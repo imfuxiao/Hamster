@@ -1,0 +1,3 @@
+[submodule "Packages/LibrimeKit"]
+	path = Packages/LibrimeKit
+	url = https://github.com/imfuxiao/LibrimeKit.git
