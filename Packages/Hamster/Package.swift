@@ -14,7 +14,7 @@ let package = Package(
       targets: ["Hamster"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/KeyboardKit/KeyboardKit.git", from: "6.8.1"),
+    .package(url: "https://github.com/KeyboardKit/KeyboardKit.git", from: "6.9.0"),
     .package(url: "https://github.com/imfuxiao/Plist.git", from: "0.3.0"),
     .package(path: "../LibrimeKit")
   ],
