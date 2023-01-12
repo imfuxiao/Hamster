@@ -8,7 +8,7 @@ import UIKit
  键盘ViewController
  */
 open class HamsterKeyboardViewController: KeyboardInputViewController {
-  private var rimeEngine = RimeKit.shared
+  public var rimeEngine = RimeEngine.shared
   
   @PlistWrapper(path: Bundle.module.url(forResource: "DefaultSkinExtend", withExtension: "plist")!)
   private var skinExtend: Plist
@@ -19,16 +19,25 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     #endif
     
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(inputSetProvider: self.inputSetProvider)
-    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
+    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self, rimeEngine: self.rimeEngine)
     super.viewDidLoad()
+  }
+  
+  deinit {
+    self.rimeShutdown()
   }
   
   override public func viewWillSetupKeyboard() {
     #if DEBUG
       NSLog("viewWillSetupKeyboard() begin")
-    NSLog("controller view width = %f", KeyboardInputViewController.shared.view.frame.width)
-    NSLog("screen width = %f", UIScreen.main.bounds.size.width)
     #endif
+
+    do {
+      try rimeStart()
+    } catch {
+      print("rime start error: ")
+      print(error.localizedDescription)
+    }
     
     super.viewWillSetupKeyboard()
     let alphabetKeyboard = AlphabetKeyboard(list: skinExtend)
@@ -36,7 +45,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
   
   // TODO: 文本改变后可以在这里做写什么
-  open override func textDidChange(_ textInput: UITextInput?) {
+  override open func textDidChange(_ textInput: UITextInput?) {
 //    super.textDidChange(textInput)
 //    performAutocomplete()
 //    tryChangeToPreferredKeyboardTypeAfterTextDidChange()

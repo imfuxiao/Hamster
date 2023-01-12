@@ -11,9 +11,52 @@
 		C000CA9C296EA50400EC5323 /* Hamster in Frameworks */ = {isa = PBXBuildFile; productRef = C000CA9B296EA50400EC5323 /* Hamster */; };
 		C000CA9E296EA72600EC5323 /* KeyboardInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */; };
 		C03E8029296D4F4C0083E53A /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E8028296D4F4C0083E53A /* HamsterApp.swift */; };
-		C03E802D296D4F4D0083E53A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
-		C03E8030296D4F4D0083E53A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
 		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C071BF4A297011C400E21FBC /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BECF297010EE00E21FBC /* TWVariants.ocd2 */; };
+		C071BF4B297011C400E21FBC /* t2jp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED0297010EE00E21FBC /* t2jp.json */; };
+		C071BF4C297011C400E21FBC /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED1297010EE00E21FBC /* TWPhrases.ocd2 */; };
+		C071BF4D297011C400E21FBC /* t2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED2297010EE00E21FBC /* t2tw.json */; };
+		C071BF4E297011C400E21FBC /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED3297010EE00E21FBC /* TSCharacters.ocd2 */; };
+		C071BF4F297011C400E21FBC /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED4297010EE00E21FBC /* STCharacters.ocd2 */; };
+		C071BF50297011C400E21FBC /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED5297010EE00E21FBC /* JPShinjitaiCharacters.ocd2 */; };
+		C071BF51297011C400E21FBC /* tw2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED6297010EE00E21FBC /* tw2s.json */; };
+		C071BF52297011C400E21FBC /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED7297010EE00E21FBC /* HKVariantsRevPhrases.ocd2 */; };
+		C071BF53297011C400E21FBC /* hk2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED8297010EE00E21FBC /* hk2s.json */; };
+		C071BF54297011C400E21FBC /* s2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BED9297010EE00E21FBC /* s2hk.json */; };
+		C071BF55297011C400E21FBC /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDA297010EE00E21FBC /* HKVariantsRev.ocd2 */; };
+		C071BF56297011C400E21FBC /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDB297010EE00E21FBC /* TWVariantsRevPhrases.ocd2 */; };
+		C071BF57297011C400E21FBC /* t2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDC297010EE00E21FBC /* t2s.json */; };
+		C071BF58297011C400E21FBC /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDD297010EE00E21FBC /* STPhrases.ocd2 */; };
+		C071BF59297011C400E21FBC /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDE297010EE00E21FBC /* HKVariants.ocd2 */; };
+		C071BF5A297011C400E21FBC /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEDF297010EE00E21FBC /* TSPhrases.ocd2 */; };
+		C071BF5B297011C400E21FBC /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE0297010EE00E21FBC /* JPVariants.ocd2 */; };
+		C071BF5C297011C400E21FBC /* s2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE1297010EE00E21FBC /* s2tw.json */; };
+		C071BF5D297011C400E21FBC /* s2twp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE2297010EE00E21FBC /* s2twp.json */; };
+		C071BF5E297011C400E21FBC /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE3297010EE00E21FBC /* JPShinjitaiPhrases.ocd2 */; };
+		C071BF5F297011C400E21FBC /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE4297010EE00E21FBC /* JPVariantsRev.ocd2 */; };
+		C071BF60297011C400E21FBC /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE5297010EE00E21FBC /* TWPhrasesRev.ocd2 */; };
+		C071BF61297011C400E21FBC /* t2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE6297010EE00E21FBC /* t2hk.json */; };
+		C071BF62297011C400E21FBC /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE7297010EE00E21FBC /* TWVariantsRev.ocd2 */; };
+		C071BF63297011C400E21FBC /* s2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE8297010EE00E21FBC /* s2t.json */; };
+		C071BF64297011C400E21FBC /* jp2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEE9297010EE00E21FBC /* jp2t.json */; };
+		C071BF65297011C400E21FBC /* tw2sp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C071BEEA297010EE00E21FBC /* tw2sp.json */; };
+		C071BF672970124D00E21FBC /* squirrel.yaml in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEEC297010EE00E21FBC /* squirrel.yaml */; };
+		C071BF682970124D00E21FBC /* flypy_top.txt in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEED297010EE00E21FBC /* flypy_top.txt */; };
+		C071BF692970124D00E21FBC /* flypy.schema.yaml in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEEE297010EE00E21FBC /* flypy.schema.yaml */; };
+		C071BF6A2970124D00E21FBC /* flypy_user.txt in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEEF297010EE00E21FBC /* flypy_user.txt */; };
+		C071BF6B2970124D00E21FBC /* rime.lua in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEF0297010EE00E21FBC /* rime.lua */; };
+		C071BF6C2970124D00E21FBC /* squirrel.custom.yaml in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEF3297010EE00E21FBC /* squirrel.custom.yaml */; };
+		C071BF6D2970124D00E21FBC /* default.custom.yaml in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEF4297010EE00E21FBC /* default.custom.yaml */; };
+		C071BF6E2970124D00E21FBC /* flypy_full.txt in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEF5297010EE00E21FBC /* flypy_full.txt */; };
+		C071BF6F2970124D00E21FBC /* flypy_sys.txt in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEFD297010EE00E21FBC /* flypy_sys.txt */; };
+		C071BF702970124D00E21FBC /* default.yaml in Copy Rime user */ = {isa = PBXBuildFile; fileRef = C071BEFE297010EE00E21FBC /* default.yaml */; };
+		C071BF73297012AB00E21FBC /* calculator_translator.lua in Copy Rime User lua */ = {isa = PBXBuildFile; fileRef = C071BEF2297010EE00E21FBC /* calculator_translator.lua */; };
+		C071BF752970131800E21FBC /* flypy.reverse.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEF7297010EE00E21FBC /* flypy.reverse.bin */; };
+		C071BF762970131800E21FBC /* flypydz.prism.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEF8297010EE00E21FBC /* flypydz.prism.bin */; };
+		C071BF772970131800E21FBC /* flypydz.table.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEF9297010EE00E21FBC /* flypydz.table.bin */; };
+		C071BF782970131800E21FBC /* flypy.prism.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFA297010EE00E21FBC /* flypy.prism.bin */; };
+		C071BF792970131800E21FBC /* flypy.table.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFB297010EE00E21FBC /* flypy.table.bin */; };
+		C071BF7A2970131800E21FBC /* flypydz.reverse.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFC297010EE00E21FBC /* flypydz.reverse.bin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +81,91 @@
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C071BF2C2970112B00E21FBC /* Copy Rime ShareSupport OpenCC */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = rime/SharedSupport/opencc;
+			dstSubfolderSpec = 7;
+			files = (
+				C071BF4A297011C400E21FBC /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF4B297011C400E21FBC /* t2jp.json in Copy Rime ShareSupport OpenCC */,
+				C071BF4C297011C400E21FBC /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF4D297011C400E21FBC /* t2tw.json in Copy Rime ShareSupport OpenCC */,
+				C071BF4E297011C400E21FBC /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF4F297011C400E21FBC /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF50297011C400E21FBC /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF51297011C400E21FBC /* tw2s.json in Copy Rime ShareSupport OpenCC */,
+				C071BF52297011C400E21FBC /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF53297011C400E21FBC /* hk2s.json in Copy Rime ShareSupport OpenCC */,
+				C071BF54297011C400E21FBC /* s2hk.json in Copy Rime ShareSupport OpenCC */,
+				C071BF55297011C400E21FBC /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF56297011C400E21FBC /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF57297011C400E21FBC /* t2s.json in Copy Rime ShareSupport OpenCC */,
+				C071BF58297011C400E21FBC /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF59297011C400E21FBC /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF5A297011C400E21FBC /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF5B297011C400E21FBC /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF5C297011C400E21FBC /* s2tw.json in Copy Rime ShareSupport OpenCC */,
+				C071BF5D297011C400E21FBC /* s2twp.json in Copy Rime ShareSupport OpenCC */,
+				C071BF5E297011C400E21FBC /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF5F297011C400E21FBC /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF60297011C400E21FBC /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF61297011C400E21FBC /* t2hk.json in Copy Rime ShareSupport OpenCC */,
+				C071BF62297011C400E21FBC /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C071BF63297011C400E21FBC /* s2t.json in Copy Rime ShareSupport OpenCC */,
+				C071BF64297011C400E21FBC /* jp2t.json in Copy Rime ShareSupport OpenCC */,
+				C071BF65297011C400E21FBC /* tw2sp.json in Copy Rime ShareSupport OpenCC */,
+			);
+			name = "Copy Rime ShareSupport OpenCC";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C071BF662970121E00E21FBC /* Copy Rime user */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = rime/user;
+			dstSubfolderSpec = 7;
+			files = (
+				C071BF672970124D00E21FBC /* squirrel.yaml in Copy Rime user */,
+				C071BF682970124D00E21FBC /* flypy_top.txt in Copy Rime user */,
+				C071BF692970124D00E21FBC /* flypy.schema.yaml in Copy Rime user */,
+				C071BF6A2970124D00E21FBC /* flypy_user.txt in Copy Rime user */,
+				C071BF6B2970124D00E21FBC /* rime.lua in Copy Rime user */,
+				C071BF6C2970124D00E21FBC /* squirrel.custom.yaml in Copy Rime user */,
+				C071BF6D2970124D00E21FBC /* default.custom.yaml in Copy Rime user */,
+				C071BF6E2970124D00E21FBC /* flypy_full.txt in Copy Rime user */,
+				C071BF6F2970124D00E21FBC /* flypy_sys.txt in Copy Rime user */,
+				C071BF702970124D00E21FBC /* default.yaml in Copy Rime user */,
+			);
+			name = "Copy Rime user";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C071BF712970126C00E21FBC /* Copy Rime User lua */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = rime/user/lua;
+			dstSubfolderSpec = 7;
+			files = (
+				C071BF73297012AB00E21FBC /* calculator_translator.lua in Copy Rime User lua */,
+			);
+			name = "Copy Rime User lua";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C071BF74297012F800E21FBC /* Copy Rime User Build */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = rime/user/build;
+			dstSubfolderSpec = 7;
+			files = (
+				C071BF752970131800E21FBC /* flypy.reverse.bin in Copy Rime User Build */,
+				C071BF762970131800E21FBC /* flypydz.prism.bin in Copy Rime User Build */,
+				C071BF772970131800E21FBC /* flypydz.table.bin in Copy Rime User Build */,
+				C071BF782970131800E21FBC /* flypy.prism.bin in Copy Rime User Build */,
+				C071BF792970131800E21FBC /* flypy.table.bin in Copy Rime User Build */,
+				C071BF7A2970131800E21FBC /* flypydz.reverse.bin in Copy Rime User Build */,
+			);
+			name = "Copy Rime User Build";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +178,53 @@
 		C03E8037296D52B50083E53A /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
 		C03E803C296D53650083E53A /* HamsterKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HamsterKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8040296D53650083E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
+		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
+		C071BECF297010EE00E21FBC /* TWVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariants.ocd2; sourceTree = "<group>"; };
+		C071BED0297010EE00E21FBC /* t2jp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2jp.json; sourceTree = "<group>"; };
+		C071BED1297010EE00E21FBC /* TWPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrases.ocd2; sourceTree = "<group>"; };
+		C071BED2297010EE00E21FBC /* t2tw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2tw.json; sourceTree = "<group>"; };
+		C071BED3297010EE00E21FBC /* TSCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSCharacters.ocd2; sourceTree = "<group>"; };
+		C071BED4297010EE00E21FBC /* STCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STCharacters.ocd2; sourceTree = "<group>"; };
+		C071BED5297010EE00E21FBC /* JPShinjitaiCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiCharacters.ocd2; sourceTree = "<group>"; };
+		C071BED6297010EE00E21FBC /* tw2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tw2s.json; sourceTree = "<group>"; };
+		C071BED7297010EE00E21FBC /* HKVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
+		C071BED8297010EE00E21FBC /* hk2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hk2s.json; sourceTree = "<group>"; };
+		C071BED9297010EE00E21FBC /* s2hk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2hk.json; sourceTree = "<group>"; };
+		C071BEDA297010EE00E21FBC /* HKVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRev.ocd2; sourceTree = "<group>"; };
+		C071BEDB297010EE00E21FBC /* TWVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
+		C071BEDC297010EE00E21FBC /* t2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2s.json; sourceTree = "<group>"; };
+		C071BEDD297010EE00E21FBC /* STPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STPhrases.ocd2; sourceTree = "<group>"; };
+		C071BEDE297010EE00E21FBC /* HKVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariants.ocd2; sourceTree = "<group>"; };
+		C071BEDF297010EE00E21FBC /* TSPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSPhrases.ocd2; sourceTree = "<group>"; };
+		C071BEE0297010EE00E21FBC /* JPVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariants.ocd2; sourceTree = "<group>"; };
+		C071BEE1297010EE00E21FBC /* s2tw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2tw.json; sourceTree = "<group>"; };
+		C071BEE2297010EE00E21FBC /* s2twp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2twp.json; sourceTree = "<group>"; };
+		C071BEE3297010EE00E21FBC /* JPShinjitaiPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiPhrases.ocd2; sourceTree = "<group>"; };
+		C071BEE4297010EE00E21FBC /* JPVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariantsRev.ocd2; sourceTree = "<group>"; };
+		C071BEE5297010EE00E21FBC /* TWPhrasesRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrasesRev.ocd2; sourceTree = "<group>"; };
+		C071BEE6297010EE00E21FBC /* t2hk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2hk.json; sourceTree = "<group>"; };
+		C071BEE7297010EE00E21FBC /* TWVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRev.ocd2; sourceTree = "<group>"; };
+		C071BEE8297010EE00E21FBC /* s2t.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2t.json; sourceTree = "<group>"; };
+		C071BEE9297010EE00E21FBC /* jp2t.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jp2t.json; sourceTree = "<group>"; };
+		C071BEEA297010EE00E21FBC /* tw2sp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tw2sp.json; sourceTree = "<group>"; };
+		C071BEEC297010EE00E21FBC /* squirrel.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = squirrel.yaml; sourceTree = "<group>"; };
+		C071BEED297010EE00E21FBC /* flypy_top.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = flypy_top.txt; sourceTree = "<group>"; };
+		C071BEEE297010EE00E21FBC /* flypy.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = flypy.schema.yaml; sourceTree = "<group>"; };
+		C071BEEF297010EE00E21FBC /* flypy_user.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = flypy_user.txt; sourceTree = "<group>"; };
+		C071BEF0297010EE00E21FBC /* rime.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = rime.lua; sourceTree = "<group>"; };
+		C071BEF2297010EE00E21FBC /* calculator_translator.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = calculator_translator.lua; sourceTree = "<group>"; };
+		C071BEF3297010EE00E21FBC /* squirrel.custom.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = squirrel.custom.yaml; sourceTree = "<group>"; };
+		C071BEF4297010EE00E21FBC /* default.custom.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = default.custom.yaml; sourceTree = "<group>"; };
+		C071BEF5297010EE00E21FBC /* flypy_full.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = flypy_full.txt; sourceTree = "<group>"; };
+		C071BEF7297010EE00E21FBC /* flypy.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypy.reverse.bin; sourceTree = "<group>"; };
+		C071BEF8297010EE00E21FBC /* flypydz.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypydz.prism.bin; sourceTree = "<group>"; };
+		C071BEF9297010EE00E21FBC /* flypydz.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypydz.table.bin; sourceTree = "<group>"; };
+		C071BEFA297010EE00E21FBC /* flypy.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypy.prism.bin; sourceTree = "<group>"; };
+		C071BEFB297010EE00E21FBC /* flypy.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypy.table.bin; sourceTree = "<group>"; };
+		C071BEFC297010EE00E21FBC /* flypydz.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = flypydz.reverse.bin; sourceTree = "<group>"; };
+		C071BEFD297010EE00E21FBC /* flypy_sys.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = flypy_sys.txt; sourceTree = "<group>"; };
+		C071BEFE297010EE00E21FBC /* default.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +261,7 @@
 				C03E803D296D53650083E53A /* HamsterKeyboard */,
 				C0059F6F296EA35600F3F9AB /* Hamster */,
 				C03E8037296D52B50083E53A /* LibrimeKit */,
+				C071BECC2970108000E21FBC /* Resources */,
 				C03E8026296D4F4C0083E53A /* Products */,
 				C000CA98296EA48D00EC5323 /* Frameworks */,
 			);
@@ -103,6 +279,7 @@
 		C03E8027296D4F4C0083E53A /* HamsterApp */ = {
 			isa = PBXGroup;
 			children = (
+				C071BECA297006EF00E21FBC /* HamsterApp.entitlements */,
 				C03E8028296D4F4C0083E53A /* HamsterApp.swift */,
 				C03E802C296D4F4D0083E53A /* Assets.xcassets */,
 				C03E802E296D4F4D0083E53A /* Preview Content */,
@@ -121,10 +298,103 @@
 		C03E803D296D53650083E53A /* HamsterKeyboard */ = {
 			isa = PBXGroup;
 			children = (
+				C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */,
 				C03E8040296D53650083E53A /* Info.plist */,
 				C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */,
 			);
 			path = HamsterKeyboard;
+			sourceTree = "<group>";
+		};
+		C071BECC2970108000E21FBC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C071BECD297010EE00E21FBC /* SharedSupport */,
+				C071BEEB297010EE00E21FBC /* user */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		C071BECD297010EE00E21FBC /* SharedSupport */ = {
+			isa = PBXGroup;
+			children = (
+				C071BECE297010EE00E21FBC /* opencc */,
+			);
+			path = SharedSupport;
+			sourceTree = "<group>";
+		};
+		C071BECE297010EE00E21FBC /* opencc */ = {
+			isa = PBXGroup;
+			children = (
+				C071BECF297010EE00E21FBC /* TWVariants.ocd2 */,
+				C071BED0297010EE00E21FBC /* t2jp.json */,
+				C071BED1297010EE00E21FBC /* TWPhrases.ocd2 */,
+				C071BED2297010EE00E21FBC /* t2tw.json */,
+				C071BED3297010EE00E21FBC /* TSCharacters.ocd2 */,
+				C071BED4297010EE00E21FBC /* STCharacters.ocd2 */,
+				C071BED5297010EE00E21FBC /* JPShinjitaiCharacters.ocd2 */,
+				C071BED6297010EE00E21FBC /* tw2s.json */,
+				C071BED7297010EE00E21FBC /* HKVariantsRevPhrases.ocd2 */,
+				C071BED8297010EE00E21FBC /* hk2s.json */,
+				C071BED9297010EE00E21FBC /* s2hk.json */,
+				C071BEDA297010EE00E21FBC /* HKVariantsRev.ocd2 */,
+				C071BEDB297010EE00E21FBC /* TWVariantsRevPhrases.ocd2 */,
+				C071BEDC297010EE00E21FBC /* t2s.json */,
+				C071BEDD297010EE00E21FBC /* STPhrases.ocd2 */,
+				C071BEDE297010EE00E21FBC /* HKVariants.ocd2 */,
+				C071BEDF297010EE00E21FBC /* TSPhrases.ocd2 */,
+				C071BEE0297010EE00E21FBC /* JPVariants.ocd2 */,
+				C071BEE1297010EE00E21FBC /* s2tw.json */,
+				C071BEE2297010EE00E21FBC /* s2twp.json */,
+				C071BEE3297010EE00E21FBC /* JPShinjitaiPhrases.ocd2 */,
+				C071BEE4297010EE00E21FBC /* JPVariantsRev.ocd2 */,
+				C071BEE5297010EE00E21FBC /* TWPhrasesRev.ocd2 */,
+				C071BEE6297010EE00E21FBC /* t2hk.json */,
+				C071BEE7297010EE00E21FBC /* TWVariantsRev.ocd2 */,
+				C071BEE8297010EE00E21FBC /* s2t.json */,
+				C071BEE9297010EE00E21FBC /* jp2t.json */,
+				C071BEEA297010EE00E21FBC /* tw2sp.json */,
+			);
+			path = opencc;
+			sourceTree = "<group>";
+		};
+		C071BEEB297010EE00E21FBC /* user */ = {
+			isa = PBXGroup;
+			children = (
+				C071BEEC297010EE00E21FBC /* squirrel.yaml */,
+				C071BEED297010EE00E21FBC /* flypy_top.txt */,
+				C071BEEE297010EE00E21FBC /* flypy.schema.yaml */,
+				C071BEEF297010EE00E21FBC /* flypy_user.txt */,
+				C071BEF0297010EE00E21FBC /* rime.lua */,
+				C071BEF1297010EE00E21FBC /* lua */,
+				C071BEF3297010EE00E21FBC /* squirrel.custom.yaml */,
+				C071BEF4297010EE00E21FBC /* default.custom.yaml */,
+				C071BEF5297010EE00E21FBC /* flypy_full.txt */,
+				C071BEF6297010EE00E21FBC /* build */,
+				C071BEFD297010EE00E21FBC /* flypy_sys.txt */,
+				C071BEFE297010EE00E21FBC /* default.yaml */,
+			);
+			path = user;
+			sourceTree = "<group>";
+		};
+		C071BEF1297010EE00E21FBC /* lua */ = {
+			isa = PBXGroup;
+			children = (
+				C071BEF2297010EE00E21FBC /* calculator_translator.lua */,
+			);
+			path = lua;
+			sourceTree = "<group>";
+		};
+		C071BEF6297010EE00E21FBC /* build */ = {
+			isa = PBXGroup;
+			children = (
+				C071BEF7297010EE00E21FBC /* flypy.reverse.bin */,
+				C071BEF8297010EE00E21FBC /* flypydz.prism.bin */,
+				C071BEF9297010EE00E21FBC /* flypydz.table.bin */,
+				C071BEFA297010EE00E21FBC /* flypy.prism.bin */,
+				C071BEFB297010EE00E21FBC /* flypy.table.bin */,
+				C071BEFC297010EE00E21FBC /* flypydz.reverse.bin */,
+			);
+			path = build;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,8 +406,11 @@
 			buildPhases = (
 				C03E8021296D4F4C0083E53A /* Sources */,
 				C03E8022296D4F4C0083E53A /* Frameworks */,
-				C03E8023296D4F4C0083E53A /* Resources */,
 				C03E8047296D53650083E53A /* Embed Foundation Extensions */,
+				C071BF2C2970112B00E21FBC /* Copy Rime ShareSupport OpenCC */,
+				C071BF662970121E00E21FBC /* Copy Rime user */,
+				C071BF712970126C00E21FBC /* Copy Rime User lua */,
+				C071BF74297012F800E21FBC /* Copy Rime User Build */,
 			);
 			buildRules = (
 			);
@@ -201,8 +474,6 @@
 			);
 			mainGroup = C03E801C296D4F4C0083E53A;
 			packageReferences = (
-				C03E8075296D55240083E53A /* XCRemoteSwiftPackageReference "KeyboardKit" */,
-				C03E8078296D58240083E53A /* XCRemoteSwiftPackageReference "Plist" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -215,15 +486,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C03E8023296D4F4C0083E53A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C03E8030296D4F4D0083E53A /* Preview Assets.xcassets in Resources */,
-				C03E802D296D4F4D0083E53A /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C03E803A296D53650083E53A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,6 +643,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HamsterApp/HamsterApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HamsterApp/Preview Content\"";
@@ -412,6 +675,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HamsterApp/HamsterApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HamsterApp/Preview Content\"";
@@ -441,6 +705,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = HamsterKeyboard/HamsterKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M4N6995A28;
@@ -468,6 +733,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = HamsterKeyboard/HamsterKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M4N6995A28;
@@ -521,25 +787,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C03E8075296D55240083E53A /* XCRemoteSwiftPackageReference "KeyboardKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/KeyboardKit/KeyboardKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.8.1;
-			};
-		};
-		C03E8078296D58240083E53A /* XCRemoteSwiftPackageReference "Plist" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/imfuxiao/Plist";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.3.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		C000CA99296EA4FC00EC5323 /* Hamster */ = {

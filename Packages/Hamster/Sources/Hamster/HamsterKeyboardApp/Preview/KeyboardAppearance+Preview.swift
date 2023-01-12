@@ -6,7 +6,7 @@ import UIKit
  */
 public class PreviewHamsterKeyboardAppearance: StandardKeyboardAppearance {
   init() {
-    super.init(context: .preview)
+    super.init(keyboardContext: .preview)
   }
   
   override public func inputCalloutStyle() -> InputCalloutStyle {

@@ -28,7 +28,7 @@ extension KeyboardAction {
   
   var hamsterStandardLongPressAction: GestureAction? {
     switch self {
-    case .backspace: return standardTapAction
+    case .backspace: return standardReleaseAction
     case .space: return { _ in }
     default: return nil
     }
@@ -79,7 +79,7 @@ extension KeyboardAction {
    */
   var hamsterStandardRepeatAction: GestureAction? {
     switch self {
-    case .backspace: return standardTapAction
+    case .backspace: return standardReleaseAction
     default: return nil
     }
   }

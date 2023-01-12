@@ -4,10 +4,11 @@ import SwiftUI
 class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 滑动手势
   let slidGestureHandler: SlideGestureHandler
+  weak var rimeEngine: RimeEngine?
   
-  init(inputViewController ivc: KeyboardInputViewController) {
-    self.slidGestureHandler = CharacterSlideGestureHandler(
-      context: ivc.keyboardContext)
+  init(inputViewController ivc: KeyboardInputViewController, rimeEngine: RimeEngine) {
+    self.rimeEngine = rimeEngine
+    self.slidGestureHandler = CharacterSlideGestureHandler(context: ivc.keyboardContext)
     
     super.init(inputViewController: ivc)
   }

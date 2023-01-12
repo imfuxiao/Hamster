@@ -86,10 +86,10 @@ struct HamsterStandardKeyboardLayoutProvider_Previews: PreviewProvider {
           .frame(maxWidth: .infinity)
           .multilineTextAlignment(.center)
       default:
-        StandardSystemKeyboardButtonView(
+        SystemKeyboardButtonRowItem(
           content: previewButtonContent(item: item),
           item: item,
-          context: .preview,
+          keyboardContext: .preview,
           keyboardWidth: keyboardWidth,
           inputWidth: inputWidth,
           appearance: .preview,
@@ -121,10 +121,10 @@ struct HamsterStandardKeyboardLayoutProvider_Previews: PreviewProvider {
           .font(.system(size: 22))
         }
       default:
-        StandardSystemKeyboardButtonContent(
+        SystemKeyboardActionButtonContent(
           action: item.action,
           appearance: PreviewHamsterKeyboardAppearance(),
-          context: .preview
+          keyboardContext: .preview
         )
       }
     }

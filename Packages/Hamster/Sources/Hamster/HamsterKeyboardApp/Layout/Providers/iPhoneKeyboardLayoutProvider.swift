@@ -207,7 +207,7 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
    */
   func isPortrait(_ context: KeyboardContext) -> Bool {
     #if os(iOS)
-      return context.screenOrientation.isPortrait
+      return context.interfaceOrientation.isPortrait
     #else
       return false
     #endif

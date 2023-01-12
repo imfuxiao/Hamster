@@ -97,7 +97,7 @@ struct HamsterKeyboardButtonText_Previews: PreviewProvider {
       SystemKeyboardButtonText(text: "PasCal", action: .space)
       SystemKeyboardButtonText(text: "UPPER", action: .space)
       SystemKeyboardButtonText(text: "lower", action: .space)
-      SystemKeyboardButtonText(text: "lower", isInputAction: true)
+      SystemKeyboardButtonText(text: "lower", action: .space)
       SystemKeyboardButtonText(text: "non-input", action: .backspace)
     }
   }

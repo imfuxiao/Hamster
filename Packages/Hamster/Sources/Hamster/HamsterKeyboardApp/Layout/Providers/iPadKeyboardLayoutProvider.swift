@@ -57,7 +57,7 @@ class HamsteriPadKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
    */
   override open func keyboardReturnAction(for context: KeyboardContext) -> KeyboardAction {
     let base = super.keyboardReturnAction(for: context)
-    return base == .return ? .newLine : base
+    return base == .primary(.return) ? .primary(.newLine) : base
   }
   
   // MARK: - iPad Specific
@@ -100,11 +100,11 @@ class HamsteriPadKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
   open func lowerTrailingActions(for context: KeyboardContext) -> KeyboardActions {
     guard let action = keyboardSwitchActionForBottomInputRow(for: context) else { return [] }
     if context.isAlphabetic(.arabic) { return [keyboardReturnAction(for: context)] }
-    if context.isAlphabetic(.hebrew) { return [.newLine] }
+    if context.isAlphabetic(.hebrew) { return [.primary(.newLine)] }
     if context.isAlphabetic(.kurdish_sorani_arabic) { return [keyboardReturnAction(for: context)] }
     if context.isAlphabetic(.kurdish_sorani_pc) { return [keyboardReturnAction(for: context)] }
     if context.isAlphabetic(.persian) { return [] }
-    if hasAlphabeticInputCount([12, 12, 10]) { return [.newLine] } // e.g. Belarusian
+    if hasAlphabeticInputCount([12, 12, 10]) { return [.primary(.newLine)] } // e.g. Belarusian
     return [action]
   }
   
@@ -197,7 +197,7 @@ private extension HamsteriPadKeyboardLayoutProvider {
   
   func isPortrait(_ context: KeyboardContext) -> Bool {
     #if os(iOS)
-      context.screenOrientation.isPortrait
+    context.interfaceOrientation.isPortrait
     #else
       return false
     #endif

@@ -58,10 +58,10 @@ struct AlphabetKeyboard: View {
       inputCalloutContext: inputCalloutContext,
       width: width,
       buttonView: { layoutItem, keyboardWidth, inputWidth in
-        StandardSystemKeyboardButtonView(
+        SystemKeyboardButtonRowItem(
           content: buttonContent(item: layoutItem),
           item: layoutItem,
-          context: context,
+          keyboardContext: context,
           keyboardWidth: keyboardWidth,
           inputWidth: inputWidth,
           appearance: appearance,
@@ -72,8 +72,6 @@ struct AlphabetKeyboard: View {
   }
 
   var width: CGFloat {
-    print(context.isPortrait)
-    print(standardKeyboardWidth)
     // TODO: 横向的全面屏需要减去左右两边的听写键和键盘切换键
     return !context.isPortrait && context.hasDictationKey ? standardKeyboardWidth - 150 : standardKeyboardWidth
   }

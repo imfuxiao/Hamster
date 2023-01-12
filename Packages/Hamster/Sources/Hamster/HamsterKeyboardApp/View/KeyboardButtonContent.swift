@@ -36,16 +36,16 @@ struct HamsterKeyboardActionButtonContent: View {
   
   public var body: some View {
     if action == .nextKeyboard {
-#if os(iOS) || os(tvOS)
+      #if os(iOS) || os(tvOS)
       NextKeyboardButton()
-#else
+      #else
       Image.keyboardGlobe
-#endif
+      #endif
     } else if action == .space {
       spaceView
-    } else if let image = buttonImage {
-      image
-    } else if let text = buttonText {
+    } else if let image = appearance.buttonImage(for: action) {
+      image.scaleEffect(appearance.buttonImageScaleFactor(for: action))
+    } else if let text = appearance.buttonText(for: action) {
       textView(for: text)
     } else {
       Text("")
@@ -54,18 +54,13 @@ struct HamsterKeyboardActionButtonContent: View {
 }
 
 private extension HamsterKeyboardActionButtonContent {
-  var buttonImage: Image? {
-    appearance.buttonImage(for: action)
-  }
-  
-  var buttonText: String? {
-    appearance.buttonText(for: action)
-  }
-  
   var spaceView: some View {
-    SystemKeyboardSpaceButtonContent(
-      localeText: localeText,
-      spaceText: spaceText
+    SystemKeyboardSpaceContent(
+      localeText: shouldShowLocaleName ? localeName : spaceText,
+      spaceView: SystemKeyboardButtonText(
+        text: spaceText,
+        action: .space
+      )
     )
   }
   
@@ -83,10 +78,6 @@ private extension HamsterKeyboardActionButtonContent {
 private extension HamsterKeyboardActionButtonContent {
   var localeName: String {
     context.locale.localizedLanguageName ?? ""
-  }
-  
-  var localeText: String {
-    shouldShowLocaleName ? localeName : spaceText
   }
   
   var shouldShowLocaleName: Bool {
@@ -116,7 +107,7 @@ struct HamsterKeyboardActionButtonContent_Previews: PreviewProvider {
     SystemKeyboardActionButtonContent(
       action: action,
       appearance: .preview,
-      context: multiLocale ? multiLocaleContext : .preview
+      keyboardContext: multiLocale ? multiLocaleContext : .preview
     )
   }
   
