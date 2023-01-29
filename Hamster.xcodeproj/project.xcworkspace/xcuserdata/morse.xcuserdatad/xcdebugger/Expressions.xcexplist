@@ -3,12 +3,60 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "closure #4 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "hamsterInputViewController?.keyboardContext.keyboardType">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.selectedIndex.getter:ActionCalloutContext.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardGestures.updateShouldApplyReleaseAction():KeyboardGestures.swift">
+      </ContextState>
+      <ContextState
          contextName = "static ShareManager.initShareResources(appAbsolutePath:):ShareManager.swift">
          <PersistentStrings>
             <PersistentString
                value = "dstPath.path">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StandardKeyboardActionHandler.autocompleteAction.getter:StandardKeyboardActionHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "HamsterKeyboardActionHandler.handle(_:on:):HamsterKeyboardActionHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardAction.hamsterStandardReleaseAction.getter:KeyboardAction+Actions.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardGestures.handleReleaseInside(in:):KeyboardGestures.swift">
+      </ContextState>
+      <ContextState
+         contextName = "HamsterAutocompleteProvider.autocompleteSuggestions(for:completion:):HamsterAutocompleteProvider.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.hasSelectedAction.getter:ActionCalloutContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.hasSelectedAction">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.actions">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

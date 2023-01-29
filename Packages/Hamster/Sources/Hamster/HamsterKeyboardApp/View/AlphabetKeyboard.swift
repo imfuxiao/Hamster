@@ -10,7 +10,6 @@ import Plist
 import SwiftUI
 
 struct AlphabetKeyboard: View {
-  var skinExtend: [String: String] = [:]
   var layoutProvider: KeyboardLayoutProvider
   var appearance: KeyboardAppearance
   var actionHandler: KeyboardActionHandler
@@ -19,10 +18,15 @@ struct AlphabetKeyboard: View {
   private var context: KeyboardContext
 
   @EnvironmentObject
+  private var autocompleteContext: AutocompleteContext
+
+  @EnvironmentObject
   private var actionCalloutContext: ActionCalloutContext
 
   @EnvironmentObject
   private var inputCalloutContext: InputCalloutContext
+
+  var skinExtend: [String: String] = [:]
 
   init(list: Plist) {
     if let dict = list.dict {
@@ -48,7 +52,12 @@ struct AlphabetKeyboard: View {
     )
   }
 
-  var body: some View {
+  var autocompleteToolbar: some View {
+    HamsterAutocompleteToolbar()
+      .opacity(context.prefersAutocomplete ? 1 : 0) // Still allocate height
+  }
+
+  var keyboard: some View {
     SystemKeyboard(
       layout: layoutProvider.keyboardLayout(for: context),
       appearance: appearance,
@@ -69,6 +78,15 @@ struct AlphabetKeyboard: View {
         )
       }
     )
+  }
+
+  var body: some View {
+    VStack(spacing: 0) {
+      if context.keyboardType != .emojis {
+        autocompleteToolbar
+      }
+      keyboard
+    }
   }
 
   var width: CGFloat {

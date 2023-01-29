@@ -18,13 +18,21 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       NSLog("viewDidLoad() begin")
     #endif
     
+    do {
+      try self.rimeStart()
+    } catch {
+      // TODO: RIME 异常启动处理
+      print("rime start error: ")
+      print(error.localizedDescription)
+    }
+    
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(inputSetProvider: self.inputSetProvider)
-    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self, rimeEngine: self.rimeEngine)
+    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
+    self.autocompleteProvider = HamsterAutocompleteProvider(engine: self.rimeEngine)
+    self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
+    self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
+    
     super.viewDidLoad()
-  }
-  
-  deinit {
-    self.rimeShutdown()
   }
   
   override public func viewWillSetupKeyboard() {
@@ -32,22 +40,34 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       NSLog("viewWillSetupKeyboard() begin")
     #endif
 
-    do {
-      try rimeStart()
-    } catch {
-      print("rime start error: ")
-      print(error.localizedDescription)
-    }
-    
     super.viewWillSetupKeyboard()
     let alphabetKeyboard = AlphabetKeyboard(list: skinExtend)
+      .environmentObject(self.rimeEngine)
     setup(with: alphabetKeyboard)
   }
   
-  // TODO: 文本改变后可以在这里做写什么
-  override open func textDidChange(_ textInput: UITextInput?) {
-//    super.textDidChange(textInput)
-//    performAutocomplete()
-//    tryChangeToPreferredKeyboardTypeAfterTextDidChange()
-  }
+  // MARK: - Text And Selection Change
+  
+//  override open func selectionWillChange(_ textInput: UITextInput?) {
+  ////    super.selectionWillChange(textInput)
+//    resetAutocomplete()
+//  }
+//
+//  override open func selectionDidChange(_ textInput: UITextInput?) {
+  ////    super.selectionDidChange(textInput)
+//    resetAutocomplete()
+//  }
+//
+//  override open func textWillChange(_ textInput: UITextInput?) {
+  ////    super.textWillChange(textInput)
+  ////    if keyboardContext.textDocumentProxy === textDocumentProxy { return }
+  ////    keyboardContext.textDocumentProxy = textDocumentProxy
+//  }
+//
+//  // TODO: 文本改变后可以在这里做写什么
+//  override open func textDidChange(_ textInput: UITextInput?) {
+  ////    super.textDidChange(textInput)
+  ////    performAutocomplete()
+  ////    tryChangeToPreferredKeyboardTypeAfterTextDidChange()
+//  }
 }

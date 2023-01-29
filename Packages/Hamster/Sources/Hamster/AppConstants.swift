@@ -18,5 +18,4 @@ enum AppConstants {
   // MARK: Rime相关
   static let rimeSharedSupportPathName = "SharedSupport"
   static let rimeUserPathName = "user"
-  static let rimeAppName = "rime.Hamster"
 }

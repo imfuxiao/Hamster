@@ -1,7 +1,7 @@
 import KeyboardKit
 import SwiftUI
 
-class HamsterKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
+class HamsterKeyboardLayoutProvider: SystemKeyboardLayoutProvider, ObservableObject {
   // MARK: 新增九宫格键盘类型
   
   /**
@@ -44,9 +44,9 @@ class HamsterKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   override func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
     case .alphabetic: return .keyboardType(.numeric)
-    case .numeric: return .keyboardType(.alphabetic(.auto))
-    case .symbolic: return .keyboardType(.alphabetic(.auto))
-    case .custom(named: KeyboardConstant.keyboardType.GridView): return .keyboardType(.alphabetic(.auto))
+    case .numeric: return .keyboardType(.alphabetic(.lowercased))
+    case .symbolic: return .keyboardType(.alphabetic(.lowercased))
+    case .custom(named: KeyboardConstant.keyboardType.GridView): return .keyboardType(.alphabetic(.lowercased))
     default: return nil
     }
   }

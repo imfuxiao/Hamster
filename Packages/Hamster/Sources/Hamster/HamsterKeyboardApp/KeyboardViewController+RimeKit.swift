@@ -23,7 +23,9 @@ class HamsterRimeNotification: IRimeNotificationDelegate {
 }
 
 extension HamsterKeyboardViewController {
-  var keyboardAbsolutePath: URL { Bundle.main.resourceURL! }
+  var keyboardAbsolutePath: URL {
+    try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+  }
   
   var sharedDataDir: String {
     self.keyboardAbsolutePath.appendingPathComponent(
@@ -40,12 +42,17 @@ extension HamsterKeyboardViewController {
   func rimeStart() throws {
     try ShareManager.initKeyboardInputMethodResources(keyboardAbsolutePath: self.keyboardAbsolutePath)
     
+    rimeShutdown()
+    
     let traits = IRimeTraits()
     traits.sharedDataDir = self.sharedDataDir
     traits.userDataDir = self.userDir
-    traits.appName = AppConstants.rimeAppName
     traits.distributionCodeName = "Hamster"
     traits.distributionName = "仓鼠"
+    traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    // TODO: appName设置名字会产生异常
+    // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
+//    traits.appName = "rime.Hamster"
     
     self.rimeEngine.setNotificationDelegate(HamsterRimeNotification())
     self.rimeEngine.startService(traits)
