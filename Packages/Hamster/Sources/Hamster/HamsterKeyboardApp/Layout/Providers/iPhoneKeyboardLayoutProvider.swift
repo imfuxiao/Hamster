@@ -53,7 +53,7 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
     // 字符
     case .character(let char):
       // 九宫格
-      if context.isGridViewKeyboardType, char == KeyboardConstant.Character.equal {
+      if context.isGridViewKeyboardType, char == KeyboardConstant.Character.Equal {
         return .input
       }
       if context.isAlphabetic(.greek) { return .percentage(0.1) }

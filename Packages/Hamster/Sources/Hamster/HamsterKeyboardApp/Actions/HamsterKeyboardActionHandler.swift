@@ -21,7 +21,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     }
     
     self.slideGestureHandler = CharacterSlideGestureHandler(
-      config: keyboardActionExtendConfig
+      config: keyboardActionExtendConfig,
+      rimeEngine: self.ivc?.rimeEngine
     )
     
     super.init(inputViewController: ivc)

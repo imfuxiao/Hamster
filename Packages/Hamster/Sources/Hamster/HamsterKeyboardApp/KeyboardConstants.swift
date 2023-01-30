@@ -6,11 +6,20 @@ class KeyboardConstant {
   }
 
   enum Character {
-    static let equal = "="
+    static let Equal = "="
     static let SlideUp = "↑" // 表示上滑 Upwards Arrow: https://www.compart.com/en/unicode/U+2191
     static let SlideDown = "↓" // 表示下滑 Downwards Arrow: https://www.compart.com/en/unicode/U+2193
   }
-  
+
+  enum Fuction: String {
+    case SimplifiedTraditionalSwitch = "#繁简切换"
+    case ChineseEnglishSwitch = "#中英切换"
+    case BeginOfSentence = "#行首"
+    case EndOfSentence = "#行尾"
+    case SelectSecond = "#次选"
+    case UndoCommitText = "#撤销上屏"
+  }
+
   enum Action {
     static let endDragGesture = "endGragGesture"
   }
@@ -25,7 +34,7 @@ class KeyboardConstant {
     case Period = 0x002e // .
     case BracketLeft = 0x005b // [
     case BracketRight = 0x005d // ]
-    
+
     func string() -> String {
       if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {
         return String(scalarValue)
