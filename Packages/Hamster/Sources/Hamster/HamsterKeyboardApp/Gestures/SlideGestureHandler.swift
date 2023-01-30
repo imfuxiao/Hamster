@@ -1,10 +1,7 @@
-import KeyboardKit
 import CoreGraphics
+import KeyboardKit
 
+// 滑动手势
 public protocol SlideGestureHandler {
-  
-  /**
-   Handle Slide gestures from a start to a current location.
-   */
-  func handleDragGesture(action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint)
+  func handleDragGesture(action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) -> KeyboardAction.GestureAction?
 }

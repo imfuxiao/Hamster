@@ -10,6 +10,10 @@ class KeyboardConstant {
     static let SlideUp = "↑" // 表示上滑 Upwards Arrow: https://www.compart.com/en/unicode/U+2191
     static let SlideDown = "↓" // 表示下滑 Downwards Arrow: https://www.compart.com/en/unicode/U+2193
   }
+  
+  enum Action {
+    static let endDragGesture = "endGragGesture"
+  }
 
   enum KeySymbol: Int32 {
     case Backspace = 0xff08 // 退格键(删除键)
@@ -21,5 +25,12 @@ class KeyboardConstant {
     case Period = 0x002e // .
     case BracketLeft = 0x005b // [
     case BracketRight = 0x005d // ]
+    
+    func string() -> String {
+      if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {
+        return String(scalarValue)
+      }
+      return ""
+    }
   }
 }

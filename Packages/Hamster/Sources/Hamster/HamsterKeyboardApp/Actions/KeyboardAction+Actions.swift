@@ -62,25 +62,25 @@ extension KeyboardAction {
     switch self {
     case .dismissKeyboard: return { _ in { $0?.dismissKeyboard() }}
     case .nextLocale: return { _ in { $0?.keyboardContext.selectNextLocale() }}
-    case .shift(let currentState): return { hamsterInputViewContorller in {
-        // shift 小鹤双形通配符
-        if let rimeEngine = hamsterInputViewContorller?.rimeEngine {
-          if !rimeEngine.inputKey.isEmpty {
-            if rimeEngine.inputKey(KeyboardConstant.KeySymbol.QuoteLeft.rawValue) {
-              let candidates = rimeEngine.context().getCandidates()
-              if !candidates.isEmpty {
-                rimeEngine.candidates = candidates
-                rimeEngine.inputKey = rimeEngine.getInputKeys()
+    case .shift(let currentState): return { hamsterInputViewContorller in
+        {
+          // MARK: Shift键做为小鹤双形通配符
+
+          if let rimeEngine = hamsterInputViewContorller?.rimeEngine {
+            let inputKey = rimeEngine.getInputKeys()
+            if !inputKey.isEmpty {
+              if rimeEngine.inputKey(KeyboardConstant.KeySymbol.QuoteLeft.rawValue) {
+                rimeEngine.userInputKey.append(KeyboardConstant.KeySymbol.QuoteLeft.string())
               }
+              return
             }
-            return
+          }
+          
+          switch currentState {
+          case .lowercased: $0?.keyboardContext.keyboardType = .alphabetic(.uppercased)
+          case .auto, .capsLocked, .uppercased: $0?.keyboardContext.keyboardType = .alphabetic(.lowercased)
           }
         }
-        switch currentState {
-        case .lowercased: $0?.keyboardContext.keyboardType = .alphabetic(.uppercased)
-        case .auto, .capsLocked, .uppercased: $0?.keyboardContext.keyboardType = .alphabetic(.lowercased)
-        }
-      }
       }
     default: return nil
     }
@@ -108,53 +108,62 @@ extension KeyboardAction {
     
     switch self {
     case .backspace: return { hamsterInputViewController in
-        if let rimeEngine = hamsterInputViewController?.rimeEngine {
-          let inputKeys = rimeEngine.getInputKeys()
-          if inputKeys.isEmpty {
-            return deleteAction
-          }
-
-          // TODO:
-          if rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
-            rimeEngine.candidates = rimeEngine.context().getCandidates()
-            rimeEngine.inputKey = rimeEngine.getInputKeys()
-          } else {
-            rimeEngine.cleanAll()
-          }
+        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return deleteAction }
+        if rimeEngine.userInputKey.isEmpty {
+          return deleteAction
+        }
+        rimeEngine.userInputKey.removeLast()
+        if !rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
+          NSLog("rime engine input backspace key error")
+          rimeEngine.rest()
         }
         return { _ in }
       }
     case .character(let char): return { hamsterInputViewController in
         let insertCharAction: GestureAction = { $0?.textDocumentProxy.insertText(char) }
       
-        // Shift 小写
-        if hamsterInputViewController?.keyboardContext.keyboardType == .alphabetic(.lowercased),
-           let rimeEngine = hamsterInputViewController?.rimeEngine
-        {
-          if rimeEngine.isAsciiMode() {
-            return insertCharAction
-          }
-          
-          if rimeEngine.inputKey(char) {
-            let commit = rimeEngine.getCommitText()
-            if commit.isEmpty {
-              rimeEngine.inputKey = rimeEngine.getInputKeys()
-              rimeEngine.candidates = rimeEngine.candidateList()
-            } else {
-              rimeEngine.cleanAll()
-              return { $0?.textDocumentProxy.insertText(commit) }
-            }
-          }
-          return { _ in }
+        guard let keyboardType = hamsterInputViewController?.keyboardContext.keyboardType else {
+          return insertCharAction
         }
       
-        if let rimeEgine = hamsterInputViewController?.rimeEngine {
-          rimeEgine.cleanComposition()
-          rimeEgine.inputKey = ""
-          rimeEgine.candidates = []
+        // 键盘非小写状态
+        if keyboardType != .alphabetic(.lowercased) {
+          return insertCharAction
+        }
+      
+        guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
+          return insertCharAction
+        }
+      
+        // 输入法引擎为字母状态
+        if rimeEngine.isAsciiMode() {
+          return insertCharAction
+        }
+      
+        // 调用输入法引擎
+        if rimeEngine.inputKey(char) {
+          // 唯一码直接上屏
+          let commitText = rimeEngine.getCommitText()
+          if !commitText.isEmpty {
+            rimeEngine.rest()
+            return { $0?.textDocumentProxy.insertText(commitText) }
+          }
+          
+          let status = rimeEngine.status()
+          // 不存在候选字
+          if !status.isComposing {
+            rimeEngine.rest()
+          } else {
+            rimeEngine.userInputKey.append(char)
+          }
+          return { _ in }
+        } else {
+          NSLog("rime engine input character(%s) error. ", char)
+          rimeEngine.rest()
         }
         return insertCharAction
       }
+      
     case .characterMargin(let char): return { _ in { $0?.textDocumentProxy.insertText(char) }}
     case .emoji(let emoji): return { _ in { $0?.textDocumentProxy.insertText(emoji.char) }}
     case .moveCursorBackward: return { _ in { $0?.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1) }}
@@ -164,21 +173,19 @@ extension KeyboardAction {
     case .newLine: return { _ in newLineAction }
     case .primary: return { _ in newLineAction }
     case .return: return { _ in newLineAction }
+      
     case .space: return { hamsterInputViewController in
-        let action: GestureAction = { $0?.textDocumentProxy.insertText(.space) }
-        if let rimeEngine = hamsterInputViewController?.rimeEngine {
-          let status = rimeEngine.status()
-          if status.isComposing {
-            if !rimeEngine.candidates.isEmpty {
-              let candidates = rimeEngine.candidates
-              rimeEngine.inputKey = ""
-              rimeEngine.candidates = []
-              rimeEngine.cleanComposition()
-              return { $0?.textDocumentProxy.insertText(candidates[0].text) }
-            }
+        let spaceAction: GestureAction = { $0?.textDocumentProxy.insertText(.space) }
+        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return spaceAction }
+        let status = rimeEngine.status()
+        if status.isComposing {
+          let candidates = rimeEngine.context().getCandidates()
+          if !candidates.isEmpty {
+            rimeEngine.rest()
+            return { $0?.textDocumentProxy.insertText(candidates[0].text) }
           }
         }
-        return action
+        return spaceAction
       }
     case .tab: return { _ in { $0?.textDocumentProxy.insertText(.tab) }}
     default: return nil

@@ -11,7 +11,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
   
   @PlistWrapper(path: Bundle.module.url(forResource: "DefaultSkinExtend", withExtension: "plist")!)
-  private var skinExtend: Plist
+  public var skinExtend: Plist
+  
+  @PlistWrapper(path: Bundle.module.url(forResource: "DefaultAction", withExtension: "plist")!)
+  public var actionExtend: Plist
   
   override public func viewDidLoad() {
     #if DEBUG
@@ -31,6 +34,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.autocompleteProvider = HamsterAutocompleteProvider(engine: self.rimeEngine)
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
     self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
+    self.actionCalloutContext = HamsterActionCalloutContext(
+      actionHandler: self.keyboardActionHandler,
+      actionProvider: self.calloutActionProvider
+    )
     
     super.viewDidLoad()
   }

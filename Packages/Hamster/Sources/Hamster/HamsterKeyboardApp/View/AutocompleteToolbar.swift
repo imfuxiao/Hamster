@@ -45,7 +45,7 @@ struct HamsterAutocompleteToolbar: View {
           if !text.isEmpty {
             keyboardContext.textDocumentProxy.insertText(text)
           }
-          rimeEngine.cleanAll()
+          rimeEngine.rest()
         }
       )
     }

@@ -7,9 +7,7 @@ public struct Candidate {
 }
 
 public class RimeEngine: ObservableObject {
-  @Published var inputKey: String = ""
-  @Published var candidates: [Candidate] = []
-  @Published var isAlphabet: Bool = false // true: 英文字母模式, false: 中文处理
+  @Published var userInputKey: String = ""
   
   public static let shared: RimeEngine = .init()
   
@@ -66,10 +64,9 @@ public class RimeEngine: ObservableObject {
     return rimeAPI.getCommit()!
   }
   
-  public func cleanAll() {
-    inputKey = ""
-    candidates = []
-    cleanComposition()
+  public func rest() {
+    self.userInputKey = ""
+    self.cleanComposition()
   }
   
   public func cleanComposition() {

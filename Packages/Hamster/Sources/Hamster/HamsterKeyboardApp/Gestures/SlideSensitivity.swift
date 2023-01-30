@@ -9,9 +9,9 @@ extension CharacterSlideSensitivity {
   
   var points: Int {
     switch self {
-    case .low: return 10
-    case .medium: return 5
-    case .high: return 2
+    case .low: return 30
+    case .medium: return 20
+    case .high: return 10
     case .custom(let points): return points
     }
   }

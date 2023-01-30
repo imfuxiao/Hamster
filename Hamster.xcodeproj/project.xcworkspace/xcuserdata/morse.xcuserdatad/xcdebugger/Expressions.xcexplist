@@ -3,6 +3,9 @@
    version = "1.0">
    <ContextStates>
       <ContextState
+         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
+      </ContextState>
+      <ContextState
          contextName = "closure #4 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
          <PersistentStrings>
             <PersistentString
@@ -15,6 +18,9 @@
       </ContextState>
       <ContextState
          contextName = "KeyboardGestures.updateShouldApplyReleaseAction():KeyboardGestures.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CharacterSlideGestureHandler.init(context:config:sensitivity:):CharacterSlideGestureHandler.swift">
       </ContextState>
       <ContextState
          contextName = "static ShareManager.initShareResources(appAbsolutePath:):ShareManager.swift">
@@ -40,6 +46,9 @@
          contextName = "HamsterAutocompleteProvider.autocompleteSuggestions(for:completion:):HamsterAutocompleteProvider.swift">
       </ContextState>
       <ContextState
+         contextName = "CharacterSlideGestureHandler.handleDragGesture(action:from:to:):CharacterSlideGestureHandler.swift">
+      </ContextState>
+      <ContextState
          contextName = "ActionCalloutContext.hasSelectedAction.getter:ActionCalloutContext.swift">
          <PersistentStrings>
             <PersistentString
@@ -51,7 +60,13 @@
          contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
          <PersistentStrings>
             <PersistentString
+               value = "selectedIndex">
+            </PersistentString>
+            <PersistentString
                value = "self.actions">
+            </PersistentString>
+            <PersistentString
+               value = "actions">
             </PersistentString>
          </PersistentStrings>
       </ContextState>

@@ -1,10 +1,12 @@
 import CoreGraphics
+import Foundation
 import KeyboardKit
+import os
 
 class CharacterSlideGestureHandler: SlideGestureHandler {
-  private let characterSwipeConfig: [String: String] = [:]
-  public let context: KeyboardContext
+  private let characterSwipeConfig: [String: String]
   private let sensitivity: CharacterSlideSensitivity
+  private let logger = Logger(subsystem: "dev.fuxiao.hamster", category: "CharacterSlideGestureHandler")
   
   var slideUp: String {
     KeyboardConstant.Character.SlideUp
@@ -14,29 +16,43 @@ class CharacterSlideGestureHandler: SlideGestureHandler {
     KeyboardConstant.Character.SlideDown
   }
   
-  init(context: KeyboardContext, sensitivity: CharacterSlideSensitivity = .high) {
+  init(config: [String: String] = [:], sensitivity: CharacterSlideSensitivity = .low) {
+    self.characterSwipeConfig = config
     self.sensitivity = sensitivity
-    self.context = context
   }
   
-  func handleDragGesture(action: KeyboardKit.KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) {
+  func handleDragGesture(action: KeyboardKit.KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) -> KeyboardAction.GestureAction? {
+    logger.debug("from.x: \(startLocation.x), from.y: \(startLocation.y)")
+    logger.debug("to.x: \(currentLocation.x), to.y: \(currentLocation.y)")
+    
     guard case let .character(char) = action else {
-      return
+      logger.debug("action is not character")
+      return nil
     }
     
     // 上下滑动只关心Y轴, 且滑动距离需要大于设置的敏感度
     let slideYDelta = startLocation.y - currentLocation.y
-    if abs(slideYDelta) > CGFloat(sensitivity.points) {
-      return
+    let sensitivityValue = sensitivity.points
+    
+    logger.debug("slide y delta: \(slideYDelta)")
+    logger.debug("sensitivity.points: \(sensitivityValue)")
+    
+    if abs(slideYDelta) < CGFloat(sensitivityValue) {
+      return nil
     }
     
-    let actionKey = slideYDelta > 0 ? char + slideDown : char + slideUp
+    let actionKey = slideYDelta < 0 ? char.lowercased() + slideDown : char.lowercased() + slideUp
+    logger.debug("action key: \(actionKey)")
     
     if let value = characterSwipeConfig[actionKey] {
-      // TODO: 对于#开头的action, 如中英切换, 简繁切换等需要处理
-      if !value.hasPrefix("#") {
-        context.textDocumentProxy.insertText(value)
+      logger.debug("action value: \(value)")
+      if value.hasPrefix("#") {
+        // TODO: 对于#开头的action, 如中英切换, 简繁切换等需要处理
+        return nil
       }
+      return { $0?.keyboardContext.textDocumentProxy.insertText(value) }
     }
+    
+    return nil
   }
 }
