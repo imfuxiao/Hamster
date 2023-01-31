@@ -3,7 +3,7 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
+         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
       </ContextState>
       <ContextState
          contextName = "closure #4 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
@@ -12,6 +12,9 @@
                value = "hamsterInputViewController?.keyboardContext.keyboardType">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">
       </ContextState>
       <ContextState
          contextName = "ActionCalloutContext.selectedIndex.getter:ActionCalloutContext.swift">
@@ -27,6 +30,14 @@
          <PersistentStrings>
             <PersistentString
                value = "dstPath.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #9 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "$0?.textInputProxy">
             </PersistentString>
          </PersistentStrings>
       </ContextState>
@@ -57,6 +68,9 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
+         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
+      </ContextState>
+      <ContextState
          contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
          <PersistentStrings>
             <PersistentString
@@ -69,9 +83,6 @@
                value = "actions">
             </PersistentString>
          </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

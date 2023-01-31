@@ -95,30 +95,24 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
   open func bottomActions(for context: KeyboardContext) -> KeyboardActions {
     var result = KeyboardActions()
     
-    // 数字/字母键盘类型切换键
+    // 根据键盘类型不同显示不同的切换键: 如数字键盘/字母键盘等切换键
     if let action = keyboardSwitchActionForBottomRow(for: context) {
       result.append(action)
     }
-//
-    // 输入法切换键 or emoji键盘
-    // let needsInputSwitch = context.needsInputModeSwitchKey
-    // if needsInputSwitch { result.append(.nextKeyboard) }
-    // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
     
-    // 屏幕纵向 且 需要输入法切换键 且可选的听写替换Action存在, 则添加此Action
-    // let needsDictation = context.needsInputModeSwitchKey
-    // if isPortrait(context), needsDictation, let action = dictationReplacement { result.append(action) }
+    // 不同输入法切换键
+    let needsInputSwitch = context.needsInputModeSwitchKey
+    if needsInputSwitch { result.append(.nextKeyboard) }
+    
+    // emojis键盘
+    // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
     
     // 空格
     result.append(.space)
     
-    // 波斯语
-    // if context.isAlphabetic(.persian) { result.append(.character(.zeroWidthSpace)) }
-    
-    // 根据Context添加不同的ReturnAction
+    // 根据当前上下文显示不同功能的回车键
     result.append(keyboardReturnAction(for: context))
     
-    // if !isPortrait(context), needsDictation, let action = dictationReplacement { result.append(action) }
     return result
   }
   

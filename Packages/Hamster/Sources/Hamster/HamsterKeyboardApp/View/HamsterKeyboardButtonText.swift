@@ -73,13 +73,19 @@ struct HamsterKeyboardButtonText: View {
   }
 
   public var body: some View {
-    VStack(spacing: 0) {
-      characterExtendView
+    if !isInputAction {
+      Text(text)
+        .lineLimit(1)
+        .offset(y: useNegativeOffset ? -2 : 0)
+    } else {
       VStack(spacing: 0) {
-        Text(text)
-          .lineLimit(1)
-          .offset(y: useNegativeOffset ? -2 : 0)
-          .font(.system(size: 18))
+        characterExtendView
+        VStack(spacing: 0) {
+          Text(text)
+            .lineLimit(1)
+            .offset(y: useNegativeOffset ? -2 : 0)
+            .font(.system(size: 18))
+        }
       }
     }
   }

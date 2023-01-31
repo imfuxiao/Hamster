@@ -101,17 +101,23 @@ extension KeyboardAction {
    The standard text document proxy action, if any.
    */
   var hamsterStandardTextDocumentProxyAction: HamsterGestureAction? {
-    let newLineAction: GestureAction = { $0?.textInputProxy?.insertText(.newline) }
+    let newLineAction: GestureAction = {
+      $0?.textDocumentProxy.insertText(.newline)
+    }
     let deleteAction: GestureAction = {
       $0?.textDocumentProxy.deleteBackward(range: $0?.keyboardBehavior.backspaceRange ?? .char)
     }
     
     switch self {
     case .backspace: return { hamsterInputViewController in
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return deleteAction }
+        guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
+          return deleteAction
+        }
+      
         if rimeEngine.userInputKey.isEmpty {
           return deleteAction
         }
+      
         rimeEngine.userInputKey.removeLast()
         if !rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
           NSLog("rime engine input backspace key error")

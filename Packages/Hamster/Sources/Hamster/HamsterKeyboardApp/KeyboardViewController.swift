@@ -29,6 +29,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       print(error.localizedDescription)
     }
     
+    self.keyboardAppearance = HamsterKeyboardAppearance(keyboardContext: self.keyboardContext)
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(inputSetProvider: self.inputSetProvider)
     self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
     self.autocompleteProvider = HamsterAutocompleteProvider(engine: self.rimeEngine)
@@ -39,6 +40,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       actionProvider: self.calloutActionProvider
     )
     
+    // TODO: 动态设置 local
+    self.keyboardContext.locale = Locale(identifier: "zh-Hans")
     super.viewDidLoad()
   }
   

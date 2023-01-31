@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "Hamster",
+  defaultLocalization: "zh-Hans",
   platforms: [
     .iOS(.v14),
   ],
