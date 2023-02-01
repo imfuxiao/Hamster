@@ -5,7 +5,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 滑动手势
   let slideGestureHandler: SlideGestureHandler
   weak var ivc: HamsterKeyboardViewController?
-  var gestureEndAction: KeyboardAction.GestureAction?
+  var dragGestureEndAction: KeyboardAction.GestureAction?
   
   init(inputViewController ivc: HamsterKeyboardViewController) {
     weak var input = ivc
@@ -37,15 +37,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   }
 
   override func action(for gesture: KeyboardGesture, on action: KeyboardAction) -> KeyboardAction.GestureAction? {
-    // 手势完成信号
-    if gesture == .tap && action == .custom(named: KeyboardConstant.Action.endDragGesture) {
-      return gestureEndAction
-    }
-    
     if let action = action.hamsterStanderAction(for: gesture) {
       return action(ivc)
     }
-    
     return nil
   }
 
@@ -71,7 +65,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     switch action {
     case .space: spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
     case .character:
-      gestureEndAction = slideGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      dragGestureEndAction = slideGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
     default: break
     }
   }

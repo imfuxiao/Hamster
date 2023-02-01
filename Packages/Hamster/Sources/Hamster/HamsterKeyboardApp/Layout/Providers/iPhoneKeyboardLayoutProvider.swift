@@ -16,11 +16,18 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
     // 九宫格布局
     if actions.count == 4, context.isGridViewKeyboardType {
       var result = KeyboardActionRows()
+      // 第一行: 添加删除键
       result.append(actions[0] + [.backspace])
       result.append(actions[1])
+      // 第三行: 添加符号键
       result.append([.keyboardType(.symbolic)] + actions[2])
+      
+      // 第四行: 添加键盘切换键
       if let action = keyboardSwitchActionForBottomRow(for: context) {
         result.append([action] + actions[3] + [keyboardReturnAction(for: context)])
+      } else {
+        // TODO: 如果不存在键盘切换键, 则手工添加字母键盘
+        result.append([.keyboardType(.alphabetic(.lowercased))] + actions[3] + [keyboardReturnAction(for: context)])
       }
       return result
     }
@@ -45,43 +52,22 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
    for the provided `context`, `row` and row `index`.
    */
   override func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemWidth {
-    if action.isPrimaryAction { return bottomPrimaryButtonWidth(for: context) }
+    let isGridViewKeyboard = context.isGridViewKeyboardType
+    if action.isPrimaryAction { return isGridViewKeyboard ? .input : bottomPrimaryButtonWidth(for: context) }
     
     switch action {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     
     // 字符
-    case .character(let char):
-      // 九宫格
-      if context.isGridViewKeyboardType, char == KeyboardConstant.Character.Equal {
-        return .input
-      }
+    case .character:
       if context.isAlphabetic(.greek) { return .percentage(0.1) }
-      return isLastNumericInputRow(row, for: context) ?
-        lastSymbolicInputWidth(for: context) : .input
+      return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
       
-    // 退格键
-    case .backspace:
-      // 九宫格
-      if context.isGridViewKeyboardType {
-        return .input
-      }
-      return lowerSystemButtonWidth(for: context)
-      
-    // 键盘类型切换键宽度与回车键保持一致
-    // case .keyboardType: return bottomSystemButtonWidth(for: context)
-    case .keyboardType:
-      if context.isGridViewKeyboardType {
-        return .input
-      }
-      return bottomPrimaryButtonWidth(for: context)
-    case .newLine: return bottomPrimaryButtonWidth(for: context)
-    case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .return:
-      if context.isGridViewKeyboardType {
-        return .input
-      }
-      return bottomPrimaryButtonWidth(for: context)
+    case .backspace: return isGridViewKeyboard ? .input : lowerSystemButtonWidth(for: context)
+    case .keyboardType: return isGridViewKeyboard ? .input : bottomPrimaryButtonWidth(for: context)
+    case .newLine: return isGridViewKeyboard ? .input : bottomPrimaryButtonWidth(for: context)
+    case .nextKeyboard: return isGridViewKeyboard ? .input : bottomSystemButtonWidth(for: context)
+    case .return: return isGridViewKeyboard ? .input : bottomPrimaryButtonWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     default: return .available
     }
@@ -122,17 +108,7 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
   open func lowerLeadingActions(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardActions {
     guard isExpectedPhoneInputActions(actions) else { return [] }
     let margin = actions[2].leadingCharacterMarginAction
-    if context.isAlphabetic(.hebrew) { return [margin] }
     guard let switcher = keyboardSwitchActionForBottomInputRow(for: context) else { return [] }
-    if context.isAlphabetic(.arabic) { return [] }
-    if context.isAlphabetic(.kurdish_sorani_arabic) { return [] }
-    if context.isAlphabetic(.kurdish_sorani_pc) { return [] }
-    if context.isAlphabetic(.persian) { return [] }
-    if context.isAlphabetic(.russian) { return [switcher] }
-    if context.isAlphabetic(.ukrainian) { return [switcher] }
-    if isAlphabeticWithInputCount(context, [10, 10, 8]) { return [switcher] } // e.g. Czech
-    if isAlphabeticWithInputCount(context, [11, 11, 9]) { return [switcher] } // e.g. Russian
-    if isAlphabeticWithInputCount(context, [12, 12, 9]) { return [switcher] } // e.g. Belarusian
     return [switcher, margin]
   }
   
@@ -142,15 +118,6 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
   open func lowerTrailingActions(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardActions {
     guard isExpectedPhoneInputActions(actions) else { return [] }
     let margin = actions[2].trailingCharacterMarginAction
-    if context.isAlphabetic(.hebrew) { return [margin] }
-    if context.isAlphabetic(.arabic) { return [margin, .backspace] }
-    if context.isAlphabetic(.kurdish_sorani_arabic) { return [.backspace] }
-    if context.isAlphabetic(.kurdish_sorani_pc) { return [margin, .backspace] }
-    if context.isAlphabetic(.persian) { return [.backspace] }
-    if context.isAlphabetic(.ukrainian) { return [.backspace] }
-    if isAlphabeticWithInputCount(context, [10, 10, 8]) { return [.backspace] } // e.g. Czech
-    if isAlphabeticWithInputCount(context, [11, 11, 9]) { return [.backspace] } // e.g. Russian
-    if isAlphabeticWithInputCount(context, [12, 12, 9]) { return [.backspace] } // e.g. Belarusian
     return [margin, .backspace]
   }
   
@@ -175,7 +142,6 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
    */
   open func upperLeadingActions(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardActions {
     let margin = actions[0].leadingCharacterMarginAction
-    if context.isAlphabetic(.hebrew) { return [margin] }
     guard shouldAddUpperMarginActions(for: actions, context: context) else { return [] }
     return [margin]
   }
@@ -185,7 +151,6 @@ class HamsteriPhoneKeyboardLayoutProvider: HamsterKeyboardLayoutProvider {
    */
   open func upperTrailingActions(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardActions {
     let margin = actions[0].trailingCharacterMarginAction
-    if context.isAlphabetic(.hebrew) { return [margin, .backspace] }
     guard shouldAddUpperMarginActions(for: actions, context: context) else { return [] }
     return [margin]
   }
@@ -235,15 +200,6 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
   func lowerSystemButtonWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
     let bottomWidth = bottomSystemButtonWidth(for: context)
     let standard = isPortrait(context) ? bottomWidth : .percentage(0.12)
-    if context.is(.kurdish_sorani_arabic) { return .input }
-    if context.isAlphabetic(.arabic) { return isPortrait(context) ? bottomWidth : .percentage(0.14) }
-    if context.isAlphabetic(.kurdish_sorani_pc) { return isPortrait(context) ? bottomWidth : .percentage(0.14) }
-    if context.isAlphabetic(.persian) { return .input }
-    if context.isAlphabetic(.ukrainian) { return .input }
-    if hasAlphabeticInputCount([12, 11, 9]) { return .percentage(0.11) } // e.g. Turkish
-    if isAlphabeticWithInputCount(context, [11, 11, 9]) { return .input } // e.g. Russian
-    if isAlphabeticWithInputCount(context, [10, 10, 8]) { return .input } // e.g. Czech
-    if isAlphabeticWithInputCount(context, [12, 12, 9]) { return .available } // e.g. Belarusian
     return standard
   }
   
@@ -263,7 +219,6 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
    */
   func shouldAddMiddleMarginActions(for actions: KeyboardActionRows, context: KeyboardContext) -> Bool {
     guard isExpectedPhoneInputActions(actions) else { return false }
-    if context.isAlphabetic(.greek) { return true }
     return actions[0].count > actions[1].count
   }
   
@@ -272,7 +227,6 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
    */
   func shouldAddUpperMarginActions(for actions: KeyboardActionRows, context: KeyboardContext) -> Bool {
     guard isExpectedPhoneInputActions(actions) else { return false }
-    if context.isAlphabetic(.greek) { return true }
     return false
   }
 }
