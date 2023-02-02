@@ -65,7 +65,10 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
   override func handleDrag(on action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) {
     switch action {
-    case .space: spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
+    case .space:
+      if ivc?.appSettings.preferences.useSpaceSlide ?? true {
+        spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
+      }
     case .character:
       // TODO: 只有字母类型键盘开启滑动手势
       if keyboardContext.keyboardType.isAlphabetic {

@@ -57,6 +57,8 @@
 		C071BF782970131800E21FBC /* flypy.prism.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFA297010EE00E21FBC /* flypy.prism.bin */; };
 		C071BF792970131800E21FBC /* flypy.table.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFB297010EE00E21FBC /* flypy.table.bin */; };
 		C071BF7A2970131800E21FBC /* flypydz.reverse.bin in Copy Rime User Build */ = {isa = PBXBuildFile; fileRef = C071BEFC297010EE00E21FBC /* flypydz.reverse.bin */; };
+		C0E458AB298B975B007F5FE0 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0E458AA298B975B007F5FE0 /* LibrimeKit */; };
+		C0E458AD298B97D9007F5FE0 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0E458AC298B97D9007F5FE0 /* LibrimeKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -233,6 +235,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0E458AD298B97D9007F5FE0 /* LibrimeKit in Frameworks */,
 				C000CA9A296EA4FC00EC5323 /* Hamster in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +244,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0E458AB298B975B007F5FE0 /* LibrimeKit in Frameworks */,
 				C000CA9C296EA50400EC5323 /* Hamster in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,6 +426,7 @@
 			name = HamsterApp;
 			packageProductDependencies = (
 				C000CA99296EA4FC00EC5323 /* Hamster */,
+				C0E458AC298B97D9007F5FE0 /* LibrimeKit */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* HamsterApp.app */;
@@ -442,6 +447,7 @@
 			name = HamsterKeyboard;
 			packageProductDependencies = (
 				C000CA9B296EA50400EC5323 /* Hamster */,
+				C0E458AA298B975B007F5FE0 /* LibrimeKit */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
@@ -798,6 +804,14 @@
 		C000CA9B296EA50400EC5323 /* Hamster */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Hamster;
+		};
+		C0E458AA298B975B007F5FE0 /* LibrimeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LibrimeKit;
+		};
+		C0E458AC298B97D9007F5FE0 /* LibrimeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LibrimeKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

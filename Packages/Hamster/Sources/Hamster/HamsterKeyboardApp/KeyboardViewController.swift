@@ -10,6 +10,8 @@ import UIKit
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
   
+  var appSettings = HamsterAppSettings()
+  
   @PlistWrapper(path: Bundle.module.url(forResource: "DefaultSkinExtend", withExtension: "plist")!)
   public var skinExtend: Plist
   
