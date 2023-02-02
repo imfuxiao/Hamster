@@ -2,9 +2,11 @@ import KeyboardKit
 import SwiftUI
 
 class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
+  weak var ivc: HamsterKeyboardViewController?
+  
   // 滑动手势
   let slideGestureHandler: SlideGestureHandler
-  weak var ivc: HamsterKeyboardViewController?
+  // 滑动手势EndAction
   var dragGestureEndAction: KeyboardAction.GestureAction?
   
   init(inputViewController ivc: HamsterKeyboardViewController) {
@@ -65,7 +67,10 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     switch action {
     case .space: spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
     case .character:
-      dragGestureEndAction = slideGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      // TODO: 只有字母类型键盘开启滑动手势
+      if keyboardContext.keyboardType.isAlphabetic {
+        dragGestureEndAction = slideGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      }
     default: break
     }
   }
