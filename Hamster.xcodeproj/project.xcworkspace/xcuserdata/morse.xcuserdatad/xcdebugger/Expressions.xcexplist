@@ -3,7 +3,7 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
+         contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">
       </ContextState>
       <ContextState
          contextName = "closure #4 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
@@ -14,7 +14,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">
+         contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "selectedIndex">
+            </PersistentString>
+            <PersistentString
+               value = "self.actions">
+            </PersistentString>
+            <PersistentString
+               value = "actions">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "ActionCalloutContext.selectedIndex.getter:ActionCalloutContext.swift">
@@ -60,6 +71,20 @@
          contextName = "CharacterSlideGestureHandler.handleDragGesture(action:from:to:):CharacterSlideGestureHandler.swift">
       </ContextState>
       <ContextState
+         contextName = "String.bgrColor.getter:RimeEngine.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "hexValue &amp; 0x000000ff">
+            </PersistentString>
+            <PersistentString
+               value = "hexValue &amp; 0x0000ff00 &gt;&gt; 8">
+            </PersistentString>
+            <PersistentString
+               value = "hexValue &amp; 0x00ff0000 &gt;&gt; 16">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "ActionCalloutContext.hasSelectedAction.getter:ActionCalloutContext.swift">
          <PersistentStrings>
             <PersistentString
@@ -68,21 +93,10 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
+         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
       </ContextState>
       <ContextState
-         contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "selectedIndex">
-            </PersistentString>
-            <PersistentString
-               value = "self.actions">
-            </PersistentString>
-            <PersistentString
-               value = "actions">
-            </PersistentString>
-         </PersistentStrings>
+         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
       </ContextState>
    </ContextStates>
 </VariablesViewState>

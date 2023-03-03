@@ -6,8 +6,5 @@
 //
 
 import Foundation
-import Hamster
 
-public class KeyboardInputViewController: HamsterKeyboardViewController {
-  
-}
+public class KeyboardController: HamsterKeyboardViewController {}
