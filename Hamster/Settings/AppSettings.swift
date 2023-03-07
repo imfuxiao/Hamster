@@ -4,44 +4,50 @@ import SwiftUI
 /**
  应用设置配置
  */
-class HamsterAppSettings: ObservableObject {
+public class HamsterAppSettings: ObservableObject {
     @Published var preferences = AppPreferences()
 }
 
 struct AppPreferences {
     enum HamsterAppSettingKeys: String {
-        case isTraditionalChinese
-        case slideBySpace
-        case displayPopupCharacter
-        case useInsertSymbol
+        // 是否显示按键气泡
+        case showKeyPressBubble = "view.keyboard.showKeyPressBubble"
 
-        case keyboardHaptic // 键盘震动
-        case keyboardHapticStrength // 键盘震动强度
-        case keyboardSound // 键盘声音
+        // 切换繁体中文
+        case switchTraditionalChinese = "view.keyboard.switchTraditionalChinese"
+
+        // 空格划动
+        case slideBySpaceButton = "view.keyboard.slideBySpaceButton"
+
+        // rime 选择方案
+        case rimeSelectSchema = "rime.selectSchema"
     }
 
     init() {
-        // TODO: 选项初始化值
+        // 选项初始值
+        UserDefaults.hamsterSettingsDefault.register(defaults: [
+            HamsterAppSettingKeys.showKeyPressBubble.rawValue: true,
+            HamsterAppSettingKeys.switchTraditionalChinese.rawValue: false,
+            HamsterAppSettingKeys.slideBySpaceButton.rawValue: true,
+            HamsterAppSettingKeys.rimeSelectSchema.rawValue: ""
+        ])
     }
 
     // 按键气泡
-    @AppStorage(HamsterAppSettingKeys.displayPopupCharacter.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var showKeyPressBubble: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.displayPopupCharacter.rawValue)
+    @AppStorage(HamsterAppSettingKeys.showKeyPressBubble.rawValue, store: UserDefaults.hamsterSettingsDefault)
+    var showKeyPressBubble: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyPressBubble.rawValue)
 
-    @AppStorage(HamsterAppSettingKeys.useInsertSymbol.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var useInsertSymbol: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.useInsertSymbol.rawValue)
+    // 简繁切换
+    @AppStorage(HamsterAppSettingKeys.switchTraditionalChinese.rawValue, store: UserDefaults.hamsterSettingsDefault)
+    var switchTraditionalChinese: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
 
-    @AppStorage(HamsterAppSettingKeys.isTraditionalChinese.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var isTraditionalChinese: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.isTraditionalChinese.rawValue)
+    // 空格滑动
+    @AppStorage(HamsterAppSettingKeys.slideBySpaceButton.rawValue, store: UserDefaults.hamsterSettingsDefault)
+    var slideBySapceButton: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.slideBySpaceButton.rawValue)
 
-    @AppStorage(HamsterAppSettingKeys.slideBySpace.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var useSpaceSlide: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.slideBySpace.rawValue)
-
-    @AppStorage(HamsterAppSettingKeys.keyboardHaptic.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var useKeyboardHaptic: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.keyboardHaptic.rawValue)
-
-    @AppStorage(HamsterAppSettingKeys.keyboardSound.rawValue, store: UserDefaults.hamsterSettingsDefault)
-    var useKeyboardSound: Bool = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.keyboardSound.rawValue)
+    // Rime: 输入方案选择
+    @AppStorage(HamsterAppSettingKeys.rimeSelectSchema.rawValue, store: UserDefaults.hamsterSettingsDefault)
+    var rimeSelectSchema: String = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeSelectSchema.rawValue) ?? ""
 }
 
 public extension UserDefaults {

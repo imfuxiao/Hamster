@@ -7,33 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "8185C591-FF3E-4DA3-AA48-607B8E0D6DC6"
+            uuid = "848106C8-FCEF-454D-8D1F-148B1341E9A3"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "HamsterKeyboard/Keyboard/Actions/HamsterKeyboardActionHandler.swift"
+            filePath = "Hamster/RimeEngine/RimeEngine.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "35"
-            endingLineNumber = "35"
-            landmarkName = "action(for:on:)"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "start()"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "8CA694D3-D852-40F4-B1E7-A042928CA9B2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "HamsterKeyboard/Keyboard/Actions/KeyboardAction+Actions.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
-            landmarkName = "hamsterStandardReleaseAction"
-            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

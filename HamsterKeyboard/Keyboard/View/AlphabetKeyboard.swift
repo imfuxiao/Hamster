@@ -5,6 +5,7 @@
 //  Created by morse on 10/1/2023.
 //
 
+import Combine
 import KeyboardKit
 import Plist
 import SwiftUI
@@ -23,6 +24,12 @@ struct AlphabetKeyboard: View {
 
     @EnvironmentObject
     private var keyboardCalloutContext: KeyboardCalloutContext
+
+    @EnvironmentObject
+    private var rimeEngine: RimeEngine
+
+    @EnvironmentObject
+    private var appSetting: HamsterAppSettings
 
     var skinExtend: [String: String]
 
@@ -77,6 +84,16 @@ struct AlphabetKeyboard: View {
     var body: some View {
         VStack(spacing: 0) {
             if keyboardContext.keyboardType != .emojis {
+                VStack {
+                    HStack {
+                        Toggle(isOn: $appSetting.preferences.showKeyPressBubble) {
+                            Text("按钮气泡")
+                        }
+                        Toggle(isOn: $appSetting.preferences.switchTraditionalChinese) {
+                            Text("繁体中文")
+                        }
+                    }
+                }
                 autocompleteToolbar
             }
             keyboard

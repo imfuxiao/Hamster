@@ -1,0 +1,91 @@
+//
+//  InputSchemeView.swift
+//  HamsterApp
+//
+//  Created by morse on 5/3/2023.
+//
+
+import SwiftUI
+
+struct InputSchemaView: View {
+    var schemas: [SchemaViewModel]
+    @State var selectSchema: SchemaViewModel?
+    @EnvironmentObject var appSetting: HamsterAppSettings
+
+    var body: some View {
+        ZStack {
+            Color.gray.opacity(0.1).ignoresSafeArea(.all)
+
+            VStack {
+                VStack {
+                    HStack {
+                        Text("输入方案")
+                            .font(.system(.title3, design: .rounded))
+                            .fontWeight(.bold)
+
+                        Spacer()
+                    }
+                }
+                .padding(.horizontal)
+
+                List {
+                    ForEach(schemas) { schema in
+                        HStack {
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 16, weight: .heavy))
+                                .foregroundColor(.green)
+                                .opacity(isSelect(schema) ? 1 : 0)
+
+                            Text(schema.schemaName)
+                                .font(.system(.body, design: .rounded))
+
+                            Spacer()
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .frame(minHeight: 0, maxHeight: .infinity)
+                        .onTapGesture {
+                            selectSchema = schema
+                            appSetting.preferences.rimeSelectSchema = schema.schemaId
+                        }
+                    }
+                }
+                .padding(.top, 20)
+                .padding(.horizontal)
+                .listStyle(.plain)
+            }
+        }
+        .animation(.default, value: selectSchema)
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(minHeight: 0, maxHeight: .infinity)
+    }
+
+    func isSelect(_ schema: SchemaViewModel) -> Bool {
+        if let selectSchema = selectSchema {
+            if selectSchema.schemaId == schema.schemaId {
+                return true
+            }
+        }
+        return false
+    }
+}
+
+struct SchemaViewModel: Identifiable, Equatable {
+    var id = UUID()
+    var schemaId: String
+    var schemaName: String
+}
+
+let sampleSchemas: [SchemaViewModel] = [
+    .init(schemaId: "1", schemaName: "小鹤音形"),
+    .init(schemaId: "2", schemaName: "朙月拼音"),
+    .init(schemaId: "3", schemaName: "朙月拼音-简化字"),
+    .init(schemaId: "4", schemaName: "朙月拼音-语句流"),
+    .init(schemaId: "5", schemaName: "注音"),
+]
+
+struct InputSchemaView_Previews: PreviewProvider {
+    static var previews: some View {
+        InputSchemaView(schemas: sampleSchemas, selectSchema: sampleSchemas[0])
+            .environmentObject(HamsterAppSettings())
+    }
+}

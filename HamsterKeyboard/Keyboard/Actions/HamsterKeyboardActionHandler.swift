@@ -48,7 +48,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     override func handleDrag(on action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) {
         switch action {
         case .space:
-            if hamsterKeyboardController?.appSettings.preferences.useSpaceSlide ?? true {
+            if hamsterKeyboardController?.appSettings.preferences.slideBySapceButton ?? true {
                 spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
             }
         case .character:
