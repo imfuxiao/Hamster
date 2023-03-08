@@ -54,13 +54,13 @@ class CharacterSlideGestureHandler: SlideGestureHandler {
                 case .SimplifiedTraditionalSwitch:
                     return { [weak self] _ in
                         if let status = self?.rimeEngine?.status() {
-                            self?.rimeEngine?.traditionalMode(!status.isSimplified)
+                            _ = self?.rimeEngine?.simplifiedChineseMode(status.isSimplified)
                         }
                     }
                 case .ChineseEnglishSwitch:
                     return { [weak self] _ in
                         if let status = self?.rimeEngine?.status() {
-                            self?.rimeEngine?.asciiMode(!status.isASCIIMode)
+                            _ = self?.rimeEngine?.asciiMode(!status.isASCIIMode)
                         }
                     }
                 case .BeginOfSentence:

@@ -9,7 +9,8 @@ public struct Candidate {
     let comment: String
 }
 
-public struct Schema {
+public struct Schema: Identifiable, Equatable {
+    public let id = UUID()
     let schemaId: String
     let schemaName: String
 }
@@ -35,44 +36,48 @@ public struct ColorSchema: Identifiable {
     var textColor: String = "" // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
 }
 
+let asciiModeKey = "ascii_mode"
+let simplifiedChineseKey = "simplification"
+
 public class RimeEngine: ObservableObject {
-    @Published var userInputKey: String = ""
-  
-    public static let shared: RimeEngine = .init()
-  
     private let rimeAPI: IRimeAPI = .init()
-  
-    private var session: RimeSessionId?
+    private var session: RimeSessionId = 0
     
-    public func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
+    @Published var userInputKey: String = ""
+    
+    public static let shared: RimeEngine = .init()
+    private init() {}
+    
+    func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
         rimeAPI.setNotificationDelegate(delegate)
     }
   
-    // TODO: 方法重写, 将sessionId集成在RimeEngine中
-    public func startRimeServer(_ traits: IRimeTraits) {
-//        rimeAPI.setup(traits)
-//        rimeAPI.start(traits, withFullCheck: false)
-//        let session = rimeAPI.session()
-        rimeAPI.startRimeServer(traits)
-        //  [self setup:traits];
-        //  [self start:traits WithFullCheck:false];
-        //  [self session];
+    func setup(_ traits: IRimeTraits) {
+        rimeAPI.setup(traits)
+    }
+    
+    func start(_ traits: IRimeTraits, fullCheck: Bool) {
+        rimeAPI.start(traits, withFullCheck: fullCheck)
     }
   
-    public func stopService() {
+    func stopRimeService() {
         rimeAPI.shutdown()
     }
-  
-    public func inputKey(_ key: String) -> Bool {
-        return rimeAPI.processKey(key)
+    
+    func rimeAlive() -> Bool {
+        return rimeAPI.findSession(session)
     }
   
-    public func inputKey(_ key: Int32) -> Bool {
-        return rimeAPI.processKeyCode(key)
+    func inputKey(_ key: String) -> Bool {
+        return rimeAPI.processKey(key, andSession: session)
     }
   
-    public func candidateList() -> [Candidate] {
-        let candidates = rimeAPI.getCandidateList()
+    func inputKey(_ key: Int32) -> Bool {
+        return rimeAPI.processKeyCode(key, andSession: session)
+    }
+  
+    func candidateList() -> [Candidate] {
+        let candidates = rimeAPI.getCandidateList(session)
         if candidates != nil {
             return candidates!.map {
                 Candidate(text: $0.text, comment: $0.comment)
@@ -81,8 +86,8 @@ public class RimeEngine: ObservableObject {
         return []
     }
   
-    public func candidateListWithIndex(index: Int, andCount count: Int) -> [Candidate] {
-        let candidates = rimeAPI.getCandidateWith(Int32(index), andCount: Int32(count))
+    func candidateListWithIndex(index: Int, andCount count: Int) -> [Candidate] {
+        let candidates = rimeAPI.getCandidateWith(Int32(index), andCount: Int32(count), andSession: session)
         if candidates != nil {
             return candidates!.map {
                 Candidate(text: $0.text, comment: $0.comment)
@@ -91,49 +96,26 @@ public class RimeEngine: ObservableObject {
         return []
     }
   
-    public func getInputKeys() -> String {
-        return rimeAPI.getInput()
+    func getInputKeys() -> String {
+        return rimeAPI.getInput(session)
     }
   
-    public func getCommitText() -> String {
-        return rimeAPI.getCommit()!
-    }
-  
-    public func rest() {
-        userInputKey = ""
-        cleanComposition()
+    func getCommitText() -> String {
+        return rimeAPI.getCommit(session)!
     }
   
     public func cleanComposition() {
-        rimeAPI.cleanComposition()
+        rimeAPI.cleanComposition(session)
     }
   
     public func status() -> IRimeStatus {
-        return rimeAPI.getStatus()
+        return rimeAPI.getStatus(session)
     }
   
     public func context() -> IRimeContext {
-        return rimeAPI.getContext()
+        return rimeAPI.getContext(session)
     }
   
-    // 繁体模式
-    public func traditionalMode(_ value: Bool) {
-        rimeAPI.simplification(value)
-    }
-  
-    public func isSimplifiedMode() -> Bool {
-        return !rimeAPI.isSimplifiedMode()
-    }
-  
-    // 字母模式
-    public func asciiMode(_ value: Bool) {
-        rimeAPI.asciiMode(value)
-    }
-  
-    public func isAsciiMode() -> Bool {
-        return rimeAPI.isAsciiMode()
-    }
-    
     public func getSchemas() -> [Schema] {
         let list = rimeAPI.schemaList()
         if list == nil {
@@ -180,9 +162,10 @@ public class RimeEngine: ObservableObject {
 }
 
 extension RimeEngine {
-    func start() throws {
-        
-        print(Bundle.main.bundleURL)
+    private func createTraits() throws -> IRimeTraits {
+        #if DEBUG
+            print("app bundle path: \(Bundle.main.bundleURL)")
+        #endif
         
         try Self.syncShareSupportDirectory()
         try Self.syncAppGroupUserDataDirectory()
@@ -197,10 +180,45 @@ extension RimeEngine {
         // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
         // traits.appName = "rime.Hamster"
         
+        return traits
+    }
+
+    func launch() throws {
+        let traits = try createTraits()
+        
         setNotificationDelegate(HamsterRimeNotification())
-        startRimeServer(traits)
+        rimeAPI.setup(traits)
+        rimeAPI.start(traits, withFullCheck: false)
+        session = rimeAPI.session()
         
         // TODO: 启动时判断繁体是否开启
         // rimeEngine.traditionalMode(appSettings.preferences.switchTraditionalChinese)
+    }
+    
+    func setup() throws {
+        let traits = try createTraits()
+        setNotificationDelegate(HamsterRimeNotification())
+        rimeAPI.setup(traits)
+    }
+
+    func rest() {
+        userInputKey = ""
+        cleanComposition()
+    }
+
+    public func isAsciiMode() -> Bool {
+        return rimeAPI.getOption(session, andOption: asciiModeKey)
+    }
+
+    public func asciiMode(_ value: Bool) -> Bool {
+        return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
+    }
+
+    public func isSimplifiedMode() -> Bool {
+        return rimeAPI.getOption(session, andOption: simplifiedChineseKey)
+    }
+
+    public func simplifiedChineseMode(_ value: Bool) -> Bool {
+        return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: value)
     }
 }

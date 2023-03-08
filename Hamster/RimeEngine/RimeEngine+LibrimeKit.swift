@@ -15,3 +15,9 @@ extension IRimeContext {
         }
     }
 }
+
+extension IRimeStatus {
+    func currentSchema() -> Schema {
+        Schema(schemaId: self.schemaId, schemaName: self.schemaName)
+    }
+}

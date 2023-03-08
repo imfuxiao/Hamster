@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct InputSchemaView: View {
-    var schemas: [SchemaViewModel]
-    @State var selectSchema: SchemaViewModel?
+    var schemas: [Schema]
+    @State var selectSchema: Schema?
     @EnvironmentObject var appSetting: HamsterAppSettings
 
     var body: some View {
@@ -45,7 +45,6 @@ struct InputSchemaView: View {
                         .frame(minHeight: 0, maxHeight: .infinity)
                         .onTapGesture {
                             selectSchema = schema
-                            appSetting.preferences.rimeSelectSchema = schema.schemaId
                         }
                     }
                 }
@@ -57,9 +56,14 @@ struct InputSchemaView: View {
         .animation(.default, value: selectSchema)
         .frame(minWidth: 0, maxWidth: .infinity)
         .frame(minHeight: 0, maxHeight: .infinity)
+        .onChange(of: selectSchema, perform: { newSelectSchame in
+            if let selectSchema = newSelectSchame {
+                appSetting.preferences.rimeSelectSchema = selectSchema.schemaId
+            }
+        })
     }
 
-    func isSelect(_ schema: SchemaViewModel) -> Bool {
+    func isSelect(_ schema: Schema) -> Bool {
         if let selectSchema = selectSchema {
             if selectSchema.schemaId == schema.schemaId {
                 return true
@@ -69,13 +73,7 @@ struct InputSchemaView: View {
     }
 }
 
-struct SchemaViewModel: Identifiable, Equatable {
-    var id = UUID()
-    var schemaId: String
-    var schemaName: String
-}
-
-let sampleSchemas: [SchemaViewModel] = [
+let sampleSchemas: [Schema] = [
     .init(schemaId: "1", schemaName: "小鹤音形"),
     .init(schemaId: "2", schemaName: "朙月拼音"),
     .init(schemaId: "3", schemaName: "朙月拼音-简化字"),

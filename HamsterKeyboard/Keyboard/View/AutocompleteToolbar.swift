@@ -94,7 +94,7 @@ struct AutocompleteToolbar_Previews: PreviewProvider {
         HamsterAutocompleteToolbar()
             .preferredColorScheme(.dark)
             .environmentObject(KeyboardContext.hamsterPreview)
-            .environmentObject(RimeEngine())
+            .environmentObject(RimeEngine.shared)
             .environmentObject(AutocompleteContext())
             .environmentObject(ActionCalloutContext.preview)
             .environmentObject(InputCalloutContext.preview)

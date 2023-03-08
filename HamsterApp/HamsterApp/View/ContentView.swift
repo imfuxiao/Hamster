@@ -9,8 +9,6 @@ import Combine
 import SwiftUI
 
 public struct ContentView: View {
-    var appSetings = HamsterAppSettings()
-
     public var body: some View {
         GeometryReader { proxy in
             NavigationView {
@@ -61,7 +59,6 @@ public struct ContentView: View {
                 }
             }
         }
-        .environmentObject(appSetings)
     }
 }
 
@@ -69,5 +66,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
             .previewDevice("iPhone 13 mini")
+            .environmentObject(HamsterAppSettings())
+            .environmentObject(RimeEngine.shared)
     }
 }

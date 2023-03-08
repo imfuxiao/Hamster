@@ -26,7 +26,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         #endif
     
         do {
-            try self.rimeEngine.start()
+            try self.rimeEngine.launch()
             
         } catch {
             // TODO: RIME 异常启动处理
@@ -70,7 +70,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
             .map(\.switchTraditionalChinese)
             .sink {
                 print("-----------\n traditionalMode \($0)")
-                self.rimeEngine.traditionalMode($0)
+                _ = self.rimeEngine.simplifiedChineseMode($0)
             }
             .store(in: &self.cancel)
         

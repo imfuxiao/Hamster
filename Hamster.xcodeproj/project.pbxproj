@@ -826,7 +826,6 @@
 				C04FA8AE299A65AC00F8CC32 /* HamsterApp */,
 				C0E458A7298B938B007F5FE0 /* Info.plist */,
 				C071BECA297006EF00E21FBC /* HamsterApp.entitlements */,
-				C03E8028296D4F4C0083E53A /* HamsterApp.swift */,
 				C03E802C296D4F4D0083E53A /* Assets.xcassets */,
 				C03E802E296D4F4D0083E53A /* Preview Content */,
 			);
@@ -873,6 +872,7 @@
 		C04FA8AE299A65AC00F8CC32 /* HamsterApp */ = {
 			isa = PBXGroup;
 			children = (
+				C03E8028296D4F4C0083E53A /* HamsterApp.swift */,
 				C04FA8AF299A65AC00F8CC32 /* View */,
 			);
 			path = HamsterApp;
@@ -892,10 +892,10 @@
 		C04FA8BC299A65AC00F8CC32 /* RimeEngine */ = {
 			isa = PBXGroup;
 			children = (
+				C020AD4429B73CFA00B26142 /* RimeNotification.swift */,
 				C04FA8BD299A65AC00F8CC32 /* RimeEngine.swift */,
 				C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */,
 				C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */,
-				C020AD4429B73CFA00B26142 /* RimeNotification.swift */,
 				C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */,
 			);
 			path = RimeEngine;
