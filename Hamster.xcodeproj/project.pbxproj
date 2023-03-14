@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */; };
+		C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010B0129B9040B00CE4869 /* AboutView.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
 		C020ABEE29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
 		C020AC9729B732A000B26142 /* stroke.reverse.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF829B7326100B26142 /* stroke.reverse.bin */; };
@@ -153,9 +155,7 @@
 		C020AD4129B736D800B26142 /* zh-hant-t-essay-bgc.gram in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF629B7326100B26142 /* zh-hant-t-essay-bgc.gram */; };
 		C020AD4229B736D800B26142 /* zh-hant-t-essay-bgw.gram in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3E29B7326200B26142 /* zh-hant-t-essay-bgw.gram */; };
 		C020AD4329B736D800B26142 /* zhuyin.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF029B7326100B26142 /* zhuyin.yaml */; };
-		C020AD4529B73CFA00B26142 /* RimeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4429B73CFA00B26142 /* RimeNotification.swift */; };
 		C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */; };
-		C020AD4829B73DD600B26142 /* RimeNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4429B73CFA00B26142 /* RimeNotification.swift */; };
 		C020AD4929B73DD600B26142 /* RimeEngine+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */; };
 		C020AD4A29B74C7900B26142 /* stroke.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF829B7326100B26142 /* stroke.reverse.bin */; };
 		C020AD4B29B74C7900B26142 /* luna_pinyin_simp.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF929B7326100B26142 /* luna_pinyin_simp.prism.bin */; };
@@ -183,6 +183,10 @@
 		C020AD6129B74C7900B26142 /* luna_pinyin.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0F29B7326100B26142 /* luna_pinyin.reverse.bin */; };
 		C020AD6229B74C7900B26142 /* bopomofo_tw.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1029B7326100B26142 /* bopomofo_tw.prism.bin */; };
 		C020AD6329B74C7900B26142 /* default.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1129B7326100B26142 /* default.yaml */; };
+		C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EF429BFDB7B007B6AF5 /* iFilemanager */; };
+		C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */; };
+		C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFB29C07C96007B6AF5 /* LibrimeKit */; };
+		C02C1EFE29C07C9E007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFD29C07C9E007B6AF5 /* LibrimeKit */; };
 		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C0458A7C29B1338700262E69 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8B2299A65AC00F8CC32 /* ContentView.swift */; };
 		C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */; };
@@ -219,9 +223,7 @@
 		C0458A9E29B133A300262E69 /* KeyboardContext+KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */; };
 		C0458A9F29B133A300262E69 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
 		C0458AA029B133A300262E69 /* HamsterActionCalloutContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */; };
-		C0458AA129B133A300262E69 /* HamsterKeyboard.entitlements in Sources */ = {isa = PBXBuildFile; fileRef = C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */; };
 		C0458AA329B133A300262E69 /* KeyboardInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */; };
-		C0458AA429B133BC00262E69 /* HamsterApp.entitlements in Sources */ = {isa = PBXBuildFile; fileRef = C071BECA297006EF00E21FBC /* HamsterApp.entitlements */; };
 		C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E8028296D4F4C0083E53A /* HamsterApp.swift */; };
 		C0458AA629B133DC00262E69 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */; };
 		C0458AA829B133DC00262E69 /* RimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8BD299A65AC00F8CC32 /* RimeEngine.swift */; };
@@ -244,8 +246,6 @@
 		C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
 		C0CE234829B5219500F79A74 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE234729B5219500F79A74 /* CellView.swift */; };
-		C0E458AB298B975B007F5FE0 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0E458AA298B975B007F5FE0 /* LibrimeKit */; };
-		C0E458AD298B97D9007F5FE0 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0E458AC298B97D9007F5FE0 /* LibrimeKit */; };
 		C0F858C329A2AA38003A2ED4 /* RimeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -544,6 +544,8 @@
 
 /* Begin PBXFileReference section */
 		C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputViewController.swift; sourceTree = "<group>"; };
+		C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
+		C0010B0129B9040B00CE4869 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+File.swift"; sourceTree = "<group>"; };
 		C020ABEF29B7326100B26142 /* default.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
 		C020ABF029B7326100B26142 /* zhuyin.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = zhuyin.yaml; sourceTree = "<group>"; };
@@ -628,13 +630,13 @@
 		C020AC4129B7326200B26142 /* key_bindings.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = key_bindings.yaml; sourceTree = "<group>"; };
 		C020AC4229B7326200B26142 /* installation.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = installation.yaml; sourceTree = "<group>"; };
 		C020AC4329B7326200B26142 /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = terra_pinyin.schema.yaml; sourceTree = "<group>"; };
-		C020AD4429B73CFA00B26142 /* RimeNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeNotification.swift; sourceTree = "<group>"; };
 		C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+LibrimeKit.swift"; sourceTree = "<group>"; };
+		C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
+		C02C1EFA29C07C85007B6AF5 /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
 		C03E8025296D4F4C0083E53A /* HamsterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HamsterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8028296D4F4C0083E53A /* HamsterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterApp.swift; sourceTree = "<group>"; };
 		C03E802C296D4F4D0083E53A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C03E8037296D52B50083E53A /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
 		C03E803C296D53650083E53A /* HamsterKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HamsterKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8040296D53650083E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0458AAB29B136DC00262E69 /* HamsterKeyboard+Injection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HamsterKeyboard+Injection.swift"; sourceTree = "<group>"; };
@@ -694,8 +696,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0E458AD298B97D9007F5FE0 /* LibrimeKit in Frameworks */,
+				C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */,
 				C04FA9A1299A6F3900F8CC32 /* KeyboardKit in Frameworks */,
+				C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */,
 				C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -706,7 +709,7 @@
 			files = (
 				C04FA97E299A6D3000F8CC32 /* Plist in Frameworks */,
 				C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */,
-				C0E458AB298B975B007F5FE0 /* LibrimeKit in Frameworks */,
+				C02C1EFE29C07C9E007B6AF5 /* LibrimeKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -796,6 +799,14 @@
 			path = opencc;
 			sourceTree = "<group>";
 		};
+		C02C1EF829C07BFE007B6AF5 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C02C1EFA29C07C85007B6AF5 /* LibrimeKit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		C03E801C296D4F4C0083E53A = {
 			isa = PBXGroup;
 			children = (
@@ -804,8 +815,8 @@
 				C04FA8AB299A65AB00F8CC32 /* Hamster */,
 				C0F858B229A2A943003A2ED4 /* HamsterAppTests */,
 				C071BECC2970108000E21FBC /* Resources */,
-				C03E8037296D52B50083E53A /* LibrimeKit */,
 				C03E8026296D4F4C0083E53A /* Products */,
+				C02C1EF829C07BFE007B6AF5 /* Packages */,
 				C000CA98296EA48D00EC5323 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -892,7 +903,6 @@
 		C04FA8BC299A65AC00F8CC32 /* RimeEngine */ = {
 			isa = PBXGroup;
 			children = (
-				C020AD4429B73CFA00B26142 /* RimeNotification.swift */,
 				C04FA8BD299A65AC00F8CC32 /* RimeEngine.swift */,
 				C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */,
 				C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */,
@@ -1074,6 +1084,9 @@
 			isa = PBXGroup;
 			children = (
 				C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */,
+				C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */,
+				C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */,
+				C0010B0129B9040B00CE4869 /* AboutView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -1189,9 +1202,10 @@
 			);
 			name = HamsterApp;
 			packageProductDependencies = (
-				C0E458AC298B97D9007F5FE0 /* LibrimeKit */,
 				C04FA99E299A6F3900F8CC32 /* Plist */,
 				C04FA9A0299A6F3900F8CC32 /* KeyboardKit */,
+				C02C1EF429BFDB7B007B6AF5 /* iFilemanager */,
+				C02C1EFB29C07C96007B6AF5 /* LibrimeKit */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* HamsterApp.app */;
@@ -1214,9 +1228,9 @@
 			);
 			name = HamsterKeyboard;
 			packageProductDependencies = (
-				C0E458AA298B975B007F5FE0 /* LibrimeKit */,
 				C04FA97B299A6C8200F8CC32 /* KeyboardKit */,
 				C04FA97D299A6D3000F8CC32 /* Plist */,
+				C02C1EFD29C07C9E007B6AF5 /* LibrimeKit */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
@@ -1283,6 +1297,7 @@
 			packageReferences = (
 				C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */,
 				C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */,
+				C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -1336,17 +1351,18 @@
 			files = (
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
 				C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
-				C0458AA429B133BC00262E69 /* HamsterApp.entitlements in Sources */,
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
+				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
+				C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */,
 				C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */,
-				C020AD4529B73CFA00B26142 /* RimeNotification.swift in Sources */,
 				C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
 				C0458A7C29B1338700262E69 /* ContentView.swift in Sources */,
+				C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1354,7 +1370,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C020AD4829B73DD600B26142 /* RimeNotification.swift in Sources */,
 				C020AD4929B73DD600B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0458AA629B133DC00262E69 /* AppSettings.swift in Sources */,
 				C0458AA829B133DC00262E69 /* RimeEngine.swift in Sources */,
@@ -1393,7 +1408,6 @@
 				C0458A9E29B133A300262E69 /* KeyboardContext+KeyboardType.swift in Sources */,
 				C0458A9F29B133A300262E69 /* KKL10n.swift in Sources */,
 				C0458AA029B133A300262E69 /* HamsterActionCalloutContext.swift in Sources */,
-				C0458AA129B133A300262E69 /* HamsterKeyboard.entitlements in Sources */,
 				C0458AAC29B136DC00262E69 /* HamsterKeyboard+Injection.swift in Sources */,
 				C0458AA329B133A300262E69 /* KeyboardInputViewController.swift in Sources */,
 			);
@@ -1765,6 +1779,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
+			requirement = {
+				kind = exactVersion;
+				version = 0.7.3;
+			};
+		};
 		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/imfuxiao/Plist";
@@ -1784,6 +1806,19 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C02C1EF429BFDB7B007B6AF5 /* iFilemanager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */;
+			productName = iFilemanager;
+		};
+		C02C1EFB29C07C96007B6AF5 /* LibrimeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LibrimeKit;
+		};
+		C02C1EFD29C07C9E007B6AF5 /* LibrimeKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LibrimeKit;
+		};
 		C04FA97B299A6C8200F8CC32 /* KeyboardKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
@@ -1805,14 +1840,6 @@
 			productName = KeyboardKit;
 		};
 		C06197FC29A35A5F004DF94F /* LibrimeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LibrimeKit;
-		};
-		C0E458AA298B975B007F5FE0 /* LibrimeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LibrimeKit;
-		};
-		C0E458AC298B97D9007F5FE0 /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LibrimeKit;
 		};

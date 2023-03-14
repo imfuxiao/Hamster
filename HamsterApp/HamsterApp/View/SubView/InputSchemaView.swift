@@ -8,82 +8,114 @@
 import SwiftUI
 
 struct InputSchemaView: View {
-    var schemas: [Schema]
-    @State var selectSchema: Schema?
-    @EnvironmentObject var appSetting: HamsterAppSettings
+  @State
+  var schemas: [Schema] = []
 
-    var body: some View {
-        ZStack {
-            Color.gray.opacity(0.1).ignoresSafeArea(.all)
+  @State
+  var selectSchema: Schema?
 
-            VStack {
-                VStack {
-                    HStack {
-                        Text("输入方案")
-                            .font(.system(.title3, design: .rounded))
-                            .fontWeight(.bold)
+  @State
+  var rimeError: Error?
 
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal)
+  @EnvironmentObject
+  var appSetting: HamsterAppSettings
 
-                List {
-                    ForEach(schemas) { schema in
-                        HStack {
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 16, weight: .heavy))
-                                .foregroundColor(.green)
-                                .opacity(isSelect(schema) ? 1 : 0)
+  @EnvironmentObject
+  var rimeEngine: RimeEngine
 
-                            Text(schema.schemaName)
-                                .font(.system(.body, design: .rounded))
+  init(schemas: [Schema] = [], selectSchema: Schema? = nil) {
+    self.schemas = schemas
+    self.selectSchema = selectSchema
+  }
 
-                            Spacer()
-                        }
-                        .frame(minWidth: 0, maxWidth: .infinity)
-                        .frame(minHeight: 0, maxHeight: .infinity)
-                        .onTapGesture {
-                            selectSchema = schema
-                        }
-                    }
-                }
-                .padding(.top, 20)
-                .padding(.horizontal)
-                .listStyle(.plain)
-            }
+  var body: some View {
+    ZStack {
+      Color.gray.opacity(0.1).ignoresSafeArea(.all)
+
+      VStack {
+        VStack {
+          HStack {
+            Text("输入方案")
+              .font(.system(.title3, design: .rounded))
+              .fontWeight(.bold)
+
+            Spacer()
+          }
         }
-        .animation(.default, value: selectSchema)
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .frame(minHeight: 0, maxHeight: .infinity)
-        .onChange(of: selectSchema, perform: { newSelectSchame in
-            if let selectSchema = newSelectSchame {
-                appSetting.preferences.rimeSelectSchema = selectSchema.schemaId
-            }
-        })
-    }
+        .padding(.horizontal)
 
-    func isSelect(_ schema: Schema) -> Bool {
-        if let selectSchema = selectSchema {
-            if selectSchema.schemaId == schema.schemaId {
-                return true
+        List {
+          ForEach(schemas) { schema in
+            HStack {
+              Image(systemName: "checkmark")
+                .font(.system(size: 16, weight: .heavy))
+                .foregroundColor(.green)
+                .opacity(isSelect(schema) ? 1 : 0)
+
+              Text(schema.schemaName)
+                .font(.system(.body, design: .rounded))
+
+              Spacer()
             }
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(minHeight: 0, maxHeight: .infinity)
+            .onTapGesture {
+              selectSchema = schema
+            }
+          }
         }
-        return false
+        .padding(.top, 20)
+        .padding(.horizontal)
+        .listStyle(.plain)
+      }
     }
+    .animation(.default, value: selectSchema)
+    .frame(minWidth: 0, maxWidth: .infinity)
+    .frame(minHeight: 0, maxHeight: .infinity)
+    .onChange(of: selectSchema, perform: { newSelectSchame in
+      if let selectSchema = newSelectSchame {
+        appSetting.rimeSelectSchema = selectSchema.schemaId
+      }
+    })
+    .onAppear {
+      if !rimeEngine.rimeAlive() {
+        do {
+          try rimeEngine.launch()
+        } catch {
+          print(error)
+        }
+      }
+      schemas = rimeEngine.getSchemas()
+      selectSchema = rimeEngine.status().currentSchema()
+      print("\n \n internal appear end \n \n")
+    }
+  }
+
+  func isSelect(_ schema: Schema) -> Bool {
+    if let selectSchema = selectSchema {
+      if selectSchema.schemaId == schema.schemaId {
+        return true
+      }
+    }
+    return false
+  }
 }
 
 let sampleSchemas: [Schema] = [
-    .init(schemaId: "1", schemaName: "小鹤音形"),
-    .init(schemaId: "2", schemaName: "朙月拼音"),
-    .init(schemaId: "3", schemaName: "朙月拼音-简化字"),
-    .init(schemaId: "4", schemaName: "朙月拼音-语句流"),
-    .init(schemaId: "5", schemaName: "注音"),
+  .init(schemaId: "1", schemaName: "小鹤音形"),
+  .init(schemaId: "2", schemaName: "朙月拼音"),
+  .init(schemaId: "3", schemaName: "朙月拼音-简化字"),
+  .init(schemaId: "4", schemaName: "朙月拼音-语句流"),
+  .init(schemaId: "5", schemaName: "注音"),
 ]
 
 struct InputSchemaView_Previews: PreviewProvider {
-    static var previews: some View {
-        InputSchemaView(schemas: sampleSchemas, selectSchema: sampleSchemas[0])
-            .environmentObject(HamsterAppSettings())
-    }
+  static var previews: some View {
+    InputSchemaView(
+      schemas: sampleSchemas,
+      selectSchema: sampleSchemas[0]
+    )
+    .environmentObject(HamsterAppSettings())
+    .environmentObject(RimeEngine.shared)
+  }
 }

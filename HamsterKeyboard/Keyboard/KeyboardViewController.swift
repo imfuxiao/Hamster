@@ -28,6 +28,36 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         do {
             try self.rimeEngine.launch()
             
+            self.appSettings.$switchTraditionalChinese
+                .receive(on: RunLoop.main)
+                .sink {
+                    print("-----------\n combine traditionalMode \($0)")
+                    _ = self.rimeEngine.simplifiedChineseMode(!$0)
+                }
+                .store(in: &self.cancel)
+            
+            self.appSettings.$showKeyPressBubble
+                .receive(on: RunLoop.main)
+                .sink {
+                    print("-----------\n combine showKeyPressBubble \($0)")
+                    self.calloutContext.input.isEnabled = $0
+                }
+                .store(in: &self.cancel)
+            
+            self.appSettings.$rimeSelectSchema
+                .receive(on: RunLoop.main)
+                .sink { selectSchema in
+                    print("-----------\n combine selected schema \(selectSchema)")
+                    let schema = self.rimeEngine.getSchemas()
+                        .first(where: {
+                            $0.schemaId == selectSchema
+                        })
+                    if let schema = schema {
+                        _ = self.rimeEngine.setSchema(schema.schemaId)
+                    }
+                }
+                .store(in: &self.cancel)
+            
         } catch {
             // TODO: RIME 异常启动处理
             print("rime start error: ")
@@ -56,7 +86,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
                 isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
         )
         
-        if !self.appSettings.preferences.showKeyPressBubble {
+        if !self.appSettings.showKeyPressBubble {
             self.calloutContext.input.isEnabled = false
         }
         
@@ -64,24 +94,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         self.keyboardContext.locale = Locale(identifier: "zh-Hans")
         
         super.viewDidLoad()
-        
-        self.appSettings.$preferences
-            .receive(on: RunLoop.main)
-            .map(\.switchTraditionalChinese)
-            .sink {
-                print("-----------\n traditionalMode \($0)")
-                _ = self.rimeEngine.simplifiedChineseMode($0)
-            }
-            .store(in: &self.cancel)
-        
-        self.appSettings.$preferences
-            .receive(on: RunLoop.main)
-            .map(\.showKeyPressBubble)
-            .sink {
-                print("-----------\n showKeyPressBubble \($0)")
-                self.calloutContext.input.isEnabled = $0
-            }
-            .store(in: &self.cancel)
     }
   
     override public func viewDidDisappear(_ animated: Bool) {

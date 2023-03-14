@@ -86,10 +86,10 @@ struct AlphabetKeyboard: View {
             if keyboardContext.keyboardType != .emojis {
                 VStack {
                     HStack {
-                        Toggle(isOn: $appSetting.preferences.showKeyPressBubble) {
+                        Toggle(isOn: $appSetting.showKeyPressBubble) {
                             Text("按钮气泡")
                         }
-                        Toggle(isOn: $appSetting.preferences.switchTraditionalChinese) {
+                        Toggle(isOn: $appSetting.switchTraditionalChinese) {
                             Text("繁体中文")
                         }
                     }

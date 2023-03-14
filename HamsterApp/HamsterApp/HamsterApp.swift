@@ -9,21 +9,14 @@ import SwiftUI
 
 @main
 struct HamsterApp: App {
-    var appSetings = HamsterAppSettings()
-    var rimeEngine = RimeEngine.shared
+  var appSetings = HamsterAppSettings()
+  var rimeEngine = RimeEngine.shared
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .environmentObject(appSetings)
-                .environmentObject(rimeEngine)
-                .onAppear {
-                    do {
-                        try rimeEngine.launch()
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
-        }
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environmentObject(appSetings)
+        .environmentObject(rimeEngine)
     }
+  }
 }
