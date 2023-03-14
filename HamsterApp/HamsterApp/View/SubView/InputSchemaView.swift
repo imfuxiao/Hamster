@@ -74,7 +74,7 @@ struct InputSchemaView: View {
     .frame(minHeight: 0, maxHeight: .infinity)
     .onChange(of: selectSchema, perform: { newSelectSchame in
       if let selectSchema = newSelectSchame {
-        appSetting.rimeSelectSchema = selectSchema.schemaId
+        appSetting.rimeInputSchema = selectSchema.schemaId
       }
     })
     .onAppear {

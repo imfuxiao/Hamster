@@ -44,7 +44,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
                 }
                 .store(in: &self.cancel)
             
-            self.appSettings.$rimeSelectSchema
+            self.appSettings.$rimeInputSchema
                 .receive(on: RunLoop.main)
                 .sink { selectSchema in
                     print("-----------\n combine selected schema \(selectSchema)")

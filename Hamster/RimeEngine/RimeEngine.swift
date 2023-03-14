@@ -15,7 +15,7 @@ public struct Schema: Identifiable, Equatable {
   let schemaName: String
 }
 
-public struct ColorSchema: Identifiable {
+public struct ColorSchema: Identifiable, Equatable {
   public let id = UUID()
     
   var schemaName: String = ""

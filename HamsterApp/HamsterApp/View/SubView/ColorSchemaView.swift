@@ -17,6 +17,16 @@ struct ColorSchemaView: View {
   @EnvironmentObject
   var rimeEngine: RimeEngine
 
+  @EnvironmentObject
+  var appSetting: HamsterAppSettings
+
+  func isSelected(_ colorSchema: ColorSchema) -> Bool {
+    guard let selectColorSchema = selectColorSchema else {
+      return false
+    }
+    return selectColorSchema.schemaName == colorSchema.schemaName
+  }
+
   var body: some View {
     VStack {
       HStack {
@@ -28,11 +38,38 @@ struct ColorSchemaView: View {
       }
       .padding(.horizontal)
 
-      ScrollView {
-        ForEach(colorSchemas) {
-          WordView(colorSchema: $0)
+      HStack {
+        Toggle(isOn: $appSetting.rimeEnableColorSchema) {
+          Text("启用配色")
+            .font(.system(.body, design: .rounded))
+            .fontWeight(.bold)
         }
       }
+      .padding(.horizontal)
+
+      if appSetting.rimeEnableColorSchema {
+        ScrollView {
+          ForEach(colorSchemas) { colorSchema in
+            HStack {
+              RadioButton(isSelected: isSelected(colorSchema)) {
+                selectColorSchema = colorSchema
+              }
+              WordView(colorSchema: colorSchema)
+                .background(
+                  RoundedRectangle(cornerRadius: 15)
+                    .strokeBorder(lineWidth: 3)
+                    .foregroundColor(
+                      isSelected(colorSchema) ? .green.opacity(0.8) : Color.gray
+                    )
+                    .shadow(radius: 2, x: 1, y: 1)
+                )
+            }
+            .padding(.horizontal)
+          }
+        }
+      }
+
+      Spacer()
     }
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
@@ -43,6 +80,12 @@ struct ColorSchemaView: View {
         self.selectColorSchema = self.colorSchemas.first(where: { $0.schemaName == currentColorName })
       }
     }
+    .onChange(of: selectColorSchema, perform: { newColorSchema in
+      if let colorSchema = newColorSchema {
+        appSetting.rimeEnableColorSchema = true
+        appSetting.rimeColorSchema = colorSchema.name
+      }
+    })
   }
 }
 
@@ -51,7 +94,7 @@ struct WordView: View {
   var body: some View {
     VStack {
       HStack {
-        Text(colorSchema.schemaName)
+        Text("方案名称: " + colorSchema.schemaName)
           .font(.system(.title2))
           .fontWeight(.bold)
         Spacer()
@@ -59,7 +102,7 @@ struct WordView: View {
       .foregroundColor(.primary)
 
       HStack {
-        Text(colorSchema.author)
+        Text("作者: " + colorSchema.author)
           .font(.system(.footnote))
           .fontWeight(.heavy)
           .lineLimit(1)
@@ -114,6 +157,7 @@ struct WordView: View {
     .frame(minWidth: 0, maxWidth: .infinity)
     .padding(.horizontal)
     .padding(.vertical, 5)
+    .padding(.bottom, 10)
   }
 }
 
@@ -175,5 +219,6 @@ struct ColorSchemaView_Previews: PreviewProvider {
   static var previews: some View {
     ColorSchemaView(colorSchemas: sampleColorSchema)
       .environmentObject(RimeEngine.shared)
+      .environmentObject(HamsterAppSettings())
   }
 }

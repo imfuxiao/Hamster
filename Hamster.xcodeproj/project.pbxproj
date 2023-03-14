@@ -245,6 +245,7 @@
 		C099464629B28625007FD3CA /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
 		C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
+		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
 		C0CE234829B5219500F79A74 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE234729B5219500F79A74 /* CellView.swift */; };
 		C0F858C329A2AA38003A2ED4 /* RimeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */; };
 /* End PBXBuildFile section */
@@ -684,6 +685,7 @@
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C0AC2E68299F7B5100BC494C /* HamsterKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboard.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+Color.swift"; sourceTree = "<group>"; };
+		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		C0E458A7298B938B007F5FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 		C04FA8AF299A65AC00F8CC32 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C0CDF6E629C0F9BD00CA2493 /* Components */,
 				C04FA8B2299A65AC00F8CC32 /* ContentView.swift */,
 				C0629C6D29B3C42F00C27D42 /* SetttingView.swift */,
 				C0CE234729B5219500F79A74 /* CellView.swift */,
@@ -1156,6 +1159,14 @@
 			path = Image;
 			sourceTree = "<group>";
 		};
+		C0CDF6E629C0F9BD00CA2493 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		C0F858B229A2A943003A2ED4 /* HamsterAppTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1361,6 +1372,7 @@
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
+				C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */,
 				C0458A7C29B1338700262E69 /* ContentView.swift in Sources */,
 				C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */,
 			);
