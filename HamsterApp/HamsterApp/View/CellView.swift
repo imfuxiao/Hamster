@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CellView<SubView: View>: View {
   typealias SubViewBuilder = () -> SubView
-  
+
   init(
     width: CGFloat,
     height: CGFloat,
@@ -27,7 +27,7 @@ struct CellView<SubView: View>: View {
       navgationDestinationBuilder: nil
     )
   }
-    
+
   init(
     width: CGFloat,
     height: CGFloat,
@@ -45,7 +45,7 @@ struct CellView<SubView: View>: View {
       navgationDestinationBuilder: navgationDestinationBuilder
     )
   }
-    
+
   private init(
     width: CGFloat,
     height: CGFloat,
@@ -63,27 +63,27 @@ struct CellView<SubView: View>: View {
     self._toggleValue = toggle
     self.navgationDestinationBuilder = navgationDestinationBuilder
   }
-    
+
   var width: CGFloat
   var height: CGFloat
   var imageName: String
   var featureName: String
-    
+
   var showSubView: Bool
   var navgationDestinationBuilder: SubViewBuilder?
-  
+
   @Binding
   var toggleValue: Bool
-  
+
   @EnvironmentObject
   var rimeEngine: RimeEngine
-    
+
   var imageView: some View {
     HStack {
       Image(systemName: imageName)
-            
+
       Spacer()
-            
+
       if !showSubView {
         Toggle("", isOn: $toggleValue)
           .fixedSize()
@@ -94,13 +94,13 @@ struct CellView<SubView: View>: View {
     }
     .padding(.horizontal)
   }
-    
+
   var titleView: some View {
     HStack(spacing: 0) {
       Text(featureName)
         .font(.system(.body, design: .rounded))
         .fontWeight(.bold)
-            
+
       if showSubView {
         Image(systemName: "chevron.right")
           .font(.system(size: 12))
@@ -111,7 +111,7 @@ struct CellView<SubView: View>: View {
     .padding(.horizontal)
     .foregroundColor(.primary)
   }
-    
+
   var body: some View {
     VStack(alignment: .leading) {
       imageView
@@ -139,10 +139,13 @@ struct CellView<SubView: View>: View {
 struct CellView_Previews: PreviewProvider {
   static var previews: some View {
     VStack {
-      CellView(width: 180, height: 100, imageName: "keyboard", featureName: "方案选择", navgationDestinationBuilder: { InputSchemaView(schemas: sampleSchemas) })
-            
       CellView(
-        width: 180, height: 100, imageName: "keyboard", featureName: "按键气泡", toggle: .constant(false)
+        width: 180, height: 100, imageName: "keyboard", featureName: "方案选择",
+        navgationDestinationBuilder: { InputSchemaView(schemas: sampleSchemas) })
+
+      CellView(
+        width: 180, height: 100, imageName: "keyboard", featureName: "按键气泡",
+        toggle: .constant(false)
       )
     }
     .environmentObject(HamsterAppSettings())

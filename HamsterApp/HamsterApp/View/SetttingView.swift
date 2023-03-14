@@ -27,7 +27,6 @@ struct SettingView: View {
       featureName: "输入方案",
       navgationDestinationBuilder: {
         InputSchemaView()
-          .onAppear {}
       }
     )
 
@@ -38,16 +37,6 @@ struct SettingView: View {
       featureName: "配色选择",
       navgationDestinationBuilder: {
         ColorSchemaView()
-          .onAppear {
-            print("\n \n outside appear \n \n")
-            if !rimeEngine.rimeAlive() {
-              do {
-                try rimeEngine.launch()
-              } catch {
-                print(error)
-              }
-            }
-          }
       }
     )
 
@@ -100,7 +89,7 @@ struct SettingView: View {
     Section {
       LazyVGrid(
         columns: [
-          GridItem(.adaptive(minimum: 150)),
+          GridItem(.adaptive(minimum: 150))
         ],
         spacing: 20
       ) {

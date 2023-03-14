@@ -24,7 +24,7 @@ struct RadioButton: View {
         if isSelected {
           Circle()
             .foregroundColor(Color.white)
-            .frame(width: width/2, height: width/2)
+            .frame(width: width / 2, height: width / 2)
         }
       }
       .transition(.opacity)

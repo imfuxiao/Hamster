@@ -74,18 +74,25 @@ struct ColorSchemaView: View {
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
     .onAppear {
-      if rimeEngine.rimeAlive() {
-        self.colorSchemas = rimeEngine.colorSchema()
-        let currentColorName = rimeEngine.currentColorSchemaName()
-        self.selectColorSchema = self.colorSchemas.first(where: { $0.schemaName == currentColorName })
+      if !rimeEngine.rimeAlive() {
+        do {
+          try rimeEngine.launch()
+        } catch {
+          print(error)
+        }
       }
+      self.colorSchemas = rimeEngine.colorSchema()
+      let currentColorName = rimeEngine.currentColorSchemaName()
+      self.selectColorSchema = self.colorSchemas.first(where: { $0.schemaName == currentColorName })
     }
-    .onChange(of: selectColorSchema, perform: { newColorSchema in
-      if let colorSchema = newColorSchema {
-        appSetting.rimeEnableColorSchema = true
-        appSetting.rimeColorSchema = colorSchema.name
-      }
-    })
+    .onChange(
+      of: selectColorSchema,
+      perform: { newColorSchema in
+        if let colorSchema = newColorSchema {
+          appSetting.rimeEnableColorSchema = true
+          appSetting.rimeColorSchema = colorSchema.name
+        }
+      })
   }
 }
 

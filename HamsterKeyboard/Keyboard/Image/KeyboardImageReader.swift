@@ -9,5 +9,5 @@ import Foundation
 import KeyboardKit
 
 extension KeyboardImageReader {
-    // TODO
+  // TODO
 }

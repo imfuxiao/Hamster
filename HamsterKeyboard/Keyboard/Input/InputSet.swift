@@ -9,18 +9,18 @@ import Foundation
 import KeyboardKit
 
 struct GridInputSet: InputSet {
-    var rows: KeyboardKit.InputSetRows
+  var rows: KeyboardKit.InputSetRows
 
-    init(rows: KeyboardKit.InputSetRows) {
-        self.rows = rows
-    }
+  init(rows: KeyboardKit.InputSetRows) {
+    self.rows = rows
+  }
 }
 
 extension GridInputSet {
-    static let numberGrid: GridInputSet = .init(rows: [
-        .init(chars: "+123"),
-        .init(chars: "-456*"),
-        .init(chars: "789/"),
-        .init(chars: ",0."),
-    ])
+  static let numberGrid: GridInputSet = .init(rows: [
+    .init(chars: "+123"),
+    .init(chars: "-456*"),
+    .init(chars: "789/"),
+    .init(chars: ",0."),
+  ])
 }

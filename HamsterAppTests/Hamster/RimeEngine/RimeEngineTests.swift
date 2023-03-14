@@ -5,9 +5,10 @@
 //  Created by morse on 20/2/2023.
 //
 
-@testable import HamsterApp
 import LibrimeKit
 import XCTest
+
+@testable import HamsterApp
 
 class RimeTestNotification: IRimeNotificationDelegate {
   func onDelployStart() {
@@ -86,10 +87,10 @@ final class RimeEngineTests: XCTestCase {
     XCTAssertEqual(currentSchemaName, "metro")
   }
 
-//  func testPerformanceExample() throws {
-//    // This is an example of a performance test case.
-//    measure {
-//      // Put the code you want to measure the time of here.
-//    }
-//  }
+  //  func testPerformanceExample() throws {
+  //    // This is an example of a performance test case.
+  //    measure {
+  //      // Put the code you want to measure the time of here.
+  //    }
+  //  }
 }

@@ -9,15 +9,15 @@ import Foundation
 import LibrimeKit
 
 extension IRimeContext {
-    func getCandidates() -> [Candidate] {
-        candidates.map {
-            Candidate(text: $0.text, comment: $0.comment)
-        }
+  func getCandidates() -> [Candidate] {
+    candidates.map {
+      Candidate(text: $0.text, comment: $0.comment)
     }
+  }
 }
 
 extension IRimeStatus {
-    func currentSchema() -> Schema {
-        Schema(schemaId: self.schemaId, schemaName: self.schemaName)
-    }
+  func currentSchema() -> Schema {
+    Schema(schemaId: self.schemaId, schemaName: self.schemaName)
+  }
 }

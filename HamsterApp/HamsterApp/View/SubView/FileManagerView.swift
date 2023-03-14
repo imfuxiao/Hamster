@@ -5,9 +5,9 @@
 //  Created by morse on 14/3/2023.
 //
 
-import iFilemanager
 import SwiftUI
 import UIKit
+import iFilemanager
 
 struct FileManagerView: View {
   let fileServer = FileServer(
@@ -82,7 +82,7 @@ extension UIDevice {
     if getifaddrs(&ifaddr) == 0 {
       var ptr = ifaddr
       while ptr != nil {
-        defer { ptr = ptr?.pointee.ifa_next } // memory has been renamed to pointee in swift 3 so changed memory to pointee
+        defer { ptr = ptr?.pointee.ifa_next }  // memory has been renamed to pointee in swift 3 so changed memory to pointee
 
         guard let interface = ptr?.pointee else {
           return nil
@@ -94,9 +94,11 @@ extension UIDevice {
           }
           let name = String(cString: ifa_name)
 
-          if name == "en0" { // String.fromCString() is deprecated in Swift 3. So use the following code inorder to get the exact IP Address.
+          if name == "en0" {  // String.fromCString() is deprecated in Swift 3. So use the following code inorder to get the exact IP Address.
             var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
-            getnameinfo(interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len), &hostname, socklen_t(hostname.count), nil, socklen_t(0), NI_NUMERICHOST)
+            getnameinfo(
+              interface.ifa_addr, socklen_t(interface.ifa_addr.pointee.sa_len), &hostname,
+              socklen_t(hostname.count), nil, socklen_t(0), NI_NUMERICHOST)
             address = String(cString: hostname)
           }
         }

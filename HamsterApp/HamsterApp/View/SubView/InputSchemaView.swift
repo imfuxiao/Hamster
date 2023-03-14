@@ -72,11 +72,14 @@ struct InputSchemaView: View {
     .animation(.default, value: selectSchema)
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
-    .onChange(of: selectSchema, perform: { newSelectSchame in
-      if let selectSchema = newSelectSchame {
-        appSetting.rimeInputSchema = selectSchema.schemaId
+    .onChange(
+      of: selectSchema,
+      perform: { newSelectSchame in
+        if let selectSchema = newSelectSchame {
+          appSetting.rimeInputSchema = selectSchema.schemaId
+        }
       }
-    })
+    )
     .onAppear {
       if !rimeEngine.rimeAlive() {
         do {
@@ -87,7 +90,6 @@ struct InputSchemaView: View {
       }
       schemas = rimeEngine.getSchemas()
       selectSchema = rimeEngine.status().currentSchema()
-      print("\n \n internal appear end \n \n")
     }
   }
 
