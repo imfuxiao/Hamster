@@ -16,15 +16,15 @@ extension KeyboardAction {
   }
 
   /**
-     The action that by default should be triggered when the
-     action is double tapped.
-     */
+   The action that by default should be triggered when the
+   action is double tapped.
+   */
   var hamsterStandardDoubleTapAction: HamsterGestureAction? { nil }
 
   /**
-     The action that by default should be triggered when the
-     action is long pressed.
-     */
+   The action that by default should be triggered when the
+   action is long pressed.
+   */
   var hamsterStandardLongPressAction: HamsterGestureAction? {
     switch self {
     case .backspace: return hamsterStandardPressAction
@@ -34,9 +34,9 @@ extension KeyboardAction {
   }
 
   /**
-     The action that by default should be triggered when the
-     action is pressed.
-     */
+   The action that by default should be triggered when the
+   action is pressed.
+   */
   var hamsterStandardPressAction: HamsterGestureAction? {
     switch self {
     case .backspace:
@@ -65,9 +65,9 @@ extension KeyboardAction {
   }
 
   /**
-     The action that by default should be triggered when the
-     action is released.
-     */
+   The action that by default should be triggered when the
+   action is released.
+   */
   var hamsterStandardReleaseAction: HamsterGestureAction? {
     switch self {
     case .character(let char):
@@ -108,7 +108,7 @@ extension KeyboardAction {
           }
           return { _ in }
         } else {
-          NSLog("rime engine input character(%s) error. ", char)
+          print("rime engine input character \(char) error.")
           rimeEngine.rest()
         }
         return insertCharAction
@@ -181,14 +181,42 @@ extension KeyboardAction {
         return spaceAction
       }
     case .tab: return { _ in { $0?.insertText(.tab) } }
+    case .custom(let name):
+      // TODO: 自定义按键动作处理
+      if let customButton = KeyboardConstant.CustomButton(rawValue: name) {
+        return { hamsterInputViewController in
+          guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
+            return { _ in }
+          }
+          if rimeEngine.inputKey(customButton.buttonText) {
+            // 唯一码直接上屏
+            let commitText = rimeEngine.getCommitText()
+            if !commitText.isEmpty {
+              rimeEngine.rest()
+              return { $0?.insertText(commitText) }
+            }
+
+            let status = rimeEngine.status()
+            // 不存在候选字
+            if !status.isComposing {
+              rimeEngine.rest()
+            } else {
+              rimeEngine.userInputKey = rimeEngine.getInputKeys()
+            }
+            return { _ in }
+          }
+          return { _ in }
+        }
+      }
+      return nil
     default: return nil
     }
   }
 
   /**
-     The action that by default should be triggered when the
-     action is pressed, and repeated until it is released.
-     */
+   The action that by default should be triggered when the
+   action is pressed, and repeated until it is released.
+   */
   var hamsterStandardRepeatAction: HamsterGestureAction? {
     switch self {
     case .backspace: return hamsterStandardReleaseAction

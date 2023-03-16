@@ -22,50 +22,57 @@ public struct ColorSchema: Identifiable, Equatable {
 
   // 窗体背景色
   var backColor: String = ""
-  var borderColor: String = ""  // 边框颜色: border_color
+  var borderColor: String = "" // 边框颜色: border_color
 
   // 组字区域
-  var textColor: String = ""  // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
-  var hilitedTextColor: String = ""  // 编码高亮: hilited_text_color
-  var hilitedBackColor: String = ""  // 编码背景高亮: hilited_back_color
+  var textColor: String = "" // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
+  var hilitedTextColor: String = "" // 编码高亮: hilited_text_color
+  var hilitedBackColor: String = "" // 编码背景高亮: hilited_back_color
 
   // 候选栏颜色
-  var hilitedCandidateTextColor: String = ""  // 首选文字颜色: hilited_candidate_text_color
-  var hilitedCandidateBackColor: String = ""  // 首选背景颜色: hilited_candidate_back_color
+  var hilitedCandidateTextColor: String = "" // 首选文字颜色: hilited_candidate_text_color
+  var hilitedCandidateBackColor: String = "" // 首选背景颜色: hilited_candidate_back_color
   // hilited_candidate_label_color 首选序号颜色
-  var hilitedCommentTextColor: String = ""  // 首选提示字母色: hilited_comment_text_color
+  var hilitedCommentTextColor: String = "" // 首选提示字母色: hilited_comment_text_color
 
-  var candidateTextColor: String = ""  // 次选文字色: candidate_text_color
-  var commentTextColor: String = ""  // 次选提示色: comment_text_color
+  var candidateTextColor: String = "" // 次选文字色: candidate_text_color
+  var commentTextColor: String = "" // 次选提示色: comment_text_color
   // label_color 次选序号颜色
 }
 
 let asciiModeKey = "ascii_mode"
 let simplifiedChineseKey = "simplification"
 
+enum RimeDeployStatus {
+  case Begin
+  case Success
+  case Failure
+  case none
+}
+
 public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private let rimeAPI: IRimeAPI = .init()
   private var session: RimeSessionId = 0
 
-  @Published var userInputKey: String = ""
+  @Published
+  var userInputKey: String = ""
+
+  @Published
+  var deployState: RimeDeployStatus = .none
 
   public static let shared: RimeEngine = .init()
   private init() {}
 
-  func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
+  private func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
     rimeAPI.setNotificationDelegate(delegate)
   }
 
-  func setup(_ traits: IRimeTraits) {
+  private func setup(_ traits: IRimeTraits) {
     rimeAPI.setup(traits)
   }
 
-  func start(_ traits: IRimeTraits, fullCheck: Bool) {
+  private func start(_ traits: IRimeTraits, fullCheck: Bool) {
     rimeAPI.start(traits, withFullCheck: fullCheck)
-  }
-
-  func stopRimeService() {
-    rimeAPI.shutdown()
   }
 
   func rimeAlive() -> Bool {
@@ -182,18 +189,11 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   }
 }
 
-extension RimeEngine {
-  private func createTraits() throws -> IRimeTraits {
-    #if DEBUG
-      print("app bundle path: \(Bundle.main.bundleURL)")
-    #endif
-
-    try Self.syncShareSupportDirectory()
-    try Self.syncAppGroupUserDataDirectory()
-
+public extension RimeEngine {
+  private func createTraits(sharedSupportDir: String, userDataDir: String) -> IRimeTraits {
     let traits = IRimeTraits()
-    traits.sharedDataDir = Self.sharedSupportDirectory.path
-    traits.userDataDir = Self.userDataDirectory.path
+    traits.sharedDataDir = sharedSupportDir
+    traits.userDataDir = userDataDir
     traits.distributionCodeName = "Hamster"
     traits.distributionName = "仓鼠"
     traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
@@ -204,62 +204,81 @@ extension RimeEngine {
     return traits
   }
 
-  public func launch() throws {
-    let traits = try createTraits()
+  func setupRime(sharedSupportDir: String, userDataDir: String) {
     setNotificationDelegate(self)
-    rimeAPI.setup(traits)
-    rimeAPI.start(traits, withFullCheck: false)
+    rimeAPI.setup(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
+  }
+
+  func startRime(fullCheck: Bool = false) {
+    rimeAPI.start(nil, withFullCheck: fullCheck)
     session = rimeAPI.session()
   }
 
-  public func deploy() throws {
-    rimeAPI.shutdown()
-    rimeAPI.start(nil, withFullCheck: true)
-    session = rimeAPI.session()
+  func deploy(fullCheck: Bool = true) {
+    DispatchQueue.main.async { [weak self] in
+      self?.rimeAPI.shutdown()
+      self?.rimeAPI.start(nil, withFullCheck: true)
+      self?.session = self?.rimeAPI.session() ?? 0
+    }
   }
 
-  public func rest() {
-    userInputKey = ""
-    cleanComposition()
+  func rest() {
+    DispatchQueue.main.async { [weak self] in
+      self?.userInputKey = ""
+      self?.cleanComposition()
+    }
   }
 
-  public func isAsciiMode() -> Bool {
+  func isAsciiMode() -> Bool {
     return rimeAPI.getOption(session, andOption: asciiModeKey)
   }
 
-  public func asciiMode(_ value: Bool) -> Bool {
+  func asciiMode(_ value: Bool) -> Bool {
     return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
   }
 
-  public func isSimplifiedMode() -> Bool {
+  func isSimplifiedMode() -> Bool {
     return rimeAPI.getOption(session, andOption: simplifiedChineseKey)
   }
 
-  public func simplifiedChineseMode(_ value: Bool) -> Bool {
+  func simplifiedChineseMode(_ value: Bool) -> Bool {
     return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: value)
   }
 }
 
 // MARK: implementation IRimeNotificationDelegate
 
-extension RimeEngine {
-  public func onDelployStart() {
+public extension RimeEngine {
+  func onDelployStart() {
     print("HamsterRimeNotification: onDelployStart")
+    DispatchQueue.main.async { [weak self] in
+      self?.deployState = .Begin
+    }
   }
 
-  public func onDeploySuccess() {
+  func onDeploySuccess() {
     print("HamsterRimeNotification: onDeploySuccess")
+    if !rimeAlive() {
+      DispatchQueue.main.async { [weak self] in
+        self?.rimeAPI.shutdown()
+        self?.startRime()
+        self?.deployState = .Success
+      }
+    }
   }
 
-  public func onDeployFailure() {
+  func onDeployFailure() {
     print("HamsterRimeNotification: onDeployFailure")
+    DispatchQueue.main.async { [weak self] in
+      self?.deployState = .Failure
+    }
   }
 
-  public func onChangeMode(_ mode: String) {
+  func onChangeMode(_ mode: String) {
     print("HamsterRimeNotification: onChangeMode, mode: ", mode)
   }
 
-  public func onLoadingSchema(_ schema: String) {
+  func onLoadingSchema(_ schema: String) {
     print("HamsterRimeNotification: onLoadingSchema, schema: ", schema)
   }
 }

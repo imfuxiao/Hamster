@@ -51,10 +51,6 @@ struct AlphabetKeyboard: View {
     )
   }
 
-  var autocompleteToolbar: some View {
-    HamsterAutocompleteToolbar()
-  }
-
   var keyboard: some View {
     SystemKeyboard(
       layout: layoutProvider.keyboardLayout(for: keyboardContext),
@@ -84,20 +80,23 @@ struct AlphabetKeyboard: View {
   var body: some View {
     VStack(spacing: 0) {
       if keyboardContext.keyboardType != .emojis {
-        VStack {
-          HStack {
-            Toggle(isOn: $appSetting.showKeyPressBubble) {
-              Text("按钮气泡")
-            }
-            Toggle(isOn: $appSetting.switchTraditionalChinese) {
-              Text("繁体中文")
-            }
-          }
-        }
-        autocompleteToolbar
+        HamsterAutocompleteToolbar()
+          .frame(minWidth: 0, maxWidth: .infinity)
+          .frame(height: 50)
       }
       keyboard
+        .background(backgroudColor)
     }
+//    .eraseToAnyView()
+  }
+
+  var backgroudColor: Color {
+    if appSetting.rimeEnableColorSchema {
+      if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSetting.rimeColorSchema }) {
+        return colorSchema.backColor.bgrColor ?? Color.clearInteractable
+      }
+    }
+    return Color.clearInteractable
   }
 
   var width: CGFloat {

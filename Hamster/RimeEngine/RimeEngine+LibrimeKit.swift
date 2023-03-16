@@ -18,6 +18,6 @@ extension IRimeContext {
 
 extension IRimeStatus {
   func currentSchema() -> Schema {
-    Schema(schemaId: self.schemaId, schemaName: self.schemaName)
+    Schema(schemaId: self.schemaId == nil ? "" : self.schemaId, schemaName: self.schemaName == nil ? "" : self.schemaName)
   }
 }

@@ -16,55 +16,63 @@ let itemStyle = AutocompleteToolbarItemStyle(
 )
 
 struct HamsterAutocompleteToolbar: View {
-  @EnvironmentObject private var autocompleteContext: AutocompleteContext
-  @EnvironmentObject private var keyboardContext: KeyboardContext
-  @EnvironmentObject private var rimeEngine: RimeEngine
+  @EnvironmentObject
+  private var keyboardContext: KeyboardContext
 
-  func itemView(suggestion: AutocompleteSuggestion, style: AutocompleteToolbarStyle, local: Locale)
-    -> some View
-  {
-    HStack {
-      HamsterAutocompleteToolbarItemTitle(
-        suggestion: suggestion,
-        style: style.item
-      )
+  @EnvironmentObject
+  private var rimeEngine: RimeEngine
+
+  public typealias SuggestionAction = (AutocompleteSuggestion) -> Void
+
+  var style = AutocompleteToolbarStyle(
+    item: itemStyle
+  )
+
+  func itemButton(for suggestion: HamsterSuggestion) -> some View {
+    Button {
+      // TODO: 点击候选项处理
+      let text = suggestion.text
+      if !text.isEmpty {
+        keyboardContext.textDocumentProxy.insertText(text)
+      }
+      rimeEngine.rest()
+    } label: {
+      HStack {
+        HamsterAutocompleteToolbarItemTitle(
+          suggestion: suggestion,
+          style: style.item
+        )
+      }
+      .padding(1)
+      .padding(.horizontal, 4)
+      .padding(.vertical, 10)
+      .background(suggestion.isAutocomplete ? style.autocompleteBackground.color : Color.clearInteractable)
+      .cornerRadius(style.autocompleteBackground.cornerRadius)
     }
-    .padding(1)
+    .buttonStyle(.plain)
   }
 
   var body: some View {
-    GeometryReader { _ in
-      AutocompleteToolbar(
-        suggestions: rimeEngine.suggestions,
-        locale: keyboardContext.locale,
-        style: AutocompleteToolbarStyle(
-          item: itemStyle
-        ),
-        itemView: itemView,
-        suggestionAction: {
-          // TODO: 点击候选项处理
-          let text = $0.text
-          if !text.isEmpty {
-            keyboardContext.textDocumentProxy.insertText(text)
-          }
-          rimeEngine.rest()
-        }
-      )
+    HStack(spacing: 3) {
+      ForEach(rimeEngine.suggestions) { item in
+        itemButton(for: item)
+      }
+
+      Spacer()
     }
-    .frame(height: 50)
   }
 }
 
 public struct HamsterAutocompleteToolbarItemTitle: View {
   public init(
-    suggestion: AutocompleteSuggestion,
+    suggestion: HamsterSuggestion,
     style: AutocompleteToolbarItemStyle = .standard
   ) {
     self.suggestion = suggestion
     self.style = style
   }
 
-  private let suggestion: AutocompleteSuggestion
+  private let suggestion: HamsterSuggestion
   private let style: AutocompleteToolbarItemStyle
 
   public var body: some View {
@@ -95,7 +103,7 @@ struct AutocompleteToolbar_Previews: PreviewProvider {
   static var previews: some View {
     HamsterAutocompleteToolbar()
       .preferredColorScheme(.dark)
-      .environmentObject(KeyboardContext.hamsterPreview)
+      .environmentObject(KeyboardContext.preview)
       .environmentObject(RimeEngine.shared)
       .environmentObject(AutocompleteContext())
       .environmentObject(ActionCalloutContext.preview)

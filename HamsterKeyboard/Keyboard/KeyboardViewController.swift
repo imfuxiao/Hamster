@@ -24,46 +24,68 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     #endif
 
     do {
-      try self.rimeEngine.launch()
-
-      self.appSettings.$switchTraditionalChinese
-        .receive(on: RunLoop.main)
-        .sink {
-          print("-----------\n combine traditionalMode \($0)")
-          _ = self.rimeEngine.simplifiedChineseMode(!$0)
-        }
-        .store(in: &self.cancel)
-
-      self.appSettings.$showKeyPressBubble
-        .receive(on: RunLoop.main)
-        .sink {
-          print("-----------\n combine showKeyPressBubble \($0)")
-          self.calloutContext.input.isEnabled = $0
-        }
-        .store(in: &self.cancel)
-
-      self.appSettings.$rimeInputSchema
-        .receive(on: RunLoop.main)
-        .sink { selectSchema in
-          print("-----------\n combine selected schema \(selectSchema)")
-          let schema = self.rimeEngine.getSchemas()
-            .first(where: {
-              $0.schemaId == selectSchema
-            })
-          if let schema = schema {
-            _ = self.rimeEngine.setSchema(schema.schemaId)
-          }
-        }
-        .store(in: &self.cancel)
-
+      try RimeEngine.syncAppGroupSharedSupportDirectory()
+      try RimeEngine.initUserDataDirectory()
+      try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
     } catch {
       // TODO: RIME 异常启动处理
-      print("rime start error: ")
+      print("create rime directory error: ")
       print(error.localizedDescription)
     }
 
+    self.rimeEngine.setupRime(
+      sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
+      userDataDir: RimeEngine.userDataDirectory.path
+    )
+    self.rimeEngine.startRime()
+
+    self.appSettings.$switchTraditionalChinese
+      .receive(on: RunLoop.main)
+      .sink {
+        print("-----------\n combine traditionalMode \($0)")
+        _ = self.rimeEngine.simplifiedChineseMode($0)
+      }
+      .store(in: &self.cancel)
+
+    self.appSettings.$showKeyPressBubble
+      .receive(on: RunLoop.main)
+      .sink {
+        print("-----------\n combine showKeyPressBubble \($0)")
+        self.calloutContext.input.isEnabled = $0
+      }
+      .store(in: &self.cancel)
+
+    self.appSettings.$rimeNeedOverrideUserDataDirectory
+      .receive(on: RunLoop.main)
+      .sink {
+        if $0 {
+          do {
+            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
+          } catch {
+            print(error)
+          }
+          self.rimeEngine.deploy(fullCheck: false)
+        }
+      }
+      .store(in: &self.cancel)
+
+    self.appSettings.$rimeInputSchema
+      .receive(on: RunLoop.main)
+      .sink {
+        if !$0.isEmpty {
+          if !self.rimeEngine.setSchema($0) {
+            print("rime engine set schema false")
+          }
+        }
+      }
+      .store(in: &self.cancel)
+
+    
+    // 注意初始化的顺序
     self.keyboardAppearance = HamsterKeyboardAppearance(
-      keyboardContext: self.keyboardContext
+      keyboardContext: self.keyboardContext,
+      appSettings: self.appSettings,
+      rimeEngine: self.rimeEngine
     )
 
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
@@ -71,10 +93,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       inputSetProvider: self.inputSetProvider
     )
 
-    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
-    self.autocompleteProvider = HamsterAutocompleteProvider(engine: self.rimeEngine)
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
-    self.calloutActionProvider = DisabledCalloutActionProvider()  // 禁用长按按钮
+    self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
     self.calloutContext = KeyboardCalloutContext(
       action: HamsterActionCalloutContext(
         actionHandler: keyboardActionHandler,
@@ -84,9 +104,20 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
     )
 
-    if !self.appSettings.showKeyPressBubble {
-      self.calloutContext.input.isEnabled = false
-    }
+    self.keyboardFeedbackSettings = KeyboardFeedbackSettings(
+      audioConfiguration: AudioFeedbackConfiguration(),
+      hapticConfiguration: HapticFeedbackConfiguration(
+        tap: .mediumImpact,
+        doubleTap: .mediumImpact,
+        longPress: .mediumImpact,
+        longPressOnSpace: .mediumImpact
+      )
+    )
+    self.keyboardFeedbackHandler = HamsterKeyboardFeedbackHandler(
+      settings: self.keyboardFeedbackSettings,
+      appSettings: self.appSettings
+    )
+    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
 
     // TODO: 动态设置 local
     self.keyboardContext.locale = Locale(identifier: "zh-Hans")
@@ -130,13 +161,13 @@ extension Plist {
   }
 }
 
-extension HamsterKeyboardViewController {
+public extension HamsterKeyboardViewController {
   //    func insertAutocompleteSuggestion(_ suggestion: AutocompleteSuggestion) {
   //        textDocumentProxy.insertAutocompleteSuggestion(suggestion)
   //        keyboardActionHandler.handle(.release, on: .character(""))
   //    }
 
-  public func setHamsterKeyboardType(_ type: KeyboardType) {
+  func setHamsterKeyboardType(_ type: KeyboardType) {
     // TODO: 切换九宫格
     //        if case .numeric = type {
     //            keyboardContext.keyboardType = .custom(named: KeyboardConstant.keyboardType.NumberGrid)

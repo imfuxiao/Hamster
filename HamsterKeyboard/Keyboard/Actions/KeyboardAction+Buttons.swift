@@ -2,11 +2,11 @@ import CoreGraphics
 import KeyboardKit
 import SwiftUI
 
-extension KeyboardAction {
+public extension KeyboardAction {
   /**
-     The action's standard button text.
-     */
-  public func hamsterButtonText(for context: KeyboardContext) -> String? {
+   The action's standard button text.
+   */
+  func hamsterButtonText(for context: KeyboardContext) -> String? {
     switch self {
     case .character(let char): return char
     case .emoji(let emoji): return emoji.char
@@ -21,7 +21,7 @@ extension KeyboardAction {
       #endif
       return text
     case .custom(let name):
-      // TODO:
+      // TODO: 自定义按键显示文字
       let customButton = KeyboardConstant.CustomButton(rawValue: name)
       return customButton?.buttonText
     default: return nil

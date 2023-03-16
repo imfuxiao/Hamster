@@ -25,7 +25,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       spaceDragGestureHandler: SpaceCursorDragGestureHandler(
         keyboardContext: ivc.keyboardContext,
         feedbackHandler: ivc.keyboardFeedbackHandler,
-        action: { print($0) }
+        action: { [weak ivc] in
+          ivc?.keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: $0)
+        }
       ),
       spaceDragSensitivity: .medium
     )
@@ -34,8 +36,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   override func action(for gesture: KeyboardGesture, on action: KeyboardAction) -> KeyboardAction
     .GestureAction?
   {
-    if let action = action.hamsterStanderAction(for: gesture) {
-      return action(hamsterKeyboardController)
+    if let hamsterAction = action.hamsterStanderAction(for: gesture) {
+      triggerFeedback(for: gesture, on: action)
+      return hamsterAction(hamsterKeyboardController)
     }
     return nil
   }
@@ -43,10 +46,12 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   override func handle(
     _ gesture: KeyboardKit.KeyboardGesture, on action: KeyboardKit.KeyboardAction
   ) {
-    //        triggerFeedback(for: gesture, on: action)
-
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
     gestureAction(keyboardController)
+  }
+
+  override func triggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {
+    keyboardFeedbackHandler.triggerFeedback(for: gesture, on: action)
   }
 
   override func handleDrag(
@@ -61,7 +66,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       // TODO: 只有字母类型键盘开启滑动手势
       if keyboardContext.keyboardType.isAlphabetic {
         dragGestureEndAction = slideGestureHandler.handleDragGesture(
-          action: action, from: startLocation, to: currentLocation)
+          action: action, from: startLocation, to: currentLocation
+        )
       }
     default: break
     }

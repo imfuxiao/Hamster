@@ -12,9 +12,6 @@ struct InputSchemaView: View {
   var schemas: [Schema] = []
 
   @State
-  var selectSchema: Schema?
-
-  @State
   var rimeError: Error?
 
   @EnvironmentObject
@@ -23,24 +20,21 @@ struct InputSchemaView: View {
   @EnvironmentObject
   var rimeEngine: RimeEngine
 
-  init(schemas: [Schema] = [], selectSchema: Schema? = nil) {
+  init(schemas: [Schema] = []) {
     self.schemas = schemas
-    self.selectSchema = selectSchema
   }
 
   var body: some View {
     ZStack {
-      Color.gray.opacity(0.1).ignoresSafeArea(.all)
+      Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
       VStack {
-        VStack {
-          HStack {
-            Text("输入方案")
-              .font(.system(.title3, design: .rounded))
-              .fontWeight(.bold)
+        HStack {
+          Text("输入方案")
+            .font(.system(.title3, design: .rounded))
+            .fontWeight(.bold)
 
-            Spacer()
-          }
+          Spacer()
         }
         .padding(.horizontal)
 
@@ -60,7 +54,7 @@ struct InputSchemaView: View {
             .frame(minWidth: 0, maxWidth: .infinity)
             .frame(minHeight: 0, maxHeight: .infinity)
             .onTapGesture {
-              selectSchema = schema
+              appSetting.rimeInputSchema = schema.schemaId
             }
           }
         }
@@ -69,37 +63,19 @@ struct InputSchemaView: View {
         .listStyle(.plain)
       }
     }
-    .animation(.default, value: selectSchema)
+    .animation(.default, value: appSetting.rimeInputSchema)
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
-    .onChange(
-      of: selectSchema,
-      perform: { newSelectSchame in
-        if let selectSchema = newSelectSchame {
-          appSetting.rimeInputSchema = selectSchema.schemaId
-        }
-      }
-    )
     .onAppear {
-      if !rimeEngine.rimeAlive() {
-        do {
-          try rimeEngine.launch()
-        } catch {
-          print(error)
-        }
-      }
       schemas = rimeEngine.getSchemas()
-      selectSchema = rimeEngine.status().currentSchema()
+      if appSetting.rimeInputSchema.isEmpty && !schemas.isEmpty {
+        appSetting.rimeInputSchema = schemas[0].schemaId
+      }
     }
   }
 
   func isSelect(_ schema: Schema) -> Bool {
-    if let selectSchema = selectSchema {
-      if selectSchema.schemaId == schema.schemaId {
-        return true
-      }
-    }
-    return false
+    schema.schemaId == appSetting.rimeInputSchema
   }
 }
 
@@ -114,8 +90,7 @@ let sampleSchemas: [Schema] = [
 struct InputSchemaView_Previews: PreviewProvider {
   static var previews: some View {
     InputSchemaView(
-      schemas: sampleSchemas,
-      selectSchema: sampleSchemas[0]
+      schemas: sampleSchemas
     )
     .environmentObject(HamsterAppSettings())
     .environmentObject(RimeEngine.shared)

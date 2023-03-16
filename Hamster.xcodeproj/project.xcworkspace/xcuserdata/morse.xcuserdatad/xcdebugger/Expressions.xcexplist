@@ -3,7 +3,18 @@
    version = "1.0">
    <ContextStates>
       <ContextState
-         contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">
+         contextName = "HamsterAutocompleteProvider.autocompleteSuggestions(for:completion:):HamsterAutocompleteProvider.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.selectedIndex.getter:ActionCalloutContext.swift">
+      </ContextState>
+      <ContextState
+         contextName = "HamsterKeyboardAppearance.buttonStyle(for:isPressed:):HamsterKeyboardAppearance.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "appSettings.rimeColorSchema">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
       <ContextState
          contextName = "closure #4 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
@@ -14,61 +25,7 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
-      </ContextState>
-      <ContextState
-         contextName = "ActionCalloutContext.selectedIndex.getter:ActionCalloutContext.swift">
-      </ContextState>
-      <ContextState
-         contextName = "KeyboardGestures.updateShouldApplyReleaseAction():KeyboardGestures.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CharacterSlideGestureHandler.init(context:config:sensitivity:):CharacterSlideGestureHandler.swift">
-      </ContextState>
-      <ContextState
-         contextName = "static ShareManager.initShareResources(appAbsolutePath:):ShareManager.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "dstPath.path">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "closure #1 in closure #9 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "$0?.textInputProxy">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
-         contextName = "StandardKeyboardActionHandler.autocompleteAction.getter:StandardKeyboardActionHandler.swift">
-      </ContextState>
-      <ContextState
-         contextName = "RimeEngine.start():RimeEngine.swift">
-         <PersistentStrings>
-            <PersistentString
-               value = "Self.sharedSupportDirectory.path">
-            </PersistentString>
-            <PersistentString
-               value = "Self.userDataDirectory.path">
-            </PersistentString>
-         </PersistentStrings>
-      </ContextState>
-      <ContextState
          contextName = "HamsterKeyboardActionHandler.handle(_:on:):HamsterKeyboardActionHandler.swift">
-      </ContextState>
-      <ContextState
-         contextName = "KeyboardAction.hamsterStandardReleaseAction.getter:KeyboardAction+Actions.swift">
-      </ContextState>
-      <ContextState
-         contextName = "KeyboardGestures.handleReleaseInside(in:):KeyboardGestures.swift">
-      </ContextState>
-      <ContextState
-         contextName = "HamsterAutocompleteProvider.autocompleteSuggestions(for:completion:):HamsterAutocompleteProvider.swift">
-      </ContextState>
-      <ContextState
-         contextName = "CharacterSlideGestureHandler.handleDragGesture(action:from:to:):CharacterSlideGestureHandler.swift">
       </ContextState>
       <ContextState
          contextName = "String.bgrColor.getter:RimeEngine.swift">
@@ -85,12 +42,55 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "ActionCalloutContext.hasSelectedAction.getter:ActionCalloutContext.swift">
+         contextName = "CharacterSlideGestureHandler.handleDragGesture(action:from:to:):CharacterSlideGestureHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #1 in HamsterApp.body.getter:HamsterApp.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static ShareManager.initShareResources(appAbsolutePath:):ShareManager.swift">
          <PersistentStrings>
             <PersistentString
-               value = "self.hasSelectedAction">
+               value = "dstPath.path">
             </PersistentString>
          </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "StandardKeyboardActionHandler.autocompleteAction.getter:StandardKeyboardActionHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardAction.hamsterStandardReleaseAction.getter:KeyboardAction+Actions.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardGestures.handleReleaseInside(in:):KeyboardGestures.swift">
+      </ContextState>
+      <ContextState
+         contextName = "RimeEngine.start():RimeEngine.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Self.sharedSupportDirectory.path">
+            </PersistentString>
+            <PersistentString
+               value = "Self.userDataDirectory.path">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "closure #1 in closure #9 in KeyboardAction.hamsterStandardTextDocumentProxyAction.getter:KeyboardAction+Actions.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "$0?.textInputProxy">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardGestures.updateShouldApplyReleaseAction():KeyboardGestures.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.handleSelectedAction():ActionCalloutContext.swift">
       </ContextState>
       <ContextState
          contextName = "ActionCalloutContext.selectedAction.getter:ActionCalloutContext.swift">
@@ -107,7 +107,18 @@
          </PersistentStrings>
       </ContextState>
       <ContextState
-         contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
+         contextName = "CharacterSlideGestureHandler.init(context:config:sensitivity:):CharacterSlideGestureHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">
+      </ContextState>
+      <ContextState
+         contextName = "ActionCalloutContext.hasSelectedAction.getter:ActionCalloutContext.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.hasSelectedAction">
+            </PersistentString>
+         </PersistentStrings>
       </ContextState>
    </ContextStates>
 </VariablesViewState>

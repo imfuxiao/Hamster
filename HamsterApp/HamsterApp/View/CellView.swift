@@ -81,6 +81,8 @@ struct CellView<SubView: View>: View {
   var imageView: some View {
     HStack {
       Image(systemName: imageName)
+        .font(.system(size: 18))
+        .foregroundColor(Color.HamsterFontColor)
 
       Spacer()
 
@@ -88,7 +90,7 @@ struct CellView<SubView: View>: View {
         Toggle("", isOn: $toggleValue)
           .fixedSize()
           .frame(width: 0, height: 0)
-          .scaleEffect(0.5)
+          .scaleEffect(0.7)
           .padding(.trailing)
       }
     }
@@ -100,12 +102,13 @@ struct CellView<SubView: View>: View {
       Text(featureName)
         .font(.system(.body, design: .rounded))
         .fontWeight(.bold)
+        .foregroundColor(Color.HamsterFontColor)
 
       if showSubView {
         Image(systemName: "chevron.right")
           .font(.system(size: 12))
           .padding(.leading, 5)
-          .foregroundColor(.secondary)
+          .foregroundColor(Color.HamsterFontColor)
       }
     }
     .padding(.horizontal)
@@ -129,9 +132,9 @@ struct CellView<SubView: View>: View {
       }
     }
     .frame(width: width, height: height)
-    .background(Color.white)
+    .background(Color.HamsterCellColor)
     .cornerRadius(15)
-    .shadow(color: Color(.systemGray4), radius: 3, x: 1, y: 1)
+    .hamsterShadow()
     .navigationBarBackButtonHidden(true)
   }
 }
@@ -141,7 +144,8 @@ struct CellView_Previews: PreviewProvider {
     VStack {
       CellView(
         width: 180, height: 100, imageName: "keyboard", featureName: "方案选择",
-        navgationDestinationBuilder: { InputSchemaView(schemas: sampleSchemas) })
+        navgationDestinationBuilder: { InputSchemaView(schemas: sampleSchemas) }
+      )
 
       CellView(
         width: 180, height: 100, imageName: "keyboard", featureName: "按键气泡",

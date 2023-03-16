@@ -44,7 +44,7 @@ struct HamsterKeyboard: View {
         SystemKeyboard(controller: controler, autocompleteToolbar: .none)
       }
     }
-    .eraseToAnyView()
+//    .eraseToAnyView()
   }
 }
 

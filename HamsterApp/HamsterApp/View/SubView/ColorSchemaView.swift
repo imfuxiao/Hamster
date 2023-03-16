@@ -11,9 +11,6 @@ struct ColorSchemaView: View {
   @State
   var colorSchemas: [ColorSchema] = []
 
-  @State
-  var selectColorSchema: ColorSchema?
-
   @EnvironmentObject
   var rimeEngine: RimeEngine
 
@@ -21,10 +18,7 @@ struct ColorSchemaView: View {
   var appSetting: HamsterAppSettings
 
   func isSelected(_ colorSchema: ColorSchema) -> Bool {
-    guard let selectColorSchema = selectColorSchema else {
-      return false
-    }
-    return selectColorSchema.schemaName == colorSchema.schemaName
+    return colorSchema.schemaName == appSetting.rimeColorSchema
   }
 
   var body: some View {
@@ -37,6 +31,7 @@ struct ColorSchemaView: View {
         Spacer()
       }
       .padding(.horizontal)
+      
 
       HStack {
         Toggle(isOn: $appSetting.rimeEnableColorSchema) {
@@ -52,7 +47,7 @@ struct ColorSchemaView: View {
           ForEach(colorSchemas) { colorSchema in
             HStack {
               RadioButton(isSelected: isSelected(colorSchema)) {
-                selectColorSchema = colorSchema
+                appSetting.rimeColorSchema = colorSchema.schemaName
               }
               WordView(colorSchema: colorSchema)
                 .background(
@@ -74,25 +69,8 @@ struct ColorSchemaView: View {
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
     .onAppear {
-      if !rimeEngine.rimeAlive() {
-        do {
-          try rimeEngine.launch()
-        } catch {
-          print(error)
-        }
-      }
       self.colorSchemas = rimeEngine.colorSchema()
-      let currentColorName = rimeEngine.currentColorSchemaName()
-      self.selectColorSchema = self.colorSchemas.first(where: { $0.schemaName == currentColorName })
     }
-    .onChange(
-      of: selectColorSchema,
-      perform: { newColorSchema in
-        if let colorSchema = newColorSchema {
-          appSetting.rimeEnableColorSchema = true
-          appSetting.rimeColorSchema = colorSchema.name
-        }
-      })
   }
 }
 

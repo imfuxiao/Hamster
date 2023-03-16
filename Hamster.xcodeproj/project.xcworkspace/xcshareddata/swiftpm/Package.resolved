@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/imfuxiao/iFilemanager",
       "state" : {
-        "revision" : "4dde27108141dba40a589a0ce43719e3b74fe577",
-        "version" : "0.7.3"
+        "revision" : "98f2197b9140eef9bcca44a02203076c45a5dfde",
+        "version" : "0.7.9"
       }
     },
     {

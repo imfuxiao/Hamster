@@ -10,34 +10,40 @@ import SwiftUI
 
 public struct ContentView: View {
   @EnvironmentObject var rimeEngine: RimeEngine
+  @EnvironmentObject var appSettings: HamsterAppSettings
 
   @State var rimeError: Error?
   @State var showError: Bool = false
+  @State var isLoading: Bool = false
+  var cancel: [AnyCancellable] = []
 
   public var body: some View {
     GeometryReader { proxy in
       NavigationView {
         ZStack {
-          Color.green.opacity(0.1).ignoresSafeArea()
+          Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
           ScrollView {
             Section {
               Button {
-                do {
-                  try RimeEngine.syncAppGroupUserDataDirectory()
-                  try rimeEngine.deploy()
-                } catch {
-                  rimeError = error
-                  showError = true
+                // TODO: 缺少日志显示
+                isLoading = true
+                DispatchQueue.global(qos: .background).async {
+                  rimeEngine.deploy()
+                  isLoading = false
+                  DispatchQueue.main.async {
+                    appSettings.rimeNeedOverrideUserDataDirectory = true
+                  }
                 }
               } label: {
                 Text("重新部署")
                   .frame(width: proxy.size.width - 40, height: 40)
-                  .background(Color.white)
-                  .foregroundColor(.primary)
+                  .background(Color.HamsterCellColor)
+                  .foregroundColor(Color.HamsterFontColor)
                   .cornerRadius(10)
-                  .shadow(radius: 3, x: 1, y: 1)
+                  .hamsterShadow()
               }
+              .disabled(isLoading)
               .buttonStyle(.plain)
 
             } header: {
@@ -70,13 +76,21 @@ public struct ContentView: View {
             "Hamster输入法"
           )
           .navigationBarTitleDisplayMode(.inline)
+          .alert(isPresented: $showError) {
+            if let error = rimeError {
+              return Alert(title: Text("部署失败"), message: Text(error.localizedDescription))
+            }
+            return Alert(title: Text("部署失败"))
+          }
+
+          if isLoading {
+            ZStack {
+              Color.gray.opacity(0.1)
+                .ignoresSafeArea()
+              LoaderView(scaleSize: 3)
+            }
+          }
         }
-      }
-      .alert(isPresented: $showError) {
-        if let error = rimeError {
-          return Alert(title: Text("部署失败"), message: Text(error.localizedDescription))
-        }
-        return Alert(title: Text("部署失败"))
       }
     }
   }
@@ -88,5 +102,11 @@ struct ContentView_Previews: PreviewProvider {
       .previewDevice("iPhone 13 mini")
       .environmentObject(HamsterAppSettings())
       .environmentObject(RimeEngine.shared)
+  }
+}
+
+extension View {
+  func hamsterShadow() -> some View {
+    return shadow(color: Color.HamsterShadowColor, radius: 2)
   }
 }

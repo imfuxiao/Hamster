@@ -9,180 +9,102 @@
 /* Begin PBXBuildFile section */
 		C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */; };
 		C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010B0129B9040B00CE4869 /* AboutView.swift */; };
+		C018E6DE29C3354C00942E97 /* KeyboardFeedbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */; };
+		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
 		C020ABEE29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
-		C020AC9729B732A000B26142 /* stroke.reverse.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF829B7326100B26142 /* stroke.reverse.bin */; };
-		C020AC9829B732A000B26142 /* luna_pinyin_simp.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF929B7326100B26142 /* luna_pinyin_simp.prism.bin */; };
-		C020AC9929B732A000B26142 /* luna_pinyin_simp.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFA29B7326100B26142 /* luna_pinyin_simp.schema.yaml */; };
-		C020AC9A29B732A000B26142 /* terra_pinyin.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFB29B7326100B26142 /* terra_pinyin.prism.bin */; };
-		C020AC9B29B732A000B26142 /* terra_pinyin.table.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFC29B7326100B26142 /* terra_pinyin.table.bin */; };
-		C020AC9C29B732A000B26142 /* bopomofo.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFD29B7326100B26142 /* bopomofo.prism.bin */; };
-		C020AC9D29B732A000B26142 /* luna_quanpin.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFE29B7326100B26142 /* luna_quanpin.prism.bin */; };
-		C020AC9E29B732A000B26142 /* stroke.table.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFF29B7326100B26142 /* stroke.table.bin */; };
-		C020AC9F29B732A000B26142 /* stroke.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0029B7326100B26142 /* stroke.prism.bin */; };
-		C020ACA029B732A000B26142 /* luna_quanpin.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0129B7326100B26142 /* luna_quanpin.schema.yaml */; };
-		C020ACA129B732A000B26142 /* bopomofo_tw.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0229B7326100B26142 /* bopomofo_tw.schema.yaml */; };
-		C020ACA229B732A000B26142 /* bopomofo.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0329B7326100B26142 /* bopomofo.schema.yaml */; };
-		C020ACA329B732A000B26142 /* stroke.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0429B7326100B26142 /* stroke.schema.yaml */; };
-		C020ACA429B732A000B26142 /* cangjie5.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0529B7326100B26142 /* cangjie5.prism.bin */; };
-		C020ACA529B732A000B26142 /* cangjie5.table.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0629B7326100B26142 /* cangjie5.table.bin */; };
-		C020ACA629B732A000B26142 /* luna_pinyin.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0729B7326100B26142 /* luna_pinyin.schema.yaml */; };
-		C020ACA729B732A000B26142 /* terra_pinyin.reverse.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0829B7326100B26142 /* terra_pinyin.reverse.bin */; };
-		C020ACA829B732A000B26142 /* cangjie5.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0929B7326100B26142 /* cangjie5.schema.yaml */; };
-		C020ACA929B732A000B26142 /* luna_pinyin.table.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0A29B7326100B26142 /* luna_pinyin.table.bin */; };
-		C020ACAA29B732A000B26142 /* luna_pinyin.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0B29B7326100B26142 /* luna_pinyin.prism.bin */; };
-		C020ACAB29B732A000B26142 /* luna_pinyin_fluency.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0C29B7326100B26142 /* luna_pinyin_fluency.schema.yaml */; };
-		C020ACAC29B732A000B26142 /* cangjie5.reverse.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0D29B7326100B26142 /* cangjie5.reverse.bin */; };
-		C020ACAD29B732A000B26142 /* terra_pinyin.schema.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0E29B7326100B26142 /* terra_pinyin.schema.yaml */; };
-		C020ACAE29B732A000B26142 /* luna_pinyin.reverse.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0F29B7326100B26142 /* luna_pinyin.reverse.bin */; };
-		C020ACAF29B732A000B26142 /* bopomofo_tw.prism.bin in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1029B7326100B26142 /* bopomofo_tw.prism.bin */; };
-		C020ACB029B732A000B26142 /* default.yaml in Copy Rime ShareSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1129B7326100B26142 /* default.yaml */; };
-		C020ACB129B732DE00B26142 /* bopomofo_express.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF429B7326100B26142 /* bopomofo_express.schema.yaml */; };
-		C020ACB229B732DE00B26142 /* bopomofo_tw.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3829B7326200B26142 /* bopomofo_tw.schema.yaml */; };
-		C020ACB329B732DE00B26142 /* bopomofo.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF329B7326100B26142 /* bopomofo.schema.yaml */; };
-		C020ACB429B732DE00B26142 /* cangjie5_express.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3A29B7326200B26142 /* cangjie5_express.schema.yaml */; };
-		C020ACB529B732DE00B26142 /* cangjie5.dict.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3B29B7326200B26142 /* cangjie5.dict.yaml */; };
-		C020ACB629B732DE00B26142 /* cangjie5.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC4029B7326200B26142 /* cangjie5.schema.yaml */; };
-		C020ACB729B732DE00B26142 /* default.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABEF29B7326100B26142 /* default.yaml */; };
-		C020ACB829B732DE00B26142 /* essay.txt in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3729B7326200B26142 /* essay.txt */; };
-		C020ACB929B732DE00B26142 /* grammar.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3F29B7326200B26142 /* grammar.yaml */; };
-		C020ACBA29B732DE00B26142 /* installation.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC4229B7326200B26142 /* installation.yaml */; };
-		C020ACBB29B732DE00B26142 /* key_bindings.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC4129B7326200B26142 /* key_bindings.yaml */; };
-		C020ACBC29B732DE00B26142 /* luna_pinyin_fluency.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3C29B7326200B26142 /* luna_pinyin_fluency.schema.yaml */; };
-		C020ACBD29B732DE00B26142 /* luna_pinyin_simp.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1629B7326100B26142 /* luna_pinyin_simp.schema.yaml */; };
-		C020ACBE29B732DE00B26142 /* luna_pinyin_tw.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1729B7326100B26142 /* luna_pinyin_tw.schema.yaml */; };
-		C020ACBF29B732DE00B26142 /* luna_pinyin.dict.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3629B7326200B26142 /* luna_pinyin.dict.yaml */; };
-		C020ACC029B732DE00B26142 /* luna_pinyin.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3929B7326200B26142 /* luna_pinyin.schema.yaml */; };
-		C020ACC129B732DE00B26142 /* luna_quanpin.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3D29B7326200B26142 /* luna_quanpin.schema.yaml */; };
-		C020ACC229B732DE00B26142 /* pinyin.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1429B7326100B26142 /* pinyin.yaml */; };
-		C020ACC329B732DE00B26142 /* punctuation.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF129B7326100B26142 /* punctuation.yaml */; };
-		C020ACC429B732DE00B26142 /* squirrel.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1229B7326100B26142 /* squirrel.yaml */; };
-		C020ACC529B732DE00B26142 /* stroke.dict.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1529B7326100B26142 /* stroke.dict.yaml */; };
-		C020ACC629B732DE00B26142 /* stroke.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC1329B7326100B26142 /* stroke.schema.yaml */; };
-		C020ACC729B732DE00B26142 /* symbols.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF529B7326100B26142 /* symbols.yaml */; };
-		C020ACC829B732DE00B26142 /* terra_pinyin.dict.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF229B7326100B26142 /* terra_pinyin.dict.yaml */; };
-		C020ACC929B732DE00B26142 /* terra_pinyin.schema.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC4329B7326200B26142 /* terra_pinyin.schema.yaml */; };
-		C020ACCA29B732DE00B26142 /* user.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3529B7326200B26142 /* user.yaml */; };
-		C020ACCB29B732DE00B26142 /* zh-hant-t-essay-bgc.gram in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF629B7326100B26142 /* zh-hant-t-essay-bgc.gram */; };
-		C020ACCC29B732DE00B26142 /* zh-hant-t-essay-bgw.gram in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020AC3E29B7326200B26142 /* zh-hant-t-essay-bgw.gram */; };
-		C020ACCD29B732DE00B26142 /* zhuyin.yaml in Copy Rime ShareSupport */ = {isa = PBXBuildFile; fileRef = C020ABF029B7326100B26142 /* zhuyin.yaml */; };
-		C020ACCE29B7330600B26142 /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1929B7326100B26142 /* TWVariants.ocd2 */; };
-		C020ACCF29B7330600B26142 /* t2jp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1A29B7326100B26142 /* t2jp.json */; };
-		C020ACD029B7330600B26142 /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1B29B7326100B26142 /* TWPhrases.ocd2 */; };
-		C020ACD129B7330600B26142 /* t2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1C29B7326100B26142 /* t2tw.json */; };
-		C020ACD229B7330600B26142 /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1D29B7326100B26142 /* TSCharacters.ocd2 */; };
-		C020ACD329B7330600B26142 /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1E29B7326100B26142 /* STCharacters.ocd2 */; };
-		C020ACD429B7330600B26142 /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC1F29B7326100B26142 /* JPShinjitaiCharacters.ocd2 */; };
-		C020ACD529B7330600B26142 /* tw2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2029B7326100B26142 /* tw2s.json */; };
-		C020ACD629B7330600B26142 /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2129B7326100B26142 /* HKVariantsRevPhrases.ocd2 */; };
-		C020ACD729B7330600B26142 /* hk2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2229B7326100B26142 /* hk2s.json */; };
-		C020ACD829B7330600B26142 /* s2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2329B7326100B26142 /* s2hk.json */; };
-		C020ACD929B7330600B26142 /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2429B7326100B26142 /* HKVariantsRev.ocd2 */; };
-		C020ACDA29B7330600B26142 /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2529B7326100B26142 /* TWVariantsRevPhrases.ocd2 */; };
-		C020ACDB29B7330600B26142 /* t2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2629B7326100B26142 /* t2s.json */; };
-		C020ACDC29B7330600B26142 /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2729B7326100B26142 /* STPhrases.ocd2 */; };
-		C020ACDD29B7330600B26142 /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2829B7326100B26142 /* HKVariants.ocd2 */; };
-		C020ACDE29B7330600B26142 /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2929B7326100B26142 /* TSPhrases.ocd2 */; };
-		C020ACDF29B7330600B26142 /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2A29B7326100B26142 /* JPVariants.ocd2 */; };
-		C020ACE029B7330600B26142 /* s2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2B29B7326100B26142 /* s2tw.json */; };
-		C020ACE129B7330600B26142 /* s2twp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2C29B7326100B26142 /* s2twp.json */; };
-		C020ACE229B7330600B26142 /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2D29B7326100B26142 /* JPShinjitaiPhrases.ocd2 */; };
-		C020ACE329B7330600B26142 /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2E29B7326100B26142 /* JPVariantsRev.ocd2 */; };
-		C020ACE429B7330600B26142 /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC2F29B7326100B26142 /* TWPhrasesRev.ocd2 */; };
-		C020ACE529B7330600B26142 /* t2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC3029B7326100B26142 /* t2hk.json */; };
-		C020ACE629B7330600B26142 /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC3129B7326100B26142 /* TWVariantsRev.ocd2 */; };
-		C020ACE729B7330600B26142 /* s2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC3229B7326100B26142 /* s2t.json */; };
-		C020ACE829B7330600B26142 /* jp2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC3329B7326100B26142 /* jp2t.json */; };
-		C020ACE929B7330600B26142 /* tw2sp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C020AC3429B7326100B26142 /* tw2sp.json */; };
 		C020ACEA29B7337300B26142 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C04FA944299A675B00F8CC32 /* Localizable.strings */; };
 		C020ACEB29B7337300B26142 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C04FA947299A675B00F8CC32 /* Localizable.strings */; };
 		C020ACEC29B7337300B26142 /* DefaultAction.plist in Resources */ = {isa = PBXBuildFile; fileRef = C04FA93F299A674E00F8CC32 /* DefaultAction.plist */; };
 		C020ACED29B7337300B26142 /* DefaultSkinExtend.plist in Resources */ = {isa = PBXBuildFile; fileRef = C04FA940299A674E00F8CC32 /* DefaultSkinExtend.plist */; };
-		C020AD0A29B736AD00B26142 /* TWVariants.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1929B7326100B26142 /* TWVariants.ocd2 */; };
-		C020AD0B29B736AD00B26142 /* t2jp.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1A29B7326100B26142 /* t2jp.json */; };
-		C020AD0C29B736AD00B26142 /* TWPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1B29B7326100B26142 /* TWPhrases.ocd2 */; };
-		C020AD0D29B736AD00B26142 /* t2tw.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1C29B7326100B26142 /* t2tw.json */; };
-		C020AD0E29B736AD00B26142 /* TSCharacters.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1D29B7326100B26142 /* TSCharacters.ocd2 */; };
-		C020AD0F29B736AD00B26142 /* STCharacters.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1E29B7326100B26142 /* STCharacters.ocd2 */; };
-		C020AD1029B736AD00B26142 /* JPShinjitaiCharacters.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC1F29B7326100B26142 /* JPShinjitaiCharacters.ocd2 */; };
-		C020AD1129B736AD00B26142 /* tw2s.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2029B7326100B26142 /* tw2s.json */; };
-		C020AD1229B736AD00B26142 /* HKVariantsRevPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2129B7326100B26142 /* HKVariantsRevPhrases.ocd2 */; };
-		C020AD1329B736AD00B26142 /* hk2s.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2229B7326100B26142 /* hk2s.json */; };
-		C020AD1429B736AD00B26142 /* s2hk.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2329B7326100B26142 /* s2hk.json */; };
-		C020AD1529B736AD00B26142 /* HKVariantsRev.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2429B7326100B26142 /* HKVariantsRev.ocd2 */; };
-		C020AD1629B736AD00B26142 /* TWVariantsRevPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2529B7326100B26142 /* TWVariantsRevPhrases.ocd2 */; };
-		C020AD1729B736AD00B26142 /* t2s.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2629B7326100B26142 /* t2s.json */; };
-		C020AD1829B736AD00B26142 /* STPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2729B7326100B26142 /* STPhrases.ocd2 */; };
-		C020AD1929B736AD00B26142 /* HKVariants.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2829B7326100B26142 /* HKVariants.ocd2 */; };
-		C020AD1A29B736AD00B26142 /* TSPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2929B7326100B26142 /* TSPhrases.ocd2 */; };
-		C020AD1B29B736AD00B26142 /* JPVariants.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2A29B7326100B26142 /* JPVariants.ocd2 */; };
-		C020AD1C29B736AD00B26142 /* s2tw.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2B29B7326100B26142 /* s2tw.json */; };
-		C020AD1D29B736AD00B26142 /* s2twp.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2C29B7326100B26142 /* s2twp.json */; };
-		C020AD1E29B736AD00B26142 /* JPShinjitaiPhrases.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2D29B7326100B26142 /* JPShinjitaiPhrases.ocd2 */; };
-		C020AD1F29B736AD00B26142 /* JPVariantsRev.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2E29B7326100B26142 /* JPVariantsRev.ocd2 */; };
-		C020AD2029B736AD00B26142 /* TWPhrasesRev.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC2F29B7326100B26142 /* TWPhrasesRev.ocd2 */; };
-		C020AD2129B736AD00B26142 /* t2hk.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC3029B7326100B26142 /* t2hk.json */; };
-		C020AD2229B736AD00B26142 /* TWVariantsRev.ocd2 in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC3129B7326100B26142 /* TWVariantsRev.ocd2 */; };
-		C020AD2329B736AD00B26142 /* s2t.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC3229B7326100B26142 /* s2t.json */; };
-		C020AD2429B736AD00B26142 /* jp2t.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC3329B7326100B26142 /* jp2t.json */; };
-		C020AD2529B736AD00B26142 /* tw2sp.json in Copy SharedSupport opencc */ = {isa = PBXBuildFile; fileRef = C020AC3429B7326100B26142 /* tw2sp.json */; };
-		C020AD2729B736D800B26142 /* bopomofo_express.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF429B7326100B26142 /* bopomofo_express.schema.yaml */; };
-		C020AD2829B736D800B26142 /* bopomofo_tw.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3829B7326200B26142 /* bopomofo_tw.schema.yaml */; };
-		C020AD2929B736D800B26142 /* bopomofo.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF329B7326100B26142 /* bopomofo.schema.yaml */; };
-		C020AD2A29B736D800B26142 /* cangjie5_express.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3A29B7326200B26142 /* cangjie5_express.schema.yaml */; };
-		C020AD2B29B736D800B26142 /* cangjie5.dict.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3B29B7326200B26142 /* cangjie5.dict.yaml */; };
-		C020AD2C29B736D800B26142 /* cangjie5.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC4029B7326200B26142 /* cangjie5.schema.yaml */; };
-		C020AD2D29B736D800B26142 /* default.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABEF29B7326100B26142 /* default.yaml */; };
-		C020AD2E29B736D800B26142 /* essay.txt in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3729B7326200B26142 /* essay.txt */; };
-		C020AD2F29B736D800B26142 /* grammar.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3F29B7326200B26142 /* grammar.yaml */; };
-		C020AD3029B736D800B26142 /* installation.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC4229B7326200B26142 /* installation.yaml */; };
-		C020AD3129B736D800B26142 /* key_bindings.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC4129B7326200B26142 /* key_bindings.yaml */; };
-		C020AD3229B736D800B26142 /* luna_pinyin_fluency.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3C29B7326200B26142 /* luna_pinyin_fluency.schema.yaml */; };
-		C020AD3329B736D800B26142 /* luna_pinyin_simp.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1629B7326100B26142 /* luna_pinyin_simp.schema.yaml */; };
-		C020AD3429B736D800B26142 /* luna_pinyin_tw.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1729B7326100B26142 /* luna_pinyin_tw.schema.yaml */; };
-		C020AD3529B736D800B26142 /* luna_pinyin.dict.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3629B7326200B26142 /* luna_pinyin.dict.yaml */; };
-		C020AD3629B736D800B26142 /* luna_pinyin.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3929B7326200B26142 /* luna_pinyin.schema.yaml */; };
-		C020AD3729B736D800B26142 /* luna_quanpin.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3D29B7326200B26142 /* luna_quanpin.schema.yaml */; };
-		C020AD3829B736D800B26142 /* pinyin.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1429B7326100B26142 /* pinyin.yaml */; };
-		C020AD3929B736D800B26142 /* punctuation.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF129B7326100B26142 /* punctuation.yaml */; };
-		C020AD3A29B736D800B26142 /* squirrel.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1229B7326100B26142 /* squirrel.yaml */; };
-		C020AD3B29B736D800B26142 /* stroke.dict.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1529B7326100B26142 /* stroke.dict.yaml */; };
-		C020AD3C29B736D800B26142 /* stroke.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC1329B7326100B26142 /* stroke.schema.yaml */; };
-		C020AD3D29B736D800B26142 /* symbols.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF529B7326100B26142 /* symbols.yaml */; };
-		C020AD3E29B736D800B26142 /* terra_pinyin.dict.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF229B7326100B26142 /* terra_pinyin.dict.yaml */; };
-		C020AD3F29B736D800B26142 /* terra_pinyin.schema.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC4329B7326200B26142 /* terra_pinyin.schema.yaml */; };
-		C020AD4029B736D800B26142 /* user.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3529B7326200B26142 /* user.yaml */; };
-		C020AD4129B736D800B26142 /* zh-hant-t-essay-bgc.gram in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF629B7326100B26142 /* zh-hant-t-essay-bgc.gram */; };
-		C020AD4229B736D800B26142 /* zh-hant-t-essay-bgw.gram in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020AC3E29B7326200B26142 /* zh-hant-t-essay-bgw.gram */; };
-		C020AD4329B736D800B26142 /* zhuyin.yaml in Copy SharedSupport */ = {isa = PBXBuildFile; fileRef = C020ABF029B7326100B26142 /* zhuyin.yaml */; };
 		C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */; };
 		C020AD4929B73DD600B26142 /* RimeEngine+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */; };
-		C020AD4A29B74C7900B26142 /* stroke.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF829B7326100B26142 /* stroke.reverse.bin */; };
-		C020AD4B29B74C7900B26142 /* luna_pinyin_simp.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABF929B7326100B26142 /* luna_pinyin_simp.prism.bin */; };
-		C020AD4C29B74C7900B26142 /* luna_pinyin_simp.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFA29B7326100B26142 /* luna_pinyin_simp.schema.yaml */; };
-		C020AD4D29B74C7900B26142 /* terra_pinyin.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFB29B7326100B26142 /* terra_pinyin.prism.bin */; };
-		C020AD4E29B74C7900B26142 /* terra_pinyin.table.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFC29B7326100B26142 /* terra_pinyin.table.bin */; };
-		C020AD4F29B74C7900B26142 /* bopomofo.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFD29B7326100B26142 /* bopomofo.prism.bin */; };
-		C020AD5029B74C7900B26142 /* luna_quanpin.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFE29B7326100B26142 /* luna_quanpin.prism.bin */; };
-		C020AD5129B74C7900B26142 /* stroke.table.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020ABFF29B7326100B26142 /* stroke.table.bin */; };
-		C020AD5229B74C7900B26142 /* stroke.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0029B7326100B26142 /* stroke.prism.bin */; };
-		C020AD5329B74C7900B26142 /* luna_quanpin.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0129B7326100B26142 /* luna_quanpin.schema.yaml */; };
-		C020AD5429B74C7900B26142 /* bopomofo_tw.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0229B7326100B26142 /* bopomofo_tw.schema.yaml */; };
-		C020AD5529B74C7900B26142 /* bopomofo.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0329B7326100B26142 /* bopomofo.schema.yaml */; };
-		C020AD5629B74C7900B26142 /* stroke.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0429B7326100B26142 /* stroke.schema.yaml */; };
-		C020AD5729B74C7900B26142 /* cangjie5.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0529B7326100B26142 /* cangjie5.prism.bin */; };
-		C020AD5829B74C7900B26142 /* cangjie5.table.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0629B7326100B26142 /* cangjie5.table.bin */; };
-		C020AD5929B74C7900B26142 /* luna_pinyin.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0729B7326100B26142 /* luna_pinyin.schema.yaml */; };
-		C020AD5A29B74C7900B26142 /* terra_pinyin.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0829B7326100B26142 /* terra_pinyin.reverse.bin */; };
-		C020AD5B29B74C7900B26142 /* cangjie5.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0929B7326100B26142 /* cangjie5.schema.yaml */; };
-		C020AD5C29B74C7900B26142 /* luna_pinyin.table.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0A29B7326100B26142 /* luna_pinyin.table.bin */; };
-		C020AD5D29B74C7900B26142 /* luna_pinyin.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0B29B7326100B26142 /* luna_pinyin.prism.bin */; };
-		C020AD5E29B74C7900B26142 /* luna_pinyin_fluency.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0C29B7326100B26142 /* luna_pinyin_fluency.schema.yaml */; };
-		C020AD5F29B74C7900B26142 /* cangjie5.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0D29B7326100B26142 /* cangjie5.reverse.bin */; };
-		C020AD6029B74C7900B26142 /* terra_pinyin.schema.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0E29B7326100B26142 /* terra_pinyin.schema.yaml */; };
-		C020AD6129B74C7900B26142 /* luna_pinyin.reverse.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC0F29B7326100B26142 /* luna_pinyin.reverse.bin */; };
-		C020AD6229B74C7900B26142 /* bopomofo_tw.prism.bin in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1029B7326100B26142 /* bopomofo_tw.prism.bin */; };
-		C020AD6329B74C7900B26142 /* default.yaml in Copy SharedSupport build */ = {isa = PBXBuildFile; fileRef = C020AC1129B7326100B26142 /* default.yaml */; };
+		C02BEA3529C23C58008487A4 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02BEA3429C23C58008487A4 /* LoaderView.swift */; };
+		C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02BEA3629C25D72008487A4 /* PersistentController.swift */; };
+		C02BEB0629C2CCD8008487A4 /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE329C2CC13008487A4 /* TWVariants.ocd2 */; };
+		C02BEB0729C2CCD8008487A4 /* t2jp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE429C2CC13008487A4 /* t2jp.json */; };
+		C02BEB0829C2CCD8008487A4 /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE529C2CC13008487A4 /* TWPhrases.ocd2 */; };
+		C02BEB0929C2CCD8008487A4 /* t2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE629C2CC13008487A4 /* t2tw.json */; };
+		C02BEB0A29C2CCD8008487A4 /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE729C2CC13008487A4 /* TSCharacters.ocd2 */; };
+		C02BEB0B29C2CCD8008487A4 /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE829C2CC13008487A4 /* STCharacters.ocd2 */; };
+		C02BEB0C29C2CCD8008487A4 /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAE929C2CC13008487A4 /* JPShinjitaiCharacters.ocd2 */; };
+		C02BEB0D29C2CCD8008487A4 /* tw2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAEA29C2CC13008487A4 /* tw2s.json */; };
+		C02BEB0E29C2CCD8008487A4 /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAEB29C2CC13008487A4 /* HKVariantsRevPhrases.ocd2 */; };
+		C02BEB0F29C2CCD8008487A4 /* hk2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAEC29C2CC13008487A4 /* hk2s.json */; };
+		C02BEB1029C2CCD8008487A4 /* s2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAED29C2CC13008487A4 /* s2hk.json */; };
+		C02BEB1129C2CCD8008487A4 /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAEE29C2CC13008487A4 /* HKVariantsRev.ocd2 */; };
+		C02BEB1229C2CCD8008487A4 /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAEF29C2CC13008487A4 /* TWVariantsRevPhrases.ocd2 */; };
+		C02BEB1329C2CCD8008487A4 /* t2s.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF029C2CC13008487A4 /* t2s.json */; };
+		C02BEB1429C2CCD8008487A4 /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF129C2CC13008487A4 /* STPhrases.ocd2 */; };
+		C02BEB1529C2CCD8008487A4 /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF229C2CC13008487A4 /* HKVariants.ocd2 */; };
+		C02BEB1629C2CCD8008487A4 /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF329C2CC13008487A4 /* TSPhrases.ocd2 */; };
+		C02BEB1729C2CCD8008487A4 /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF429C2CC13008487A4 /* JPVariants.ocd2 */; };
+		C02BEB1829C2CCD8008487A4 /* s2tw.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF529C2CC13008487A4 /* s2tw.json */; };
+		C02BEB1929C2CCD8008487A4 /* s2twp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF629C2CC13008487A4 /* s2twp.json */; };
+		C02BEB1A29C2CCD8008487A4 /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF729C2CC13008487A4 /* JPShinjitaiPhrases.ocd2 */; };
+		C02BEB1B29C2CCD8008487A4 /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF829C2CC13008487A4 /* JPVariantsRev.ocd2 */; };
+		C02BEB1C29C2CCD8008487A4 /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAF929C2CC13008487A4 /* TWPhrasesRev.ocd2 */; };
+		C02BEB1D29C2CCD8008487A4 /* t2hk.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAFA29C2CC13008487A4 /* t2hk.json */; };
+		C02BEB1E29C2CCD8008487A4 /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAFB29C2CC13008487A4 /* TWVariantsRev.ocd2 */; };
+		C02BEB1F29C2CCD8008487A4 /* s2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAFC29C2CC13008487A4 /* s2t.json */; };
+		C02BEB2029C2CCD8008487A4 /* jp2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAFD29C2CC13008487A4 /* jp2t.json */; };
+		C02BEB2129C2CCD8008487A4 /* tw2sp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C02BEAFE29C2CC13008487A4 /* tw2sp.json */; };
+		C02BEB2229C2CCF7008487A4 /* stroke.reverse.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAC629C2CC0C008487A4 /* stroke.reverse.bin */; };
+		C02BEB2329C2CCF7008487A4 /* luna_pinyin_simp.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAC729C2CC0C008487A4 /* luna_pinyin_simp.prism.bin */; };
+		C02BEB2429C2CCF7008487A4 /* luna_pinyin_simp.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAC829C2CC0C008487A4 /* luna_pinyin_simp.schema.yaml */; };
+		C02BEB2529C2CCF7008487A4 /* terra_pinyin.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAC929C2CC0C008487A4 /* terra_pinyin.prism.bin */; };
+		C02BEB2629C2CCF7008487A4 /* terra_pinyin.table.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACA29C2CC0C008487A4 /* terra_pinyin.table.bin */; };
+		C02BEB2729C2CCF7008487A4 /* bopomofo.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACB29C2CC0C008487A4 /* bopomofo.prism.bin */; };
+		C02BEB2829C2CCF7008487A4 /* luna_quanpin.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACC29C2CC0C008487A4 /* luna_quanpin.prism.bin */; };
+		C02BEB2929C2CCF7008487A4 /* stroke.table.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACD29C2CC0C008487A4 /* stroke.table.bin */; };
+		C02BEB2A29C2CCF7008487A4 /* stroke.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACE29C2CC0C008487A4 /* stroke.prism.bin */; };
+		C02BEB2B29C2CCF7008487A4 /* luna_quanpin.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEACF29C2CC0C008487A4 /* luna_quanpin.schema.yaml */; };
+		C02BEB2C29C2CCF7008487A4 /* bopomofo_tw.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD029C2CC0C008487A4 /* bopomofo_tw.schema.yaml */; };
+		C02BEB2D29C2CCF7008487A4 /* bopomofo.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD129C2CC0C008487A4 /* bopomofo.schema.yaml */; };
+		C02BEB2E29C2CCF7008487A4 /* stroke.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD229C2CC0C008487A4 /* stroke.schema.yaml */; };
+		C02BEB2F29C2CCF7008487A4 /* cangjie5.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD329C2CC0C008487A4 /* cangjie5.prism.bin */; };
+		C02BEB3029C2CCF7008487A4 /* cangjie5.table.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD429C2CC0C008487A4 /* cangjie5.table.bin */; };
+		C02BEB3129C2CCF7008487A4 /* luna_pinyin.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD529C2CC0C008487A4 /* luna_pinyin.schema.yaml */; };
+		C02BEB3229C2CCF7008487A4 /* terra_pinyin.reverse.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD629C2CC0C008487A4 /* terra_pinyin.reverse.bin */; };
+		C02BEB3329C2CCF7008487A4 /* cangjie5.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD729C2CC0C008487A4 /* cangjie5.schema.yaml */; };
+		C02BEB3429C2CCF7008487A4 /* luna_pinyin.table.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD829C2CC0C008487A4 /* luna_pinyin.table.bin */; };
+		C02BEB3529C2CCF7008487A4 /* luna_pinyin.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEAD929C2CC0C008487A4 /* luna_pinyin.prism.bin */; };
+		C02BEB3629C2CCF7008487A4 /* luna_pinyin_fluency.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADA29C2CC0C008487A4 /* luna_pinyin_fluency.schema.yaml */; };
+		C02BEB3729C2CCF7008487A4 /* cangjie5.reverse.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADB29C2CC0C008487A4 /* cangjie5.reverse.bin */; };
+		C02BEB3829C2CCF7008487A4 /* terra_pinyin.schema.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADC29C2CC0C008487A4 /* terra_pinyin.schema.yaml */; };
+		C02BEB3929C2CCF7008487A4 /* luna_pinyin.reverse.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADD29C2CC0C008487A4 /* luna_pinyin.reverse.bin */; };
+		C02BEB3A29C2CCF7008487A4 /* bopomofo_tw.prism.bin in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADE29C2CC0C008487A4 /* bopomofo_tw.prism.bin */; };
+		C02BEB3B29C2CCF7008487A4 /* default.yaml in Copy Rime SharedSupport build */ = {isa = PBXBuildFile; fileRef = C02BEADF29C2CC0C008487A4 /* default.yaml */; };
+		C02BEB3C29C2CD0C008487A4 /* bopomofo_express.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB229C2CBE8008487A4 /* bopomofo_express.schema.yaml */; };
+		C02BEB3D29C2CD0C008487A4 /* bopomofo_tw.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABE29C2CC00008487A4 /* bopomofo_tw.schema.yaml */; };
+		C02BEB3E29C2CD0C008487A4 /* bopomofo.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0529C2CC1F008487A4 /* bopomofo.schema.yaml */; };
+		C02BEB3F29C2CD0C008487A4 /* cangjie5_express.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB329C2CBEA008487A4 /* cangjie5_express.schema.yaml */; };
+		C02BEB4029C2CD0C008487A4 /* cangjie5.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAFF29C2CC14008487A4 /* cangjie5.dict.yaml */; };
+		C02BEB4129C2CD0C008487A4 /* cangjie5.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABC29C2CBFC008487A4 /* cangjie5.schema.yaml */; };
+		C02BEB4229C2CD0C008487A4 /* default.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAC329C2CC07008487A4 /* default.yaml */; };
+		C02BEB4329C2CD0C008487A4 /* essay.txt in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAC029C2CC03008487A4 /* essay.txt */; };
+		C02BEB4429C2CD0C008487A4 /* grammar.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB729C2CBF1008487A4 /* grammar.yaml */; };
+		C02BEB4529C2CD0C008487A4 /* installation.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0029C2CC17008487A4 /* installation.yaml */; };
+		C02BEB4629C2CD0C008487A4 /* key_bindings.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABD29C2CBFC008487A4 /* key_bindings.yaml */; };
+		C02BEB4729C2CD0C008487A4 /* luna_pinyin_fluency.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB829C2CBF4008487A4 /* luna_pinyin_fluency.schema.yaml */; };
+		C02BEB4829C2CD0C008487A4 /* luna_pinyin_simp.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABF29C2CC00008487A4 /* luna_pinyin_simp.schema.yaml */; };
+		C02BEB4929C2CD0C008487A4 /* luna_pinyin_tw.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAC129C2CC03008487A4 /* luna_pinyin_tw.schema.yaml */; };
+		C02BEB4A29C2CD0C008487A4 /* luna_pinyin.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABA29C2CBF8008487A4 /* luna_pinyin.dict.yaml */; };
+		C02BEB4B29C2CD0C008487A4 /* luna_pinyin.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0129C2CC17008487A4 /* luna_pinyin.schema.yaml */; };
+		C02BEB4C29C2CD0C008487A4 /* luna_quanpin.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0229C2CC1B008487A4 /* luna_quanpin.schema.yaml */; };
+		C02BEB4D29C2CD0C008487A4 /* pinyin.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAE029C2CC10008487A4 /* pinyin.yaml */; };
+		C02BEB4E29C2CD0C008487A4 /* punctuation.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0429C2CC1E008487A4 /* punctuation.yaml */; };
+		C02BEB4F29C2CD0C008487A4 /* squirrel.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAC229C2CC07008487A4 /* squirrel.yaml */; };
+		C02BEB5029C2CD0C008487A4 /* stroke.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAE129C2CC10008487A4 /* stroke.dict.yaml */; };
+		C02BEB5129C2CD0D008487A4 /* stroke.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB529C2CBED008487A4 /* stroke.schema.yaml */; };
+		C02BEB5229C2CD0D008487A4 /* symbols.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAC429C2CC0B008487A4 /* symbols.yaml */; };
+		C02BEB5329C2CD0D008487A4 /* terra_pinyin.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB629C2CBF1008487A4 /* terra_pinyin.dict.yaml */; };
+		C02BEB5429C2CD0D008487A4 /* terra_pinyin.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB429C2CBED008487A4 /* terra_pinyin.schema.yaml */; };
+		C02BEB5529C2CD0D008487A4 /* user.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB129C2CBE6008487A4 /* user.yaml */; };
+		C02BEB5629C2CD0D008487A4 /* zh-hant-t-essay-bgc.gram in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEB0329C2CC1B008487A4 /* zh-hant-t-essay-bgc.gram */; };
+		C02BEB5729C2CD0D008487A4 /* zh-hant-t-essay-bgw.gram in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEAB929C2CBF5008487A4 /* zh-hant-t-essay-bgw.gram */; };
+		C02BEB5829C2CD0D008487A4 /* zhuyin.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C02BEABB29C2CBF9008487A4 /* zhuyin.yaml */; };
+		C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02BEB5929C32D93008487A4 /* FeedbackView.swift */; };
 		C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EF429BFDB7B007B6AF5 /* iFilemanager */; };
 		C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */; };
 		C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFB29C07C96007B6AF5 /* LibrimeKit */; };
@@ -196,7 +118,6 @@
 		C0458A8229B133A300262E69 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */; };
 		C0458A8429B133A300262E69 /* KeyboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */; };
 		C0458A8529B133A300262E69 /* HamsterKeyboardBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */; };
-		C0458A8629B133A300262E69 /* HamsterAutocompleteProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C2299A65AC00F8CC32 /* HamsterAutocompleteProvider.swift */; };
 		C0458A8729B133A300262E69 /* HamsterKeyboardAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */; };
 		C0458A8829B133A300262E69 /* iPadKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */; };
 		C0458A8929B133A300262E69 /* iPhoneKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */; };
@@ -217,8 +138,6 @@
 		C0458A9829B133A300262E69 /* KeyboardLayout+Priview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DE299A65AC00F8CC32 /* KeyboardLayout+Priview.swift */; };
 		C0458A9929B133A300262E69 /* KeyboardLayortProvider+Priview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DF299A65AC00F8CC32 /* KeyboardLayortProvider+Priview.swift */; };
 		C0458A9A29B133A300262E69 /* KeyboardAppearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E0299A65AC00F8CC32 /* KeyboardAppearance+Preview.swift */; };
-		C0458A9B29B133A300262E69 /* KeyboardContext+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E1299A65AC00F8CC32 /* KeyboardContext+Preview.swift */; };
-		C0458A9C29B133A300262E69 /* KeyboardInputViewController+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E2299A65AC00F8CC32 /* KeyboardInputViewController+Preview.swift */; };
 		C0458A9D29B133A300262E69 /* KeyboardType+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */; };
 		C0458A9E29B133A300262E69 /* KeyboardContext+KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */; };
 		C0458A9F29B133A300262E69 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
@@ -246,6 +165,9 @@
 		C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
 		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
+		C0CDF6EA29C10F9E00CA2493 /* HamsterSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */; };
+		C0CDF6EC29C1106400CA2493 /* HamsterSuggestion+RimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6EB29C1106400CA2493 /* HamsterSuggestion+RimeEngine.swift */; };
+		C0CDF6EE29C1221700CA2493 /* AutocompleteToolbarItemStyle+RimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6ED29C1221700CA2493 /* AutocompleteToolbarItemStyle+RimeEngine.swift */; };
 		C0CE234829B5219500F79A74 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE234729B5219500F79A74 /* CellView.swift */; };
 		C0F858C329A2AA38003A2ED4 /* RimeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */; };
 /* End PBXBuildFile section */
@@ -268,117 +190,40 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C020ACEE29B7367C00B26142 /* Copy SharedSupport build */ = {
+		C02BEA5229C2C094008487A4 /* Copy Rime SharedSupport build */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			dstPath = build;
 			dstSubfolderSpec = 12;
 			files = (
-				C020AD4A29B74C7900B26142 /* stroke.reverse.bin in Copy SharedSupport build */,
-				C020AD4B29B74C7900B26142 /* luna_pinyin_simp.prism.bin in Copy SharedSupport build */,
-				C020AD4C29B74C7900B26142 /* luna_pinyin_simp.schema.yaml in Copy SharedSupport build */,
-				C020AD4D29B74C7900B26142 /* terra_pinyin.prism.bin in Copy SharedSupport build */,
-				C020AD4E29B74C7900B26142 /* terra_pinyin.table.bin in Copy SharedSupport build */,
-				C020AD4F29B74C7900B26142 /* bopomofo.prism.bin in Copy SharedSupport build */,
-				C020AD5029B74C7900B26142 /* luna_quanpin.prism.bin in Copy SharedSupport build */,
-				C020AD5129B74C7900B26142 /* stroke.table.bin in Copy SharedSupport build */,
-				C020AD5229B74C7900B26142 /* stroke.prism.bin in Copy SharedSupport build */,
-				C020AD5329B74C7900B26142 /* luna_quanpin.schema.yaml in Copy SharedSupport build */,
-				C020AD5429B74C7900B26142 /* bopomofo_tw.schema.yaml in Copy SharedSupport build */,
-				C020AD5529B74C7900B26142 /* bopomofo.schema.yaml in Copy SharedSupport build */,
-				C020AD5629B74C7900B26142 /* stroke.schema.yaml in Copy SharedSupport build */,
-				C020AD5729B74C7900B26142 /* cangjie5.prism.bin in Copy SharedSupport build */,
-				C020AD5829B74C7900B26142 /* cangjie5.table.bin in Copy SharedSupport build */,
-				C020AD5929B74C7900B26142 /* luna_pinyin.schema.yaml in Copy SharedSupport build */,
-				C020AD5A29B74C7900B26142 /* terra_pinyin.reverse.bin in Copy SharedSupport build */,
-				C020AD5B29B74C7900B26142 /* cangjie5.schema.yaml in Copy SharedSupport build */,
-				C020AD5C29B74C7900B26142 /* luna_pinyin.table.bin in Copy SharedSupport build */,
-				C020AD5D29B74C7900B26142 /* luna_pinyin.prism.bin in Copy SharedSupport build */,
-				C020AD5E29B74C7900B26142 /* luna_pinyin_fluency.schema.yaml in Copy SharedSupport build */,
-				C020AD5F29B74C7900B26142 /* cangjie5.reverse.bin in Copy SharedSupport build */,
-				C020AD6029B74C7900B26142 /* terra_pinyin.schema.yaml in Copy SharedSupport build */,
-				C020AD6129B74C7900B26142 /* luna_pinyin.reverse.bin in Copy SharedSupport build */,
-				C020AD6229B74C7900B26142 /* bopomofo_tw.prism.bin in Copy SharedSupport build */,
-				C020AD6329B74C7900B26142 /* default.yaml in Copy SharedSupport build */,
+				C02BEB2229C2CCF7008487A4 /* stroke.reverse.bin in Copy Rime SharedSupport build */,
+				C02BEB2329C2CCF7008487A4 /* luna_pinyin_simp.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB2429C2CCF7008487A4 /* luna_pinyin_simp.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB2529C2CCF7008487A4 /* terra_pinyin.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB2629C2CCF7008487A4 /* terra_pinyin.table.bin in Copy Rime SharedSupport build */,
+				C02BEB2729C2CCF7008487A4 /* bopomofo.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB2829C2CCF7008487A4 /* luna_quanpin.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB2929C2CCF7008487A4 /* stroke.table.bin in Copy Rime SharedSupport build */,
+				C02BEB2A29C2CCF7008487A4 /* stroke.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB2B29C2CCF7008487A4 /* luna_quanpin.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB2C29C2CCF7008487A4 /* bopomofo_tw.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB2D29C2CCF7008487A4 /* bopomofo.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB2E29C2CCF7008487A4 /* stroke.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB2F29C2CCF7008487A4 /* cangjie5.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB3029C2CCF7008487A4 /* cangjie5.table.bin in Copy Rime SharedSupport build */,
+				C02BEB3129C2CCF7008487A4 /* luna_pinyin.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB3229C2CCF7008487A4 /* terra_pinyin.reverse.bin in Copy Rime SharedSupport build */,
+				C02BEB3329C2CCF7008487A4 /* cangjie5.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB3429C2CCF7008487A4 /* luna_pinyin.table.bin in Copy Rime SharedSupport build */,
+				C02BEB3529C2CCF7008487A4 /* luna_pinyin.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB3629C2CCF7008487A4 /* luna_pinyin_fluency.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB3729C2CCF7008487A4 /* cangjie5.reverse.bin in Copy Rime SharedSupport build */,
+				C02BEB3829C2CCF7008487A4 /* terra_pinyin.schema.yaml in Copy Rime SharedSupport build */,
+				C02BEB3929C2CCF7008487A4 /* luna_pinyin.reverse.bin in Copy Rime SharedSupport build */,
+				C02BEB3A29C2CCF7008487A4 /* bopomofo_tw.prism.bin in Copy Rime SharedSupport build */,
+				C02BEB3B29C2CCF7008487A4 /* default.yaml in Copy Rime SharedSupport build */,
 			);
-			name = "Copy SharedSupport build";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C020AD0929B7369D00B26142 /* Copy SharedSupport opencc */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = opencc;
-			dstSubfolderSpec = 12;
-			files = (
-				C020AD0A29B736AD00B26142 /* TWVariants.ocd2 in Copy SharedSupport opencc */,
-				C020AD0B29B736AD00B26142 /* t2jp.json in Copy SharedSupport opencc */,
-				C020AD0C29B736AD00B26142 /* TWPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD0D29B736AD00B26142 /* t2tw.json in Copy SharedSupport opencc */,
-				C020AD0E29B736AD00B26142 /* TSCharacters.ocd2 in Copy SharedSupport opencc */,
-				C020AD0F29B736AD00B26142 /* STCharacters.ocd2 in Copy SharedSupport opencc */,
-				C020AD1029B736AD00B26142 /* JPShinjitaiCharacters.ocd2 in Copy SharedSupport opencc */,
-				C020AD1129B736AD00B26142 /* tw2s.json in Copy SharedSupport opencc */,
-				C020AD1229B736AD00B26142 /* HKVariantsRevPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD1329B736AD00B26142 /* hk2s.json in Copy SharedSupport opencc */,
-				C020AD1429B736AD00B26142 /* s2hk.json in Copy SharedSupport opencc */,
-				C020AD1529B736AD00B26142 /* HKVariantsRev.ocd2 in Copy SharedSupport opencc */,
-				C020AD1629B736AD00B26142 /* TWVariantsRevPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD1729B736AD00B26142 /* t2s.json in Copy SharedSupport opencc */,
-				C020AD1829B736AD00B26142 /* STPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD1929B736AD00B26142 /* HKVariants.ocd2 in Copy SharedSupport opencc */,
-				C020AD1A29B736AD00B26142 /* TSPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD1B29B736AD00B26142 /* JPVariants.ocd2 in Copy SharedSupport opencc */,
-				C020AD1C29B736AD00B26142 /* s2tw.json in Copy SharedSupport opencc */,
-				C020AD1D29B736AD00B26142 /* s2twp.json in Copy SharedSupport opencc */,
-				C020AD1E29B736AD00B26142 /* JPShinjitaiPhrases.ocd2 in Copy SharedSupport opencc */,
-				C020AD1F29B736AD00B26142 /* JPVariantsRev.ocd2 in Copy SharedSupport opencc */,
-				C020AD2029B736AD00B26142 /* TWPhrasesRev.ocd2 in Copy SharedSupport opencc */,
-				C020AD2129B736AD00B26142 /* t2hk.json in Copy SharedSupport opencc */,
-				C020AD2229B736AD00B26142 /* TWVariantsRev.ocd2 in Copy SharedSupport opencc */,
-				C020AD2329B736AD00B26142 /* s2t.json in Copy SharedSupport opencc */,
-				C020AD2429B736AD00B26142 /* jp2t.json in Copy SharedSupport opencc */,
-				C020AD2529B736AD00B26142 /* tw2sp.json in Copy SharedSupport opencc */,
-			);
-			name = "Copy SharedSupport opencc";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C020AD2629B736BE00B26142 /* Copy SharedSupport */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 12;
-			dstPath = "";
-			dstSubfolderSpec = 12;
-			files = (
-				C020AD2729B736D800B26142 /* bopomofo_express.schema.yaml in Copy SharedSupport */,
-				C020AD2829B736D800B26142 /* bopomofo_tw.schema.yaml in Copy SharedSupport */,
-				C020AD2929B736D800B26142 /* bopomofo.schema.yaml in Copy SharedSupport */,
-				C020AD2A29B736D800B26142 /* cangjie5_express.schema.yaml in Copy SharedSupport */,
-				C020AD2B29B736D800B26142 /* cangjie5.dict.yaml in Copy SharedSupport */,
-				C020AD2C29B736D800B26142 /* cangjie5.schema.yaml in Copy SharedSupport */,
-				C020AD2D29B736D800B26142 /* default.yaml in Copy SharedSupport */,
-				C020AD2E29B736D800B26142 /* essay.txt in Copy SharedSupport */,
-				C020AD2F29B736D800B26142 /* grammar.yaml in Copy SharedSupport */,
-				C020AD3029B736D800B26142 /* installation.yaml in Copy SharedSupport */,
-				C020AD3129B736D800B26142 /* key_bindings.yaml in Copy SharedSupport */,
-				C020AD3229B736D800B26142 /* luna_pinyin_fluency.schema.yaml in Copy SharedSupport */,
-				C020AD3329B736D800B26142 /* luna_pinyin_simp.schema.yaml in Copy SharedSupport */,
-				C020AD3429B736D800B26142 /* luna_pinyin_tw.schema.yaml in Copy SharedSupport */,
-				C020AD3529B736D800B26142 /* luna_pinyin.dict.yaml in Copy SharedSupport */,
-				C020AD3629B736D800B26142 /* luna_pinyin.schema.yaml in Copy SharedSupport */,
-				C020AD3729B736D800B26142 /* luna_quanpin.schema.yaml in Copy SharedSupport */,
-				C020AD3829B736D800B26142 /* pinyin.yaml in Copy SharedSupport */,
-				C020AD3929B736D800B26142 /* punctuation.yaml in Copy SharedSupport */,
-				C020AD3A29B736D800B26142 /* squirrel.yaml in Copy SharedSupport */,
-				C020AD3B29B736D800B26142 /* stroke.dict.yaml in Copy SharedSupport */,
-				C020AD3C29B736D800B26142 /* stroke.schema.yaml in Copy SharedSupport */,
-				C020AD3D29B736D800B26142 /* symbols.yaml in Copy SharedSupport */,
-				C020AD3E29B736D800B26142 /* terra_pinyin.dict.yaml in Copy SharedSupport */,
-				C020AD3F29B736D800B26142 /* terra_pinyin.schema.yaml in Copy SharedSupport */,
-				C020AD4029B736D800B26142 /* user.yaml in Copy SharedSupport */,
-				C020AD4129B736D800B26142 /* zh-hant-t-essay-bgc.gram in Copy SharedSupport */,
-				C020AD4229B736D800B26142 /* zh-hant-t-essay-bgw.gram in Copy SharedSupport */,
-				C020AD4329B736D800B26142 /* zhuyin.yaml in Copy SharedSupport */,
-			);
-			name = "Copy SharedSupport";
+			name = "Copy Rime SharedSupport build";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C03665B029A2AC5A002C1C53 /* CopyFiles */ = {
@@ -425,111 +270,75 @@
 			dstPath = opencc;
 			dstSubfolderSpec = 12;
 			files = (
-				C020ACCE29B7330600B26142 /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACCF29B7330600B26142 /* t2jp.json in Copy Rime ShareSupport OpenCC */,
-				C020ACD029B7330600B26142 /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACD129B7330600B26142 /* t2tw.json in Copy Rime ShareSupport OpenCC */,
-				C020ACD229B7330600B26142 /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACD329B7330600B26142 /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACD429B7330600B26142 /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACD529B7330600B26142 /* tw2s.json in Copy Rime ShareSupport OpenCC */,
-				C020ACD629B7330600B26142 /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACD729B7330600B26142 /* hk2s.json in Copy Rime ShareSupport OpenCC */,
-				C020ACD829B7330600B26142 /* s2hk.json in Copy Rime ShareSupport OpenCC */,
-				C020ACD929B7330600B26142 /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACDA29B7330600B26142 /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACDB29B7330600B26142 /* t2s.json in Copy Rime ShareSupport OpenCC */,
-				C020ACDC29B7330600B26142 /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACDD29B7330600B26142 /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACDE29B7330600B26142 /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACDF29B7330600B26142 /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACE029B7330600B26142 /* s2tw.json in Copy Rime ShareSupport OpenCC */,
-				C020ACE129B7330600B26142 /* s2twp.json in Copy Rime ShareSupport OpenCC */,
-				C020ACE229B7330600B26142 /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACE329B7330600B26142 /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACE429B7330600B26142 /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACE529B7330600B26142 /* t2hk.json in Copy Rime ShareSupport OpenCC */,
-				C020ACE629B7330600B26142 /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
-				C020ACE729B7330600B26142 /* s2t.json in Copy Rime ShareSupport OpenCC */,
-				C020ACE829B7330600B26142 /* jp2t.json in Copy Rime ShareSupport OpenCC */,
-				C020ACE929B7330600B26142 /* tw2sp.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB0629C2CCD8008487A4 /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0729C2CCD8008487A4 /* t2jp.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB0829C2CCD8008487A4 /* TWPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0929C2CCD8008487A4 /* t2tw.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB0A29C2CCD8008487A4 /* TSCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0B29C2CCD8008487A4 /* STCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0C29C2CCD8008487A4 /* JPShinjitaiCharacters.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0D29C2CCD8008487A4 /* tw2s.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB0E29C2CCD8008487A4 /* HKVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB0F29C2CCD8008487A4 /* hk2s.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1029C2CCD8008487A4 /* s2hk.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1129C2CCD8008487A4 /* HKVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1229C2CCD8008487A4 /* TWVariantsRevPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1329C2CCD8008487A4 /* t2s.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1429C2CCD8008487A4 /* STPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1529C2CCD8008487A4 /* HKVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1629C2CCD8008487A4 /* TSPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1729C2CCD8008487A4 /* JPVariants.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1829C2CCD8008487A4 /* s2tw.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1929C2CCD8008487A4 /* s2twp.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1A29C2CCD8008487A4 /* JPShinjitaiPhrases.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1B29C2CCD8008487A4 /* JPVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1C29C2CCD8008487A4 /* TWPhrasesRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1D29C2CCD8008487A4 /* t2hk.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB1E29C2CCD8008487A4 /* TWVariantsRev.ocd2 in Copy Rime ShareSupport OpenCC */,
+				C02BEB1F29C2CCD8008487A4 /* s2t.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB2029C2CCD8008487A4 /* jp2t.json in Copy Rime ShareSupport OpenCC */,
+				C02BEB2129C2CCD8008487A4 /* tw2sp.json in Copy Rime ShareSupport OpenCC */,
 			);
 			name = "Copy Rime ShareSupport OpenCC";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C071BF662970121E00E21FBC /* Copy Rime ShareSupport build */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = build;
-			dstSubfolderSpec = 12;
-			files = (
-				C020AC9729B732A000B26142 /* stroke.reverse.bin in Copy Rime ShareSupport build */,
-				C020AC9829B732A000B26142 /* luna_pinyin_simp.prism.bin in Copy Rime ShareSupport build */,
-				C020AC9929B732A000B26142 /* luna_pinyin_simp.schema.yaml in Copy Rime ShareSupport build */,
-				C020AC9A29B732A000B26142 /* terra_pinyin.prism.bin in Copy Rime ShareSupport build */,
-				C020AC9B29B732A000B26142 /* terra_pinyin.table.bin in Copy Rime ShareSupport build */,
-				C020AC9C29B732A000B26142 /* bopomofo.prism.bin in Copy Rime ShareSupport build */,
-				C020AC9D29B732A000B26142 /* luna_quanpin.prism.bin in Copy Rime ShareSupport build */,
-				C020AC9E29B732A000B26142 /* stroke.table.bin in Copy Rime ShareSupport build */,
-				C020AC9F29B732A000B26142 /* stroke.prism.bin in Copy Rime ShareSupport build */,
-				C020ACA029B732A000B26142 /* luna_quanpin.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA129B732A000B26142 /* bopomofo_tw.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA229B732A000B26142 /* bopomofo.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA329B732A000B26142 /* stroke.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA429B732A000B26142 /* cangjie5.prism.bin in Copy Rime ShareSupport build */,
-				C020ACA529B732A000B26142 /* cangjie5.table.bin in Copy Rime ShareSupport build */,
-				C020ACA629B732A000B26142 /* luna_pinyin.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA729B732A000B26142 /* terra_pinyin.reverse.bin in Copy Rime ShareSupport build */,
-				C020ACA829B732A000B26142 /* cangjie5.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACA929B732A000B26142 /* luna_pinyin.table.bin in Copy Rime ShareSupport build */,
-				C020ACAA29B732A000B26142 /* luna_pinyin.prism.bin in Copy Rime ShareSupport build */,
-				C020ACAB29B732A000B26142 /* luna_pinyin_fluency.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACAC29B732A000B26142 /* cangjie5.reverse.bin in Copy Rime ShareSupport build */,
-				C020ACAD29B732A000B26142 /* terra_pinyin.schema.yaml in Copy Rime ShareSupport build */,
-				C020ACAE29B732A000B26142 /* luna_pinyin.reverse.bin in Copy Rime ShareSupport build */,
-				C020ACAF29B732A000B26142 /* bopomofo_tw.prism.bin in Copy Rime ShareSupport build */,
-				C020ACB029B732A000B26142 /* default.yaml in Copy Rime ShareSupport build */,
-			);
-			name = "Copy Rime ShareSupport build";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C071BF712970126C00E21FBC /* Copy Rime ShareSupport */ = {
+		C071BF712970126C00E21FBC /* Copy Rime SharedSupport */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 12;
 			files = (
-				C020ACB129B732DE00B26142 /* bopomofo_express.schema.yaml in Copy Rime ShareSupport */,
-				C020ACB229B732DE00B26142 /* bopomofo_tw.schema.yaml in Copy Rime ShareSupport */,
-				C020ACB329B732DE00B26142 /* bopomofo.schema.yaml in Copy Rime ShareSupport */,
-				C020ACB429B732DE00B26142 /* cangjie5_express.schema.yaml in Copy Rime ShareSupport */,
-				C020ACB529B732DE00B26142 /* cangjie5.dict.yaml in Copy Rime ShareSupport */,
-				C020ACB629B732DE00B26142 /* cangjie5.schema.yaml in Copy Rime ShareSupport */,
-				C020ACB729B732DE00B26142 /* default.yaml in Copy Rime ShareSupport */,
-				C020ACB829B732DE00B26142 /* essay.txt in Copy Rime ShareSupport */,
-				C020ACB929B732DE00B26142 /* grammar.yaml in Copy Rime ShareSupport */,
-				C020ACBA29B732DE00B26142 /* installation.yaml in Copy Rime ShareSupport */,
-				C020ACBB29B732DE00B26142 /* key_bindings.yaml in Copy Rime ShareSupport */,
-				C020ACBC29B732DE00B26142 /* luna_pinyin_fluency.schema.yaml in Copy Rime ShareSupport */,
-				C020ACBD29B732DE00B26142 /* luna_pinyin_simp.schema.yaml in Copy Rime ShareSupport */,
-				C020ACBE29B732DE00B26142 /* luna_pinyin_tw.schema.yaml in Copy Rime ShareSupport */,
-				C020ACBF29B732DE00B26142 /* luna_pinyin.dict.yaml in Copy Rime ShareSupport */,
-				C020ACC029B732DE00B26142 /* luna_pinyin.schema.yaml in Copy Rime ShareSupport */,
-				C020ACC129B732DE00B26142 /* luna_quanpin.schema.yaml in Copy Rime ShareSupport */,
-				C020ACC229B732DE00B26142 /* pinyin.yaml in Copy Rime ShareSupport */,
-				C020ACC329B732DE00B26142 /* punctuation.yaml in Copy Rime ShareSupport */,
-				C020ACC429B732DE00B26142 /* squirrel.yaml in Copy Rime ShareSupport */,
-				C020ACC529B732DE00B26142 /* stroke.dict.yaml in Copy Rime ShareSupport */,
-				C020ACC629B732DE00B26142 /* stroke.schema.yaml in Copy Rime ShareSupport */,
-				C020ACC729B732DE00B26142 /* symbols.yaml in Copy Rime ShareSupport */,
-				C020ACC829B732DE00B26142 /* terra_pinyin.dict.yaml in Copy Rime ShareSupport */,
-				C020ACC929B732DE00B26142 /* terra_pinyin.schema.yaml in Copy Rime ShareSupport */,
-				C020ACCA29B732DE00B26142 /* user.yaml in Copy Rime ShareSupport */,
-				C020ACCB29B732DE00B26142 /* zh-hant-t-essay-bgc.gram in Copy Rime ShareSupport */,
-				C020ACCC29B732DE00B26142 /* zh-hant-t-essay-bgw.gram in Copy Rime ShareSupport */,
-				C020ACCD29B732DE00B26142 /* zhuyin.yaml in Copy Rime ShareSupport */,
+				C02BEB3C29C2CD0C008487A4 /* bopomofo_express.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB3D29C2CD0C008487A4 /* bopomofo_tw.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB3E29C2CD0C008487A4 /* bopomofo.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB3F29C2CD0C008487A4 /* cangjie5_express.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4029C2CD0C008487A4 /* cangjie5.dict.yaml in Copy Rime SharedSupport */,
+				C02BEB4129C2CD0C008487A4 /* cangjie5.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4229C2CD0C008487A4 /* default.yaml in Copy Rime SharedSupport */,
+				C02BEB4329C2CD0C008487A4 /* essay.txt in Copy Rime SharedSupport */,
+				C02BEB4429C2CD0C008487A4 /* grammar.yaml in Copy Rime SharedSupport */,
+				C02BEB4529C2CD0C008487A4 /* installation.yaml in Copy Rime SharedSupport */,
+				C02BEB4629C2CD0C008487A4 /* key_bindings.yaml in Copy Rime SharedSupport */,
+				C02BEB4729C2CD0C008487A4 /* luna_pinyin_fluency.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4829C2CD0C008487A4 /* luna_pinyin_simp.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4929C2CD0C008487A4 /* luna_pinyin_tw.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4A29C2CD0C008487A4 /* luna_pinyin.dict.yaml in Copy Rime SharedSupport */,
+				C02BEB4B29C2CD0C008487A4 /* luna_pinyin.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4C29C2CD0C008487A4 /* luna_quanpin.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB4D29C2CD0C008487A4 /* pinyin.yaml in Copy Rime SharedSupport */,
+				C02BEB4E29C2CD0C008487A4 /* punctuation.yaml in Copy Rime SharedSupport */,
+				C02BEB4F29C2CD0C008487A4 /* squirrel.yaml in Copy Rime SharedSupport */,
+				C02BEB5029C2CD0C008487A4 /* stroke.dict.yaml in Copy Rime SharedSupport */,
+				C02BEB5129C2CD0D008487A4 /* stroke.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB5229C2CD0D008487A4 /* symbols.yaml in Copy Rime SharedSupport */,
+				C02BEB5329C2CD0D008487A4 /* terra_pinyin.dict.yaml in Copy Rime SharedSupport */,
+				C02BEB5429C2CD0D008487A4 /* terra_pinyin.schema.yaml in Copy Rime SharedSupport */,
+				C02BEB5529C2CD0D008487A4 /* user.yaml in Copy Rime SharedSupport */,
+				C02BEB5629C2CD0D008487A4 /* zh-hant-t-essay-bgc.gram in Copy Rime SharedSupport */,
+				C02BEB5729C2CD0D008487A4 /* zh-hant-t-essay-bgw.gram in Copy Rime SharedSupport */,
+				C02BEB5829C2CD0D008487A4 /* zhuyin.yaml in Copy Rime SharedSupport */,
 			);
-			name = "Copy Rime ShareSupport";
+			name = "Copy Rime SharedSupport";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		C0F858C429A2AAC5003A2ED4 /* CopyFiles */ = {
@@ -547,91 +356,96 @@
 		C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputViewController.swift; sourceTree = "<group>"; };
 		C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
 		C0010B0129B9040B00CE4869 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
+		C018E6DF29C343A900942E97 /* Color+Extent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extent.swift"; sourceTree = "<group>"; };
 		C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+File.swift"; sourceTree = "<group>"; };
-		C020ABEF29B7326100B26142 /* default.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
-		C020ABF029B7326100B26142 /* zhuyin.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = zhuyin.yaml; sourceTree = "<group>"; };
-		C020ABF129B7326100B26142 /* punctuation.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = punctuation.yaml; sourceTree = "<group>"; };
-		C020ABF229B7326100B26142 /* terra_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = terra_pinyin.dict.yaml; sourceTree = "<group>"; };
-		C020ABF329B7326100B26142 /* bopomofo.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = bopomofo.schema.yaml; sourceTree = "<group>"; };
-		C020ABF429B7326100B26142 /* bopomofo_express.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = bopomofo_express.schema.yaml; sourceTree = "<group>"; };
-		C020ABF529B7326100B26142 /* symbols.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = symbols.yaml; sourceTree = "<group>"; };
-		C020ABF629B7326100B26142 /* zh-hant-t-essay-bgc.gram */ = {isa = PBXFileReference; lastKnownFileType = file; path = "zh-hant-t-essay-bgc.gram"; sourceTree = "<group>"; };
-		C020ABF829B7326100B26142 /* stroke.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.reverse.bin; sourceTree = "<group>"; };
-		C020ABF929B7326100B26142 /* luna_pinyin_simp.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin_simp.prism.bin; sourceTree = "<group>"; };
-		C020ABFA29B7326100B26142 /* luna_pinyin_simp.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin_simp.schema.yaml; sourceTree = "<group>"; };
-		C020ABFB29B7326100B26142 /* terra_pinyin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.prism.bin; sourceTree = "<group>"; };
-		C020ABFC29B7326100B26142 /* terra_pinyin.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.table.bin; sourceTree = "<group>"; };
-		C020ABFD29B7326100B26142 /* bopomofo.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = bopomofo.prism.bin; sourceTree = "<group>"; };
-		C020ABFE29B7326100B26142 /* luna_quanpin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_quanpin.prism.bin; sourceTree = "<group>"; };
-		C020ABFF29B7326100B26142 /* stroke.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.table.bin; sourceTree = "<group>"; };
-		C020AC0029B7326100B26142 /* stroke.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.prism.bin; sourceTree = "<group>"; };
-		C020AC0129B7326100B26142 /* luna_quanpin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_quanpin.schema.yaml; sourceTree = "<group>"; };
-		C020AC0229B7326100B26142 /* bopomofo_tw.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = bopomofo_tw.schema.yaml; sourceTree = "<group>"; };
-		C020AC0329B7326100B26142 /* bopomofo.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = bopomofo.schema.yaml; sourceTree = "<group>"; };
-		C020AC0429B7326100B26142 /* stroke.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = stroke.schema.yaml; sourceTree = "<group>"; };
-		C020AC0529B7326100B26142 /* cangjie5.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.prism.bin; sourceTree = "<group>"; };
-		C020AC0629B7326100B26142 /* cangjie5.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.table.bin; sourceTree = "<group>"; };
-		C020AC0729B7326100B26142 /* luna_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin.schema.yaml; sourceTree = "<group>"; };
-		C020AC0829B7326100B26142 /* terra_pinyin.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.reverse.bin; sourceTree = "<group>"; };
-		C020AC0929B7326100B26142 /* cangjie5.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = cangjie5.schema.yaml; sourceTree = "<group>"; };
-		C020AC0A29B7326100B26142 /* luna_pinyin.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.table.bin; sourceTree = "<group>"; };
-		C020AC0B29B7326100B26142 /* luna_pinyin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.prism.bin; sourceTree = "<group>"; };
-		C020AC0C29B7326100B26142 /* luna_pinyin_fluency.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin_fluency.schema.yaml; sourceTree = "<group>"; };
-		C020AC0D29B7326100B26142 /* cangjie5.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.reverse.bin; sourceTree = "<group>"; };
-		C020AC0E29B7326100B26142 /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = terra_pinyin.schema.yaml; sourceTree = "<group>"; };
-		C020AC0F29B7326100B26142 /* luna_pinyin.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.reverse.bin; sourceTree = "<group>"; };
-		C020AC1029B7326100B26142 /* bopomofo_tw.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = bopomofo_tw.prism.bin; sourceTree = "<group>"; };
-		C020AC1129B7326100B26142 /* default.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
-		C020AC1229B7326100B26142 /* squirrel.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = squirrel.yaml; sourceTree = "<group>"; };
-		C020AC1329B7326100B26142 /* stroke.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = stroke.schema.yaml; sourceTree = "<group>"; };
-		C020AC1429B7326100B26142 /* pinyin.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = pinyin.yaml; sourceTree = "<group>"; };
-		C020AC1529B7326100B26142 /* stroke.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = stroke.dict.yaml; sourceTree = "<group>"; };
-		C020AC1629B7326100B26142 /* luna_pinyin_simp.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin_simp.schema.yaml; sourceTree = "<group>"; };
-		C020AC1729B7326100B26142 /* luna_pinyin_tw.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin_tw.schema.yaml; sourceTree = "<group>"; };
-		C020AC1929B7326100B26142 /* TWVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariants.ocd2; sourceTree = "<group>"; };
-		C020AC1A29B7326100B26142 /* t2jp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2jp.json; sourceTree = "<group>"; };
-		C020AC1B29B7326100B26142 /* TWPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC1C29B7326100B26142 /* t2tw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2tw.json; sourceTree = "<group>"; };
-		C020AC1D29B7326100B26142 /* TSCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSCharacters.ocd2; sourceTree = "<group>"; };
-		C020AC1E29B7326100B26142 /* STCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STCharacters.ocd2; sourceTree = "<group>"; };
-		C020AC1F29B7326100B26142 /* JPShinjitaiCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiCharacters.ocd2; sourceTree = "<group>"; };
-		C020AC2029B7326100B26142 /* tw2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tw2s.json; sourceTree = "<group>"; };
-		C020AC2129B7326100B26142 /* HKVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC2229B7326100B26142 /* hk2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = hk2s.json; sourceTree = "<group>"; };
-		C020AC2329B7326100B26142 /* s2hk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2hk.json; sourceTree = "<group>"; };
-		C020AC2429B7326100B26142 /* HKVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRev.ocd2; sourceTree = "<group>"; };
-		C020AC2529B7326100B26142 /* TWVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC2629B7326100B26142 /* t2s.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2s.json; sourceTree = "<group>"; };
-		C020AC2729B7326100B26142 /* STPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC2829B7326100B26142 /* HKVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariants.ocd2; sourceTree = "<group>"; };
-		C020AC2929B7326100B26142 /* TSPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC2A29B7326100B26142 /* JPVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariants.ocd2; sourceTree = "<group>"; };
-		C020AC2B29B7326100B26142 /* s2tw.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2tw.json; sourceTree = "<group>"; };
-		C020AC2C29B7326100B26142 /* s2twp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2twp.json; sourceTree = "<group>"; };
-		C020AC2D29B7326100B26142 /* JPShinjitaiPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiPhrases.ocd2; sourceTree = "<group>"; };
-		C020AC2E29B7326100B26142 /* JPVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariantsRev.ocd2; sourceTree = "<group>"; };
-		C020AC2F29B7326100B26142 /* TWPhrasesRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrasesRev.ocd2; sourceTree = "<group>"; };
-		C020AC3029B7326100B26142 /* t2hk.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = t2hk.json; sourceTree = "<group>"; };
-		C020AC3129B7326100B26142 /* TWVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRev.ocd2; sourceTree = "<group>"; };
-		C020AC3229B7326100B26142 /* s2t.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = s2t.json; sourceTree = "<group>"; };
-		C020AC3329B7326100B26142 /* jp2t.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = jp2t.json; sourceTree = "<group>"; };
-		C020AC3429B7326100B26142 /* tw2sp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = tw2sp.json; sourceTree = "<group>"; };
-		C020AC3529B7326200B26142 /* user.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = user.yaml; sourceTree = "<group>"; };
-		C020AC3629B7326200B26142 /* luna_pinyin.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin.dict.yaml; sourceTree = "<group>"; };
-		C020AC3729B7326200B26142 /* essay.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = essay.txt; sourceTree = "<group>"; };
-		C020AC3829B7326200B26142 /* bopomofo_tw.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = bopomofo_tw.schema.yaml; sourceTree = "<group>"; };
-		C020AC3929B7326200B26142 /* luna_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin.schema.yaml; sourceTree = "<group>"; };
-		C020AC3A29B7326200B26142 /* cangjie5_express.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = cangjie5_express.schema.yaml; sourceTree = "<group>"; };
-		C020AC3B29B7326200B26142 /* cangjie5.dict.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = cangjie5.dict.yaml; sourceTree = "<group>"; };
-		C020AC3C29B7326200B26142 /* luna_pinyin_fluency.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_pinyin_fluency.schema.yaml; sourceTree = "<group>"; };
-		C020AC3D29B7326200B26142 /* luna_quanpin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = luna_quanpin.schema.yaml; sourceTree = "<group>"; };
-		C020AC3E29B7326200B26142 /* zh-hant-t-essay-bgw.gram */ = {isa = PBXFileReference; lastKnownFileType = file; path = "zh-hant-t-essay-bgw.gram"; sourceTree = "<group>"; };
-		C020AC3F29B7326200B26142 /* grammar.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = grammar.yaml; sourceTree = "<group>"; };
-		C020AC4029B7326200B26142 /* cangjie5.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = cangjie5.schema.yaml; sourceTree = "<group>"; };
-		C020AC4129B7326200B26142 /* key_bindings.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = key_bindings.yaml; sourceTree = "<group>"; };
-		C020AC4229B7326200B26142 /* installation.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = installation.yaml; sourceTree = "<group>"; };
-		C020AC4329B7326200B26142 /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = terra_pinyin.schema.yaml; sourceTree = "<group>"; };
 		C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+LibrimeKit.swift"; sourceTree = "<group>"; };
+		C02BEA3429C23C58008487A4 /* LoaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
+		C02BEA3629C25D72008487A4 /* PersistentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentController.swift; sourceTree = "<group>"; };
+		C02BEAB129C2CBE6008487A4 /* user.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = user.yaml; sourceTree = "<group>"; };
+		C02BEAB229C2CBE8008487A4 /* bopomofo_express.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bopomofo_express.schema.yaml; sourceTree = "<group>"; };
+		C02BEAB329C2CBEA008487A4 /* cangjie5_express.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = cangjie5_express.schema.yaml; sourceTree = "<group>"; };
+		C02BEAB429C2CBED008487A4 /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = terra_pinyin.schema.yaml; sourceTree = "<group>"; };
+		C02BEAB529C2CBED008487A4 /* stroke.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = stroke.schema.yaml; sourceTree = "<group>"; };
+		C02BEAB629C2CBF1008487A4 /* terra_pinyin.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = terra_pinyin.dict.yaml; sourceTree = "<group>"; };
+		C02BEAB729C2CBF1008487A4 /* grammar.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = grammar.yaml; sourceTree = "<group>"; };
+		C02BEAB829C2CBF4008487A4 /* luna_pinyin_fluency.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin_fluency.schema.yaml; sourceTree = "<group>"; };
+		C02BEAB929C2CBF5008487A4 /* zh-hant-t-essay-bgw.gram */ = {isa = PBXFileReference; lastKnownFileType = file; path = "zh-hant-t-essay-bgw.gram"; sourceTree = "<group>"; };
+		C02BEABA29C2CBF8008487A4 /* luna_pinyin.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin.dict.yaml; sourceTree = "<group>"; };
+		C02BEABB29C2CBF9008487A4 /* zhuyin.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = zhuyin.yaml; sourceTree = "<group>"; };
+		C02BEABC29C2CBFC008487A4 /* cangjie5.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = cangjie5.schema.yaml; sourceTree = "<group>"; };
+		C02BEABD29C2CBFC008487A4 /* key_bindings.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = key_bindings.yaml; sourceTree = "<group>"; };
+		C02BEABE29C2CC00008487A4 /* bopomofo_tw.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bopomofo_tw.schema.yaml; sourceTree = "<group>"; };
+		C02BEABF29C2CC00008487A4 /* luna_pinyin_simp.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin_simp.schema.yaml; sourceTree = "<group>"; };
+		C02BEAC029C2CC03008487A4 /* essay.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = essay.txt; sourceTree = "<group>"; };
+		C02BEAC129C2CC03008487A4 /* luna_pinyin_tw.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin_tw.schema.yaml; sourceTree = "<group>"; };
+		C02BEAC229C2CC07008487A4 /* squirrel.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = squirrel.yaml; sourceTree = "<group>"; };
+		C02BEAC329C2CC07008487A4 /* default.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
+		C02BEAC429C2CC0B008487A4 /* symbols.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = symbols.yaml; sourceTree = "<group>"; };
+		C02BEAC629C2CC0C008487A4 /* stroke.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.reverse.bin; sourceTree = "<group>"; };
+		C02BEAC729C2CC0C008487A4 /* luna_pinyin_simp.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin_simp.prism.bin; sourceTree = "<group>"; };
+		C02BEAC829C2CC0C008487A4 /* luna_pinyin_simp.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin_simp.schema.yaml; sourceTree = "<group>"; };
+		C02BEAC929C2CC0C008487A4 /* terra_pinyin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.prism.bin; sourceTree = "<group>"; };
+		C02BEACA29C2CC0C008487A4 /* terra_pinyin.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.table.bin; sourceTree = "<group>"; };
+		C02BEACB29C2CC0C008487A4 /* bopomofo.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = bopomofo.prism.bin; sourceTree = "<group>"; };
+		C02BEACC29C2CC0C008487A4 /* luna_quanpin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_quanpin.prism.bin; sourceTree = "<group>"; };
+		C02BEACD29C2CC0C008487A4 /* stroke.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.table.bin; sourceTree = "<group>"; };
+		C02BEACE29C2CC0C008487A4 /* stroke.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = stroke.prism.bin; sourceTree = "<group>"; };
+		C02BEACF29C2CC0C008487A4 /* luna_quanpin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_quanpin.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD029C2CC0C008487A4 /* bopomofo_tw.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bopomofo_tw.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD129C2CC0C008487A4 /* bopomofo.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bopomofo.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD229C2CC0C008487A4 /* stroke.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = stroke.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD329C2CC0C008487A4 /* cangjie5.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.prism.bin; sourceTree = "<group>"; };
+		C02BEAD429C2CC0C008487A4 /* cangjie5.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.table.bin; sourceTree = "<group>"; };
+		C02BEAD529C2CC0C008487A4 /* luna_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD629C2CC0C008487A4 /* terra_pinyin.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = terra_pinyin.reverse.bin; sourceTree = "<group>"; };
+		C02BEAD729C2CC0C008487A4 /* cangjie5.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = cangjie5.schema.yaml; sourceTree = "<group>"; };
+		C02BEAD829C2CC0C008487A4 /* luna_pinyin.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.table.bin; sourceTree = "<group>"; };
+		C02BEAD929C2CC0C008487A4 /* luna_pinyin.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.prism.bin; sourceTree = "<group>"; };
+		C02BEADA29C2CC0C008487A4 /* luna_pinyin_fluency.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin_fluency.schema.yaml; sourceTree = "<group>"; };
+		C02BEADB29C2CC0C008487A4 /* cangjie5.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = cangjie5.reverse.bin; sourceTree = "<group>"; };
+		C02BEADC29C2CC0C008487A4 /* terra_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = terra_pinyin.schema.yaml; sourceTree = "<group>"; };
+		C02BEADD29C2CC0C008487A4 /* luna_pinyin.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = luna_pinyin.reverse.bin; sourceTree = "<group>"; };
+		C02BEADE29C2CC0C008487A4 /* bopomofo_tw.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = bopomofo_tw.prism.bin; sourceTree = "<group>"; };
+		C02BEADF29C2CC0C008487A4 /* default.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
+		C02BEAE029C2CC10008487A4 /* pinyin.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = pinyin.yaml; sourceTree = "<group>"; };
+		C02BEAE129C2CC10008487A4 /* stroke.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = stroke.dict.yaml; sourceTree = "<group>"; };
+		C02BEAE329C2CC13008487A4 /* TWVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariants.ocd2; sourceTree = "<group>"; };
+		C02BEAE429C2CC13008487A4 /* t2jp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = t2jp.json; sourceTree = "<group>"; };
+		C02BEAE529C2CC13008487A4 /* TWPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAE629C2CC13008487A4 /* t2tw.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = t2tw.json; sourceTree = "<group>"; };
+		C02BEAE729C2CC13008487A4 /* TSCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSCharacters.ocd2; sourceTree = "<group>"; };
+		C02BEAE829C2CC13008487A4 /* STCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STCharacters.ocd2; sourceTree = "<group>"; };
+		C02BEAE929C2CC13008487A4 /* JPShinjitaiCharacters.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiCharacters.ocd2; sourceTree = "<group>"; };
+		C02BEAEA29C2CC13008487A4 /* tw2s.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tw2s.json; sourceTree = "<group>"; };
+		C02BEAEB29C2CC13008487A4 /* HKVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAEC29C2CC13008487A4 /* hk2s.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = hk2s.json; sourceTree = "<group>"; };
+		C02BEAED29C2CC13008487A4 /* s2hk.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = s2hk.json; sourceTree = "<group>"; };
+		C02BEAEE29C2CC13008487A4 /* HKVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariantsRev.ocd2; sourceTree = "<group>"; };
+		C02BEAEF29C2CC13008487A4 /* TWVariantsRevPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRevPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAF029C2CC13008487A4 /* t2s.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = t2s.json; sourceTree = "<group>"; };
+		C02BEAF129C2CC13008487A4 /* STPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = STPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAF229C2CC13008487A4 /* HKVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HKVariants.ocd2; sourceTree = "<group>"; };
+		C02BEAF329C2CC13008487A4 /* TSPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TSPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAF429C2CC13008487A4 /* JPVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariants.ocd2; sourceTree = "<group>"; };
+		C02BEAF529C2CC13008487A4 /* s2tw.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = s2tw.json; sourceTree = "<group>"; };
+		C02BEAF629C2CC13008487A4 /* s2twp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = s2twp.json; sourceTree = "<group>"; };
+		C02BEAF729C2CC13008487A4 /* JPShinjitaiPhrases.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPShinjitaiPhrases.ocd2; sourceTree = "<group>"; };
+		C02BEAF829C2CC13008487A4 /* JPVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = JPVariantsRev.ocd2; sourceTree = "<group>"; };
+		C02BEAF929C2CC13008487A4 /* TWPhrasesRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWPhrasesRev.ocd2; sourceTree = "<group>"; };
+		C02BEAFA29C2CC13008487A4 /* t2hk.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = t2hk.json; sourceTree = "<group>"; };
+		C02BEAFB29C2CC13008487A4 /* TWVariantsRev.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariantsRev.ocd2; sourceTree = "<group>"; };
+		C02BEAFC29C2CC13008487A4 /* s2t.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = s2t.json; sourceTree = "<group>"; };
+		C02BEAFD29C2CC13008487A4 /* jp2t.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = jp2t.json; sourceTree = "<group>"; };
+		C02BEAFE29C2CC13008487A4 /* tw2sp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tw2sp.json; sourceTree = "<group>"; };
+		C02BEAFF29C2CC14008487A4 /* cangjie5.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = cangjie5.dict.yaml; sourceTree = "<group>"; };
+		C02BEB0029C2CC17008487A4 /* installation.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = installation.yaml; sourceTree = "<group>"; };
+		C02BEB0129C2CC17008487A4 /* luna_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_pinyin.schema.yaml; sourceTree = "<group>"; };
+		C02BEB0229C2CC1B008487A4 /* luna_quanpin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = luna_quanpin.schema.yaml; sourceTree = "<group>"; };
+		C02BEB0329C2CC1B008487A4 /* zh-hant-t-essay-bgc.gram */ = {isa = PBXFileReference; lastKnownFileType = file; path = "zh-hant-t-essay-bgc.gram"; sourceTree = "<group>"; };
+		C02BEB0429C2CC1E008487A4 /* punctuation.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = punctuation.yaml; sourceTree = "<group>"; };
+		C02BEB0529C2CC1F008487A4 /* bopomofo.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = bopomofo.schema.yaml; sourceTree = "<group>"; };
+		C02BEB5929C32D93008487A4 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
 		C02C1EFA29C07C85007B6AF5 /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
 		C03E8025296D4F4C0083E53A /* HamsterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HamsterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -645,7 +459,6 @@
 		C04FA8B2299A65AC00F8CC32 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C04FA8BD299A65AC00F8CC32 /* RimeEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RimeEngine.swift; sourceTree = "<group>"; };
 		C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardBehavior.swift; sourceTree = "<group>"; };
-		C04FA8C2299A65AC00F8CC32 /* HamsterAutocompleteProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterAutocompleteProvider.swift; sourceTree = "<group>"; };
 		C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardAppearance.swift; sourceTree = "<group>"; };
 		C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPhoneKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterStandardKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
@@ -665,8 +478,6 @@
 		C04FA8DE299A65AC00F8CC32 /* KeyboardLayout+Priview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardLayout+Priview.swift"; sourceTree = "<group>"; };
 		C04FA8DF299A65AC00F8CC32 /* KeyboardLayortProvider+Priview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardLayortProvider+Priview.swift"; sourceTree = "<group>"; };
 		C04FA8E0299A65AC00F8CC32 /* KeyboardAppearance+Preview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAppearance+Preview.swift"; sourceTree = "<group>"; };
-		C04FA8E1299A65AC00F8CC32 /* KeyboardContext+Preview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardContext+Preview.swift"; sourceTree = "<group>"; };
-		C04FA8E2299A65AC00F8CC32 /* KeyboardInputViewController+Preview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardInputViewController+Preview.swift"; sourceTree = "<group>"; };
 		C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardConstants.swift; sourceTree = "<group>"; };
 		C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardType+Button.swift"; sourceTree = "<group>"; };
 		C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardContext+KeyboardType.swift"; sourceTree = "<group>"; };
@@ -686,6 +497,9 @@
 		C0AC2E68299F7B5100BC494C /* HamsterKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboard.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+Color.swift"; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSuggestion.swift; sourceTree = "<group>"; };
+		C0CDF6EB29C1106400CA2493 /* HamsterSuggestion+RimeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HamsterSuggestion+RimeEngine.swift"; sourceTree = "<group>"; };
+		C0CDF6ED29C1221700CA2493 /* AutocompleteToolbarItemStyle+RimeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AutocompleteToolbarItemStyle+RimeEngine.swift"; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		C0E458A7298B938B007F5FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
@@ -733,70 +547,86 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C020ABF729B7326100B26142 /* build */ = {
+		C018E6DC29C334F800942E97 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
-				C020ABF829B7326100B26142 /* stroke.reverse.bin */,
-				C020ABF929B7326100B26142 /* luna_pinyin_simp.prism.bin */,
-				C020ABFA29B7326100B26142 /* luna_pinyin_simp.schema.yaml */,
-				C020ABFB29B7326100B26142 /* terra_pinyin.prism.bin */,
-				C020ABFC29B7326100B26142 /* terra_pinyin.table.bin */,
-				C020ABFD29B7326100B26142 /* bopomofo.prism.bin */,
-				C020ABFE29B7326100B26142 /* luna_quanpin.prism.bin */,
-				C020ABFF29B7326100B26142 /* stroke.table.bin */,
-				C020AC0029B7326100B26142 /* stroke.prism.bin */,
-				C020AC0129B7326100B26142 /* luna_quanpin.schema.yaml */,
-				C020AC0229B7326100B26142 /* bopomofo_tw.schema.yaml */,
-				C020AC0329B7326100B26142 /* bopomofo.schema.yaml */,
-				C020AC0429B7326100B26142 /* stroke.schema.yaml */,
-				C020AC0529B7326100B26142 /* cangjie5.prism.bin */,
-				C020AC0629B7326100B26142 /* cangjie5.table.bin */,
-				C020AC0729B7326100B26142 /* luna_pinyin.schema.yaml */,
-				C020AC0829B7326100B26142 /* terra_pinyin.reverse.bin */,
-				C020AC0929B7326100B26142 /* cangjie5.schema.yaml */,
-				C020AC0A29B7326100B26142 /* luna_pinyin.table.bin */,
-				C020AC0B29B7326100B26142 /* luna_pinyin.prism.bin */,
-				C020AC0C29B7326100B26142 /* luna_pinyin_fluency.schema.yaml */,
-				C020AC0D29B7326100B26142 /* cangjie5.reverse.bin */,
-				C020AC0E29B7326100B26142 /* terra_pinyin.schema.yaml */,
-				C020AC0F29B7326100B26142 /* luna_pinyin.reverse.bin */,
-				C020AC1029B7326100B26142 /* bopomofo_tw.prism.bin */,
-				C020AC1129B7326100B26142 /* default.yaml */,
+				C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		C02BEA3829C26027008487A4 /* Persistent */ = {
+			isa = PBXGroup;
+			children = (
+				C02BEA3629C25D72008487A4 /* PersistentController.swift */,
+			);
+			path = Persistent;
+			sourceTree = "<group>";
+		};
+		C02BEAC529C2CC0C008487A4 /* build */ = {
+			isa = PBXGroup;
+			children = (
+				C02BEAC629C2CC0C008487A4 /* stroke.reverse.bin */,
+				C02BEAC729C2CC0C008487A4 /* luna_pinyin_simp.prism.bin */,
+				C02BEAC829C2CC0C008487A4 /* luna_pinyin_simp.schema.yaml */,
+				C02BEAC929C2CC0C008487A4 /* terra_pinyin.prism.bin */,
+				C02BEACA29C2CC0C008487A4 /* terra_pinyin.table.bin */,
+				C02BEACB29C2CC0C008487A4 /* bopomofo.prism.bin */,
+				C02BEACC29C2CC0C008487A4 /* luna_quanpin.prism.bin */,
+				C02BEACD29C2CC0C008487A4 /* stroke.table.bin */,
+				C02BEACE29C2CC0C008487A4 /* stroke.prism.bin */,
+				C02BEACF29C2CC0C008487A4 /* luna_quanpin.schema.yaml */,
+				C02BEAD029C2CC0C008487A4 /* bopomofo_tw.schema.yaml */,
+				C02BEAD129C2CC0C008487A4 /* bopomofo.schema.yaml */,
+				C02BEAD229C2CC0C008487A4 /* stroke.schema.yaml */,
+				C02BEAD329C2CC0C008487A4 /* cangjie5.prism.bin */,
+				C02BEAD429C2CC0C008487A4 /* cangjie5.table.bin */,
+				C02BEAD529C2CC0C008487A4 /* luna_pinyin.schema.yaml */,
+				C02BEAD629C2CC0C008487A4 /* terra_pinyin.reverse.bin */,
+				C02BEAD729C2CC0C008487A4 /* cangjie5.schema.yaml */,
+				C02BEAD829C2CC0C008487A4 /* luna_pinyin.table.bin */,
+				C02BEAD929C2CC0C008487A4 /* luna_pinyin.prism.bin */,
+				C02BEADA29C2CC0C008487A4 /* luna_pinyin_fluency.schema.yaml */,
+				C02BEADB29C2CC0C008487A4 /* cangjie5.reverse.bin */,
+				C02BEADC29C2CC0C008487A4 /* terra_pinyin.schema.yaml */,
+				C02BEADD29C2CC0C008487A4 /* luna_pinyin.reverse.bin */,
+				C02BEADE29C2CC0C008487A4 /* bopomofo_tw.prism.bin */,
+				C02BEADF29C2CC0C008487A4 /* default.yaml */,
 			);
 			path = build;
 			sourceTree = "<group>";
 		};
-		C020AC1829B7326100B26142 /* opencc */ = {
+		C02BEAE229C2CC13008487A4 /* opencc */ = {
 			isa = PBXGroup;
 			children = (
-				C020AC1929B7326100B26142 /* TWVariants.ocd2 */,
-				C020AC1A29B7326100B26142 /* t2jp.json */,
-				C020AC1B29B7326100B26142 /* TWPhrases.ocd2 */,
-				C020AC1C29B7326100B26142 /* t2tw.json */,
-				C020AC1D29B7326100B26142 /* TSCharacters.ocd2 */,
-				C020AC1E29B7326100B26142 /* STCharacters.ocd2 */,
-				C020AC1F29B7326100B26142 /* JPShinjitaiCharacters.ocd2 */,
-				C020AC2029B7326100B26142 /* tw2s.json */,
-				C020AC2129B7326100B26142 /* HKVariantsRevPhrases.ocd2 */,
-				C020AC2229B7326100B26142 /* hk2s.json */,
-				C020AC2329B7326100B26142 /* s2hk.json */,
-				C020AC2429B7326100B26142 /* HKVariantsRev.ocd2 */,
-				C020AC2529B7326100B26142 /* TWVariantsRevPhrases.ocd2 */,
-				C020AC2629B7326100B26142 /* t2s.json */,
-				C020AC2729B7326100B26142 /* STPhrases.ocd2 */,
-				C020AC2829B7326100B26142 /* HKVariants.ocd2 */,
-				C020AC2929B7326100B26142 /* TSPhrases.ocd2 */,
-				C020AC2A29B7326100B26142 /* JPVariants.ocd2 */,
-				C020AC2B29B7326100B26142 /* s2tw.json */,
-				C020AC2C29B7326100B26142 /* s2twp.json */,
-				C020AC2D29B7326100B26142 /* JPShinjitaiPhrases.ocd2 */,
-				C020AC2E29B7326100B26142 /* JPVariantsRev.ocd2 */,
-				C020AC2F29B7326100B26142 /* TWPhrasesRev.ocd2 */,
-				C020AC3029B7326100B26142 /* t2hk.json */,
-				C020AC3129B7326100B26142 /* TWVariantsRev.ocd2 */,
-				C020AC3229B7326100B26142 /* s2t.json */,
-				C020AC3329B7326100B26142 /* jp2t.json */,
-				C020AC3429B7326100B26142 /* tw2sp.json */,
+				C02BEAE329C2CC13008487A4 /* TWVariants.ocd2 */,
+				C02BEAE429C2CC13008487A4 /* t2jp.json */,
+				C02BEAE529C2CC13008487A4 /* TWPhrases.ocd2 */,
+				C02BEAE629C2CC13008487A4 /* t2tw.json */,
+				C02BEAE729C2CC13008487A4 /* TSCharacters.ocd2 */,
+				C02BEAE829C2CC13008487A4 /* STCharacters.ocd2 */,
+				C02BEAE929C2CC13008487A4 /* JPShinjitaiCharacters.ocd2 */,
+				C02BEAEA29C2CC13008487A4 /* tw2s.json */,
+				C02BEAEB29C2CC13008487A4 /* HKVariantsRevPhrases.ocd2 */,
+				C02BEAEC29C2CC13008487A4 /* hk2s.json */,
+				C02BEAED29C2CC13008487A4 /* s2hk.json */,
+				C02BEAEE29C2CC13008487A4 /* HKVariantsRev.ocd2 */,
+				C02BEAEF29C2CC13008487A4 /* TWVariantsRevPhrases.ocd2 */,
+				C02BEAF029C2CC13008487A4 /* t2s.json */,
+				C02BEAF129C2CC13008487A4 /* STPhrases.ocd2 */,
+				C02BEAF229C2CC13008487A4 /* HKVariants.ocd2 */,
+				C02BEAF329C2CC13008487A4 /* TSPhrases.ocd2 */,
+				C02BEAF429C2CC13008487A4 /* JPVariants.ocd2 */,
+				C02BEAF529C2CC13008487A4 /* s2tw.json */,
+				C02BEAF629C2CC13008487A4 /* s2twp.json */,
+				C02BEAF729C2CC13008487A4 /* JPShinjitaiPhrases.ocd2 */,
+				C02BEAF829C2CC13008487A4 /* JPVariantsRev.ocd2 */,
+				C02BEAF929C2CC13008487A4 /* TWPhrasesRev.ocd2 */,
+				C02BEAFA29C2CC13008487A4 /* t2hk.json */,
+				C02BEAFB29C2CC13008487A4 /* TWVariantsRev.ocd2 */,
+				C02BEAFC29C2CC13008487A4 /* s2t.json */,
+				C02BEAFD29C2CC13008487A4 /* jp2t.json */,
+				C02BEAFE29C2CC13008487A4 /* tw2sp.json */,
 			);
 			path = opencc;
 			sourceTree = "<group>";
@@ -867,6 +697,7 @@
 		C04FA8AB299A65AB00F8CC32 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C02BEA3829C26027008487A4 /* Persistent */,
 				C04FA8AC299A65AC00F8CC32 /* Settings */,
 				C04FA8BC299A65AC00F8CC32 /* RimeEngine */,
 				C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */,
@@ -899,6 +730,7 @@
 				C0629C6D29B3C42F00C27D42 /* SetttingView.swift */,
 				C0CE234729B5219500F79A74 /* CellView.swift */,
 				C0629C6F29B3C68600C27D42 /* SubView */,
+				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -925,6 +757,7 @@
 				C04FA8BF299A65AC00F8CC32 /* Behavior */,
 				C04FA8E9299A65AC00F8CC32 /* Callouts */,
 				C04FA8E4299A65AC00F8CC32 /* Keyboard */,
+				C018E6DC29C334F800942E97 /* Feedback */,
 				C099464129B27F6E007FD3CA /* Input */,
 				C04FA8C5299A65AC00F8CC32 /* Layout */,
 				C04FA8CC299A65AC00F8CC32 /* Locals */,
@@ -948,7 +781,9 @@
 		C04FA8C1299A65AC00F8CC32 /* Autocomplete */ = {
 			isa = PBXGroup;
 			children = (
-				C04FA8C2299A65AC00F8CC32 /* HamsterAutocompleteProvider.swift */,
+				C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */,
+				C0CDF6EB29C1106400CA2493 /* HamsterSuggestion+RimeEngine.swift */,
+				C0CDF6ED29C1221700CA2493 /* AutocompleteToolbarItemStyle+RimeEngine.swift */,
 			);
 			path = Autocomplete;
 			sourceTree = "<group>";
@@ -1000,9 +835,9 @@
 		C04FA8D3299A65AC00F8CC32 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */,
 				C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */,
 				C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */,
-				C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */,
 				C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */,
 			);
 			path = Actions;
@@ -1027,8 +862,6 @@
 				C04FA8DE299A65AC00F8CC32 /* KeyboardLayout+Priview.swift */,
 				C04FA8DF299A65AC00F8CC32 /* KeyboardLayortProvider+Priview.swift */,
 				C04FA8E0299A65AC00F8CC32 /* KeyboardAppearance+Preview.swift */,
-				C04FA8E1299A65AC00F8CC32 /* KeyboardContext+Preview.swift */,
-				C04FA8E2299A65AC00F8CC32 /* KeyboardInputViewController+Preview.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -1090,6 +923,7 @@
 				C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */,
 				C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */,
 				C0010B0129B9040B00CE4869 /* AboutView.swift */,
+				C02BEB5929C32D93008487A4 /* FeedbackView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -1108,37 +942,37 @@
 		C071BECD297010EE00E21FBC /* SharedSupport */ = {
 			isa = PBXGroup;
 			children = (
-				C020ABF729B7326100B26142 /* build */,
-				C020AC1829B7326100B26142 /* opencc */,
-				C020ABF429B7326100B26142 /* bopomofo_express.schema.yaml */,
-				C020AC3829B7326200B26142 /* bopomofo_tw.schema.yaml */,
-				C020ABF329B7326100B26142 /* bopomofo.schema.yaml */,
-				C020AC3A29B7326200B26142 /* cangjie5_express.schema.yaml */,
-				C020AC3B29B7326200B26142 /* cangjie5.dict.yaml */,
-				C020AC4029B7326200B26142 /* cangjie5.schema.yaml */,
-				C020ABEF29B7326100B26142 /* default.yaml */,
-				C020AC3729B7326200B26142 /* essay.txt */,
-				C020AC3F29B7326200B26142 /* grammar.yaml */,
-				C020AC4229B7326200B26142 /* installation.yaml */,
-				C020AC4129B7326200B26142 /* key_bindings.yaml */,
-				C020AC3C29B7326200B26142 /* luna_pinyin_fluency.schema.yaml */,
-				C020AC1629B7326100B26142 /* luna_pinyin_simp.schema.yaml */,
-				C020AC1729B7326100B26142 /* luna_pinyin_tw.schema.yaml */,
-				C020AC3629B7326200B26142 /* luna_pinyin.dict.yaml */,
-				C020AC3929B7326200B26142 /* luna_pinyin.schema.yaml */,
-				C020AC3D29B7326200B26142 /* luna_quanpin.schema.yaml */,
-				C020AC1429B7326100B26142 /* pinyin.yaml */,
-				C020ABF129B7326100B26142 /* punctuation.yaml */,
-				C020AC1229B7326100B26142 /* squirrel.yaml */,
-				C020AC1529B7326100B26142 /* stroke.dict.yaml */,
-				C020AC1329B7326100B26142 /* stroke.schema.yaml */,
-				C020ABF529B7326100B26142 /* symbols.yaml */,
-				C020ABF229B7326100B26142 /* terra_pinyin.dict.yaml */,
-				C020AC4329B7326200B26142 /* terra_pinyin.schema.yaml */,
-				C020AC3529B7326200B26142 /* user.yaml */,
-				C020ABF629B7326100B26142 /* zh-hant-t-essay-bgc.gram */,
-				C020AC3E29B7326200B26142 /* zh-hant-t-essay-bgw.gram */,
-				C020ABF029B7326100B26142 /* zhuyin.yaml */,
+				C02BEAE229C2CC13008487A4 /* opencc */,
+				C02BEAC529C2CC0C008487A4 /* build */,
+				C02BEAB229C2CBE8008487A4 /* bopomofo_express.schema.yaml */,
+				C02BEABE29C2CC00008487A4 /* bopomofo_tw.schema.yaml */,
+				C02BEB0529C2CC1F008487A4 /* bopomofo.schema.yaml */,
+				C02BEAB329C2CBEA008487A4 /* cangjie5_express.schema.yaml */,
+				C02BEAFF29C2CC14008487A4 /* cangjie5.dict.yaml */,
+				C02BEABC29C2CBFC008487A4 /* cangjie5.schema.yaml */,
+				C02BEAC329C2CC07008487A4 /* default.yaml */,
+				C02BEAC029C2CC03008487A4 /* essay.txt */,
+				C02BEAB729C2CBF1008487A4 /* grammar.yaml */,
+				C02BEB0029C2CC17008487A4 /* installation.yaml */,
+				C02BEABD29C2CBFC008487A4 /* key_bindings.yaml */,
+				C02BEAB829C2CBF4008487A4 /* luna_pinyin_fluency.schema.yaml */,
+				C02BEABF29C2CC00008487A4 /* luna_pinyin_simp.schema.yaml */,
+				C02BEAC129C2CC03008487A4 /* luna_pinyin_tw.schema.yaml */,
+				C02BEABA29C2CBF8008487A4 /* luna_pinyin.dict.yaml */,
+				C02BEB0129C2CC17008487A4 /* luna_pinyin.schema.yaml */,
+				C02BEB0229C2CC1B008487A4 /* luna_quanpin.schema.yaml */,
+				C02BEAE029C2CC10008487A4 /* pinyin.yaml */,
+				C02BEB0429C2CC1E008487A4 /* punctuation.yaml */,
+				C02BEAC229C2CC07008487A4 /* squirrel.yaml */,
+				C02BEAE129C2CC10008487A4 /* stroke.dict.yaml */,
+				C02BEAB529C2CBED008487A4 /* stroke.schema.yaml */,
+				C02BEAC429C2CC0B008487A4 /* symbols.yaml */,
+				C02BEAB629C2CBF1008487A4 /* terra_pinyin.dict.yaml */,
+				C02BEAB429C2CBED008487A4 /* terra_pinyin.schema.yaml */,
+				C02BEAB129C2CBE6008487A4 /* user.yaml */,
+				C02BEB0329C2CC1B008487A4 /* zh-hant-t-essay-bgc.gram */,
+				C02BEAB929C2CBF5008487A4 /* zh-hant-t-essay-bgw.gram */,
+				C02BEABB29C2CBF9008487A4 /* zhuyin.yaml */,
 			);
 			path = SharedSupport;
 			sourceTree = "<group>";
@@ -1163,6 +997,7 @@
 			isa = PBXGroup;
 			children = (
 				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
+				C02BEA3429C23C58008487A4 /* LoaderView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1203,8 +1038,8 @@
 				C03E8047296D53650083E53A /* Embed Foundation Extensions */,
 				C0AC2E61299F743E00BC494C /* Resources */,
 				C071BF2C2970112B00E21FBC /* Copy Rime ShareSupport OpenCC */,
-				C071BF662970121E00E21FBC /* Copy Rime ShareSupport build */,
-				C071BF712970126C00E21FBC /* Copy Rime ShareSupport */,
+				C02BEA5229C2C094008487A4 /* Copy Rime SharedSupport build */,
+				C071BF712970126C00E21FBC /* Copy Rime SharedSupport */,
 			);
 			buildRules = (
 			);
@@ -1229,9 +1064,6 @@
 				C03E8038296D53650083E53A /* Sources */,
 				C03E8039296D53650083E53A /* Frameworks */,
 				C03E803A296D53650083E53A /* Resources */,
-				C020ACEE29B7367C00B26142 /* Copy SharedSupport build */,
-				C020AD0929B7369D00B26142 /* Copy SharedSupport opencc */,
-				C020AD2629B736BE00B26142 /* Copy SharedSupport */,
 			);
 			buildRules = (
 			);
@@ -1360,15 +1192,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */,
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
 				C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
 				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
+				C02BEA3529C23C58008487A4 /* LoaderView.swift in Sources */,
 				C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */,
 				C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */,
 				C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */,
+				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
+				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
@@ -1385,15 +1221,17 @@
 				C020AD4929B73DD600B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0458AA629B133DC00262E69 /* AppSettings.swift in Sources */,
 				C0458AA829B133DC00262E69 /* RimeEngine.swift in Sources */,
+				C0CDF6EE29C1221700CA2493 /* AutocompleteToolbarItemStyle+RimeEngine.swift in Sources */,
 				C0458AA929B133DC00262E69 /* RimeEngine+Color.swift in Sources */,
 				C0458AAA29B133DC00262E69 /* AppConstants.swift in Sources */,
 				C0458A8229B133A300262E69 /* KeyboardViewController.swift in Sources */,
 				C0458A8429B133A300262E69 /* KeyboardConstants.swift in Sources */,
 				C0458A8529B133A300262E69 /* HamsterKeyboardBehavior.swift in Sources */,
-				C0458A8629B133A300262E69 /* HamsterAutocompleteProvider.swift in Sources */,
+				C0CDF6EA29C10F9E00CA2493 /* HamsterSuggestion.swift in Sources */,
 				C0458A8729B133A300262E69 /* HamsterKeyboardAppearance.swift in Sources */,
 				C0458A8829B133A300262E69 /* iPadKeyboardLayoutProvider.swift in Sources */,
 				C020ABEE29B72F9B00B26142 /* RimeEngine+File.swift in Sources */,
+				C018E6DE29C3354C00942E97 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0458A8929B133A300262E69 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C099464329B27FF8007FD3CA /* InputSet.swift in Sources */,
 				C0458A8A29B133A300262E69 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
@@ -1410,12 +1248,11 @@
 				C0458A9529B133A300262E69 /* HamsterKeyboardButtonContent.swift in Sources */,
 				C0458A9629B133A300262E69 /* HamsterKeyboardButtonText.swift in Sources */,
 				C0458A9729B133A300262E69 /* HamsterKeyboard.swift in Sources */,
+				C0CDF6EC29C1106400CA2493 /* HamsterSuggestion+RimeEngine.swift in Sources */,
 				C0458A9829B133A300262E69 /* KeyboardLayout+Priview.swift in Sources */,
 				C0458A9929B133A300262E69 /* KeyboardLayortProvider+Priview.swift in Sources */,
 				C0458A9A29B133A300262E69 /* KeyboardAppearance+Preview.swift in Sources */,
 				C099464629B28625007FD3CA /* KeyboardImageReader.swift in Sources */,
-				C0458A9B29B133A300262E69 /* KeyboardContext+Preview.swift in Sources */,
-				C0458A9C29B133A300262E69 /* KeyboardInputViewController+Preview.swift in Sources */,
 				C0458A9D29B133A300262E69 /* KeyboardType+Button.swift in Sources */,
 				C0458A9E29B133A300262E69 /* KeyboardContext+KeyboardType.swift in Sources */,
 				C0458A9F29B133A300262E69 /* KKL10n.swift in Sources */,
@@ -1527,6 +1364,7 @@
 					"-interposable",
 				);
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1584,6 +1422,7 @@
 					"-interposable",
 				);
 				SDKROOT = iphoneos;
+				STRIP_STYLE = "non-global";
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1604,6 +1443,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "倉输入法";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1616,6 +1456,9 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1636,6 +1479,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "倉输入法";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1648,6 +1492,9 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1664,7 +1511,7 @@
 				DEVELOPMENT_TEAM = M4N6995A28;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = HamsterKeyboard;
+				INFOPLIST_KEY_CFBundleDisplayName = "倉输入法";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1692,7 +1539,7 @@
 				DEVELOPMENT_TEAM = M4N6995A28;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = HamsterKeyboard;
+				INFOPLIST_KEY_CFBundleDisplayName = "倉输入法";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1796,7 +1643,7 @@
 			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
 			requirement = {
 				kind = exactVersion;
-				version = 0.7.3;
+				version = 0.7.9;
 			};
 		};
 		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {
