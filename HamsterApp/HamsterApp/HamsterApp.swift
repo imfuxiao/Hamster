@@ -11,30 +11,39 @@ import SwiftUI
 struct HamsterApp: App {
   let appSetings = HamsterAppSettings()
   let rimeEngine = RimeEngine.shared
+  @State var launchScreenState = true
 
   var body: some Scene {
     WindowGroup {
-      ContentView()
-        .onAppear {
-          if appSetings.isFirstLaunch {
-            do {
-              try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
-              try RimeEngine.initAppGroupUserDataDirectory(override: true)
-            } catch {
-              appSetings.isFirstLaunch = true
-              // TODO: 日志处理
-              fatalError("unresolved error: \(error), \(error.localizedDescription)")
-            }
-            appSetings.isFirstLaunch = false
-          }
-          rimeEngine.setupRime(
-            sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-          )
-          rimeEngine.startRime()
+      ZStack {
+        if launchScreenState {
+          LaunchScreen()
+        } else {
+          ContentView()
         }
-        .environmentObject(appSetings)
-        .environmentObject(rimeEngine)
+      }
+      .onAppear {
+        if appSetings.isFirstLaunch {
+          do {
+            try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
+            try RimeEngine.initAppGroupUserDataDirectory(override: true)
+          } catch {
+            appSetings.isFirstLaunch = true
+            // TODO: 日志处理
+            fatalError("unresolved error: \(error), \(error.localizedDescription)")
+          }
+          appSetings.isFirstLaunch = false
+        }
+
+        rimeEngine.setupRime(
+          sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+          userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+        )
+        rimeEngine.startRime()
+        launchScreenState = false
+      }
+      .environmentObject(appSetings)
+      .environmentObject(rimeEngine)
     }
   }
 }

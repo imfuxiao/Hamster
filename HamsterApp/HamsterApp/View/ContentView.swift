@@ -64,7 +64,7 @@ public struct ContentView: View {
             VStack {
               VStack {
                 HStack {
-                  Text("power by rime".uppercased())
+                  Text("powered by rime".uppercased())
                     .font(.system(.footnote, design: .rounded))
                     .foregroundColor(.secondary)
                 }
