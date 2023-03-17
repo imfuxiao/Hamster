@@ -31,10 +31,9 @@ struct ColorSchemaView: View {
         Spacer()
       }
       .padding(.horizontal)
-      
 
       HStack {
-        Toggle(isOn: $appSetting.rimeEnableColorSchema) {
+        Toggle(isOn: $appSetting.enableRimeColorSchema) {
           Text("启用配色")
             .font(.system(.body, design: .rounded))
             .fontWeight(.bold)
@@ -42,7 +41,7 @@ struct ColorSchemaView: View {
       }
       .padding(.horizontal)
 
-      if appSetting.rimeEnableColorSchema {
+      if appSetting.enableRimeColorSchema {
         ScrollView {
           ForEach(colorSchemas) { colorSchema in
             HStack {

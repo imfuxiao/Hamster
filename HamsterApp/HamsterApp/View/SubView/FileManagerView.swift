@@ -31,12 +31,14 @@ struct FileManagerView: View {
               Group {
                 Text("1. 请在与您手机处与同一局域网内的PC浏览器上打开下面的IP地址.")
                 Text("")
-                Group {
-                  Text(" - http://\(localIP)")
-                }
-                .padding(.leading, 20)
+
+                Text(" - http://\(localIP)")
+                  .padding(.leading, 20)
+
                 Text("")
                 Text("2. 将您的个人输入方案上传至文件夹内")
+                Text("")
+                Text("修改完毕请务必点击重新部署, 否则方案不会生效.")
               }
               .font(.system(size: 18, weight: .bold, design: .rounded))
               .foregroundColor(.primary)

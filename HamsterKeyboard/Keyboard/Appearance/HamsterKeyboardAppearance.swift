@@ -39,7 +39,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
 
   // TODO: 根据 squirrel 颜色方案动态变更
   override func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
-    if appSettings.rimeEnableColorSchema {
+    if appSettings.enableRimeColorSchema {
       if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSettings.rimeColorSchema }) {
         return KeyboardButtonStyle(
           backgroundColor: colorSchema.backColor.bgrColor ?? buttonBackgroundColor(for: action, isPressed: isPressed),

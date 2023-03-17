@@ -82,16 +82,14 @@ struct AlphabetKeyboard: View {
       if keyboardContext.keyboardType != .emojis {
         HamsterAutocompleteToolbar()
           .frame(minWidth: 0, maxWidth: .infinity)
-          .frame(height: 50)
       }
       keyboard
         .background(backgroudColor)
     }
-//    .eraseToAnyView()
   }
 
   var backgroudColor: Color {
-    if appSetting.rimeEnableColorSchema {
+    if appSetting.enableRimeColorSchema {
       if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSetting.rimeColorSchema }) {
         return colorSchema.backColor.bgrColor ?? Color.clearInteractable
       }
