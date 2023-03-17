@@ -123,7 +123,6 @@
 		C0458A8929B133A300262E69 /* iPhoneKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */; };
 		C0458A8A29B133A300262E69 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */; };
 		C0458A8B29B133A300262E69 /* KeyboardLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */; };
-		C0458A8C29B133A300262E69 /* SlideSensitivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CF299A65AC00F8CC32 /* SlideSensitivity.swift */; };
 		C0458A8D29B133A300262E69 /* SlideGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */; };
 		C0458A8E29B133A300262E69 /* CharacterSlideGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D1299A65AC00F8CC32 /* CharacterSlideGestureHandler.swift */; };
 		C0458A8F29B133A300262E69 /* KeyboardAction+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */; };
@@ -158,6 +157,10 @@
 		C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA99E299A6F3900F8CC32 /* Plist */; };
 		C04FA9A1299A6F3900F8CC32 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA9A0299A6F3900F8CC32 /* KeyboardKit */; };
 		C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1529C49469001A8BE6 /* LaunchScreen.swift */; };
+		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
+		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
+		C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */; };
+		C0532D1E29C4AA7D001A8BE6 /* CharacterDragHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */; };
 		C06197FD29A35A5F004DF94F /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C06197FC29A35A5F004DF94F /* LibrimeKit */; };
 		C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C6D29B3C42F00C27D42 /* SetttingView.swift */; };
 		C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */; };
@@ -464,7 +467,6 @@
 		C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPhoneKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterStandardKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLocale.swift; sourceTree = "<group>"; };
-		C04FA8CF299A65AC00F8CC32 /* SlideSensitivity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideSensitivity.swift; sourceTree = "<group>"; };
 		C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideGestureHandler.swift; sourceTree = "<group>"; };
 		C04FA8D1299A65AC00F8CC32 /* CharacterSlideGestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterSlideGestureHandler.swift; sourceTree = "<group>"; };
 		C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
@@ -490,6 +492,10 @@
 		C04FA945299A675B00F8CC32 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		C04FA948299A675B00F8CC32 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Localizable.strings; sourceTree = "<group>"; };
 		C0532D1529C49469001A8BE6 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
+		C0532D1729C4A2C9001A8BE6 /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
+		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
+		C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleActivityView.swift; sourceTree = "<group>"; };
+		C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDragHandler.swift; sourceTree = "<group>"; };
 		C0629C6D29B3C42F00C27D42 /* SetttingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetttingView.swift; sourceTree = "<group>"; };
 		C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
@@ -828,9 +834,9 @@
 		C04FA8CE299A65AC00F8CC32 /* Gestures */ = {
 			isa = PBXGroup;
 			children = (
-				C04FA8CF299A65AC00F8CC32 /* SlideSensitivity.swift */,
 				C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */,
 				C04FA8D1299A65AC00F8CC32 /* CharacterSlideGestureHandler.swift */,
+				C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */,
 			);
 			path = Gestures;
 			sourceTree = "<group>";
@@ -1001,6 +1007,9 @@
 			children = (
 				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
 				C02BEA3429C23C58008487A4 /* LoaderView.swift */,
+				C0532D1729C4A2C9001A8BE6 /* DotView.swift */,
+				C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */,
+				C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1197,12 +1206,15 @@
 			files = (
 				C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */,
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
+				C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */,
 				C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
 				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
+				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
 				C02BEA3529C23C58008487A4 /* LoaderView.swift in Sources */,
 				C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */,
+				C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */,
 				C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */,
 				C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */,
@@ -1230,6 +1242,7 @@
 				C0458AAA29B133DC00262E69 /* AppConstants.swift in Sources */,
 				C0458A8229B133A300262E69 /* KeyboardViewController.swift in Sources */,
 				C0458A8429B133A300262E69 /* KeyboardConstants.swift in Sources */,
+				C0532D1E29C4AA7D001A8BE6 /* CharacterDragHandler.swift in Sources */,
 				C0458A8529B133A300262E69 /* HamsterKeyboardBehavior.swift in Sources */,
 				C0CDF6EA29C10F9E00CA2493 /* HamsterSuggestion.swift in Sources */,
 				C0458A8729B133A300262E69 /* HamsterKeyboardAppearance.swift in Sources */,
@@ -1240,7 +1253,6 @@
 				C099464329B27FF8007FD3CA /* InputSet.swift in Sources */,
 				C0458A8A29B133A300262E69 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
 				C0458A8B29B133A300262E69 /* KeyboardLocale.swift in Sources */,
-				C0458A8C29B133A300262E69 /* SlideSensitivity.swift in Sources */,
 				C0458A8D29B133A300262E69 /* SlideGestureHandler.swift in Sources */,
 				C0458A8E29B133A300262E69 /* CharacterSlideGestureHandler.swift in Sources */,
 				C0458A8F29B133A300262E69 /* KeyboardAction+Buttons.swift in Sources */,
@@ -1451,8 +1463,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1487,8 +1499,8 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

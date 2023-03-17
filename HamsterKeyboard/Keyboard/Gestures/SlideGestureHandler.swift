@@ -5,5 +5,7 @@ import KeyboardKit
 public protocol SlideGestureHandler {
   func handleDragGesture(
     action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint
-  ) -> KeyboardAction.GestureAction?
+  )
+
+  func endDragGesture()
 }

@@ -95,14 +95,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
     self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
-    self.calloutContext = KeyboardCalloutContext(
-      action: HamsterActionCalloutContext(
-        actionHandler: keyboardActionHandler,
-        actionProvider: calloutActionProvider
-      ),
-      input: InputCalloutContext(
-        isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
-    )
 
     self.keyboardFeedbackSettings = KeyboardFeedbackSettings(
       audioConfiguration: AudioFeedbackConfiguration(),
@@ -117,7 +109,16 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       settings: self.keyboardFeedbackSettings,
       appSettings: self.appSettings
     )
+    
     self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
+    self.calloutContext = KeyboardCalloutContext(
+      action: HamsterActionCalloutContext(
+        actionHandler: keyboardActionHandler,
+        actionProvider: calloutActionProvider
+      ),
+      input: InputCalloutContext(
+        isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
+    )
 
     // TODO: 动态设置 local
     self.keyboardContext.locale = Locale(identifier: "zh-Hans")

@@ -30,9 +30,11 @@ public struct ContentView: View {
                 isLoading = true
                 DispatchQueue.global(qos: .background).async {
                   rimeEngine.deploy()
-                  isLoading = false
                   DispatchQueue.main.async {
                     appSettings.rimeNeedOverrideUserDataDirectory = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                      isLoading = false
+                    }
                   }
                 }
               } label: {
@@ -85,9 +87,8 @@ public struct ContentView: View {
 
           if isLoading {
             ZStack {
-              Color.gray.opacity(0.1)
-                .ignoresSafeArea()
-              LoaderView(scaleSize: 3)
+              Color.secondary.opacity(0.3).ignoresSafeArea(.all)
+              DotsActivityView(color: .green.opacity(0.8))
             }
           }
         }
