@@ -21,7 +21,7 @@ class CharacterDragHandler: SlideGestureHandler {
   public init(
     keyboardContext: KeyboardContext,
     feedbackHandler: KeyboardFeedbackHandler,
-    sensitivity: SpaceDragSensitivity = .low,
+    sensitivity: SpaceDragSensitivity = .custom(points: 50),
     action: @escaping (KeyboardAction, Int) -> Void
   ) {
     self.keyboardContext = keyboardContext
