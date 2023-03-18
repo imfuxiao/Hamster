@@ -33,20 +33,20 @@ struct SettingView: View {
       CellView(
         width: cellWidth,
         height: cellHeight,
-        imageName: "hand.tap",
-        featureName: "键盘反馈",
+        imageName: "paintpalette.fill",
+        featureName: "配色选择",
         navgationDestinationBuilder: {
-          AnyView(FeedbackView())
+          AnyView(ColorSchemaView())
         }
       ),
 
       CellView(
         width: cellWidth,
         height: cellHeight,
-        imageName: "paintpalette.fill",
-        featureName: "配色选择",
+        imageName: "hand.tap",
+        featureName: "键盘反馈",
         navgationDestinationBuilder: {
-          AnyView(ColorSchemaView())
+          AnyView(FeedbackView())
         }
       ),
 
@@ -66,6 +66,14 @@ struct SettingView: View {
         imageName: "bubble.middle.bottom",
         featureName: "按键气泡",
         toggle: $appSetting.showKeyPressBubble
+      ),
+
+      CellView(
+        width: cellWidth,
+        height: cellHeight,
+        imageName: "chevron.down.circle.fill",
+        featureName: "键盘收起键",
+        toggle: $appSetting.showKeyboardDismissButton
       ),
 
       CellView(

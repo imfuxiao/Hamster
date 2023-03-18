@@ -107,8 +107,8 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     // emojis键盘
     // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
 
-    // 空格
-    result.append(.custom(named: KeyboardConstant.CustomButton.Wildcard.rawValue))
+    // TODO: 底部添加自定义功能键
+//    result.append(.custom(named: KeyboardConstant.CustomButton.Wildcard.rawValue))
     result.append(.space)
 
     // 根据当前上下文显示不同功能的回车键

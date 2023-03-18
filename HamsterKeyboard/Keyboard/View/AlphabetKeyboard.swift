@@ -29,7 +29,7 @@ struct AlphabetKeyboard: View {
   private var rimeEngine: RimeEngine
 
   @EnvironmentObject
-  private var appSetting: HamsterAppSettings
+  private var appSettings: HamsterAppSettings
 
   var skinExtend: [String: String]
 
@@ -80,8 +80,37 @@ struct AlphabetKeyboard: View {
   var body: some View {
     VStack(spacing: 0) {
       if keyboardContext.keyboardType != .emojis {
-        HamsterAutocompleteToolbar()
-          .frame(minWidth: 0, maxWidth: .infinity)
+        HStack(spacing: 0) {
+          ZStack(alignment: .leading) {
+            HamsterAutocompleteToolbar()
+
+            if rimeEngine.userInputKey.isEmpty {
+              HStack {
+                // 主菜单功能暂未实现
+//                Image(systemName: "house.circle.fill")
+//                  .font(.system(size: 25))
+//                  .foregroundColor(Color.gray)
+//                  .frame(width: 25, height: 25)
+//                  .padding(.leading, 15)
+//                  .onTapGesture {}
+
+                Spacer()
+
+                if appSettings.showKeyboardDismissButton {
+                  Image(systemName: "chevron.down.circle.fill")
+                    .font(.system(size: 30))
+                    .foregroundColor(Color.gray)
+                    .frame(width: 25, height: 25)
+                    .padding(.trailing, 15)
+                    .onTapGesture {
+                      keyboardInputViewController.dismissKeyboard()
+                    }
+                }
+              }
+            }
+          }
+        }
+        .frame(minWidth: 0, maxWidth: .infinity)
       }
       keyboard
         .background(backgroudColor)
@@ -89,8 +118,8 @@ struct AlphabetKeyboard: View {
   }
 
   var backgroudColor: Color {
-    if appSetting.enableRimeColorSchema {
-      if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSetting.rimeColorSchema }) {
+    if appSettings.enableRimeColorSchema {
+      if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSettings.rimeColorSchema }) {
         return colorSchema.backColor.bgrColor ?? Color.clearInteractable
       }
     }

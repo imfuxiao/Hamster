@@ -17,14 +17,10 @@ class HamsterKeyboardFeedbackHandler: StandardKeyboardFeedbackHandler {
 
   override func triggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {
     if appSettings.enableKeyboardFeedbackSound {
-      print("\n \n feedback sound \n\n")
       triggerAudioFeedback(for: gesture, on: action)
     }
 
     if appSettings.enableKeyboardFeedbackHaptic {
-      print("\n \n feedback haptic \n\n")
-      triggerHapticFeedback(for: gesture, on: action)
-      
       HapticFeedback.engine.trigger(.heavyImpact)
     }
   }
