@@ -10,6 +10,15 @@ import SwiftUI
 struct LaunchScreen: View {
   @Environment(\.colorScheme) var colorScheme
 
+  @State var start = UnitPoint(x: 0, y: 0)
+  @State var end = UnitPoint(x: 1, y: 1)
+
+  let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
+  let colors = [
+    Color.gray.opacity(0.5),
+    Color.black,
+  ]
+
   var body: some View {
     ZStack {
       Color.HamsterBackgroundColor
@@ -24,37 +33,36 @@ struct LaunchScreen: View {
             .resizable()
             .scaledToFit()
             .frame(width: 200, height: 200)
-//            .background(
-//              RoundedRectangle(cornerRadius: 15)
-//                .stroke(lineWidth: 3)
-//                .fill(Color.HamsterShadowColor.opacity(0.5))
-//            )
+            .opacity(0.8)
         } else {
           Image("Hamster")
             .resizable()
             .scaledToFit()
             .frame(width: 200, height: 200)
-//            .background(
-//              RoundedRectangle(cornerRadius: 15)
-//                .stroke(lineWidth: 3)
-//                .opacity(0.8)
-//            )
             .opacity(0.8)
         }
 
-        HStack {
-          Text("仓输入法")
-            .font(.system(size: 24, weight: .bold))
-            .padding(.top, 10)
-        }
+        LinearGradient(
+          gradient: Gradient(colors: colors),
+          startPoint: start,
+          endPoint: end
+        )
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(height: 80)
+        .animation(.easeOut(duration: 2).repeatForever(autoreverses: false))
+        .onReceive(timer, perform: { _ in
+          self.start = UnitPoint(x: 1, y: 1)
+        })
+        .mask(
+          Group {
+            Text("仓输入法")
+            Text("powered by rime".uppercased())
+              .padding(.top, 3)
+          }
+          .font(.system(size: 20, weight: .bold, design: .rounded))
+        )
 
         Spacer()
-
-        HStack {
-          Text("powered by Rime".uppercased())
-            .font(.system(size: 18, weight: .bold))
-        }
-        .padding(.bottom, 10)
       }
     }
   }

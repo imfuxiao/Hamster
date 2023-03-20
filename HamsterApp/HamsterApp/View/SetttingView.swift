@@ -33,7 +33,7 @@ struct SettingView: View {
       CellView(
         width: cellWidth,
         height: cellHeight,
-        imageName: "paintpalette.fill",
+        imageName: "paintpalette",
         featureName: "配色选择",
         navgationDestinationBuilder: {
           AnyView(ColorSchemaView())

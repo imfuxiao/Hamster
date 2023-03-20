@@ -23,24 +23,28 @@ struct HamsterApp: App {
         }
       }
       .onAppear {
-        if appSetings.isFirstLaunch {
-          do {
-            try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
-            try RimeEngine.initAppGroupUserDataDirectory(override: true)
-          } catch {
-            appSetings.isFirstLaunch = true
-            // TODO: 日志处理
-            fatalError("unresolved error: \(error), \(error.localizedDescription)")
+        DispatchQueue.main.async {
+          if appSetings.isFirstLaunch {
+            do {
+              try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
+              try RimeEngine.initAppGroupUserDataDirectory(override: true)
+            } catch {
+              appSetings.isFirstLaunch = true
+              // TODO: 日志处理
+              fatalError("unresolved error: \(error), \(error.localizedDescription)")
+            }
+            appSetings.isFirstLaunch = false
           }
-          appSetings.isFirstLaunch = false
-        }
 
-        rimeEngine.setupRime(
-          sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-          userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-        )
-        rimeEngine.startRime()
-        launchScreenState = false
+          rimeEngine.setupRime(
+            sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+          )
+          rimeEngine.startRime()
+          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            launchScreenState = false
+          }
+        }
       }
       .environmentObject(appSetings)
       .environmentObject(rimeEngine)
