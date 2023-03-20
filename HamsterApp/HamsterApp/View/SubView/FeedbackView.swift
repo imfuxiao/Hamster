@@ -9,6 +9,8 @@ import SwiftUI
 
 struct FeedbackView: View {
   @EnvironmentObject var appSettings: HamsterAppSettings
+  @State var hapticIntensity: HapticIntensity = .mediumImpact
+
   var body: some View {
     ZStack {
       Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
@@ -38,11 +40,26 @@ struct FeedbackView: View {
         .padding(.horizontal)
         .padding(.bottom, 10)
 
-        HStack {
-          Toggle(isOn: $appSettings.enableKeyboardFeedbackHaptic) {
-            Text("触感")
-              .font(.system(.body, design: .rounded))
-              .fontWeight(.bold)
+        VStack {
+          HStack {
+            Toggle(isOn: $appSettings.enableKeyboardFeedbackHaptic) {
+              Text("触感")
+                .font(.system(.body, design: .rounded))
+                .fontWeight(.bold)
+            }
+          }
+          if appSettings.enableKeyboardFeedbackHaptic {
+            HStack {
+              Text("触感强度")
+                .font(.system(.body, design: .rounded))
+                .fontWeight(.bold)
+              Spacer()
+              Picker("触感强度", selection: $hapticIntensity) {
+                ForEach(HapticIntensity.allCases) {
+                  Text($0.text).tag($0)
+                }
+              }
+            }
           }
         }
         .padding([.all], 15)
@@ -55,12 +72,18 @@ struct FeedbackView: View {
         Spacer()
       }
     }
+    .onChange(of: hapticIntensity, perform: {
+      appSettings.keyboardFeedbackHapticIntensity = $0.rawValue
+    })
+    .onAppear {
+      hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) ?? .mediumImpact
+    }
   }
 }
 
 struct FeedbackView_Previews: PreviewProvider {
   static var previews: some View {
-    FeedbackView()
+    FeedbackView(hapticIntensity: .mediumImpact)
       .environmentObject(HamsterAppSettings())
   }
 }

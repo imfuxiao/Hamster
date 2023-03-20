@@ -71,7 +71,7 @@ struct SettingView: View {
       CellView(
         width: cellWidth,
         height: cellHeight,
-        imageName: "chevron.down.circle.fill",
+        imageName: "chevron.down.circle",
         featureName: "键盘收起键",
         toggle: $appSetting.showKeyboardDismissButton
       ),
@@ -91,6 +91,7 @@ struct SettingView: View {
         featureName: "空格滑动",
         toggle: $appSetting.slideBySapceButton
       ),
+      
 
       CellView(
         width: cellWidth,
@@ -105,7 +106,7 @@ struct SettingView: View {
   }
 
   var body: some View {
-    Section {
+    SectionView("设置") {
       LazyVGrid(
         columns: [
           GridItem(.adaptive(minimum: 150)),
@@ -117,16 +118,6 @@ struct SettingView: View {
         }
       }
       .padding(.horizontal)
-
-    } header: {
-      HStack {
-        Text("设置")
-          .font(.system(.body, design: .rounded))
-          .fontWeight(.bold)
-        Spacer()
-      }
-      .padding(.horizontal)
-      .padding(.top, 20)
     }
   }
 }

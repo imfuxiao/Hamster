@@ -9,5 +9,7 @@
 		<key>UISceneConfigurations</key>
 		<dict/>
 	</dict>
+	<key>rimeVersion</key>
+	<string>1.8.5</string>
 </dict>
 </plist>

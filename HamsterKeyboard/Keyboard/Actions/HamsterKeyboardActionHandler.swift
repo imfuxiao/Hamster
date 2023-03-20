@@ -7,6 +7,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 其他按键滑动处理
   public let characterGragActionHandler: SlideGestureHandler
 
+  // 字符滑动处理
   let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { ivc in
     let actionConfig: [String: String] = ivc.actionExtend.strDict
     let rimeEngine = ivc.rimeEngine
@@ -49,6 +50,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
           }
           return
         }
+        
+        // 字符处理
         ivc.insertText(value)
         if value.count > 1 {
           keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)

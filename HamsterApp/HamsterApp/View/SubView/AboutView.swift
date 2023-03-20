@@ -14,7 +14,18 @@ struct AboutView: View {
   @EnvironmentObject
   var rimeEngine: RimeEngine
 
+  let infoDictionary = Bundle.main.infoDictionary ?? [:]
+
+  var appVersion: String {
+    infoDictionary["CFBundleShortVersionString"] as? String ?? ""
+  }
+
+  var rimeVersion: String {
+    infoDictionary["rimeVersion"] as? String ?? ""
+  }
+
   @State var isLoading = false
+  @State var loadingText = ""
   @State var rimeError: Error?
 
   var body: some View {
@@ -23,33 +34,48 @@ struct AboutView: View {
         Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
         VStack {
-          Button {
-            // TODO: 缺少日志显示
-            isLoading = true
-            DispatchQueue.global(qos: .background).async {
-              var err: Error?
-              do {
-                try RimeEngine.initAppGroupUserDataDirectory(override: true)
-                rimeEngine.deploy()
-              } catch {
-                err = error
+          SectionView("应用信息") {
+            VStack {
+              HStack {
+                Text("版本号: \(appVersion)")
+                Spacer()
               }
-              DispatchQueue.main.async {
-                rimeError = err
-                isLoading = false
-                appSettings.rimeNeedOverrideUserDataDirectory = true
+              HStack {
+                Text("RIME: \(rimeVersion)")
+                Spacer()
               }
             }
-          } label: {
-            Text("RIME重置")
-              .frame(width: proxy.size.width - 40, height: 40)
-              .background(Color.HamsterCellColor)
-              .foregroundColor(Color.HamsterFontColor)
-              .cornerRadius(10)
-              .hamsterShadow()
+            .padding(.horizontal)
           }
-          .disabled(isLoading)
-          .buttonStyle(.plain)
+
+          SectionView("RIME") {
+            LongButton(
+              buttonText: "RIME重置",
+              buttonWidth: proxy.size.width - 40
+            ) {
+              loadingText = "RIME重置中, 请稍后."
+              isLoading = true
+
+              DispatchQueue.global(qos: .background).async {
+                var err: Error?
+                do {
+                  try RimeEngine.initAppGroupUserDataDirectory(override: true)
+                  rimeEngine.deploy()
+                } catch {
+                  err = error
+                  isLoading = false
+                  return
+                }
+                DispatchQueue.main.async {
+                  rimeError = err
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
+                  }
+                  appSettings.rimeNeedOverrideUserDataDirectory = true
+                }
+              }
+            }
+          }
 
           Spacer()
         }
@@ -57,7 +83,7 @@ struct AboutView: View {
         .frame(minHeight: 0, maxHeight: .infinity)
 
         if isLoading {
-          LoaderView(scaleSize: 3)
+          DotsLoadingView(text: loadingText)
         }
       }
     }

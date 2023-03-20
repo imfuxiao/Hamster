@@ -8,7 +8,6 @@
 import SwiftUI
 
 public struct DotsActivityView: View {
-  
   // MARK: - Private
   
   private let dotDelayMultiplyer = 2.0
@@ -26,15 +25,11 @@ public struct DotsActivityView: View {
   // MARK: - Body
   
   public var body: some View {
-    VStack {
+    HStack {
       Spacer()
-      HStack {
-        Spacer()
-        DotView(size: dotSize, delay: 0, color: color)
-        DotView(size: dotSize, delay: dotDelayValue, color: color)
-        DotView(size: dotSize, delay: dotDelayMultiplyer * dotDelayValue, color: color)
-        Spacer()
-      }
+      DotView(size: dotSize, delay: 0, color: color)
+      DotView(size: dotSize, delay: dotDelayValue, color: color)
+      DotView(size: dotSize, delay: dotDelayMultiplyer * dotDelayValue, color: color)
       Spacer()
     }
   }

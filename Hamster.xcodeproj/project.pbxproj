@@ -109,6 +109,9 @@
 		C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */; };
 		C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFB29C07C96007B6AF5 /* LibrimeKit */; };
 		C02C1EFE29C07C9E007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFD29C07C9E007B6AF5 /* LibrimeKit */; };
+		C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C6E29C83B2A00016C68 /* LongButton.swift */; };
+		C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7029C850A400016C68 /* DotsLoadingView.swift */; };
+		C0341C7329C8558E00016C68 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7229C8558E00016C68 /* SectionView.swift */; };
 		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C0458A7C29B1338700262E69 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8B2299A65AC00F8CC32 /* ContentView.swift */; };
 		C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */; };
@@ -451,6 +454,9 @@
 		C02BEB5929C32D93008487A4 /* FeedbackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
 		C02C1EFA29C07C85007B6AF5 /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
+		C0341C6E29C83B2A00016C68 /* LongButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongButton.swift; sourceTree = "<group>"; };
+		C0341C7029C850A400016C68 /* DotsLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsLoadingView.swift; sourceTree = "<group>"; };
+		C0341C7229C8558E00016C68 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
 		C03E8025296D4F4C0083E53A /* HamsterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HamsterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8028296D4F4C0083E53A /* HamsterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterApp.swift; sourceTree = "<group>"; };
 		C03E802C296D4F4D0083E53A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -928,8 +934,8 @@
 				C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */,
 				C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */,
 				C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */,
-				C0010B0129B9040B00CE4869 /* AboutView.swift */,
 				C02BEB5929C32D93008487A4 /* FeedbackView.swift */,
+				C0010B0129B9040B00CE4869 /* AboutView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -1002,11 +1008,14 @@
 		C0CDF6E629C0F9BD00CA2493 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C0341C6E29C83B2A00016C68 /* LongButton.swift */,
 				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
 				C02BEA3429C23C58008487A4 /* LoaderView.swift */,
 				C0532D1729C4A2C9001A8BE6 /* DotView.swift */,
 				C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */,
 				C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */,
+				C0341C7029C850A400016C68 /* DotsLoadingView.swift */,
+				C0341C7229C8558E00016C68 /* SectionView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1208,6 +1217,8 @@
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
 				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
+				C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */,
+				C0341C7329C8558E00016C68 /* SectionView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
 				C02BEA3529C23C58008487A4 /* LoaderView.swift in Sources */,
 				C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */,
@@ -1220,6 +1231,7 @@
 				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
+				C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
 				C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */,
 				C0458A7C29B1338700262E69 /* ContentView.swift in Sources */,
@@ -1656,7 +1668,7 @@
 			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
 			requirement = {
 				kind = exactVersion;
-				version = 0.7.9;
+				version = 0.7.10;
 			};
 		};
 		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {

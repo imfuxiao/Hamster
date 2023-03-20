@@ -15,6 +15,7 @@ public struct ContentView: View {
   @State var rimeError: Error?
   @State var showError: Bool = false
   @State var isLoading: Bool = false
+  @State var loadingText: String = ""
   var cancel: [AnyCancellable] = []
 
   // TODO: 体验功能暂未实现
@@ -30,9 +31,15 @@ public struct ContentView: View {
             Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
             ScrollView {
-              Section {
-                Button {
+              
+              // RIME区域
+              SectionView("RIME") {
+                LongButton(
+                  buttonText: "重新部署",
+                  buttonWidth: proxy.size.width - 40
+                ) {
                   // TODO: 缺少日志显示
+                  loadingText = "正在部署, 请稍后."
                   isLoading = true
                   DispatchQueue.global(qos: .background).async {
                     rimeEngine.deploy()
@@ -43,26 +50,7 @@ public struct ContentView: View {
                       }
                     }
                   }
-                } label: {
-                  Text("重新部署")
-                    .frame(width: proxy.size.width - 40, height: 40)
-                    .background(Color.HamsterCellColor)
-                    .foregroundColor(Color.HamsterFontColor)
-                    .cornerRadius(10)
-                    .hamsterShadow()
                 }
-                .disabled(isLoading)
-                .buttonStyle(.plain)
-
-              } header: {
-                HStack {
-                  Text("RIME")
-                    .font(.system(.body, design: .rounded))
-                    .fontWeight(.bold)
-                  Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.top, 20)
               }
 
               SettingView(cellWidth: proxy.size.width / 2 - 40, cellHeight: 100)
@@ -93,10 +81,7 @@ public struct ContentView: View {
             }
 
             if isLoading {
-              ZStack {
-                Color.secondary.opacity(0.3).ignoresSafeArea(.all)
-                DotsActivityView(color: .green.opacity(0.8))
-              }
+              DotsLoadingView(text: loadingText)
             }
           }
         }
@@ -163,6 +148,6 @@ struct ContentView_Previews: PreviewProvider {
 
 extension View {
   func hamsterShadow() -> some View {
-    return shadow(color: Color.HamsterShadowColor, radius: 2)
+    return shadow(color: Color.HamsterShadowColor, radius: 1)
   }
 }

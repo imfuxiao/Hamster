@@ -1,5 +1,26 @@
 import Foundation
 
+public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
+  public var id: Int {
+    return rawValue
+  }
+
+  case lightImpact
+  case mediumImpact
+  case heavyImpact
+
+  var text: String {
+    switch self {
+    case .lightImpact:
+      return "轻"
+    case .mediumImpact:
+      return "中"
+    case .heavyImpact:
+      return "强"
+    }
+  }
+}
+
 /// 应用设置配置
 
 private enum HamsterAppSettingKeys: String {
@@ -20,7 +41,8 @@ private enum HamsterAppSettingKeys: String {
 
   // 是否开启键盘震动
   case enableKeyboardFeedbackHaptic = "app.keyboard.feedback.haptic"
-  
+  case keyboardFeedbackHapticIntensity = "app.keyboard.feedback.hapticIntensity"
+
   // 是否显示键盘收起按键
   case showKeyboardDismissButton = "app.keyboard.showDismissButton"
 
@@ -45,6 +67,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.slideBySpaceButton.rawValue: true,
       HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue: false,
+      HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue: HapticIntensity.mediumImpact.rawValue,
       HamsterAppSettingKeys.showKeyboardDismissButton.rawValue: true,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
@@ -58,6 +81,7 @@ public class HamsterAppSettings: ObservableObject {
     self.slideBySapceButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.slideBySpaceButton.rawValue)
     self.enableKeyboardFeedbackSound = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue)
     self.enableKeyboardFeedbackHaptic = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
+    self.keyboardFeedbackHapticIntensity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
     self.showKeyboardDismissButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
     self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
@@ -118,7 +142,16 @@ public class HamsterAppSettings: ObservableObject {
         enableKeyboardFeedbackHaptic, forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
     }
   }
-  
+
+  // 键盘震动强度
+  @Published
+  var keyboardFeedbackHapticIntensity: Int {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        keyboardFeedbackHapticIntensity, forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
+    }
+  }
+
   // 是否显示键盘收起键
   @Published
   var showKeyboardDismissButton: Bool {
