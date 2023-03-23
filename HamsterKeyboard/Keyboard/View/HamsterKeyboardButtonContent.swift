@@ -10,29 +10,67 @@ import SwiftUI
 
 struct HamsterKeyboardActionButtonContent: View {
   /**
-     Create a system keyboard button content view.
+   Create a system keyboard button content view.
 
-     - Parameters:
-     - action: The action for which to generate content.
-     - appearance: The appearance to apply to the content.
-     - context: The context to use when resolving content.
-     */
+   - Parameters:
+   - action: The action for which to generate content.
+   - appearance: The appearance to apply to the content.
+   - context: The context to use when resolving content.
+   */
   public init(
-    buttonExtendCharacter: [String: String],
     action: KeyboardAction,
     appearance: KeyboardAppearance,
-    context: KeyboardContext
+    keyboardContext: KeyboardContext,
+    appSettings: HamsterAppSettings
   ) {
-    self.buttonExtendCharacter = buttonExtendCharacter
     self.action = action
     self.appearance = appearance
-    self.context = context
+    self.keyboardContext = keyboardContext
+    self.appSettings = appSettings
+
+    let translateFuctionText = { (name: String) -> String in
+      if name.hasPrefix("#"), let slidFunction = SlideFuction(rawValue: name) {
+        return slidFunction.text
+      }
+      return name
+    }
+
+    var buttonExtendCharacter: [String: String] = [:]
+    for (fullKey, fullValue) in appSettings.keyboardUpAndDownSlideSymbol {
+      var key = fullKey
+      let value = translateFuctionText(fullValue)
+      let suffix = String(key.removeLast())
+      
+      // 上划
+      if suffix == KeyboardConstant.Character.SlideUp {
+        if let dictValue = buttonExtendCharacter[key] {
+          buttonExtendCharacter[key] = "\(value) \(dictValue)"
+        } else {
+          buttonExtendCharacter[key] = value
+        }
+        continue
+      }
+
+      // 下划
+      if suffix == KeyboardConstant.Character.SlideDown {
+        if let dictValue = buttonExtendCharacter[key] {
+          buttonExtendCharacter[key] = "\(dictValue) \(value)"
+        } else {
+          buttonExtendCharacter[key] = value
+        }
+      }
+    }
+    self.buttonExtendCharacter = buttonExtendCharacter
   }
 
-  var buttonExtendCharacter: [String: String]
+  private let keyboardContext: KeyboardContext
   private let action: KeyboardAction
   private let appearance: KeyboardAppearance
-  private let context: KeyboardContext
+  private let appSettings: HamsterAppSettings
+  private let buttonExtendCharacter: [String: String]
+
+  @EnvironmentObject
+  var rimeEngine: RimeEngine
 
   public var body: some View {
     bodyContent
@@ -41,9 +79,9 @@ struct HamsterKeyboardActionButtonContent: View {
   }
 }
 
-extension HamsterKeyboardActionButtonContent {
+private extension HamsterKeyboardActionButtonContent {
   @ViewBuilder
-  fileprivate var bodyContent: some View {
+  var bodyContent: some View {
     #if os(iOS) || os(tvOS)
       if action == .nextKeyboard {
         NextKeyboardButton { bodyView }
@@ -56,7 +94,7 @@ extension HamsterKeyboardActionButtonContent {
   }
 
   @ViewBuilder
-  fileprivate var bodyView: some View {
+  var bodyView: some View {
     if action == .space {
       spaceView
     } else if let image = appearance.buttonImage(for: action) {
@@ -68,38 +106,34 @@ extension HamsterKeyboardActionButtonContent {
     }
   }
 
-  fileprivate var spaceView: some View {
-    SystemKeyboardSpaceContent(
-      localeText: shouldShowLocaleName ? localeName : spaceText,
-      spaceView: SystemKeyboardButtonText(
-        text: spaceText,
-        action: .space
-      )
-    )
+  var spaceView: some View {
+    ZStack {
+      VStack {
+        if rimeEngine.asciiMode {
+          Text("英文")
+            .transition(.opacity)
+        } else {
+          Text(rimeEngine.simplifiedChineseMode ? "繁中" : "简中")
+            .transition(.opacity)
+        }
+      }
+    }
   }
 
-  fileprivate func textView(for text: String) -> some View {
+  func textView(for text: String) -> some View {
     HamsterKeyboardButtonText(
       buttonExtendCharacter: buttonExtendCharacter,
       text: text,
       isInputAction: action.isInputAction,
-      showExtendArea: context.keyboardType.isAlphabetic
+      showExtendArea: appSettings.enableKeyboardUpAndDownSlideSymbol
     )
     .padding(3)
     .minimumScaleFactor(0.6)
   }
 }
 
-extension HamsterKeyboardActionButtonContent {
-  fileprivate var localeName: String {
-    context.locale.localizedLanguageName ?? ""
-  }
-
-  fileprivate var shouldShowLocaleName: Bool {
-    context.locales.count > 1
-  }
-
-  fileprivate var spaceText: String {
+private extension HamsterKeyboardActionButtonContent {
+  var spaceText: String {
     appearance.buttonText(for: action) ?? ""
   }
 }

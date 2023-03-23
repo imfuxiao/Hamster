@@ -14,8 +14,6 @@
 	<string>3       #</string>
 	<key>f</key>
 	<string>/      繁</string>
-	<key>g</key>
-	<string> ↑     ↓</string>
 	<key>h</key>
 	<string>&quot; &quot;</string>
 	<key>i</key>
@@ -27,7 +25,7 @@
 	<key>l</key>
 	<string>{ }</string>
 	<key>m</key>
-	<string>↵      ⇥</string>
+	<string>⇥</string>
 	<key>n</key>
 	<string> .       。</string>
 	<key>o</key>
@@ -53,6 +51,6 @@
 	<key>y</key>
 	<string>6       ^</string>
 	<key>z</key>
-	<string>`</string>
+	<string>⇤</string>
 </dict>
 </plist>

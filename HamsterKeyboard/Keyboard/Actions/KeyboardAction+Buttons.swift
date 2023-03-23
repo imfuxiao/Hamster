@@ -15,15 +15,10 @@ public extension KeyboardAction {
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.hamsterButtonText(for: context.locale)
     case .space:
-      var text = KKL10n.space.hamsterText(for: context)
-      #if DEBUG
-        text = "Hamster Test"
-      #endif
-      return text
+      return KKL10n.space.hamsterText(for: context)
+    // 自定义按键显示文字
     case .custom(let name):
-      // TODO: 自定义按键显示文字
-      let customButton = KeyboardConstant.CustomButton(rawValue: name)
-      return customButton?.buttonText
+      return name
     default: return nil
     }
   }

@@ -2,6 +2,14 @@ import Foundation
 import KeyboardKit
 
 class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
+  let appSettings: HamsterAppSettings
+
+  init(inputSetProvider: InputSetProvider, appSettings: HamsterAppSettings) {
+    self.appSettings = appSettings
+
+    super.init(inputSetProvider: inputSetProvider)
+  }
+
   // MARK: - Overrides
 
   // 新增九宫格键盘类型
@@ -17,13 +25,16 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   }
 
   /**
-     Get keyboard actions for the `inputs` and `context`.
+   Get keyboard actions for the `inputs` and `context`.
 
-     Note that `inputs` is an input set and does not contain
-     the bottommost space key row, which we therefore append.
-     */
+   Note that `inputs` is an input set and does not contain
+   the bottommost space key row, which we therefore append.
+   */
   override func actions(for inputs: InputSetRows, context: KeyboardContext) -> KeyboardActionRows {
-    let actions = super.actions(for: inputs, context: context)
+//    let actions = super.actions(for: inputs, context: context)
+//    let characters =
+    
+    let actions = KeyboardActionRows(characters: actionCharacters(for: inputs, context: context))
 
     // 九宫格布局
     if actions.count == 4, context.isGridViewKeyboardType {
@@ -55,9 +66,20 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     result.append(
       topLeadingActions(for: actions, context: context) + actions[0]
         + topTrailingActions(for: actions, context: context))
+
+    // 根据个性配置添加自定义按键
+    var middleAction = KeyboardActions()
+    if appSettings.showKeyboardSelectSecondChoiceButton {
+      middleAction.append(KeyboardAction.custom(
+        named: KeyboardConstant.CustomButton.SelectSecondChoiceButton(
+          selectSecondChoice: appSettings.keyboardSelectSecondChoiceButtonValue)
+          .buttonText)
+      )
+    }
     result.append(
-      middleLeadingActions(for: actions, context: context) + actions[1]
-        + middleTrailingActions(for: actions, context: context))
+      middleLeadingActions(for: actions, context: context) + actions[1] + middleAction +
+        middleTrailingActions(for: actions, context: context))
+
     result.append(
       lowerLeadingActions(for: actions, context: context) + actions[2]
         + lowerTrailingActions(for: actions, context: context))
@@ -65,13 +87,31 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     return result
   }
 
+//  /**
+//   Additional trailing actions to apply to the middle row.
+//   */
+//  override func middleTrailingActions(
+//    for actions: KeyboardActionRows,
+//    context: KeyboardContext) -> KeyboardActions
+//  {
+//    var result: [KeyboardAction] = []
+//    if appSettings.showKeyboardSelectSecondChoiceButton {
+//      result.append(.custom(
+//        named: KeyboardConstant.CustomButton.SelectSecondChoiceButton(
+//          selectSecondChoice: appSettings.keyboardSelectSecondChoiceButtonValue)
+//          .buttonText)
+//      )
+//    }
+//    return result
+//  }
+
   /**
-     Get the keyboard layout item width of a certain `action`
-     for the provided `context`, `row` and row `index`.
-     */
+   Get the keyboard layout item width of a certain `action`
+   for the provided `context`, `row` and row `index`.
+   */
   override func itemSizeWidth(
-    for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext
-  ) -> KeyboardLayoutItemWidth {
+    for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemWidth
+  {
     switch action {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character:
@@ -90,8 +130,8 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   // MARK: - iPhone Specific
 
   /**
-     Get the actions of the bottommost space key row.
-     */
+   Get the actions of the bottommost space key row.
+   */
   override func bottomActions(for context: KeyboardContext) -> KeyboardActions {
     var result = KeyboardActions()
 
@@ -107,8 +147,14 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     // emojis键盘
     // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
 
-    // TODO: 底部添加自定义功能键
-//    result.append(.custom(named: KeyboardConstant.CustomButton.Wildcard.rawValue))
+    // 底部根据配置, 添加自定义功能键
+    if appSettings.showKeyboardReverseLookupButton {
+      result.append(.custom(
+        named: KeyboardConstant.CustomButton.ReverseLookupButton(
+          reverseLookup: appSettings.keyboardReverseLookupButtonValue)
+          .buttonText)
+      )
+    }
     result.append(.space)
 
     // 根据当前上下文显示不同功能的回车键
@@ -118,47 +164,47 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   }
 }
 
-extension HamsteriPhoneKeyboardLayoutProvider {
-  fileprivate func isExpectedActionSet(_ actions: KeyboardActionRows) -> Bool {
-    actions.count == 3
+private extension HamsteriPhoneKeyboardLayoutProvider {
+  func isExpectedActionSet(_ actions: KeyboardActionRows) -> Bool {
+    actions.count >= 3
   }
 
   /**
-     屏幕方向: 是否纵向
-     */
-  fileprivate func isPortrait(_ context: KeyboardContext) -> Bool {
+   屏幕方向: 是否纵向
+   */
+  func isPortrait(_ context: KeyboardContext) -> Bool {
     context.interfaceOrientation.isPortrait
   }
 
   /**
-     The width of the last numeric/symbolic row input button.
-     */
-  fileprivate func lastSymbolicInputWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
+   The width of the last numeric/symbolic row input button.
+   */
+  func lastSymbolicInputWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
     .percentage(0.14)
   }
 
   /**
-     Whether or not a certain row is the last input row in a
-     numeric or symbolic keyboard.
-     */
-  fileprivate func isLastNumericInputRow(_ row: Int, for context: KeyboardContext) -> Bool {
+   Whether or not a certain row is the last input row in a
+   numeric or symbolic keyboard.
+   */
+  func isLastNumericInputRow(_ row: Int, for context: KeyboardContext) -> Bool {
     let isNumeric = context.keyboardType == .numeric
     let isSymbolic = context.keyboardType == .symbolic
     guard isNumeric || isSymbolic else { return false }
-    return row == 2  // Index 2 is the "wide keys" row
+    return row == 2 // Index 2 is the "wide keys" row
   }
 }
 
 // MARK: - KeyboardContext Extension
 
-extension KeyboardContext {
+private extension KeyboardContext {
   /// This function makes the context checks above shorter.
-  fileprivate func `is`(_ locale: KeyboardLocale) -> Bool {
+  func `is`(_ locale: KeyboardLocale) -> Bool {
     hasKeyboardLocale(locale)
   }
 
   /// This function makes the context checks above shorter.
-  fileprivate func isAlphabetic(_ locale: KeyboardLocale) -> Bool {
+  func isAlphabetic(_ locale: KeyboardLocale) -> Bool {
     hasKeyboardLocale(locale) && keyboardType.isAlphabetic
   }
 }

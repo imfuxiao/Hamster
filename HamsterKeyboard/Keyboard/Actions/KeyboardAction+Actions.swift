@@ -139,20 +139,8 @@ extension KeyboardAction {
         return newLineAction
       }
     case .shift(let currentState):
-      return { hamsterInputViewController in
+      return { _ in
         {
-          // MARK: Shift键做为小鹤双形通配符
-
-          if let rimeEngine = hamsterInputViewController?.rimeEngine {
-            let inputKey = rimeEngine.getInputKeys()
-            if !inputKey.isEmpty {
-              if rimeEngine.inputKey(KeyboardConstant.KeySymbol.QuoteLeft.rawValue) {
-                rimeEngine.userInputKey.append(KeyboardConstant.KeySymbol.QuoteLeft.string())
-              }
-              return
-            }
-          }
-
           switch currentState {
           case .lowercased: $0?.setKeyboardType(.alphabetic(.uppercased))
           case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
@@ -181,34 +169,29 @@ extension KeyboardAction {
         return spaceAction
       }
     case .tab: return { _ in { $0?.insertText(.tab) } }
+    // TODO: 自定义按键动作处理
     case .custom(let name):
-      // TODO: 自定义按键动作处理
-      if let customButton = KeyboardConstant.CustomButton(rawValue: name) {
-        return { hamsterInputViewController in
-          guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
-            return { _ in }
+      return { hamsterInputViewController in
+        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return { _ in } }
+        if rimeEngine.inputKey(name) {
+          // 唯一码直接上屏
+          let commitText = rimeEngine.getCommitText()
+          if !commitText.isEmpty {
+            rimeEngine.rest()
+            return { $0?.insertText(commitText) }
           }
-          if rimeEngine.inputKey(customButton.buttonText) {
-            // 唯一码直接上屏
-            let commitText = rimeEngine.getCommitText()
-            if !commitText.isEmpty {
-              rimeEngine.rest()
-              return { $0?.insertText(commitText) }
-            }
 
-            let status = rimeEngine.status()
-            // 不存在候选字
-            if !status.isComposing {
-              rimeEngine.rest()
-            } else {
-              rimeEngine.userInputKey = rimeEngine.getInputKeys()
-            }
-            return { _ in }
+          let status = rimeEngine.status()
+          // 不存在候选字
+          if !status.isComposing {
+            rimeEngine.rest()
+          } else {
+            rimeEngine.userInputKey = rimeEngine.getInputKeys()
           }
           return { _ in }
         }
+        return { _ in }
       }
-      return nil
     default: return nil
     }
   }

@@ -31,24 +31,11 @@ struct AlphabetKeyboard: View {
   @EnvironmentObject
   private var appSettings: HamsterAppSettings
 
-  var skinExtend: [String: String]
-
   init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
     self.keyboardInputViewController = ivc
-    self.skinExtend = ivc.skinExtend.strDict
     self.layoutProvider = ivc.keyboardLayoutProvider
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
-  }
-
-  @ViewBuilder
-  func buttonContent(item: KeyboardLayoutItem) -> some View {
-    HamsterKeyboardActionButtonContent(
-      buttonExtendCharacter: skinExtend,
-      action: item.action,
-      appearance: appearance,
-      context: keyboardContext
-    )
   }
 
   var keyboard: some View {
@@ -64,7 +51,12 @@ struct AlphabetKeyboard: View {
       width: width,
       buttonView: { layoutItem, keyboardWidth, inputWidth in
         SystemKeyboardButtonRowItem(
-          content: buttonContent(item: layoutItem),
+          content: HamsterKeyboardActionButtonContent(
+            action: layoutItem.action,
+            appearance: appearance,
+            keyboardContext: keyboardContext,
+            appSettings: appSettings
+          ),
           item: layoutItem,
           actionHandler: actionHandler,
           keyboardContext: keyboardContext,
@@ -98,7 +90,7 @@ struct AlphabetKeyboard: View {
 
                 if appSettings.showKeyboardDismissButton {
                   Image(systemName: "chevron.down.circle.fill")
-                    .font(.system(size: 30))
+                    .font(.system(size: 26))
                     .foregroundColor(Color.gray)
                     .frame(width: 25, height: 25)
                     .padding(.trailing, 15)

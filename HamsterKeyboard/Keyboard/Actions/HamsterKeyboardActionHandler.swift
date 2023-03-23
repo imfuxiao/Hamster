@@ -9,7 +9,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
   // 字符滑动处理
   let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { ivc in
-    let actionConfig: [String: String] = ivc.actionExtend.strDict
+    let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
     let rimeEngine = ivc.rimeEngine
     let keyboardContext = ivc.keyboardContext
 
@@ -25,14 +25,13 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
         // TODO: 以#开头为功能
         if value.hasPrefix("#"), value.count > 1 {
-          let function = KeyboardConstant.Fuction(rawValue: value)
+          let function = SlideFuction(rawValue: value)
           switch function {
           case .SimplifiedTraditionalSwitch:
-            let status = rimeEngine.status()
-            _ = rimeEngine.simplifiedChineseMode(status.isSimplified)
+            rimeEngine.simplifiedChineseMode.toggle()
+            _ = rimeEngine.simplifiedChineseMode(rimeEngine.simplifiedChineseMode)
           case .ChineseEnglishSwitch:
-            let status = rimeEngine.status()
-            _ = rimeEngine.asciiMode(!status.isASCIIMode)
+            rimeEngine.asciiMode.toggle()
           case .SelectSecond:
             let status = rimeEngine.status()
             if status.isComposing {
@@ -45,12 +44,28 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
                 rimeEngine.rest()
               }
             }
+          case .BeginOfSentence:
+            if let beforInput = keyboardContext.textDocumentProxy.documentContextBeforeInput {
+              if let lastIndex = beforInput.lastIndex(of: "\n") {
+                let offset = beforInput[lastIndex ..< beforInput.endIndex].count - 1
+                if offset > 0 {
+                  keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -offset)
+                }
+              } else {
+                keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -beforInput.count)
+              }
+            }
+          case .EndOfSentence:
+            let offset = keyboardContext.textDocumentProxy.documentContextAfterInput?.count ?? 0
+            if offset > 0 {
+              keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: offset)
+            }
           default:
             break
           }
           return
         }
-        
+
         // 字符处理
         ivc.insertText(value)
         if value.count > 1 {

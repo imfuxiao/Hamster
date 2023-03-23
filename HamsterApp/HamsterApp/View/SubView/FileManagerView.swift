@@ -27,6 +27,8 @@ struct FileManagerView: View {
         Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
         VStack(alignment: .center) {
           VStack(alignment: .leading) {
+            Text("注意: 此功能需要开启局域网权限. 因需使用局域上传个人输入方案.")
+              .font(.system(size: 18, weight: .bold, design: .rounded))
             if wifiEnable {
               Group {
                 Text("1. 请在与您手机处与同一局域网内的PC浏览器上打开下面的IP地址.")
@@ -102,9 +104,7 @@ struct FileManagerView: View {
           monitor.start(queue: queue)
         }
         .onDisappear {
-          if isBoot {
-            fileServer.shutdown()
-          }
+          fileServer.shutdown()
           monitor.cancel()
         }
       }

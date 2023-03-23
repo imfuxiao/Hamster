@@ -26,12 +26,14 @@
 	<string>/</string>
 	<key>f↓</key>
 	<string>#繁简切换</string>
-	<key>g↓</key>
-	<string></string>
-	<key>h↑</key>
+	<key>g↑</key>
 	<string>&quot;&quot;</string>
-	<key>h↓</key>
+	<key>g↓</key>
 	<string>“”</string>
+	<key>h↑</key>
+	<string>《》</string>
+	<key>h↓</key>
+	<string></string>
 	<key>i↑</key>
 	<string>8</string>
 	<key>i↓</key>
@@ -39,19 +41,19 @@
 	<key>j↑</key>
 	<string>&lt;&gt;</string>
 	<key>j↓</key>
-	<string>《》</string>
+	<string></string>
 	<key>k↑</key>
 	<string>[]</string>
 	<key>k↓</key>
-	<string>「」</string>
+	<string></string>
 	<key>l↑</key>
 	<string>{}</string>
 	<key>l↓</key>
-	<string>『』</string>
+	<string></string>
 	<key>m↑</key>
-	<string>#行首</string>
-	<key>m↓</key>
 	<string>#行尾</string>
+	<key>m↓</key>
+	<string></string>
 	<key>n↑</key>
 	<string>.</string>
 	<key>n↓</key>
@@ -101,6 +103,8 @@
 	<key>y↓</key>
 	<string>^</string>
 	<key>z↑</key>
-	<string>`</string>
+	<string>#行首</string>
+	<key>z↓</key>
+	<string></string>
 </dict>
 </plist>

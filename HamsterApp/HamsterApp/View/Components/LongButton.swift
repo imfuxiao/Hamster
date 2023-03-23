@@ -61,7 +61,7 @@ struct LongButton_Preview: PreviewProvider {
       ) {
         isShow.toggle()
       }
-      .padding(.horizontal)
+//      .padding(.horizontal)
       .alert(isPresented: $isShow, content: {
         Alert(title: Text("测试"))
       })

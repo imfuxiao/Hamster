@@ -10,12 +10,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
   public var appSettings = HamsterAppSettings()
 
-  @PlistWrapper(path: Bundle.main.url(forResource: "DefaultSkinExtend", withExtension: "plist")!)
-  public var skinExtend: Plist
-
-  @PlistWrapper(path: Bundle.main.url(forResource: "DefaultAction", withExtension: "plist")!)
-  public var actionExtend: Plist
-
   var cancel = Set<AnyCancellable>()
 
   override public func viewDidLoad() {
@@ -80,7 +74,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       }
       .store(in: &self.cancel)
 
-    
     // 注意初始化的顺序
     self.keyboardAppearance = HamsterKeyboardAppearance(
       keyboardContext: self.keyboardContext,
@@ -90,7 +83,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
       keyboardContext: self.keyboardContext,
-      inputSetProvider: self.inputSetProvider
+      inputSetProvider: self.inputSetProvider,
+      appSettings: self.appSettings
     )
 
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
@@ -109,7 +103,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       settings: self.keyboardFeedbackSettings,
       appSettings: self.appSettings
     )
-    
+
     self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
     self.calloutContext = KeyboardCalloutContext(
       action: HamsterActionCalloutContext(
@@ -145,20 +139,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     //        setup(with: HamsterKeyboard(controler: self))
 
     //        alphabetKeyboard.observer()
-  }
-}
-
-extension Plist {
-  var strDict: [String: String] {
-    var extend: [String: String] = [:]
-    if let dict = dict {
-      for (key, value) in dict {
-        if let value = value as? String {
-          extend[(key as! String).lowercased()] = value
-        }
-      }
-    }
-    return extend
   }
 }
 

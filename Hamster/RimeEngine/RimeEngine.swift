@@ -60,6 +60,12 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   @Published
   var deployState: RimeDeployStatus = .none
 
+  @Published
+  var simplifiedChineseMode: Bool = true
+
+  @Published
+  var asciiMode: Bool = false
+
   public static let shared: RimeEngine = .init()
   private init() {}
 
@@ -190,7 +196,7 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
 }
 
 public extension RimeEngine {
-  private func createTraits(sharedSupportDir: String, userDataDir: String) -> IRimeTraits {
+  func createTraits(sharedSupportDir: String, userDataDir: String) -> IRimeTraits {
     let traits = IRimeTraits()
     traits.sharedDataDir = sharedSupportDir
     traits.userDataDir = userDataDir
@@ -209,9 +215,19 @@ public extension RimeEngine {
     rimeAPI.setup(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
   }
 
+  func setupRime(_ traits: IRimeTraits) {
+    setNotificationDelegate(self)
+    rimeAPI.setup(traits)
+  }
+
+  func deployInstallRime(_ traits: IRimeTraits) {
+    rimeAPI.deployerInitialize(traits)
+  }
+
   func startRime(fullCheck: Bool = false) {
     rimeAPI.start(nil, withFullCheck: fullCheck)
     session = rimeAPI.session()
+    simplifiedChineseMode = status().isSimplified
   }
 
   func deploy(fullCheck: Bool = true) {
@@ -230,11 +246,14 @@ public extension RimeEngine {
   }
 
   func isAsciiMode() -> Bool {
-    return rimeAPI.getOption(session, andOption: asciiModeKey)
+    return asciiMode
+//    return rimeAPI.getOption(session, andOption: asciiModeKey)
   }
 
   func asciiMode(_ value: Bool) -> Bool {
-    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
+    asciiMode = value
+    return asciiMode
+//    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
   }
 
   func isSimplifiedMode() -> Bool {

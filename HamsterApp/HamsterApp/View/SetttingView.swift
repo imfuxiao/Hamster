@@ -14,8 +14,8 @@ struct SettingView: View {
   @EnvironmentObject
   var rimeEngine: RimeEngine
 
-  var cellWidth: CGFloat
-  var cellHeight: CGFloat
+  let cellWidth: CGFloat
+  let cellHeight: CGFloat
 
   // TODO: 目前配置项少, 先在这里固定生成每个配置项页面
   var cells: [CellView<AnyView>] {
@@ -29,7 +29,7 @@ struct SettingView: View {
           AnyView(InputSchemaView())
         }
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -39,7 +39,7 @@ struct SettingView: View {
           AnyView(ColorSchemaView())
         }
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -49,7 +49,7 @@ struct SettingView: View {
           AnyView(FeedbackView())
         }
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -59,7 +59,7 @@ struct SettingView: View {
           AnyView(FileManagerView())
         }
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -67,7 +67,7 @@ struct SettingView: View {
         featureName: "按键气泡",
         toggle: $appSetting.showKeyPressBubble
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -75,7 +75,7 @@ struct SettingView: View {
         featureName: "键盘收起键",
         toggle: $appSetting.showKeyboardDismissButton
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -83,7 +83,7 @@ struct SettingView: View {
         featureName: "繁体中文",
         toggle: $appSetting.switchTraditionalChinese
       ),
-
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -91,8 +91,27 @@ struct SettingView: View {
         featureName: "空格滑动",
         toggle: $appSetting.slideBySapceButton
       ),
+    
+      CellView(
+        width: cellWidth,
+        height: cellHeight,
+        imageName: "gear",
+        featureName: "输入功能键",
+        navgationDestinationBuilder: {
+          AnyView(InputkeyFuctionView())
+        }
+      ),
       
-
+      CellView(
+        width: cellWidth,
+        height: cellHeight,
+        imageName: "arrow.up.arrow.down",
+        featureName: "上下滑动输入数字符号",
+        navgationDestinationBuilder: {
+          AnyView(UpAndDownSlideInputSymbolView())
+        }
+      ),
+    
       CellView(
         width: cellWidth,
         height: cellHeight,
@@ -109,8 +128,10 @@ struct SettingView: View {
     SectionView("设置") {
       LazyVGrid(
         columns: [
-          GridItem(.adaptive(minimum: 150)),
+          GridItem(.flexible()),
+          GridItem(.flexible()),
         ],
+        alignment: .center,
         spacing: 20
       ) {
         ForEach(0 ..< cells.count, id: \.self) {

@@ -1,5 +1,35 @@
 import Foundation
 
+enum SlideFuction: String, CaseIterable, Equatable, Identifiable {
+  var id: Self {
+    self
+  }
+
+  case SimplifiedTraditionalSwitch = "#繁简切换"
+  case ChineseEnglishSwitch = "#中英切换"
+  case BeginOfSentence = "#行首"
+  case EndOfSentence = "#行尾"
+  case SelectSecond = "#次选上屏"
+  case none = "无"
+
+  var text: String {
+    switch self {
+    case .SimplifiedTraditionalSwitch:
+      return "繁"
+    case .ChineseEnglishSwitch:
+      return "英"
+    case .BeginOfSentence:
+      return "⇤"
+    case .EndOfSentence:
+      return "⇥"
+    case .SelectSecond:
+      return "次"
+    default:
+      return ""
+    }
+  }
+}
+
 public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
   public var id: Int {
     return rawValue
@@ -46,6 +76,16 @@ private enum HamsterAppSettingKeys: String {
   // 是否显示键盘收起按键
   case showKeyboardDismissButton = "app.keyboard.showDismissButton"
 
+  // 是否显示反查键
+  case showKeyboardReverseLookupButton = "app.keyboard.showReverseLookupButton"
+  // 反查键键值
+  case keyboardReverseLookupButtonValue = "app.keyboard.reverseLookupValue"
+
+  // 是否显示次选上屏键
+  case showKeyboardSelectSecondChoiceButton = "app.keyboard.showSelectSecondChoiceButton"
+  // 次选键键值
+  case keyboardSelectSecondChoiceButtonValue = "app.keyboard.selectSecondChoiceButtonValue"
+
   // rime 输入方案
   case rimeInputSchema = "rime.inputSchema"
 
@@ -55,6 +95,10 @@ private enum HamsterAppSettingKeys: String {
 
   // rime 是否需要重新同步用户目录
   case rimeNeedOverrideUserDataDirectory = "rime.needOverrideUserDataDirectory"
+
+  // 键盘上下滑动符号
+  case enablekeyboardUpAndDownSlideSymbol = "keyboard.enableUpAndDownSlideSymbol"
+  case keyboardUpAndDownSlideSymbol = "keyboard.upAndDownSlideSymbol"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -69,10 +113,16 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue: false,
       HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue: HapticIntensity.mediumImpact.rawValue,
       HamsterAppSettingKeys.showKeyboardDismissButton.rawValue: true,
+      HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue: false,
+      HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue: "`",
+      HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue: false,
+      HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue: ";",
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
       HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue: false,
+      HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue: true,
+      HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue: [:]
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -83,10 +133,16 @@ public class HamsterAppSettings: ObservableObject {
     self.enableKeyboardFeedbackHaptic = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
     self.keyboardFeedbackHapticIntensity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
     self.showKeyboardDismissButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
+    self.showKeyboardReverseLookupButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue)
+    self.keyboardReverseLookupButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue) ?? ""
+    self.showKeyboardSelectSecondChoiceButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue)
+    self.keyboardSelectSecondChoiceButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue) ?? ""
     self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
     self.rimeNeedOverrideUserDataDirectory = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
+    self.enableKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue)
+    self.keyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue) as! [String: String]
   }
 
   // App是否首次运行
@@ -161,6 +217,42 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
+  // 是否显示反查键
+  @Published
+  var showKeyboardReverseLookupButton: Bool {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        showKeyboardReverseLookupButton, forKey: HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue)
+    }
+  }
+
+  // 反查键键值
+  @Published
+  var keyboardReverseLookupButtonValue: String {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        keyboardReverseLookupButtonValue, forKey: HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue)
+    }
+  }
+
+  // 是否显示次选按键
+  @Published
+  var showKeyboardSelectSecondChoiceButton: Bool {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        showKeyboardSelectSecondChoiceButton, forKey: HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue)
+    }
+  }
+
+  // 次选按键键值
+  @Published
+  var keyboardSelectSecondChoiceButtonValue: String {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        keyboardSelectSecondChoiceButtonValue, forKey: HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue)
+    }
+  }
+
   // Rime: 输入方案
   @Published
   var rimeInputSchema: String {
@@ -193,7 +285,24 @@ public class HamsterAppSettings: ObservableObject {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
         rimeNeedOverrideUserDataDirectory, forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
-      UserDefaults.hamsterSettingsDefault.synchronize()
+    }
+  }
+
+  // 键盘: 上下滑动符号
+
+  @Published
+  var enableKeyboardUpAndDownSlideSymbol: Bool {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue)
+    }
+  }
+
+  @Published
+  var keyboardUpAndDownSlideSymbol: [String: String] {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        keyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue)
     }
   }
 }

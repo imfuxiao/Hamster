@@ -7,7 +7,7 @@
 
 import Foundation
 
-let maxCandidateCount = 20
+let maxCandidateCount = 50
 
 extension RimeEngine {
   var suggestions: [HamsterSuggestion] {

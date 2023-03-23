@@ -31,7 +31,6 @@ public struct ContentView: View {
             Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
             ScrollView {
-              
               // RIME区域
               SectionView("RIME") {
                 LongButton(
@@ -53,7 +52,10 @@ public struct ContentView: View {
                 }
               }
 
-              SettingView(cellWidth: proxy.size.width / 2 - 40, cellHeight: 100)
+              SettingView(
+                cellWidth: (proxy.size.width - 40) / 2 - 10,
+                cellHeight: 100
+              )
 
               Spacer()
 
@@ -70,7 +72,7 @@ public struct ContentView: View {
               .padding(.bottom, 50)
             }
             .navigationTitle(
-              "Hamster输入法"
+              "仓输入法"
             )
             .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $showError) {

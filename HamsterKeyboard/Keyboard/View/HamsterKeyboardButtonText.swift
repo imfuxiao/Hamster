@@ -10,29 +10,32 @@ import SwiftUI
 
 struct HamsterKeyboardButtonText: View {
   /**
-     Create a system keyboard button text view.
+   Create a system keyboard button text view.
 
-     - Parameters:
-     - text: The text to display.
-     - action: The action bound to the button.
-     */
+   - Parameters:
+   - text: The text to display.
+   - action: The action bound to the button.
+   */
   public init(
     buttonExtendCharacter: [String: String],
     text: String,
     action: KeyboardAction
   ) {
     self.init(
-      buttonExtendCharacter: buttonExtendCharacter, text: text, isInputAction: action.isInputAction,
-      showExtendArea: false)
+      buttonExtendCharacter: buttonExtendCharacter,
+      text: text,
+      isInputAction: action.isInputAction,
+      showExtendArea: false
+    )
   }
 
   /**
-     Create a system keyboard button text view.
+   Create a system keyboard button text view.
 
-     - Parameters:
-     - text: The text to display.
-     - isInputAction: Whether or not the action bound to the button is an input action.
-     */
+   - Parameters:
+   - text: The text to display.
+   - isInputAction: Whether or not the action bound to the button is an input action.
+   */
   public init(
     buttonExtendCharacter: [String: String],
     text: String,
@@ -40,7 +43,8 @@ struct HamsterKeyboardButtonText: View {
   ) {
     self.init(
       buttonExtendCharacter: buttonExtendCharacter, text: text, isInputAction: isInputAction,
-      showExtendArea: false)
+      showExtendArea: false
+    )
   }
 
   public init(
@@ -67,12 +71,15 @@ struct HamsterKeyboardButtonText: View {
     return VStack(alignment: .leading, spacing: 0) {
       if count >= 2 {
         HStack(spacing: 0) {
-          Text(texts[0]).font(.system(size: 8))
+          Text(texts[0])
           Spacer()
-          Text(texts[1]).font(.system(size: 8))
+          Text(texts[1])
         }
+        .font(.system(size: 9))
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
       } else if count == 1 {
-        Text(texts[0]).font(.system(size: 8))
+        Text(texts[0]).font(.system(size: 9))
       } else {
         Text(" ")
       }
@@ -92,16 +99,16 @@ struct HamsterKeyboardButtonText: View {
         VStack(spacing: 0) {
           Text(text)
             .lineLimit(1)
-            .offset(y: useNegativeOffset ? -2 : 0)
-            .font(.system(size: 18))
+            .offset(y: 1)
+            .font(.system(size: 22))
         }
       }
     }
   }
 }
 
-extension HamsterKeyboardButtonText {
-  fileprivate var useNegativeOffset: Bool {
+private extension HamsterKeyboardButtonText {
+  var useNegativeOffset: Bool {
     isInputAction && text.isLowercased
   }
 }

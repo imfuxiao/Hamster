@@ -5,11 +5,12 @@
 //  Created by morse on 10/1/2023.
 //
 
+import Plist
 import SwiftUI
 
 @main
 struct HamsterApp: App {
-  let appSetings = HamsterAppSettings()
+  let appSettings = HamsterAppSettings()
   let rimeEngine = RimeEngine.shared
   @State var launchScreenState = true
 
@@ -22,31 +23,42 @@ struct HamsterApp: App {
           ContentView()
         }
       }
+      .onOpenURL { url in
+        // TODO:
+        print(url)
+      }
       .onAppear {
         DispatchQueue.main.async {
-          if appSetings.isFirstLaunch {
+          // 检测应用是否首次加载
+          if appSettings.isFirstLaunch {
+            // 加载系统默认配置上下滑动符号
+            appSettings.keyboardUpAndDownSlideSymbol = Plist.defaultAction
+
+            // RIME首次启动需要将输入方案copy到AppGroup共享目录下供Keyboard使用
             do {
               try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
               try RimeEngine.initAppGroupUserDataDirectory(override: true)
             } catch {
-              appSetings.isFirstLaunch = true
+              appSettings.isFirstLaunch = true
               // TODO: 日志处理
               fatalError("unresolved error: \(error), \(error.localizedDescription)")
             }
-            appSetings.isFirstLaunch = false
+            appSettings.isFirstLaunch = false
           }
 
+          // RIME启动
           rimeEngine.setupRime(
             sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-          )
+            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path)
           rimeEngine.startRime()
-          DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+
+          // 启动屏延迟
+          DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             launchScreenState = false
           }
         }
       }
-      .environmentObject(appSetings)
+      .environmentObject(appSettings)
       .environmentObject(rimeEngine)
     }
   }

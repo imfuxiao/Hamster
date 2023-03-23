@@ -100,8 +100,9 @@ struct CellView<SubView: View>: View {
   var titleView: some View {
     HStack(spacing: 0) {
       Text(featureName)
-        .font(.system(.body, design: .rounded))
-        .fontWeight(.bold)
+        .font(.system(size: 16, weight: .bold, design: .rounded))
+        .lineLimit(1)
+        .minimumScaleFactor(0.6)
         .foregroundColor(Color.HamsterFontColor)
 
       if showSubView {
