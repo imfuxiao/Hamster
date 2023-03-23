@@ -21,6 +21,9 @@ struct FileManagerView: View {
   @State var localIP: String = ""
   @State var wifiEnable: Bool = true
 
+  @EnvironmentObject
+  var rimeEngine: RimeEngine
+
   var body: some View {
     GeometryReader { proxy in
       ZStack {
@@ -36,7 +39,7 @@ struct FileManagerView: View {
           .padding(.horizontal)
 
           VStack(alignment: .leading) {
-            Text("注意: 此功能需要开启局域网权限. 因需使用局域上传个人输入方案.")
+            Text("注意: 此功能需要开启WiFi网络访问权限(只需Wifi即可, 无需移动网络权限). 因需使用局域上传个人输入方案.")
               .font(.system(size: 18, weight: .bold, design: .rounded))
             if wifiEnable {
               Group {
@@ -49,7 +52,7 @@ struct FileManagerView: View {
                 Text("")
                 Text("2. 将您的个人输入方案上传至文件夹内")
                 Text("")
-                Text("修改完毕请务必点击重新部署, 否则方案不会生效.")
+                Text("上传完毕请务必点击主菜单中的\"重新部署\", 否则方案不会生效.")
               }
               .font(.system(size: 18, weight: .bold, design: .rounded))
               .foregroundColor(.primary)
@@ -77,6 +80,8 @@ struct FileManagerView: View {
         }
         .frame(width: proxy.size.width, height: proxy.size.height)
         .onAppear {
+          rimeEngine.shutdownRime()
+
           let localIPs = UIDevice.current.localIP()
           if localIPs.count == 1 {
             localIP = localIPs[0].1
@@ -101,6 +106,7 @@ struct FileManagerView: View {
           monitor.start(queue: queue)
         }
         .onDisappear {
+          rimeEngine.startRime()
           fileServer.shutdown()
           monitor.cancel()
         }

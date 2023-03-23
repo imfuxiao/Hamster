@@ -39,22 +39,25 @@ struct InputSchemaView: View {
 
         List {
           ForEach(schemas) { schema in
-            HStack {
-              Image(systemName: "checkmark")
-                .font(.system(size: 16, weight: .heavy))
-                .foregroundColor(.green)
-                .opacity(isSelect(schema) ? 1 : 0)
-
-              Text(schema.schemaName)
-                .font(.system(.body, design: .rounded))
-
-              Spacer()
-            }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .frame(minHeight: 0, maxHeight: .infinity)
-            .onTapGesture {
+            Button {
               appSetting.rimeInputSchema = schema.schemaId
+            } label: {
+              HStack {
+                Image(systemName: "checkmark")
+                  .font(.system(size: 16, weight: .heavy))
+                  .foregroundColor(.green)
+                  .opacity(isSelect(schema) ? 1 : 0)
+
+                Text(schema.schemaName)
+                  .font(.system(.body, design: .rounded))
+
+                Spacer()
+              }
+              .frame(minWidth: 0, maxWidth: .infinity)
+              .frame(minHeight: 0, maxHeight: .infinity)
+              .contentShape(Rectangle(), eoFill: true)
             }
+            .buttonStyle(.plain)
           }
         }
         .padding(.top, 20)

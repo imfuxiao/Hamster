@@ -238,6 +238,10 @@ public extension RimeEngine {
     }
   }
 
+  func shutdownRime() {
+    rimeAPI.shutdown()
+  }
+
   func rest() {
     DispatchQueue.main.async { [weak self] in
       self?.userInputKey = ""
