@@ -17,8 +17,7 @@ struct InputkeyFuctionView: View {
       VStack {
         HStack {
           Text("输入功能键设置")
-            .font(.system(.title3, design: .rounded))
-            .fontWeight(.bold)
+            .font(.system(size: 30, weight: .black))
           Spacer()
         }
         .padding(.horizontal)

@@ -25,8 +25,7 @@ struct ColorSchemaView: View {
     VStack {
       HStack {
         Text("配色方案")
-          .font(.system(.title, design: .rounded))
-          .fontWeight(.black)
+          .font(.system(size: 30, weight: .black))
 
         Spacer()
       }

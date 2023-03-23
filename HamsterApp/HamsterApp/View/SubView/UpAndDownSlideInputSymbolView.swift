@@ -60,13 +60,11 @@ struct UpAndDownSlideInputSymbolView: View {
       VStack {
         HStack {
           Text("上下滑动输入数字符号")
-            .font(.system(.title3, design: .rounded))
-            .fontWeight(.bold)
+            .font(.system(size: 30, weight: .black))
 
           Spacer()
         }
         .padding(.horizontal)
-        .padding(.top, 20)
 
         VStack {
           HStack {

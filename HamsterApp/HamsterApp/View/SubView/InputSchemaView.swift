@@ -31,8 +31,7 @@ struct InputSchemaView: View {
       VStack {
         HStack {
           Text("输入方案")
-            .font(.system(.title3, design: .rounded))
-            .fontWeight(.bold)
+            .font(.system(size: 30, weight: .black))
 
           Spacer()
         }

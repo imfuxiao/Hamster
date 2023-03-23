@@ -18,8 +18,7 @@ struct FeedbackView: View {
       VStack {
         HStack {
           Text("键盘反馈")
-            .font(.system(.title3, design: .rounded))
-            .fontWeight(.bold)
+            .font(.system(size: 30, weight: .black))
 
           Spacer()
         }

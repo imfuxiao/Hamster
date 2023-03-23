@@ -6,4 +6,7 @@ enum AppConstants {
   // 预先构建的数据目录中
   static let rimeSharedSupportPathName = "SharedSupport"
   static let rimeUserPathName = "Rime"
+
+  // 注意: 此值需要与info.plist中的参数保持一致
+  static let appURL = "hamster://dev.fuxiao.app.hamster"
 }

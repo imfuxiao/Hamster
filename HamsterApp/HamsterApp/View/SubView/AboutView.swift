@@ -34,6 +34,14 @@ struct AboutView: View {
         Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
         VStack {
+          HStack {
+            Text("关于")
+              .font(.system(size: 30, weight: .black))
+
+            Spacer()
+          }
+          .padding(.horizontal)
+
           SectionView("应用信息") {
             VStack {
               HStack {

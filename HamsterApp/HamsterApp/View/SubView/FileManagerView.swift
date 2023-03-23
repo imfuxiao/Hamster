@@ -25,7 +25,16 @@ struct FileManagerView: View {
     GeometryReader { proxy in
       ZStack {
         Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
-        VStack(alignment: .center) {
+
+        VStack {
+          HStack {
+            Text("文件快传")
+              .font(.system(size: 30, weight: .black))
+
+            Spacer()
+          }
+          .padding(.horizontal)
+
           VStack(alignment: .leading) {
             Text("注意: 此功能需要开启局域网权限. 因需使用局域上传个人输入方案.")
               .font(.system(size: 18, weight: .bold, design: .rounded))
@@ -50,27 +59,15 @@ struct FileManagerView: View {
                 .foregroundColor(.primary)
             }
           }
-          .padding(.top, 120)
+          .padding(.top, 30)
           .padding(.leading, 10)
 
-          Spacer()
-
-          Button {
+          LongButton(buttonText: !isBoot ? "启动" : "停止") {
             isBoot.toggle()
             if isBoot {
               fileServer.start()
             } else {
               fileServer.shutdown()
-            }
-          } label: {
-            VStack {
-              Text(!isBoot ? "启动" : "停止")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .frame(width: proxy.size.width - 40, height: 40)
-                .background(Color.HamsterCellColor)
-                .foregroundColor(Color.HamsterFontColor)
-                .cornerRadius(10)
-                .hamsterShadow()
             }
           }
           .padding(.top, 30)

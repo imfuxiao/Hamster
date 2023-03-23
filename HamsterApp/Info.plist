@@ -6,12 +6,12 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>MainView</string>
+			<string>dev.fuxiao.app.hamster</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>dev.fuxiao.app.Hamster</string>
+				<string>hamster</string>
 			</array>
 		</dict>
 	</array>
