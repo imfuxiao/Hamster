@@ -15,7 +15,7 @@ schema:
       * Chewing - 新酷音
       * opencc - 開放中文轉換
   dependencies:
-    - stroke
+    #- stroke
 
 switches:
   - name: ascii_mode
@@ -47,7 +47,7 @@ engine:
   translators:
     - punct_translator
     - table_translator@custom_phrase
-    - reverse_lookup_translator
+    #- reverse_lookup_translator
     - script_translator
   filters:
     - simplifier

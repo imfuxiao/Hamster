@@ -1,11 +1,11 @@
 __build_info:
-  rime_version: 1.8.5
+  rime_version: 1.7.3
   timestamps:
-    default: 1675621991
+    default: 1679383333
     default.custom: 0
-    key_bindings: 1675621991
+    key_bindings: 1679383333
     key_bindings.custom: 0
-    punctuation: 1675621991
+    punctuation: 1679383333
     punctuation.custom: 0
 ascii_composer:
   good_old_caps_lock: true
@@ -127,13 +127,10 @@ recognizer:
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 schema_list:
   - schema: luna_pinyin
-  - schema: luna_pinyin_simp
   - schema: luna_pinyin_fluency
-  - schema: bopomofo
-  - schema: bopomofo_tw
-  - schema: cangjie5
-  - schema: stroke
-  - schema: terra_pinyin
+  - schema: luna_pinyin_simp
+  - schema: luna_pinyin_tw
+  - schema: luna_quanpin
 switcher:
   abbreviate_options: true
   caption: "〔方案選單〕"

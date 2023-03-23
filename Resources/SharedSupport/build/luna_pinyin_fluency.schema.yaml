@@ -1,21 +1,20 @@
 __build_info:
-  rime_version: 1.8.5
+  rime_version: 1.7.3
   timestamps:
-    default: 1675621991
+    default: 1679383333
     default.custom: 0
-    grammar: 1675621991
-    grammar.custom: 0
-    key_bindings: 1675621991
+    grammar: 0
+    key_bindings: 1679383333
     key_bindings.custom: 0
     luna_pinyin.custom: 0
-    luna_pinyin.schema: 1675621991
+    luna_pinyin.schema: 1679383333
     luna_pinyin_fluency.custom: 0
-    luna_pinyin_fluency.schema: 1675621991
-    pinyin: 1675621991
+    luna_pinyin_fluency.schema: 1679383333
+    pinyin: 1679383333
     pinyin.custom: 0
-    punctuation: 1675621991
+    punctuation: 1679383333
     punctuation.custom: 0
-    symbols: 1675621991
+    symbols: 1679383333
     symbols.custom: 0
 custom_phrase:
   db_class: stabledb
@@ -46,10 +45,7 @@ engine:
   translators:
     - punct_translator
     - "table_translator@custom_phrase"
-    - reverse_lookup_translator
     - script_translator
-grammar:
-  language: "zh-hant-t-essay-bgw"
 key_binder:
   bindings:
     - {accept: "Control+p", send: Up, when: composing}
@@ -379,8 +375,6 @@ reverse_lookup:
 schema:
   author:
     - "佛振 <chen.sst@gmail.com>"
-  dependencies:
-    - stroke
   description: |
     朙月拼音·語句流錄入！
     以空格分詞、標點或回車上屏。
@@ -415,10 +409,7 @@ switches:
   - name: ascii_punct
     states: ["。，", "．，"]
 translator:
-  contextual_suggestions: true
   dictionary: luna_pinyin
-  max_homographs: 7
-  max_homophones: 7
   preedit_format:
     - "xform/([nl])v/$1ü/"
     - "xform/([nl])ue/$1üe/"

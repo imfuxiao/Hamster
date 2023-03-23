@@ -10,3 +10,6 @@ librime: init
 	cd Packages/LibrimeKit && git submodule update --init
 	$(MAKE) -C Packages/LibrimeKit boost-build
 	$(MAKE) -C Packages/LibrimeKit librime-build
+
+minimal:
+	bash ./minimal-build.sh

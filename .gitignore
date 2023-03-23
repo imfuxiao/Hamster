@@ -4,3 +4,5 @@
 .netrc
 /lib
 .vscode
+.plum
+.deps

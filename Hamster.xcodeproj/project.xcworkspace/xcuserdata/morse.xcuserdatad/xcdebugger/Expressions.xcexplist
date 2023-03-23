@@ -45,6 +45,14 @@
          contextName = "CharacterSlideGestureHandler.handleDragGesture(action:from:to:):CharacterSlideGestureHandler.swift">
       </ContextState>
       <ContextState
+         contextName = "closure #1 in closure #1 in variable initialization expression of HamsterKeyboardActionHandler.characterGragAction:HamsterKeyboardActionHandler.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "keyboardContext.textDocumentProxy.documentContextBeforeInput!.lastSentence">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
          contextName = "HamsterKeyboardActionHandler.action(for:on:):HamsterKeyboardActionHandler.swift">
       </ContextState>
       <ContextState
@@ -108,6 +116,9 @@
       </ContextState>
       <ContextState
          contextName = "CharacterSlideGestureHandler.init(context:config:sensitivity:):CharacterSlideGestureHandler.swift">
+      </ContextState>
+      <ContextState
+         contextName = "HamsteriPhoneKeyboardLayoutProvider.actions(for:context:):iPhoneKeyboardLayoutProvider.swift">
       </ContextState>
       <ContextState
          contextName = "KeyboardAction.hamsterStanderAction(for:):KeyboardAction+Actions.swift">

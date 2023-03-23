@@ -6,7 +6,7 @@ __include: luna_pinyin.schema:/
 schema:
   schema_id: luna_pinyin_tw
   name: 朙月拼音·臺灣正體
-  version: "0.20"
+  version: "0.20.minimal"
   author:
     - 佛振 <chen.sst@gmail.com>
   description: |
