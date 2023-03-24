@@ -108,7 +108,7 @@ extension KeyboardAction {
           }
           return { _ in }
         } else {
-          print("rime engine input character \(char) error.")
+          log.error("rime engine input character \(char) error.")
           rimeEngine.rest()
         }
         return insertCharAction

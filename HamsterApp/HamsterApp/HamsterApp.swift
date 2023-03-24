@@ -7,11 +7,14 @@
 
 import Plist
 import SwiftUI
+import SwiftyBeaver
 
 @main
 struct HamsterApp: App {
   let appSettings = HamsterAppSettings()
   let rimeEngine = RimeEngine.shared
+  let log = Logger.shared.log
+
   @State var launchScreenState = true
 
   var body: some Scene {
@@ -24,8 +27,7 @@ struct HamsterApp: App {
         }
       }
       .onOpenURL { url in
-        // TODO:
-        print(url)
+        log.debug("open url: \(url)")
       }
       .onAppear {
         DispatchQueue.main.async {
@@ -40,7 +42,7 @@ struct HamsterApp: App {
               try RimeEngine.initAppGroupUserDataDirectory(override: true)
             } catch {
               appSettings.isFirstLaunch = true
-              // TODO: 日志处理
+              log.error("rime init file drectory error: \(error), \(error.localizedDescription)")
               fatalError("unresolved error: \(error), \(error.localizedDescription)")
             }
             appSettings.isFirstLaunch = false

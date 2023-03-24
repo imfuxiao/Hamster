@@ -5,6 +5,8 @@ import LibrimeKit
 import Plist
 import UIKit
 
+let log = Logger.shared.log
+
 /// 键盘ViewController
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
@@ -23,8 +25,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
     } catch {
       // TODO: RIME 异常启动处理
-      print("create rime directory error: ")
-      print(error.localizedDescription)
+      log.error("create rime directory error: \(error), \(error.localizedDescription)")
+      fatalError(error.localizedDescription)
     }
 
     self.rimeEngine.setupRime(
@@ -36,7 +38,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.appSettings.$switchTraditionalChinese
       .receive(on: RunLoop.main)
       .sink {
-        print("-----------\n combine traditionalMode \($0)")
+        log.info("combine $switchTraditionalChinese \($0)")
         _ = self.rimeEngine.simplifiedChineseMode($0)
       }
       .store(in: &self.cancel)
@@ -44,7 +46,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.appSettings.$showKeyPressBubble
       .receive(on: RunLoop.main)
       .sink {
-        print("-----------\n combine showKeyPressBubble \($0)")
+        log.info("combine $showKeyPressBubble \($0)")
         self.calloutContext.input.isEnabled = $0
       }
       .store(in: &self.cancel)
@@ -52,11 +54,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.appSettings.$rimeNeedOverrideUserDataDirectory
       .receive(on: RunLoop.main)
       .sink {
+        log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
         if $0 {
           do {
             try RimeEngine.syncAppGroupUserDataDirectory(override: true)
           } catch {
-            print(error)
+            log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
           }
           self.rimeEngine.deploy(fullCheck: false)
         }
@@ -68,7 +71,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .sink {
         if !$0.isEmpty {
           if !self.rimeEngine.setSchema($0) {
-            print("rime engine set schema false")
+            log.error("rime engine set schema \($0) error")
           }
         }
       }

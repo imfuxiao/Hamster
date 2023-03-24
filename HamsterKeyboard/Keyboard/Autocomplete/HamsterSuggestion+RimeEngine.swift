@@ -16,7 +16,6 @@ extension RimeEngine {
     }
 
     let candidates = self.candidateListWithIndex(index: 0, andCount: maxCandidateCount)
-    print(candidates)
     if candidates.isEmpty {
       return []
     }

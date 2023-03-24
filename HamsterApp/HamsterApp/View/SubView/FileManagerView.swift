@@ -13,7 +13,7 @@ import UIKit
 struct FileManagerView: View {
   let fileServer = FileServer(
     port: 80,
-    publicDirectory: RimeEngine.appGroupUserDataDirectoryURL
+    publicDirectory: RimeEngine.shareURL
   )
   let monitor: NWPathMonitor = .init(requiredInterfaceType: .wifi)
 

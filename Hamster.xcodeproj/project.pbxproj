@@ -81,6 +81,10 @@
 		C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C6D29B3C42F00C27D42 /* SetttingView.swift */; };
 		C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */; };
 		C07A61D329C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07A61D129C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift */; };
+		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
+		C07C1A1E29CD4C3F00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1D29CD4C3F00FD0572 /* SwiftyBeaver */; };
+		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
+		C07C1A2229CD88FD00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
 		C099464329B27FF8007FD3CA /* InputSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464229B27FF8007FD3CA /* InputSet.swift */; };
 		C099464629B28625007FD3CA /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
 		C0A301BC29C992E800C29E35 /* TWVariants.ocd2 in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C0A3019929C992CC00C29E35 /* TWVariants.ocd2 */; };
@@ -363,6 +367,7 @@
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C07A61D129C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HamsterSuggestion+RimeEngine.swift"; sourceTree = "<group>"; };
+		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C099464229B27FF8007FD3CA /* InputSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSet.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C0A300CE29C986A700C29E35 /* squirrel.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = squirrel.yaml; sourceTree = "<group>"; };
@@ -438,6 +443,7 @@
 			files = (
 				C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */,
 				C04FA9A1299A6F3900F8CC32 /* KeyboardKit in Frameworks */,
+				C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */,
 				C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */,
 				C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */,
 			);
@@ -450,6 +456,7 @@
 				C04FA97E299A6D3000F8CC32 /* Plist in Frameworks */,
 				C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */,
 				C02C1EFE29C07C9E007B6AF5 /* LibrimeKit in Frameworks */,
+				C07C1A1E29CD4C3F00FD0572 /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,6 +568,7 @@
 		C04FA8AB299A65AB00F8CC32 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C07C1A1F29CD6B5E00FD0572 /* Logger */,
 				C037B60E29CBD50200B1BBDC /* Plist */,
 				C02BEA3829C26027008487A4 /* Persistent */,
 				C04FA8AC299A65AC00F8CC32 /* Settings */,
@@ -815,6 +823,14 @@
 			path = SharedSupport;
 			sourceTree = "<group>";
 		};
+		C07C1A1F29CD6B5E00FD0572 /* Logger */ = {
+			isa = PBXGroup;
+			children = (
+				C07C1A2029CD6B6D00FD0572 /* Logger.swift */,
+			);
+			path = Logger;
+			sourceTree = "<group>";
+		};
 		C099464129B27F6E007FD3CA /* Input */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,6 +969,7 @@
 				C04FA9A0299A6F3900F8CC32 /* KeyboardKit */,
 				C02C1EF429BFDB7B007B6AF5 /* iFilemanager */,
 				C02C1EFB29C07C96007B6AF5 /* LibrimeKit */,
+				C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* HamsterApp.app */;
@@ -975,6 +992,7 @@
 				C04FA97B299A6C8200F8CC32 /* KeyboardKit */,
 				C04FA97D299A6D3000F8CC32 /* Plist */,
 				C02C1EFD29C07C9E007B6AF5 /* LibrimeKit */,
+				C07C1A1D29CD4C3F00FD0572 /* SwiftyBeaver */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
@@ -1042,6 +1060,7 @@
 				C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */,
 				C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */,
 				C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */,
+				C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -1096,6 +1115,7 @@
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
 				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
+				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
 				C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */,
 				C0341C7329C8558E00016C68 /* SectionView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
@@ -1127,6 +1147,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C07C1A2229CD88FD00FD0572 /* Logger.swift in Sources */,
 				C037B61129CBD55C00B1BBDC /* Plist.swift in Sources */,
 				C020AD4929B73DD600B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0458AA629B133DC00262E69 /* AppSettings.swift in Sources */,
@@ -1567,6 +1588,14 @@
 				version = 7.0.0;
 			};
 		};
+		C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1606,6 +1635,16 @@
 		C06197FC29A35A5F004DF94F /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LibrimeKit;
+		};
+		C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		C07C1A1D29CD4C3F00FD0572 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

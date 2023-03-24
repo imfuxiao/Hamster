@@ -9,7 +9,7 @@ import Foundation
 
 extension RimeEngine {
   // AppGroup共享目录
-  private static var shareURL: URL {
+  public static var shareURL: URL {
     FileManager.default.containerURL(
       forSecurityApplicationGroupIdentifier: AppConstants.appGroupName)!
   }
