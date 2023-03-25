@@ -30,8 +30,7 @@ struct FeedbackView: View {
           HStack {
             Toggle(isOn: $appSettings.enableKeyboardFeedbackSound) {
               Text("声音")
-                .font(.system(.body, design: .rounded))
-                .fontWeight(.bold)
+                .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
           .padding([.all], 15)
@@ -46,15 +45,13 @@ struct FeedbackView: View {
             HStack {
               Toggle(isOn: $appSettings.enableKeyboardFeedbackHaptic) {
                 Text("触感")
-                  .font(.system(.body, design: .rounded))
-                  .fontWeight(.bold)
+                  .font(.system(size: 16, weight: .bold, design: .rounded))
               }
             }
             if appSettings.enableKeyboardFeedbackHaptic {
               HStack {
                 Text("触感强度")
-                  .font(.system(.body, design: .rounded))
-                  .fontWeight(.bold)
+                  .font(.system(size: 16, weight: .bold, design: .rounded))
                 Spacer()
                 Picker("触感强度", selection: $hapticIntensity) {
                   ForEach(HapticIntensity.allCases) {

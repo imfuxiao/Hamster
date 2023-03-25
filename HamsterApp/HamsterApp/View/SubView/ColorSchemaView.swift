@@ -37,8 +37,7 @@ struct ColorSchemaView: View {
         HStack {
           Toggle(isOn: $appSetting.enableRimeColorSchema) {
             Text("启用配色")
-              .font(.system(.body, design: .rounded))
-              .fontWeight(.bold)
+              .font(.system(size: 16, weight: .bold, design: .rounded))
           }
         }
         .padding(.horizontal)

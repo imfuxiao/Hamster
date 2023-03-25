@@ -24,8 +24,7 @@ struct SectionView<Content: View>: View {
     } header: {
       HStack {
         Text(title)
-          .font(.system(.body, design: .rounded))
-          .fontWeight(.bold)
+          .font(.system(size: 18, weight: .bold, design: .rounded))
         Spacer()
       }
       .padding(.horizontal)

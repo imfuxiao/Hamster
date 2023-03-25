@@ -27,8 +27,7 @@ struct InputkeyFuctionView: View {
           HStack {
             Toggle(isOn: $appSettings.showKeyboardReverseLookupButton) {
               Text("启用反查键(空格左边)")
-                .font(.system(.body, design: .rounded))
-                .fontWeight(.bold)
+                .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
           if appSettings.showKeyboardReverseLookupButton {
@@ -59,8 +58,7 @@ struct InputkeyFuctionView: View {
           HStack {
             Toggle(isOn: $appSettings.showKeyboardSelectSecondChoiceButton) {
               Text("次选上屏键(回车键上方)")
-                .font(.system(.body, design: .rounded))
-                .fontWeight(.bold)
+                .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
           if appSettings.showKeyboardSelectSecondChoiceButton {
