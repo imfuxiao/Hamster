@@ -51,7 +51,7 @@ extension KeyboardAction {
 
         rimeEngine.userInputKey.removeLast()
         if !rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
-          NSLog("rime engine input backspace key error")
+          Logger.shared.log.error("rime engine input backspace key error")
           rimeEngine.rest()
         }
         return { _ in }
@@ -108,7 +108,7 @@ extension KeyboardAction {
           }
           return { _ in }
         } else {
-          log.error("rime engine input character \(char) error.")
+          Logger.shared.log.error("rime engine input character \(char) error.")
           rimeEngine.rest()
         }
         return insertCharAction

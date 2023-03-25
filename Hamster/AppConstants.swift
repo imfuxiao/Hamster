@@ -12,8 +12,8 @@ enum AppConstants {
   // 注意: 此值需要与info.plist中的参数保持一致
   static let appURL = "hamster://dev.fuxiao.app.hamster"
 
-  // 日志文件URL
-  static let logFileURL = FileManager.default.containerURL(
-    forSecurityApplicationGroupIdentifier: AppConstants.appGroupName)!
-    .appendingPathComponent("Hamster.log")
+  // 应用日志文件URL
+  static let logFileURL = FileManager.default
+    .containerURL(forSecurityApplicationGroupIdentifier: AppConstants.appGroupName)!
+    .appendingPathComponent("HamsterApp.log")
 }

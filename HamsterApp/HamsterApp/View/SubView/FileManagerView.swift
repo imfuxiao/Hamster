@@ -74,7 +74,7 @@ struct FileManagerView: View {
             }
           }
           .padding(.top, 30)
-          .disabled(wifiEnable == false)
+//          .disabled(wifiEnable == false)
 
           Spacer()
         }
@@ -106,6 +106,7 @@ struct FileManagerView: View {
           monitor.start(queue: queue)
         }
         .onDisappear {
+          self.isBoot = false
           rimeEngine.startRime()
           fileServer.shutdown()
           monitor.cancel()

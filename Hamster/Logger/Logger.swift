@@ -9,30 +9,45 @@ import Foundation
 import SwiftyBeaver
 
 public class Logger {
-  public static let shared: Logger = .init()
+  public static let shared: Logger = .init(AppConstants.logFileURL)
 
   public let log: SwiftyBeaver.Type
 
   private var stderrPipe = Pipe()
 
-  private init() {
+  public init(_ fileURL: URL) {
     let log = SwiftyBeaver.self
-    // 日志初始化
+
+    // 控制台
     let console = ConsoleDestination()
     console.format = "$DHH:mm:ss$d $L $M"
-
-    let file = FileDestination(logFileURL: AppConstants.logFileURL)
-
-    #if DEBUG
-      file.minLevel = .debug
-    #else
-      file.minLevel = .info
-    #endif
-
     log.addDestination(console)
-    log.addDestination(file)
 
-    log.debug(["log path": AppConstants.logFileURL.path])
+    // 判断是否有权限读写日志文件: 扩展键盘需要完全访问权限才能读写AppGroup下日志文件
+    var logFileWriteable = false
+    let fm = FileManager.default
+    if !fm.fileExists(atPath: fileURL.path) {
+      if fm.createFile(atPath: fileURL.path, contents: nil) {
+        logFileWriteable = true
+      }
+    } else {
+      logFileWriteable = FileManager.default.isWritableFile(atPath: fileURL.path)
+    }
+
+    if logFileWriteable {
+      // 默认: 日志文件数量为1. 文件大小为5M
+      let file = FileDestination(logFileURL: fileURL)
+      #if DEBUG
+        file.minLevel = .debug
+      #else
+        file.minLevel = .info
+      #endif
+      log.addDestination(file)
+    } else {
+      log.error("log file cannot writeable. file: \(fileURL.path)")
+    }
+
+    log.debug(["log path": fileURL.path])
 
     // 将依赖库中stderr中日志同步到日志库中
     setvbuf(stderr, nil, _IONBF, 0)

@@ -1569,7 +1569,7 @@
 			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
 			requirement = {
 				kind = exactVersion;
-				version = 0.7.13;
+				version = 0.7.14;
 			};
 		};
 		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {

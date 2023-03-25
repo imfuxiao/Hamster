@@ -211,8 +211,7 @@ public extension RimeEngine {
   }
 
   func setupRime(sharedSupportDir: String, userDataDir: String) {
-    setNotificationDelegate(self)
-    rimeAPI.setup(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
+    setupRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
   }
 
   func setupRime(_ traits: IRimeTraits) {
@@ -273,35 +272,35 @@ public extension RimeEngine {
 
 public extension RimeEngine {
   func onDelployStart() {
-    print("HamsterRimeNotification: onDelployStart")
+    Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
     DispatchQueue.main.async { [weak self] in
       self?.deployState = .Begin
     }
   }
 
   func onDeploySuccess() {
-    print("HamsterRimeNotification: onDeploySuccess")
+    Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
     if !rimeAlive() {
       DispatchQueue.main.async { [weak self] in
-        self?.rimeAPI.shutdown()
-        self?.startRime()
+        self?.session = self?.rimeAPI.session() ?? 0
+        Logger.shared.log.info("session \(String(self?.session ?? 0))")
         self?.deployState = .Success
       }
     }
   }
 
   func onDeployFailure() {
-    print("HamsterRimeNotification: onDeployFailure")
+    Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
     DispatchQueue.main.async { [weak self] in
       self?.deployState = .Failure
     }
   }
 
   func onChangeMode(_ mode: String) {
-    print("HamsterRimeNotification: onChangeMode, mode: ", mode)
+    Logger.shared.log.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
   }
 
   func onLoadingSchema(_ schema: String) {
-    print("HamsterRimeNotification: onLoadingSchema, schema: ", schema)
+    Logger.shared.log.info("HamsterRimeNotification: onLoadingSchema, schema: \(schema)")
   }
 }

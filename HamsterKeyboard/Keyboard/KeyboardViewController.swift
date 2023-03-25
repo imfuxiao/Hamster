@@ -5,27 +5,24 @@ import LibrimeKit
 import Plist
 import UIKit
 
-let log = Logger.shared.log
-
 /// 键盘ViewController
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
   public var appSettings = HamsterAppSettings()
+  private let log = Logger.shared.log
 
   var cancel = Set<AnyCancellable>()
 
   override public func viewDidLoad() {
-    #if DEBUG
-      NSLog("viewDidLoad() begin")
-    #endif
+    self.log.debug("viewDidLoad() begin")
 
     do {
       try RimeEngine.syncAppGroupSharedSupportDirectory()
       try RimeEngine.initUserDataDirectory()
-      try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
+      try RimeEngine.syncAppGroupUserDataDirectory()
     } catch {
       // TODO: RIME 异常启动处理
-      log.error("create rime directory error: \(error), \(error.localizedDescription)")
+      self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
       fatalError(error.localizedDescription)
     }
 
@@ -38,7 +35,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.appSettings.$switchTraditionalChinese
       .receive(on: RunLoop.main)
       .sink {
-        log.info("combine $switchTraditionalChinese \($0)")
+        self.log.info("combine $switchTraditionalChinese \($0)")
         _ = self.rimeEngine.simplifiedChineseMode($0)
       }
       .store(in: &self.cancel)
@@ -46,32 +43,33 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.appSettings.$showKeyPressBubble
       .receive(on: RunLoop.main)
       .sink {
-        log.info("combine $showKeyPressBubble \($0)")
+        self.log.info("combine $showKeyPressBubble \($0)")
         self.calloutContext.input.isEnabled = $0
       }
       .store(in: &self.cancel)
 
     self.appSettings.$rimeNeedOverrideUserDataDirectory
       .receive(on: RunLoop.main)
-      .sink {
-        log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
+      .sink { [weak self] in
+        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
         if $0 {
           do {
+            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
             try RimeEngine.syncAppGroupUserDataDirectory(override: true)
           } catch {
-            log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
+            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
           }
-          self.rimeEngine.deploy(fullCheck: false)
+          self?.rimeEngine.deploy(fullCheck: false)
         }
       }
       .store(in: &self.cancel)
 
     self.appSettings.$rimeInputSchema
       .receive(on: RunLoop.main)
-      .sink {
+      .sink { [weak self] in
         if !$0.isEmpty {
-          if !self.rimeEngine.setSchema($0) {
-            log.error("rime engine set schema \($0) error")
+          if !(self?.rimeEngine.setSchema($0) ?? false) {
+            self?.log.error("rime engine set schema \($0) error")
           }
         }
       }
@@ -124,15 +122,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override public func viewDidDisappear(_ animated: Bool) {
-    #if DEBUG
-      NSLog("viewDidDisappear() begin")
-    #endif
+    self.log.debug("viewDidDisappear() begin")
   }
 
   override public func viewWillSetupKeyboard() {
-    #if DEBUG
-      NSLog("viewWillSetupKeyboard() begin")
-    #endif
+    self.log.debug("viewWillSetupKeyboard() begin")
 
     let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)

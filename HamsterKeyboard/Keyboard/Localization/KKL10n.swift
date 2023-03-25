@@ -36,7 +36,7 @@ extension Bundle {
     let path = bundlePath(named: locale.identifier) ?? bundlePath(named: locale.languageCode)
 
     #if DEBUG
-    log.debug("Localization bundle path: \(path ?? "null")")
+    Logger.shared.log.debug("Localization bundle path: \(path ?? "null")")
     #endif
 
     return path
