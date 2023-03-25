@@ -107,6 +107,7 @@ public struct ContentView: View {
               openURL(URL(string: AppConstants.addKeyboardPath)!)
             }
           }
+          .ignoresSafeArea()
         }
         // TODO: 点击体验输入法(待开发)
       }
