@@ -54,7 +54,7 @@ struct SettingView: View {
         width: cellWidth,
         height: cellHeight,
         imageName: "network",
-        featureName: "文件快传",
+        featureName: "输入方案上传",
         navgationDestinationBuilder: {
           AnyView(FileManagerView())
         }

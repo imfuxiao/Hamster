@@ -37,7 +37,7 @@ struct AboutView: View {
       ZStack {
         Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
 
-        VStack {
+        ScrollView {
           HStack {
             Text("关于")
               .font(.system(size: 30, weight: .black))
@@ -154,6 +154,7 @@ struct AboutView: View {
         }
       }
     }
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

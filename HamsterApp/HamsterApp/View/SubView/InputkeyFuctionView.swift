@@ -89,6 +89,7 @@ struct InputkeyFuctionView: View {
         Spacer()
       }
     }
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

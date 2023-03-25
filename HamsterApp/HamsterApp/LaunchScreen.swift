@@ -54,9 +54,9 @@ struct LaunchScreen: View {
           self.start = UnitPoint(x: 1, y: 1)
         })
         .mask(
-          Group {
+          VStack {
             Text("仓输入法")
-            Text("powered by rime".uppercased())
+            Text("powered by 中州韻輸入法引擎(RIME)".uppercased())
               .padding(.top, 3)
           }
           .font(.system(size: 20, weight: .bold, design: .rounded))

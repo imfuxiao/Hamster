@@ -161,6 +161,7 @@ struct UpAndDownSlideInputSymbolView: View {
         .transition(.move(edge: .bottom))
       }
     }
+    .navigationBarTitleDisplayMode(.inline)
     .animation(.linear, value: appSettings.enableKeyboardUpAndDownSlideSymbol)
     .toolbar {
       ToolbarItem(placement: .navigationBarTrailing) {

@@ -22,53 +22,60 @@ struct ColorSchemaView: View {
   }
 
   var body: some View {
-    VStack {
-      HStack {
-        Text("配色方案")
-          .font(.system(size: 30, weight: .black))
+    ZStack {
+      Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
+
+      VStack {
+        HStack {
+          Text("配色方案")
+            .font(.system(size: 30, weight: .black))
+
+          Spacer()
+        }
+        .padding(.horizontal)
+
+        HStack {
+          Toggle(isOn: $appSetting.enableRimeColorSchema) {
+            Text("启用配色")
+              .font(.system(.body, design: .rounded))
+              .fontWeight(.bold)
+          }
+        }
+        .padding(.horizontal)
+
+        if appSetting.enableRimeColorSchema {
+          ScrollView {
+            ForEach(colorSchemas) { colorSchema in
+              HStack {
+                RadioButton(isSelected: isSelected(colorSchema)) {
+                  appSetting.rimeColorSchema = colorSchema.schemaName
+                }
+                WordView(colorSchema: colorSchema)
+                  .background(
+                    RoundedRectangle(cornerRadius: 15)
+                      .strokeBorder(lineWidth: 1)
+                      .foregroundColor(
+                        isSelected(colorSchema) ? .green.opacity(0.8) : Color.gray
+                      )
+                  )
+                  .onTapGesture {
+                    appSetting.rimeColorSchema = colorSchema.schemaName
+                  }
+              }
+              .padding(.horizontal)
+            }
+          }
+        }
 
         Spacer()
       }
-      .padding(.horizontal)
-
-      HStack {
-        Toggle(isOn: $appSetting.enableRimeColorSchema) {
-          Text("启用配色")
-            .font(.system(.body, design: .rounded))
-            .fontWeight(.bold)
-        }
+      .frame(minWidth: 0, maxWidth: .infinity)
+      .frame(minHeight: 0, maxHeight: .infinity)
+      .onAppear {
+        self.colorSchemas = rimeEngine.colorSchema()
       }
-      .padding(.horizontal)
-
-      if appSetting.enableRimeColorSchema {
-        ScrollView {
-          ForEach(colorSchemas) { colorSchema in
-            HStack {
-              RadioButton(isSelected: isSelected(colorSchema)) {
-                appSetting.rimeColorSchema = colorSchema.schemaName
-              }
-              WordView(colorSchema: colorSchema)
-                .background(
-                  RoundedRectangle(cornerRadius: 15)
-                    .strokeBorder(lineWidth: 3)
-                    .foregroundColor(
-                      isSelected(colorSchema) ? .green.opacity(0.8) : Color.gray
-                    )
-                    .shadow(radius: 2, x: 1, y: 1)
-                )
-            }
-            .padding(.horizontal)
-          }
-        }
-      }
-
-      Spacer()
     }
-    .frame(minWidth: 0, maxWidth: .infinity)
-    .frame(minHeight: 0, maxHeight: .infinity)
-    .onAppear {
-      self.colorSchemas = rimeEngine.colorSchema()
-    }
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 
@@ -78,17 +85,16 @@ struct WordView: View {
     VStack {
       HStack {
         Text("方案名称: " + colorSchema.schemaName)
-          .font(.system(.title2))
-          .fontWeight(.bold)
+          .font(.system(size: 16, weight: .bold))
         Spacer()
       }
       .foregroundColor(.primary)
 
       HStack {
         Text("作者: " + colorSchema.author)
-          .font(.system(.footnote))
-          .fontWeight(.heavy)
+          .font(.system(size: 16, weight: .bold))
           .lineLimit(1)
+          .minimumScaleFactor(0.5)
         Spacer()
       }
       .foregroundColor(.primary)

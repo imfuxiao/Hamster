@@ -39,6 +39,7 @@ struct LongButton: View {
       buttonAction()
     } label: {
       Text(buttonText)
+        .font(.system(size: 16, weight: .bold))
         .frame(width: buttonWidth, height: buttonHeight)
         .background(backgroundColor)
         .foregroundColor(foregroundColor)

@@ -17,6 +17,17 @@ struct FileManagerView: View {
   )
   let monitor: NWPathMonitor = .init(requiredInterfaceType: .wifi)
 
+  var remark: String { """
+  1. 请在与您手机处与同一局域网内的PC浏览器上打开下面的IP地址.
+  
+     - http://\(self.localIP)
+  
+  2. 将您的个人输入方案上传至"Rime"文件夹内.
+  3. 上传完毕请务必点击主菜单中的"重新部署", 否则方案不会生效.
+  注意: SharedSupport目录是Rime的主目录, 无非必要不要修改.
+  """
+  }
+
   @State var isBoot: Bool = false
   @State var localIP: String = ""
   @State var wifiEnable: Bool = true
@@ -31,7 +42,7 @@ struct FileManagerView: View {
 
         VStack {
           HStack {
-            Text("文件快传")
+            Text("输入方案上传")
               .font(.system(size: 30, weight: .black))
 
             Spacer()
@@ -39,80 +50,72 @@ struct FileManagerView: View {
           .padding(.horizontal)
 
           VStack(alignment: .leading) {
-            Text("注意: 此功能需要开启WiFi网络访问权限(只需Wifi即可, 无需移动网络权限). 因需使用局域上传个人输入方案.")
+            Text("注意: 此功能需要开启WiFi网络访问权限(只需Wifi即可, 无需移动网络权限).")
               .font(.system(size: 18, weight: .bold, design: .rounded))
-            if wifiEnable {
-              Group {
-                Text("1. 请在与您手机处与同一局域网内的PC浏览器上打开下面的IP地址.")
-                Text("")
-
-                Text(" - http://\(localIP)")
-                  .padding(.leading, 20)
-
-                Text("")
-                Text("2. 将您的个人输入方案上传至文件夹内")
-                Text("")
-                Text("上传完毕请务必点击主菜单中的\"重新部署\", 否则方案不会生效.")
-              }
-              .font(.system(size: 18, weight: .bold, design: .rounded))
-              .foregroundColor(.primary)
+            if self.wifiEnable {
+              Text(self.remark)
+                .font(.system(size: 18, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+                .padding(.top, 30)
             } else {
               Text("WiFi网络不可用, 请打开WiFi或开启Wifi网络访问权限")
                 .font(.system(size: 18, weight: .bold, design: .rounded))
                 .foregroundColor(.primary)
+                .padding(.top, 30)
             }
           }
           .padding(.top, 30)
           .padding(.leading, 10)
 
-          LongButton(buttonText: !isBoot ? "启动" : "停止") {
-            isBoot.toggle()
-            if isBoot {
-              fileServer.start()
+          LongButton(buttonText: !self.isBoot ? "启动" : "停止", buttonWidth: 200) {
+            self.isBoot.toggle()
+            if self.isBoot {
+              self.fileServer.start()
             } else {
-              fileServer.shutdown()
+              self.fileServer.shutdown()
             }
           }
           .padding(.top, 30)
-//          .disabled(wifiEnable == false)
+          .disabled(self.wifiEnable == false)
 
           Spacer()
         }
         .frame(width: proxy.size.width, height: proxy.size.height)
         .onAppear {
-          rimeEngine.shutdownRime()
+          self.rimeEngine.shutdownRime()
 
           let localIPs = UIDevice.current.localIP()
           if localIPs.count == 1 {
-            localIP = localIPs[0].1
+            self.localIP = localIPs[0].1
           }
-          monitor.pathUpdateHandler = { path in
+          self.monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
-              wifiEnable = true
+              self.wifiEnable = true
               for (name, ip) in localIPs {
                 let name = path.availableInterfaces
                   .map { $0.name }
                   .first { $0 == name }
                 if name != nil {
-                  localIP = ip
+                  self.localIP = ip
                 }
               }
               return
             }
-            wifiEnable = false
+            self.wifiEnable = false
           }
 
           let queue = DispatchQueue.global(qos: .background)
-          monitor.start(queue: queue)
+          self.monitor.start(queue: queue)
         }
         .onDisappear {
           self.isBoot = false
-          rimeEngine.startRime()
-          fileServer.shutdown()
-          monitor.cancel()
+          self.rimeEngine.startRime()
+          self.fileServer.shutdown()
+          self.monitor.cancel()
         }
       }
     }
+    .navigationBarTitleDisplayMode(.inline)
   }
 }
 

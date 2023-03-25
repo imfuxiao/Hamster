@@ -63,8 +63,11 @@ struct InputSchemaView: View {
         .padding(.top, 20)
         .padding(.horizontal)
         .listStyle(.plain)
+        
+        Spacer()
       }
     }
+    .navigationBarTitleDisplayMode(.inline)
     .animation(.default, value: appSetting.rimeInputSchema)
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)

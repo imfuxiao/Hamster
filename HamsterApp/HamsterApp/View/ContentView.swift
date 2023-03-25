@@ -19,16 +19,18 @@ public struct ContentView: View {
   var cancel: [AnyCancellable] = []
 
   // TODO: 体验功能暂未实现
-  @State var userExperienceState = true
-  @State var userExperienceText: String = ""
-  @State var responder = true
+//  @State var userExperienceState = true
+//  @State var userExperienceText: String = ""
+//  @State var responder = true
 
   public var body: some View {
     ZStack {
       GeometryReader { proxy in
         NavigationView {
           ZStack {
-            Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
+            Color
+              .HamsterBackgroundColor.opacity(0.1)
+              .ignoresSafeArea()
 
             ScrollView {
               // RIME区域
@@ -62,7 +64,7 @@ public struct ContentView: View {
               VStack {
                 VStack {
                   HStack {
-                    Text("powered by rime".uppercased())
+                    Text("powered by 中州韻輸入法引擎(rime)".uppercased())
                       .font(.system(.footnote, design: .rounded))
                       .foregroundColor(.secondary)
                   }
@@ -71,10 +73,6 @@ public struct ContentView: View {
               .padding(.top, 50)
               .padding(.bottom, 50)
             }
-            .navigationTitle(
-              "仓输入法"
-            )
-            .navigationBarTitleDisplayMode(.inline)
             .alert(isPresented: $showError) {
               if let error = rimeError {
                 return Alert(title: Text("部署失败"), message: Text(error.localizedDescription))
@@ -86,55 +84,14 @@ public struct ContentView: View {
               DotsLoadingView(text: loadingText)
             }
           }
+          .navigationTitle(Text("仓输入法"))
+          // ZStack End
         }
+        .navigationViewStyle(.stack)
+        // Navigation End
       }
 
-      if !userExperienceState {
-        VStack(spacing: 0) {
-          Spacer()
-          Button {
-            userExperienceState = true
-          } label: {
-            Text("点击体验输入法")
-              .font(.system(.body))
-              .fontWeight(.bold)
-              .frame(minWidth: 0, maxWidth: .infinity)
-              .frame(height: 50)
-              .foregroundColor(Color.primary)
-              .background(Color.HamsterBackgroundColor.opacity(0.6))
-          }
-        }
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .ignoresSafeArea(.all)
-      }
-
-      if !userExperienceState {
-        VStack {
-          Spacer()
-        }
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .frame(minHeight: 0, maxHeight: .infinity)
-        .background(Color.black.opacity(0.1))
-        .ignoresSafeArea(.all)
-
-        VStack {
-          Spacer()
-          HStack {
-            TextField("输入", text: $userExperienceText)
-              .textFieldStyle(.plain)
-              .background(Color.secondary.opacity(0.8))
-              .frame(minWidth: 0, maxWidth: .infinity)
-              .frame(height: 100)
-              .cornerRadius(30)
-          }
-          .padding(.horizontal)
-          .frame(minWidth: 0, maxWidth: .infinity)
-          .frame(height: 60)
-          .background(Color.primary.opacity(0.8))
-        }
-        .transition(.move(edge: .bottom))
-        .ignoresSafeArea()
-      }
+      // TODO: 点击体验输入法(待开发)
     }
   }
 }
