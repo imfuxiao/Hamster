@@ -11,6 +11,7 @@ import SwiftUI
 public struct ContentView: View {
   @EnvironmentObject var rimeEngine: RimeEngine
   @EnvironmentObject var appSettings: HamsterAppSettings
+  @Environment(\.openURL) var openURL
 
   @State var rimeError: Error?
   @State var showError: Bool = false
@@ -24,8 +25,8 @@ public struct ContentView: View {
 //  @State var responder = true
 
   public var body: some View {
-    ZStack {
-      GeometryReader { proxy in
+    GeometryReader { proxy in
+      ZStack {
         NavigationView {
           ZStack {
             Color
@@ -89,9 +90,27 @@ public struct ContentView: View {
         }
         .navigationViewStyle(.stack)
         // Navigation End
-      }
 
-      // TODO: 点击体验输入法(待开发)
+        if !appSettings.isKeyboardEnabled {
+          VStack {
+            Spacer()
+
+            HStack {
+              Text("您还未启用仓输入法, 点击跳转开启.")
+                .font(.system(size: 20, weight: .bold))
+            }
+            .frame(width: proxy.size.width, height: 80)
+            .background(Color.green)
+            .foregroundColor(.white)
+            .onTapGesture {
+              // 点击跳转设置
+              openURL(URL(string: AppConstants.addKeyboardPath)!)
+            }
+          }
+        }
+        // TODO: 点击体验输入法(待开发)
+      }
+      // ZStack end
     }
   }
 }

@@ -17,16 +17,6 @@ struct AboutView: View {
   @Environment(\.openURL)
   var openURL
 
-  let infoDictionary = Bundle.main.infoDictionary ?? [:]
-
-  var appVersion: String {
-    infoDictionary["CFBundleShortVersionString"] as? String ?? ""
-  }
-
-  var rimeVersion: String {
-    infoDictionary["rimeVersion"] as? String ?? ""
-  }
-
   @State var isLoading = false
   @State var loadingText = ""
   @State var rimeError: Error?
@@ -49,11 +39,11 @@ struct AboutView: View {
           SectionView("应用信息") {
             VStack {
               HStack {
-                Text("版本号: \(appVersion)")
+                Text("版本号: \(appSettings.appVersion)")
                 Spacer()
               }
               HStack {
-                Text("RIME: \(rimeVersion)")
+                Text("RIME: \(appSettings.rimeVersion)")
                 Spacer()
               }
             }

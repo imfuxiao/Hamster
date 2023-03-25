@@ -102,6 +102,8 @@ private enum HamsterAppSettingKeys: String {
 }
 
 public class HamsterAppSettings: ObservableObject {
+  let infoDictionary = Bundle.main.infoDictionary ?? [:]
+
   init() {
     // 选项初始值
     UserDefaults.hamsterSettingsDefault.register(defaults: [

@@ -13,10 +13,6 @@ struct FeedbackView: View {
   @Environment(\.openURL) var openURL
   @Environment(\.colorScheme) var colorScheme
 
-  var hasFullAccess: Bool {
-    UIInputViewController().hasFullAccess
-  }
-
   var body: some View {
     GeometryReader { proxy in
       ZStack {
@@ -54,7 +50,6 @@ struct FeedbackView: View {
                   .fontWeight(.bold)
               }
             }
-            if appSettings.enableKeyboardFeedbackHaptic && !hasFullAccess {}
             if appSettings.enableKeyboardFeedbackHaptic {
               HStack {
                 Text("触感强度")
@@ -81,7 +76,7 @@ struct FeedbackView: View {
           Spacer()
         }
 
-        if appSettings.enableKeyboardFeedbackHaptic && !hasFullAccess {
+        if appSettings.enableKeyboardFeedbackHaptic && !appSettings.hasFullAccess {
           BlackView(bgColor: .black.opacity(0.1))
             .onTapGesture {
               appSettings.enableKeyboardFeedbackHaptic = false
@@ -96,21 +91,27 @@ struct FeedbackView: View {
                 .foregroundColor(.primary)
                 .padding(.top, 30)
                 .padding(.horizontal, 30)
+              
+              Text("点击\"开启\"跳转系统设置, 点击\"键盘 -> 允许完全访问\", 选择\"允许\".")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.secondary)
+                .padding(.top, 5)
+                .padding(.horizontal, 30)
 
               Spacer()
 
               HStack(spacing: 60) {
                 LongButton(
                   buttonText: "取消",
-                  backgroundColor: .gray.opacity(0.5))
-                {
+                  backgroundColor: .gray
+                ) {
                   appSettings.enableKeyboardFeedbackHaptic = false
                 }
                 LongButton(
                   buttonText: "开启",
                   foregroundColor: .white,
-                  backgroundColor: .green.opacity(0.6))
-                {
+                  backgroundColor: .green
+                ) {
                   // 点击跳转设置
                   openURL(URL(string: UIApplication.openSettingsURLString)!)
                 }
@@ -132,9 +133,13 @@ struct FeedbackView: View {
       })
       .onAppear {
         hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) ?? .mediumImpact
+
+        if !appSettings.hasFullAccess {
+          appSettings.enableKeyboardFeedbackHaptic = false
+        }
       }
       .onDisappear {
-        if !hasFullAccess && appSettings.enableKeyboardFeedbackHaptic {
+        if !appSettings.hasFullAccess && appSettings.enableKeyboardFeedbackHaptic {
           appSettings.enableKeyboardFeedbackHaptic = false
         }
       }

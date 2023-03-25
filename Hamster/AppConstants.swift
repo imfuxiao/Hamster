@@ -3,6 +3,12 @@ import Foundation
 enum AppConstants {
   // AppGroup ID
   static let appGroupName = "group.dev.fuxiao.app.Hamster"
+  
+  // keyboard Bundle ID
+  static let keyboardBundleID = "dev.fuxiao.app.Hamster.HamsterKeyboard"
+  
+  // 系统添加键盘URL
+  static let addKeyboardPath = "app-settings:root=General&path=Keyboard"
 
   // 与Squirrel.app保持一致
   // 预先构建的数据目录中

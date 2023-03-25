@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */; };
 		C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010B0129B9040B00CE4869 /* AboutView.swift */; };
+		C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */; };
+		C00699FC29CE9A2300087879 /* AppSettings+Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */; };
+		C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */; };
+		C00699FF29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */; };
 		C018E6DE29C3354C00942E97 /* KeyboardFeedbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */; };
 		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
@@ -307,6 +311,8 @@
 		C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputViewController.swift; sourceTree = "<group>"; };
 		C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
 		C0010B0129B9040B00CE4869 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Permission.swift"; sourceTree = "<group>"; };
+		C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Bundle.swift"; sourceTree = "<group>"; };
 		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
 		C018E6DF29C343A900942E97 /* Color+Extent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extent.swift"; sourceTree = "<group>"; };
 		C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+File.swift"; sourceTree = "<group>"; };
@@ -582,6 +588,8 @@
 			isa = PBXGroup;
 			children = (
 				C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */,
+				C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */,
+				C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1112,6 +1120,7 @@
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
 				C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */,
 				C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */,
+				C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */,
 				C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */,
 				C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
@@ -1130,6 +1139,7 @@
 				C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */,
 				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
 				C0341D5129C89B6300016C68 /* InputkeyFuctionView.swift in Sources */,
+				C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
 				C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */,
 				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
@@ -1162,6 +1172,7 @@
 				C0458A8729B133A300262E69 /* HamsterKeyboardAppearance.swift in Sources */,
 				C0458A8829B133A300262E69 /* iPadKeyboardLayoutProvider.swift in Sources */,
 				C020ABEE29B72F9B00B26142 /* RimeEngine+File.swift in Sources */,
+				C00699FF29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */,
 				C018E6DE29C3354C00942E97 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0458A8929B133A300262E69 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C099464329B27FF8007FD3CA /* InputSet.swift in Sources */,
@@ -1172,6 +1183,7 @@
 				C0458A8E29B133A300262E69 /* CharacterSlideGestureHandler.swift in Sources */,
 				C0458A8F29B133A300262E69 /* KeyboardAction+Buttons.swift in Sources */,
 				C0458A9029B133A300262E69 /* KeyboardAction+Actions.swift in Sources */,
+				C00699FC29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
 				C0458A9129B133A300262E69 /* HamsterKeyboardActionHandler.swift in Sources */,
 				C0458A9229B133A300262E69 /* KeyboardAction+Return.swift in Sources */,
 				C0458A9329B133A300262E69 /* AutocompleteToolbar.swift in Sources */,
