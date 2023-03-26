@@ -7,7 +7,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 其他按键滑动处理
   public let characterGragActionHandler: SlideGestureHandler
 
-  // 字符滑动处理
+  // 键盘上下滑动处理
   let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { ivc in
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
     let rimeEngine = ivc.rimeEngine

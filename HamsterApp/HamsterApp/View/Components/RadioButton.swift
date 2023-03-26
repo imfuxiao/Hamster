@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct RadioButton: View {
-  var color: Color = .green.opacity(0.8)
+  var color: Color = .green
   var width: CGFloat = 32
+  var fontSize: CGFloat = 16
   var isSelected = false
   var action: () -> Void = {}
 
@@ -18,13 +19,18 @@ struct RadioButton: View {
       action()
     } label: {
       ZStack {
-        Circle()
-          .foregroundColor(color)
-          .frame(width: width, height: width)
         if isSelected {
           Circle()
-            .foregroundColor(Color.white)
+            .fill(color)
+            .frame(width: width, height: width)
+          Image(systemName: "checkmark")
+            .font(.system(size: fontSize, weight: .heavy))
+            .foregroundColor(.white)
             .frame(width: width / 2, height: width / 2)
+        } else {
+          Circle()
+            .stroke(.gray, lineWidth: 1)
+            .frame(width: width, height: width)
         }
       }
       .transition(.opacity)
@@ -35,6 +41,9 @@ struct RadioButton: View {
 
 struct RadioButton_Previews: PreviewProvider {
   static var previews: some View {
-    RadioButton(isSelected: true)
+    VStack {
+      RadioButton(isSelected: true)
+      RadioButton(isSelected: false)
+    }
   }
 }

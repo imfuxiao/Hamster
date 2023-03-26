@@ -22,7 +22,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     } catch {
       // TODO: RIME 异常启动处理
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
-      fatalError(error.localizedDescription)
+//      fatalError(error.localizedDescription)
     }
 
     self.rimeEngine.setupRime(

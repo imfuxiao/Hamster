@@ -86,10 +86,16 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   }
 
   func inputKey(_ key: String) -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.session()
+    }
     return rimeAPI.processKey(key, andSession: session)
   }
 
   func inputKey(_ key: Int32) -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.session()
+    }
     return rimeAPI.processKeyCode(key, andSession: session)
   }
 

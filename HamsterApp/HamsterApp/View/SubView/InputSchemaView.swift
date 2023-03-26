@@ -39,31 +39,26 @@ struct InputSchemaView: View {
 
         List {
           ForEach(schemas) { schema in
-            Button {
-              appSetting.rimeInputSchema = schema.schemaId
-            } label: {
-              HStack {
-                Image(systemName: "checkmark")
-                  .font(.system(size: 16, weight: .heavy))
-                  .foregroundColor(.green)
-                  .opacity(isSelect(schema) ? 1 : 0)
-
-                Text(schema.schemaName)
-                  .font(.system(.body, design: .rounded))
-
-                Spacer()
+            HStack {
+              RadioButton(width: 24, fontSize: 12, isSelected: isSelect(schema)) {
+                appSetting.rimeInputSchema = schema.schemaId
               }
-              .frame(minWidth: 0, maxWidth: .infinity)
-              .frame(minHeight: 0, maxHeight: .infinity)
-              .contentShape(Rectangle(), eoFill: true)
+              Text(schema.schemaName)
+                .font(.system(.body, design: .rounded))
+              Spacer()
             }
-            .buttonStyle(.plain)
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .frame(minHeight: 0, maxHeight: .infinity)
+            .contentShape(Rectangle(), eoFill: true)
+            .onTapGesture {
+              appSetting.rimeInputSchema = schema.schemaId
+            }
           }
         }
         .padding(.top, 20)
         .padding(.horizontal)
         .listStyle(.plain)
-        
+
         Spacer()
       }
     }
