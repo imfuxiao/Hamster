@@ -8,6 +8,7 @@
 import KeyboardKit
 import SwiftUI
 
+@available(iOS 14, *)
 struct HamsterKeyboardButtonText: View {
   /**
    Create a system keyboard button text view.

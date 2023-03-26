@@ -15,6 +15,7 @@ let itemStyle = AutocompleteToolbarItemStyle(
   subtitleColor: .primary
 )
 
+@available(iOS 13, *)
 struct HamsterAutocompleteToolbar: View {
   @EnvironmentObject
   private var keyboardContext: KeyboardContext

@@ -2,7 +2,6 @@ import Combine
 import Foundation
 import KeyboardKit
 import LibrimeKit
-import Plist
 import UIKit
 
 /// 键盘ViewController
@@ -14,7 +13,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   var cancel = Set<AnyCancellable>()
 
   override public func viewDidLoad() {
-    self.log.debug("viewDidLoad() begin")
+    self.log.info("viewDidLoad() begin")
 
     do {
       try RimeEngine.syncAppGroupSharedSupportDirectory()
@@ -131,11 +130,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)
-
     setup(with: alphabetKeyboard)
-    //        setup(with: HamsterKeyboard(controler: self))
-
-    //        alphabetKeyboard.observer()
   }
 }
 

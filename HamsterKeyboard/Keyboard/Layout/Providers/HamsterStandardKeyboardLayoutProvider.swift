@@ -1,6 +1,5 @@
 import Foundation
 import KeyboardKit
-import Plist
 import SwiftUI
 
 class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {

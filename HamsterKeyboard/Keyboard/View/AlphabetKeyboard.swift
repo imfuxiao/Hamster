@@ -1,5 +1,5 @@
 //
-//  SystemKeyboardView.swift
+//  AlphabetKeyboard.swift
 //  HamsterKeyboard
 //
 //  Created by morse on 10/1/2023.
@@ -7,9 +7,9 @@
 
 import Combine
 import KeyboardKit
-import Plist
 import SwiftUI
 
+@available(iOS 14, *)
 struct AlphabetKeyboard: View {
   var layoutProvider: KeyboardLayoutProvider
   var appearance: KeyboardAppearance
@@ -72,56 +72,42 @@ struct AlphabetKeyboard: View {
   }
 
   var body: some View {
-    if appSettings.isFirstLaunch {
-      VStack {
-        Spacer()
-      }
-      .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-      .alert(isPresented: $appSettings.isFirstLaunch) {
-        Alert(title: Text("RIME还未部署.首次运行需要先运行App"), dismissButton: .destructive(Text("确定")) {
-          if let url = URL(string: AppConstants.appURL) {
-            openURL(url)
-          }
-        })
-      }
-    } else {
-      VStack(spacing: 0) {
-        if keyboardContext.keyboardType != .emojis {
-          HStack(spacing: 0) {
-            ZStack(alignment: .leading) {
-              HamsterAutocompleteToolbar()
+    VStack(spacing: 0) {
+      if keyboardContext.keyboardType != .emojis {
+        HStack(spacing: 0) {
+          ZStack(alignment: .leading) {
+            HamsterAutocompleteToolbar()
 
-              if rimeEngine.userInputKey.isEmpty {
-                HStack {
-                  // 主菜单功能暂未实现
-                  //                Image(systemName: "house.circle.fill")
-                  //                  .font(.system(size: 25))
-                  //                  .foregroundColor(Color.gray)
-                  //                  .frame(width: 25, height: 25)
-                  //                  .padding(.leading, 15)
-                  //                  .onTapGesture {}
+            if rimeEngine.userInputKey.isEmpty {
+              HStack {
+                // 主菜单功能暂未实现
+                //                Image(systemName: "house.circle.fill")
+                //                  .font(.system(size: 25))
+                //                  .foregroundColor(Color.gray)
+                //                  .frame(width: 25, height: 25)
+                //                  .padding(.leading, 15)
+                //                  .onTapGesture {}
 
-                  Spacer()
+                Spacer()
 
-                  if appSettings.showKeyboardDismissButton {
-                    Image(systemName: "chevron.down.circle.fill")
-                      .font(.system(size: 26))
-                      .foregroundColor(Color.gray)
-                      .frame(width: 25, height: 25)
-                      .padding(.trailing, 15)
-                      .onTapGesture {
-                        keyboardInputViewController.dismissKeyboard()
-                      }
-                  }
+                if appSettings.showKeyboardDismissButton {
+                  Image(systemName: "chevron.down.circle.fill")
+                    .font(.system(size: 26))
+                    .foregroundColor(Color.gray)
+                    .frame(width: 25, height: 25)
+                    .padding(.trailing, 15)
+                    .onTapGesture {
+                      keyboardInputViewController.dismissKeyboard()
+                    }
                 }
               }
             }
           }
-          .frame(minWidth: 0, maxWidth: .infinity)
         }
-        keyboard
-          .background(backgroudColor)
+        .frame(minWidth: 0, maxWidth: .infinity)
       }
+
+      keyboard.background(backgroudColor)
     }
   }
 
