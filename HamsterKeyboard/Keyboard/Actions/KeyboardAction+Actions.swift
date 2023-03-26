@@ -189,6 +189,8 @@ extension KeyboardAction {
             rimeEngine.userInputKey = rimeEngine.getInputKeys()
           }
           return { _ in }
+        } else {
+          hamsterInputViewController?.insertText(name)
         }
         return { _ in }
       }

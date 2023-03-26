@@ -41,7 +41,7 @@ struct HamsterKeyboardActionButtonContent: View {
       var key = fullKey
       let value = translateFuctionText(fullValue)
       let suffix = String(key.removeLast())
-      
+
       // 上划
       if suffix == KeyboardConstant.Character.SlideUp {
         if let dictValue = buttonExtendCharacter[key] {
@@ -125,11 +125,20 @@ private extension HamsterKeyboardActionButtonContent {
     HamsterKeyboardButtonText(
       buttonExtendCharacter: buttonExtendCharacter,
       text: text,
-      isInputAction: action.isInputAction,
-      showExtendArea: appSettings.enableKeyboardUpAndDownSlideSymbol
+      isInputAction: action.isInputAction || {
+        switch action {
+        case .custom:
+          return true
+        default:
+          return false
+        }
+      }(),
+      // 只有字母键盘显示扩展区域
+      showExtendArea: keyboardContext.keyboardType.isAlphabetic
+        && appSettings.enableKeyboardUpAndDownSlideSymbol
     )
-    .padding(3)
-    .minimumScaleFactor(0.6)
+    .padding(1)
+    .minimumScaleFactor(0.8)
   }
 }
 

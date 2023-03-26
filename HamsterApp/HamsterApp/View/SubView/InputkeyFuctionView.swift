@@ -21,68 +21,59 @@ struct InputkeyFuctionView: View {
           Spacer()
         }
         .padding(.horizontal)
-
-        // 反查键
+        
         VStack {
           HStack {
-            Toggle(isOn: $appSettings.showKeyboardReverseLookupButton) {
-              Text("启用反查键(空格左边)")
+            Toggle(isOn: $appSettings.showSpaceLeftButton) {
+              Text("空格左边按键")
                 .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
-          if appSettings.showKeyboardReverseLookupButton {
+          if appSettings.showSpaceLeftButton {
             HStack {
-              TextField("反查键键值", text: $appSettings.keyboardReverseLookupButtonValue)
+              TextField("空格左边按键", text: $appSettings.spaceLeftButtonValue)
                 .textFieldStyle(BorderTextFieldBackground(systemImageString: "pencil"))
                 .padding(.vertical, 5)
                 .foregroundColor(.secondary)
               Spacer()
             }
-            HStack {
-              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-              Spacer()
-            }
+//            HStack {
+//              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
+//                .font(.footnote)
+//                .foregroundColor(.secondary)
+//              Spacer()
+//            }
           }
         }
-        .padding([.all], 15)
-        .background(Color.HamsterCellColor)
-        .foregroundColor(Color.HamsterFontColor)
-        .cornerRadius(8)
-        .hamsterShadow()
-        .padding(.horizontal)
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
 
-        // 次选上屏键
+        
         VStack {
           HStack {
-            Toggle(isOn: $appSettings.showKeyboardSelectSecondChoiceButton) {
-              Text("次选上屏键(回车键上方)")
+            Toggle(isOn: $appSettings.showSpaceRightButton) {
+              Text("空格右边按键")
                 .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
-          if appSettings.showKeyboardSelectSecondChoiceButton {
+          if appSettings.showSpaceRightButton {
             HStack {
-              TextField("次选上屏键", text: $appSettings.keyboardSelectSecondChoiceButtonValue)
+              TextField("空格左边按键", text: $appSettings.spaceRightButtonValue)
                 .textFieldStyle(BorderTextFieldBackground(systemImageString: "pencil"))
                 .padding(.vertical, 5)
                 .foregroundColor(.secondary)
               Spacer()
             }
-            HStack {
-              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
-                .font(.footnote)
-                .foregroundColor(.secondary)
-              Spacer()
-            }
+            //            HStack {
+            //              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
+            //                .font(.footnote)
+            //                .foregroundColor(.secondary)
+            //              Spacer()
+            //            }
           }
         }
-        .padding([.all], 15)
-        .background(Color.HamsterCellColor)
-        .foregroundColor(Color.HamsterFontColor)
-        .cornerRadius(8)
-        .hamsterShadow()
-        .padding(.horizontal)
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
 
         Spacer()
       }
@@ -95,5 +86,23 @@ struct InputkeyFuctionView_Previews: PreviewProvider {
   static var previews: some View {
     InputkeyFuctionView()
       .environmentObject(HamsterAppSettings())
+  }
+}
+
+struct FunctionCellModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .padding([.all], 15)
+      .background(Color.HamsterCellColor)
+      .foregroundColor(Color.HamsterFontColor)
+      .cornerRadius(8)
+      .hamsterShadow()
+      .padding(.horizontal)
+  }
+}
+
+extension View {
+  func functionCell() -> some View {
+    modifier(FunctionCellModifier())
   }
 }

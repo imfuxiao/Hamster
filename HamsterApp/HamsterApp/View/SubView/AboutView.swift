@@ -113,6 +113,7 @@ struct AboutView: View {
                 DispatchQueue.global(qos: .background).async {
                   var err: Error?
                   do {
+                    try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
                     try RimeEngine.initAppGroupUserDataDirectory(override: true)
                     rimeEngine.deploy()
                   } catch {

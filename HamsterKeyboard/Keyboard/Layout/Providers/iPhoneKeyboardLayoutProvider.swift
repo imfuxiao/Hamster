@@ -33,7 +33,7 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override func actions(for inputs: InputSetRows, context: KeyboardContext) -> KeyboardActionRows {
 //    let actions = super.actions(for: inputs, context: context)
 //    let characters =
-    
+
     let actions = KeyboardActionRows(characters: actionCharacters(for: inputs, context: context))
 
     // 九宫格布局
@@ -67,17 +67,8 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       topLeadingActions(for: actions, context: context) + actions[0]
         + topTrailingActions(for: actions, context: context))
 
-    // 根据个性配置添加自定义按键
-    var middleAction = KeyboardActions()
-    if appSettings.showKeyboardSelectSecondChoiceButton {
-      middleAction.append(KeyboardAction.custom(
-        named: KeyboardConstant.CustomButton.SelectSecondChoiceButton(
-          selectSecondChoice: appSettings.keyboardSelectSecondChoiceButtonValue)
-          .buttonText)
-      )
-    }
     result.append(
-      middleLeadingActions(for: actions, context: context) + actions[1] + middleAction +
+      middleLeadingActions(for: actions, context: context) + actions[1] +
         middleTrailingActions(for: actions, context: context))
 
     result.append(
@@ -148,14 +139,13 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
 
     // 底部根据配置, 添加自定义功能键
-    if appSettings.showKeyboardReverseLookupButton {
-      result.append(.custom(
-        named: KeyboardConstant.CustomButton.ReverseLookupButton(
-          reverseLookup: appSettings.keyboardReverseLookupButtonValue)
-          .buttonText)
-      )
+    if appSettings.showSpaceLeftButton {
+      result.append(.custom(named: appSettings.spaceLeftButtonValue))
     }
     result.append(.space)
+    if appSettings.showSpaceRightButton {
+      result.append(.custom(named: appSettings.spaceRightButtonValue))
+    }
 
     // 根据当前上下文显示不同功能的回车键
     result.append(keyboardReturnAction(for: context))

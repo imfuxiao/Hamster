@@ -66,6 +66,9 @@ private enum HamsterAppSettingKeys: String {
   // 空格划动
   case slideBySpaceButton = "view.keyboard.slideBySpaceButton"
 
+  // 空格上划次选
+  case selectSecondChoiceByUpSlideSpaceButton = "app.keyboard.selectSecondChoiceByUpSlideSpaceButton"
+
   // 是否开启键盘声音
   case enableKeyboardFeedbackSound = "app.keyboard.feedback.sound"
 
@@ -76,15 +79,15 @@ private enum HamsterAppSettingKeys: String {
   // 是否显示键盘收起按键
   case showKeyboardDismissButton = "app.keyboard.showDismissButton"
 
-  // 是否显示反查键
-  case showKeyboardReverseLookupButton = "app.keyboard.showReverseLookupButton"
-  // 反查键键值
-  case keyboardReverseLookupButtonValue = "app.keyboard.reverseLookupValue"
+  // 是否显示空格左边按键
+  case showSpaceLeftButton = "app.keyboard.showSpaceLeftButton"
+  // 空格左边按键键值
+  case spaceLeftButtonValue = "app.keyboard.spaceLeftButtonValue"
 
-  // 是否显示次选上屏键
-  case showKeyboardSelectSecondChoiceButton = "app.keyboard.showSelectSecondChoiceButton"
-  // 次选键键值
-  case keyboardSelectSecondChoiceButtonValue = "app.keyboard.selectSecondChoiceButtonValue"
+  // 是否显示空格右边按键
+  case showSpaceRightButton = "app.keyboard.showSpaceRightButton"
+  // 空格右边按键键值
+  case spaceRightButtonValue = "app.keyboard.spaceRightButtonValue"
 
   // rime 输入方案
   case rimeInputSchema = "rime.inputSchema"
@@ -115,10 +118,10 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue: false,
       HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue: HapticIntensity.mediumImpact.rawValue,
       HamsterAppSettingKeys.showKeyboardDismissButton.rawValue: true,
-      HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue: true,
-      HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue: "`",
-      HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue: true,
-      HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue: ";",
+      HamsterAppSettingKeys.showSpaceLeftButton.rawValue: true,
+      HamsterAppSettingKeys.spaceLeftButtonValue.rawValue: "，",
+      HamsterAppSettingKeys.showSpaceRightButton.rawValue: true,
+      HamsterAppSettingKeys.spaceRightButtonValue.rawValue: "。",
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
@@ -135,10 +138,10 @@ public class HamsterAppSettings: ObservableObject {
     self.enableKeyboardFeedbackHaptic = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
     self.keyboardFeedbackHapticIntensity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
     self.showKeyboardDismissButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
-    self.showKeyboardReverseLookupButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue)
-    self.keyboardReverseLookupButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue) ?? ""
-    self.showKeyboardSelectSecondChoiceButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue)
-    self.keyboardSelectSecondChoiceButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue) ?? ""
+    self.showSpaceLeftButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceLeftButton.rawValue)
+    self.spaceLeftButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue) ?? ""
+    self.showSpaceRightButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
+    self.spaceRightButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue) ?? ""
     self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
@@ -219,39 +222,39 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
-  // 是否显示反查键
+  // 是否显示空格左边按键
   @Published
-  var showKeyboardReverseLookupButton: Bool {
+  var showSpaceLeftButton: Bool {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
-        showKeyboardReverseLookupButton, forKey: HamsterAppSettingKeys.showKeyboardReverseLookupButton.rawValue)
+        showSpaceLeftButton, forKey: HamsterAppSettingKeys.showSpaceLeftButton.rawValue)
     }
   }
 
-  // 反查键键值
+  // 空格左边按键键值
   @Published
-  var keyboardReverseLookupButtonValue: String {
+  var spaceLeftButtonValue: String {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
-        keyboardReverseLookupButtonValue, forKey: HamsterAppSettingKeys.keyboardReverseLookupButtonValue.rawValue)
+        spaceLeftButtonValue, forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue)
     }
   }
 
-  // 是否显示次选按键
+  // 是否显示空格右边按键
   @Published
-  var showKeyboardSelectSecondChoiceButton: Bool {
+  var showSpaceRightButton: Bool {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
-        showKeyboardSelectSecondChoiceButton, forKey: HamsterAppSettingKeys.showKeyboardSelectSecondChoiceButton.rawValue)
+        showSpaceRightButton, forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     }
   }
 
-  // 次选按键键值
+  // 空格右边按键键值
   @Published
-  var keyboardSelectSecondChoiceButtonValue: String {
+  var spaceRightButtonValue: String {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
-        keyboardSelectSecondChoiceButtonValue, forKey: HamsterAppSettingKeys.keyboardSelectSecondChoiceButtonValue.rawValue)
+        spaceRightButtonValue, forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue)
     }
   }
 

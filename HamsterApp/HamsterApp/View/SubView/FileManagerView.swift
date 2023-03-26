@@ -83,6 +83,10 @@ struct FileManagerView: View {
         .frame(width: proxy.size.width, height: proxy.size.height)
         .onAppear {
           self.rimeEngine.shutdownRime()
+          
+          // 屏幕长亮, 防止wifi无法使用
+          UIApplication.shared.isIdleTimerDisabled = true
+          
 
           let localIPs = UIDevice.current.localIP()
           if localIPs.count == 1 {
@@ -108,6 +112,8 @@ struct FileManagerView: View {
           self.monitor.start(queue: queue)
         }
         .onDisappear {
+          UIApplication.shared.isIdleTimerDisabled = false
+          
           self.isBoot = false
           self.rimeEngine.startRime()
           self.fileServer.shutdown()

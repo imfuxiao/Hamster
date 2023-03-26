@@ -43,7 +43,9 @@ struct HamsterKeyboardButtonText: View {
     isInputAction: Bool
   ) {
     self.init(
-      buttonExtendCharacter: buttonExtendCharacter, text: text, isInputAction: isInputAction,
+      buttonExtendCharacter: buttonExtendCharacter,
+      text: text,
+      isInputAction: isInputAction,
       showExtendArea: false
     )
   }
@@ -78,32 +80,34 @@ struct HamsterKeyboardButtonText: View {
         }
         .font(.system(size: 9))
         .lineLimit(1)
-//        .minimumScaleFactor(0.5)
+        .minimumScaleFactor(0.8)
       } else if count == 1 {
         Text(texts[0])
           .font(.system(size: 9))
       } else {
-        Text(" ")
+//        Text(" ")
       }
     }
   }
 
   public var body: some View {
     if !isInputAction {
-      Text(text)
-        .lineLimit(1)
-        .offset(y: useNegativeOffset ? -2 : 0)
-        .font(.system(size: 22))
+      VStack(alignment: .center, spacing: 0) {
+        Text(text)
+          .lineLimit(1)
+//          .offset(y: useNegativeOffset ? -2 : 0)
+          .font(.system(size: 20))
+      }
     } else {
       VStack(spacing: 0) {
         if showExtentArea {
           characterExtendView
         }
-        VStack(spacing: 0) {
+        VStack(alignment: .center, spacing: 0) {
           Text(text)
             .lineLimit(1)
-            .offset(y: 1)
-            .font(.system(size: 22))
+//            .offset(y: 1)
+            .font(.system(size: 20))
         }
       }
     }
