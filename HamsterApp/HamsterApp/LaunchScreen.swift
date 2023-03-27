@@ -22,7 +22,6 @@ struct LaunchScreen: View {
   var body: some View {
     ZStack {
       Color.HamsterBackgroundColor
-        .opacity(0.1)
         .ignoresSafeArea(.all)
 
       VStack(alignment: .center) {

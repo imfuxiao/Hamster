@@ -12,7 +12,7 @@ struct DotsLoadingView: View {
   let text: String
   let dotColor: Color
 
-  init(text: String, dotColor: Color = .green) {
+  init(text: String, dotColor: Color = .init("dots")) {
     self.text = text
     self.dotColor = dotColor
   }
@@ -20,13 +20,13 @@ struct DotsLoadingView: View {
   var body: some View {
     ZStack {
       Color.HamsterBackgroundColor
-        .opacity(colorScheme == .dark ? 0.6 : 0.1)
+//        .opacity(colorScheme == .dark ? 0.6 : 0.1)
         .ignoresSafeArea()
 
       VStack {
         Spacer()
         Text(text)
-          .font(.system(size: 16, weight: .bold))
+          .font(.system(size: 20, weight: .bold))
           .foregroundColor(Color.secondary)
         DotsActivityView(color: dotColor)
         Spacer()

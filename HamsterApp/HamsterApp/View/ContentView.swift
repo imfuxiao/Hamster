@@ -30,7 +30,7 @@ public struct ContentView: View {
         NavigationView {
           ZStack {
             Color
-              .HamsterBackgroundColor.opacity(0.1)
+              .HamsterBackgroundColor
               .ignoresSafeArea()
 
             ScrollView {

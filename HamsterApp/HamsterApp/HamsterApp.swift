@@ -15,6 +15,8 @@ struct HamsterApp: App {
   let rimeEngine = RimeEngine.shared
 
   @State var launchScreenState = true
+  @State var showError: Bool = false
+  @State var err: Error?
 
   var body: some Scene {
     WindowGroup {
@@ -23,6 +25,8 @@ struct HamsterApp: App {
           LaunchScreen()
         } else {
           ContentView()
+            .environmentObject(appSettings)
+            .environmentObject(rimeEngine)
         }
       }
       .onOpenURL { url in
@@ -42,7 +46,8 @@ struct HamsterApp: App {
             } catch {
               appSettings.isFirstLaunch = true
               Logger.shared.log.error("rime init file drectory error: \(error), \(error.localizedDescription)")
-              fatalError("unresolved error: \(error), \(error.localizedDescription)")
+              showError = true
+              err = error
             }
             appSettings.isFirstLaunch = false
           }
@@ -59,8 +64,11 @@ struct HamsterApp: App {
           }
         }
       }
-      .environmentObject(appSettings)
-      .environmentObject(rimeEngine)
+      .alert(isPresented: $showError) {
+        Alert(title: Text("RIME初始化异常: \(err?.localizedDescription ?? "")"), dismissButton: .cancel {
+          err = nil
+        })
+      }
     }
   }
 }
