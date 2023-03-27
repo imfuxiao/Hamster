@@ -4,7 +4,7 @@ extension KeyboardContext {
   // 键盘类型是否为九宫格
   var isGridViewKeyboardType: Bool {
     switch self.keyboardType {
-    case .custom(named: KeyboardConstant.keyboardType.NumberGrid):
+    case .custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue):
       return true
     default:
       return false

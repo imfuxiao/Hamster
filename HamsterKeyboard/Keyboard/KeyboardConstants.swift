@@ -1,8 +1,10 @@
 import Foundation
 
 class KeyboardConstant {
-  enum keyboardType {
-    static let NumberGrid = "numberGrid" // 数字九宫格布局
+  enum keyboardType: String, CaseIterable, Equatable {
+    case chinese = "中文全键盘"
+    case chineseNineGrid = "拼音九宫格"
+    case numberNineGrid = "数字九宫格"
   }
 
   // 自定义按钮
@@ -30,7 +32,6 @@ class KeyboardConstant {
     static let SlideUp = "↑" // 表示上滑 Upwards Arrow: https://www.compart.com/en/unicode/U+2191
     static let SlideDown = "↓" // 表示下滑 Downwards Arrow: https://www.compart.com/en/unicode/U+2193
   }
-
 
   enum Action {
     static let endDragGesture = "endGragGesture"

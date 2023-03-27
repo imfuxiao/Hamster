@@ -69,7 +69,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         // 字符处理
         ivc.insertText(value)
         if value.count > 1 {
-          keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+          ivc.adjustTextPosition(byCharacterOffset: -1)
         }
       }
     }
@@ -94,7 +94,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         keyboardContext: ivc.keyboardContext,
         feedbackHandler: ivc.keyboardFeedbackHandler,
         action: { [weak ivc] in
-          ivc?.keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: $0)
+          ivc?.adjustTextPosition(byCharacterOffset: $0)
         }
       ),
       spaceDragSensitivity: .medium
@@ -106,7 +106,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   {
     if let hamsterAction = action.hamsterStanderAction(for: gesture) {
       triggerFeedback(for: gesture, on: action)
-      return hamsterAction(hamsterKeyboardController)
+      return hamsterAction
     }
     return nil
   }

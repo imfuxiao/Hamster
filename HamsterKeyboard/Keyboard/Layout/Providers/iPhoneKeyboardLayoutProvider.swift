@@ -18,7 +18,7 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     case .alphabetic: return inputSetProvider.alphabeticInputSet.rows
     case .numeric: return inputSetProvider.numericInputSet.rows
     case .symbolic: return inputSetProvider.symbolicInputSet.rows
-    case .custom(named: KeyboardConstant.keyboardType.NumberGrid):
+    case .custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue):
       return GridInputSet.numberGrid.rows
     default: return []
     }

@@ -1603,7 +1603,7 @@
 			repositoryURL = "https://github.com/KeyboardKit/KeyboardKit.git";
 			requirement = {
 				kind = exactVersion;
-				version = 7.2.0;
+				version = 7.2.1;
 			};
 		};
 		C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {

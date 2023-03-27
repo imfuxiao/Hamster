@@ -54,6 +54,7 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private let rimeAPI: IRimeAPI = .init()
   private var session: RimeSessionId = 0
 
+  /// 用户输入键值
   @Published
   var userInputKey: String = ""
 

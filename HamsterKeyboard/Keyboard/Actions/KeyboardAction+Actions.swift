@@ -2,10 +2,10 @@ import Foundation
 import KeyboardKit
 
 extension KeyboardAction {
-  // 用于注入 HamsterInputViewController 并兼容 KeyboardKit
-  typealias HamsterGestureAction = (HamsterKeyboardViewController?) -> GestureAction
+//  // 用于注入 HamsterInputViewController 并兼容 KeyboardKit
+//  typealias HamsterGestureAction = (HamsterKeyboardViewController?) -> GestureAction
 
-  func hamsterStanderAction(for gesture: KeyboardGesture) -> HamsterGestureAction? {
+  func hamsterStanderAction(for gesture: KeyboardGesture) -> GestureAction? {
     switch gesture {
     case .doubleTap: return hamsterStandardDoubleTapAction
     case .longPress: return hamsterStandardLongPressAction
@@ -19,16 +19,15 @@ extension KeyboardAction {
    The action that by default should be triggered when the
    action is double tapped.
    */
-  var hamsterStandardDoubleTapAction: HamsterGestureAction? { nil }
+  var hamsterStandardDoubleTapAction: GestureAction? { nil }
 
   /**
    The action that by default should be triggered when the
    action is long pressed.
    */
-  var hamsterStandardLongPressAction: HamsterGestureAction? {
+  var hamsterStandardLongPressAction: GestureAction? {
     switch self {
-    case .backspace: return hamsterStandardPressAction
-    case .space: return { _ in { _ in } }
+    case .space: return { _ in }
     default: return nil
     }
   }
@@ -37,29 +36,10 @@ extension KeyboardAction {
    The action that by default should be triggered when the
    action is pressed.
    */
-  var hamsterStandardPressAction: HamsterGestureAction? {
+  var hamsterStandardPressAction: GestureAction? {
     switch self {
-    case .backspace:
-      return { hamsterInputViewController in
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
-          return { $0?.deleteBackward() }
-        }
-
-        if rimeEngine.userInputKey.isEmpty {
-          return { $0?.deleteBackward() }
-        }
-
-        rimeEngine.userInputKey.removeLast()
-        if !rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
-          Logger.shared.log.error("rime engine input backspace key error")
-          rimeEngine.rest()
-        }
-        return { _ in }
-      }
-    case .keyboardType(let type):
-      return { hamsterKeyboardContorller in
-        { _ in hamsterKeyboardContorller?.setHamsterKeyboardType(type) }
-      }
+    case .backspace: return { $0?.deleteBackward() }
+    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     default: return nil
     }
   }
@@ -68,132 +48,28 @@ extension KeyboardAction {
    The action that by default should be triggered when the
    action is released.
    */
-  var hamsterStandardReleaseAction: HamsterGestureAction? {
+  var hamsterStandardReleaseAction: GestureAction? {
     switch self {
-    case .character(let char):
-      return { hamsterInputViewController in
-        let insertCharAction: GestureAction = { $0?.insertText(char) }
-
-        guard let keyboardType = hamsterInputViewController?.keyboardContext.keyboardType else {
-          return insertCharAction
-        }
-
-        if !keyboardType.isAlphabetic {
-          return insertCharAction
-        }
-
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
-          return insertCharAction
-        }
-
-        if rimeEngine.isAsciiMode() {
-          return insertCharAction
-        }
-
-        // 调用输入法引擎
-        if rimeEngine.inputKey(char) {
-          // 唯一码直接上屏
-          let commitText = rimeEngine.getCommitText()
-          if !commitText.isEmpty {
-            rimeEngine.rest()
-            return { $0?.insertText(commitText) }
-          }
-
-          let status = rimeEngine.status()
-          // 不存在候选字
-          if !status.isComposing {
-            rimeEngine.rest()
-          } else {
-            rimeEngine.userInputKey = rimeEngine.getInputKeys()
-          }
-          return { _ in }
-        } else {
-          Logger.shared.log.error("rime engine input character \(char) error.")
-          rimeEngine.rest()
-        }
-        return insertCharAction
-      }
-
-    case .characterMargin(let char): return { _ in { $0?.insertText(char) } }
-    case .dismissKeyboard: return { _ in { $0?.dismissKeyboard() } }
-    case .emoji(let emoji): return { _ in { $0?.insertText(emoji.char) } }
-    case .moveCursorBackward: return { _ in { $0?.adjustTextPosition(byCharacterOffset: -1) } }
-    case .moveCursorForward: return { _ in { $0?.adjustTextPosition(byCharacterOffset: 1) } }
-    case .nextLocale: return { _ in { $0?.selectNextLocale() } }
-    case .primary:
-      return { hamsterInputViewController in
-        let newLineAction: GestureAction = {
-          $0?.insertText(.newline)
-        }
-
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else {
-          return newLineAction
-        }
-
-        if !rimeEngine.userInputKey.isEmpty {
-          let text = rimeEngine.userInputKey
-          rimeEngine.rest()
-          return { $0?.insertText(text) }
-        }
-
-        return newLineAction
-      }
+    case .character(let char): return { $0?.insertText(char) }
+    case .characterMargin(let char): return { $0?.insertText(char) }
+    case .dismissKeyboard: return { $0?.dismissKeyboard() }
+    case .emoji(let emoji): return { $0?.insertText(emoji.char) }
+    case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
+    case .moveCursorForward: return { $0?.adjustTextPosition(byCharacterOffset: 1) }
+    case .nextLocale: return { $0?.selectNextLocale() }
+    case .nextKeyboard: return { $0?.selectNextKeyboard() }
+    case .primary: return { $0?.insertText(.newline) }
     case .shift(let currentState):
-      return { _ in
-        {
-          switch currentState {
-          case .lowercased: $0?.setKeyboardType(.alphabetic(.uppercased))
-          case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
-          }
+      return {
+        switch currentState {
+        case .lowercased: $0?.setKeyboardType(.alphabetic(.uppercased))
+        case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
         }
       }
-    case .space:
-      return { hamsterInputViewController in
-        let spaceAction: GestureAction = { $0?.insertText(.space) }
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return spaceAction }
-        let status = rimeEngine.status()
-        if status.isComposing {
-          let candidates = rimeEngine.context().getCandidates()
-          if !candidates.isEmpty {
-            let text = candidates[0].text
-            rimeEngine.rest()
-            return { $0?.insertText(text) }
-          }
-
-          if !rimeEngine.userInputKey.isEmpty {
-            let text = rimeEngine.userInputKey
-            rimeEngine.rest()
-            return { $0?.insertText(text) }
-          }
-        }
-        return spaceAction
-      }
-    case .tab: return { _ in { $0?.insertText(.tab) } }
-    // TODO: 自定义按键动作处理
-    case .custom(let name):
-      return { hamsterInputViewController in
-        guard let rimeEngine = hamsterInputViewController?.rimeEngine else { return { _ in } }
-        if rimeEngine.inputKey(name) {
-          // 唯一码直接上屏
-          let commitText = rimeEngine.getCommitText()
-          if !commitText.isEmpty {
-            rimeEngine.rest()
-            return { $0?.insertText(commitText) }
-          }
-
-          let status = rimeEngine.status()
-          // 不存在候选字
-          if !status.isComposing {
-            rimeEngine.rest()
-          } else {
-            rimeEngine.userInputKey = rimeEngine.getInputKeys()
-          }
-          return { _ in }
-        } else {
-          hamsterInputViewController?.insertText(name)
-        }
-        return { _ in }
-      }
+    case .space: return { $0?.insertText(.space) }
+    case .tab: return { $0?.insertText(.tab) }
+    // 自定义按键动作处理
+    case .custom(let name): return { $0?.insertText(name) }
     default: return nil
     }
   }
@@ -202,9 +78,9 @@ extension KeyboardAction {
    The action that by default should be triggered when the
    action is pressed, and repeated until it is released.
    */
-  var hamsterStandardRepeatAction: HamsterGestureAction? {
+  var hamsterStandardRepeatAction: GestureAction? {
     switch self {
-    case .backspace: return hamsterStandardReleaseAction
+    case .backspace: return hamsterStandardPressAction
     default: return nil
     }
   }
