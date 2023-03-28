@@ -11,7 +11,7 @@ import SwiftyBeaver
 
 @main
 struct HamsterApp: App {
-  let appSettings = HamsterAppSettings()
+  let appSettings = HamsterAppSettings.shared
   let rimeEngine = RimeEngine.shared
 
   @State var launchScreenState = true
@@ -25,8 +25,6 @@ struct HamsterApp: App {
           LaunchScreen()
         } else {
           ContentView()
-            .environmentObject(appSettings)
-            .environmentObject(rimeEngine)
         }
       }
       .onOpenURL { url in
@@ -43,20 +41,25 @@ struct HamsterApp: App {
             do {
               try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
               try RimeEngine.initAppGroupUserDataDirectory(override: true)
+              appSettings.isFirstLaunch = false
             } catch {
               appSettings.isFirstLaunch = true
               Logger.shared.log.error("rime init file drectory error: \(error), \(error.localizedDescription)")
               showError = true
               err = error
             }
-            appSettings.isFirstLaunch = false
           }
 
           // RIME启动
-          rimeEngine.setupRime(
+//          rimeEngine.setupRime(
+//            sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+//            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+//          )
+//          rimeEngine.startRime()
+          rimeEngine.deployInstallRime(
             sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path)
-          rimeEngine.startRime()
+            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+          )
 
           // 启动屏延迟
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

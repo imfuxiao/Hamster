@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InputkeyFuctionView: View {
-  @EnvironmentObject var appSettings: HamsterAppSettings
+  @StateObject var appSettings = HamsterAppSettings.shared
 
   var body: some View {
     ZStack {
@@ -21,7 +21,7 @@ struct InputkeyFuctionView: View {
           Spacer()
         }
         .padding(.horizontal)
-        
+
         VStack {
           HStack {
             Toggle(isOn: $appSettings.showSpaceLeftButton) {
@@ -37,18 +37,11 @@ struct InputkeyFuctionView: View {
                 .foregroundColor(.secondary)
               Spacer()
             }
-//            HStack {
-//              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
-//                .font(.footnote)
-//                .foregroundColor(.secondary)
-//              Spacer()
-//            }
           }
         }
         .animation(.linear, value: appSettings.showSpaceLeftButton)
         .functionCell()
 
-        
         VStack {
           HStack {
             Toggle(isOn: $appSettings.showSpaceRightButton) {
@@ -64,12 +57,6 @@ struct InputkeyFuctionView: View {
                 .foregroundColor(.secondary)
               Spacer()
             }
-            //            HStack {
-            //              Text("注意: 此键值依赖输入方案配置文件中的配置, 否则没有效果.")
-            //                .font(.footnote)
-            //                .foregroundColor(.secondary)
-            //              Spacer()
-            //            }
           }
         }
         .animation(.linear, value: appSettings.showSpaceLeftButton)
@@ -85,7 +72,7 @@ struct InputkeyFuctionView: View {
 struct InputkeyFuctionView_Previews: PreviewProvider {
   static var previews: some View {
     InputkeyFuctionView()
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }
 

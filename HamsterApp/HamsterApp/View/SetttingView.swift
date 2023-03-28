@@ -8,120 +8,12 @@
 import SwiftUI
 
 struct SettingView: View {
-  @EnvironmentObject
-  var appSetting: HamsterAppSettings
+  let cells: [CellViewModel]
+  let cellDestinationRoute: CellDestinationRoute
 
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
-
-  let cellWidth: CGFloat
-  let cellHeight: CGFloat
-
-  // TODO: 目前配置项少, 先在这里固定生成每个配置项页面
-  var cells: [CellView<AnyView>] {
-    [
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "keyboard",
-        featureName: "输入方案",
-        navgationDestinationBuilder: {
-          AnyView(InputSchemaView())
-        }
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "paintpalette",
-        featureName: "配色选择",
-        navgationDestinationBuilder: {
-          AnyView(ColorSchemaView())
-        }
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "hand.tap",
-        featureName: "键盘反馈",
-        navgationDestinationBuilder: {
-          AnyView(FeedbackView())
-        }
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "network",
-        featureName: "输入方案上传",
-        navgationDestinationBuilder: {
-          AnyView(FileManagerView())
-        }
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "bubble.middle.bottom",
-        featureName: "按键气泡",
-        toggle: $appSetting.showKeyPressBubble
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "chevron.down.circle",
-        featureName: "键盘收起键",
-        toggle: $appSetting.showKeyboardDismissButton
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "character",
-        featureName: "繁体中文",
-        toggle: $appSetting.switchTraditionalChinese
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "lasso",
-        featureName: "空格滑动",
-        toggle: $appSetting.slideBySapceButton
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "gear",
-        featureName: "输入功能键",
-        navgationDestinationBuilder: {
-          AnyView(InputkeyFuctionView())
-        }
-      ),
-      
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "arrow.up.arrow.down",
-        featureName: "上下滑动输入数字符号",
-        navgationDestinationBuilder: {
-          AnyView(UpAndDownSlideInputSymbolView())
-        }
-      ),
-    
-      CellView(
-        width: cellWidth,
-        height: cellHeight,
-        imageName: "info.circle",
-        featureName: "关于",
-        navgationDestinationBuilder: {
-          AnyView(AboutView())
-        }
-      ),
-    ]
+  init(cells: [CellViewModel], cellDestinationRoute: CellDestinationRoute) {
+    self.cells = cells
+    self.cellDestinationRoute = cellDestinationRoute
   }
 
   var body: some View {
@@ -134,8 +26,8 @@ struct SettingView: View {
         alignment: .center,
         spacing: 20
       ) {
-        ForEach(0 ..< cells.count, id: \.self) {
-          cells[$0]
+        ForEach(cells) {
+          CellView(cellDestinationRoute: cellDestinationRoute, cellViewModel: $0)
         }
       }
       .padding(.horizontal)
@@ -144,12 +36,18 @@ struct SettingView: View {
 }
 
 struct RowView_Previews: PreviewProvider {
+  static var cellDestinationRoute = CellDestinationRoute()
+
   static var previews: some View {
     VStack {
-      SettingView(cellWidth: 180, cellHeight: 100)
+      SettingView(
+        cells: createCells(
+          cellWidth: 180,
+          cellHeight: 100
+        ),
+        cellDestinationRoute: Self.cellDestinationRoute
+      )
     }
     .background(Color.green.opacity(0.1))
-    .environmentObject(HamsterAppSettings())
-    .environmentObject(RimeEngine.shared)
   }
 }

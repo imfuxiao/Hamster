@@ -7,87 +7,93 @@
 
 import SwiftUI
 
-struct CellView<SubView: View>: View {
-  typealias SubViewBuilder = () -> SubView
+enum DestinationType {
+  case inputSchema
+  case colorSchema
+  case fileManager
+  case feedback
+  case inputKeyFuction
+  case upAndDownSlideInputSymbol
+  case about
+  case none
 
-  init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    toggle: Binding<Bool>
-  ) where SubView == AnyView {
-    self.init(
-      width: width,
-      height: height,
-      imageName: imageName,
-      featureName: featureName,
-      showSubView: false,
-      toggle: toggle,
-      navgationDestinationBuilder: nil
-    )
+  func isNone() -> Bool {
+    if case .none = self {
+      return true
+    }
+    return false
+  }
+}
+
+protocol CellDestination {
+  associatedtype DestinationType
+  associatedtype View: SwiftUI.View
+
+  @ViewBuilder
+  func view(type: DestinationType) -> View
+}
+
+struct CellDestinationRoute: CellDestination {
+  @ViewBuilder
+  func view(type: DestinationType) -> some View {
+    switch type {
+    case .inputSchema:
+      InputSchemaView()
+    case .colorSchema:
+      ColorSchemaView()
+    case .fileManager:
+      FileManagerView()
+    case .feedback:
+      FeedbackView()
+    case .inputKeyFuction:
+      InputkeyFuctionView()
+    case .upAndDownSlideInputSymbol:
+      UpAndDownSlideInputSymbolView()
+    case .about:
+      AboutView()
+    default:
+      EmptyView()
+    }
+  }
+}
+
+struct CellViewModel: Identifiable, Equatable {
+  static func == (lhs: CellViewModel, rhs: CellViewModel) -> Bool {
+    lhs.id == rhs.id
   }
 
-  init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    @ViewBuilder navgationDestinationBuilder: @escaping SubViewBuilder
-  ) {
-    self.init(
-      width: width,
-      height: height,
-      imageName: imageName,
-      featureName: featureName,
-      showSubView: true,
-      toggle: .constant(false),
-      navgationDestinationBuilder: navgationDestinationBuilder
-    )
-  }
+  let id = UUID()
 
-  private init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    showSubView: Bool,
-    toggle: Binding<Bool>,
-    navgationDestinationBuilder: SubViewBuilder?
-  ) {
-    self.width = width
-    self.height = height
-    self.imageName = imageName
-    self.featureName = featureName
-    self.showSubView = showSubView
-    self._toggleValue = toggle
-    self.navgationDestinationBuilder = navgationDestinationBuilder
-  }
-
-  var width: CGFloat
-  var height: CGFloat
+//  var appSettings: HamsterAppSettings
+  var cellWidth: CGFloat
+  var cellHeight: CGFloat
+  var cellName: String
   var imageName: String
-  var featureName: String
+  var destinationType: DestinationType
 
-  var showSubView: Bool
-  var navgationDestinationBuilder: SubViewBuilder?
+  var toggleValue: Bool = false {
+    didSet {
+      toggleDidSet(toggleValue)
+    }
+  }
 
-  @Binding
-  var toggleValue: Bool
+  var toggleDidSet: (_ value: Bool) -> Void = { _ in }
+}
 
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
+struct CellView: View {
+  let cellDestinationRoute: CellDestinationRoute
+  @State var cellViewModel: CellViewModel
 
   var imageView: some View {
     HStack {
-      Image(systemName: imageName)
+      Image(systemName: cellViewModel.imageName)
         .font(.system(size: 18))
         .foregroundColor(Color.HamsterFontColor)
 
       Spacer()
 
-      if !showSubView {
-        Toggle("", isOn: $toggleValue)
+      if cellViewModel.destinationType.isNone() {
+        Toggle("", isOn: $cellViewModel.toggleValue)
           .fixedSize()
           .frame(width: 0, height: 0)
           .scaleEffect(0.7)
@@ -99,14 +105,14 @@ struct CellView<SubView: View>: View {
 
   var titleView: some View {
     HStack(spacing: 0) {
-      Text(featureName)
+      Text(cellViewModel.cellName)
         .font(.system(size: 16, weight: .bold, design: .rounded))
         .lineLimit(2)
         .multilineTextAlignment(.leading)
         .minimumScaleFactor(0.5)
         .foregroundColor(Color.HamsterFontColor)
 
-      if showSubView {
+      if !cellViewModel.destinationType.isNone() {
         Image(systemName: "chevron.right")
           .font(.system(size: 12))
           .padding(.leading, 5)
@@ -121,11 +127,9 @@ struct CellView<SubView: View>: View {
     VStack(alignment: .leading) {
       imageView
         .padding(.bottom, 15)
-      if showSubView {
+      if !cellViewModel.destinationType.isNone() {
         NavigationLink {
-          if let builder = navgationDestinationBuilder {
-            builder()
-          }
+          cellDestinationRoute.view(type: cellViewModel.destinationType)
         } label: {
           titleView
         }
@@ -133,162 +137,130 @@ struct CellView<SubView: View>: View {
         titleView
       }
     }
-    .frame(width: width, height: height)
+    .frame(width: cellViewModel.cellWidth, height: cellViewModel.cellHeight)
     .background(Color.HamsterCellColor)
     .cornerRadius(15)
     .hamsterShadow()
     .navigationBarBackButtonHidden(true)
   }
+}
+
+/// cell创建
+func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
+  [
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "输入方案",
+      imageName: "keyboard",
+      destinationType: .inputSchema
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "配色选择",
+      imageName: "paintpalette",
+      destinationType: .colorSchema
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "键盘反馈",
+      imageName: "hand.tap",
+      destinationType: .feedback
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "输入方案上传",
+      imageName: "network",
+      destinationType: .fileManager
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "按键气泡",
+      imageName: "bubble.middle.bottom",
+      destinationType: .none,
+      toggleValue: HamsterAppSettings.shared.showKeyPressBubble,
+      toggleDidSet: { value in
+        HamsterAppSettings.shared.showKeyPressBubble = value
+      }
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "键盘收起键",
+      imageName: "chevron.down.circle",
+      destinationType: .none,
+      toggleValue: HamsterAppSettings.shared.showKeyboardDismissButton,
+      toggleDidSet: { value in
+        HamsterAppSettings.shared.showKeyboardDismissButton = value
+      }
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "繁体中文",
+      imageName: "character",
+      destinationType: .none,
+      toggleValue: HamsterAppSettings.shared.switchTraditionalChinese,
+      toggleDidSet: { value in
+        HamsterAppSettings.shared.switchTraditionalChinese = value
+      }
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "空格滑动",
+      imageName: "lasso",
+      destinationType: .none,
+      toggleValue: HamsterAppSettings.shared.slideBySapceButton,
+      toggleDidSet: { value in
+        HamsterAppSettings.shared.slideBySapceButton = value
+      }
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "输入功能键",
+      imageName: "gear",
+      destinationType: .inputKeyFuction
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "上下滑动输入数字符号",
+      imageName: "arrow.up.arrow.down",
+      destinationType: .upAndDownSlideInputSymbol
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "关于",
+      imageName: "info.circle",
+      destinationType: .about
+    ),
+  ]
 }
 
 struct CellView_Previews: PreviewProvider {
+  static let cellDestinationRoute = CellDestinationRoute()
   static var previews: some View {
     VStack {
       CellView(
-        width: 180, height: 100, imageName: "keyboard", featureName: "方案选择",
-        navgationDestinationBuilder: { InputSchemaView(schemas: sampleSchemas) }
-      )
-
-      CellView(
-        width: 180, height: 100, imageName: "keyboard", featureName: "按键气泡",
-        toggle: .constant(false)
+        cellDestinationRoute: cellDestinationRoute,
+        cellViewModel:
+        .init(
+          cellWidth: 160,
+          cellHeight: 100,
+          cellName: "按键气泡",
+          imageName: "keyboard",
+          destinationType: .none
+        )
       )
     }
-    .environmentObject(HamsterAppSettings())
+    .environmentObject(HamsterAppSettings.shared)
     .environmentObject(RimeEngine.shared)
-  }
-}
-
-struct CellView2<SubView: View>: View {
-  typealias SubViewBuilder = () -> SubView
-  
-  init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    toggle: Binding<Bool>
-  ) where SubView == AnyView {
-    self.init(
-      width: width,
-      height: height,
-      imageName: imageName,
-      featureName: featureName,
-      showSubView: false,
-      toggle: toggle,
-      navgationDestinationBuilder: nil
-    )
-  }
-  
-  init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    @ViewBuilder navgationDestinationBuilder: @escaping SubViewBuilder
-  ) {
-    self.init(
-      width: width,
-      height: height,
-      imageName: imageName,
-      featureName: featureName,
-      showSubView: true,
-      toggle: .constant(false),
-      navgationDestinationBuilder: navgationDestinationBuilder
-    )
-  }
-  
-  private init(
-    width: CGFloat,
-    height: CGFloat,
-    imageName: String,
-    featureName: String,
-    showSubView: Bool,
-    toggle: Binding<Bool>,
-    navgationDestinationBuilder: SubViewBuilder?
-  ) {
-    self.width = width
-    self.height = height
-    self.imageName = imageName
-    self.featureName = featureName
-    self.showSubView = showSubView
-    self._toggleValue = toggle
-    self.navgationDestinationBuilder = navgationDestinationBuilder
-  }
-  
-  var width: CGFloat
-  var height: CGFloat
-  var imageName: String
-  var featureName: String
-  
-  var showSubView: Bool
-  var navgationDestinationBuilder: SubViewBuilder?
-  
-  @Binding
-  var toggleValue: Bool
-  
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
-  
-  var imageView: some View {
-    HStack {
-      Image(systemName: imageName)
-        .font(.system(size: 18))
-        .foregroundColor(Color.HamsterFontColor)
-      
-      Spacer()
-      
-      if !showSubView {
-        Toggle("", isOn: $toggleValue)
-          .fixedSize()
-          .frame(width: 0, height: 0)
-          .scaleEffect(0.7)
-          .padding(.trailing)
-      }
-    }
-    .padding(.horizontal)
-  }
-  
-  var titleView: some View {
-    HStack(spacing: 0) {
-      Text(featureName)
-        .font(.system(size: 16, weight: .bold, design: .rounded))
-        .lineLimit(2)
-        .multilineTextAlignment(.leading)
-        .minimumScaleFactor(0.5)
-        .foregroundColor(Color.HamsterFontColor)
-      
-      if showSubView {
-        Image(systemName: "chevron.right")
-          .font(.system(size: 12))
-          .padding(.leading, 5)
-          .foregroundColor(Color.HamsterFontColor)
-      }
-    }
-    .padding(.horizontal)
-    .foregroundColor(.primary)
-  }
-  
-  var body: some View {
-    VStack(alignment: .leading) {
-      imageView
-        .padding(.bottom, 15)
-      if showSubView {
-        NavigationLink {
-          if let builder = navgationDestinationBuilder {
-            builder()
-          }
-        } label: {
-          titleView
-        }
-      } else {
-        titleView
-      }
-    }
-    .frame(width: width, height: height)
-    .background(Color.HamsterCellColor)
-    .cornerRadius(15)
-    .hamsterShadow()
-    .navigationBarBackButtonHidden(true)
   }
 }

@@ -8,19 +8,13 @@
 import SwiftUI
 
 struct InputSchemaView: View {
-  @State
-  var schemas: [Schema] = []
-
-  @State
-  var rimeError: Error?
-
-  @EnvironmentObject
-  var appSetting: HamsterAppSettings
-
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
+  @State var schemas: [Schema] = []
+  @State var rimeError: Error?
+  @StateObject var appSettings = HamsterAppSettings.shared
+  var rimeEngine = RimeEngine.shared
 
   init(schemas: [Schema] = []) {
+    Logger.shared.log.debug("InputSchemaView init()")
     self.schemas = schemas
   }
 
@@ -41,7 +35,7 @@ struct InputSchemaView: View {
           ForEach(schemas) { schema in
             HStack {
               RadioButton(width: 24, fontSize: 12, isSelected: isSelect(schema)) {
-                appSetting.rimeInputSchema = schema.schemaId
+                appSettings.rimeInputSchema = schema.schemaId
               }
               Text(schema.schemaName)
                 .font(.system(.body, design: .rounded))
@@ -51,7 +45,7 @@ struct InputSchemaView: View {
             .frame(minHeight: 0, maxHeight: .infinity)
             .contentShape(Rectangle(), eoFill: true)
             .onTapGesture {
-              appSetting.rimeInputSchema = schema.schemaId
+              appSettings.rimeInputSchema = schema.schemaId
             }
           }
         }
@@ -63,19 +57,28 @@ struct InputSchemaView: View {
       }
     }
     .navigationBarTitleDisplayMode(.inline)
-    .animation(.default, value: appSetting.rimeInputSchema)
+    .animation(.default, value: appSettings.rimeInputSchema)
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(minHeight: 0, maxHeight: .infinity)
     .onAppear {
+      rimeEngine.startRime()
       schemas = rimeEngine.getSchemas()
-      if appSetting.rimeInputSchema.isEmpty && !schemas.isEmpty {
-        appSetting.rimeInputSchema = schemas[0].schemaId
+      if appSettings.rimeInputSchema.isEmpty && !schemas.isEmpty {
+        appSettings.rimeInputSchema = schemas[0].schemaId
+      } else {
+        let schema = schemas.first(where: { $0.schemaId == appSettings.rimeInputSchema })
+        if schema == nil && !schemas.isEmpty {
+          appSettings.rimeInputSchema = schemas[0].schemaId
+        }
       }
+    }
+    .onDisappear {
+      rimeEngine.shutdownRime()
     }
   }
 
   func isSelect(_ schema: Schema) -> Bool {
-    schema.schemaId == appSetting.rimeInputSchema
+    return schema.schemaId == appSettings.rimeInputSchema
   }
 }
 
@@ -92,7 +95,7 @@ struct InputSchemaView_Previews: PreviewProvider {
     InputSchemaView(
       schemas: sampleSchemas
     )
-    .environmentObject(HamsterAppSettings())
+    .environmentObject(HamsterAppSettings.shared)
     .environmentObject(RimeEngine.shared)
   }
 }

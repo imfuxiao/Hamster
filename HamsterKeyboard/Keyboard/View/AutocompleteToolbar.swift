@@ -93,7 +93,7 @@ struct HamsterAutocompleteToolbar: View {
       .padding(.leading, 5)
 
       ScrollView(.horizontal, showsIndicators: true) {
-        HStack {
+        LazyHStack {
           ForEach(rimeEngine.suggestions) { item in
             Button {
               // TODO: 点击候选项处理

@@ -59,13 +59,13 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   var userInputKey: String = ""
 
   @Published
-  var deployState: RimeDeployStatus = .none
-
-  @Published
   var simplifiedChineseMode: Bool = true
 
   @Published
   var asciiMode: Bool = false
+
+  @Published
+  var deployState: RimeDeployStatus = .none
 
   public static let shared: RimeEngine = .init()
   private init() {}
@@ -217,6 +217,14 @@ public extension RimeEngine {
     return traits
   }
 
+  func deployInstallRime(sharedSupportDir: String, userDataDir: String) {
+    deployInstallRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
+  }
+
+  func deployInstallRime(_ traits: IRimeTraits) {
+    rimeAPI.deployerInitialize(traits)
+  }
+
   func setupRime(sharedSupportDir: String, userDataDir: String) {
     setupRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
   }
@@ -224,10 +232,6 @@ public extension RimeEngine {
   func setupRime(_ traits: IRimeTraits) {
     setNotificationDelegate(self)
     rimeAPI.setup(traits)
-  }
-
-  func deployInstallRime(_ traits: IRimeTraits) {
-    rimeAPI.deployerInitialize(traits)
   }
 
   func startRime(fullCheck: Bool = false) {

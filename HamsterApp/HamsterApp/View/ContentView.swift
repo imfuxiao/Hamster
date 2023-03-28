@@ -9,8 +9,9 @@ import Combine
 import SwiftUI
 
 public struct ContentView: View {
-  @EnvironmentObject var rimeEngine: RimeEngine
-  @EnvironmentObject var appSettings: HamsterAppSettings
+  var appSettings = HamsterAppSettings.shared
+  var rimeEngine = RimeEngine.shared
+
   @Environment(\.openURL) var openURL
 
   @State var rimeError: Error?
@@ -18,6 +19,9 @@ public struct ContentView: View {
   @State var isLoading: Bool = false
   @State var loadingText: String = ""
   var cancel: [AnyCancellable] = []
+
+  let cellDestinationRoute = CellDestinationRoute()
+  var cells: [CellViewModel] = createCells(cellWidth: 160, cellHeight: 100)
 
   // TODO: 体验功能暂未实现
 //  @State var userExperienceState = true
@@ -40,24 +44,21 @@ public struct ContentView: View {
                   buttonText: "重新部署",
                   buttonWidth: proxy.size.width - 40
                 ) {
-                  // TODO: 缺少日志显示
                   loadingText = "正在部署, 请稍后."
                   isLoading = true
-                  DispatchQueue.global(qos: .background).async {
+                  DispatchQueue.main.async {
                     rimeEngine.deploy()
-                    DispatchQueue.main.async {
-                      appSettings.rimeNeedOverrideUserDataDirectory = true
-                      DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        isLoading = false
-                      }
+                    appSettings.rimeNeedOverrideUserDataDirectory = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                      isLoading = false
                     }
                   }
                 }
               }
 
               SettingView(
-                cellWidth: (proxy.size.width - 40) / 2 - 10,
-                cellHeight: 100
+                cells: cells,
+                cellDestinationRoute: cellDestinationRoute
               )
 
               Spacer()
@@ -100,7 +101,7 @@ public struct ContentView: View {
                 .font(.system(size: 20, weight: .bold))
             }
             .frame(width: proxy.size.width, height: 80)
-            .background(Color.green)
+            .background(Color("dots"))
             .foregroundColor(.white)
             .onTapGesture {
               // 点击跳转设置
@@ -120,7 +121,7 @@ struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
       .previewDevice("iPhone 13 mini")
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
       .environmentObject(RimeEngine.shared)
   }
 }

@@ -11,29 +11,25 @@ import SwiftUI
 import UIKit
 
 struct FileManagerView: View {
-  let fileServer = FileServer(
+  let fileServer: FileServer = .init(
     port: 80,
     publicDirectory: RimeEngine.shareURL
   )
-  let monitor: NWPathMonitor = .init(requiredInterfaceType: .wifi)
+  @State var monitor: NWPathMonitor = .init(requiredInterfaceType: .wifi)
+  @State var isBoot: Bool = false
+  @State var localIP: String = ""
+  @State var wifiEnable: Bool = true
 
   var remark: String { """
   1. 请在与您手机处与同一局域网内的PC浏览器上打开下面的IP地址.
-  
+
      - http://\(self.localIP)
-  
+
   2. 将您的个人输入方案上传至"Rime"文件夹内.
   3. 上传完毕请务必点击主菜单中的"重新部署", 否则方案不会生效.
   注意: SharedSupport目录是Rime的主目录, 无非必要不要修改.
   """
   }
-
-  @State var isBoot: Bool = false
-  @State var localIP: String = ""
-  @State var wifiEnable: Bool = true
-
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
 
   var body: some View {
     GeometryReader { proxy in
@@ -82,11 +78,10 @@ struct FileManagerView: View {
         }
         .frame(width: proxy.size.width, height: proxy.size.height)
         .onAppear {
-          self.rimeEngine.shutdownRime()
-          
+          Logger.shared.log.debug("FileManagerView appear")
+
           // 屏幕长亮, 防止wifi无法使用
           UIApplication.shared.isIdleTimerDisabled = true
-          
 
           let localIPs = UIDevice.current.localIP()
           if localIPs.count == 1 {
@@ -112,12 +107,13 @@ struct FileManagerView: View {
           self.monitor.start(queue: queue)
         }
         .onDisappear {
+          Logger.shared.log.debug("FileManagerView disppear")
           UIApplication.shared.isIdleTimerDisabled = false
-          
-          self.isBoot = false
-          self.rimeEngine.startRime()
-          self.fileServer.shutdown()
           self.monitor.cancel()
+          if self.isBoot {
+            self.fileServer.shutdown()
+            self.isBoot = false
+          }
         }
       }
     }

@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct ColorSchemaView: View {
-  @State
-  var colorSchemas: [ColorSchema] = []
-
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
-
-  @EnvironmentObject
-  var appSetting: HamsterAppSettings
+  @State var colorSchemas: [ColorSchema] = []
+  @StateObject var appSettings = HamsterAppSettings.shared
+  var rimeEngine = RimeEngine.shared
 
   func isSelected(_ colorSchema: ColorSchema) -> Bool {
-    return colorSchema.schemaName == appSetting.rimeColorSchema
+    return colorSchema.schemaName == appSettings.rimeColorSchema
   }
 
   var body: some View {
@@ -35,19 +30,19 @@ struct ColorSchemaView: View {
         .padding(.horizontal)
 
         HStack {
-          Toggle(isOn: $appSetting.enableRimeColorSchema) {
+          Toggle(isOn: $appSettings.enableRimeColorSchema) {
             Text("启用配色")
               .font(.system(size: 16, weight: .bold, design: .rounded))
           }
         }
         .padding(.horizontal)
 
-        if appSetting.enableRimeColorSchema {
+        if appSettings.enableRimeColorSchema {
           ScrollView {
             ForEach(colorSchemas) { colorSchema in
               HStack {
                 RadioButton(isSelected: isSelected(colorSchema)) {
-                  appSetting.rimeColorSchema = colorSchema.schemaName
+                  appSettings.rimeColorSchema = colorSchema.schemaName
                 }
                 WordView(colorSchema: colorSchema)
                   .background(
@@ -58,7 +53,7 @@ struct ColorSchemaView: View {
                       )
                   )
                   .onTapGesture {
-                    appSetting.rimeColorSchema = colorSchema.schemaName
+                    appSettings.rimeColorSchema = colorSchema.schemaName
                   }
               }
               .padding(.horizontal)
@@ -71,7 +66,11 @@ struct ColorSchemaView: View {
       .frame(minWidth: 0, maxWidth: .infinity)
       .frame(minHeight: 0, maxHeight: .infinity)
       .onAppear {
+        rimeEngine.startRime()
         self.colorSchemas = rimeEngine.colorSchema()
+      }
+      .onDisappear {
+        rimeEngine.shutdownRime()
       }
     }
     .navigationBarTitleDisplayMode(.inline)
@@ -207,6 +206,6 @@ struct ColorSchemaView_Previews: PreviewProvider {
   static var previews: some View {
     ColorSchemaView(colorSchemas: sampleColorSchema)
       .environmentObject(RimeEngine.shared)
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }

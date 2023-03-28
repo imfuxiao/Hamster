@@ -8,15 +8,9 @@
 import SwiftUI
 
 struct AboutView: View {
-  @EnvironmentObject
-  var appSettings: HamsterAppSettings
-
-  @EnvironmentObject
-  var rimeEngine: RimeEngine
-
-  @Environment(\.openURL)
-  var openURL
-
+  @StateObject var appSettings = HamsterAppSettings.shared
+  var rimeEngine = RimeEngine.shared
+  @Environment(\.openURL) var openURL
   @State var isLoading = false
   @State var loadingText = ""
   @State var rimeError: Error?
@@ -110,23 +104,21 @@ struct AboutView: View {
                 loadingText = "RIME重置中, 请稍后."
                 isLoading = true
 
-                DispatchQueue.global(qos: .background).async {
-                  var err: Error?
+                DispatchQueue.main.async {
                   do {
                     try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
                     try RimeEngine.initAppGroupUserDataDirectory(override: true)
-                    rimeEngine.deploy()
-                  } catch {
-                    err = error
-                    isLoading = false
-                    return
-                  }
-                  DispatchQueue.main.async {
-                    rimeError = err
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                      isLoading = false
-                    }
+                    rimeEngine.deployInstallRime(
+                      sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+                      userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+                    )
                     appSettings.rimeNeedOverrideUserDataDirectory = true
+                  } catch {
+                    rimeError = error
+                    isLoading = false
+                  }
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    isLoading = false
                   }
                 }
 

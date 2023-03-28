@@ -11,10 +11,10 @@ import SwiftUI
 
 @available(iOS 14, *)
 struct AlphabetKeyboard: View {
+  var ivc: HamsterKeyboardViewController
   var layoutProvider: KeyboardLayoutProvider
   var appearance: KeyboardAppearance
   var actionHandler: KeyboardActionHandler
-  var keyboardInputViewController: KeyboardInputViewController
 
   @EnvironmentObject
   private var keyboardContext: KeyboardContext
@@ -34,7 +34,7 @@ struct AlphabetKeyboard: View {
   @Environment(\.openURL) var openURL
 
   init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
-    self.keyboardInputViewController = ivc
+    self.ivc = ivc
     self.layoutProvider = ivc.keyboardLayoutProvider
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
@@ -97,7 +97,7 @@ struct AlphabetKeyboard: View {
                     .frame(width: 25, height: 25)
                     .padding(.trailing, 15)
                     .onTapGesture {
-                      keyboardInputViewController.dismissKeyboard()
+                      ivc.dismissKeyboard()
                     }
                 }
               }
@@ -127,6 +127,6 @@ struct AlphabetKeyboard: View {
   }
 
   var standardKeyboardWidth: CGFloat {
-    keyboardInputViewController.view.frame.width
+    ivc.view.frame.width
   }
 }

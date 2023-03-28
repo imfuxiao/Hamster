@@ -8,53 +8,42 @@ import UIKit
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine.shared
-  public var appSettings = HamsterAppSettings()
+  public var appSettings = HamsterAppSettings.shared
   private let log = Logger.shared.log
   var cancellables = Set<AnyCancellable>()
   
   private func setupAppSettings() {
-    self.appSettings.$switchTraditionalChinese
-      .receive(on: RunLoop.main)
-      .sink {
-        self.log.info("combine $switchTraditionalChinese \($0)")
-        _ = self.rimeEngine.simplifiedChineseMode($0)
-      }
-      .store(in: &self.cancellables)
+    // 简繁切换
+    if self.appSettings.switchTraditionalChinese {
+      switchTraditionalSimplifiedChinese()
+    }
     
-    self.appSettings.$showKeyPressBubble
-      .receive(on: RunLoop.main)
-      .sink {
-        self.log.info("combine $showKeyPressBubble \($0)")
-        self.calloutContext.input.isEnabled = $0
-      }
-      .store(in: &self.cancellables)
+    // 显示按键气泡
+    if self.appSettings.showKeyPressBubble {
+      self.calloutContext.input.isEnabled = true
+    }
     
-    self.appSettings.$rimeNeedOverrideUserDataDirectory
-      .receive(on: RunLoop.main)
-      .sink { [weak self] in
-        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
-        if $0 {
-          do {
-            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
-            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
-          } catch {
-            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
-          }
-          self?.rimeEngine.deploy(fullCheck: false)
+    // 是否重新覆盖用户数据目录
+    if self.appSettings.rimeNeedOverrideUserDataDirectory {
+      do {
+        try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
+        try RimeEngine.syncAppGroupUserDataDirectory(override: true)
+      } catch {
+        self.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
+      }
+      self.rimeEngine.deploy(fullCheck: false)
+    }
+    
+    // 用户选择输入方案
+    let inputSchema = self.appSettings.rimeInputSchema
+    if !inputSchema.isEmpty {
+      let schema = self.rimeEngine.getSchemas().first(where: { $0.schemaId == inputSchema })
+      if let schema = schema {
+        if !self.rimeEngine.setSchema(schema.schemaId) {
+          self.log.error("rime engine set schema error")
         }
       }
-      .store(in: &self.cancellables)
-    
-    self.appSettings.$rimeInputSchema
-      .receive(on: RunLoop.main)
-      .sink { [weak self] in
-        if !$0.isEmpty {
-          if !(self?.rimeEngine.setSchema($0) ?? false) {
-            self?.log.error("rime engine set schema \($0) error")
-          }
-        }
-      }
-      .store(in: &self.cancellables)
+    }
   }
   
   private func setupRimeEngine() {
@@ -224,15 +213,45 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 }
 
 extension HamsterKeyboardViewController {
-  /// 首选候选字上屏
-  func candidateTextOnScreen() -> Bool {
-    let candidates = self.rimeEngine.context().getCandidates()
-    if !candidates.isEmpty {
-      if let candidate = candidates.first {
-        textDocumentProxy.insertText(candidate.text)
+  // 简繁切换
+  func switchTraditionalSimplifiedChinese() {
+    self.rimeEngine.simplifiedChineseMode.toggle()
+    _ = self.rimeEngine.simplifiedChineseMode(self.rimeEngine.simplifiedChineseMode)
+  }
+  
+  // 中英切换
+  func switchEnglishChinese() {
+    self.rimeEngine.asciiMode.toggle()
+  }
+  
+  /// 次选上屏
+  func secondCandidateTextOnScreen() -> Bool {
+    let status = self.rimeEngine.status()
+    if status.isComposing {
+      let candidates = self.rimeEngine.context().candidates
+      if candidates == nil && candidates!.isEmpty {
+        return false
+      }
+      if candidates!.count >= 2 {
+        self.textDocumentProxy.insertText(candidates![1].text)
         self.rimeEngine.rest()
         return true
       }
+    }
+    return false
+  }
+  
+  /// 首选候选字上屏
+  func candidateTextOnScreen() -> Bool {
+    let status = self.rimeEngine.status()
+    if status.isComposing {
+      let candidates = self.rimeEngine.context().candidates
+      if candidates == nil && candidates!.isEmpty {
+        return false
+      }
+      self.textDocumentProxy.insertText(candidates![0].text)
+      self.rimeEngine.rest()
+      return true
     }
     return false
   }
@@ -246,6 +265,28 @@ extension HamsterKeyboardViewController {
       return true
     }
     return false
+  }
+  
+  // 光标移动句首
+  func moveBeginOfSentence() {
+    if let beforInput = self.textDocumentProxy.documentContextBeforeInput {
+      if let lastIndex = beforInput.lastIndex(of: "\n") {
+        let offset = beforInput[lastIndex ..< beforInput.endIndex].count - 1
+        if offset > 0 {
+          self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -offset)
+        }
+      } else {
+        self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -beforInput.count)
+      }
+    }
+  }
+  
+  // 光标移动句尾
+  func moveEndOfSentence() {
+    let offset = self.textDocumentProxy.documentContextAfterInput?.count ?? 0
+    if offset > 0 {
+      self.textDocumentProxy.adjustTextPosition(byCharacterOffset: offset)
+    }
   }
 }
 #endif

@@ -107,7 +107,9 @@ private enum HamsterAppSettingKeys: String {
 public class HamsterAppSettings: ObservableObject {
   let infoDictionary = Bundle.main.infoDictionary ?? [:]
 
-  init() {
+  static let shared: HamsterAppSettings = .init()
+
+  private init() {
     // 选项初始值
     UserDefaults.hamsterSettingsDefault.register(defaults: [
       HamsterAppSettingKeys.appFirstLaunch.rawValue: true,
@@ -154,6 +156,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var isFirstLaunch: Bool {
     didSet {
+      Logger.shared.log.debug(["AppSettings, isFirstLaunch = ", isFirstLaunch])
       UserDefaults.hamsterSettingsDefault.set(
         isFirstLaunch, forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
     }
@@ -163,6 +166,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var showKeyPressBubble: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, showKeyPressBubble = ", showKeyPressBubble])
       UserDefaults.hamsterSettingsDefault.set(
         showKeyPressBubble, forKey: HamsterAppSettingKeys.showKeyPressBubble.rawValue)
     }
@@ -172,6 +176,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var switchTraditionalChinese: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, switchTraditionalChinese = ", switchTraditionalChinese])
       UserDefaults.hamsterSettingsDefault.set(
         switchTraditionalChinese, forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
     }
@@ -181,6 +186,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var slideBySapceButton: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, slideBySapceButton = ", slideBySapceButton])
       UserDefaults.hamsterSettingsDefault.set(
         slideBySapceButton, forKey: HamsterAppSettingKeys.slideBySpaceButton.rawValue)
     }
@@ -190,6 +196,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var enableKeyboardFeedbackSound: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardFeedbackSound = ", enableKeyboardFeedbackSound])
       UserDefaults.hamsterSettingsDefault.set(
         enableKeyboardFeedbackSound, forKey: HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue)
     }
@@ -199,6 +206,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var enableKeyboardFeedbackHaptic: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardFeedbackHaptic = ", enableKeyboardFeedbackHaptic])
       UserDefaults.hamsterSettingsDefault.set(
         enableKeyboardFeedbackHaptic, forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
     }
@@ -208,15 +216,17 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var keyboardFeedbackHapticIntensity: Int {
     didSet {
+      Logger.shared.log.info(["AppSettings, keyboardFeedbackHapticIntensity = ", keyboardFeedbackHapticIntensity])
       UserDefaults.hamsterSettingsDefault.set(
         keyboardFeedbackHapticIntensity, forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
     }
   }
 
-  // 是否显示键盘收起键
+  // 是否显示键盘收起按键
   @Published
   var showKeyboardDismissButton: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, showKeyboardDismissButton = ", showKeyboardDismissButton])
       UserDefaults.hamsterSettingsDefault.set(
         showKeyboardDismissButton, forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
     }
@@ -226,6 +236,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var showSpaceLeftButton: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, showSpaceLeftButton = ", showSpaceLeftButton])
       UserDefaults.hamsterSettingsDefault.set(
         showSpaceLeftButton, forKey: HamsterAppSettingKeys.showSpaceLeftButton.rawValue)
     }
@@ -235,6 +246,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var spaceLeftButtonValue: String {
     didSet {
+      Logger.shared.log.info(["AppSettings, spaceLeftButtonValue = ", spaceLeftButtonValue])
       UserDefaults.hamsterSettingsDefault.set(
         spaceLeftButtonValue, forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue)
     }
@@ -244,6 +256,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var showSpaceRightButton: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, showSpaceRightButton = ", showSpaceRightButton])
       UserDefaults.hamsterSettingsDefault.set(
         showSpaceRightButton, forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     }
@@ -253,6 +266,7 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var spaceRightButtonValue: String {
     didSet {
+      Logger.shared.log.info(["AppSettings, spaceRightButtonValue = ", spaceRightButtonValue])
       UserDefaults.hamsterSettingsDefault.set(
         spaceRightButtonValue, forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue)
     }
@@ -262,50 +276,57 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var rimeInputSchema: String {
     didSet {
+      Logger.shared.log.info(["AppSettings, rimeInputSchema = ", rimeInputSchema])
       UserDefaults.hamsterSettingsDefault.set(
         rimeInputSchema, forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue)
     }
   }
 
-  // Rime: 颜色方案
+  // Rime: 是否启用颜色方案
   @Published
   var enableRimeColorSchema: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, enableRimeColorSchema = ", enableRimeColorSchema])
       UserDefaults.hamsterSettingsDefault.set(
         enableRimeColorSchema, forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     }
   }
 
+  // Rime: 颜色方案
   @Published
   var rimeColorSchema: String {
     didSet {
+      Logger.shared.log.info(["AppSettings, rimeColorSchema = ", rimeColorSchema])
       UserDefaults.hamsterSettingsDefault.set(
         rimeColorSchema, forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue)
     }
   }
 
-  // Rime: 是否需要覆盖rime UserData目录数据
+  // Rime: 是否需要覆盖UserData目录数据
   @Published
   var rimeNeedOverrideUserDataDirectory: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, rimeNeedOverrideUserDataDirectory = ", rimeNeedOverrideUserDataDirectory])
       UserDefaults.hamsterSettingsDefault.set(
         rimeNeedOverrideUserDataDirectory, forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
     }
   }
 
-  // 键盘: 上下滑动符号
-
+  // 键盘: 启用上下滑动符号
   @Published
   var enableKeyboardUpAndDownSlideSymbol: Bool {
     didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardUpAndDownSlideSymbol = ", enableKeyboardUpAndDownSlideSymbol])
       UserDefaults.hamsterSettingsDefault.set(
         enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue)
     }
   }
 
+  // 键盘: 按键对应上下滑动键值
   @Published
   var keyboardUpAndDownSlideSymbol: [String: String] {
     didSet {
+      Logger.shared.log.info(["AppSettings, keyboardUpAndDownSlideSymbol = ", keyboardUpAndDownSlideSymbol])
       UserDefaults.hamsterSettingsDefault.set(
         keyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue)
     }

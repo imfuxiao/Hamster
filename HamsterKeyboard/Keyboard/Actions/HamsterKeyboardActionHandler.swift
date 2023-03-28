@@ -10,9 +10,6 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 键盘上下滑动处理
   let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { ivc in
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
-    let rimeEngine = ivc.rimeEngine
-    let keyboardContext = ivc.keyboardContext
-
     return { action, offset in
       if case .character(let char) = action {
         let actionKey = offset < 0 ?
@@ -28,38 +25,15 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
           let function = SlideFuction(rawValue: value)
           switch function {
           case .SimplifiedTraditionalSwitch:
-            rimeEngine.simplifiedChineseMode.toggle()
-            _ = rimeEngine.simplifiedChineseMode(rimeEngine.simplifiedChineseMode)
+            ivc.switchTraditionalSimplifiedChinese()
           case .ChineseEnglishSwitch:
-            rimeEngine.asciiMode.toggle()
+            ivc.switchEnglishChinese()
           case .SelectSecond:
-            let status = rimeEngine.status()
-            if status.isComposing {
-              let candidates = rimeEngine.context().candidates
-              if candidates != nil && candidates!.isEmpty {
-                break
-              }
-              if candidates!.count == 2 {
-                keyboardContext.textDocumentProxy.insertText(candidates![1].text)
-                rimeEngine.rest()
-              }
-            }
+            _ = ivc.secondCandidateTextOnScreen()
           case .BeginOfSentence:
-            if let beforInput = keyboardContext.textDocumentProxy.documentContextBeforeInput {
-              if let lastIndex = beforInput.lastIndex(of: "\n") {
-                let offset = beforInput[lastIndex ..< beforInput.endIndex].count - 1
-                if offset > 0 {
-                  keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -offset)
-                }
-              } else {
-                keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: -beforInput.count)
-              }
-            }
+            ivc.moveBeginOfSentence()
           case .EndOfSentence:
-            let offset = keyboardContext.textDocumentProxy.documentContextAfterInput?.count ?? 0
-            if offset > 0 {
-              keyboardContext.textDocumentProxy.adjustTextPosition(byCharacterOffset: offset)
-            }
+            ivc.moveEndOfSentence()
           default:
             break
           }
@@ -67,7 +41,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         }
 
         // 字符处理
-        ivc.insertText(value)
+        ivc.textDocumentProxy.insertText(value)
         if value.count > 1 {
           ivc.adjustTextPosition(byCharacterOffset: -1)
         }

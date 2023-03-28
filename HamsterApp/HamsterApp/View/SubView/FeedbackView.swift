@@ -8,10 +8,15 @@
 import SwiftUI
 
 struct FeedbackView: View {
-  @EnvironmentObject var appSettings: HamsterAppSettings
-  @State var hapticIntensity: HapticIntensity = .mediumImpact
+  @StateObject var appSettings = HamsterAppSettings.shared
   @Environment(\.openURL) var openURL
   @Environment(\.colorScheme) var colorScheme
+
+  @State var hapticIntensity: HapticIntensity = .mediumImpact
+
+  var hasFullAccess: Bool {
+    appSettings.hasFullAccess
+  }
 
   var body: some View {
     GeometryReader { proxy in
@@ -33,13 +38,7 @@ struct FeedbackView: View {
                 .font(.system(size: 16, weight: .bold, design: .rounded))
             }
           }
-          .padding([.all], 15)
-          .background(Color.HamsterCellColor)
-          .foregroundColor(Color.HamsterFontColor)
-          .cornerRadius(8)
-          .hamsterShadow()
-          .padding(.horizontal)
-          .padding(.bottom, 10)
+          .functionCell()
 
           VStack {
             HStack {
@@ -61,19 +60,13 @@ struct FeedbackView: View {
               }
             }
           }
-          .padding([.all], 15)
-          .background(Color.HamsterCellColor)
-          .foregroundColor(Color.HamsterFontColor)
-          .cornerRadius(8)
-          .hamsterShadow()
-          .padding(.horizontal)
-          .transition(.opacity)
+          .functionCell()
           .animation(.linear, value: appSettings.enableKeyboardFeedbackHaptic)
 
           Spacer()
         }
 
-        if appSettings.enableKeyboardFeedbackHaptic && !appSettings.hasFullAccess {
+        if appSettings.enableKeyboardFeedbackHaptic && !hasFullAccess {
           BlackView(bgColor: .black.opacity(0.1))
             .onTapGesture {
               appSettings.enableKeyboardFeedbackHaptic = false
@@ -88,7 +81,7 @@ struct FeedbackView: View {
                 .foregroundColor(.primary)
                 .padding(.top, 30)
                 .padding(.horizontal, 30)
-              
+
               Text("点击\"开启\"跳转系统设置, 点击\"键盘 -> 允许完全访问\", 选择\"允许\".")
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(.secondary)
@@ -129,14 +122,13 @@ struct FeedbackView: View {
         appSettings.keyboardFeedbackHapticIntensity = $0.rawValue
       })
       .onAppear {
-        hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) ?? .mediumImpact
-
-        if !appSettings.hasFullAccess {
+        if !hasFullAccess {
           appSettings.enableKeyboardFeedbackHaptic = false
         }
+        hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) ?? .mediumImpact
       }
       .onDisappear {
-        if !appSettings.hasFullAccess && appSettings.enableKeyboardFeedbackHaptic {
+        if !hasFullAccess && appSettings.enableKeyboardFeedbackHaptic {
           appSettings.enableKeyboardFeedbackHaptic = false
         }
       }
@@ -147,6 +139,6 @@ struct FeedbackView: View {
 struct FeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     FeedbackView(hapticIntensity: .mediumImpact)
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }
