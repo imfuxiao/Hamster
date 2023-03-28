@@ -20,7 +20,7 @@ struct InputSchemaView: View {
 
   var body: some View {
     ZStack {
-      Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
+      Color.HamsterBackgroundColor.ignoresSafeArea()
 
       VStack {
         HStack {
@@ -31,27 +31,32 @@ struct InputSchemaView: View {
         }
         .padding(.horizontal)
 
-        List {
+        ScrollView {
           ForEach(schemas) { schema in
-            HStack {
-              RadioButton(width: 24, fontSize: 12, isSelected: isSelect(schema)) {
+            VStack {
+              HStack {
+                RadioButton(width: 24, fontSize: 12, isSelected: isSelect(schema)) {
+                  appSettings.rimeInputSchema = schema.schemaId
+                }
+                Text(schema.schemaName)
+                  .font(.system(.body, design: .rounded))
+                Spacer()
+              }
+              .frame(minWidth: 0, maxWidth: .infinity)
+              .frame(minHeight: 0, maxHeight: .infinity)
+              .frame(height: 40)
+              .contentShape(Rectangle(), eoFill: true)
+              .onTapGesture {
                 appSettings.rimeInputSchema = schema.schemaId
               }
-              Text(schema.schemaName)
-                .font(.system(.body, design: .rounded))
-              Spacer()
-            }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            .frame(minHeight: 0, maxHeight: .infinity)
-            .contentShape(Rectangle(), eoFill: true)
-            .onTapGesture {
-              appSettings.rimeInputSchema = schema.schemaId
+              
+              Divider()
             }
           }
         }
         .padding(.top, 20)
         .padding(.horizontal)
-        .listStyle(.plain)
+//        .listStyle(.plain)
 
         Spacer()
       }

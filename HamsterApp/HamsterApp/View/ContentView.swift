@@ -87,6 +87,15 @@ public struct ContentView: View {
             }
           }
           .navigationTitle(Text("仓输入法"))
+          .toolbar {
+            ToolbarItem(placement: .principal) {
+              VStack {
+                HStack{
+                  
+                }
+              }
+            }
+          }
           // ZStack End
         }
         .navigationViewStyle(.stack)

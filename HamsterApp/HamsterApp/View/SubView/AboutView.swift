@@ -26,7 +26,7 @@ struct AboutView: View {
   var body: some View {
     GeometryReader { proxy in
       ZStack {
-        Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
+        Color.HamsterBackgroundColor.ignoresSafeArea()
 
         ScrollView {
           HStack {

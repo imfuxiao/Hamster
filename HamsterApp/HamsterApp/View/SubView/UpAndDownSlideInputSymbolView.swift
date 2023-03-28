@@ -42,7 +42,7 @@ struct UpAndDownSlideInputSymbolView: View {
 
   var body: some View {
     ZStack {
-      Color.HamsterBackgroundColor.opacity(0.1).ignoresSafeArea()
+      Color.HamsterBackgroundColor.ignoresSafeArea()
 
       VStack {
         HStack {

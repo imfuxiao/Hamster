@@ -271,11 +271,11 @@ public extension RimeEngine {
   }
 
   func isSimplifiedMode() -> Bool {
-    return rimeAPI.getOption(session, andOption: simplifiedChineseKey)
+    return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
   }
 
   func simplifiedChineseMode(_ value: Bool) -> Bool {
-    return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: value)
+    return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
   }
 }
 
