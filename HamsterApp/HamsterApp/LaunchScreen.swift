@@ -15,7 +15,7 @@ struct LaunchScreen: View {
 
   let timer = Timer.publish(every: 1, on: .main, in: .default).autoconnect()
   let colors = [
-    Color.gray.opacity(0.5),
+    Color.gray,
     Color.black,
   ]
 
@@ -48,9 +48,9 @@ struct LaunchScreen: View {
         )
         .frame(minWidth: 0, maxWidth: .infinity)
         .frame(height: 80)
-        .animation(.easeOut(duration: 2).repeatForever(autoreverses: false))
+        .animation(.easeOut(duration: 1.5).repeatForever(autoreverses: false))
         .onReceive(timer, perform: { _ in
-          self.start = UnitPoint(x: 1, y: 1)
+          self.start = UnitPoint(x: 2, y: 2)
         })
         .mask(
           VStack {

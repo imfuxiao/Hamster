@@ -78,24 +78,6 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     return result
   }
 
-//  /**
-//   Additional trailing actions to apply to the middle row.
-//   */
-//  override func middleTrailingActions(
-//    for actions: KeyboardActionRows,
-//    context: KeyboardContext) -> KeyboardActions
-//  {
-//    var result: [KeyboardAction] = []
-//    if appSettings.showKeyboardSelectSecondChoiceButton {
-//      result.append(.custom(
-//        named: KeyboardConstant.CustomButton.SelectSecondChoiceButton(
-//          selectSecondChoice: appSettings.keyboardSelectSecondChoiceButtonValue)
-//          .buttonText)
-//      )
-//    }
-//    return result
-//  }
-
   /**
    Get the keyboard layout item width of a certain `action`
    for the provided `context`, `row` and row `index`.

@@ -16,6 +16,13 @@ struct AboutView: View {
   @State var rimeError: Error?
   @State var restState = false
 
+  let openSourceSoftLists = """
+    • https://github.com/rime/librime
+    • https://github.com/KeyboardKit/KeyboardKit
+    • https://github.com/SwiftyBeaver/SwiftyBeaver
+    • https://github.com/vapor/vapor
+  """
+
   var body: some View {
     GeometryReader { proxy in
       ZStack {
@@ -40,6 +47,18 @@ struct AboutView: View {
                 Text("RIME: \(appSettings.rimeVersion)")
                 Spacer()
               }
+            }
+            .padding(.horizontal)
+            .padding(.top, 10)
+          }
+
+          SectionView("使用开源库") {
+            VStack {
+              HStack {
+                Text(openSourceSoftLists)
+                Spacer()
+              }
+              .contentShape(Rectangle(), eoFill: true)
             }
             .padding(.horizontal)
             .padding(.top, 10)

@@ -13,37 +13,52 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   var cancellables = Set<AnyCancellable>()
   
   private func setupAppSettings() {
-    // 简繁切换
-    if self.appSettings.switchTraditionalChinese {
-      switchTraditionalSimplifiedChinese()
-    }
-    
-    // 显示按键气泡
-    if self.appSettings.showKeyPressBubble {
-      self.calloutContext.input.isEnabled = true
-    }
-    
-    // 是否重新覆盖用户数据目录
-    if self.appSettings.rimeNeedOverrideUserDataDirectory {
-      do {
-        try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
-        try RimeEngine.syncAppGroupUserDataDirectory(override: true)
-      } catch {
-        self.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
+    // 简中切换
+    self.appSettings.$switchTraditionalChinese
+      .receive(on: RunLoop.main)
+      .sink {
+        self.log.info("combine $switchTraditionalChinese \($0)")
+        _ = self.rimeEngine.simplifiedChineseMode($0)
       }
-      self.rimeEngine.deploy(fullCheck: false)
-    }
+      .store(in: &self.cancellables)
     
-    // 用户选择输入方案
-    let inputSchema = self.appSettings.rimeInputSchema
-    if !inputSchema.isEmpty {
-      let schema = self.rimeEngine.getSchemas().first(where: { $0.schemaId == inputSchema })
-      if let schema = schema {
-        if !self.rimeEngine.setSchema(schema.schemaId) {
-          self.log.error("rime engine set schema error")
+    // 按键气泡
+    self.appSettings.$showKeyPressBubble
+      .receive(on: RunLoop.main)
+      .sink {
+        self.log.info("combine $showKeyPressBubble \($0)")
+        self.calloutContext.input.isEnabled = $0
+      }
+      .store(in: &self.cancellables)
+    
+    // 是否重置用户数据目录
+    self.appSettings.$rimeNeedOverrideUserDataDirectory
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
+        if $0 {
+          do {
+            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
+            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
+          } catch {
+            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
+          }
+          self?.rimeEngine.deploy(fullCheck: false)
         }
       }
-    }
+      .store(in: &self.cancellables)
+    
+    // 输入方案切换
+    self.appSettings.$rimeInputSchema
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        if !$0.isEmpty {
+          if !(self?.rimeEngine.setSchema($0) ?? false) {
+            self?.log.error("rime engine set schema \($0) error")
+          }
+        }
+      }
+      .store(in: &self.cancellables)
   }
   
   private func setupRimeEngine() {
@@ -173,7 +188,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       let commitText = self.rimeEngine.getCommitText()
       if !commitText.isEmpty {
         self.rimeEngine.rest()
-        textInputProxy?.insertText(commitText)
+        self.textDocumentProxy.insertText(commitText)
         return
       }
 
