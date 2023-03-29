@@ -127,7 +127,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.spaceLeftButtonValue.rawValue: "，",
       HamsterAppSettingKeys.showSpaceRightButton.rawValue: true,
       HamsterAppSettingKeys.spaceRightButtonValue.rawValue: "。",
-      HamsterAppSettingKeys.rimePageSize.rawValue: 20,
+      HamsterAppSettingKeys.rimePageSize.rawValue: 9,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",

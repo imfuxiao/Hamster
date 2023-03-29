@@ -70,19 +70,20 @@ struct CellViewModel: Identifiable, Equatable {
   var cellName: String
   var imageName: String
   var destinationType: DestinationType
-
-  var toggleValue: Bool = false {
-    didSet {
-      toggleDidSet(toggleValue)
-    }
-  }
-
+  var toggleValue: Bool = false
   var toggleDidSet: (_ value: Bool) -> Void = { _ in }
 }
 
 struct CellView: View {
   let cellDestinationRoute: CellDestinationRoute
-  @State var cellViewModel: CellViewModel
+  var cellViewModel: CellViewModel
+  @State var toggleState: Bool
+
+  init(cellDestinationRoute: CellDestinationRoute, cellViewModel: CellViewModel) {
+    self.cellDestinationRoute = cellDestinationRoute
+    self.cellViewModel = cellViewModel
+    self._toggleState = State(initialValue: cellViewModel.toggleValue)
+  }
 
   var imageView: some View {
     HStack {
@@ -93,7 +94,7 @@ struct CellView: View {
       Spacer()
 
       if cellViewModel.destinationType.isNone() {
-        Toggle("", isOn: $cellViewModel.toggleValue)
+        Toggle("", isOn: $toggleState)
           .fixedSize()
           .frame(width: 0, height: 0)
           .scaleEffect(0.7)
@@ -142,6 +143,9 @@ struct CellView: View {
     .cornerRadius(15)
     .hamsterShadow()
     .navigationBarBackButtonHidden(true)
+    .onChange(of: toggleState, perform: {
+      cellViewModel.toggleDidSet($0)
+    })
   }
 }
 

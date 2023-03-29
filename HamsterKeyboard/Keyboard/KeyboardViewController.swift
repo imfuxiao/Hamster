@@ -196,7 +196,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override open func deleteBackward() {
     if !self.rimeEngine.userInputKey.isEmpty {
-      if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
+      if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.Backspace.rawValue) {
         self.rimeEngine.contextReact()
       } else {
         Logger.shared.log.error("rime engine input backspace key error")
@@ -292,7 +292,7 @@ extension HamsterKeyboardViewController {
   
   // 候选字上一页
   func previousPageOfCandidates() {
-    if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.PageUp.rawValue) {
+    if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.PageUp.rawValue) {
       self.rimeEngine.contextReact()
     } else {
       Logger.shared.log.warning("rime input pageup result error")
@@ -301,7 +301,7 @@ extension HamsterKeyboardViewController {
   
   // 候选字下一页
   func nextPageOfCandidates() {
-    if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.PageDown.rawValue) {
+    if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.PageDown.rawValue) {
       self.rimeEngine.contextReact()
     } else {
       Logger.shared.log.debug("rime input pageDown result error")

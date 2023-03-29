@@ -56,7 +56,7 @@ struct HamsterAutocompleteToolbar: View {
       // 候选区
       HStack(spacing: 0) {
         ScrollView(.horizontal, showsIndicators: true) {
-          LazyHStack(spacing: 1) {
+          LazyHStack(spacing: 5) {
             // 上一页
             if rimeEngine.previousPage {
               Image(systemName: "arrow.backward.square.fill")
@@ -74,7 +74,7 @@ struct HamsterAutocompleteToolbar: View {
                 ivc.insertText(String(item.index))
               } label: {
                 HStack(alignment: .bottom, spacing: 2) {
-                  Text("\(item.index). " + item.text)
+                  Text(item.text)
                     .font(style.item.titleFont)
                     .foregroundColor(item.isAutocomplete ?
                       hamsterColor.hilitedCandidateTextColor : hamsterColor.candidateTextColor
@@ -108,7 +108,7 @@ struct HamsterAutocompleteToolbar: View {
                 }
             }
           }
-          .padding(.bottom, 3)
+          .padding(.bottom, 5)
           // LazyHStack End
         }
         .padding(.leading, 3)
