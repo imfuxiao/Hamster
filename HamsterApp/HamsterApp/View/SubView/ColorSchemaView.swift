@@ -65,15 +65,15 @@ struct ColorSchemaView: View {
       }
       .frame(minWidth: 0, maxWidth: .infinity)
       .frame(minHeight: 0, maxHeight: .infinity)
-      .onAppear {
-        rimeEngine.startRime()
-        self.colorSchemas = rimeEngine.colorSchema()
-      }
-      .onDisappear {
-        rimeEngine.shutdownRime()
-      }
     }
     .navigationBarTitleDisplayMode(.inline)
+    .onAppear {
+      rimeEngine.startRime()
+      self.colorSchemas = rimeEngine.colorSchema()
+    }
+    .onDisappear {
+      rimeEngine.shutdownRime()
+    }
   }
 }
 
@@ -102,12 +102,12 @@ struct WordView: View {
         // 组字区域
         HStack {
           Text("方案")
-            .foregroundColor(colorSchema.textColor.bgrColor ?? .clear)
+            .foregroundColor(colorSchema.textColor)
           Text("pei se˰")
-            .foregroundColor(colorSchema.hilitedTextColor.bgrColor ?? .clear)
+            .foregroundColor(colorSchema.hilitedTextColor)
           Spacer()
         }
-        .background(colorSchema.hilitedBackColor.bgrColor ?? .clear)
+        .background(colorSchema.hilitedBackColor)
         .font(.system(.body))
         .padding(.leading, 5)
 
@@ -115,20 +115,20 @@ struct WordView: View {
           // 首选区域
           HStack {
             Text("1. 配色")
-              .foregroundColor(colorSchema.hilitedCandidateTextColor.bgrColor ?? .clear)
+              .foregroundColor(colorSchema.hilitedCandidateTextColor)
             Text("(pei se)")
-              .foregroundColor(colorSchema.hilitedCommentTextColor.bgrColor ?? .clear)
+              .foregroundColor(colorSchema.hilitedCommentTextColor)
           }
           .background(
             Rectangle()
-              .fill(colorSchema.hilitedCandidateBackColor.bgrColor ?? .clear)
+              .fill(colorSchema.hilitedCandidateBackColor ?? .clear)
           )
 
           Text("2. 陪")
-            .foregroundColor(colorSchema.candidateTextColor.bgrColor ?? .clear)
+            .foregroundColor(colorSchema.candidateTextColor)
 
           Text("(pei)")
-            .foregroundColor(colorSchema.commentTextColor.bgrColor ?? .clear)
+            .foregroundColor(colorSchema.commentTextColor)
 
           Spacer()
         }
@@ -137,7 +137,7 @@ struct WordView: View {
       }
       .background(
         RoundedRectangle(cornerRadius: 5)
-          .fill(colorSchema.backColor.bgrColor ?? .clear)
+          .fill(colorSchema.backColor ?? .clear)
           .frame(height: 50)
       )
     }
@@ -151,55 +151,17 @@ struct WordView: View {
 struct ColorSchemaView_Previews: PreviewProvider {
   static let sampleColorSchema: [ColorSchema] = [
     .init(
-      schemaName: "aqua",
-      name: "碧水／Aqua",
-      author: "佛振 <chen.sst@gmail.com>",
-      backColor: "0xeeeceeee",
-      borderColor: "",
-
-      textColor: "0x606060",
-      hilitedTextColor: "0x000000",
-      hilitedBackColor: "",
-
-      hilitedCandidateTextColor: "0xffffff",
-      hilitedCandidateBackColor: "0xeefa3a0a",
-      hilitedCommentTextColor: "0xfcac9d",
-      candidateTextColor: "0x000000",
-      commentTextColor: "0x5a5a5a"
-    ),
-    .init(
       schemaName: "azure",
       name: "青天／Azure",
       author: "佛振 <chen.sst@gmail.com>",
-      backColor: "0xee8b4e01",
-      borderColor: "",
-
-      textColor: "0xcfa677",
-      hilitedTextColor: "0xffeacc",
-      hilitedBackColor: "",
-
-      hilitedCandidateTextColor: "0x7ffeff",
-      hilitedCandidateBackColor: "0x00000000",
-      hilitedCommentTextColor: "0xfcac9d",
-      candidateTextColor: "0xffeacc",
-      commentTextColor: "0xc69664"
-    ),
-    .init(
-      schemaName: "solarized_rock",
-      name: "曬經石／Solarized Rock",
-      author: "Aben <tntaben@gmail.com>, based on Ethan Schoonover's Solarized color scheme",
-      backColor: "0x362b00",
-      borderColor: "0x362b00",
-
-      textColor: "0x8236d3",
-      hilitedTextColor: "0x98a12a",
-      hilitedBackColor: "",
-
-      hilitedCandidateTextColor: "0xffffff",
-      hilitedCandidateBackColor: "0x8236d3",
-      hilitedCommentTextColor: "0x362b00",
-      candidateTextColor: "0x969483",
-      commentTextColor: "0xc098a12a"
+      backColor: "0xee8b4e01".bgrColor!,
+      textColor: "0xcfa677".bgrColor!,
+      hilitedTextColor: "0xffeacc".bgrColor!,
+      hilitedCandidateTextColor: "0x7ffeff".bgrColor!,
+      hilitedCandidateBackColor: "0x00000000".bgrColor!,
+      hilitedCommentTextColor: "0xfcac9d".bgrColor!,
+      candidateTextColor: "0xffeacc".bgrColor!,
+      commentTextColor: "0xc69664".bgrColor!
     ),
   ]
 

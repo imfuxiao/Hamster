@@ -48,18 +48,22 @@ struct HamsterApp: App {
               showError = true
               err = error
             }
-          }
+            rimeEngine.setupRime(
+              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+            )
+            rimeEngine.startRime(fullCheck: true)
+            
+            if let schema = rimeEngine.getSchemas().first {
+              appSettings.rimeInputSchema = schema.schemaId
+            }
 
-          // RIME启动
-//          rimeEngine.setupRime(
-//            sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-//            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-//          )
-//          rimeEngine.startRime()
-          rimeEngine.deployInstallRime(
-            sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-            userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-          )
+          } else {
+            rimeEngine.setupRime(
+              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+            )
+          }
 
           // 启动屏延迟
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

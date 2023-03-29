@@ -47,6 +47,8 @@ class KeyboardConstant {
     case Period = 0x002e // .
     case BracketLeft = 0x005b // [
     case BracketRight = 0x005d // ]
+    case PageUp = 0xFF55
+    case PageDown = 0xFF56
 
     func string() -> String {
       if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {

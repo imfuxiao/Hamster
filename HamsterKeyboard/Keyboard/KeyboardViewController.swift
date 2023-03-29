@@ -47,18 +47,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         }
       }
       .store(in: &self.cancellables)
-    
-    // 输入方案切换
-    self.appSettings.$rimeInputSchema
-      .receive(on: RunLoop.main)
-      .sink { [weak self] in
-        if !$0.isEmpty {
-          if !(self?.rimeEngine.setSchema($0) ?? false) {
-            self?.log.error("rime engine set schema \($0) error")
-          }
-        }
-      }
-      .store(in: &self.cancellables)
   }
   
   private func setupRimeEngine() {
@@ -76,7 +64,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
       userDataDir: RimeEngine.userDataDirectory.path
     )
-    self.rimeEngine.startRime()
+    
+    self.rimeEngine.startRime(fullCheck: true)
   }
   
   override public func viewDidLoad() {
@@ -93,11 +82,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // TODO: 动态设置 local
     self.keyboardContext.locale = Locale(identifier: "zh-Hans")
     
-    self.keyboardAppearance = HamsterKeyboardAppearance(
-      keyboardContext: self.keyboardContext,
-      appSettings: self.appSettings,
-      rimeEngine: self.rimeEngine
-    )
+    self.keyboardAppearance = HamsterKeyboardAppearance(ivc: self)
     
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
       keyboardContext: self.keyboardContext,
@@ -198,7 +183,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       if !status.isComposing {
         self.rimeEngine.rest()
       } else {
-        self.rimeEngine.userInputKey = self.rimeEngine.getInputKeys()
+        self.rimeEngine.contextReact()
       }
       return
     } else {
@@ -211,8 +196,9 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override open func deleteBackward() {
     if !self.rimeEngine.userInputKey.isEmpty {
-      self.rimeEngine.userInputKey.removeLast()
-      if !self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
+      if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.Backspace.rawValue) {
+        self.rimeEngine.contextReact()
+      } else {
         Logger.shared.log.error("rime engine input backspace key error")
         self.rimeEngine.rest()
       }
@@ -243,8 +229,8 @@ extension HamsterKeyboardViewController {
   func secondCandidateTextOnScreen() -> Bool {
     let status = self.rimeEngine.status()
     if status.isComposing {
-      let candidates = self.rimeEngine.context().candidates
-      if candidates == nil && candidates!.isEmpty {
+      let candidates = self.rimeEngine.context().menu.candidates
+      if candidates == nil || candidates!.isEmpty {
         return false
       }
       if candidates!.count >= 2 {
@@ -260,8 +246,8 @@ extension HamsterKeyboardViewController {
   func candidateTextOnScreen() -> Bool {
     let status = self.rimeEngine.status()
     if status.isComposing {
-      let candidates = self.rimeEngine.context().candidates
-      if candidates == nil && candidates!.isEmpty {
+      let candidates = self.rimeEngine.context().menu.candidates
+      if candidates == nil || candidates!.isEmpty {
         return false
       }
       self.textDocumentProxy.insertText(candidates![0].text)
@@ -275,8 +261,8 @@ extension HamsterKeyboardViewController {
   func userInputOnScreen() -> Bool {
     if !self.rimeEngine.userInputKey.isEmpty {
       let text = self.rimeEngine.userInputKey
-      self.rimeEngine.rest()
       textDocumentProxy.insertText(text)
+      self.rimeEngine.rest()
       return true
     }
     return false
@@ -302,6 +288,41 @@ extension HamsterKeyboardViewController {
     if offset > 0 {
       self.textDocumentProxy.adjustTextPosition(byCharacterOffset: offset)
     }
+  }
+  
+  // 候选字上一页
+  func previousPageOfCandidates() {
+    if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.PageUp.rawValue) {
+      self.rimeEngine.contextReact()
+    } else {
+      Logger.shared.log.warning("rime input pageup result error")
+    }
+  }
+  
+  // 候选字下一页
+  func nextPageOfCandidates() {
+    if self.rimeEngine.inputKey(KeyboardConstant.KeySymbol.PageDown.rawValue) {
+      self.rimeEngine.contextReact()
+    } else {
+      Logger.shared.log.debug("rime input pageDown result error")
+    }
+  }
+  
+  // 当前颜色
+  func currentColorSchema() -> ColorSchema {
+    let schema = ColorSchema()
+    
+    if !self.appSettings.enableRimeColorSchema {
+      return schema
+    }
+    let name = self.appSettings.rimeColorSchema
+    if name.isEmpty {
+      return schema
+    }
+    guard let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == name }) else {
+      return schema
+    }
+    return colorSchema
   }
 }
 #endif

@@ -112,8 +112,6 @@
 		C0C9F01429CF4316004B2C33 /* KeyboardAction+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */; };
 		C0C9F01529CF4316004B2C33 /* KeyboardAction+Return.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */; };
 		C0C9F01629CF4316004B2C33 /* HamsterKeyboardAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */; };
-		C0C9F01729CF4316004B2C33 /* HamsterSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */; };
-		C0C9F01829CF4316004B2C33 /* HamsterSuggestion+RimeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07A61D129C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift */; };
 		C0C9F01929CF4316004B2C33 /* HamsterKeyboardBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */; };
 		C0C9F01A29CF4316004B2C33 /* HamsterActionCalloutContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */; };
 		C0C9F01B29CF4316004B2C33 /* KeyboardType+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */; };
@@ -371,7 +369,6 @@
 		C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
-		C07A61D129C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HamsterSuggestion+RimeEngine.swift"; sourceTree = "<group>"; };
 		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C099464229B27FF8007FD3CA /* InputSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSet.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
@@ -433,7 +430,6 @@
 		C0A301F329C999F600C29E35 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+Color.swift"; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
-		C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSuggestion.swift; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		C0E458A7298B938B007F5FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
@@ -635,7 +631,6 @@
 				C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */,
 				C04FA8D3299A65AC00F8CC32 /* Actions */,
 				C04FA8C3299A65AC00F8CC32 /* Appearance */,
-				C04FA8C1299A65AC00F8CC32 /* Autocomplete */,
 				C04FA8BF299A65AC00F8CC32 /* Behavior */,
 				C04FA8E9299A65AC00F8CC32 /* Callouts */,
 				C04FA8E4299A65AC00F8CC32 /* Keyboard */,
@@ -657,15 +652,6 @@
 				C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */,
 			);
 			path = Behavior;
-			sourceTree = "<group>";
-		};
-		C04FA8C1299A65AC00F8CC32 /* Autocomplete */ = {
-			isa = PBXGroup;
-			children = (
-				C0CDF6E929C10F9E00CA2493 /* HamsterSuggestion.swift */,
-				C07A61D129C4C6BA0099B82E /* HamsterSuggestion+RimeEngine.swift */,
-			);
-			path = Autocomplete;
 			sourceTree = "<group>";
 		};
 		C04FA8C3299A65AC00F8CC32 /* Appearance */ = {
@@ -1173,8 +1159,6 @@
 				C0C9F01429CF4316004B2C33 /* KeyboardAction+Actions.swift in Sources */,
 				C0C9F01529CF4316004B2C33 /* KeyboardAction+Return.swift in Sources */,
 				C0C9F01629CF4316004B2C33 /* HamsterKeyboardAppearance.swift in Sources */,
-				C0C9F01729CF4316004B2C33 /* HamsterSuggestion.swift in Sources */,
-				C0C9F01829CF4316004B2C33 /* HamsterSuggestion+RimeEngine.swift in Sources */,
 				C0C9F01929CF4316004B2C33 /* HamsterKeyboardBehavior.swift in Sources */,
 				C0C9F01A29CF4316004B2C33 /* HamsterActionCalloutContext.swift in Sources */,
 				C0C9F01B29CF4316004B2C33 /* KeyboardType+Button.swift in Sources */,

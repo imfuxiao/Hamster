@@ -99,7 +99,7 @@ recognizer:
   patterns:
     punct: '^/([0-9]0?|[A-Za-z]+)$'
     reverse_lookup: "`[a-z]*'?$"
-
+    
 __patch:
   # 使用八股文語言模型
   - grammar:/hant?

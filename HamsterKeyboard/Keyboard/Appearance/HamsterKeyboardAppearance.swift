@@ -2,14 +2,15 @@ import KeyboardKit
 import SwiftUI
 
 class HamsterKeyboardAppearance: StandardKeyboardAppearance {
+  var ivc: HamsterKeyboardViewController
   var appSettings: HamsterAppSettings
   var rimeEngine: RimeEngine
 
-  public init(keyboardContext: KeyboardContext, appSettings: HamsterAppSettings, rimeEngine: RimeEngine) {
-    self.appSettings = appSettings
-    self.rimeEngine = rimeEngine
-
-    super.init(keyboardContext: keyboardContext)
+  public init(ivc: HamsterKeyboardViewController) {
+    self.ivc = ivc
+    self.appSettings = ivc.appSettings
+    self.rimeEngine = ivc.rimeEngine
+    super.init(keyboardContext: ivc.keyboardContext)
   }
 
   // 九宫格自定义背景色
@@ -40,16 +41,15 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
   // TODO: 根据 squirrel 颜色方案动态变更
   override func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
     if appSettings.enableRimeColorSchema {
-      if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSettings.rimeColorSchema }) {
-        return KeyboardButtonStyle(
-          backgroundColor: colorSchema.backColor.bgrColor ?? buttonBackgroundColor(for: action, isPressed: isPressed),
-          foregroundColor: colorSchema.candidateTextColor.bgrColor ?? buttonForegroundColor(for: action, isPressed: isPressed),
-          font: buttonFont(for: action),
-          cornerRadius: buttonCornerRadius(for: action),
-          border: KeyboardButtonBorderStyle(color: colorSchema.borderColor.bgrColor ?? .clear, size: 1) ,
-          shadow: .noShadow
-        )
-      }
+      let colorSchema = ivc.currentColorSchema()
+      return KeyboardButtonStyle(
+        backgroundColor: colorSchema.backColor,
+        foregroundColor: colorSchema.candidateTextColor ?? buttonForegroundColor(for: action, isPressed: isPressed),
+        font: buttonFont(for: action),
+        cornerRadius: buttonCornerRadius(for: action),
+        border: KeyboardButtonBorderStyle(color: colorSchema.borderColor ?? .clearInteractable, size: 1),
+        shadow: .noShadow
+      )
     }
     return KeyboardButtonStyle(
       backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed),

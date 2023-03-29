@@ -15,6 +15,9 @@ public extension KeyboardAction {
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.hamsterButtonText(for: context.locale)
     case .space:
+      if context.locale.identifier == "zh-Hans" {
+        return "空格"
+      }
       return KKL10n.space.hamsterText(for: context)
     // 自定义按键显示文字
     case .custom(let name):

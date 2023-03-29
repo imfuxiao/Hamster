@@ -76,7 +76,7 @@ struct AlphabetKeyboard: View {
       if keyboardContext.keyboardType != .emojis {
         HStack(spacing: 0) {
           ZStack(alignment: .leading) {
-            HamsterAutocompleteToolbar()
+            HamsterAutocompleteToolbar(ivc: ivc)
 
             if rimeEngine.userInputKey.isEmpty {
               HStack {
@@ -92,9 +92,7 @@ struct AlphabetKeyboard: View {
 
                 if appSettings.showKeyboardDismissButton {
                   Image(systemName: "chevron.down.circle.fill")
-                    .font(.system(size: 26))
-                    .foregroundColor(Color.gray)
-                    .frame(width: 25, height: 25)
+                    .iconStyle()
                     .padding(.trailing, 15)
                     .onTapGesture {
                       ivc.dismissKeyboard()
@@ -112,12 +110,7 @@ struct AlphabetKeyboard: View {
   }
 
   var backgroudColor: Color {
-    if appSettings.enableRimeColorSchema {
-      if let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == appSettings.rimeColorSchema }) {
-        return colorSchema.backColor.bgrColor ?? Color.clearInteractable
-      }
-    }
-    return Color.clearInteractable
+    return ivc.currentColorSchema().backColor ?? .clearInteractable
   }
 
   var width: CGFloat {
@@ -128,5 +121,20 @@ struct AlphabetKeyboard: View {
 
   var standardKeyboardWidth: CGFloat {
     ivc.view.frame.width
+  }
+}
+
+struct IconModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .font(.system(size: 24))
+      .foregroundColor(Color.gray)
+      .frame(width: 25, height: 25)
+  }
+}
+
+extension View {
+  func iconStyle() -> some View {
+    modifier(IconModifier())
   }
 }
