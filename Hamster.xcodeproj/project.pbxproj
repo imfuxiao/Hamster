@@ -605,10 +605,10 @@
 				C04FA8B2299A65AC00F8CC32 /* ContentView.swift */,
 				C0629C6D29B3C42F00C27D42 /* SetttingView.swift */,
 				C0CE234729B5219500F79A74 /* CellView.swift */,
-				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
 				C0629C6F29B3C68600C27D42 /* SubView */,
 				C0CDF6E629C0F9BD00CA2493 /* Components */,
 				C037B61429CC37AD00B1BBDC /* View+Extend.swift */,
+				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

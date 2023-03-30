@@ -21,6 +21,23 @@ public struct ContentView: View {
   var cancel: [AnyCancellable] = []
   let cellDestinationRoute = CellDestinationRoute()
 
+  init() {
+//    let navView = UIView()
+//
+//    let label = UILabel()
+//    label.text = "Text"
+//    label.sizeToFit()
+//    label.center = navView.center
+//    label.textAlignment = NSTextAlignment.center
+//
+//    let image = UIImageView()
+//    image.image = UIImage(named: "Hamster")
+//    image.contentMode = .scaleAspectFit
+//
+//    navView.addSubview(label)
+//    navView.addSubview(image)
+  }
+
   // TODO: 体验功能暂未实现
 //  @State var userExperienceState = true
 //  @State var userExperienceText: String = ""
@@ -85,16 +102,30 @@ public struct ContentView: View {
             }
           }
           .navigationTitle(Text("仓输入法"))
+          .navigationBarTitleDisplayMode(.inline)
           .toolbar {
             ToolbarItem(placement: .principal) {
               VStack {
-                HStack {}
+                HStack {
+                  Image("Hamster")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 25, height: 25)
+                    .padding(.all, 5)
+                    .background(
+                      RoundedRectangle(cornerRadius: 5)
+                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    )
+                  Text("仓输入法")
+
+                  Spacer()
+                }
               }
             }
           }
           // ZStack End
         }
-        .navigationViewStyle(.stack)
+        .navigationViewStyle(.automatic)
         // Navigation End
 
         if !appSettings.isKeyboardEnabled {
@@ -125,17 +156,32 @@ public struct ContentView: View {
   }
 }
 
+struct HamsterNavigationBarView: View {
+  var body: some View {
+    VStack {
+      HStack {
+        Image("Hamster")
+          .resizable()
+          .scaledToFill()
+          .frame(width: 25, height: 25)
+          .padding(.all, 5)
+          .background(
+            RoundedRectangle(cornerRadius: 5)
+              .stroke(Color.gray, lineWidth: 1)
+          )
+        Text("仓输入法")
+
+        Spacer()
+      }
+    }
+  }
+}
+
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
       .previewDevice("iPhone 13 mini")
       .environmentObject(HamsterAppSettings())
       .environmentObject(RimeEngine())
-  }
-}
-
-extension View {
-  func hamsterShadow() -> some View {
-    return shadow(color: Color.HamsterShadowColor, radius: 1)
   }
 }

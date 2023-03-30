@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+extension View {
+  func hamsterShadow() -> some View {
+    return shadow(color: Color.HamsterShadowColor, radius: 1)
+  }
+}
+
 @available(iOS 14.0, *)
 extension EnvironmentValues {
     var dismiss: () -> Void {
