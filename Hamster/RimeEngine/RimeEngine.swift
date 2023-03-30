@@ -173,8 +173,13 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   @Published
   var suggestions: [HamsterSuggestion] = []
 
-  public static let shared: RimeEngine = .init()
-  private init() {}
+  @Published
+  var currentColorSchema = ColorSchema()
+  
+  @Published
+  var pageSize = 9
+
+  public init() {}
 
   private func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
     rimeAPI.setNotificationDelegate(delegate)
@@ -262,7 +267,10 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   //    }
 
   public func setSchema(_ schemaId: String) -> Bool {
-    rimeAPI.selectSchema(session, andSchameId: schemaId)
+    if !rimeAlive() {
+      session = rimeAPI.session()
+    }
+    return rimeAPI.selectSchema(session, andSchameId: schemaId)
   }
 
   public func colorSchema() -> [ColorSchema] {
@@ -301,6 +309,33 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
       return ""
     }
     return config!.getString("style/color_scheme")
+  }
+
+  // MARK: 通知回调函数
+
+  var deployStartCallback: () -> Void = {}
+  func setDelployStartCallback(callback: @escaping () -> Void) {
+    deployStartCallback = callback
+  }
+
+  var deploySuccessCallback: () -> Void = {}
+  func setDeploySuccessCallback(callback: @escaping () -> Void) {
+    deploySuccessCallback = callback
+  }
+
+  var deployFailureCallback: () -> Void = {}
+  func setDeployFailureCallback(callback: @escaping () -> Void) {
+    deployFailureCallback = callback
+  }
+
+  var changeModeCallback: (String) -> Void = { _ in }
+  func setChangeModeCallback(callback: @escaping (String) -> Void) {
+    changeModeCallback = callback
+  }
+
+  var loadingSchemaCallback: (String) -> Void = { _ in }
+  func setLoadingSchemaCallback(callback: @escaping (String) -> Void) {
+    loadingSchemaCallback = callback
   }
 }
 
@@ -389,10 +424,18 @@ public extension RimeEngine {
   }
 
   func isSimplifiedMode() -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.session()
+    }
+    
     return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
   }
 
   func simplifiedChineseMode(_ value: Bool) -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.session()
+    }
+    
     return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
   }
 
@@ -405,6 +448,7 @@ public extension RimeEngine {
     }
 
     if context.menu != nil {
+      Logger.shared.log.debug("rime context menu: \(context.menu.description)")
       previousPage = context.menu.pageNo != 0
       nextPage = !context.menu.isLastPage && context.menu.pageSize != 0
 
@@ -431,57 +475,45 @@ public extension RimeEngine {
 public extension RimeEngine {
   func onDelployStart() {
     Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
-    DispatchQueue.main.async { [weak self] in
-      self?.deployState = .Begin
+    DispatchQueue.main.sync {
+      deployState = .Begin
     }
+    deployStartCallback()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    let inputSchema = HamsterAppSettings.shared.rimeInputSchema
-    if !inputSchema.isEmpty {
-      Logger.shared.log.info("rime set schema: \(inputSchema)")
-      // 输入方案切换
-      if setSchema(inputSchema) {
-        Logger.shared.log.error("rime engine set schema \(inputSchema) error")
-      }
 
-      // 设置分页数量
-      setRimePageSize(inputSchema)
+    DispatchQueue.main.sync {
+      deployState = .Success
     }
 
-    if rimeAlive() {
+    if !rimeAlive() {
+      Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
+      rimeAPI.cleanAllSession()
       session = rimeAPI.session()
     }
 
-    DispatchQueue.main.async { [weak self] in
-      Logger.shared.log.info("session \(String(self?.session ?? 0))")
-      self?.deployState = .Success
-    }
+    Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session \(session)")
+    
+    deploySuccessCallback()
   }
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    DispatchQueue.main.async { [weak self] in
-      self?.deployState = .Failure
+    DispatchQueue.main.sync {
+      deployState = .Failure
     }
+    deployFailureCallback()
   }
 
   func onChangeMode(_ mode: String) {
     Logger.shared.log.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
+    changeModeCallback(mode)
   }
 
   func onLoadingSchema(_ schema: String) {
     Logger.shared.log.info("HamsterRimeNotification: onLoadingSchema, schema: \(schema)")
-    setRimePageSize(schema)
-  }
-
-  func setRimePageSize(_ schema: String) {
-    // 设置分页数量
-    Logger.shared.log.info("setting schema: \(schema) menu/page_size: \(HamsterAppSettings.shared.rimePageSize)")
-    let config = openSchema(schema: schema)
-    if config.setInt("menu/page_size", value: Int32(HamsterAppSettings.shared.rimePageSize)) {
-      Logger.shared.log.error("edit menu/page_size result error")
-    }
+    loadingSchemaCallback(schema)
   }
 }

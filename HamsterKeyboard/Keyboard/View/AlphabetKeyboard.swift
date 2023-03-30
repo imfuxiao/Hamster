@@ -12,18 +12,15 @@ import SwiftUI
 @available(iOS 14, *)
 struct AlphabetKeyboard: View {
   var ivc: HamsterKeyboardViewController
-  var layoutProvider: KeyboardLayoutProvider
+
   var appearance: KeyboardAppearance
   var actionHandler: KeyboardActionHandler
 
   @EnvironmentObject
-  private var keyboardContext: KeyboardContext
-
-  @EnvironmentObject
-  private var autocompleteContext: AutocompleteContext
-
-  @EnvironmentObject
   private var keyboardCalloutContext: KeyboardCalloutContext
+
+  @EnvironmentObject
+  private var keyboardContext: KeyboardContext
 
   @EnvironmentObject
   private var rimeEngine: RimeEngine
@@ -34,23 +31,16 @@ struct AlphabetKeyboard: View {
   @Environment(\.openURL) var openURL
 
   init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
+    Logger.shared.log.debug("AlphabetKeyboard init")
     self.ivc = ivc
-    self.layoutProvider = ivc.keyboardLayoutProvider
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
   }
 
   var keyboard: some View {
     SystemKeyboard(
-      layout: layoutProvider.keyboardLayout(for: keyboardContext),
-      appearance: appearance,
-      actionHandler: actionHandler,
-      autocompleteContext: autocompleteContext,
-      autocompleteToolbar: .none,
-      autocompleteToolbarAction: { _ in },
-      keyboardContext: keyboardContext,
-      calloutContext: keyboardCalloutContext,
-      width: width,
+      controller: ivc,
+      autocompleteToolbarMode: .none,
       buttonView: { layoutItem, keyboardWidth, inputWidth in
         SystemKeyboardButtonRowItem(
           content: HamsterKeyboardActionButtonContent(
@@ -110,7 +100,7 @@ struct AlphabetKeyboard: View {
   }
 
   var backgroudColor: Color {
-    return ivc.currentColorSchema().backColor ?? .clearInteractable
+    return rimeEngine.currentColorSchema.backColor ?? .clearInteractable
   }
 
   var width: CGFloat {

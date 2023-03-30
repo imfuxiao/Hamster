@@ -110,9 +110,7 @@ private enum HamsterAppSettingKeys: String {
 public class HamsterAppSettings: ObservableObject {
   let infoDictionary = Bundle.main.infoDictionary ?? [:]
 
-  static let shared: HamsterAppSettings = .init()
-
-  private init() {
+  public init() {
     // 选项初始值
     UserDefaults.hamsterSettingsDefault.register(defaults: [
       HamsterAppSettingKeys.appFirstLaunch.rawValue: true,
@@ -313,6 +311,7 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeColorSchema = ", rimeColorSchema])
       UserDefaults.hamsterSettingsDefault.set(
         rimeColorSchema, forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue)
+      UserDefaults.hamsterSettingsDefault.synchronize()
     }
   }
 

@@ -18,7 +18,7 @@ enum ValueType: String, Equatable, CaseIterable, Identifiable {
 }
 
 struct UpAndDownSlideInputSymbolView: View {
-  @StateObject var appSettings = HamsterAppSettings.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
   @State var editKey: String?
   @State var editValueType: ValueType = .String
   @State var editValue: String = ""
@@ -295,7 +295,7 @@ struct UpAndDownSlideInputSymbolView_Previews: PreviewProvider {
   static var defaultAction: Plist
 
   static var appSettings: HamsterAppSettings {
-    let settings = HamsterAppSettings.shared
+    let settings = HamsterAppSettings()
     settings.keyboardUpAndDownSlideSymbol = defaultAction.strDict
     return settings
   }

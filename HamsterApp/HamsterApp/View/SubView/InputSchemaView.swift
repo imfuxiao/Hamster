@@ -10,8 +10,8 @@ import SwiftUI
 struct InputSchemaView: View {
   @State var schemas: [Schema] = []
   @State var rimeError: Error?
-  @StateObject var appSettings = HamsterAppSettings.shared
-  var rimeEngine = RimeEngine.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeEngine: RimeEngine
 
   init(schemas: [Schema] = []) {
     Logger.shared.log.debug("InputSchemaView init()")
@@ -100,7 +100,7 @@ struct InputSchemaView_Previews: PreviewProvider {
     InputSchemaView(
       schemas: sampleSchemas
     )
-    .environmentObject(HamsterAppSettings.shared)
-    .environmentObject(RimeEngine.shared)
+    .environmentObject(HamsterAppSettings())
+    .environmentObject(RimeEngine())
   }
 }

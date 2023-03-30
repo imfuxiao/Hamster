@@ -7,8 +7,8 @@ import UIKit
 
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
-  public var rimeEngine = RimeEngine.shared
-  public var appSettings = HamsterAppSettings.shared
+  public var rimeEngine = RimeEngine()
+  public var appSettings = HamsterAppSettings()
   private let log = Logger.shared.log
   var cancellables = Set<AnyCancellable>()
   
@@ -18,7 +18,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .receive(on: RunLoop.main)
       .sink {
         self.log.info("combine $switchTraditionalChinese \($0)")
-        _ = self.rimeEngine.simplifiedChineseMode($0)
+        _ = self.rimeEngine.simplifiedChineseMode(!$0)
       }
       .store(in: &self.cancellables)
     
@@ -43,17 +43,37 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
           } catch {
             self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
           }
-          self?.rimeEngine.deploy(fullCheck: false)
+          self?.rimeEngine.deploy(fullCheck: true)
+          self?.rimeEngine.restSession()
+        }
+      }
+      .store(in: &self.cancellables)
+    
+    // 配色方案变更
+    self.appSettings.$enableRimeColorSchema
+      .combineLatest(self.appSettings.$rimeColorSchema)
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] enable, schemaName in
+        self?.log.info("combine $enableRimeColorSchema and $rimeInputSchema: \(enable), \(schemaName)")
+        if enable {
+          if let self = self {
+            self.rimeEngine.currentColorSchema = self.getCurrentColorSchema()
+          }
         }
       }
       .store(in: &self.cancellables)
   }
   
   private func setupRimeEngine() {
+    var needFullCheck = false
     do {
-      try RimeEngine.syncAppGroupSharedSupportDirectory()
+      try RimeEngine.syncAppGroupSharedSupportDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
       try RimeEngine.initUserDataDirectory()
-      try RimeEngine.syncAppGroupUserDataDirectory()
+      try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
+      if self.appSettings.rimeNeedOverrideUserDataDirectory {
+        self.appSettings.rimeNeedOverrideUserDataDirectory = false
+        needFullCheck = true
+      }
     } catch {
       // TODO: RIME 异常启动处理
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
@@ -65,18 +85,26 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       userDataDir: RimeEngine.userDataDirectory.path
     )
     
-    self.rimeEngine.startRime(fullCheck: true)
+    self.rimeEngine.startRime(fullCheck: needFullCheck)
+    self.changeInputSchema(self.appSettings.rimeInputSchema)
+    
+    // 部署成功回调函数
+    self.rimeEngine.setDeploySuccessCallback { [weak self] in
+      if let self = self {
+        Logger.shared.log.info("rime delploy success callback begin: ")
+        self.changeInputSchema(self.appSettings.rimeInputSchema)
+      }
+    }
+    
+//    self.rimeEngine.setLoadingSchemaCallback { [weak self] _ in
+//      if let self = self {
+//        Logger.shared.log.info("rime loading schema callback begin: ")
+//      }
+//    }
   }
   
   override public func viewDidLoad() {
     self.log.info("viewDidLoad() begin")
-    
-    // 启动rime
-    self.setupRimeEngine()
-    
-    // 监听AppSettings变化
-    self.setupAppSettings()
-    
     // 注意初始化的顺序
     
     // TODO: 动态设置 local
@@ -119,11 +147,13 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
     )
     
+    // 启动rime
+    self.setupRimeEngine()
+    
+    // 监听AppSettings变化
+    self.setupAppSettings()
+    
     super.viewDidLoad()
-  }
-  
-  override public func viewDidDisappear(_ animated: Bool) {
-    self.log.debug("viewDidDisappear() begin")
   }
   
   override public func viewWillSetupKeyboard() {
@@ -133,6 +163,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)
     setup(with: alphabetKeyboard)
+  }
+  
+  override public func viewDidDisappear(_ animated: Bool) {
+    self.log.debug("viewDidDisappear() begin")
   }
   
   // MARK: - KeyboardController
@@ -309,7 +343,8 @@ extension HamsterKeyboardViewController {
   }
   
   // 当前颜色
-  func currentColorSchema() -> ColorSchema {
+  func getCurrentColorSchema() -> ColorSchema {
+    Logger.shared.log.info("call getCurrentColorSchema()")
     let schema = ColorSchema()
     
     if !self.appSettings.enableRimeColorSchema {
@@ -322,7 +357,21 @@ extension HamsterKeyboardViewController {
     guard let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == name }) else {
       return schema
     }
+    Logger.shared.log.info("call getCurrentColorSchema, schameName = \(colorSchema.schemaName)")
     return colorSchema
+  }
+  
+  // 修改输入方案
+  func changeInputSchema(_ schema: String) {
+    Logger.shared.log.info("rime set schema: \(schema)")
+    if !schema.isEmpty {
+      // 输入方案切换
+      if self.rimeEngine.setSchema(schema) {
+        Logger.shared.log.info("rime engine set schema \(schema) success")
+      } else {
+        Logger.shared.log.error("rime engine set schema \(schema) error")
+      }
+    }
   }
 }
 #endif

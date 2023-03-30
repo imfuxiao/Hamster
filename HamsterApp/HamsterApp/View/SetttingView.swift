@@ -43,7 +43,8 @@ struct RowView_Previews: PreviewProvider {
       SettingView(
         cells: createCells(
           cellWidth: 180,
-          cellHeight: 100
+          cellHeight: 100,
+          appSettings: HamsterAppSettings()
         ),
         cellDestinationRoute: Self.cellDestinationRoute
       )

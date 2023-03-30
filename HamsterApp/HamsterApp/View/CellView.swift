@@ -150,7 +150,7 @@ struct CellView: View {
 }
 
 /// cell创建
-func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
+func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAppSettings) -> [CellViewModel] {
   [
     CellViewModel(
       cellWidth: cellWidth,
@@ -186,9 +186,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
       cellName: "按键气泡",
       imageName: "bubble.middle.bottom",
       destinationType: .none,
-      toggleValue: HamsterAppSettings.shared.showKeyPressBubble,
+      toggleValue: appSettings.showKeyPressBubble,
       toggleDidSet: { value in
-        HamsterAppSettings.shared.showKeyPressBubble = value
+        appSettings.showKeyPressBubble = value
       }
     ),
     CellViewModel(
@@ -197,9 +197,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
       cellName: "键盘收起键",
       imageName: "chevron.down.circle",
       destinationType: .none,
-      toggleValue: HamsterAppSettings.shared.showKeyboardDismissButton,
+      toggleValue: appSettings.showKeyboardDismissButton,
       toggleDidSet: { value in
-        HamsterAppSettings.shared.showKeyboardDismissButton = value
+        appSettings.showKeyboardDismissButton = value
       }
     ),
     CellViewModel(
@@ -208,9 +208,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
       cellName: "繁体中文",
       imageName: "character",
       destinationType: .none,
-      toggleValue: HamsterAppSettings.shared.switchTraditionalChinese,
+      toggleValue: appSettings.switchTraditionalChinese,
       toggleDidSet: { value in
-        HamsterAppSettings.shared.switchTraditionalChinese = value
+        appSettings.switchTraditionalChinese = value
       }
     ),
     CellViewModel(
@@ -219,9 +219,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat) -> [CellViewModel] {
       cellName: "空格滑动",
       imageName: "lasso",
       destinationType: .none,
-      toggleValue: HamsterAppSettings.shared.slideBySapceButton,
+      toggleValue: appSettings.slideBySapceButton,
       toggleDidSet: { value in
-        HamsterAppSettings.shared.slideBySapceButton = value
+        appSettings.slideBySapceButton = value
       }
     ),
     CellViewModel(
@@ -264,7 +264,7 @@ struct CellView_Previews: PreviewProvider {
         )
       )
     }
-    .environmentObject(HamsterAppSettings.shared)
-    .environmentObject(RimeEngine.shared)
+    .environmentObject(HamsterAppSettings())
+    .environmentObject(RimeEngine())
   }
 }

@@ -34,6 +34,3 @@ key_binder:
   bindings/+:
     - { when: always, accept: Control+Shift+4, toggle: zh_simp }
     - { when: always, accept: Control+Shift+dollar, toggle: zh_simp }
-
-menu:
-  page_size: 30

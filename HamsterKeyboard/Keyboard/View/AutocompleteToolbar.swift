@@ -34,10 +34,11 @@ struct HamsterAutocompleteToolbar: View {
 
   init(ivc: HamsterKeyboardViewController) {
     self.ivc = ivc
-    self.hamsterColor = ivc.currentColorSchema()
   }
 
-  var hamsterColor: ColorSchema
+  var hamsterColor: ColorSchema {
+    rimeEngine.currentColorSchema
+  }
 
   var body: some View {
     VStack(spacing: 0) {

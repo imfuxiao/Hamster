@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FeedbackView: View {
-  @StateObject var appSettings = HamsterAppSettings.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
   @Environment(\.openURL) var openURL
   @Environment(\.colorScheme) var colorScheme
 
@@ -139,6 +139,6 @@ struct FeedbackView: View {
 struct FeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     FeedbackView(hapticIntensity: .mediumImpact)
-      .environmentObject(HamsterAppSettings.shared)
+      .environmentObject(HamsterAppSettings())
   }
 }

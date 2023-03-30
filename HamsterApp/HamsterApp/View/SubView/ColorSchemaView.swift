@@ -9,8 +9,8 @@ import SwiftUI
 
 struct ColorSchemaView: View {
   @State var colorSchemas: [ColorSchema] = []
-  @StateObject var appSettings = HamsterAppSettings.shared
-  var rimeEngine = RimeEngine.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeEngine: RimeEngine
 
   func isSelected(_ colorSchema: ColorSchema) -> Bool {
     return colorSchema.schemaName == appSettings.rimeColorSchema
@@ -82,7 +82,7 @@ struct WordView: View {
   var body: some View {
     VStack {
       HStack {
-        Text("方案名称: " + colorSchema.schemaName)
+        Text("方案名称: " + colorSchema.name)
           .font(.system(size: 16, weight: .bold))
         Spacer()
       }
@@ -167,7 +167,7 @@ struct ColorSchemaView_Previews: PreviewProvider {
 
   static var previews: some View {
     ColorSchemaView(colorSchemas: sampleColorSchema)
-      .environmentObject(RimeEngine.shared)
-      .environmentObject(HamsterAppSettings.shared)
+      .environmentObject(RimeEngine())
+      .environmentObject(HamsterAppSettings())
   }
 }

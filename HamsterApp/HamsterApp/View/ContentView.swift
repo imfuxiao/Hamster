@@ -9,19 +9,17 @@ import Combine
 import SwiftUI
 
 public struct ContentView: View {
-  var appSettings = HamsterAppSettings.shared
-  var rimeEngine = RimeEngine.shared
-
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeEngine: RimeEngine
   @Environment(\.openURL) var openURL
-
   @State var rimeError: Error?
   @State var showError: Bool = false
   @State var isLoading: Bool = false
   @State var loadingText: String = ""
-  var cancel: [AnyCancellable] = []
+  @State var cells: [CellViewModel] = []
 
+  var cancel: [AnyCancellable] = []
   let cellDestinationRoute = CellDestinationRoute()
-  var cells: [CellViewModel] = createCells(cellWidth: 160, cellHeight: 100)
 
   // TODO: 体验功能暂未实现
 //  @State var userExperienceState = true
@@ -90,9 +88,7 @@ public struct ContentView: View {
           .toolbar {
             ToolbarItem(placement: .principal) {
               VStack {
-                HStack{
-                  
-                }
+                HStack {}
               }
             }
           }
@@ -121,6 +117,9 @@ public struct ContentView: View {
         }
         // TODO: 点击体验输入法(待开发)
       }
+      .onAppear {
+        cells = createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
+      }
       // ZStack end
     }
   }
@@ -130,8 +129,8 @@ struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
       .previewDevice("iPhone 13 mini")
-      .environmentObject(HamsterAppSettings.shared)
-      .environmentObject(RimeEngine.shared)
+      .environmentObject(HamsterAppSettings())
+      .environmentObject(RimeEngine())
   }
 }
 

@@ -11,8 +11,8 @@ import SwiftyBeaver
 
 @main
 struct HamsterApp: App {
-  let appSettings = HamsterAppSettings.shared
-  let rimeEngine = RimeEngine.shared
+  var appSettings = HamsterAppSettings()
+  var rimeEngine = RimeEngine()
 
   @State var launchScreenState = true
   @State var showError: Bool = false
@@ -53,7 +53,7 @@ struct HamsterApp: App {
               userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
             )
             rimeEngine.startRime(fullCheck: true)
-            
+
             if let schema = rimeEngine.getSchemas().first {
               appSettings.rimeInputSchema = schema.schemaId
             }
@@ -76,6 +76,8 @@ struct HamsterApp: App {
           err = nil
         })
       }
+      .environmentObject(appSettings)
+      .environmentObject(rimeEngine)
     }
   }
 }

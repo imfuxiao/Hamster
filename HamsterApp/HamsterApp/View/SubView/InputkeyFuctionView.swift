@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InputkeyFuctionView: View {
-  @StateObject var appSettings = HamsterAppSettings.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
 
   var body: some View {
     ZStack {
@@ -72,7 +72,7 @@ struct InputkeyFuctionView: View {
 struct InputkeyFuctionView_Previews: PreviewProvider {
   static var previews: some View {
     InputkeyFuctionView()
-      .environmentObject(HamsterAppSettings.shared)
+      .environmentObject(HamsterAppSettings())
   }
 }
 

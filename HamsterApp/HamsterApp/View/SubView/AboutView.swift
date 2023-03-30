@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct AboutView: View {
-  @StateObject var appSettings = HamsterAppSettings.shared
-  var rimeEngine = RimeEngine.shared
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeEngine: RimeEngine
   @Environment(\.openURL) var openURL
   @State var isLoading = false
   @State var loadingText = ""
