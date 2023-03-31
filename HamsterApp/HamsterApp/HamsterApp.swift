@@ -31,7 +31,7 @@ struct HamsterApp: App {
         Logger.shared.log.debug("open url: \(url)")
       }
       .onAppear {
-        DispatchQueue.main.async {
+        DispatchQueue.main.async(qos: .background) {
           // 检测应用是否首次加载
           if appSettings.isFirstLaunch {
             // 加载系统默认配置上下滑动符号
@@ -48,16 +48,15 @@ struct HamsterApp: App {
               showError = true
               err = error
             }
-            rimeEngine.setupRime(
-              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+            let traits = self.rimeEngine.createTraits(
+              sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
+              userDataDir: RimeEngine.userDataDirectory.path
             )
-            rimeEngine.startRime(fullCheck: true)
-
+            rimeEngine.setupRime(traits)
+            rimeEngine.startRime(traits, fullCheck: true)
             if let schema = rimeEngine.getSchemas().first {
               appSettings.rimeInputSchema = schema.schemaId
             }
-
           } else {
             rimeEngine.setupRime(
               sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,

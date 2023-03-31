@@ -291,6 +291,7 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeInputSchema = ", rimeInputSchema])
       UserDefaults.hamsterSettingsDefault.set(
         rimeInputSchema, forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue)
+      UserDefaults.hamsterSettingsDefault.synchronize()
     }
   }
 

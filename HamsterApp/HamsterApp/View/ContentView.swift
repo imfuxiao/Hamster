@@ -61,7 +61,7 @@ public struct ContentView: View {
                 ) {
                   loadingText = "正在部署, 请稍后."
                   isLoading = true
-                  DispatchQueue.main.async {
+                  DispatchQueue.main.async(qos: .background) {
                     rimeEngine.deploy()
                     appSettings.rimeNeedOverrideUserDataDirectory = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

@@ -148,17 +148,27 @@ enum RimeDeployStatus {
 public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private let rimeAPI: IRimeAPI = .init()
   private var session: RimeSessionId = 0
+  private var isFirstRunning = true
+  private var traits: IRimeTraits?
+  private var deployStartCallback: () -> Void = {}
+  private var deploySuccessCallback: () -> Void = {}
+  private var deployFailureCallback: () -> Void = {}
+  private var changeModeCallback: (String) -> Void = { _ in }
+  private var loadingSchemaCallback: (String) -> Void = { _ in }
 
   /// 用户输入键值
   @Published
   var userInputKey: String = ""
 
+  /// 简繁中文模式
   @Published
   var simplifiedChineseMode: Bool = true
 
+  /// 字母模式
   @Published
   var asciiMode: Bool = false
 
+  /// Rime发布状态
   @Published
   var deployState: RimeDeployStatus = .none
 
@@ -170,40 +180,183 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   @Published
   var nextPage: Bool = false
 
+  /// 候选字
   @Published
   var suggestions: [HamsterSuggestion] = []
 
+  /// 当前颜色
   @Published
   var currentColorSchema = ColorSchema()
-  
+
   @Published
   var pageSize = 9
+}
 
-  public init() {}
+public extension RimeEngine {
+  func createTraits(sharedSupportDir: String, userDataDir: String) -> IRimeTraits {
+    let traits = IRimeTraits()
+    traits.sharedDataDir = sharedSupportDir
+    traits.userDataDir = userDataDir
+    traits.distributionCodeName = "Hamster"
+    traits.distributionName = "Hamster"
+    traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+    // appName设置名字后, 在重复调用rimeAPI.setup()方法时会产生异常
+    // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
+    // 所以需要判断是否首次运行
+    traits.appName = "rime.Hamster"
+    return traits
+  }
 
   private func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
     rimeAPI.setNotificationDelegate(delegate)
   }
 
-  private func setup(_ traits: IRimeTraits) {
-    rimeAPI.setup(traits)
+  func setupRime(sharedSupportDir: String, userDataDir: String) {
+    setupRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
   }
 
-  private func start(_ traits: IRimeTraits, fullCheck: Bool) {
-    rimeAPI.start(traits, withFullCheck: fullCheck)
+  func setupRime(_ traits: IRimeTraits) {
+    if isFirstRunning {
+      isFirstRunning = false
+      setNotificationDelegate(self)
+      rimeAPI.setup(traits)
+      self.traits = traits
+    }
+  }
+
+  func startRime(_ traits: IRimeTraits? = nil, fullCheck: Bool = false) {
+    rimeAPI.initialize(traits)
+    rimeAPI.startMaintenance(fullCheck)
+    session = rimeAPI.createSession()
+    Logger.shared.log.debug("rime start session: \(session)")
+    Logger.shared.log.debug("rime status: \(status())")
+    simplifiedChineseMode = status().isSimplified
+  }
+
+  // 重新部署
+  func deploy(fullCheck: Bool = true) {
+    DispatchQueue.main.async(qos: .background) { [weak self] in
+      if let self = self {
+        self.shutdownRime()
+        self.startRime(self.traits, fullCheck: fullCheck)
+      }
+    }
+  }
+
+  func shutdownRime() {
+    rimeAPI.cleanAllSession()
+    session = 0
+    rimeAPI.finalize()
+  }
+
+  func rest() {
+    DispatchQueue.main.async(qos: .background) { [weak self] in
+      self?.userInputKey = ""
+      self?.cleanComposition()
+      self?.suggestions = []
+      self?.nextPage = false
+      self?.previousPage = false
+    }
+  }
+
+  func rimeAlive() -> Bool {
+    return session > 0 && rimeAPI.findSession(session)
+  }
+
+  func restSession() {
+    rimeAPI.cleanAllSession()
+    session = rimeAPI.createSession()
+  }
+
+  func openSchema(schema: String) -> IRimeConfig {
+    rimeAPI.openSchema(schema)
+  }
+
+  func isAsciiMode() -> Bool {
+    return asciiMode
+//    return rimeAPI.getOption(session, andOption: asciiModeKey)
+  }
+
+  func asciiMode(_ value: Bool) -> Bool {
+    asciiMode = value
+    return asciiMode
+//    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
+  }
+
+  func isSimplifiedMode() -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.createSession()
+    }
+
+    return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
+  }
+
+  func simplifiedChineseMode(_ value: Bool) -> Bool {
+    if !rimeAlive() {
+      session = rimeAPI.createSession()
+    }
+
+    return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
+  }
+
+  // context响应
+  func contextReact() {
+    let context = context()
+
+    if context.composition != nil {
+      userInputKey = context.composition.preedit
+    }
+
+    let candidates = rimeAPI.getCandidateList(session)!
+    var result: [HamsterSuggestion] = []
+    for i in 0 ..< candidates.count {
+      var suggestion = HamsterSuggestion(
+        text: candidates[i].text
+      )
+      suggestion.index = i
+      suggestion.comment = candidates[i].comment
+      if i == 0 {
+        suggestion.isAutocomplete = true
+      }
+      result.append(suggestion)
+    }
+    suggestions = result
+
+//    if context.menu != nil {
+//      Logger.shared.log.debug("rime context menu: \(context.menu.description)")
+//      previousPage = context.menu.pageNo != 0
+//      nextPage = !context.menu.isLastPage && context.menu.pageSize != 0
+//
+//      let candidates = context.menu.candidates
+//      var result: [HamsterSuggestion] = []
+//      for i in 0 ..< candidates!.count {
+//        var suggestion = HamsterSuggestion(
+//          text: candidates![i].text
+//        )
+//        suggestion.index = i + 1
+//        suggestion.comment = candidates![i].comment
+//        if i == 0 {
+//          suggestion.isAutocomplete = true
+//        }
+//        result.append(suggestion)
+//      }
+//      suggestions = result
+//    }
   }
 
   func inputKey(_ key: String) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.session()
-    }
+//    if !rimeAlive() {
+//      session = rimeAPI.createSession()
+//      Logger.shared.log.debug("inputKey rime not alive, create session: \(session)")
+//    }
     return rimeAPI.processKey(key, andSession: session)
   }
 
   func inputKeyCode(_ key: Int32) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.session()
-    }
+//    if !rimeAlive() {
+//      session = rimeAPI.createSession()
+//      Logger.shared.log.debug("inputKeyCode rime not alive, create session: \(session)")
+//    }
     return rimeAPI.processKeyCode(key, andSession: session)
   }
 
@@ -217,6 +370,17 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
     return []
   }
 
+  func selectCandidate(index: Int) -> Bool {
+    return rimeAPI.selectCandidate(session, andIndex: Int32(index))
+  }
+
+  // index: 指candidates索引, 从1开始
+  // count: 指每次获取的总数量
+  // 注意: 举例每页10个候选字
+  // 第一页: index = 1, count = 10
+  // 第二页: index = 11, count = 10
+  // 第二页: index = 21, count = 10
+  // 以此类推
   func candidateListWithIndex(index: Int, andCount count: Int) -> [Candidate] {
     let candidates = rimeAPI.getCandidateWith(
       Int32(index), andCount: Int32(count), andSession: session
@@ -237,19 +401,19 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
     return rimeAPI.getCommit(session)!
   }
 
-  public func cleanComposition() {
+  func cleanComposition() {
     rimeAPI.cleanComposition(session)
   }
 
-  public func status() -> IRimeStatus {
+  func status() -> IRimeStatus {
     return rimeAPI.getStatus(session)
   }
 
-  public func context() -> IRimeContext {
+  func context() -> IRimeContext {
     return rimeAPI.getContext(session)
   }
 
-  public func getSchemas() -> [Schema] {
+  func getSchemas() -> [Schema] {
     let list = rimeAPI.schemaList()
     if list == nil {
       return []
@@ -257,23 +421,20 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
     return list!.map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
-  // 通过getStatus()获取当前schema
-  //    public func currentSchema() -> Schema? {
-  //        let rimeSchema = rimeAPI.currentSchema(session)
-  //        if rimeSchema == nil {
-  //            return nil
-  //        }
-  //        return Schema(schemaId: rimeSchema!.schemaId, schemaName: rimeSchema!.schemaName)
-  //    }
+  func currentSchema() -> Schema? {
+    let status = rimeAPI.getStatus(session)!
+    return Schema(schemaId: status.schemaId, schemaName: status.schemaName)
+  }
 
-  public func setSchema(_ schemaId: String) -> Bool {
+  func setSchema(_ schemaId: String) -> Bool {
     if !rimeAlive() {
-      session = rimeAPI.session()
+      session = rimeAPI.createSession()
+      Logger.shared.log.debug("setSchema rime not alive, create session: \(session)")
     }
     return rimeAPI.selectSchema(session, andSchameId: schemaId)
   }
 
-  public func colorSchema() -> [ColorSchema] {
+  func colorSchema() -> [ColorSchema] {
     // open squirrel.yaml
     let cfg = rimeAPI.openConfig("squirrel")
     guard cfg != nil else {
@@ -302,7 +463,7 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
     }
   }
 
-  public func currentColorSchemaName() -> String {
+  func currentColorSchemaName() -> String {
     // open squirrel.yaml
     let config = rimeAPI.openConfig("squirrel")
     if config == nil {
@@ -313,160 +474,24 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
 
   // MARK: 通知回调函数
 
-  var deployStartCallback: () -> Void = {}
   func setDelployStartCallback(callback: @escaping () -> Void) {
     deployStartCallback = callback
   }
 
-  var deploySuccessCallback: () -> Void = {}
   func setDeploySuccessCallback(callback: @escaping () -> Void) {
     deploySuccessCallback = callback
   }
 
-  var deployFailureCallback: () -> Void = {}
   func setDeployFailureCallback(callback: @escaping () -> Void) {
     deployFailureCallback = callback
   }
 
-  var changeModeCallback: (String) -> Void = { _ in }
   func setChangeModeCallback(callback: @escaping (String) -> Void) {
     changeModeCallback = callback
   }
 
-  var loadingSchemaCallback: (String) -> Void = { _ in }
   func setLoadingSchemaCallback(callback: @escaping (String) -> Void) {
     loadingSchemaCallback = callback
-  }
-}
-
-public extension RimeEngine {
-  func createTraits(sharedSupportDir: String, userDataDir: String) -> IRimeTraits {
-    let traits = IRimeTraits()
-    traits.sharedDataDir = sharedSupportDir
-    traits.userDataDir = userDataDir
-    traits.distributionCodeName = "Hamster"
-    traits.distributionName = "仓鼠"
-    traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-    // TODO: appName设置名字会产生异常
-    // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
-    // traits.appName = "rime.Hamster"
-
-    return traits
-  }
-
-  func deployInstallRime(sharedSupportDir: String, userDataDir: String) {
-    deployInstallRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
-  }
-
-  func deployInstallRime(_ traits: IRimeTraits) {
-    rimeAPI.deployerInitialize(traits)
-  }
-
-  func setupRime(sharedSupportDir: String, userDataDir: String) {
-    setupRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
-  }
-
-  func setupRime(_ traits: IRimeTraits) {
-    setNotificationDelegate(self)
-    rimeAPI.setup(traits)
-  }
-
-  func startRime(fullCheck: Bool = false) {
-    rimeAPI.start(nil, withFullCheck: fullCheck)
-    session = rimeAPI.session()
-    simplifiedChineseMode = status().isSimplified
-  }
-
-  func deploy(fullCheck: Bool = true) {
-    DispatchQueue.main.async { [weak self] in
-      self?.rimeAPI.shutdown()
-      self?.rimeAPI.start(nil, withFullCheck: true)
-      self?.session = self?.rimeAPI.session() ?? 0
-    }
-  }
-
-  func shutdownRime() {
-    rimeAPI.shutdown()
-  }
-
-  func rest() {
-    DispatchQueue.main.async { [weak self] in
-      self?.userInputKey = ""
-      self?.cleanComposition()
-      self?.suggestions = []
-      self?.nextPage = false
-      self?.previousPage = false
-    }
-  }
-
-  func rimeAlive() -> Bool {
-    return session > 0 && rimeAPI.findSession(session)
-  }
-
-  func restSession() {
-    rimeAPI.cleanAllSession()
-    session = rimeAPI.session()
-  }
-
-  func openSchema(schema: String) -> IRimeConfig {
-    rimeAPI.openSchema(schema)
-  }
-
-  func isAsciiMode() -> Bool {
-    return asciiMode
-//    return rimeAPI.getOption(session, andOption: asciiModeKey)
-  }
-
-  func asciiMode(_ value: Bool) -> Bool {
-    asciiMode = value
-    return asciiMode
-//    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
-  }
-
-  func isSimplifiedMode() -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.session()
-    }
-    
-    return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
-  }
-
-  func simplifiedChineseMode(_ value: Bool) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.session()
-    }
-    
-    return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
-  }
-
-  // context响应
-  func contextReact() {
-    let context = context()
-
-    if context.composition != nil {
-      userInputKey = context.composition.preedit
-    }
-
-    if context.menu != nil {
-      Logger.shared.log.debug("rime context menu: \(context.menu.description)")
-      previousPage = context.menu.pageNo != 0
-      nextPage = !context.menu.isLastPage && context.menu.pageSize != 0
-
-      let candidates = context.menu.candidates
-      var result: [HamsterSuggestion] = []
-      for i in 0 ..< candidates!.count {
-        var suggestion = HamsterSuggestion(
-          text: candidates![i].text
-        )
-        suggestion.index = i + 1
-        suggestion.comment = candidates![i].comment
-        if i == 0 {
-          suggestion.isAutocomplete = true
-        }
-        result.append(suggestion)
-      }
-      suggestions = result
-    }
   }
 }
 
@@ -475,41 +500,46 @@ public extension RimeEngine {
 public extension RimeEngine {
   func onDelployStart() {
     Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
-    DispatchQueue.main.sync {
-      deployState = .Begin
+    DispatchQueue.main.async(qos: .background) { [weak self] in
+      if let self = self {
+        self.deployState = .Begin
+      }
     }
     deployStartCallback()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-
-    DispatchQueue.main.sync {
-      deployState = .Success
+    DispatchQueue.main.async(qos: .background) { [weak self] in
+      if let self = self {
+        self.deployState = .Success
+      }
     }
 
     if !rimeAlive() {
       Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
       rimeAPI.cleanAllSession()
-      session = rimeAPI.session()
+      session = rimeAPI.createSession()
     }
 
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session \(session)")
-    
+
     deploySuccessCallback()
   }
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    DispatchQueue.main.sync {
-      deployState = .Failure
+    DispatchQueue.main.async(qos: .background) { [weak self] in
+      if let self = self {
+        self.deployState = .Failure
+      }
     }
     deployFailureCallback()
   }
 
   func onChangeMode(_ mode: String) {
     Logger.shared.log.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
-    changeModeCallback(mode)
+//    changeModeCallback(mode)
   }
 
   func onLoadingSchema(_ schema: String) {

@@ -123,14 +123,11 @@ struct AboutView: View {
                 loadingText = "RIME重置中, 请稍后."
                 isLoading = true
 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async(qos: .background) {
                   do {
                     try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
                     try RimeEngine.initAppGroupUserDataDirectory(override: true)
-                    rimeEngine.deployInstallRime(
-                      sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-                      userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-                    )
+                    rimeEngine.deploy()
                     appSettings.rimeNeedOverrideUserDataDirectory = true
                   } catch {
                     rimeError = error

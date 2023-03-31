@@ -87,6 +87,7 @@ extension RimeEngine {
 
   // 同步AppGroup共享目录下SharedSupport目录至沙盒目录
   static func syncAppGroupSharedSupportDirectory(override: Bool = false) throws {
+    Logger.shared.log.info("rime syncAppGroupSharedSupportDirectory: override \(override)")
     let fm = FileManager.default
     let dst = sharedSupportDirectory
 
@@ -104,6 +105,7 @@ extension RimeEngine {
 
   // 同步AppGroup共享目录下UserData目录至沙盒目录
   static func syncAppGroupUserDataDirectory(override: Bool = false) throws {
+    Logger.shared.log.info("rime syncAppGroupUserDataDirectory: override \(override)")
     let fm = FileManager.default
     let dst = userDataDirectory
 

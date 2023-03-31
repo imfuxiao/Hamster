@@ -59,22 +59,22 @@ struct HamsterAutocompleteToolbar: View {
         ScrollView(.horizontal, showsIndicators: true) {
           LazyHStack(spacing: 5) {
             // 上一页
-            if rimeEngine.previousPage {
-              Image(systemName: "arrow.backward.square.fill")
-                .iconStyle()
-                .padding(.leading, 5)
-                .padding(.trailing, 5)
-                .onTapGesture {
-                  ivc.previousPageOfCandidates()
-                }
-            }
+//            if rimeEngine.previousPage {
+//              Image(systemName: "arrow.backward.square.fill")
+//                .iconStyle()
+//                .padding(.leading, 5)
+//                .padding(.trailing, 5)
+//                .onTapGesture {
+//                  ivc.previousPageOfCandidates()
+//                }
+//            }
 
             ForEach(rimeEngine.suggestions) { item in
               Button {
                 // TODO: 点击候选项处理
                 ivc.insertText(String(item.index))
               } label: {
-                HStack(alignment: .bottom, spacing: 2) {
+                HStack(alignment: .bottom, spacing: 5) {
                   Text(item.text)
                     .font(style.item.titleFont)
                     .foregroundColor(item.isAutocomplete ?
@@ -99,15 +99,15 @@ struct HamsterAutocompleteToolbar: View {
             }
 
             // 下一页
-            if rimeEngine.nextPage {
-              Image(systemName: "arrow.forward.square.fill")
-                .iconStyle()
-                .padding(.leading, 5)
-                .padding(.trailing, 5)
-                .onTapGesture {
-                  ivc.nextPageOfCandidates()
-                }
-            }
+//            if rimeEngine.nextPage {
+//              Image(systemName: "arrow.forward.square.fill")
+//                .iconStyle()
+//                .padding(.leading, 5)
+//                .padding(.trailing, 5)
+//                .onTapGesture {
+//                  ivc.nextPageOfCandidates()
+//                }
+//            }
           }
           .padding(.bottom, 5)
           // LazyHStack End

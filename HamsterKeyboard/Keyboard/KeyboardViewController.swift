@@ -5,6 +5,9 @@ import KeyboardKit
 import LibrimeKit
 import UIKit
 
+// 全局变量: 设置Rime是否首次启动标志
+var isRimeFirstRun = true
+
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine()
@@ -15,7 +18,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   private func setupAppSettings() {
     // 简中切换
     self.appSettings.$switchTraditionalChinese
-      .receive(on: RunLoop.main)
+      .receive(on: DispatchQueue.main)
       .sink {
         self.log.info("combine $switchTraditionalChinese \($0)")
         _ = self.rimeEngine.simplifiedChineseMode(!$0)
@@ -24,30 +27,30 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     
     // 按键气泡
     self.appSettings.$showKeyPressBubble
-      .receive(on: RunLoop.main)
+      .receive(on: DispatchQueue.main)
       .sink {
         self.log.info("combine $showKeyPressBubble \($0)")
         self.calloutContext.input.isEnabled = $0
       }
       .store(in: &self.cancellables)
     
-    // 是否重置用户数据目录
-    self.appSettings.$rimeNeedOverrideUserDataDirectory
-      .receive(on: RunLoop.main)
-      .sink { [weak self] in
-        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
-        if $0 {
-          do {
-            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
-            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
-          } catch {
-            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
-          }
-          self?.rimeEngine.deploy(fullCheck: true)
-          self?.rimeEngine.restSession()
-        }
-      }
-      .store(in: &self.cancellables)
+//     是否重置用户数据目录
+//    self.appSettings.$rimeNeedOverrideUserDataDirectory
+//      .receive(on: RunLoop.main)
+//      .sink { [weak self] in
+//        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
+//        if $0 {
+//          do {
+//            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
+//            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
+//          } catch {
+//            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
+//          }
+//          self?.rimeEngine.deploy(fullCheck: true)
+//          self?.rimeEngine.restSession()
+//        }
+//      }
+//      .store(in: &self.cancellables)
     
     // 配色方案变更
     self.appSettings.$enableRimeColorSchema
@@ -65,27 +68,31 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
   
   private func setupRimeEngine() {
-    var needFullCheck = false
     do {
       try RimeEngine.syncAppGroupSharedSupportDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
       try RimeEngine.initUserDataDirectory()
       try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
       if self.appSettings.rimeNeedOverrideUserDataDirectory {
         self.appSettings.rimeNeedOverrideUserDataDirectory = false
-        needFullCheck = true
       }
     } catch {
-      // TODO: RIME 异常启动处理
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
-      //      fatalError(error.localizedDescription)
     }
     
-    self.rimeEngine.setupRime(
+    let traits = self.rimeEngine.createTraits(
       sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
       userDataDir: RimeEngine.userDataDirectory.path
     )
     
-    self.rimeEngine.startRime(fullCheck: needFullCheck)
+    // setupRime不能重复调用, 否则会触发panic
+    // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
+    // rimeEngine是ViewController的成员变量, 每次启动都会被初始化
+    // 所以内部的是否首次启动标志不起作用, 这里在ViewController外部定义了全局变量, 用来标记是否首次启动.
+    if isRimeFirstRun {
+      isRimeFirstRun = false
+      self.rimeEngine.setupRime(traits)
+    }
+    self.rimeEngine.startRime(traits)
     self.changeInputSchema(self.appSettings.rimeInputSchema)
     
     // 部署成功回调函数
@@ -147,11 +154,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
     )
     
-    // 启动rime
-    self.setupRimeEngine()
-    
-    // 监听AppSettings变化
     self.setupAppSettings()
+    self.setupRimeEngine()
     
     super.viewDidLoad()
   }
@@ -166,7 +170,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
   
   override public func viewDidDisappear(_ animated: Bool) {
-    self.log.debug("viewDidDisappear() begin")
+    self.log.debug("HamsterKeyboardViewController viewDidDisappear")
+  }
+  
+  public func dealloc() {
+    self.log.debug("HamsterKeyboardViewController dealloc")
+    self.rimeEngine.shutdownRime()
   }
   
   // MARK: - KeyboardController
@@ -200,9 +209,20 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       textDocumentProxy.insertText(text)
       return
     }
+    
+    var callResult = false
+    /// 判断如果用户点击了候选栏, 则传递的为候选字的索引
+    if let index = Int(text) {
+      callResult = self.rimeEngine.selectCandidate(index: index)
+      if !callResult {
+        Logger.shared.log.warning("call rime select candidate is false. index = \(index)")
+      }
+    } else {
+      callResult = self.rimeEngine.inputKey(text)
+    }
 
     // 调用输入法引擎
-    if self.rimeEngine.inputKey(text) {
+    if callResult {
       // 唯一码直接上屏
       let commitText = self.rimeEngine.getCommitText()
       if !commitText.isEmpty {
@@ -263,12 +283,12 @@ extension HamsterKeyboardViewController {
   func secondCandidateTextOnScreen() -> Bool {
     let status = self.rimeEngine.status()
     if status.isComposing {
-      let candidates = self.rimeEngine.context().menu.candidates
-      if candidates == nil || candidates!.isEmpty {
+      let candidates = self.rimeEngine.suggestions
+      if candidates.isEmpty {
         return false
       }
-      if candidates!.count >= 2 {
-        self.textDocumentProxy.insertText(candidates![1].text)
+      if candidates.count >= 2 {
+        self.textDocumentProxy.insertText(candidates[1].text)
         self.rimeEngine.rest()
         return true
       }
@@ -280,11 +300,11 @@ extension HamsterKeyboardViewController {
   func candidateTextOnScreen() -> Bool {
     let status = self.rimeEngine.status()
     if status.isComposing {
-      let candidates = self.rimeEngine.context().menu.candidates
-      if candidates == nil || candidates!.isEmpty {
+      let candidates = self.rimeEngine.suggestions
+      if candidates.isEmpty {
         return false
       }
-      self.textDocumentProxy.insertText(candidates![0].text)
+      self.textDocumentProxy.insertText(candidates[0].text)
       self.rimeEngine.rest()
       return true
     }
@@ -354,7 +374,7 @@ extension HamsterKeyboardViewController {
     if name.isEmpty {
       return schema
     }
-    guard let colorSchema = rimeEngine.colorSchema().first(where: { $0.schemaName == name }) else {
+    guard let colorSchema = self.rimeEngine.colorSchema().first(where: { $0.schemaName == name }) else {
       return schema
     }
     Logger.shared.log.info("call getCurrentColorSchema, schameName = \(colorSchema.schemaName)")
