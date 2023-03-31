@@ -6,3 +6,5 @@
 .vscode
 .plum
 .deps
+.HamsterInputSchemas
+Resources/SharedSupport/**
