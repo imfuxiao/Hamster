@@ -49,8 +49,8 @@ struct HamsterApp: App {
               err = error
             }
             let traits = self.rimeEngine.createTraits(
-              sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
-              userDataDir: RimeEngine.userDataDirectory.path
+              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
             )
             rimeEngine.setupRime(traits)
             rimeEngine.startRime(traits, fullCheck: true)

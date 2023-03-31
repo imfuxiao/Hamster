@@ -114,7 +114,7 @@ private extension HamsterKeyboardActionButtonContent {
           Text("英文")
             .transition(.opacity)
         } else {
-          Text(rimeEngine.simplifiedChineseMode ? "繁中" : "简中")
+          Text(rimeEngine.simplifiedChineseMode ? "简中" : "繁中")
             .transition(.opacity)
         }
       }

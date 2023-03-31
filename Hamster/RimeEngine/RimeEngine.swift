@@ -229,18 +229,12 @@ public extension RimeEngine {
     rimeAPI.startMaintenance(fullCheck)
     session = rimeAPI.createSession()
     Logger.shared.log.debug("rime start session: \(session)")
-    Logger.shared.log.debug("rime status: \(status())")
-    simplifiedChineseMode = status().isSimplified
   }
 
   // 重新部署
   func deploy(fullCheck: Bool = true) {
-    DispatchQueue.main.async(qos: .background) { [weak self] in
-      if let self = self {
-        self.shutdownRime()
-        self.startRime(self.traits, fullCheck: fullCheck)
-      }
-    }
+    shutdownRime()
+    startRime(traits, fullCheck: fullCheck)
   }
 
   func shutdownRime() {
@@ -250,13 +244,11 @@ public extension RimeEngine {
   }
 
   func rest() {
-    DispatchQueue.main.async(qos: .background) { [weak self] in
-      self?.userInputKey = ""
-      self?.cleanComposition()
-      self?.suggestions = []
-      self?.nextPage = false
-      self?.previousPage = false
-    }
+    userInputKey = ""
+    cleanComposition()
+    suggestions = []
+    nextPage = false
+    previousPage = false
   }
 
   func rimeAlive() -> Bool {
@@ -500,46 +492,31 @@ public extension RimeEngine {
 public extension RimeEngine {
   func onDelployStart() {
     Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
-    DispatchQueue.main.async(qos: .background) { [weak self] in
-      if let self = self {
-        self.deployState = .Begin
-      }
-    }
+    deployState = .Begin
     deployStartCallback()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    DispatchQueue.main.async(qos: .background) { [weak self] in
-      if let self = self {
-        self.deployState = .Success
-      }
-    }
-
+    deployState = .Success
     if !rimeAlive() {
       Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
       rimeAPI.cleanAllSession()
       session = rimeAPI.createSession()
     }
-
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session \(session)")
-
     deploySuccessCallback()
   }
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    DispatchQueue.main.async(qos: .background) { [weak self] in
-      if let self = self {
-        self.deployState = .Failure
-      }
-    }
+    deployState = .Failure
     deployFailureCallback()
   }
 
   func onChangeMode(_ mode: String) {
     Logger.shared.log.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
-//    changeModeCallback(mode)
+    changeModeCallback(mode)
   }
 
   func onLoadingSchema(_ schema: String) {
