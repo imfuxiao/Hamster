@@ -1,4 +1,4 @@
-.PHONY: init librime
+.PHONY: init librime schema
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir := $(dir $(mkfile_path))
@@ -11,5 +11,5 @@ librime: init
 	$(MAKE) -C Packages/LibrimeKit boost-build
 	$(MAKE) -C Packages/LibrimeKit librime-build
 
-minimal:
-	bash ./minimal-build.sh
+schema:
+	bash ./InputSchemaBuild.sh
