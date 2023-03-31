@@ -50,9 +50,9 @@ struct HamsterAutocompleteToolbar: View {
 
         Spacer()
       }
-      .frame(height: 10)
-      .padding(.vertical, 3)
-      .padding(.leading, 3)
+      .frame(minHeight: 15)
+      .padding(.vertical, 5)
+      .padding(.leading, 5)
 
       // 候选区
       HStack(spacing: 0) {
@@ -74,7 +74,7 @@ struct HamsterAutocompleteToolbar: View {
                 // TODO: 点击候选项处理
                 ivc.insertText(String(item.index))
               } label: {
-                HStack(alignment: .bottom, spacing: 5) {
+                HStack(alignment: .bottom, spacing: 0) {
                   Text(item.text)
                     .font(style.item.titleFont)
                     .foregroundColor(item.isAutocomplete ?
@@ -89,7 +89,7 @@ struct HamsterAutocompleteToolbar: View {
                       )
                   }
                 }
-//                .padding(.horizontal, 4)
+                .padding(.horizontal, 5)
 //                .padding(.vertical, 10)
                 .background(item.isAutocomplete ? hamsterColor.hilitedCandidateBackColor : Color.clearInteractable)
                 .cornerRadius(style.autocompleteBackground.cornerRadius)
@@ -112,13 +112,13 @@ struct HamsterAutocompleteToolbar: View {
           .padding(.bottom, 5)
           // LazyHStack End
         }
-        .padding(.leading, 3)
+        .padding(.leading, 5)
         // ScrollView End
       }
-      .frame(height: 30)
+      .frame(minHeight: 35)
     }
     .frame(minWidth: 0, maxWidth: .infinity)
-    .frame(height: 50)
+    .frame(minHeight: 60)
     .background(hamsterColor.backColor)
   }
 }

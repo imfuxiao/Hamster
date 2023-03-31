@@ -89,6 +89,7 @@ struct AlphabetKeyboard: View {
                     }
                 }
               }
+              .frame(minHeight: 60)
             }
           }
         }

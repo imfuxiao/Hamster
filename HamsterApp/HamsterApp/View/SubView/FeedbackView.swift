@@ -77,6 +77,9 @@ struct FeedbackView: View {
 
             VStack {
               Text("因系统限制, 震动需要开启键盘**完全访问权限**.")
+                .lineLimit(2)
+                .multilineTextAlignment(.leading)
+                .scaleEffect(0.8)
                 .font(.system(size: 20, weight: .bold))
                 .foregroundColor(.primary)
                 .padding(.top, 30)
