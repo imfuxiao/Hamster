@@ -25,8 +25,7 @@ struct InputSchemaView: View {
       VStack {
         HStack {
           Text("输入方案")
-            .font(.system(size: 30, weight: .black))
-
+            .subViewTitleFont()
           Spacer()
         }
         .padding(.horizontal)
@@ -54,7 +53,7 @@ struct InputSchemaView: View {
             }
           }
         }
-        .padding(.top, 20)
+        .padding(.top, 5)
         .padding(.horizontal)
 //        .listStyle(.plain)
 

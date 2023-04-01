@@ -39,7 +39,7 @@ struct FileManagerView: View {
         VStack {
           HStack {
             Text("输入方案上传")
-              .font(.system(size: 30, weight: .black))
+              .subViewTitleFont()
 
             Spacer()
           }

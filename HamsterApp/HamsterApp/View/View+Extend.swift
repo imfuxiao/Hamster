@@ -8,14 +8,20 @@
 import SwiftUI
 
 extension View {
+  // 统一阴影样式
   func hamsterShadow() -> some View {
-    return shadow(color: Color.HamsterShadowColor, radius: 1)
+    shadow(color: Color.HamsterShadowColor, radius: 1)
+  }
+
+  // 统一子页面Title字体样式
+  func subViewTitleFont() -> some View {
+    font(.system(size: 26, weight: .black))
   }
 }
 
 @available(iOS 14.0, *)
 extension EnvironmentValues {
-    var dismiss: () -> Void {
-        { presentationMode.wrappedValue.dismiss() }
-    }
+  var dismiss: () -> Void {
+    { presentationMode.wrappedValue.dismiss() }
+  }
 }

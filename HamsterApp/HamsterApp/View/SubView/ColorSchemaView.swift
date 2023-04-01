@@ -23,7 +23,7 @@ struct ColorSchemaView: View {
       VStack {
         HStack {
           Text("配色方案")
-            .font(.system(size: 30, weight: .black))
+            .subViewTitleFont()
 
           Spacer()
         }

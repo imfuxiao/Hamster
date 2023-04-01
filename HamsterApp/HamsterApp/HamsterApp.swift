@@ -21,6 +21,12 @@ struct HamsterApp: App {
   var body: some Scene {
     WindowGroup {
       ZStack {
+        Color.clear
+          .alert(isPresented: $showError) {
+            Alert(title: Text("RIME初始化异常: \(err?.localizedDescription ?? "")"), dismissButton: .cancel {
+              err = nil
+            })
+          }
         if launchScreenState {
           LaunchScreen()
         } else {
@@ -69,11 +75,6 @@ struct HamsterApp: App {
             launchScreenState = false
           }
         }
-      }
-      .alert(isPresented: $showError) {
-        Alert(title: Text("RIME初始化异常: \(err?.localizedDescription ?? "")"), dismissButton: .cancel {
-          err = nil
-        })
       }
       .environmentObject(appSettings)
       .environmentObject(rimeEngine)

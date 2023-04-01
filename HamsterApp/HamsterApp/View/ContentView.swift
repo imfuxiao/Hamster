@@ -17,6 +17,7 @@ public struct ContentView: View {
   @State var isLoading: Bool = false
   @State var loadingText: String = ""
   @State var cells: [CellViewModel] = []
+  @State var restState = false
 
   var cancel: [AnyCancellable] = []
   let cellDestinationRoute = CellDestinationRoute()
@@ -45,48 +46,32 @@ public struct ContentView: View {
 
   public var body: some View {
     GeometryReader { proxy in
-      ZStack {
-        NavigationView {
-          ZStack {
-            Color
-              .HamsterBackgroundColor
-              .ignoresSafeArea()
+      NavigationView {
+        ZStack {
+          Color.HamsterBackgroundColor.ignoresSafeArea()
 
-            ScrollView {
-              // RIME区域
-              SectionView("RIME") {
-                LongButton(
-                  buttonText: "重新部署",
-                  buttonWidth: proxy.size.width - 40
-                ) {
-                  loadingText = "正在部署, 请稍后."
-                  isLoading = true
-                  appSettings.rimeNeedOverrideUserDataDirectory = true
-                  DispatchQueue.global(qos: .background).async {
-                    rimeEngine.deploy()
-                    isLoading = false
-                  }
+          ScrollView {
+            // Rime 区域 Begin
+            SectionView("RIME") {
+              LongButton(
+                buttonText: "重新部署",
+                buttonWidth: proxy.size.width - 40
+              ) {
+                loadingText = "正在部署, 请稍后."
+                isLoading = true
+                appSettings.rimeNeedOverrideUserDataDirectory = true
+                DispatchQueue.global(qos: .background).async {
+                  rimeEngine.deploy()
+                  isLoading = false
                 }
               }
 
-              SettingView(
-                cells: cells,
-                cellDestinationRoute: cellDestinationRoute
-              )
-
-              Spacer()
-
-              VStack {
-                VStack {
-                  HStack {
-                    Text("powered by 中州韻輸入法引擎(rime)".uppercased())
-                      .font(.system(.footnote, design: .rounded))
-                      .foregroundColor(.secondary)
-                  }
-                }
+              LongButton(
+                buttonText: "RIME重置",
+                buttonWidth: proxy.size.width - 40
+              ) {
+                restState = true
               }
-              .padding(.top, 50)
-              .padding(.bottom, 50)
             }
             .alert(isPresented: $showError) {
               if let error = rimeError {
@@ -94,10 +79,51 @@ public struct ContentView: View {
               }
               return Alert(title: Text("部署失败"))
             }
-
-            if isLoading {
-              DotsLoadingView(text: loadingText)
+            .alert(isPresented: $restState) {
+              Alert(
+                title: Text("重置会删除个人上传方案, 恢复到原始安装状态, 确定重置?"),
+                primaryButton: .destructive(Text("确定")) {
+                  loadingText = "RIME重置中, 请稍后."
+                  isLoading = true
+                  DispatchQueue.global(qos: .background).async {
+                    do {
+                      try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
+                      try RimeEngine.initAppGroupUserDataDirectory(override: true)
+                      rimeEngine.deploy()
+                      DispatchQueue.main.async {
+                        appSettings.rimeNeedOverrideUserDataDirectory = true
+                      }
+                    } catch {
+                      rimeError = error
+                    }
+                    isLoading = false
+                  }
+                },
+                secondaryButton: .cancel(Text("取消"))
+              )
             }
+            // Rime 区域 end
+
+            // 中间设置区域 Begin
+            SettingView(
+              cells: cells,
+              cellDestinationRoute: cellDestinationRoute
+            )
+            // 中间设置区域 End
+
+            // 底部begin
+            VStack {
+              VStack {
+                HStack {
+                  Text("powered by 中州韻輸入法引擎(rime)".uppercased())
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundColor(.secondary)
+                }
+              }
+            }
+            .padding(.top, 50)
+            .padding(.bottom, 50)
+            // 底部end
           }
           .navigationTitle(Text("仓输入法"))
           .navigationBarTitleDisplayMode(.inline)
@@ -115,42 +141,45 @@ public struct ContentView: View {
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
                   Text("仓输入法")
-
+                  
                   Spacer()
                 }
               }
             }
           }
-          // ZStack End
-        }
-        .navigationViewStyle(.automatic)
-        // Navigation End
+          // ScrollView
 
-        if !appSettings.isKeyboardEnabled {
-          VStack {
-            Spacer()
-
-            HStack {
-              Text("您还未启用仓输入法, 点击跳转开启.")
-                .font(.system(size: 20, weight: .bold))
-            }
-            .frame(width: proxy.size.width, height: 80)
-            .background(Color("dots"))
-            .foregroundColor(.white)
-            .onTapGesture {
-              // 点击跳转设置
-              openURL(URL(string: AppConstants.addKeyboardPath)!)
-            }
+          if isLoading {
+            DotsLoadingView(text: loadingText)
           }
-          .ignoresSafeArea()
+
+          if !appSettings.isKeyboardEnabled {
+            VStack {
+              Spacer()
+
+              HStack {
+                Text("您还未启用仓输入法, 点击跳转开启.")
+                  .font(.system(size: 20, weight: .bold))
+              }
+              .frame(width: proxy.size.width, height: 80)
+              .background(Color("dots"))
+              .foregroundColor(.white)
+              .onTapGesture {
+                // 点击跳转设置
+                openURL(URL(string: AppConstants.addKeyboardPath)!)
+              }
+            }
+            .ignoresSafeArea()
+          }
         }
-        // TODO: 点击体验输入法(待开发)
+        // ZStack
       }
-      .onAppear {
-        cells = createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
-      }
-      // ZStack end
+      // Navigation
     }
+    .onAppear {
+      cells = createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
+    }
+    // GeometryReader End
   }
 }
 

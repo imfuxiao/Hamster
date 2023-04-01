@@ -11,10 +11,6 @@ struct AboutView: View {
   @EnvironmentObject var appSettings: HamsterAppSettings
   @EnvironmentObject var rimeEngine: RimeEngine
   @Environment(\.openURL) var openURL
-  @State var isLoading = false
-  @State var loadingText = ""
-  @State var rimeError: Error?
-  @State var restState = false
 
   let openSourceSoftLists = """
     • https://github.com/rime/librime
@@ -31,7 +27,7 @@ struct AboutView: View {
         ScrollView {
           HStack {
             Text("关于")
-              .font(.system(size: 30, weight: .black))
+              .subViewTitleFont()
 
             Spacer()
           }
@@ -56,6 +52,7 @@ struct AboutView: View {
             VStack {
               HStack {
                 Text(openSourceSoftLists)
+                  .scaleEffect(0.8)
                 Spacer()
               }
               .contentShape(Rectangle(), eoFill: true)
@@ -108,49 +105,10 @@ struct AboutView: View {
             .padding(.top, 10)
           }
 
-          SectionView("RIME") {
-            LongButton(
-              buttonText: "RIME重置",
-              buttonWidth: proxy.size.width - 40
-            ) {
-              restState = true
-            }
-          }
-          .alert(isPresented: $restState) {
-            Alert(
-              title: Text("重置会删除个人上传方案, 恢复到原始安装状态, 确定重置?"),
-              primaryButton: .destructive(Text("确定")) {
-                loadingText = "RIME重置中, 请稍后."
-                isLoading = true
-
-                DispatchQueue.main.async(qos: .background) {
-                  do {
-                    try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
-                    try RimeEngine.initAppGroupUserDataDirectory(override: true)
-                    rimeEngine.deploy()
-                    appSettings.rimeNeedOverrideUserDataDirectory = true
-                  } catch {
-                    rimeError = error
-                    isLoading = false
-                  }
-                  DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    isLoading = false
-                  }
-                }
-
-              },
-              secondaryButton: .cancel(Text("取消"))
-            )
-          }
-
           Spacer()
         }
         .frame(minWidth: 0, maxWidth: .infinity)
         .frame(minHeight: 0, maxHeight: .infinity)
-
-        if isLoading {
-          DotsLoadingView(text: loadingText)
-        }
       }
     }
     .navigationBarTitleDisplayMode(.inline)

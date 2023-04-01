@@ -492,13 +492,21 @@ public extension RimeEngine {
 public extension RimeEngine {
   func onDelployStart() {
     Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
-    deployState = .Begin
+    DispatchQueue.main.async { [weak self] in
+      if let self = self {
+        self.deployState = .Begin
+      }
+    }
     deployStartCallback()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    deployState = .Success
+    DispatchQueue.main.async { [weak self] in
+      if let self = self {
+        self.deployState = .Success
+      }
+    }
     if !rimeAlive() {
       Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
       rimeAPI.cleanAllSession()
@@ -510,7 +518,11 @@ public extension RimeEngine {
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    deployState = .Failure
+    DispatchQueue.main.async { [weak self] in
+      if let self = self {
+        self.deployState = .Failure
+      }
+    }
     deployFailureCallback()
   }
 
