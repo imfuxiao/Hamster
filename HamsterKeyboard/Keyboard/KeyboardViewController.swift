@@ -20,14 +20,14 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   private func setupAppSettings() {
     // 简中切换
-    self.appSettings.$switchTraditionalChinese
-      .receive(on: RunLoop.main)
-      .sink { [weak self] in
-        guard let self = self else { return }
-        self.log.info("combine $switchTraditionalChinese \($0)")
-        _ = self.rimeEngine.simplifiedChineseMode($0)
-      }
-      .store(in: &self.cancellables)
+//    self.appSettings.$switchTraditionalChinese
+//      .receive(on: RunLoop.main)
+//      .sink { [weak self] in
+//        guard let self = self else { return }
+//        self.log.info("combine $switchTraditionalChinese \($0)")
+//        _ = self.rimeEngine.simplifiedChineseMode($0)
+//      }
+//      .store(in: &self.cancellables)
     
     // 按键气泡
     self.appSettings.$showKeyPressBubble
