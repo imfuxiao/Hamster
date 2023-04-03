@@ -125,28 +125,7 @@ public struct ContentView: View {
             .padding(.bottom, 50)
             // 底部end
           }
-          .navigationTitle(Text("仓输入法"))
-          .navigationBarTitleDisplayMode(.inline)
-          .toolbar {
-            ToolbarItem(placement: .principal) {
-              VStack {
-                HStack {
-                  Image("Hamster")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 25, height: 25)
-                    .padding(.all, 5)
-                    .background(
-                      RoundedRectangle(cornerRadius: 5)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-                    )
-                  Text("仓输入法")
-                  
-                  Spacer()
-                }
-              }
-            }
-          }
+
           // ScrollView
 
           if isLoading {
@@ -172,8 +151,31 @@ public struct ContentView: View {
             .ignoresSafeArea()
           }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(Text("仓输入法"))
+        .toolbar {
+          ToolbarItem(placement: .principal) {
+            VStack {
+              HStack {
+                Image("Hamster")
+                  .resizable()
+                  .scaledToFill()
+                  .frame(width: 25, height: 25)
+                  .padding(.all, 5)
+                  .background(
+                    RoundedRectangle(cornerRadius: 5)
+                      .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                  )
+                Text("仓输入法")
+
+                Spacer()
+              }
+            }
+          }
+        }
         // ZStack
       }
+      .navigationViewStyle(.stack)
       // Navigation
     }
     .onAppear {
