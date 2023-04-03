@@ -16,6 +16,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = globalRimeEngine
   public var appSettings = globalAppSettings
   var cancellables = Set<AnyCancellable>()
+  lazy var hamsterInputSetProvider: HamsterInputSetProvider = .init(keyboardContext: keyboardContext)
   
   private func setupAppSettings() {
     // 简中切换

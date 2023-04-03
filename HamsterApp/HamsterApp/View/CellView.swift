@@ -227,6 +227,17 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
+      cellName: "数字九宫格",
+      imageName: "number.square",
+      destinationType: .none,
+      toggleValue: appSettings.enableNumberNineGrid,
+      toggleDidSet: { value in
+        appSettings.enableNumberNineGrid = value
+      }
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
       cellName: "输入功能键",
       imageName: "gear",
       destinationType: .inputKeyFuction

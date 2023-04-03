@@ -3,10 +3,11 @@ import KeyboardKit
 
 class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   let appSettings: HamsterAppSettings
+  let hamsterInputSetProvider: HamsterInputSetProvider
 
-  init(inputSetProvider: InputSetProvider, appSettings: HamsterAppSettings) {
+  init(inputSetProvider: HamsterInputSetProvider, appSettings: HamsterAppSettings) {
     self.appSettings = appSettings
-
+    self.hamsterInputSetProvider = inputSetProvider
     super.init(inputSetProvider: inputSetProvider)
   }
 
@@ -15,11 +16,11 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   // 新增九宫格键盘类型
   override func inputRows(for context: KeyboardContext) -> InputSetRows {
     switch context.keyboardType {
-    case .alphabetic: return inputSetProvider.alphabeticInputSet.rows
-    case .numeric: return inputSetProvider.numericInputSet.rows
-    case .symbolic: return inputSetProvider.symbolicInputSet.rows
+    case .alphabetic: return hamsterInputSetProvider.alphabeticInputSet.rows
+    case .numeric: return hamsterInputSetProvider.numericInputSet.rows
+    case .symbolic: return hamsterInputSetProvider.symbolicInputSet.rows
     case .custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue):
-      return GridInputSet.numberGrid.rows
+      return hamsterInputSetProvider.numberNineGridInputSet.rows
     default: return []
     }
   }
@@ -90,10 +91,10 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     case .character:
       return isLastNumericInputRow(row, for: context)
         ? lastSymbolicInputWidth(for: context) : .input
-    case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType: return bottomSystemButtonWidth(for: context)
+    case .backspace: return context.isGridViewKeyboardType ? .input : lowerSystemButtonWidth(for: context)
+    case .keyboardType: return context.isGridViewKeyboardType ? .input : bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .primary: return .percentage(isPortrait(context) ? 0.25 : 0.195)
+    case .primary: return context.isGridViewKeyboardType ? .input : .percentage(isPortrait(context) ? 0.25 : 0.195)
     case .shift: return lowerSystemButtonWidth(for: context)
     case .custom: return .input
     default: return .available
@@ -133,6 +134,38 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     result.append(keyboardReturnAction(for: context))
 
     return result
+  }
+
+  override open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
+    switch context.keyboardType {
+    case .alphabetic:
+      // 切数字九宫格
+      if appSettings.enableNumberNineGrid {
+        return .keyboardType(.custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue))
+      }
+      return .keyboardType(.numeric)
+    case .numeric: return .keyboardType(.alphabetic(.auto))
+    case .symbolic: return .keyboardType(.alphabetic(.auto))
+    case .custom(let name):
+      let customKeyboardType = KeyboardConstant.keyboardType(rawValue: name)
+      switch customKeyboardType {
+      case .numberNineGrid:
+        return .keyboardType(.alphabetic(.auto))
+      default:
+        return .keyboardType(.alphabetic(.auto))
+      }
+    default: return nil
+    }
+  }
+
+  override open func actionCharacters(for rows: InputSetRows, context: KeyboardContext) -> [[String]] {
+    switch context.keyboardType {
+    case .alphabetic(let casing): return rows.characters(for: casing)
+    case .numeric: return rows.characters()
+    case .symbolic: return rows.characters()
+    case .custom: return rows.characters()
+    default: return []
+    }
   }
 }
 
