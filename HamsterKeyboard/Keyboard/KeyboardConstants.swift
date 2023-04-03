@@ -2,9 +2,19 @@ import Foundation
 
 class KeyboardConstant {
   enum keyboardType: String, CaseIterable, Equatable {
-    case chinese = "中文全键盘"
-    case chineseNineGrid = "拼音九宫格"
-    case numberNineGrid = "数字九宫格"
+    // "中文全键盘"
+    case chinese
+    // "拼音九宫格"
+    case chineseNineGrid
+    // "数字九宫格"
+    case numberNineGrid
+
+    var buttonName: String {
+      switch self {
+      case .numberNineGrid: return "123"
+      default: return "中"
+      }
+    }
   }
 
   // 自定义按钮
@@ -47,8 +57,8 @@ class KeyboardConstant {
     case Period = 0x002e // .
     case BracketLeft = 0x005b // [
     case BracketRight = 0x005d // ]
-    case PageUp = 0xFF55
-    case PageDown = 0xFF56
+    case PageUp = 0xff55
+    case PageDown = 0xff56
 
     func string() -> String {
       if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {

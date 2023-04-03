@@ -81,7 +81,7 @@ struct HamsterAutocompleteToolbar: View {
                   }
                 }
                 .padding(.horizontal, 5)
-//                .padding(.vertical, 10)
+                .padding(.vertical, 5)
                 .background(item.isAutocomplete ? hamsterColor.hilitedCandidateBackColor : Color.clearInteractable)
                 .cornerRadius(style.autocompleteBackground.cornerRadius)
                 .contentShape(Rectangle(), eoFill: true)

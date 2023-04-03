@@ -97,6 +97,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     }
     self.rimeEngine.startRime(traits)
     self.changeInputSchema(self.appSettings.rimeInputSchema)
+    self.rimeEngine.rest()
     
     // 部署成功回调函数
     self.rimeEngine.setDeploySuccessCallback { [weak self] in
@@ -120,14 +121,16 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // TODO: 动态设置 local
     self.keyboardContext.locale = Locale(identifier: "zh-Hans")
     
+    // 外观
     self.keyboardAppearance = HamsterKeyboardAppearance(
       keyboardContext: self.keyboardContext,
       rimeEngine: self.rimeEngine,
       appSettings: self.appSettings
     )
+    // 布局
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
       keyboardContext: self.keyboardContext,
-      inputSetProvider: self.inputSetProvider,
+      inputSetProvider: self.hamsterInputSetProvider,
       appSettings: self.appSettings
     )
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
@@ -178,7 +181,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override public func viewDidDisappear(_ animated: Bool) {
     self.log.debug("HamsterKeyboardViewController viewDidDisappear")
-    self.rimeEngine.shutdownRime()
   }
   
   public func dealloc() {

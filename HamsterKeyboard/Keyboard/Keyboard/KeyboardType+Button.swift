@@ -13,6 +13,7 @@ extension KeyboardType {
     case .alphabetic: return KKL10n.keyboardTypeAlphabetic.hamsterText(for: context)
     case .numeric: return KKL10n.keyboardTypeNumeric.hamsterText(for: context)
     case .symbolic: return KKL10n.keyboardTypeSymbolic.hamsterText(for: context)
+
     default: return nil
     }
   }
@@ -22,6 +23,9 @@ extension KeyboardType {
     case .alphabetic: return "ABC"
     case .numeric: return "123"
     case .symbolic: return "#+="
+    case .custom(let name):
+      let customKeyboard = KeyboardConstant.keyboardType(rawValue: name)
+      return customKeyboard?.buttonName
     default:
       return nil
     }
