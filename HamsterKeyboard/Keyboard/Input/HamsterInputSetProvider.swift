@@ -16,7 +16,11 @@ class HamsterInputSetProvider: StandardInputSetProvider {
     super.init(keyboardContext: keyboardContext, localizedProviders: localizedProviders)
   }
 
-  var numberNineGridInputSet: GridInputSet {
-    .numberGrid
+  var numberNineGridInputSet: NumberNineGridInputSet {
+    .numberNineGrid
+  }
+
+  var chineseSymboleInputSet: ChineseSymbolicInputSet {
+    .standard()
   }
 }

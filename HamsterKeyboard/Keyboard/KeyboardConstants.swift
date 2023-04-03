@@ -8,10 +8,13 @@ class KeyboardConstant {
     case chineseNineGrid
     // "数字九宫格"
     case numberNineGrid
+    // 中文符号
+    case chineseSymbol
 
     var buttonName: String {
       switch self {
       case .numberNineGrid: return "123"
+      case .chineseSymbol: return "#+="
       default: return "中"
       }
     }

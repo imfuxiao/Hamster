@@ -13,14 +13,22 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
 
   // MARK: - Overrides
 
-  // 新增九宫格键盘类型
   override func inputRows(for context: KeyboardContext) -> InputSetRows {
     switch context.keyboardType {
     case .alphabetic: return hamsterInputSetProvider.alphabeticInputSet.rows
     case .numeric: return hamsterInputSetProvider.numericInputSet.rows
     case .symbolic: return hamsterInputSetProvider.symbolicInputSet.rows
-    case .custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue):
-      return hamsterInputSetProvider.numberNineGridInputSet.rows
+    // 自定义键盘
+    case .custom(let name):
+      let costomKeyboarType = KeyboardConstant.keyboardType(rawValue: name)
+      switch costomKeyboarType {
+      case .numberNineGrid:
+        return hamsterInputSetProvider.numberNineGridInputSet.rows
+      case .chineseSymbol:
+        return hamsterInputSetProvider.chineseSymboleInputSet.rows
+      default:
+        return []
+      }
     default: return []
     }
   }
@@ -134,6 +142,19 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     result.append(keyboardReturnAction(for: context))
 
     return result
+  }
+
+  override open func keyboardSwitchActionForBottomInputRow(for context: KeyboardContext) -> KeyboardAction? {
+    switch context.keyboardType {
+    case .alphabetic(let casing): return .shift(currentCasing: casing)
+    case .numeric: return .keyboardType(.symbolic)
+    case .symbolic:
+      if appSettings.enableNumberNineGrid {
+        return .keyboardType(.custom(named: KeyboardConstant.keyboardType.numberNineGrid.rawValue))
+      }
+      return .keyboardType(.numeric)
+    default: return nil
+    }
   }
 
   override open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
