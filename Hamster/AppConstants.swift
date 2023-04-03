@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 enum AppConstants {
   // AppGroup ID
@@ -7,8 +8,8 @@ enum AppConstants {
   // keyboard Bundle ID
   static let keyboardBundleID = "dev.fuxiao.app.Hamster.HamsterKeyboard"
   
-  // 系统添加键盘URL
-  static let addKeyboardPath = "app-settings:root=General&path=Keyboard"
+  // TODO: 系统添加键盘URL
+  static let addKeyboardPath = "app-settings:root=General&path=Keyboard/KEYBOARDS"
 
   // 与Squirrel.app保持一致
   // 预先构建的数据目录中

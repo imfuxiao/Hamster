@@ -337,18 +337,18 @@ public extension RimeEngine {
   }
 
   func inputKey(_ key: String) -> Bool {
-//    if !rimeAlive() {
-//      session = rimeAPI.createSession()
-//      Logger.shared.log.debug("inputKey rime not alive, create session: \(session)")
-//    }
+    if !rimeAlive() {
+      session = rimeAPI.createSession()
+      Logger.shared.log.debug("inputKey rime not alive, create session: \(session)")
+    }
     return rimeAPI.processKey(key, andSession: session)
   }
 
   func inputKeyCode(_ key: Int32) -> Bool {
-//    if !rimeAlive() {
-//      session = rimeAPI.createSession()
-//      Logger.shared.log.debug("inputKeyCode rime not alive, create session: \(session)")
-//    }
+    if !rimeAlive() {
+      session = rimeAPI.createSession()
+      Logger.shared.log.debug("inputKeyCode rime not alive, create session: \(session)")
+    }
     return rimeAPI.processKeyCode(key, andSession: session)
   }
 
@@ -432,6 +432,10 @@ public extension RimeEngine {
     guard cfg != nil else {
       return []
     }
+    
+    defer {
+      cfg?.close()
+    }
 
     let config = cfg!
     // 获取配色名称
@@ -460,6 +464,9 @@ public extension RimeEngine {
     let config = rimeAPI.openConfig("squirrel")
     if config == nil {
       return ""
+    }
+    defer {
+      config?.close()
     }
     return config!.getString("style/color_scheme")
   }

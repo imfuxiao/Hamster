@@ -14,8 +14,8 @@
             filePath = "Packages/LibrimeKit/Sources/ObjC/irime_api.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "355"
-            endingLineNumber = "355"
+            startingLineNumber = "362"
+            endingLineNumber = "362"
             landmarkName = "-startMaintenance:"
             landmarkType = "7">
          </BreakpointContent>

@@ -138,14 +138,15 @@ public struct ContentView: View {
 
               HStack {
                 Text("您还未启用仓输入法, 点击跳转开启.")
-                  .font(.system(size: 20, weight: .bold))
+                  .font(.system(size: 20, weight: .black))
+                  .foregroundColor(Color.primary)
               }
               .frame(width: proxy.size.width, height: 80)
               .background(Color("dots"))
-              .foregroundColor(.white)
               .onTapGesture {
                 // 点击跳转设置
                 openURL(URL(string: AppConstants.addKeyboardPath)!)
+                print(UIApplication.openSettingsURLString)
               }
             }
             .ignoresSafeArea()

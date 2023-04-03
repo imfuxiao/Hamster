@@ -7,14 +7,14 @@ import UIKit
 
 // 全局变量: 设置Rime是否首次启动标志
 var isRimeFirstRun = true
-let globalRimeEngine = RimeEngine()
-let globalAppSettings = HamsterAppSettings()
+//let globalRimeEngine = RimeEngine()
+//let globalAppSettings = HamsterAppSettings()
 
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   private let log = Logger.shared.log
-  public var rimeEngine = globalRimeEngine
-  public var appSettings = globalAppSettings
+  public var rimeEngine = RimeEngine()
+  public var appSettings = HamsterAppSettings()
   var cancellables = Set<AnyCancellable>()
   lazy var hamsterInputSetProvider: HamsterInputSetProvider = .init(keyboardContext: keyboardContext)
   
@@ -25,7 +25,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .sink { [weak self] in
         guard let self = self else { return }
         self.log.info("combine $switchTraditionalChinese \($0)")
-        _ = self.rimeEngine.simplifiedChineseMode(!$0)
+        _ = self.rimeEngine.simplifiedChineseMode($0)
       }
       .store(in: &self.cancellables)
     
