@@ -8,9 +8,11 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public let characterGragActionHandler: SlideGestureHandler
 
   // 键盘上下滑动处理
-  let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { ivc in
+  let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { keyboardController in
+    weak var ivc = keyboardController
+    guard let ivc = ivc else { return { _, _ in } }
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
-    return { action, offset in
+    return { [weak ivc] action, offset in
       if case .character(let char) = action {
         let actionKey = offset < 0 ?
           char.lowercased() + KeyboardConstant.Character.SlideDown :
@@ -19,6 +21,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         guard let value = actionConfig[actionKey] else {
           return
         }
+
+        guard let ivc = ivc else { return }
 
         // TODO: 以#开头为功能
         if value.hasPrefix("#"), value.count > 1 {
@@ -49,12 +53,16 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     }
   }
 
-  public init(inputViewController ivc: HamsterKeyboardViewController) {
-    self.hamsterKeyboardController = ivc
-
+  public init(
+    inputViewController ivc: HamsterKeyboardViewController,
+    keyboardContext: KeyboardContext,
+    keyboardFeedbackHandler: KeyboardFeedbackHandler
+  ) {
+    weak var keyboardController = ivc
+    self.hamsterKeyboardController = keyboardController
     self.characterGragActionHandler = CharacterDragHandler(
-      keyboardContext: ivc.keyboardContext,
-      feedbackHandler: ivc.keyboardFeedbackHandler,
+      keyboardContext: keyboardContext,
+      feedbackHandler: keyboardFeedbackHandler,
       action: characterGragAction(ivc)
     )
 

@@ -2,15 +2,17 @@ import KeyboardKit
 import SwiftUI
 
 class HamsterKeyboardAppearance: StandardKeyboardAppearance {
-  var ivc: HamsterKeyboardViewController
   var appSettings: HamsterAppSettings
   var rimeEngine: RimeEngine
 
-  public init(ivc: HamsterKeyboardViewController) {
-    self.ivc = ivc
-    self.appSettings = ivc.appSettings
-    self.rimeEngine = ivc.rimeEngine
-    super.init(keyboardContext: ivc.keyboardContext)
+  public init(
+    keyboardContext: KeyboardContext,
+    rimeEngine: RimeEngine,
+    appSettings: HamsterAppSettings
+  ) {
+    self.appSettings = appSettings
+    self.rimeEngine = rimeEngine
+    super.init(keyboardContext: keyboardContext)
   }
 
   // 九宫格自定义背景色

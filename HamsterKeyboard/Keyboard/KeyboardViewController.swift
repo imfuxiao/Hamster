@@ -7,19 +7,22 @@ import UIKit
 
 // 全局变量: 设置Rime是否首次启动标志
 var isRimeFirstRun = true
+let globalRimeEngine = RimeEngine()
+let globalAppSettings = HamsterAppSettings()
 
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
-  public var rimeEngine = RimeEngine()
-  public var appSettings = HamsterAppSettings()
   private let log = Logger.shared.log
+  public var rimeEngine = globalRimeEngine
+  public var appSettings = globalAppSettings
   var cancellables = Set<AnyCancellable>()
   
   private func setupAppSettings() {
     // 简中切换
     self.appSettings.$switchTraditionalChinese
-      .receive(on: DispatchQueue.main)
-      .sink {
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
         self.log.info("combine $switchTraditionalChinese \($0)")
         _ = self.rimeEngine.simplifiedChineseMode(!$0)
       }
@@ -27,8 +30,9 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     
     // 按键气泡
     self.appSettings.$showKeyPressBubble
-      .receive(on: DispatchQueue.main)
-      .sink {
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
         self.log.info("combine $showKeyPressBubble \($0)")
         self.calloutContext.input.isEnabled = $0
       }
@@ -55,13 +59,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // 配色方案变更
     self.appSettings.$enableRimeColorSchema
       .combineLatest(self.appSettings.$rimeColorSchema)
-      .receive(on: DispatchQueue.main)
+      .receive(on: RunLoop.main)
       .sink { [weak self] enable, schemaName in
-        self?.log.info("combine $enableRimeColorSchema and $rimeInputSchema: \(enable), \(schemaName)")
+        guard let self = self else { return }
+        self.log.info("combine $enableRimeColorSchema and $rimeInputSchema: \(enable), \(schemaName)")
         if enable {
-          if let self = self {
-            self.rimeEngine.currentColorSchema = self.getCurrentColorSchema()
-          }
+          self.rimeEngine.currentColorSchema = self.getCurrentColorSchema()
         }
       }
       .store(in: &self.cancellables)
@@ -117,19 +120,19 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // TODO: 动态设置 local
     self.keyboardContext.locale = Locale(identifier: "zh-Hans")
     
-    self.keyboardAppearance = HamsterKeyboardAppearance(ivc: self)
-    
+    self.keyboardAppearance = HamsterKeyboardAppearance(
+      keyboardContext: self.keyboardContext,
+      rimeEngine: self.rimeEngine,
+      appSettings: self.appSettings
+    )
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
       keyboardContext: self.keyboardContext,
       inputSetProvider: self.inputSetProvider,
       appSettings: self.appSettings
     )
-    
     self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
-    
     // TODO: 长按按钮设置
     self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
-    
     self.keyboardFeedbackSettings = KeyboardFeedbackSettings(
       audioConfiguration: AudioFeedbackConfiguration(),
       hapticConfiguration: HapticFeedbackConfiguration(
@@ -143,8 +146,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       settings: self.keyboardFeedbackSettings,
       appSettings: self.appSettings
     )
-    
-    self.keyboardActionHandler = HamsterKeyboardActionHandler(inputViewController: self)
+    self.keyboardActionHandler = HamsterKeyboardActionHandler(
+      inputViewController: self,
+      keyboardContext: self.keyboardContext,
+      keyboardFeedbackHandler: self.keyboardFeedbackHandler
+    )
     self.calloutContext = KeyboardCalloutContext(
       action: HamsterActionCalloutContext(
         actionHandler: keyboardActionHandler,
@@ -162,6 +168,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override public func viewWillSetupKeyboard() {
     self.log.debug("viewWillSetupKeyboard() begin")
+    super.viewWillSetupKeyboard()
     
     let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
@@ -171,6 +178,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override public func viewDidDisappear(_ animated: Bool) {
     self.log.debug("HamsterKeyboardViewController viewDidDisappear")
+    self.rimeEngine.shutdownRime()
   }
   
   public func dealloc() {

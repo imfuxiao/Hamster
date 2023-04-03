@@ -11,10 +11,10 @@ import SwiftUI
 
 @available(iOS 14, *)
 struct AlphabetKeyboard: View {
-  var ivc: HamsterKeyboardViewController
-
-  var appearance: KeyboardAppearance
-  var actionHandler: KeyboardActionHandler
+  weak var ivc: HamsterKeyboardViewController?
+  let appearance: KeyboardAppearance
+  let actionHandler: KeyboardActionHandler
+  let standardKeyboardWidth: CGFloat
 
   @EnvironmentObject
   private var keyboardCalloutContext: KeyboardCalloutContext
@@ -32,33 +32,40 @@ struct AlphabetKeyboard: View {
 
   init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
     Logger.shared.log.debug("AlphabetKeyboard init")
-    self.ivc = ivc
+    weak var keyboardViewController = ivc
+    self.ivc = keyboardViewController
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
+    self.standardKeyboardWidth = ivc.view.frame.width
   }
 
+  @ViewBuilder
   var keyboard: some View {
-    SystemKeyboard(
-      controller: ivc,
-      autocompleteToolbarMode: .none,
-      buttonView: { layoutItem, keyboardWidth, inputWidth in
-        SystemKeyboardButtonRowItem(
-          content: HamsterKeyboardActionButtonContent(
-            action: layoutItem.action,
-            appearance: appearance,
+    if let ivc = ivc {
+      SystemKeyboard(
+        controller: ivc,
+        autocompleteToolbarMode: .none,
+        buttonView: { layoutItem, keyboardWidth, inputWidth in
+          SystemKeyboardButtonRowItem(
+            content: HamsterKeyboardActionButtonContent(
+              action: layoutItem.action,
+              appearance: appearance,
+              keyboardContext: keyboardContext,
+              appSettings: appSettings
+            ),
+            item: layoutItem,
+            actionHandler: actionHandler,
             keyboardContext: keyboardContext,
-            appSettings: appSettings
-          ),
-          item: layoutItem,
-          actionHandler: actionHandler,
-          keyboardContext: keyboardContext,
-          calloutContext: keyboardCalloutContext,
-          keyboardWidth: keyboardWidth,
-          inputWidth: inputWidth,
-          appearance: appearance
-        )
-      }
-    )
+            calloutContext: keyboardCalloutContext,
+            keyboardWidth: keyboardWidth,
+            inputWidth: inputWidth,
+            appearance: appearance
+          )
+        }
+      )
+    } else {
+      EmptyView()
+    }
   }
 
   var body: some View {
@@ -66,7 +73,9 @@ struct AlphabetKeyboard: View {
       if keyboardContext.keyboardType != .emojis {
         HStack(spacing: 0) {
           ZStack(alignment: .leading) {
-            HamsterAutocompleteToolbar(ivc: ivc)
+            if let ivc = ivc {
+              HamsterAutocompleteToolbar(ivc: ivc)
+            }
 
             if rimeEngine.userInputKey.isEmpty {
               HStack {
@@ -84,7 +93,8 @@ struct AlphabetKeyboard: View {
                   Image(systemName: "chevron.down.circle.fill")
                     .iconStyle()
                     .padding(.trailing, 15)
-                    .onTapGesture {
+                    .onTapGesture { [weak ivc] in
+                      guard let ivc = ivc else { return }
                       ivc.dismissKeyboard()
                     }
                 }
@@ -108,10 +118,6 @@ struct AlphabetKeyboard: View {
     // TODO: 横向的全面屏需要减去左右两边的听写键和键盘切换键
     return !keyboardContext.isPortrait && keyboardContext.hasDictationKey
       ? standardKeyboardWidth - 150 : standardKeyboardWidth
-  }
-
-  var standardKeyboardWidth: CGFloat {
-    ivc.view.frame.width
   }
 }
 

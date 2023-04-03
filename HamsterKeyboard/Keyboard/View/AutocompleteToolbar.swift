@@ -17,7 +17,7 @@ let itemStyle = AutocompleteToolbarItemStyle(
 
 @available(iOS 14, *)
 struct HamsterAutocompleteToolbar: View {
-  var ivc: HamsterKeyboardViewController
+  weak var ivc: HamsterKeyboardViewController?
 
   @EnvironmentObject
   private var keyboardContext: KeyboardContext
@@ -33,7 +33,8 @@ struct HamsterAutocompleteToolbar: View {
   )
 
   init(ivc: HamsterKeyboardViewController) {
-    self.ivc = ivc
+    weak var keyboardViewController = ivc
+    self.ivc = keyboardViewController
   }
 
   var hamsterColor: ColorSchema {
@@ -58,19 +59,9 @@ struct HamsterAutocompleteToolbar: View {
       HStack(spacing: 0) {
         ScrollView(.horizontal, showsIndicators: true) {
           LazyHStack(spacing: 5) {
-            // 上一页
-//            if rimeEngine.previousPage {
-//              Image(systemName: "arrow.backward.square.fill")
-//                .iconStyle()
-//                .padding(.leading, 5)
-//                .padding(.trailing, 5)
-//                .onTapGesture {
-//                  ivc.previousPageOfCandidates()
-//                }
-//            }
-
             ForEach(rimeEngine.suggestions) { item in
-              Button {
+              Button { [weak ivc] in
+                guard let ivc = ivc else { return }
                 // TODO: 点击候选项处理
                 ivc.insertText(String(item.index))
               } label: {
@@ -97,17 +88,6 @@ struct HamsterAutocompleteToolbar: View {
               }
               .buttonStyle(.plain)
             }
-
-            // 下一页
-//            if rimeEngine.nextPage {
-//              Image(systemName: "arrow.forward.square.fill")
-//                .iconStyle()
-//                .padding(.leading, 5)
-//                .padding(.trailing, 5)
-//                .onTapGesture {
-//                  ivc.nextPageOfCandidates()
-//                }
-//            }
           }
           .padding(.bottom, 5)
           // LazyHStack End
