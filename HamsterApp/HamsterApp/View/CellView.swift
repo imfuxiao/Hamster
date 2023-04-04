@@ -11,6 +11,7 @@ enum DestinationType {
   case inputSchema
   case colorSchema
   case fileManager
+  case fileEditor
   case feedback
   case inputKeyFuction
   case upAndDownSlideInputSymbol
@@ -43,6 +44,8 @@ struct CellDestinationRoute: CellDestination {
       ColorSchemaView()
     case .fileManager:
       FileManagerView()
+    case .fileEditor:
+      EditorView()
     case .feedback:
       FeedbackView()
     case .inputKeyFuction:
@@ -179,6 +182,13 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "输入方案上传",
       imageName: "network",
       destinationType: .fileManager
+    ),
+    CellViewModel(
+      cellWidth: cellWidth,
+      cellHeight: cellHeight,
+      cellName: "方案编辑",
+      imageName: "creditcard",
+      destinationType: .fileEditor
     ),
     CellViewModel(
       cellWidth: cellWidth,

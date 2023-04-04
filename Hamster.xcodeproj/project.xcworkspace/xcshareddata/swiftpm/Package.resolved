@@ -91,6 +91,15 @@
       }
     },
     {
+      "identity" : "runestone",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/Runestone.git",
+      "state" : {
+        "revision" : "1d0e79051a18d79f12882e9fad0b130e47d4a06b",
+        "version" : "0.3.0"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms.git",
@@ -214,6 +223,15 @@
       "state" : {
         "revision" : "1080914828ef1c9ca9cd2bad50667b3d847dabff",
         "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "treesitterlanguages",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/simonbs/TreeSitterLanguages.git",
+      "state" : {
+        "revision" : "a15ab30453d14097355d7d78ec7c0feb008cfbba",
+        "version" : "0.1.7"
       }
     },
     {

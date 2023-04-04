@@ -7,8 +7,8 @@ import UIKit
 
 // 全局变量: 设置Rime是否首次启动标志
 var isRimeFirstRun = true
-//let globalRimeEngine = RimeEngine()
-//let globalAppSettings = HamsterAppSettings()
+// let globalRimeEngine = RimeEngine()
+// let globalAppSettings = HamsterAppSettings()
 
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
@@ -172,8 +172,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override public func viewWillSetupKeyboard() {
     self.log.debug("viewWillSetupKeyboard() begin")
-    super.viewWillSetupKeyboard()
-    
     let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)

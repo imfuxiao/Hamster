@@ -37,7 +37,6 @@
 		C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E8028296D4F4C0083E53A /* HamsterApp.swift */; };
 		C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA97B299A6C8200F8CC32 /* KeyboardKit */; };
 		C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA99E299A6F3900F8CC32 /* Plist */; };
-		C04FA9A1299A6F3900F8CC32 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA9A0299A6F3900F8CC32 /* KeyboardKit */; };
 		C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1529C49469001A8BE6 /* LaunchScreen.swift */; };
 		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
@@ -158,6 +157,13 @@
 		C096EECD29D5A8AC00E302DD /* wubi86_jidian.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDEF29D5A7D000E302DD /* wubi86_jidian.schema.yaml */; };
 		C096EECE29D5A8AC00E302DD /* zh-hans-t-essay-bgw.gram in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE1029D5A7D200E302DD /* zh-hans-t-essay-bgw.gram */; };
 		C0A301F429C999F600C29E35 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A301F329C999F600C29E35 /* TextFieldStyle.swift */; };
+		C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1029DBC1F800F8D01E /* Runestone */; };
+		C0AB7C1429DBC27A00F8D01E /* TreeSitterYAML in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */; };
+		C0AB7C1629DBC27A00F8D01E /* TreeSitterYAMLQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */; };
+		C0AB7C1829DBC27A00F8D01E /* TreeSitterYAMLRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */; };
+		C0AB7C1A29DBC2E900F8D01E /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB7C1929DBC2E900F8D01E /* TextEditView.swift */; };
+		C0AB7C1C29DBC8DD00F8D01E /* FinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB7C1B29DBC8DD00F8D01E /* FinderView.swift */; };
+		C0AB7C1E29DC016A00F8D01E /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB7C1D29DC016A00F8D01E /* EditorView.swift */; };
 		C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
 		C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */; };
@@ -614,6 +620,9 @@
 		C099464229B27FF8007FD3CA /* InputSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSet.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C0A301F329C999F600C29E35 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
+		C0AB7C1929DBC2E900F8D01E /* TextEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
+		C0AB7C1B29DBC8DD00F8D01E /* FinderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderView.swift; sourceTree = "<group>"; };
+		C0AB7C1D29DC016A00F8D01E /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+Color.swift"; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
@@ -629,10 +638,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0AB7C1829DBC27A00F8D01E /* TreeSitterYAMLRunestone in Frameworks */,
 				C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */,
-				C04FA9A1299A6F3900F8CC32 /* KeyboardKit in Frameworks */,
+				C0AB7C1629DBC27A00F8D01E /* TreeSitterYAMLQueries in Frameworks */,
 				C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */,
 				C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */,
+				C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */,
+				C0AB7C1429DBC27A00F8D01E /* TreeSitterYAML in Frameworks */,
 				C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -966,6 +978,7 @@
 				C0010B0129B9040B00CE4869 /* AboutView.swift */,
 				C0341D5029C89B6300016C68 /* InputkeyFuctionView.swift */,
 				C037B61229CBDADC00B1BBDC /* UpAndDownSlideInputSymbolView.swift */,
+				C0AB7C1D29DC016A00F8D01E /* EditorView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -1167,6 +1180,8 @@
 				C0341C7029C850A400016C68 /* DotsLoadingView.swift */,
 				C0341C7229C8558E00016C68 /* SectionView.swift */,
 				C0A301F329C999F600C29E35 /* TextFieldStyle.swift */,
+				C0AB7C1929DBC2E900F8D01E /* TextEditView.swift */,
+				C0AB7C1B29DBC8DD00F8D01E /* FinderView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1220,10 +1235,13 @@
 			name = HamsterApp;
 			packageProductDependencies = (
 				C04FA99E299A6F3900F8CC32 /* Plist */,
-				C04FA9A0299A6F3900F8CC32 /* KeyboardKit */,
 				C02C1EF429BFDB7B007B6AF5 /* iFilemanager */,
 				C02C1EFB29C07C96007B6AF5 /* LibrimeKit */,
 				C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */,
+				C0AB7C1029DBC1F800F8D01E /* Runestone */,
+				C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */,
+				C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */,
+				C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* HamsterApp.app */;
@@ -1315,6 +1333,8 @@
 				C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */,
 				C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */,
 				C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
+				C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */,
+				C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -1385,11 +1405,14 @@
 				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
 				C0341D5129C89B6300016C68 /* InputkeyFuctionView.swift in Sources */,
 				C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
+				C0AB7C1C29DBC8DD00F8D01E /* FinderView.swift in Sources */,
 				C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */,
 				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
 				C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */,
+				C0AB7C1E29DC016A00F8D01E /* EditorView.swift in Sources */,
+				C0AB7C1A29DBC2E900F8D01E /* TextEditView.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
 				C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */,
 				C0458A7C29B1338700262E69 /* ContentView.swift in Sources */,
@@ -1860,6 +1883,22 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonbs/Runestone.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.3.0;
+			};
+		};
+		C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonbs/TreeSitterLanguages.git";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.7;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1882,11 +1921,6 @@
 			package = C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */;
 			productName = Plist;
 		};
-		C04FA9A0299A6F3900F8CC32 /* KeyboardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
-			productName = KeyboardKit;
-		};
 		C06197FC29A35A5F004DF94F /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LibrimeKit;
@@ -1895,6 +1929,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
 			productName = SwiftyBeaver;
+		};
+		C0AB7C1029DBC1F800F8D01E /* Runestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */;
+			productName = Runestone;
+		};
+		C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAML;
+		};
+		C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAMLQueries;
+		};
+		C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAMLRunestone;
 		};
 		C0C9F03B29CF43F9004B2C33 /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;

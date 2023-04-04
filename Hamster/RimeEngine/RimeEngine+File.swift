@@ -12,6 +12,7 @@ extension RimeEngine {
   public static var shareURL: URL {
     FileManager.default.containerURL(
       forSecurityApplicationGroupIdentifier: AppConstants.appGroupName)!
+      .appendingPathComponent("InputSchema")
   }
 
   // AppGroup共享下: SharedSupport目录
@@ -58,6 +59,9 @@ extension RimeEngine {
         return
       }
     }
+    if !fm.fileExists(atPath: dst.deletingLastPathComponent().path) {
+      try fm.createDirectory(at: dst.deletingLastPathComponent(), withIntermediateDirectories: true)
+    }
     try fm.copyItem(at: src, to: dst)
   }
 
@@ -71,6 +75,9 @@ extension RimeEngine {
       } else {
         return
       }
+    }
+    if !fm.fileExists(atPath: dst.deletingLastPathComponent().path) {
+      try fm.createDirectory(at: dst.deletingLastPathComponent(), withIntermediateDirectories: true)
     }
     try fm.createDirectory(at: dst, withIntermediateDirectories: true)
   }

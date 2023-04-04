@@ -503,7 +503,6 @@ public extension RimeEngine {
     }
     if !rimeAlive() {
       Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
-      rimeAPI.cleanAllSession()
       session = rimeAPI.createSession()
     }
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session \(session)")
