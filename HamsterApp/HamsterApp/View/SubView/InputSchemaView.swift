@@ -30,6 +30,15 @@ struct InputSchemaView: View {
         }
         .padding(.horizontal)
 
+        HStack {
+          Text("由于版权及其他因素, 无法内置更多的输入方案. 您可以通过'文件上传'功能, 上传自己喜欢的输入方案.")
+            .font(.system(size: 12))
+            .foregroundColor(.secondary)
+          Spacer()
+        }
+        .padding(.top)
+        .padding(.horizontal)
+
         ScrollView {
           ForEach(schemas) { schema in
             VStack {
@@ -48,7 +57,7 @@ struct InputSchemaView: View {
               .onTapGesture {
                 appSettings.rimeInputSchema = schema.schemaId
               }
-              
+
               Divider()
             }
           }

@@ -186,7 +186,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
-      cellName: "方案编辑",
+      cellName: "文件编辑",
       imageName: "creditcard",
       destinationType: .fileEditor
     ),
