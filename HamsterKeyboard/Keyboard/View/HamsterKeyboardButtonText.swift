@@ -10,13 +10,13 @@ import SwiftUI
 
 @available(iOS 14, *)
 struct HamsterKeyboardButtonText: View {
-  /**
-   Create a system keyboard button text view.
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var keyboardContext: KeyboardContext
 
-   - Parameters:
-   - text: The text to display.
-   - action: The action bound to the button.
-   */
+  var buttonExtendCharacter: [String: String]
+  private let text: String
+  private let isInputAction: Bool
+
   public init(
     buttonExtendCharacter: [String: String],
     text: String,
@@ -25,8 +25,7 @@ struct HamsterKeyboardButtonText: View {
     self.init(
       buttonExtendCharacter: buttonExtendCharacter,
       text: text,
-      isInputAction: action.isInputAction,
-      showExtendArea: false
+      isInputAction: action.isInputAction
     )
   }
 
@@ -42,30 +41,17 @@ struct HamsterKeyboardButtonText: View {
     text: String,
     isInputAction: Bool
   ) {
-    self.init(
-      buttonExtendCharacter: buttonExtendCharacter,
-      text: text,
-      isInputAction: isInputAction,
-      showExtendArea: false
-    )
-  }
-
-  public init(
-    buttonExtendCharacter: [String: String],
-    text: String,
-    isInputAction: Bool,
-    showExtendArea: Bool
-  ) {
     self.buttonExtendCharacter = buttonExtendCharacter
     self.text = text
     self.isInputAction = isInputAction
-    self.showExtentArea = showExtendArea
   }
 
-  var buttonExtendCharacter: [String: String]
-  private let text: String
-  private let isInputAction: Bool
-  private let showExtentArea: Bool
+  // 是否显示按键扩展区域
+  var showExtendArea: Bool {
+    appSettings.enableKeyboardUpAndDownSlideSymbol
+      && appSettings.showKeyboardUpAndDownSlideSymbol
+      && keyboardContext.keyboardType.isAlphabetic
+  }
 
   var characterExtendView: some View {
     let action = buttonExtendCharacter[text.lowercased(), default: ""]
@@ -108,13 +94,13 @@ struct HamsterKeyboardButtonText: View {
       }
     } else {
       VStack(spacing: 0) {
-        if showExtentArea {
+        if showExtendArea {
           characterExtendView
         }
         VStack(alignment: .center, spacing: 0) {
           Text(text)
             .lineLimit(1)
-//            .offset(y: 1)
+            .offset(y: showExtendArea ? -2 : 0)
             .font(.system(size: 20))
         }
       }

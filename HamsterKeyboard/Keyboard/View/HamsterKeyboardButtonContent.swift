@@ -132,10 +132,7 @@ private extension HamsterKeyboardActionButtonContent {
         default:
           return false
         }
-      }(),
-      // 只有字母键盘显示扩展区域
-      showExtendArea: keyboardContext.keyboardType.isAlphabetic
-        && appSettings.enableKeyboardUpAndDownSlideSymbol
+      }()
     )
     .padding(1)
     .minimumScaleFactor(0.8)

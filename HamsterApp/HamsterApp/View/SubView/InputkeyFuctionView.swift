@@ -21,6 +21,15 @@ struct InputkeyFuctionView: View {
           Spacer()
         }
         .padding(.horizontal)
+        
+        HStack {
+          Text("可根据个人爱好修改两个按键对应的键值.")
+            .font(.system(size: 12))
+            .foregroundColor(.secondary)
+          Spacer()
+        }
+        .padding(.top)
+        .padding(.horizontal)
 
         VStack {
           HStack {

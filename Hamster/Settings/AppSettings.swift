@@ -103,7 +103,8 @@ private enum HamsterAppSettingKeys: String {
   case rimeNeedOverrideUserDataDirectory = "rime.needOverrideUserDataDirectory"
 
   // 键盘上下滑动符号
-  case enablekeyboardUpAndDownSlideSymbol = "keyboard.enableUpAndDownSlideSymbol"
+  case enableKeyboardUpAndDownSlideSymbol = "keyboard.enableUpAndDownSlideSymbol"
+  case showKeyboardUpAndDownSlideSymbol = "keyboard.showUpAndDownSlideSymbol"
   case keyboardUpAndDownSlideSymbol = "keyboard.upAndDownSlideSymbol"
 
   // 启用数字九宫格键盘
@@ -133,7 +134,8 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
       HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue: false,
-      HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue: true,
+      HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue: true,
+      HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue: true,
       HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue: [:] as [String: String],
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
     ])
@@ -155,7 +157,8 @@ public class HamsterAppSettings: ObservableObject {
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
     self.rimeNeedOverrideUserDataDirectory = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
-    self.enableKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue)
+    self.enableKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue)
+    self.showKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue)
     self.keyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue) as! [String: String]
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
   }
@@ -331,13 +334,23 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
-  // 键盘: 启用上下滑动符号
+  // 键盘: 是否启用上下滑动符号
   @Published
   var enableKeyboardUpAndDownSlideSymbol: Bool {
     didSet {
       Logger.shared.log.info(["AppSettings, enableKeyboardUpAndDownSlideSymbol": enableKeyboardUpAndDownSlideSymbol])
       UserDefaults.hamsterSettingsDefault.set(
-        enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enablekeyboardUpAndDownSlideSymbol.rawValue)
+        enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue)
+    }
+  }
+  
+  // 键盘: 是否显示上下滑动符号
+  @Published
+  var showKeyboardUpAndDownSlideSymbol: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardUpAndDownSlideSymbol": enableKeyboardUpAndDownSlideSymbol])
+      UserDefaults.hamsterSettingsDefault.set(
+        showKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue)
     }
   }
 

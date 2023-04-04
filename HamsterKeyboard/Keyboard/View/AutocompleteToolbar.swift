@@ -51,14 +51,14 @@ struct HamsterAutocompleteToolbar: View {
 
         Spacer()
       }
-      .frame(minHeight: 15)
       .padding(.vertical, 5)
       .padding(.leading, 5)
+      .frame(height: 25)
 
       // 候选区
       HStack(spacing: 0) {
         ScrollView(.horizontal, showsIndicators: true) {
-          LazyHStack(spacing: 5) {
+          LazyHStack(spacing: 0) {
             ForEach(rimeEngine.suggestions) { item in
               Button { [weak ivc] in
                 guard let ivc = ivc else { return }
@@ -89,16 +89,14 @@ struct HamsterAutocompleteToolbar: View {
               .buttonStyle(.plain)
             }
           }
-          .padding(.bottom, 5)
           // LazyHStack End
         }
-        .padding(.leading, 5)
         // ScrollView End
       }
       .frame(minHeight: 35)
     }
     .frame(minWidth: 0, maxWidth: .infinity)
-    .frame(minHeight: 60)
+    .frame(height: 60)
     .background(hamsterColor.backColor)
   }
 }

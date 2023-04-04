@@ -212,17 +212,17 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
         appSettings.showKeyboardDismissButton = value
       }
     ),
-    CellViewModel(
-      cellWidth: cellWidth,
-      cellHeight: cellHeight,
-      cellName: "繁体中文",
-      imageName: "character",
-      destinationType: .none,
-      toggleValue: appSettings.switchTraditionalChinese,
-      toggleDidSet: { value in
-        appSettings.switchTraditionalChinese = value
-      }
-    ),
+//    CellViewModel(
+//      cellWidth: cellWidth,
+//      cellHeight: cellHeight,
+//      cellName: "繁体中文",
+//      imageName: "character",
+//      destinationType: .none,
+//      toggleValue: appSettings.switchTraditionalChinese,
+//      toggleDidSet: { value in
+//        appSettings.switchTraditionalChinese = value
+//      }
+//    ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,

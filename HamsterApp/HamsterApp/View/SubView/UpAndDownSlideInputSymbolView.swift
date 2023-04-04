@@ -55,7 +55,7 @@ struct UpAndDownSlideInputSymbolView: View {
         VStack {
           HStack {
             Toggle(isOn: $appSettings.enableKeyboardUpAndDownSlideSymbol) {
-              Text("是否开启")
+              Text("是否启用")
                 .font(.system(.body, design: .rounded))
             }
           }
@@ -79,6 +79,23 @@ struct UpAndDownSlideInputSymbolView: View {
         .padding(.bottom, 10)
 
         if appSettings.enableKeyboardUpAndDownSlideSymbol {
+          VStack {
+            HStack {
+              Toggle(isOn: $appSettings.showKeyboardUpAndDownSlideSymbol) {
+                Text("是否显示")
+                  .font(.system(.body, design: .rounded))
+              }
+            }
+          }
+          .padding([.top, .bottom], 15)
+          .padding(.horizontal)
+          .background(Color.HamsterCellColor)
+          .foregroundColor(Color.HamsterFontColor)
+          .cornerRadius(8)
+          .hamsterShadow()
+          .padding(.horizontal)
+          .padding(.bottom, 10)
+
           ScrollView {
             ForEach(upAndDownSlideSymbolKeys, id: \.self) { key in
               Button {

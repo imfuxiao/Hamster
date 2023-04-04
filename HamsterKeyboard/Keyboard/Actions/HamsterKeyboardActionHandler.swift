@@ -6,6 +6,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
   // 其他按键滑动处理
   public let characterGragActionHandler: SlideGestureHandler
+  public let appSettings: HamsterAppSettings
 
   // 键盘上下滑动处理
   let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { keyboardController in
@@ -60,6 +61,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     weak var keyboardController = ivc
     self.hamsterKeyboardController = keyboardController
+    self.appSettings = ivc.appSettings
     self.characterGragActionHandler = CharacterDragHandler(
       keyboardContext: keyboardContext,
       feedbackHandler: keyboardFeedbackHandler,
@@ -109,11 +111,13 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     switch action {
     case .space:
-      if hamsterKeyboardController?.appSettings.slideBySapceButton ?? true {
+      if appSettings.slideBySapceButton {
         spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
       }
     case .character:
-      characterGragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      if appSettings.enableKeyboardUpAndDownSlideSymbol {
+        characterGragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      }
     default: break
     }
   }
