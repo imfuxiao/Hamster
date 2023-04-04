@@ -20,8 +20,7 @@ struct SettingView: View {
     SectionView("设置") {
       LazyVGrid(
         columns: [
-          GridItem(.flexible()),
-          GridItem(.flexible()),
+          GridItem(.adaptive(minimum: 160)),
         ],
         alignment: .center,
         spacing: 20
