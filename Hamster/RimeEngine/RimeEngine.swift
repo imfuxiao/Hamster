@@ -172,14 +172,6 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   @Published
   var deployState: RimeDeployStatus = .none
 
-  /// 上一页
-  @Published
-  var previousPage: Bool = false
-
-  /// 下一页
-  @Published
-  var nextPage: Bool = false
-
   /// 候选字
   @Published
   var suggestions: [HamsterSuggestion] = []
@@ -187,9 +179,6 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   /// 当前颜色
   @Published
   var currentColorSchema = ColorSchema()
-
-  @Published
-  var pageSize = 9
 }
 
 public extension RimeEngine {
@@ -247,8 +236,6 @@ public extension RimeEngine {
     userInputKey = ""
     cleanComposition()
     suggestions = []
-    nextPage = false
-    previousPage = false
   }
 
   func rimeAlive() -> Bool {

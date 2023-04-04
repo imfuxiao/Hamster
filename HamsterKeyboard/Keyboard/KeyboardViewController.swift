@@ -97,8 +97,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       self.rimeEngine.setupRime(traits)
     }
     self.rimeEngine.startRime(traits)
-    self.changeInputSchema(self.appSettings.rimeInputSchema)
     self.rimeEngine.rest()
+    self.changeInputSchema(self.appSettings.rimeInputSchema)
     
     // 部署成功回调函数
     self.rimeEngine.setDeploySuccessCallback { [weak self] in

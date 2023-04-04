@@ -252,7 +252,7 @@ struct EditActionValueView: View {
 
           Spacer()
         }
-        .background(colorScheme == .dark ? Color.secondary : Color.white)
+        .background(Color("BackgroundColor"))
         .overlay(
           VStack {
             HStack {
