@@ -398,7 +398,7 @@ extension HamsterKeyboardViewController {
       if self.rimeEngine.setSchema(schema) {
         Logger.shared.log.info("rime engine set schema \(schema) success")
       } else {
-        Logger.shared.log.error("rime engine set schema \(schema) error")
+        Logger.shared.log.error("rime engine set schema \(schema) error retry. \(self.rimeEngine.setSchema(schema))")
       }
     }
   }

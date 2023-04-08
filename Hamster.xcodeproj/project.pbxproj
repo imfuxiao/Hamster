@@ -82,23 +82,14 @@
 		C096EE8029D5A81E00E302DD /* jp2t.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C096EE5429D5A7D300E302DD /* jp2t.json */; };
 		C096EE8129D5A81E00E302DD /* emoji_category.txt in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C096EE5529D5A7D300E302DD /* emoji_category.txt */; };
 		C096EE8229D5A81E00E302DD /* tw2sp.json in Copy Rime ShareSupport OpenCC */ = {isa = PBXBuildFile; fileRef = C096EE5629D5A7D300E302DD /* tw2sp.json */; };
-		C096EE8329D5A84000E302DD /* wubi86_jidian_pinyin.schema.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1429D5A7D200E302DD /* wubi86_jidian_pinyin.schema.yaml */; };
 		C096EE8429D5A84000E302DD /* extended.reverse.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1529D5A7D200E302DD /* extended.reverse.bin */; };
 		C096EE8529D5A84000E302DD /* clover.prism.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1629D5A7D200E302DD /* clover.prism.bin */; };
 		C096EE8629D5A84000E302DD /* clover.table.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1729D5A7D200E302DD /* clover.table.bin */; };
 		C096EE8729D5A84000E302DD /* clover.reverse.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1829D5A7D200E302DD /* clover.reverse.bin */; };
-		C096EE8829D5A84000E302DD /* wubi86_jidian.schema.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1929D5A7D200E302DD /* wubi86_jidian.schema.yaml */; };
-		C096EE8929D5A84000E302DD /* qq86wubi.reverse.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1A29D5A7D200E302DD /* qq86wubi.reverse.bin */; };
 		C096EE8A29D5A84000E302DD /* double_pinyin_flypy.schema.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1B29D5A7D200E302DD /* double_pinyin_flypy.schema.yaml */; };
-		C096EE8B29D5A84000E302DD /* wubi86_jidian.table.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1C29D5A7D200E302DD /* wubi86_jidian.table.bin */; };
 		C096EE8C29D5A84000E302DD /* double_pinyin_flypy.prism.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1D29D5A7D200E302DD /* double_pinyin_flypy.prism.bin */; };
-		C096EE8D29D5A84000E302DD /* qq86wubi.schema.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1E29D5A7D200E302DD /* qq86wubi.schema.yaml */; };
-		C096EE8E29D5A84000E302DD /* wubi86_jidian.prism.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE1F29D5A7D200E302DD /* wubi86_jidian.prism.bin */; };
 		C096EE8F29D5A84000E302DD /* extended.table.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2029D5A7D200E302DD /* extended.table.bin */; };
-		C096EE9029D5A84000E302DD /* wubi86_jidian.reverse.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2129D5A7D200E302DD /* wubi86_jidian.reverse.bin */; };
 		C096EE9129D5A84000E302DD /* default.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2229D5A7D200E302DD /* default.yaml */; };
-		C096EE9229D5A84000E302DD /* qq86wubi.prism.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2329D5A7D200E302DD /* qq86wubi.prism.bin */; };
-		C096EE9329D5A84000E302DD /* qq86wubi.table.bin in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2429D5A7D200E302DD /* qq86wubi.table.bin */; };
 		C096EE9429D5A84000E302DD /* clover.schema.yaml in Copy Files SharedSupport build */ = {isa = PBXBuildFile; fileRef = C096EE2529D5A7D200E302DD /* clover.schema.yaml */; };
 		C096EE9629D5A87100E302DD /* date_translator.lua in Copy Rime ShareSupport lua */ = {isa = PBXBuildFile; fileRef = C096EE2729D5A7D200E302DD /* date_translator.lua */; };
 		C096EE9729D5A87100E302DD /* select_character.lua in Copy Rime ShareSupport lua */ = {isa = PBXBuildFile; fileRef = C096EE2829D5A7D200E302DD /* select_character.lua */; };
@@ -125,12 +116,6 @@
 		C096EEAD29D5A8AC00E302DD /* extended.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE0929D5A7D200E302DD /* extended.dict.yaml */; };
 		C096EEAE29D5A8AC00E302DD /* key_bindings.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE2B29D5A7D300E302DD /* key_bindings.yaml */; };
 		C096EEAF29D5A8AC00E302DD /* punctuation.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE5929D5A7D300E302DD /* punctuation.yaml */; };
-		C096EEB029D5A8AC00E302DD /* qq86wubi_extra_addition.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE0829D5A7D100E302DD /* qq86wubi_extra_addition.dict.yaml */; };
-		C096EEB129D5A8AC00E302DD /* qq86wubi_extra.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE2F29D5A7D300E302DD /* qq86wubi_extra.dict.yaml */; };
-		C096EEB229D5A8AC00E302DD /* qq86wubi_user.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE2929D5A7D200E302DD /* qq86wubi_user.dict.yaml */; };
-		C096EEB329D5A8AC00E302DD /* qq86wubi.custom.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE5D29D5A7D400E302DD /* qq86wubi.custom.yaml */; };
-		C096EEB429D5A8AC00E302DD /* qq86wubi.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE5C29D5A7D400E302DD /* qq86wubi.dict.yaml */; };
-		C096EEB529D5A8AC00E302DD /* qq86wubi.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE1229D5A7D200E302DD /* qq86wubi.schema.yaml */; };
 		C096EEB629D5A8AC00E302DD /* rime.lua in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDF829D5A7D100E302DD /* rime.lua */; };
 		C096EEB729D5A8AC00E302DD /* sogou_new_words.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDEE29D5A7D000E302DD /* sogou_new_words.dict.yaml */; };
 		C096EEB829D5A8AC00E302DD /* squirrel.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDF129D5A7D000E302DD /* squirrel.yaml */; };
@@ -147,14 +132,6 @@
 		C096EEC329D5A8AC00E302DD /* THUOCL_medical.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE3129D5A7D300E302DD /* THUOCL_medical.dict.yaml */; };
 		C096EEC429D5A8AC00E302DD /* THUOCL_poem.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDFA29D5A7D100E302DD /* THUOCL_poem.dict.yaml */; };
 		C096EEC529D5A8AC00E302DD /* user.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE0F29D5A7D200E302DD /* user.yaml */; };
-		C096EEC629D5A8AC00E302DD /* wubi86_jidian_addition.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE5829D5A7D300E302DD /* wubi86_jidian_addition.dict.yaml */; };
-		C096EEC729D5A8AC00E302DD /* wubi86_jidian_extra.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDFB29D5A7D100E302DD /* wubi86_jidian_extra.dict.yaml */; };
-		C096EEC829D5A8AC00E302DD /* wubi86_jidian_pinyin.custom.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE0D29D5A7D200E302DD /* wubi86_jidian_pinyin.custom.yaml */; };
-		C096EEC929D5A8AC00E302DD /* wubi86_jidian_pinyin.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDED29D5A7D000E302DD /* wubi86_jidian_pinyin.schema.yaml */; };
-		C096EECA29D5A8AC00E302DD /* wubi86_jidian_user.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE5B29D5A7D300E302DD /* wubi86_jidian_user.dict.yaml */; };
-		C096EECB29D5A8AC00E302DD /* wubi86_jidian.custom.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE2D29D5A7D300E302DD /* wubi86_jidian.custom.yaml */; };
-		C096EECC29D5A8AC00E302DD /* wubi86_jidian.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDFC29D5A7D100E302DD /* wubi86_jidian.dict.yaml */; };
-		C096EECD29D5A8AC00E302DD /* wubi86_jidian.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EDEF29D5A7D000E302DD /* wubi86_jidian.schema.yaml */; };
 		C096EECE29D5A8AC00E302DD /* zh-hans-t-essay-bgw.gram in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C096EE1029D5A7D200E302DD /* zh-hans-t-essay-bgw.gram */; };
 		C0A301F429C999F600C29E35 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A301F329C999F600C29E35 /* TextFieldStyle.swift */; };
 		C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1029DBC1F800F8D01E /* Runestone */; };
@@ -238,23 +215,14 @@
 			dstPath = build;
 			dstSubfolderSpec = 12;
 			files = (
-				C096EE8329D5A84000E302DD /* wubi86_jidian_pinyin.schema.yaml in Copy Files SharedSupport build */,
 				C096EE8429D5A84000E302DD /* extended.reverse.bin in Copy Files SharedSupport build */,
 				C096EE8529D5A84000E302DD /* clover.prism.bin in Copy Files SharedSupport build */,
 				C096EE8629D5A84000E302DD /* clover.table.bin in Copy Files SharedSupport build */,
 				C096EE8729D5A84000E302DD /* clover.reverse.bin in Copy Files SharedSupport build */,
-				C096EE8829D5A84000E302DD /* wubi86_jidian.schema.yaml in Copy Files SharedSupport build */,
-				C096EE8929D5A84000E302DD /* qq86wubi.reverse.bin in Copy Files SharedSupport build */,
 				C096EE8A29D5A84000E302DD /* double_pinyin_flypy.schema.yaml in Copy Files SharedSupport build */,
-				C096EE8B29D5A84000E302DD /* wubi86_jidian.table.bin in Copy Files SharedSupport build */,
 				C096EE8C29D5A84000E302DD /* double_pinyin_flypy.prism.bin in Copy Files SharedSupport build */,
-				C096EE8D29D5A84000E302DD /* qq86wubi.schema.yaml in Copy Files SharedSupport build */,
-				C096EE8E29D5A84000E302DD /* wubi86_jidian.prism.bin in Copy Files SharedSupport build */,
 				C096EE8F29D5A84000E302DD /* extended.table.bin in Copy Files SharedSupport build */,
-				C096EE9029D5A84000E302DD /* wubi86_jidian.reverse.bin in Copy Files SharedSupport build */,
 				C096EE9129D5A84000E302DD /* default.yaml in Copy Files SharedSupport build */,
-				C096EE9229D5A84000E302DD /* qq86wubi.prism.bin in Copy Files SharedSupport build */,
-				C096EE9329D5A84000E302DD /* qq86wubi.table.bin in Copy Files SharedSupport build */,
 				C096EE9429D5A84000E302DD /* clover.schema.yaml in Copy Files SharedSupport build */,
 			);
 			name = "Copy Files SharedSupport build";
@@ -363,12 +331,6 @@
 				C096EEAD29D5A8AC00E302DD /* extended.dict.yaml in Copy Rime SharedSupport */,
 				C096EEAE29D5A8AC00E302DD /* key_bindings.yaml in Copy Rime SharedSupport */,
 				C096EEAF29D5A8AC00E302DD /* punctuation.yaml in Copy Rime SharedSupport */,
-				C096EEB029D5A8AC00E302DD /* qq86wubi_extra_addition.dict.yaml in Copy Rime SharedSupport */,
-				C096EEB129D5A8AC00E302DD /* qq86wubi_extra.dict.yaml in Copy Rime SharedSupport */,
-				C096EEB229D5A8AC00E302DD /* qq86wubi_user.dict.yaml in Copy Rime SharedSupport */,
-				C096EEB329D5A8AC00E302DD /* qq86wubi.custom.yaml in Copy Rime SharedSupport */,
-				C096EEB429D5A8AC00E302DD /* qq86wubi.dict.yaml in Copy Rime SharedSupport */,
-				C096EEB529D5A8AC00E302DD /* qq86wubi.schema.yaml in Copy Rime SharedSupport */,
 				C096EEB629D5A8AC00E302DD /* rime.lua in Copy Rime SharedSupport */,
 				C096EEB729D5A8AC00E302DD /* sogou_new_words.dict.yaml in Copy Rime SharedSupport */,
 				C096EEB829D5A8AC00E302DD /* squirrel.yaml in Copy Rime SharedSupport */,
@@ -385,14 +347,6 @@
 				C096EEC329D5A8AC00E302DD /* THUOCL_medical.dict.yaml in Copy Rime SharedSupport */,
 				C096EEC429D5A8AC00E302DD /* THUOCL_poem.dict.yaml in Copy Rime SharedSupport */,
 				C096EEC529D5A8AC00E302DD /* user.yaml in Copy Rime SharedSupport */,
-				C096EEC629D5A8AC00E302DD /* wubi86_jidian_addition.dict.yaml in Copy Rime SharedSupport */,
-				C096EEC729D5A8AC00E302DD /* wubi86_jidian_extra.dict.yaml in Copy Rime SharedSupport */,
-				C096EEC829D5A8AC00E302DD /* wubi86_jidian_pinyin.custom.yaml in Copy Rime SharedSupport */,
-				C096EEC929D5A8AC00E302DD /* wubi86_jidian_pinyin.schema.yaml in Copy Rime SharedSupport */,
-				C096EECA29D5A8AC00E302DD /* wubi86_jidian_user.dict.yaml in Copy Rime SharedSupport */,
-				C096EECB29D5A8AC00E302DD /* wubi86_jidian.custom.yaml in Copy Rime SharedSupport */,
-				C096EECC29D5A8AC00E302DD /* wubi86_jidian.dict.yaml in Copy Rime SharedSupport */,
-				C096EECD29D5A8AC00E302DD /* wubi86_jidian.schema.yaml in Copy Rime SharedSupport */,
 				C096EECE29D5A8AC00E302DD /* zh-hans-t-essay-bgw.gram in Copy Rime SharedSupport */,
 			);
 			name = "Copy Rime SharedSupport";
@@ -507,9 +461,7 @@
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		C096EDED29D5A7D000E302DD /* wubi86_jidian_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_pinyin.schema.yaml; sourceTree = "<group>"; };
 		C096EDEE29D5A7D000E302DD /* sogou_new_words.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = sogou_new_words.dict.yaml; sourceTree = "<group>"; };
-		C096EDEF29D5A7D000E302DD /* wubi86_jidian.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian.schema.yaml; sourceTree = "<group>"; };
 		C096EDF029D5A7D000E302DD /* THUOCL_chengyu.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_chengyu.dict.yaml; sourceTree = "<group>"; };
 		C096EDF129D5A7D000E302DD /* squirrel.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = squirrel.yaml; sourceTree = "<group>"; };
 		C096EDF229D5A7D000E302DD /* THUOCL_lishimingren.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_lishimingren.dict.yaml; sourceTree = "<group>"; };
@@ -521,8 +473,6 @@
 		C096EDF829D5A7D100E302DD /* rime.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = rime.lua; sourceTree = "<group>"; };
 		C096EDF929D5A7D100E302DD /* default.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
 		C096EDFA29D5A7D100E302DD /* THUOCL_poem.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_poem.dict.yaml; sourceTree = "<group>"; };
-		C096EDFB29D5A7D100E302DD /* wubi86_jidian_extra.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_extra.dict.yaml; sourceTree = "<group>"; };
-		C096EDFC29D5A7D100E302DD /* wubi86_jidian.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian.dict.yaml; sourceTree = "<group>"; };
 		C096EDFE29D5A7D100E302DD /* simp-ext.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "simp-ext.dict.yaml"; sourceTree = "<group>"; };
 		C096EDFF29D5A7D100E302DD /* sogou_net.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = sogou_net.dict.yaml; sourceTree = "<group>"; };
 		C096EE0029D5A7D100E302DD /* thuocl_medical.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = thuocl_medical.dict.yaml; sourceTree = "<group>"; };
@@ -533,44 +483,29 @@
 		C096EE0529D5A7D100E302DD /* thuocl_food.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = thuocl_food.dict.yaml; sourceTree = "<group>"; };
 		C096EE0629D5A7D100E302DD /* thuocl_idiom.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = thuocl_idiom.dict.yaml; sourceTree = "<group>"; };
 		C096EE0729D5A7D100E302DD /* thuocl_animal.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = thuocl_animal.dict.yaml; sourceTree = "<group>"; };
-		C096EE0829D5A7D100E302DD /* qq86wubi_extra_addition.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi_extra_addition.dict.yaml; sourceTree = "<group>"; };
 		C096EE0929D5A7D200E302DD /* extended.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = extended.dict.yaml; sourceTree = "<group>"; };
 		C096EE0A29D5A7D200E302DD /* custom_phrase.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = custom_phrase.txt; sourceTree = "<group>"; };
 		C096EE0B29D5A7D200E302DD /* THUOCL_diming.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_diming.dict.yaml; sourceTree = "<group>"; };
 		C096EE0C29D5A7D200E302DD /* THUOCL_caijing.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_caijing.dict.yaml; sourceTree = "<group>"; };
-		C096EE0D29D5A7D200E302DD /* wubi86_jidian_pinyin.custom.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_pinyin.custom.yaml; sourceTree = "<group>"; };
 		C096EE0E29D5A7D200E302DD /* clover.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.dict.yaml; sourceTree = "<group>"; };
 		C096EE0F29D5A7D200E302DD /* user.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = user.yaml; sourceTree = "<group>"; };
 		C096EE1029D5A7D200E302DD /* zh-hans-t-essay-bgw.gram */ = {isa = PBXFileReference; lastKnownFileType = file; path = "zh-hans-t-essay-bgw.gram"; sourceTree = "<group>"; };
 		C096EE1129D5A7D200E302DD /* double_pinyin_flypy.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = double_pinyin_flypy.schema.yaml; sourceTree = "<group>"; };
-		C096EE1229D5A7D200E302DD /* qq86wubi.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi.schema.yaml; sourceTree = "<group>"; };
-		C096EE1429D5A7D200E302DD /* wubi86_jidian_pinyin.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_pinyin.schema.yaml; sourceTree = "<group>"; };
 		C096EE1529D5A7D200E302DD /* extended.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = extended.reverse.bin; sourceTree = "<group>"; };
 		C096EE1629D5A7D200E302DD /* clover.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = clover.prism.bin; sourceTree = "<group>"; };
 		C096EE1729D5A7D200E302DD /* clover.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = clover.table.bin; sourceTree = "<group>"; };
 		C096EE1829D5A7D200E302DD /* clover.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = clover.reverse.bin; sourceTree = "<group>"; };
-		C096EE1929D5A7D200E302DD /* wubi86_jidian.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian.schema.yaml; sourceTree = "<group>"; };
-		C096EE1A29D5A7D200E302DD /* qq86wubi.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = qq86wubi.reverse.bin; sourceTree = "<group>"; };
 		C096EE1B29D5A7D200E302DD /* double_pinyin_flypy.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = double_pinyin_flypy.schema.yaml; sourceTree = "<group>"; };
-		C096EE1C29D5A7D200E302DD /* wubi86_jidian.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = wubi86_jidian.table.bin; sourceTree = "<group>"; };
 		C096EE1D29D5A7D200E302DD /* double_pinyin_flypy.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = double_pinyin_flypy.prism.bin; sourceTree = "<group>"; };
-		C096EE1E29D5A7D200E302DD /* qq86wubi.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi.schema.yaml; sourceTree = "<group>"; };
-		C096EE1F29D5A7D200E302DD /* wubi86_jidian.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = wubi86_jidian.prism.bin; sourceTree = "<group>"; };
 		C096EE2029D5A7D200E302DD /* extended.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = extended.table.bin; sourceTree = "<group>"; };
-		C096EE2129D5A7D200E302DD /* wubi86_jidian.reverse.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = wubi86_jidian.reverse.bin; sourceTree = "<group>"; };
 		C096EE2229D5A7D200E302DD /* default.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = default.yaml; sourceTree = "<group>"; };
-		C096EE2329D5A7D200E302DD /* qq86wubi.prism.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = qq86wubi.prism.bin; sourceTree = "<group>"; };
-		C096EE2429D5A7D200E302DD /* qq86wubi.table.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = qq86wubi.table.bin; sourceTree = "<group>"; };
 		C096EE2529D5A7D200E302DD /* clover.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.schema.yaml; sourceTree = "<group>"; };
 		C096EE2729D5A7D200E302DD /* date_translator.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = date_translator.lua; sourceTree = "<group>"; };
 		C096EE2829D5A7D200E302DD /* select_character.lua */ = {isa = PBXFileReference; lastKnownFileType = text; path = select_character.lua; sourceTree = "<group>"; };
-		C096EE2929D5A7D200E302DD /* qq86wubi_user.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi_user.dict.yaml; sourceTree = "<group>"; };
 		C096EE2A29D5A7D300E302DD /* essay.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = essay.txt; sourceTree = "<group>"; };
 		C096EE2B29D5A7D300E302DD /* key_bindings.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = key_bindings.yaml; sourceTree = "<group>"; };
 		C096EE2C29D5A7D300E302DD /* symbols.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = symbols.yaml; sourceTree = "<group>"; };
-		C096EE2D29D5A7D300E302DD /* wubi86_jidian.custom.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian.custom.yaml; sourceTree = "<group>"; };
 		C096EE2E29D5A7D300E302DD /* essay-zh-hans.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "essay-zh-hans.txt"; sourceTree = "<group>"; };
-		C096EE2F29D5A7D300E302DD /* qq86wubi_extra.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi_extra.dict.yaml; sourceTree = "<group>"; };
 		C096EE3029D5A7D300E302DD /* clover.base.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.base.dict.yaml; sourceTree = "<group>"; };
 		C096EE3129D5A7D300E302DD /* THUOCL_medical.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_medical.dict.yaml; sourceTree = "<group>"; };
 		C096EE3329D5A7D300E302DD /* TWVariants.ocd2 */ = {isa = PBXFileReference; lastKnownFileType = file; path = TWVariants.ocd2; sourceTree = "<group>"; };
@@ -610,12 +545,8 @@
 		C096EE5529D5A7D300E302DD /* emoji_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = emoji_category.txt; sourceTree = "<group>"; };
 		C096EE5629D5A7D300E302DD /* tw2sp.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = tw2sp.json; sourceTree = "<group>"; };
 		C096EE5729D5A7D300E302DD /* THUOCL_animal.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = THUOCL_animal.dict.yaml; sourceTree = "<group>"; };
-		C096EE5829D5A7D300E302DD /* wubi86_jidian_addition.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_addition.dict.yaml; sourceTree = "<group>"; };
 		C096EE5929D5A7D300E302DD /* punctuation.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = punctuation.yaml; sourceTree = "<group>"; };
 		C096EE5A29D5A7D300E302DD /* clover.phrase.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.phrase.dict.yaml; sourceTree = "<group>"; };
-		C096EE5B29D5A7D300E302DD /* wubi86_jidian_user.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86_jidian_user.dict.yaml; sourceTree = "<group>"; };
-		C096EE5C29D5A7D400E302DD /* qq86wubi.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi.dict.yaml; sourceTree = "<group>"; };
-		C096EE5D29D5A7D400E302DD /* qq86wubi.custom.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = qq86wubi.custom.yaml; sourceTree = "<group>"; };
 		C096EE5E29D5A7D400E302DD /* clover.key_bindings.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.key_bindings.yaml; sourceTree = "<group>"; };
 		C099464229B27FF8007FD3CA /* InputSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSet.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
@@ -1014,12 +945,6 @@
 				C096EE0929D5A7D200E302DD /* extended.dict.yaml */,
 				C096EE2B29D5A7D300E302DD /* key_bindings.yaml */,
 				C096EE5929D5A7D300E302DD /* punctuation.yaml */,
-				C096EE0829D5A7D100E302DD /* qq86wubi_extra_addition.dict.yaml */,
-				C096EE2F29D5A7D300E302DD /* qq86wubi_extra.dict.yaml */,
-				C096EE2929D5A7D200E302DD /* qq86wubi_user.dict.yaml */,
-				C096EE5D29D5A7D400E302DD /* qq86wubi.custom.yaml */,
-				C096EE5C29D5A7D400E302DD /* qq86wubi.dict.yaml */,
-				C096EE1229D5A7D200E302DD /* qq86wubi.schema.yaml */,
 				C096EDF829D5A7D100E302DD /* rime.lua */,
 				C096EDEE29D5A7D000E302DD /* sogou_new_words.dict.yaml */,
 				C096EDF129D5A7D000E302DD /* squirrel.yaml */,
@@ -1036,14 +961,6 @@
 				C096EE3129D5A7D300E302DD /* THUOCL_medical.dict.yaml */,
 				C096EDFA29D5A7D100E302DD /* THUOCL_poem.dict.yaml */,
 				C096EE0F29D5A7D200E302DD /* user.yaml */,
-				C096EE5829D5A7D300E302DD /* wubi86_jidian_addition.dict.yaml */,
-				C096EDFB29D5A7D100E302DD /* wubi86_jidian_extra.dict.yaml */,
-				C096EE0D29D5A7D200E302DD /* wubi86_jidian_pinyin.custom.yaml */,
-				C096EDED29D5A7D000E302DD /* wubi86_jidian_pinyin.schema.yaml */,
-				C096EE5B29D5A7D300E302DD /* wubi86_jidian_user.dict.yaml */,
-				C096EE2D29D5A7D300E302DD /* wubi86_jidian.custom.yaml */,
-				C096EDFC29D5A7D100E302DD /* wubi86_jidian.dict.yaml */,
-				C096EDEF29D5A7D000E302DD /* wubi86_jidian.schema.yaml */,
 				C096EE1029D5A7D200E302DD /* zh-hans-t-essay-bgw.gram */,
 			);
 			path = SharedSupport;
@@ -1077,23 +994,14 @@
 		C096EE1329D5A7D200E302DD /* build */ = {
 			isa = PBXGroup;
 			children = (
-				C096EE1429D5A7D200E302DD /* wubi86_jidian_pinyin.schema.yaml */,
 				C096EE1529D5A7D200E302DD /* extended.reverse.bin */,
 				C096EE1629D5A7D200E302DD /* clover.prism.bin */,
 				C096EE1729D5A7D200E302DD /* clover.table.bin */,
 				C096EE1829D5A7D200E302DD /* clover.reverse.bin */,
-				C096EE1929D5A7D200E302DD /* wubi86_jidian.schema.yaml */,
-				C096EE1A29D5A7D200E302DD /* qq86wubi.reverse.bin */,
 				C096EE1B29D5A7D200E302DD /* double_pinyin_flypy.schema.yaml */,
-				C096EE1C29D5A7D200E302DD /* wubi86_jidian.table.bin */,
 				C096EE1D29D5A7D200E302DD /* double_pinyin_flypy.prism.bin */,
-				C096EE1E29D5A7D200E302DD /* qq86wubi.schema.yaml */,
-				C096EE1F29D5A7D200E302DD /* wubi86_jidian.prism.bin */,
 				C096EE2029D5A7D200E302DD /* extended.table.bin */,
-				C096EE2129D5A7D200E302DD /* wubi86_jidian.reverse.bin */,
 				C096EE2229D5A7D200E302DD /* default.yaml */,
-				C096EE2329D5A7D200E302DD /* qq86wubi.prism.bin */,
-				C096EE2429D5A7D200E302DD /* qq86wubi.table.bin */,
 				C096EE2529D5A7D200E302DD /* clover.schema.yaml */,
 			);
 			path = build;
@@ -1659,7 +1567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1697,7 +1605,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.6.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1728,7 +1636,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.6.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1758,7 +1666,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.6.0;
+				MARKETING_VERSION = 1.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

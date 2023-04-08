@@ -35,6 +35,7 @@ struct TextEditorView: UIViewRepresentable {
 
   func makeUIView(context: Context) -> Runestone.TextView {
     let textView = TextView()
+    textView.backgroundColor = UIColor(named: "BackgroundColor")
     textView.showLineNumbers = true
     // Highlight the selected line.
     textView.lineSelectionDisplayType = .line
