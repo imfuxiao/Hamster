@@ -169,8 +169,8 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   var asciiMode: Bool = false
 
   /// Rime发布状态
-  @Published
-  var deployState: RimeDeployStatus = .none
+//  @Published
+//  var deployState: RimeDeployStatus = .none
 
   /// 候选字
   @Published
@@ -216,14 +216,13 @@ public extension RimeEngine {
   func startRime(_ traits: IRimeTraits? = nil, fullCheck: Bool = false) {
     rimeAPI.initialize(traits)
     rimeAPI.startMaintenance(fullCheck)
-    session = rimeAPI.createSession()
-    Logger.shared.log.debug("rime start session: \(session)")
   }
 
   // 重新部署
   func deploy(fullCheck: Bool = true) {
     shutdownRime()
     startRime(traits, fullCheck: fullCheck)
+    shutdownRime()
   }
 
   func shutdownRime() {
@@ -419,7 +418,7 @@ public extension RimeEngine {
     guard cfg != nil else {
       return []
     }
-    
+
     defer {
       cfg?.close()
     }
@@ -486,21 +485,16 @@ public extension RimeEngine {
 public extension RimeEngine {
   func onDelployStart() {
     Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
-    DispatchQueue.main.async { [weak self] in
-      if let self = self {
-        self.deployState = .Begin
-      }
-    }
+//    DispatchQueue.main.async { [weak self] in
+//      if let self = self {
+//        self.deployState = .Begin
+//      }
+//    }
     deployStartCallback()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    DispatchQueue.main.async { [weak self] in
-      if let self = self {
-        self.deployState = .Success
-      }
-    }
     if !rimeAlive() {
       Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
       session = rimeAPI.createSession()
@@ -511,11 +505,6 @@ public extension RimeEngine {
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    DispatchQueue.main.async { [weak self] in
-      if let self = self {
-        self.deployState = .Failure
-      }
-    }
     deployFailureCallback()
   }
 

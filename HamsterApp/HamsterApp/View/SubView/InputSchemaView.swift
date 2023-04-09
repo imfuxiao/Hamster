@@ -84,8 +84,6 @@ struct InputSchemaView: View {
           appSettings.rimeInputSchema = schemas[0].schemaId
         }
       }
-    }
-    .onDisappear {
       rimeEngine.shutdownRime()
     }
   }

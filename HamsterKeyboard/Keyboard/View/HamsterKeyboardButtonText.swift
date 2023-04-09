@@ -67,7 +67,7 @@ struct HamsterKeyboardButtonText: View {
         .font(.system(size: 9))
         .lineLimit(1)
         .minimumScaleFactor(0.8)
-        .padding(.horizontal, 3)
+        .padding(.horizontal, 1)
         .padding(.vertical, 3)
       } else if count == 1 {
         HStack(alignment: .top, spacing: 0) {

@@ -70,8 +70,6 @@ struct ColorSchemaView: View {
     .onAppear {
       rimeEngine.startRime()
       self.colorSchemas = rimeEngine.colorSchema()
-    }
-    .onDisappear {
       rimeEngine.shutdownRime()
     }
   }

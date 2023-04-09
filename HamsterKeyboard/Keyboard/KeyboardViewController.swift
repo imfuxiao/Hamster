@@ -57,6 +57,16 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 //      }
 //      .store(in: &self.cancellables)
     
+    // 输入方案变更
+    self.appSettings.$rimeInputSchema
+      .receive(on: RunLoop.main)
+      .sink { [weak self] schema in
+        guard let self = self else { return }
+        self.log.info("combine $rimeInputSchema: \(schema)")
+        self.changeInputSchema(schema)
+      }
+      .store(in: &self.cancellables)
+    
     // 配色方案变更
     self.appSettings.$enableRimeColorSchema
       .combineLatest(self.appSettings.$rimeColorSchema)
@@ -96,23 +106,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       isRimeFirstRun = false
       self.rimeEngine.setupRime(traits)
     }
-    self.rimeEngine.startRime(traits)
+    self.rimeEngine.startRime(traits, fullCheck: false)
     self.rimeEngine.rest()
-    self.changeInputSchema(self.appSettings.rimeInputSchema)
-    
-    // 部署成功回调函数
-    self.rimeEngine.setDeploySuccessCallback { [weak self] in
-      if let self = self {
-        Logger.shared.log.info("rime delploy success callback begin: ")
-        self.changeInputSchema(self.appSettings.rimeInputSchema)
-      }
-    }
-    
-//    self.rimeEngine.setLoadingSchemaCallback { [weak self] _ in
-//      if let self = self {
-//        Logger.shared.log.info("rime loading schema callback begin: ")
-//      }
-//    }
   }
   
   override public func viewDidLoad() {
@@ -164,8 +159,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
     )
     
-    self.setupAppSettings()
     self.setupRimeEngine()
+    self.setupAppSettings()
+    
+    // 修改当前inputShcema
+    // self.changeInputSchema(self.appSettings.rimeInputSchema)
     
     super.viewDidLoad()
   }
@@ -398,7 +396,7 @@ extension HamsterKeyboardViewController {
       if self.rimeEngine.setSchema(schema) {
         Logger.shared.log.info("rime engine set schema \(schema) success")
       } else {
-        Logger.shared.log.error("rime engine set schema \(schema) error retry. \(self.rimeEngine.setSchema(schema))")
+        Logger.shared.log.error("rime engine set schema \(schema) error")
       }
     }
   }
