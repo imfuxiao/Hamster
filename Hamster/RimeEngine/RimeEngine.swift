@@ -156,6 +156,9 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private var changeModeCallback: (String) -> Void = { _ in }
   private var loadingSchemaCallback: (String) -> Void = { _ in }
 
+  /// 候选字上限
+  var maxCandidateCount: Int32 = 100
+
   /// 用户输入键值
   @Published
   var userInputKey: String = ""
@@ -285,19 +288,19 @@ public extension RimeEngine {
       userInputKey = context.composition.preedit
     }
 
-    let candidates = rimeAPI.getCandidateList(session)!
+    let candidates = rimeAPI.getCandidateWith(0, andCount: maxCandidateCount, andSession: session)!
+//    let candidates = rimeAPI.getCandidateList(session)!
     var result: [HamsterSuggestion] = []
-    for i in 0 ..< candidates.count {
+    for (index, candidate) in candidates.enumerated() {
       var suggestion = HamsterSuggestion(
-        text: candidates[i].text
+        text: candidate.text
       )
-      suggestion.index = i
-      suggestion.comment = candidates[i].comment
-      if i == 0 {
-        suggestion.isAutocomplete = true
-      }
+      suggestion.index = index
+      suggestion.comment = candidate.comment
+      suggestion.isAutocomplete = index == 0
       result.append(suggestion)
     }
+    Logger.shared.log.debug("rime candidates count \(result.count)")
     suggestions = result
 
 //    if context.menu != nil {

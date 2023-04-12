@@ -67,6 +67,16 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       }
       .store(in: &self.cancellables)
     
+    // 候选字最大数量
+    self.appSettings.$rimeMaxCandidateSize
+      .receive(on: RunLoop.main)
+      .sink { [weak self] rimeMaxCandidateSize in
+        guard let self = self else { return }
+        self.log.info("combine $rimeMaxCandidateSize: \(rimeMaxCandidateSize)")
+        self.rimeEngine.maxCandidateCount = rimeMaxCandidateSize
+      }
+      .store(in: &self.cancellables)
+    
     // 配色方案变更
     self.appSettings.$enableRimeColorSchema
       .combineLatest(self.appSettings.$rimeColorSchema)
@@ -107,6 +117,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       self.rimeEngine.setupRime(traits)
     }
     self.rimeEngine.startRime(traits, fullCheck: false)
+    self.rimeEngine.maxCandidateCount = self.appSettings.rimeMaxCandidateSize
     self.rimeEngine.rest()
   }
   

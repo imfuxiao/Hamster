@@ -16,12 +16,12 @@ struct InputkeyFuctionView: View {
 
       VStack {
         HStack {
-          Text("输入功能键设置")
+          Text("输入功能调整")
             .subViewTitleFont()
           Spacer()
         }
         .padding(.horizontal)
-        
+
         HStack {
           Text("可根据个人爱好修改两个按键对应的键值.")
             .font(.system(size: 12))
@@ -66,6 +66,17 @@ struct InputkeyFuctionView: View {
                 .foregroundColor(.secondary)
               Spacer()
             }
+          }
+        }
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
+
+        VStack {
+          HStack {
+            Stepper(value: $appSettings.rimeMaxCandidateSize, in: 50 ... 500, step: 50) {
+              Text("候选文字最大数量: \(appSettings.rimeMaxCandidateSize)")
+            }
+            Spacer()
           }
         }
         .animation(.linear, value: appSettings.showSpaceLeftButton)

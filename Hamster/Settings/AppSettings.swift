@@ -89,8 +89,8 @@ private enum HamsterAppSettingKeys: String {
   // 空格右边按键键值
   case spaceRightButtonValue = "app.keyboard.spaceRightButtonValue"
 
-  // rime page_size 候选字每页数量
-  case rimePageSize = "rime.pageSize"
+  // rime 候选字最大数量
+  case rimeMaxCandidateSize = "rime.maxCandidateSize"
 
   // rime 输入方案
   case rimeInputSchema = "rime.inputSchema"
@@ -129,7 +129,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.spaceLeftButtonValue.rawValue: "，",
       HamsterAppSettingKeys.showSpaceRightButton.rawValue: true,
       HamsterAppSettingKeys.spaceRightButtonValue.rawValue: "。",
-      HamsterAppSettingKeys.rimePageSize.rawValue: 9,
+      HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue: 100,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
@@ -152,7 +152,7 @@ public class HamsterAppSettings: ObservableObject {
     self.spaceLeftButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue) ?? ""
     self.showSpaceRightButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     self.spaceRightButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue) ?? ""
-    self.rimePageSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimePageSize.rawValue)
+    self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
@@ -284,11 +284,11 @@ public class HamsterAppSettings: ObservableObject {
   }
 
   @Published
-  var rimePageSize: Int {
+  var rimeMaxCandidateSize: Int32 {
     didSet {
-      Logger.shared.log.info(["AppSettings, rimePageSize": rimePageSize])
+      Logger.shared.log.info(["AppSettings, rimeMaxCandidateSize": rimeMaxCandidateSize])
       UserDefaults.hamsterSettingsDefault.set(
-        rimePageSize, forKey: HamsterAppSettingKeys.rimePageSize.rawValue)
+        rimeMaxCandidateSize, forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue)
     }
   }
 
@@ -343,7 +343,7 @@ public class HamsterAppSettings: ObservableObject {
         enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue)
     }
   }
-  
+
   // 键盘: 是否显示上下滑动符号
   @Published
   var showKeyboardUpAndDownSlideSymbol: Bool {

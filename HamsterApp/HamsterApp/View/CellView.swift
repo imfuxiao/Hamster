@@ -248,7 +248,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
-      cellName: "输入功能键",
+      cellName: "输入功能调整",
       imageName: "gear",
       destinationType: .inputKeyFuction
     ),
