@@ -1,3 +1,10 @@
+/* 
+  Localizable.strings
+  Hamster
+
+  Created by morse on 11/4/2023.
+  
+*/
 "locale" = "en";
 
 "done" = "done";

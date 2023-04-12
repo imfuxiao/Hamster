@@ -143,6 +143,10 @@
 		C0AB7C1E29DC016A00F8D01E /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB7C1D29DC016A00F8D01E /* EditorView.swift */; };
 		C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802F296D4F4D0083E53A /* Preview Assets.xcassets */; };
+		C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
+		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
+		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
+		C0C7EAF329E5A397008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */; };
 		C0C9F01129CF4316004B2C33 /* KeyboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */; };
 		C0C9F01229CF4316004B2C33 /* HamsterKeyboardActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */; };
@@ -183,8 +187,6 @@
 		C0C9F03C29CF43F9004B2C33 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03B29CF43F9004B2C33 /* LibrimeKit */; };
 		C0C9F03E29CF442C004B2C33 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03D29CF442C004B2C33 /* SwiftyBeaver */; };
 		C0C9F04029CF44D5004B2C33 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03F29CF44D5004B2C33 /* Plist */; };
-		C0C9F04129CF45C6004B2C33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C04FA947299A675B00F8CC32 /* Localizable.strings */; };
-		C0C9F04229CF45D7004B2C33 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C04FA944299A675B00F8CC32 /* Localizable.strings */; };
 		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
 		C0CE234829B5219500F79A74 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE234729B5219500F79A74 /* CellView.swift */; };
 		C0DAFD2629DA9DD000762D2B /* HamsterInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */; };
@@ -553,12 +555,18 @@
 		C0AB7C1B29DBC8DD00F8D01E /* FinderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderView.swift; sourceTree = "<group>"; };
 		C0AB7C1D29DC016A00F8D01E /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+Color.swift"; sourceTree = "<group>"; };
+		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C0C7EAE529E59324008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C0C7EAE729E59F2C008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C0C7EAE829E59F32008D4EE1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		C0C7EAEE29E5A236008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C0C7EAF029E5A23A008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C0C7EAF129E5A23B008D4EE1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C0C7EAF229E5A23C008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterInputSetProvider.swift; sourceTree = "<group>"; };
 		C0E458A7298B938B007F5FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		C0EA5D8429E29A2B001BEAE7 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "../zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		C0EA5D8529E29A2B001BEAE7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = ../en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C0F858B129A2A943003A2ED4 /* HamsterAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HamsterAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RimeEngineTests.swift; sourceTree = "<group>"; };
@@ -883,22 +891,6 @@
 			path = Config;
 			sourceTree = "<group>";
 		};
-		C04FA943299A675B00F8CC32 /* en.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA944299A675B00F8CC32 /* Localizable.strings */,
-			);
-			path = en.lproj;
-			sourceTree = "<group>";
-		};
-		C04FA946299A675B00F8CC32 /* zh-Hans.lproj */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA947299A675B00F8CC32 /* Localizable.strings */,
-			);
-			path = "zh-Hans.lproj";
-			sourceTree = "<group>";
-		};
 		C0629C6F29B3C68600C27D42 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
@@ -917,10 +909,10 @@
 		C071BECC2970108000E21FBC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C04FA943299A675B00F8CC32 /* en.lproj */,
-				C04FA946299A675B00F8CC32 /* zh-Hans.lproj */,
 				C04FA93E299A674E00F8CC32 /* Config */,
 				C071BECD297010EE00E21FBC /* SharedSupport */,
+				C0C7EAE429E5931E008D4EE1 /* Localizable.strings */,
+				C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1232,8 +1224,9 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 				"zh-Hans",
+				"zh-HK",
+				"zh-Hant",
 			);
 			mainGroup = C03E801C296D4F4C0083E53A;
 			packageReferences = (
@@ -1260,8 +1253,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0C9F04229CF45D7004B2C33 /* Localizable.strings in Resources */,
-				C0C9F04129CF45C6004B2C33 /* Localizable.strings in Resources */,
+				C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */,
+				C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1269,9 +1262,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C7EAF329E5A397008D4EE1 /* Localizable.strings in Resources */,
 				C037B60C29CBD2C600B1BBDC /* DefaultAction.plist in Resources */,
 				C0AC2E63299F746100BC494C /* Preview Assets.xcassets in Resources */,
 				C0AC2E62299F744900BC494C /* Assets.xcassets in Resources */,
+				C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1398,20 +1393,26 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C04FA944299A675B00F8CC32 /* Localizable.strings */ = {
+		C0C7EAE429E5931E008D4EE1 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C0EA5D8429E29A2B001BEAE7 /* zh-Hans */,
+				C0C7EAE329E5931E008D4EE1 /* en */,
+				C0C7EAE529E59324008D4EE1 /* zh-Hans */,
+				C0C7EAE729E59F2C008D4EE1 /* zh-HK */,
+				C0C7EAE829E59F32008D4EE1 /* zh-Hant */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		C04FA947299A675B00F8CC32 /* Localizable.strings */ = {
+		C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				C0EA5D8529E29A2B001BEAE7 /* en */,
+				C0C7EAEE29E5A236008D4EE1 /* zh-Hans */,
+				C0C7EAF029E5A23A008D4EE1 /* zh-HK */,
+				C0C7EAF129E5A23B008D4EE1 /* zh-Hant */,
+				C0C7EAF229E5A23C008D4EE1 /* en */,
 			);
-			name = Localizable.strings;
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1557,7 +1558,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "仓输入法";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1567,7 +1568,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1595,7 +1596,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterApp/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "仓输入法";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1605,7 +1606,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1628,7 +1629,7 @@
 				DEVELOPMENT_TEAM = M4N6995A28;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "仓输入法";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1658,7 +1659,7 @@
 				DEVELOPMENT_TEAM = M4N6995A28;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HamsterKeyboard/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "仓输入法";
+				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
