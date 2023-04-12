@@ -244,9 +244,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       // 唯一码直接上屏
       let commitText = self.rimeEngine.getCommitText()
       if !commitText.isEmpty {
-        self.rimeEngine.rest()
         self.textDocumentProxy.insertText(commitText)
-        return
       }
 
       // 查看输入法状态
