@@ -64,20 +64,20 @@ struct HamsterKeyboardButtonText: View {
           Spacer()
           Text(texts[1])
         }
-        .font(.system(size: 9))
+        .font(.system(size: 10))
         .lineLimit(1)
         .minimumScaleFactor(0.8)
-        .padding(.horizontal, 1)
-        .padding(.vertical, 3)
+        .padding(.horizontal, 2)
+        .padding(.vertical, 1)
       } else if count == 1 {
         HStack(alignment: .top, spacing: 0) {
           Text(texts[0])
         }
-        .font(.system(size: 9))
+        .font(.system(size: 10))
         .lineLimit(1)
         .minimumScaleFactor(0.8)
         .padding(.horizontal, 3)
-        .padding(.vertical, 3)
+        .padding(.vertical, 1)
       } else {
 //        Text(" ")
       }

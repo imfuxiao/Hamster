@@ -23,7 +23,7 @@
 		C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C6E29C83B2A00016C68 /* LongButton.swift */; };
 		C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7029C850A400016C68 /* DotsLoadingView.swift */; };
 		C0341C7329C8558E00016C68 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7229C8558E00016C68 /* SectionView.swift */; };
-		C0341D5129C89B6300016C68 /* InputkeyFuctionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341D5029C89B6300016C68 /* InputkeyFuctionView.swift */; };
+		C0341D5129C89B6300016C68 /* InputEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341D5029C89B6300016C68 /* InputEditorView.swift */; };
 		C037B60C29CBD2C600B1BBDC /* DefaultAction.plist in Resources */ = {isa = PBXBuildFile; fileRef = C04FA93F299A674E00F8CC32 /* DefaultAction.plist */; };
 		C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B60F29CBD50F00B1BBDC /* Plist.swift */; };
 		C037B61329CBDADC00B1BBDC /* UpAndDownSlideInputSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B61229CBDADC00B1BBDC /* UpAndDownSlideInputSymbolView.swift */; };
@@ -415,7 +415,7 @@
 		C0341C6E29C83B2A00016C68 /* LongButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongButton.swift; sourceTree = "<group>"; };
 		C0341C7029C850A400016C68 /* DotsLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsLoadingView.swift; sourceTree = "<group>"; };
 		C0341C7229C8558E00016C68 /* SectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
-		C0341D5029C89B6300016C68 /* InputkeyFuctionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputkeyFuctionView.swift; sourceTree = "<group>"; };
+		C0341D5029C89B6300016C68 /* InputEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputEditorView.swift; sourceTree = "<group>"; };
 		C037B60F29CBD50F00B1BBDC /* Plist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plist.swift; sourceTree = "<group>"; };
 		C037B61229CBDADC00B1BBDC /* UpAndDownSlideInputSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpAndDownSlideInputSymbolView.swift; sourceTree = "<group>"; };
 		C037B61429CC37AD00B1BBDC /* View+Extend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extend.swift"; sourceTree = "<group>"; };
@@ -899,7 +899,7 @@
 				C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */,
 				C02BEB5929C32D93008487A4 /* FeedbackView.swift */,
 				C0010B0129B9040B00CE4869 /* AboutView.swift */,
-				C0341D5029C89B6300016C68 /* InputkeyFuctionView.swift */,
+				C0341D5029C89B6300016C68 /* InputEditorView.swift */,
 				C037B61229CBDADC00B1BBDC /* UpAndDownSlideInputSymbolView.swift */,
 				C0AB7C1D29DC016A00F8D01E /* EditorView.swift */,
 			);
@@ -1306,7 +1306,7 @@
 				C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */,
 				C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */,
 				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
-				C0341D5129C89B6300016C68 /* InputkeyFuctionView.swift in Sources */,
+				C0341D5129C89B6300016C68 /* InputEditorView.swift in Sources */,
 				C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
 				C0AB7C1C29DBC8DD00F8D01E /* FinderView.swift in Sources */,
 				C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */,

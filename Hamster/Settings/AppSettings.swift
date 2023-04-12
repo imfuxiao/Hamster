@@ -92,6 +92,9 @@ private enum HamsterAppSettingKeys: String {
   // rime 候选字最大数量
   case rimeMaxCandidateSize = "rime.maxCandidateSize"
 
+  // rime 候选字Title字体大小
+  case rimeCandidateTitleFontSize = "rime.candidateTitleFontSize"
+
   // rime 输入方案
   case rimeInputSchema = "rime.inputSchema"
 
@@ -130,6 +133,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.showSpaceRightButton.rawValue: true,
       HamsterAppSettingKeys.spaceRightButtonValue.rawValue: "。",
       HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue: 100,
+      HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue: 20,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
@@ -153,6 +157,7 @@ public class HamsterAppSettings: ObservableObject {
     self.showSpaceRightButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     self.spaceRightButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue) ?? ""
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
+    self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
@@ -289,6 +294,15 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeMaxCandidateSize": rimeMaxCandidateSize])
       UserDefaults.hamsterSettingsDefault.set(
         rimeMaxCandidateSize, forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue)
+    }
+  }
+
+  @Published
+  var rimeCandidateTitleFontSize: Int {
+    didSet {
+      Logger.shared.log.info(["AppSettings, rimeMaxCandidateSize": rimeCandidateTitleFontSize])
+      UserDefaults.hamsterSettingsDefault.set(
+        rimeCandidateTitleFontSize, forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     }
   }
 

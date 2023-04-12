@@ -75,7 +75,7 @@ struct HamsterKeyboardActionButtonContent: View {
 
   public var body: some View {
     bodyContent
-      .padding(3)
+//      .padding(3)
       .contentShape(Rectangle())
   }
 }
@@ -129,7 +129,6 @@ private extension HamsterKeyboardActionButtonContent {
         }
       }()
     )
-    .padding(1)
     .minimumScaleFactor(0.8)
   }
 }

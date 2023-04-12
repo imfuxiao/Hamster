@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InputkeyFuctionView: View {
+struct InputEditorView: View {
   @EnvironmentObject var appSettings: HamsterAppSettings
 
   var body: some View {
@@ -82,6 +82,17 @@ struct InputkeyFuctionView: View {
         .animation(.linear, value: appSettings.showSpaceLeftButton)
         .functionCell()
 
+        VStack {
+          HStack {
+            Stepper(value: $appSettings.rimeCandidateTitleFontSize, in: 18 ... 30, step: 1) {
+              Text("候选文字体大小: \(appSettings.rimeCandidateTitleFontSize)")
+            }
+            Spacer()
+          }
+        }
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
+
         Spacer()
       }
     }
@@ -91,25 +102,7 @@ struct InputkeyFuctionView: View {
 
 struct InputkeyFuctionView_Previews: PreviewProvider {
   static var previews: some View {
-    InputkeyFuctionView()
+    InputEditorView()
       .environmentObject(HamsterAppSettings())
-  }
-}
-
-struct FunctionCellModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    content
-      .padding([.all], 15)
-      .background(Color.HamsterCellColor)
-      .foregroundColor(Color.HamsterFontColor)
-      .cornerRadius(8)
-      .hamsterShadow()
-      .padding(.horizontal)
-  }
-}
-
-extension View {
-  func functionCell() -> some View {
-    modifier(FunctionCellModifier())
   }
 }

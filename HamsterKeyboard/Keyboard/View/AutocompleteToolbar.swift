@@ -8,13 +8,6 @@
 import KeyboardKit
 import SwiftUI
 
-let itemStyle = AutocompleteToolbarItemStyle(
-  titleFont: .system(size: 18, weight: .bold),
-  titleColor: .primary,
-  subtitleFont: .system(size: 12),
-  subtitleColor: .primary
-)
-
 @available(iOS 14, *)
 struct HamsterAutocompleteToolbar: View {
   weak var ivc: HamsterKeyboardViewController?
@@ -28,13 +21,22 @@ struct HamsterAutocompleteToolbar: View {
   @EnvironmentObject
   private var rimeEngine: RimeEngine
 
-  var style = AutocompleteToolbarStyle(
-    item: itemStyle
-  )
+  var style: AutocompleteToolbarStyle
 
   init(ivc: HamsterKeyboardViewController) {
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
+
+    self.style = AutocompleteToolbarStyle(
+      item: AutocompleteToolbarItemStyle(
+        titleFont: .system(
+          size: CGFloat(ivc.appSettings.rimeCandidateTitleFontSize), weight: .bold
+        ),
+        titleColor: .primary,
+        subtitleFont: .system(size: 12),
+        subtitleColor: .primary
+      )
+    )
   }
 
   var hamsterColor: ColorSchema {
@@ -51,20 +53,14 @@ struct HamsterAutocompleteToolbar: View {
 
         Spacer()
       }
-      .padding(.vertical, 5)
       .padding(.leading, 5)
-      .frame(height: 25)
 
       // 候选区
-      HStack(spacing: 0) {
-        ScrollView(.horizontal, showsIndicators: true) {
-          LazyHStack(spacing: 0) {
-            ForEach(rimeEngine.suggestions) { item in
-              Button { [weak ivc] in
-                guard let ivc = ivc else { return }
-                // TODO: 点击候选项处理
-                ivc.insertText(String(item.index))
-              } label: {
+      GeometryReader { proxy in
+        HStack(alignment: .top, spacing: 0) {
+          ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 0) {
+              ForEach(rimeEngine.suggestions) { item in
                 HStack(alignment: .bottom, spacing: 0) {
                   Text(item.text)
                     .font(style.item.titleFont)
@@ -81,22 +77,25 @@ struct HamsterAutocompleteToolbar: View {
                   }
                 }
                 .padding(.horizontal, 5)
-                .padding(.vertical, 5)
                 .background(item.isAutocomplete ? hamsterColor.hilitedCandidateBackColor : Color.clearInteractable)
                 .cornerRadius(style.autocompleteBackground.cornerRadius)
+                .frame(height: proxy.size.height)
                 .contentShape(Rectangle(), eoFill: true)
+                .onTapGesture { [weak ivc] in
+                  guard let ivc = ivc else { return }
+                  // TODO: 点击候选项处理
+                  ivc.insertText(String(item.index))
+                }
               }
-              .buttonStyle(.plain)
             }
+            // LazyHStack End
           }
-          // LazyHStack End
+          // ScrollView End
         }
-        // ScrollView End
+        // 候选字HStack
       }
-      .frame(minHeight: 35)
     }
     .frame(minWidth: 0, maxWidth: .infinity)
-    .frame(height: 60)
     .background(hamsterColor.backColor)
   }
 }

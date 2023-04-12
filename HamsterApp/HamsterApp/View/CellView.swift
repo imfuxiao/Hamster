@@ -49,7 +49,7 @@ struct CellDestinationRoute: CellDestination {
     case .feedback:
       FeedbackView()
     case .inputKeyFuction:
-      InputkeyFuctionView()
+      InputEditorView()
     case .upAndDownSlideInputSymbol:
       UpAndDownSlideInputSymbolView()
     case .about:

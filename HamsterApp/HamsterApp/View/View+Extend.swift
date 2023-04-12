@@ -17,6 +17,23 @@ extension View {
   func subViewTitleFont() -> some View {
     font(.system(size: 26, weight: .black))
   }
+  
+  /// 统一function类似样式
+  func functionCell() -> some View {
+    modifier(FunctionCellModifier())
+  }
+}
+
+struct FunctionCellModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .padding([.all], 15)
+      .background(Color.HamsterCellColor)
+      .foregroundColor(Color.HamsterFontColor)
+      .cornerRadius(8)
+      .hamsterShadow()
+      .padding(.horizontal)
+  }
 }
 
 @available(iOS 14.0, *)

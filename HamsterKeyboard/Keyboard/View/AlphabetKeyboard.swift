@@ -75,11 +75,12 @@ struct AlphabetKeyboard: View {
           ZStack(alignment: .leading) {
             if let ivc = ivc {
               HamsterAutocompleteToolbar(ivc: ivc)
+                .frame(minHeight: 50)
             }
 
             if rimeEngine.userInputKey.isEmpty {
               HStack {
-                // 主菜单功能暂未实现
+                // TODO: 主菜单功能暂未实现
                 //                Image(systemName: "house.circle.fill")
                 //                  .font(.system(size: 25))
                 //                  .foregroundColor(Color.gray)
@@ -93,20 +94,22 @@ struct AlphabetKeyboard: View {
                   Image(systemName: "chevron.down.circle.fill")
                     .iconStyle()
                     .padding(.trailing, 15)
+//                    .padding(.vertical, 15)
                     .onTapGesture { [weak ivc] in
                       guard let ivc = ivc else { return }
                       ivc.dismissKeyboard()
                     }
                 }
               }
-              .frame(height: 60)
+              .frame(minHeight: 50)
             }
           }
         }
         .frame(minWidth: 0, maxWidth: .infinity)
       }
 
-      keyboard.background(backgroudColor)
+      keyboard
+        .background(backgroudColor)
     }
   }
 
@@ -114,11 +117,11 @@ struct AlphabetKeyboard: View {
     return rimeEngine.currentColorSchema.backColor ?? .clearInteractable
   }
 
-  var width: CGFloat {
-    // TODO: 横向的全面屏需要减去左右两边的听写键和键盘切换键
-    return !keyboardContext.isPortrait && keyboardContext.hasDictationKey
-      ? standardKeyboardWidth - 150 : standardKeyboardWidth
-  }
+//  var width: CGFloat {
+//    // TODO: 横向的全面屏需要减去左右两边的听写键和键盘切换键
+//    return !keyboardContext.isPortrait && keyboardContext.hasDictationKey
+//      ? standardKeyboardWidth - 150 : standardKeyboardWidth
+//  }
 }
 
 struct IconModifier: ViewModifier {
