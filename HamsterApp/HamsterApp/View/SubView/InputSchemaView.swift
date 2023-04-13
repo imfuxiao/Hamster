@@ -53,7 +53,7 @@ struct InputSchemaView: View {
               .frame(minWidth: 0, maxWidth: .infinity)
               .frame(minHeight: 0, maxHeight: .infinity)
               .frame(height: 40)
-              .contentShape(Rectangle(), eoFill: true)
+              .contentShape(Rectangle())
               .onTapGesture {
                 appSettings.rimeInputSchema = schema.schemaId
               }

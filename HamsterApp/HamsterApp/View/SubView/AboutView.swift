@@ -55,7 +55,6 @@ struct AboutView: View {
                   .scaleEffect(0.8)
                 Spacer()
               }
-              .contentShape(Rectangle(), eoFill: true)
             }
             .padding(.horizontal)
             .padding(.top, 10)
@@ -67,7 +66,7 @@ struct AboutView: View {
                 Text("许可证: GPLv3")
                 Spacer()
               }
-              .contentShape(Rectangle(), eoFill: true)
+              .contentShape(Rectangle())
               .onTapGesture {
                 openURL(URL(string: "https://www.gnu.org/licenses/gpl-3.0.html")!)
               }

@@ -117,7 +117,7 @@ struct UpAndDownSlideInputSymbolView: View {
                   }
                   .foregroundColor(.secondary)
                 }
-                .contentShape(Rectangle(), eoFill: true)
+                .contentShape(Rectangle())
                 .padding(.horizontal)
               }
               .buttonStyle(.plain)

@@ -175,8 +175,8 @@ struct FileCellView: View {
         .multilineTextAlignment(.leading)
       Spacer()
     }
-    .contentShape(Rectangle(), eoFill: true)
     .frame(minHeight: 40)
+    .contentShape(Rectangle())
     .onTapGesture {
       tapCallback()
     }
