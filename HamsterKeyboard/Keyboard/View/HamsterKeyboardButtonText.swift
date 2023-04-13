@@ -66,7 +66,7 @@ struct HamsterKeyboardButtonText: View {
         }
         .font(.system(size: 10))
         .lineLimit(1)
-        .minimumScaleFactor(0.8)
+        .minimumScaleFactor(0.5)
         .padding(.horizontal, 2)
         .padding(.vertical, 1)
       } else if count == 1 {
@@ -75,7 +75,7 @@ struct HamsterKeyboardButtonText: View {
         }
         .font(.system(size: 10))
         .lineLimit(1)
-        .minimumScaleFactor(0.8)
+        .minimumScaleFactor(0.5)
         .padding(.horizontal, 3)
         .padding(.vertical, 1)
       } else {

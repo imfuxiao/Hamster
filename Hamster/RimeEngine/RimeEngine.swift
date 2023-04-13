@@ -289,7 +289,8 @@ public extension RimeEngine {
     }
 
     let candidates = rimeAPI.getCandidateWith(0, andCount: maxCandidateCount, andSession: session)!
-//    let candidates = rimeAPI.getCandidateList(session)!
+    // 获取全部候选字
+    // let candidates = rimeAPI.getCandidateList(session)!
     var result: [HamsterSuggestion] = []
     for (index, candidate) in candidates.enumerated() {
       var suggestion = HamsterSuggestion(
@@ -300,9 +301,9 @@ public extension RimeEngine {
       suggestion.isAutocomplete = index == 0
       result.append(suggestion)
     }
-    Logger.shared.log.debug("rime candidates count \(result.count)")
     suggestions = result
 
+    // TODO: 分页
 //    if context.menu != nil {
 //      Logger.shared.log.debug("rime context menu: \(context.menu.description)")
 //      previousPage = context.menu.pageNo != 0

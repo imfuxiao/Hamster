@@ -59,9 +59,9 @@ struct HamsterAutocompleteToolbar: View {
       GeometryReader { proxy in
         HStack(alignment: .top, spacing: 0) {
           ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 0) {
+            LazyHStack(spacing: 15) {
               ForEach(rimeEngine.suggestions) { item in
-                HStack(alignment: .bottom, spacing: 0) {
+                HStack(alignment: .center, spacing: 0) {
                   Text(item.text)
                     .font(style.item.titleFont)
                     .foregroundColor(item.isAutocomplete ?
@@ -76,15 +76,15 @@ struct HamsterAutocompleteToolbar: View {
                       )
                   }
                 }
-                .padding(.horizontal, 5)
+                .padding(.all, 5)
                 .background(item.isAutocomplete ? hamsterColor.hilitedCandidateBackColor : Color.clearInteractable)
                 .cornerRadius(style.autocompleteBackground.cornerRadius)
                 .frame(height: proxy.size.height)
-                .contentShape(Rectangle(), eoFill: true)
+                .contentShape(Rectangle())
                 .onTapGesture { [weak ivc] in
                   guard let ivc = ivc else { return }
                   // TODO: 点击候选项处理
-                  ivc.insertText(String(item.index))
+                  ivc.selectCandidateIndex(index: item.index)
                 }
               }
             }

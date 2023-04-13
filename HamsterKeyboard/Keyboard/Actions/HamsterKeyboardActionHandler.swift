@@ -45,10 +45,14 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
           return
         }
 
-        // 字符处理
-        ivc.textDocumentProxy.insertText(value)
+        // TODO: 字符处理
         if value.count > 1 {
-          ivc.adjustTextPosition(byCharacterOffset: -1)
+          ivc.textDocumentProxy.insertText(value)
+          if value.count > 1 {
+            ivc.adjustTextPosition(byCharacterOffset: -1)
+          }
+        } else {
+          ivc.insertText(value)
         }
       }
     }

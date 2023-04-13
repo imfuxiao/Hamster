@@ -200,47 +200,37 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
   override open func insertText(_ text: String) {
     // TODO: 特殊符号处理
-    switch text {
-    /// A carriage return character.
-    case .carriageReturn, .tab:
-      textDocumentProxy.insertText(text)
-      return // 注意: 这里直接return
-    // 空格候选字上屏
-    case .space:
-      if !candidateTextOnScreen() {
-        textDocumentProxy.insertText(text)
-      }
-      return // 注意: 这里直接return
-    // 回车用户输入key上屏
-    case .newline:
-      if !userInputOnScreen() {
-        textDocumentProxy.insertText(text)
-      }
-      return // 注意: 这里直接return
-    default:
-      break
-    }
+//    switch text {
+//    /// A carriage return character.
+//    case .carriageReturn, .tab:
+//      textDocumentProxy.insertText(text)
+//      return // 注意: 这里直接return
+//    // 空格候选字上屏
+//    case .space:
+//      if !candidateTextOnScreen() {
+//        textDocumentProxy.insertText(text)
+//      }
+//      return // 注意: 这里直接return
+//    // 回车用户输入key上屏
+//    case .newline:
+//      if !userInputOnScreen() {
+//        textDocumentProxy.insertText(text)
+//      }
+//      return // 注意: 这里直接return
+//    default:
+//      break
+//    }
     
     // TODO: 自定义键处理
     
+    // 是否英文模式
     if self.rimeEngine.isAsciiMode() {
       textDocumentProxy.insertText(text)
       return
     }
     
-    var callResult = false
-    /// 判断如果用户点击了候选栏, 则传递的为候选字的索引
-    if let index = Int(text) {
-      callResult = self.rimeEngine.selectCandidate(index: index)
-      if !callResult {
-        Logger.shared.log.warning("call rime select candidate is false. index = \(index)")
-      }
-    } else {
-      callResult = self.rimeEngine.inputKey(text)
-    }
-
     // 调用输入法引擎
-    if callResult {
+    if self.rimeEngine.inputKey(text) {
       // 唯一码直接上屏
       let commitText = self.rimeEngine.getCommitText()
       if !commitText.isEmpty {
@@ -260,7 +250,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       Logger.shared.log.error("rime engine input character \(text) error.")
       self.rimeEngine.rest()
     }
-    
     textDocumentProxy.insertText(text)
   }
   
@@ -406,6 +395,25 @@ extension HamsterKeyboardViewController {
         Logger.shared.log.info("rime engine set schema \(schema) success")
       } else {
         Logger.shared.log.error("rime engine set schema \(schema) error")
+      }
+    }
+  }
+  
+  func selectCandidateIndex(index: Int) {
+    if self.rimeEngine.selectCandidate(index: index) {
+      // 唯一码直接上屏
+      let commitText = self.rimeEngine.getCommitText()
+      if !commitText.isEmpty {
+        self.textDocumentProxy.insertText(commitText)
+      }
+      
+      // 查看输入法状态
+      let status = self.rimeEngine.status()
+      // 如不存在候选字,则重置输入法
+      if !status.isComposing {
+        self.rimeEngine.rest()
+      } else {
+        self.rimeEngine.contextReact()
       }
     }
   }
