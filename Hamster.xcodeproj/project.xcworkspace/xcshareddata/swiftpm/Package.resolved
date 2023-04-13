@@ -32,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/imfuxiao/iFilemanager",
       "state" : {
-        "revision" : "cab73b0c376ddd555679a113a0624f9099b8f7b6",
-        "version" : "0.7.14"
+        "revision" : "b7337d4a92f43e6bf854618a1408baec0fd0fafc",
+        "version" : "0.7.15"
       }
     },
     {
@@ -239,8 +239,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
       "state" : {
-        "revision" : "bac0fe31e3b186537eb750d44fae048681e2b773",
-        "version" : "4.74.0"
+        "revision" : "f4b00a5350238fe896d865d96d64f12fcbbeda95",
+        "version" : "4.76.0"
       }
     },
     {
