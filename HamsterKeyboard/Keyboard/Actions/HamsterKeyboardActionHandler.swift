@@ -93,7 +93,6 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     .GestureAction?
   {
     if let hamsterAction = action.hamsterStanderAction(for: gesture) {
-      triggerFeedback(for: gesture, on: action)
       return hamsterAction
     }
     return nil
@@ -102,11 +101,18 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   override func handle(
     _ gesture: KeyboardKit.KeyboardGesture, on action: KeyboardKit.KeyboardAction
   ) {
+    handle(gesture, on: action, replaced: false)
+  }
+
+  override func handle(_ gesture: KeyboardGesture, on action: KeyboardAction, replaced: Bool) {
+    if !replaced && tryHandleReplacementAction(before: gesture, on: action) { return }
+    triggerFeedback(for: gesture, on: action)
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
     gestureAction(keyboardController)
   }
 
   override func triggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {
+    guard shouldTriggerFeedback(for: gesture, on: action) else { return }
     keyboardFeedbackHandler.triggerFeedback(for: gesture, on: action)
   }
 
