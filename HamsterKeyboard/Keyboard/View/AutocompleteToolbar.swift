@@ -30,7 +30,7 @@ struct HamsterAutocompleteToolbar: View {
     self.style = AutocompleteToolbarStyle(
       item: AutocompleteToolbarItemStyle(
         titleFont: .system(
-          size: CGFloat(ivc.appSettings.rimeCandidateTitleFontSize), weight: .bold
+          size: CGFloat(ivc.appSettings.rimeCandidateTitleFontSize)
         ),
         titleColor: .primary,
         subtitleFont: .system(size: 12),
