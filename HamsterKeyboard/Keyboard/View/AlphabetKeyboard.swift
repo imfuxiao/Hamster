@@ -94,7 +94,6 @@ struct AlphabetKeyboard: View {
                   Image(systemName: "chevron.down.circle.fill")
                     .iconStyle()
                     .padding(.trailing, 15)
-//                    .padding(.vertical, 15)
                     .onTapGesture { [weak ivc] in
                       guard let ivc = ivc else { return }
                       ivc.dismissKeyboard()
@@ -124,17 +123,3 @@ struct AlphabetKeyboard: View {
 //  }
 }
 
-struct IconModifier: ViewModifier {
-  func body(content: Content) -> some View {
-    content
-      .font(.system(size: 24))
-      .foregroundColor(Color.gray)
-      .frame(width: 25, height: 25)
-  }
-}
-
-extension View {
-  func iconStyle() -> some View {
-    modifier(IconModifier())
-  }
-}

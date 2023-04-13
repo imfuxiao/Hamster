@@ -20,6 +20,8 @@
 		C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EF429BFDB7B007B6AF5 /* iFilemanager */; };
 		C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C1EF629BFDBC0007B6AF5 /* FileManagerView.swift */; };
 		C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFB29C07C96007B6AF5 /* LibrimeKit */; };
+		C0333C0B29E81C800049FA58 /* View+Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B61429CC37AD00B1BBDC /* View+Extend.swift */; };
+		C0333C0C29E81C800049FA58 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
 		C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C6E29C83B2A00016C68 /* LongButton.swift */; };
 		C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7029C850A400016C68 /* DotsLoadingView.swift */; };
 		C0341C7329C8558E00016C68 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0341C7229C8558E00016C68 /* SectionView.swift */; };
@@ -641,6 +643,15 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
+		C0333C0A29E81BF50049FA58 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				C037B61429CC37AD00B1BBDC /* View+Extend.swift */,
+				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		C037B60E29CBD50200B1BBDC /* Plist */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,6 +718,7 @@
 		C04FA8AB299A65AB00F8CC32 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C0333C0A29E81BF50049FA58 /* View */,
 				C07C1A1F29CD6B5E00FD0572 /* Logger */,
 				C037B60E29CBD50200B1BBDC /* Plist */,
 				C02BEA3829C26027008487A4 /* Persistent */,
@@ -745,8 +757,6 @@
 				C0CE234729B5219500F79A74 /* CellView.swift */,
 				C0629C6F29B3C68600C27D42 /* SubView */,
 				C0CDF6E629C0F9BD00CA2493 /* Components */,
-				C037B61429CC37AD00B1BBDC /* View+Extend.swift */,
-				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1329,6 +1339,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0333C0B29E81C800049FA58 /* View+Extend.swift in Sources */,
+				C0333C0C29E81C800049FA58 /* Color+Extent.swift in Sources */,
 				C0C9F02D29CF4355004B2C33 /* Logger.swift in Sources */,
 				C0C9F02E29CF4355004B2C33 /* Plist.swift in Sources */,
 				C0C9F02F29CF4355004B2C33 /* AppSettings.swift in Sources */,

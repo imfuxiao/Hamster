@@ -56,31 +56,20 @@ struct HamsterKeyboardButtonText: View {
   var characterExtendView: some View {
     let action = buttonExtendCharacter[text.lowercased(), default: ""]
     let texts = action.split(separator: " ").filter { $0.count > 0 }.map { String($0) }
-    let count = texts.count
     return VStack(alignment: .leading, spacing: 0) {
-      if count >= 2 {
-        HStack(alignment: .top, spacing: 0) {
+      HStack(alignment: .center, spacing: 0) {
+        if !texts.isEmpty {
           Text(texts[0])
+        }
+        if texts.count > 1 {
           Spacer()
           Text(texts[1])
         }
-        .font(.system(size: 10))
-        .lineLimit(1)
-        .minimumScaleFactor(0.5)
-        .padding(.horizontal, 2)
-        .padding(.vertical, 1)
-      } else if count == 1 {
-        HStack(alignment: .top, spacing: 0) {
-          Text(texts[0])
-        }
-        .font(.system(size: 10))
-        .lineLimit(1)
-        .minimumScaleFactor(0.5)
-        .padding(.horizontal, 3)
-        .padding(.vertical, 1)
-      } else {
-//        Text(" ")
       }
+      .font(.system(size: 10))
+      .lineLimit(1)
+      .minimumScaleFactor(0.5)
+      .padding(.all, 2)
     }
   }
 

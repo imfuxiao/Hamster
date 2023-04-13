@@ -17,10 +17,24 @@ extension View {
   func subViewTitleFont() -> some View {
     font(.system(size: 26, weight: .black))
   }
-  
+
   /// 统一function类似样式
   func functionCell() -> some View {
     modifier(FunctionCellModifier())
+  }
+
+  /// 统一icon样式
+  func iconStyle() -> some View {
+    modifier(IconModifier())
+  }
+}
+
+struct IconModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .font(.system(size: 24))
+      .foregroundColor(Color.gray)
+      .frame(width: 25, height: 25)
   }
 }
 
