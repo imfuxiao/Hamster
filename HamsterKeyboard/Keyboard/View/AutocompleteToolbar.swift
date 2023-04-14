@@ -23,14 +23,13 @@ struct HamsterAutocompleteToolbar: View {
 
   var style: AutocompleteToolbarStyle
 
-  init(ivc: HamsterKeyboardViewController) {
+  init(ivc: HamsterKeyboardViewController?) {
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
-
     self.style = AutocompleteToolbarStyle(
       item: AutocompleteToolbarItemStyle(
         titleFont: .system(
-          size: CGFloat(ivc.appSettings.rimeCandidateTitleFontSize)
+          size: CGFloat(ivc?.appSettings.rimeCandidateTitleFontSize ?? 20)
         ),
         titleColor: .primary,
         subtitleFont: .system(size: 12),
@@ -44,55 +43,62 @@ struct HamsterAutocompleteToolbar: View {
   }
 
   var body: some View {
-    VStack(spacing: 0) {
-      // 拼写区域
-      HStack {
-        Text(rimeEngine.userInputKey)
-          .font(style.item.subtitleFont)
-          .foregroundColor(hamsterColor.hilitedTextColor)
+    GeometryReader { proxy in
+      VStack(alignment: .leading, spacing: 0) {
+        // 拼写区域
+        HStack {
+          Text(rimeEngine.userInputKey)
+            .font(style.item.subtitleFont)
+            .foregroundColor(hamsterColor.hilitedTextColor)
 
-        Spacer()
-      }
-      .padding(.leading, 5)
+          Spacer()
+        }
+        .padding(.leading, 5)
 
-      // 候选区
-      GeometryReader { proxy in
-        HStack(alignment: .top, spacing: 0) {
-          ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 15) {
-              ForEach(rimeEngine.suggestions) { item in
-                HStack(alignment: .center, spacing: 0) {
+        // 候选区
+        ScrollView(.horizontal, showsIndicators: false) {
+          LazyHStack(spacing: 0, pinnedViews: .sectionFooters) {
+            ForEach(rimeEngine.suggestions) { item in
+              Button { [weak ivc] in
+                guard let ivc = ivc else { return }
+                // TODO: 点击候选项处理
+                ivc.selectCandidateIndex(index: item.index)
+              } label: {
+                HStack(spacing: 0) {
                   Text(item.text)
                     .font(style.item.titleFont)
-                    .foregroundColor(item.isAutocomplete ?
-                      hamsterColor.hilitedCandidateTextColor : hamsterColor.candidateTextColor
+                    .foregroundColor(
+                      item.isAutocomplete
+                        ? hamsterColor.hilitedCandidateTextColor
+                        : hamsterColor.candidateTextColor
                     )
-
                   if let comment = item.comment {
                     Text(comment)
                       .font(style.item.subtitleFont)
-                      .foregroundColor(item.isAutocomplete ?
-                        hamsterColor.hilitedCommentTextColor : hamsterColor.commentTextColor
+                      .foregroundColor(
+                        item.isAutocomplete
+                          ? hamsterColor.hilitedCommentTextColor
+                          : hamsterColor.commentTextColor
                       )
                   }
                 }
                 .padding(.all, 5)
                 .background(item.isAutocomplete ? hamsterColor.hilitedCandidateBackColor : Color.clearInteractable)
                 .cornerRadius(style.autocompleteBackground.cornerRadius)
-                .frame(height: proxy.size.height)
                 .contentShape(Rectangle())
-                .onTapGesture { [weak ivc] in
-                  guard let ivc = ivc else { return }
-                  // TODO: 点击候选项处理
-                  ivc.selectCandidateIndex(index: item.index)
-                }
               }
+              .buttonStyle(.plain)
             }
-            // LazyHStack End
           }
-          // ScrollView End
         }
-        // 候选字HStack
+//        .overlay(
+//          VStack(spacing: 0) {
+//            Rectangle().stroke(Color.pink, lineWidth: 2)
+//          }
+//        )
+        .frame(height: proxy.size.height - 10)
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .padding(.leading, 2)
       }
     }
     .frame(minWidth: 0, maxWidth: .infinity)

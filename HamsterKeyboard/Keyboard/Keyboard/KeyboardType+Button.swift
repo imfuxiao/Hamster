@@ -6,9 +6,9 @@ extension KeyboardType {
    The keyboard type's standard button text.
    */
   public func hamsterButtonText(for context: KeyboardContext) -> String? {
-    if context.locale.identifier == "zh-Hans" {
-      return chineseText()
-    }
+//    if context.locale.identifier == "zh-Hans" {
+//      return chineseText()
+//    }
     switch self {
     case .alphabetic: return KKL10n.keyboardTypeAlphabetic.hamsterText(for: context)
     case .numeric: return KKL10n.keyboardTypeNumeric.hamsterText(for: context)

@@ -60,9 +60,18 @@ public struct ContentView: View {
                 loadingText = "正在部署, 请稍后."
                 isLoading = true
                 appSettings.rimeNeedOverrideUserDataDirectory = true
-                DispatchQueue.global(qos: .background).async {
+                DispatchQueue.global().async {
                   rimeEngine.deploy()
-                  isLoading = false
+                  let schemas = rimeEngine.getSchemas()
+                  let userSelectInputSchema = schemas.first(where: { $0.schemaId == appSettings.rimeInputSchema })
+                  DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    if userSelectInputSchema == nil {
+                      appSettings.rimeInputSchema = schemas.first?.schemaId ?? ""
+                    }
+                    rimeEngine.shutdownRime()
+                    isLoading = false
+                    Logger.shared.log.debug("DispatchQueue.main.async end...")
+                  }
                 }
               }
 
@@ -85,18 +94,29 @@ public struct ContentView: View {
                 primaryButton: .destructive(Text("确定")) {
                   loadingText = "RIME重置中, 请稍后."
                   isLoading = true
-                  DispatchQueue.global(qos: .background).async {
+                  DispatchQueue.global().async {
                     do {
                       try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
                       try RimeEngine.initAppGroupUserDataDirectory(override: true)
-                      rimeEngine.deploy()
-                      DispatchQueue.main.async {
-                        appSettings.rimeNeedOverrideUserDataDirectory = true
-                      }
                     } catch {
                       rimeError = error
+                      isLoading = false
+                      return
                     }
-                    isLoading = false
+
+                    rimeEngine.deploy()
+                    let schemas = rimeEngine.getSchemas()
+                    let userSelectInputSchema = schemas.first(where: { $0.schemaId == appSettings.rimeInputSchema })
+                    rimeEngine.shutdownRime()
+
+                    DispatchQueue.main.async {
+                      appSettings.rimeNeedOverrideUserDataDirectory = true
+                      if userSelectInputSchema == nil {
+                        appSettings.rimeInputSchema = schemas.first?.schemaId ?? ""
+                      }
+                      isLoading = false
+                      Logger.shared.log.debug("DispatchQueue.main.async end...")
+                    }
                   }
                 },
                 secondaryButton: .cancel(Text("取消"))

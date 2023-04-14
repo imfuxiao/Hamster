@@ -33,13 +33,7 @@ extension Bundle {
   }
 
   func bundlePath(for locale: Locale) -> String? {
-    let path = bundlePath(named: locale.identifier) ?? bundlePath(named: locale.languageCode)
-
-    #if DEBUG
-    Logger.shared.log.debug("Localization bundle path: \(path ?? "null")")
-    #endif
-
-    return path
+    return bundlePath(named: locale.identifier) ?? bundlePath(named: locale.languageCode)
   }
 
   func bundlePath(named name: String?) -> String? {

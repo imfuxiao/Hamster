@@ -70,7 +70,7 @@ struct HamsterKeyboardActionButtonContent: View {
   private let appSettings: HamsterAppSettings
   private let buttonExtendCharacter: [String: String]
   @State var spaceText: String = ""
-  
+
   @EnvironmentObject var rimeEngine: RimeEngine
 
   public var body: some View {
@@ -109,10 +109,15 @@ private extension HamsterKeyboardActionButtonContent {
 
   @ViewBuilder
   var spaceView: some View {
-    if #available(iOS 16, *) {
-      Image(systemName: "space")
+//    if #available(iOS 16, *) {
+//      Image(systemName: "space")
+//    } else {
+//      Text(spaceText)
+//    }
+    if rimeEngine.asciiMode {
+      Text("西文")
     } else {
-      Text(spaceText)
+      Text("中文")
     }
   }
 

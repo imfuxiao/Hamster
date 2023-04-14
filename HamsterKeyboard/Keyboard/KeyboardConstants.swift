@@ -49,25 +49,26 @@ class KeyboardConstant {
   enum Action {
     static let endDragGesture = "endGragGesture"
   }
-
-  enum KeySymbol: Int32 {
-    case Backspace = 0xff08 // 退格键(删除键)
-    case Return = 0xff0d // 回车键
-    case QuoteLeft = 0x0060 // 反引号(`), 标准键盘数字1左边的键
-    case Plus = 0x002b // +
-    case Minus = 0x002d // -
-    case Comma = 0x002c // ,
-    case Period = 0x002e // .
-    case BracketLeft = 0x005b // [
-    case BracketRight = 0x005d // ]
-    case PageUp = 0xff55
-    case PageDown = 0xff56
-
-    func string() -> String {
-      if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {
-        return String(scalarValue)
-      }
-      return ""
-    }
-  }
 }
+
+//enum KeySymbol: Int32 {
+//  case Backspace = 0xff08 // 退格键(删除键) Back space, back char
+//  case Tab = 0xff09 //
+//  case Return = 0xff0d // 回车键
+//  case QuoteLeft = 0x0060 // 反引号(`), 标准键盘数字1左边的键
+//  case Plus = 0x002b // +
+//  case Minus = 0x002d // -
+//  case Comma = 0x002c // ,
+//  case Period = 0x002e // .
+//  case BracketLeft = 0x005b // [
+//  case BracketRight = 0x005d // ]
+//  case PageUp = 0xff55
+//  case PageDown = 0xff56
+//
+//  func string() -> String {
+//    if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {
+//      return String(scalarValue)
+//    }
+//    return ""
+//  }
+//}

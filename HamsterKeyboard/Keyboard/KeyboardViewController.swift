@@ -18,17 +18,86 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   var cancellables = Set<AnyCancellable>()
   lazy var hamsterInputSetProvider: HamsterInputSetProvider = .init(keyboardContext: keyboardContext)
   
-  private func setupAppSettings() {
-    // 简中切换
-//    self.appSettings.$switchTraditionalChinese
-//      .receive(on: RunLoop.main)
-//      .sink { [weak self] in
-//        guard let self = self else { return }
-//        self.log.info("combine $switchTraditionalChinese \($0)")
-//        _ = self.rimeEngine.simplifiedChineseMode($0)
-//      }
-//      .store(in: &self.cancellables)
+  override public func viewDidLoad() {
+    self.log.info("viewDidLoad() begin")
+    // 注意初始化的顺序
     
+    // TODO: 动态设置 local
+    self.keyboardContext.locale = Locale(identifier: "zh-Hans")
+//    self.log.info("local language: \(Locale.preferredLanguages[0])")
+//    self.log.info("local language: \(Locale.autoupdatingCurrent.identifier)")
+//    self.log.info("local language: \(Locale.autoupdatingCurrent.languageCode)")
+//    self.log.info("local language: \(Locale.current.identifier)")
+//    self.log.info("local language: \(Locale.current.languageCode)")
+    
+    // 外观
+    self.keyboardAppearance = HamsterKeyboardAppearance(
+      keyboardContext: self.keyboardContext,
+      rimeEngine: self.rimeEngine,
+      appSettings: self.appSettings
+    )
+    // 布局
+    self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
+      keyboardContext: self.keyboardContext,
+      inputSetProvider: self.hamsterInputSetProvider,
+      appSettings: self.appSettings
+    )
+    self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
+    // TODO: 长按按钮设置
+    self.calloutActionProvider = HamsterCalloutActionProvider(
+      keyboardContext: self.keyboardContext,
+      rimeEngine: self.rimeEngine
+    )
+    // 键盘反馈设置
+    self.keyboardFeedbackSettings = KeyboardFeedbackSettings(
+      audioConfiguration: AudioFeedbackConfiguration(),
+      hapticConfiguration: HapticFeedbackConfiguration()
+    )
+    self.keyboardFeedbackHandler = HamsterKeyboardFeedbackHandler(
+      settings: self.keyboardFeedbackSettings,
+      appSettings: self.appSettings
+    )
+    // 键盘Action处理
+    self.keyboardActionHandler = HamsterKeyboardActionHandler(
+      inputViewController: self,
+      keyboardContext: self.keyboardContext,
+      keyboardFeedbackHandler: self.keyboardFeedbackHandler
+    )
+    
+    self.calloutContext = KeyboardCalloutContext(
+      action: HamsterActionCalloutContext(
+        actionHandler: keyboardActionHandler,
+        actionProvider: calloutActionProvider
+      ),
+      input: InputCalloutContext(
+        isEnabled: UIDevice.current.userInterfaceIdiom == .phone
+      )
+    )
+    
+    self.setupRimeEngine()
+    self.setupAppSettings()
+    
+    super.viewDidLoad()
+  }
+  
+  override public func viewWillSetupKeyboard() {
+    self.log.debug("viewWillSetupKeyboard() begin")
+    let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
+      .environmentObject(self.rimeEngine)
+      .environmentObject(self.appSettings)
+    setup(with: alphabetKeyboard)
+  }
+  
+  override public func viewDidDisappear(_ animated: Bool) {
+    self.log.debug("HamsterKeyboardViewController viewDidDisappear")
+  }
+  
+  public func dealloc() {
+    self.log.debug("HamsterKeyboardViewController dealloc")
+    self.rimeEngine.shutdownRime()
+  }
+  
+  private func setupAppSettings() {
     // 按键气泡
     self.appSettings.$showKeyPressBubble
       .receive(on: RunLoop.main)
@@ -39,34 +108,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       }
       .store(in: &self.cancellables)
     
-//     是否重置用户数据目录
-//    self.appSettings.$rimeNeedOverrideUserDataDirectory
-//      .receive(on: RunLoop.main)
-//      .sink { [weak self] in
-//        self?.log.info("combine $rimeNeedOverrideUserDataDirectory \($0)")
-//        if $0 {
-//          do {
-//            try RimeEngine.syncAppGroupSharedSupportDirectory(override: true)
-//            try RimeEngine.syncAppGroupUserDataDirectory(override: true)
-//          } catch {
-//            self?.log.error("rime syncAppGroupUserDataDirectory error \(error), \(error.localizedDescription)")
-//          }
-//          self?.rimeEngine.deploy(fullCheck: true)
-//          self?.rimeEngine.restSession()
-//        }
-//      }
-//      .store(in: &self.cancellables)
-    
-    // 输入方案变更
-    self.appSettings.$rimeInputSchema
-      .receive(on: RunLoop.main)
-      .sink { [weak self] schema in
-        guard let self = self else { return }
-        self.log.info("combine $rimeInputSchema: \(schema)")
-        self.changeInputSchema(schema)
-      }
-      .store(in: &self.cancellables)
-    
     // 候选字最大数量
     self.appSettings.$rimeMaxCandidateSize
       .receive(on: RunLoop.main)
@@ -74,6 +115,17 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         guard let self = self else { return }
         self.log.info("combine $rimeMaxCandidateSize: \(rimeMaxCandidateSize)")
         self.rimeEngine.maxCandidateCount = rimeMaxCandidateSize
+      }
+      .store(in: &self.cancellables)
+    
+    // 输入方案变更
+    self.appSettings.$rimeInputSchema
+      .receive(on: RunLoop.main)
+      .sink { [weak self] schemaName in
+        guard let self = self else { return }
+        // 设置用户选择方案
+        let setSchemaHandled = self.rimeEngine.setSchema(schemaName)
+        Logger.shared.log.debug("combine $rimeInputSchema:  \(schemaName), setSchemaHandled: \(setSchemaHandled)")
       }
       .store(in: &self.cancellables)
     
@@ -96,9 +148,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       try RimeEngine.syncAppGroupSharedSupportDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
       try RimeEngine.initUserDataDirectory()
       try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
-      if self.appSettings.rimeNeedOverrideUserDataDirectory {
-        self.appSettings.rimeNeedOverrideUserDataDirectory = false
-      }
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
     }
@@ -116,113 +165,18 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       isRimeFirstRun = false
       self.rimeEngine.setupRime(traits)
     }
-    self.rimeEngine.startRime(traits, fullCheck: false)
+    self.rimeEngine.startRime(traits, fullCheck: self.appSettings.rimeNeedOverrideUserDataDirectory)
+    if self.appSettings.rimeNeedOverrideUserDataDirectory {
+      self.appSettings.rimeNeedOverrideUserDataDirectory = false
+    }
+    self.rimeEngine.createSession()
     self.rimeEngine.maxCandidateCount = self.appSettings.rimeMaxCandidateSize
-    self.rimeEngine.rest()
-  }
-  
-  override public func viewDidLoad() {
-    self.log.info("viewDidLoad() begin")
-    // 注意初始化的顺序
-    
-    // TODO: 动态设置 local
-    self.keyboardContext.locale = Locale(identifier: "zh-Hans")
-    
-    // 外观
-    self.keyboardAppearance = HamsterKeyboardAppearance(
-      keyboardContext: self.keyboardContext,
-      rimeEngine: self.rimeEngine,
-      appSettings: self.appSettings
-    )
-    // 布局
-    self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
-      keyboardContext: self.keyboardContext,
-      inputSetProvider: self.hamsterInputSetProvider,
-      appSettings: self.appSettings
-    )
-    self.keyboardBehavior = HamsterKeyboardBehavior(keyboardContext: self.keyboardContext)
-    // TODO: 长按按钮设置
-    self.calloutActionProvider = DisabledCalloutActionProvider() // 禁用长按按钮
-    self.keyboardFeedbackSettings = KeyboardFeedbackSettings(
-      audioConfiguration: AudioFeedbackConfiguration(),
-      hapticConfiguration: HapticFeedbackConfiguration(
-        tap: .mediumImpact,
-        doubleTap: .mediumImpact,
-        longPress: .mediumImpact,
-        longPressOnSpace: .mediumImpact
-      )
-    )
-    self.keyboardFeedbackHandler = HamsterKeyboardFeedbackHandler(
-      settings: self.keyboardFeedbackSettings,
-      appSettings: self.appSettings
-    )
-    self.keyboardActionHandler = HamsterKeyboardActionHandler(
-      inputViewController: self,
-      keyboardContext: self.keyboardContext,
-      keyboardFeedbackHandler: self.keyboardFeedbackHandler
-    )
-    self.calloutContext = KeyboardCalloutContext(
-      action: HamsterActionCalloutContext(
-        actionHandler: keyboardActionHandler,
-        actionProvider: calloutActionProvider
-      ),
-      input: InputCalloutContext(
-        isEnabled: UIDevice.current.userInterfaceIdiom == .phone)
-    )
-    
-    self.setupRimeEngine()
-    self.setupAppSettings()
-    
-    // 修改当前inputShcema
-    // self.changeInputSchema(self.appSettings.rimeInputSchema)
-    
-    super.viewDidLoad()
-  }
-  
-  override public func viewWillSetupKeyboard() {
-    self.log.debug("viewWillSetupKeyboard() begin")
-    let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
-      .environmentObject(self.rimeEngine)
-      .environmentObject(self.appSettings)
-    setup(with: alphabetKeyboard)
-  }
-  
-  override public func viewDidDisappear(_ animated: Bool) {
-    self.log.debug("HamsterKeyboardViewController viewDidDisappear")
-  }
-  
-  public func dealloc() {
-    self.log.debug("HamsterKeyboardViewController dealloc")
-    self.rimeEngine.shutdownRime()
+    self.rimeEngine.reset()
   }
   
   // MARK: - KeyboardController
 
   override open func insertText(_ text: String) {
-    // TODO: 特殊符号处理
-//    switch text {
-//    /// A carriage return character.
-//    case .carriageReturn, .tab:
-//      textDocumentProxy.insertText(text)
-//      return // 注意: 这里直接return
-//    // 空格候选字上屏
-//    case .space:
-//      if !candidateTextOnScreen() {
-//        textDocumentProxy.insertText(text)
-//      }
-//      return // 注意: 这里直接return
-//    // 回车用户输入key上屏
-//    case .newline:
-//      if !userInputOnScreen() {
-//        textDocumentProxy.insertText(text)
-//      }
-//      return // 注意: 这里直接return
-//    default:
-//      break
-//    }
-    
-    // TODO: 自定义键处理
-    
     // 是否英文模式
     if self.rimeEngine.isAsciiMode() {
       textDocumentProxy.insertText(text)
@@ -230,40 +184,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     }
     
     // 调用输入法引擎
-    if self.rimeEngine.inputKey(text) {
-      // 唯一码直接上屏
-      let commitText = self.rimeEngine.getCommitText()
-      if !commitText.isEmpty {
-        self.textDocumentProxy.insertText(commitText)
-      }
-
-      // 查看输入法状态
-      let status = self.rimeEngine.status()
-      // 如不存在候选字,则重置输入法
-      if !status.isComposing {
-        self.rimeEngine.rest()
-      } else {
-        self.rimeEngine.contextReact()
-      }
-      return
-    } else {
-      Logger.shared.log.error("rime engine input character \(text) error.")
-      self.rimeEngine.rest()
-    }
-    textDocumentProxy.insertText(text)
+    self.inputCharacter(key: text)
   }
   
   override open func deleteBackward() {
-    if !self.rimeEngine.userInputKey.isEmpty {
-      if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.Backspace.rawValue) {
-        self.rimeEngine.contextReact()
-      } else {
-        Logger.shared.log.error("rime engine input backspace key error")
-        self.rimeEngine.rest()
-      }
-      return
-    }
-    textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+    self.inputRimeKeycode(keycode: XK_BackSpace)
   }
 
   override open func setKeyboardType(_ type: KeyboardType) {
@@ -294,7 +219,7 @@ extension HamsterKeyboardViewController {
       }
       if candidates.count >= 2 {
         self.textDocumentProxy.insertText(candidates[1].text)
-        self.rimeEngine.rest()
+        self.rimeEngine.reset()
         return true
       }
     }
@@ -310,18 +235,7 @@ extension HamsterKeyboardViewController {
         return false
       }
       self.textDocumentProxy.insertText(candidates[0].text)
-      self.rimeEngine.rest()
-      return true
-    }
-    return false
-  }
-  
-  /// 用户输入键直接上屏
-  func userInputOnScreen() -> Bool {
-    if !self.rimeEngine.userInputKey.isEmpty {
-      let text = self.rimeEngine.userInputKey
-      textDocumentProxy.insertText(text)
-      self.rimeEngine.rest()
+      self.rimeEngine.reset()
       return true
     }
     return false
@@ -351,7 +265,7 @@ extension HamsterKeyboardViewController {
   
   // 候选字上一页
   func previousPageOfCandidates() {
-    if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.PageUp.rawValue) {
+    if self.rimeEngine.inputKeyCode(XK_Page_Up) {
       self.rimeEngine.contextReact()
     } else {
       Logger.shared.log.warning("rime input pageup result error")
@@ -360,7 +274,7 @@ extension HamsterKeyboardViewController {
   
   // 候选字下一页
   func nextPageOfCandidates() {
-    if self.rimeEngine.inputKeyCode(KeyboardConstant.KeySymbol.PageDown.rawValue) {
+    if self.rimeEngine.inputKeyCode(XK_Page_Down) {
       self.rimeEngine.contextReact()
     } else {
       Logger.shared.log.debug("rime input pageDown result error")
@@ -388,17 +302,13 @@ extension HamsterKeyboardViewController {
   
   // 修改输入方案
   func changeInputSchema(_ schema: String) {
-    Logger.shared.log.info("rime set schema: \(schema)")
     if !schema.isEmpty {
-      // 输入方案切换
-      if self.rimeEngine.setSchema(schema) {
-        Logger.shared.log.info("rime engine set schema \(schema) success")
-      } else {
-        Logger.shared.log.error("rime engine set schema \(schema) error")
-      }
+//      self.rimeEngine.needChangeInputSchema = true
+//      self.rimeEngine.userInputSchemaName = schema
     }
   }
   
+  /// 根据索引选择候选字
   func selectCandidateIndex(index: Int) {
     if self.rimeEngine.selectCandidate(index: index) {
       // 唯一码直接上屏
@@ -411,10 +321,61 @@ extension HamsterKeyboardViewController {
       let status = self.rimeEngine.status()
       // 如不存在候选字,则重置输入法
       if !status.isComposing {
-        self.rimeEngine.rest()
+        self.rimeEngine.reset()
       } else {
         self.rimeEngine.contextReact()
       }
+    }
+  }
+  
+  /// 字符输入
+  func inputCharacter(key: String) {
+    let keyUTF8 = key.utf8
+    if keyUTF8.count == 1, let first = keyUTF8.first {
+      self.inputRimeKeycode(keycode: Int32(first))
+    } else {
+      self.textDocumentProxy.insertText(key)
+    }
+  }
+  
+  /// 转为RimeCode
+  func inputRimeKeycode(keycode: Int32, modifier: Int32 = 0) {
+    let handled = self.rimeEngine.inputKeyCode(keycode, modifier: modifier)
+    if !handled {
+      // 特殊功能键处理
+      switch keycode {
+      case XK_Return:
+        self.textDocumentProxy.insertText(.newline)
+        return
+      case XK_BackSpace:
+        self.textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+        return
+      case XK_Tab:
+        self.textDocumentProxy.insertText(.tab)
+        return
+      default:
+        break
+      }
+    }
+    
+    // 唯一码直接上屏
+    let commitText = self.rimeEngine.getCommitText()
+    if !commitText.isEmpty {
+      self.textDocumentProxy.insertText(commitText)
+    }
+      
+    // 查看输入法状态
+    let status = self.rimeEngine.status()
+    // 如不存在候选字,则重置输入法
+    if !status.isComposing {
+      self.rimeEngine.reset()
+    } else {
+      self.rimeEngine.contextReact()
+    }
+    
+    // 符号键直接上屏
+    if !handled, let str = String(data: Data([UInt8(keycode)]), encoding: .utf8) {
+      self.textDocumentProxy.insertText(String(str))
     }
   }
 }

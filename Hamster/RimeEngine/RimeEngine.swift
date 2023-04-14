@@ -147,7 +147,6 @@ enum RimeDeployStatus {
 
 public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private let rimeAPI: IRimeAPI = .init()
-  private var session: RimeSessionId = 0
   private var isFirstRunning = true
   private var traits: IRimeTraits?
   private var deployStartCallback: () -> Void = {}
@@ -155,6 +154,9 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   private var deployFailureCallback: () -> Void = {}
   private var changeModeCallback: (String) -> Void = { _ in }
   private var loadingSchemaCallback: (String) -> Void = { _ in }
+
+  /// rime session
+  var session: RimeSessionId = 0
 
   /// 候选字上限
   var maxCandidateCount: Int32 = 100
@@ -225,16 +227,18 @@ public extension RimeEngine {
   func deploy(fullCheck: Bool = true) {
     shutdownRime()
     startRime(traits, fullCheck: fullCheck)
-    shutdownRime()
   }
 
   func shutdownRime() {
     rimeAPI.cleanAllSession()
-    session = 0
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      self.session = 0
+    }
     rimeAPI.finalize()
   }
 
-  func rest() {
+  func reset() {
     userInputKey = ""
     cleanComposition()
     suggestions = []
@@ -242,6 +246,12 @@ public extension RimeEngine {
 
   func rimeAlive() -> Bool {
     return session > 0 && rimeAPI.findSession(session)
+  }
+
+  func createSession() {
+    if !rimeAlive() {
+      session = rimeAPI.createSession()
+    }
   }
 
   func restSession() {
@@ -265,18 +275,12 @@ public extension RimeEngine {
   }
 
   func isSimplifiedMode() -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.createSession()
-    }
-
+    createSession()
     return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
   }
 
   func simplifiedChineseMode(_ value: Bool) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.createSession()
-    }
-
+    createSession()
     return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
   }
 
@@ -327,19 +331,13 @@ public extension RimeEngine {
   }
 
   func inputKey(_ key: String) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.createSession()
-      Logger.shared.log.debug("inputKey rime not alive, create session: \(session)")
-    }
+    createSession()
     return rimeAPI.processKey(key, andSession: session)
   }
 
-  func inputKeyCode(_ key: Int32) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.createSession()
-      Logger.shared.log.debug("inputKeyCode rime not alive, create session: \(session)")
-    }
-    return rimeAPI.processKeyCode(key, andSession: session)
+  func inputKeyCode(_ keycode: Int32, modifier: Int32 = 0) -> Bool {
+    createSession()
+    return rimeAPI.processKeyCode(keycode, modifier: modifier, andSession: session)
   }
 
   func candidateList() -> [Candidate] {
@@ -409,10 +407,7 @@ public extension RimeEngine {
   }
 
   func setSchema(_ schemaId: String) -> Bool {
-    if !rimeAlive() {
-      session = rimeAPI.createSession()
-      Logger.shared.log.debug("setSchema rime not alive, create session: \(session)")
-    }
+    createSession()
     return rimeAPI.selectSchema(session, andSchameId: schemaId)
   }
 
@@ -499,11 +494,6 @@ public extension RimeEngine {
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    if !rimeAlive() {
-      Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session is not alive")
-      session = rimeAPI.createSession()
-    }
-    Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess session \(session)")
     deploySuccessCallback()
   }
 

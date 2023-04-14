@@ -189,6 +189,9 @@
 		C0C9F03C29CF43F9004B2C33 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03B29CF43F9004B2C33 /* LibrimeKit */; };
 		C0C9F03E29CF442C004B2C33 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03D29CF442C004B2C33 /* SwiftyBeaver */; };
 		C0C9F04029CF44D5004B2C33 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03F29CF44D5004B2C33 /* Plist */; };
+		C0CB388129E9294E007211E7 /* HamsterCalloutActionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */; };
+		C0CB388529EA3C48007211E7 /* OSXKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */; };
+		C0CB388729EA51AD007211E7 /* keysymdef.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388629EA51AD007211E7 /* keysymdef.swift */; };
 		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
 		C0CE234829B5219500F79A74 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE234729B5219500F79A74 /* CellView.swift */; };
 		C0DAFD2629DA9DD000762D2B /* HamsterInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */; };
@@ -565,6 +568,9 @@
 		C0C7EAF029E5A23A008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF129E5A23B008D4EE1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF229E5A23C008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterCalloutActionProvider.swift; sourceTree = "<group>"; };
+		C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSXKeyCode.swift; sourceTree = "<group>"; };
+		C0CB388629EA51AD007211E7 /* keysymdef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keysymdef.swift; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C0CE234729B5219500F79A74 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
 		C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterInputSetProvider.swift; sourceTree = "<group>"; };
@@ -768,6 +774,8 @@
 				C0B42C9529AE7C860037DE15 /* RimeEngine+Color.swift */,
 				C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */,
 				C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */,
+				C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */,
+				C0CB388629EA51AD007211E7 /* keysymdef.swift */,
 			);
 			path = RimeEngine;
 			sourceTree = "<group>";
@@ -889,6 +897,7 @@
 			isa = PBXGroup;
 			children = (
 				C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */,
+				C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */,
 			);
 			path = Callouts;
 			sourceTree = "<group>";
@@ -1342,6 +1351,7 @@
 				C0333C0B29E81C800049FA58 /* View+Extend.swift in Sources */,
 				C0333C0C29E81C800049FA58 /* Color+Extent.swift in Sources */,
 				C0C9F02D29CF4355004B2C33 /* Logger.swift in Sources */,
+				C0CB388729EA51AD007211E7 /* keysymdef.swift in Sources */,
 				C0C9F02E29CF4355004B2C33 /* Plist.swift in Sources */,
 				C0C9F02F29CF4355004B2C33 /* AppSettings.swift in Sources */,
 				C0C9F03029CF4355004B2C33 /* AppSettings+Permission.swift in Sources */,
@@ -1351,6 +1361,7 @@
 				C0C9F03329CF4355004B2C33 /* RimeEngine+Color.swift in Sources */,
 				C0C9F03429CF4355004B2C33 /* RimeEngine+File.swift in Sources */,
 				C0C9F03529CF4355004B2C33 /* RimeEngine+LibrimeKit.swift in Sources */,
+				C0CB388129E9294E007211E7 /* HamsterCalloutActionProvider.swift in Sources */,
 				C0C9F03629CF4355004B2C33 /* AppConstants.swift in Sources */,
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
 				C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */,
@@ -1367,6 +1378,7 @@
 				C0C9F01D29CF4316004B2C33 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0C9F01E29CF4316004B2C33 /* InputSet.swift in Sources */,
 				C0C9F01F29CF4316004B2C33 /* iPadKeyboardLayoutProvider.swift in Sources */,
+				C0CB388529EA3C48007211E7 /* OSXKeyCode.swift in Sources */,
 				C0C9F02029CF4316004B2C33 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C0C9F02129CF4316004B2C33 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
 				C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */,
@@ -1581,7 +1593,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1619,7 +1631,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1650,7 +1662,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1680,7 +1692,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -71,45 +71,40 @@ struct AlphabetKeyboard: View {
   var body: some View {
     VStack(spacing: 0) {
       if keyboardContext.keyboardType != .emojis {
-        HStack(spacing: 0) {
-          ZStack(alignment: .leading) {
-            if let ivc = ivc {
-              HamsterAutocompleteToolbar(ivc: ivc)
-                .frame(minHeight: 50)
-            }
+        VStack(spacing: 0) {
+          if rimeEngine.userInputKey.isEmpty {
+            HStack {
+              // TODO: 主菜单功能暂未实现
+              //                Image(systemName: "house.circle.fill")
+              //                  .font(.system(size: 25))
+              //                  .foregroundColor(Color.gray)
+              //                  .frame(width: 25, height: 25)
+              //                  .padding(.leading, 15)
+              //                  .onTapGesture {}
 
-            if rimeEngine.userInputKey.isEmpty {
-              HStack {
-                // TODO: 主菜单功能暂未实现
-                //                Image(systemName: "house.circle.fill")
-                //                  .font(.system(size: 25))
-                //                  .foregroundColor(Color.gray)
-                //                  .frame(width: 25, height: 25)
-                //                  .padding(.leading, 15)
-                //                  .onTapGesture {}
+              Spacer()
 
-                Spacer()
-
-                if appSettings.showKeyboardDismissButton {
-                  Image(systemName: "chevron.down.circle.fill")
-                    .iconStyle()
-                    .padding(.trailing, 15)
-                    .onTapGesture { [weak ivc] in
-                      guard let ivc = ivc else { return }
-                      ivc.dismissKeyboard()
-                    }
-                }
+              if appSettings.showKeyboardDismissButton {
+                Image(systemName: "chevron.down.circle.fill")
+                  .iconStyle()
+                  .padding(.trailing, 15)
+                  .onTapGesture { [weak ivc] in
+                    guard let ivc = ivc else { return }
+                    ivc.dismissKeyboard()
+                  }
               }
-              .frame(minHeight: 50)
             }
+          } else {
+            HamsterAutocompleteToolbar(ivc: ivc)
+              .coordinateSpace(name: ActionCalloutContext.coordinateSpace)
           }
         }
         .frame(minWidth: 0, maxWidth: .infinity)
+        .frame(minHeight: 50)
       }
-
       keyboard
-        .background(backgroudColor)
     }
+    .background(backgroudColor)
   }
 
   var backgroudColor: Color {
@@ -122,4 +117,3 @@ struct AlphabetKeyboard: View {
 //      ? standardKeyboardWidth - 150 : standardKeyboardWidth
 //  }
 }
-

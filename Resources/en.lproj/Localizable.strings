@@ -14,6 +14,7 @@
 "return" = "return";
 "search" = "search";
 "space" = "space";
+"send" = "send";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";

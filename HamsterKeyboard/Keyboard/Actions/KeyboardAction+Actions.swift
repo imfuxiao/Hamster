@@ -53,12 +53,21 @@ extension KeyboardAction {
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
-    case .emoji(let emoji): return { $0?.insertText(emoji.char) }
+    case .emoji(let emoji): return {
+//      $0?.insertText(emoji.char)
+        if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+          ivc.keyboardContext.textDocumentProxy.insertText(emoji.char)
+        }
+      }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
     case .moveCursorForward: return { $0?.adjustTextPosition(byCharacterOffset: 1) }
     case .nextLocale: return { $0?.selectNextLocale() }
     case .nextKeyboard: return { $0?.selectNextKeyboard() }
-    case .primary: return { $0?.insertText(.newline) }
+    case .primary: return {
+        if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+          ivc.inputRimeKeycode(keycode: XK_Return)
+        }
+      }
     case .shift(let currentState):
       return {
         switch currentState {
@@ -66,8 +75,16 @@ extension KeyboardAction {
         case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
         }
       }
-    case .space: return { $0?.insertText(.space) }
-    case .tab: return { $0?.insertText(.tab) }
+    case .space: return {
+        if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+          ivc.inputRimeKeycode(keycode: XK_space)
+        }
+      }
+    case .tab: return {
+      if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+        ivc.inputRimeKeycode(keycode: XK_Tab)
+      }
+    }
     // 自定义按键动作处理
     case .custom(let name): return { $0?.insertText(name) }
     default: return nil

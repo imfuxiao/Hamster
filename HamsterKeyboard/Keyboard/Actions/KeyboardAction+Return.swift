@@ -6,9 +6,9 @@ extension KeyboardAction.ReturnType {
    The standard button to text for a certain locale.
    */
   public func hamsterButtonText(for locale: Locale) -> String? {
-    if locale.identifier == "zh-Hans" {
-      return chineseReturnText()
-    }
+//    if locale.identifier == "zh-Hans" {
+//      return chineseReturnText()
+//    }
     switch self {
     case .custom(let title): return title
     case .done: return KKL10n.done.hamsterText(for: locale)
