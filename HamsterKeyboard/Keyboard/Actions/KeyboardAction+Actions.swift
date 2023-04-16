@@ -61,17 +61,15 @@ extension KeyboardAction {
    */
   var hamsterStandardReleaseAction: GestureAction? {
     switch self {
-    case .character(let char): return {
+    case .character(let char), .characterMargin(let char): return {
         $0?.insertText(char)
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          switch ivc.keyboardContext.keyboardType {
-          case .alphabetic(.uppercased):
+          if ivc.keyboardContext.keyboardType.isAlphabetic(.uppercased) {
             ivc.setKeyboardType(.alphabetic(.lowercased))
-          default:
           }
         }
       }
-    case .characterMargin(let char): return { $0?.insertText(char) }
+//    case .characterMargin(let char): return { $0?.insertText(char) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return {
 //      $0?.insertText(emoji.char)
@@ -101,10 +99,10 @@ extension KeyboardAction {
         }
       }
     case .tab: return {
-      if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-        ivc.inputRimeKeycode(keycode: XK_Tab)
+        if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+          ivc.inputRimeKeycode(keycode: XK_Tab)
+        }
       }
-    }
     // 自定义按键动作处理
     case .custom(let name): return { $0?.insertText(name) }
     default: return nil
