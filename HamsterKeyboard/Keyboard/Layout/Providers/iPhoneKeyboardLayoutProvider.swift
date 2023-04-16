@@ -100,7 +100,21 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       return isLastNumericInputRow(row, for: context)
         ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return context.isGridViewKeyboardType ? .input : lowerSystemButtonWidth(for: context)
-    case .keyboardType: return context.isGridViewKeyboardType ? .input : bottomSystemButtonWidth(for: context)
+//    case .keyboardType: return context.isGridViewKeyboardType ? .input : bottomSystemButtonWidth(for: context)
+    case .keyboardType(let type):
+      if context.isGridViewKeyboardType {
+        return .input
+      }
+      if context.keyboardType.isAlphabetic {
+        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+      }
+      if context.keyboardType == .numeric && type.isAlphabetic {
+        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+      }
+      if context.keyboardType == .symbolic && type.isAlphabetic {
+        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+      }
+      return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary: return context.isGridViewKeyboardType ? .input : .percentage(isPortrait(context) ? 0.25 : 0.195)
     case .shift: return lowerSystemButtonWidth(for: context)

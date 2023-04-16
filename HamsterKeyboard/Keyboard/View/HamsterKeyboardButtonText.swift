@@ -79,7 +79,6 @@ struct HamsterKeyboardButtonText: View {
         Text(text)
           .lineLimit(1)
 //          .offset(y: useNegativeOffset ? -2 : 0)
-          .font(.system(size: 20))
       }
     } else {
       VStack(spacing: 0) {
@@ -90,7 +89,6 @@ struct HamsterKeyboardButtonText: View {
           Text(text)
             .lineLimit(1)
             .offset(y: showExtendArea ? -2 : 0)
-            .font(.system(size: 20))
         }
       }
     }
