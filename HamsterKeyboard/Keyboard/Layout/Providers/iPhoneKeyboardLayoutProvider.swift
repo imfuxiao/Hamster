@@ -106,17 +106,17 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
         return .input
       }
       if context.keyboardType.isAlphabetic {
-        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+        return lastRowNoCharacterButtonWidth(for: context)
       }
       if context.keyboardType == .numeric && type.isAlphabetic {
-        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+        return lastRowNoCharacterButtonWidth(for: context)
       }
       if context.keyboardType == .symbolic && type.isAlphabetic {
-        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+        return lastRowNoCharacterButtonWidth(for: context)
       }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .primary: return context.isGridViewKeyboardType ? .input : .percentage(isPortrait(context) ? 0.25 : 0.195)
+    case .primary: return context.isGridViewKeyboardType ? .input : lastRowNoCharacterButtonWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     case .custom: return .input
     default: return .available
@@ -221,6 +221,13 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
    */
   func lastSymbolicInputWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
     .percentage(0.14)
+  }
+
+  /**
+   最后一行非字母按钮宽度
+   */
+  func lastRowNoCharacterButtonWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
+    .percentage(isPortrait(context) ? 0.17 : 0.195)
   }
 
   /**

@@ -300,14 +300,6 @@ extension HamsterKeyboardViewController {
     return colorSchema
   }
   
-  // 修改输入方案
-  func changeInputSchema(_ schema: String) {
-    if !schema.isEmpty {
-//      self.rimeEngine.needChangeInputSchema = true
-//      self.rimeEngine.userInputSchemaName = schema
-    }
-  }
-  
   /// 根据索引选择候选字
   func selectCandidateIndex(index: Int) {
     if self.rimeEngine.selectCandidate(index: index) {
