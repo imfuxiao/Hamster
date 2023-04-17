@@ -29,7 +29,7 @@ struct HamsterKeyboardActionButtonContent: View {
     self.keyboardContext = keyboardContext
     self.appSettings = appSettings
 
-    let translateFuctionText = { (name: String) -> String in
+    let translateFunctionText = { (name: String) -> String in
       if name.hasPrefix("#"), let slidFunction = SlideFuction(rawValue: name) {
         return slidFunction.text
       }
@@ -39,7 +39,7 @@ struct HamsterKeyboardActionButtonContent: View {
     var buttonExtendCharacter: [String: String] = [:]
     for (fullKey, fullValue) in appSettings.keyboardUpAndDownSlideSymbol {
       var key = fullKey
-      let value = translateFuctionText(fullValue)
+      let value = translateFunctionText(fullValue)
       let suffix = String(key.removeLast())
 
       // 上划

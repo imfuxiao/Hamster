@@ -104,10 +104,10 @@ struct AlphabetKeyboard: View {
       }
       keyboard
     }
-    .background(backgroudColor)
+    .background(backgroundColor)
   }
 
-  var backgroudColor: Color {
+  var backgroundColor: Color {
     return rimeEngine.currentColorSchema.backColor ?? .clearInteractable
   }
 
