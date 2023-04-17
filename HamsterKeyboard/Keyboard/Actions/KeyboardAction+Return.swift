@@ -10,7 +10,13 @@ extension KeyboardAction.ReturnType {
 //      return chineseReturnText()
 //    }
     switch self {
-    case .custom(let title): return title
+    case .custom(let title): {
+      // workaround until https://github.com/KeyboardKit/KeyboardKit/issues/432 resolved
+      if title == "send" {
+        return KKL10n.send.hamsterText(for: locale)
+      }
+      return title
+    }
     case .done: return KKL10n.done.hamsterText(for: locale)
     case .go: return KKL10n.go.hamsterText(for: locale)
     case .join: return KKL10n.join.hamsterText(for: locale)
