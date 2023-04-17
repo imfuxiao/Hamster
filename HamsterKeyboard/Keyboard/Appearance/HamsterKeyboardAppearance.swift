@@ -105,12 +105,12 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     if appSettings.enableRimeColorSchema {
       let colorSchema = rimeEngine.currentColorSchema
       return KeyboardButtonStyle(
-        backgroundColor: colorSchema.backColor,
+        backgroundColor: colorSchema.backColor ?? buttonBackgroundColor(for: action, isPressed: isPressed),
         foregroundColor: colorSchema.candidateTextColor ?? buttonForegroundColor(for: action, isPressed: isPressed),
         font: buttonFont(for: action),
         cornerRadius: buttonCornerRadius(for: action),
         border: KeyboardButtonBorderStyle(color: colorSchema.borderColor ?? .clearInteractable, size: 1),
-        shadow: .noShadow
+        shadow: buttonShadowStyle(for: action)
       )
     }
     return KeyboardButtonStyle(
