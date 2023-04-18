@@ -116,7 +116,7 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       if context.keyboardType == .symbolic && type.isAlphabetic {
         return lastRowNoCharacterButtonWidth(for: context)
       }
-      return bottomSystemButtonWidth(for: context)
+      return lowerSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary: return context.isGridViewKeyboardType ? .input : lastRowNoCharacterButtonWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
