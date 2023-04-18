@@ -13,6 +13,7 @@
 		C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */; };
 		C00BAA0529ED501300325ED2 /* CandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0429ED501300325ED2 /* CandidateView.swift */; };
 		C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0929ED507200325ED2 /* CollectionView.swift */; };
+		C00BAA0B29ED920E00325ED2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
 		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
 		C020AD4729B73D5400B26142 /* RimeEngine+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */; };
@@ -1287,6 +1288,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00BAA0B29ED920E00325ED2 /* Assets.xcassets in Resources */,
 				C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */,
 				C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */,
 			);

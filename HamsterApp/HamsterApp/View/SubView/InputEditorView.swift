@@ -70,6 +70,18 @@ struct InputEditorView: View {
         }
         .animation(.linear, value: appSettings.showSpaceLeftButton)
         .functionCell()
+        
+        VStack {
+          HStack {
+            Toggle(isOn: $appSettings.showSpaceRightSwitchLanguageButton) {
+              Text("空格右边中英切换键")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+            }
+          }
+        }
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
+
 
         VStack {
           HStack {

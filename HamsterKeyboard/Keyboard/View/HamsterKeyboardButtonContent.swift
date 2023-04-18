@@ -99,7 +99,8 @@ private extension HamsterKeyboardActionButtonContent {
     if action == .space {
       spaceView
     } else if let image = appearance.buttonImage(for: action) {
-      image.scaleEffect(appearance.buttonImageScaleFactor(for: action))
+      image
+        .scaleEffect(appearance.buttonImageScaleFactor(for: action))
     } else if let text = appearance.buttonText(for: action) {
       textView(for: text)
     } else {

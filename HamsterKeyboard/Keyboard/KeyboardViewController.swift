@@ -40,7 +40,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.keyboardLayoutProvider = HamsterStandardKeyboardLayoutProvider(
       keyboardContext: self.keyboardContext,
       inputSetProvider: self.hamsterInputSetProvider,
-      appSettings: self.appSettings
+      appSettings: self.appSettings,
+      rimeEngine: self.rimeEngine
     )
     
     // 键盘默认行为: 这里可以做如改变键盘的类型
@@ -176,8 +177,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
-    
-    
   }
   
   // MARK: - KeyboardController
@@ -227,7 +226,21 @@ extension HamsterKeyboardViewController {
   }
   
   // 中英切换
-  func switchEnglishChinese() {
+  func switchEnglishChinese(_ imageName: String = "") {
+//    中文模式下, 在已经有候选字的情况下, 切换英文模式.
+//
+//    情况1. 清空中文输入, 开始英文输入
+//    self.rimeEngine.reset()
+    
+//    情况2. 候选栏字母上屏, 并开启英文输入
+    var userInputKey = self.rimeEngine.userInputKey
+    if !userInputKey.isEmpty {
+      userInputKey.removeAll(where: { $0 == " " })
+      self.textDocumentProxy.insertText(userInputKey)
+    }
+    self.rimeEngine.reset()
+//    情况3. 首选候选字上屏, 并开启英文输入
+//    _ = self.candidateTextOnScreen()
     self.rimeEngine.asciiMode.toggle()
   }
   

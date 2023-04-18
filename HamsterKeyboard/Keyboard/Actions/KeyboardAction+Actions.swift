@@ -38,7 +38,7 @@ extension KeyboardAction {
    */
   var hamsterStandardLongPressAction: GestureAction? {
     switch self {
-    case .space: return { _ in }
+    case .space: return nil
     default: return nil
     }
   }
@@ -105,6 +105,20 @@ extension KeyboardAction {
       }
     // 自定义按键动作处理
     case .custom(let name): return { $0?.insertText(name) }
+    case .image(_, _, let imageName):
+      if imageName.isEmpty {
+        return nil
+      }
+      return {
+        guard let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController else {
+          return
+        }
+        switch imageName {
+        case KeyboardConstant.ImageName.ChineseLanguageImageName, KeyboardConstant.ImageName.EnglishLanguageImageName:
+          ivc.switchEnglishChinese(imageName)
+        default: return
+        }
+      }
     default: return nil
     }
   }

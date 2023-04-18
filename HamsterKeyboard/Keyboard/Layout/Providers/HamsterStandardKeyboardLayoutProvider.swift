@@ -4,17 +4,19 @@ import SwiftUI
 
 class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
   let appSettings: HamsterAppSettings
+  let rimeEngine: RimeEngine
   let hamsterInputSetProvider: HamsterInputSetProvider
 
   init(
     keyboardContext: KeyboardContext,
     inputSetProvider: HamsterInputSetProvider,
     localizedProviders: [LocalizedKeyboardLayoutProvider] = [],
-    appSettings: HamsterAppSettings)
-  {
+    appSettings: HamsterAppSettings,
+    rimeEngine: RimeEngine
+  ) {
     self.appSettings = appSettings
+    self.rimeEngine = rimeEngine
     self.hamsterInputSetProvider = inputSetProvider
-
     super.init(keyboardContext: keyboardContext, inputSetProvider: inputSetProvider, localizedProviders: localizedProviders)
   }
 
@@ -29,7 +31,9 @@ class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
    */
   lazy var hamsteriPhoneProvider = HamsteriPhoneKeyboardLayoutProvider(
     inputSetProvider: hamsterInputSetProvider,
-    appSettings: appSettings)
+    appSettings: appSettings,
+    rimeEngine: rimeEngine
+  )
 
   override func keyboardLayoutProvider(for context: KeyboardContext) -> KeyboardLayoutProvider {
     if let provider = localizedProviders.value(for: context.locale) { return provider }
@@ -40,7 +44,7 @@ class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
     let layout = keyboardLayoutProvider(for: context)
       .keyboardLayout(for: context)
 
-    // TODO 也可以在这里改变键盘布局
+    // TODO: 也可以在这里改变键盘布局
     if keyboardContext.isGridViewKeyboardType {
 //      var rows = layout.itemRows
 //      var row = layout.itemRows[0]

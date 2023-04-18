@@ -49,6 +49,11 @@ class KeyboardConstant {
   enum Action {
     static let endDragGesture = "endGragGesture"
   }
+  
+  enum ImageName {
+    static let ChineseLanguageImageName = "cn"
+    static let EnglishLanguageImageName = "en"
+  }
 }
 
 //enum KeySymbol: Int32 {

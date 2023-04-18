@@ -4,6 +4,20 @@ import SwiftUI
 
 public extension KeyboardAction {
   /**
+   The action's standard button image.
+   */
+  func hamsterButtonImage(for context: KeyboardContext) -> Image? {
+    switch self {
+    case .image(_, _, let imageName):
+      if !imageName.isEmpty {
+        return Image(imageName)
+      }
+      return nil
+    default: return nil
+    }
+  }
+
+  /**
    The action's standard button text.
    */
   func hamsterButtonText(for context: KeyboardContext) -> String? {

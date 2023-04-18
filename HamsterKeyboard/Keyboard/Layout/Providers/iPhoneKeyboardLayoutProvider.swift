@@ -3,10 +3,12 @@ import KeyboardKit
 
 class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   let appSettings: HamsterAppSettings
+  let rimeEngine: RimeEngine
   let hamsterInputSetProvider: HamsterInputSetProvider
 
-  init(inputSetProvider: HamsterInputSetProvider, appSettings: HamsterAppSettings) {
+  init(inputSetProvider: HamsterInputSetProvider, appSettings: HamsterAppSettings, rimeEngine: RimeEngine) {
     self.appSettings = appSettings
+    self.rimeEngine = rimeEngine
     self.hamsterInputSetProvider = inputSetProvider
     super.init(inputSetProvider: inputSetProvider)
   }
@@ -119,6 +121,9 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     case .primary: return context.isGridViewKeyboardType ? .input : lastRowNoCharacterButtonWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     case .custom: return .input
+    case .image:
+      // Logger.shared.log.debug("iPhoneKeyboardLayoutProvider itemSizeWidth(): image action, \(description), keyboardImageName = \(keyboardImageName), imageName = \(imageName)")
+      return .input
     default: return .available
     }
   }
@@ -147,9 +152,29 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     if appSettings.showSpaceLeftButton {
       result.append(.custom(named: appSettings.spaceLeftButtonValue))
     }
+
     result.append(.space)
+
     if appSettings.showSpaceRightButton {
       result.append(.custom(named: appSettings.spaceRightButtonValue))
+    }
+
+    if appSettings.showSpaceRightSwitchLanguageButton && context.keyboardType.isAlphabetic {
+      if rimeEngine.asciiMode {
+        result.append(
+          .image(
+            description: "中英切换",
+            keyboardImageName: "",
+            imageName: KeyboardConstant.ImageName.EnglishLanguageImageName)
+        )
+      } else {
+        result.append(
+          .image(
+            description: "中英切换",
+            keyboardImageName: "",
+            imageName: KeyboardConstant.ImageName.ChineseLanguageImageName)
+        )
+      }
     }
 
     // 根据当前上下文显示不同功能的回车键

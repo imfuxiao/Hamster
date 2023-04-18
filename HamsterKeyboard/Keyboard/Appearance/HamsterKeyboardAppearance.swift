@@ -14,7 +14,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     self.rimeEngine = rimeEngine
     super.init(keyboardContext: keyboardContext)
   }
-  
+
   /**
    The button font to use for a certain action.
    */
@@ -23,7 +23,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     guard let weight = buttonFontWeight(for: action) else { return rawFont }
     return rawFont.weight(weight)
   }
-  
+
   /**
    The button font size to use for a certain action.
    */
@@ -36,7 +36,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     if action.isSystemAction || action.isPrimaryAction { return 16 }
     return 23
   }
-  
+
   /**
    The button font size to force override for iPad devices.
    */
@@ -49,8 +49,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     if action.isKeyboardTypeAction(.symbolic) { return 20 }
     return nil
   }
-  
-  
+
   /**
    The button font size to force override for some actions.
    */
@@ -61,7 +60,7 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     default: return nil
     }
   }
-  
+
   /**
    The button font size to use for a certain keyboard type.
    */
@@ -73,7 +72,6 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     default: return 14
     }
   }
-  
 
   // 九宫格自定义背景色
   override func buttonBackgroundColor(for action: KeyboardAction, isPressed: Bool) -> Color {
@@ -92,7 +90,20 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
 
   // TODO: 图片按钮
   override func buttonImage(for action: KeyboardAction) -> Image? {
-    action.standardButtonImage(for: keyboardContext)
+    if let image = action.hamsterButtonImage(for: keyboardContext) {
+      return image
+    }
+    return action.standardButtonImage(for: keyboardContext)
+  }
+
+  /**
+   The scale factor to apply to the button content, if any.
+   */
+  override func buttonImageScaleFactor(for action: KeyboardAction) -> CGFloat {
+    switch keyboardContext.deviceType {
+    case .pad: return 1.2
+    default: return 0.9
+    }
   }
 
   // 自定义键盘文字国际化

@@ -89,6 +89,9 @@ private enum HamsterAppSettingKeys: String {
   // 空格右边按键键值
   case spaceRightButtonValue = "app.keyboard.spaceRightButtonValue"
 
+  // 是否显示空格右边中英文切换键
+  case showSpaceRightSwitchLanguageButton = "app.keyboard.showSpaceRightSwitchLanguageButton"
+
   // rime 候选字最大数量
   case rimeMaxCandidateSize = "rime.maxCandidateSize"
 
@@ -132,6 +135,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.showSpaceLeftButton.rawValue: true,
       HamsterAppSettingKeys.spaceLeftButtonValue.rawValue: ",",
       HamsterAppSettingKeys.showSpaceRightButton.rawValue: true,
+      HamsterAppSettingKeys.showSpaceRightSwitchLanguageButton.rawValue: false,
       HamsterAppSettingKeys.spaceRightButtonValue.rawValue: ".",
       HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue: 100,
       HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue: 20,
@@ -158,6 +162,7 @@ public class HamsterAppSettings: ObservableObject {
     self.spaceLeftButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue) ?? ""
     self.showSpaceRightButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     self.spaceRightButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue) ?? ""
+    self.showSpaceRightSwitchLanguageButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightSwitchLanguageButton.rawValue)
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeCandidateCommentFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue)
@@ -288,6 +293,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, spaceRightButtonValue": spaceRightButtonValue])
       UserDefaults.hamsterSettingsDefault.set(
         spaceRightButtonValue, forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue)
+    }
+  }
+
+  // 是否显示空格右边中英切换按键
+  @Published
+  var showSpaceRightSwitchLanguageButton: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, showSpaceRightSwitchLanguageButton": showSpaceRightSwitchLanguageButton])
+      UserDefaults.hamsterSettingsDefault.set(
+        showSpaceRightSwitchLanguageButton, forKey: HamsterAppSettingKeys.showSpaceRightSwitchLanguageButton.rawValue)
     }
   }
 
