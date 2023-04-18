@@ -116,6 +116,9 @@ private enum HamsterAppSettingKeys: String {
 
   // 启用数字九宫格键盘
   case enableNumberNineGrid = "keyboard.enableNumberNineGrid"
+  
+  // 键盘是否自动小写
+  case enableKeyboardAutomaticallyLowercase = "keyboard.enableKeyboardAutomaticallyLowercase"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -148,6 +151,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue: true,
       HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue: [:] as [String: String],
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
+      HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -174,6 +178,7 @@ public class HamsterAppSettings: ObservableObject {
     self.showKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue)
     self.keyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue) as! [String: String]
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
+    self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
   }
 
   // App是否首次运行
@@ -412,6 +417,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, enableNumberNineGrid": enableNumberNineGrid])
       UserDefaults.hamsterSettingsDefault.set(
         enableNumberNineGrid, forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
+    }
+  }
+  
+  // 键盘: 启用键盘自动转小写
+  @Published
+  var enableKeyboardAutomaticallyLowercase: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardAutomaticallyLowercase": enableKeyboardAutomaticallyLowercase])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableKeyboardAutomaticallyLowercase, forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     }
   }
 }

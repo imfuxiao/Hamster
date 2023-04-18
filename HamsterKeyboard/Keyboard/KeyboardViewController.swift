@@ -177,6 +177,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
+    // TODO: 这里添加英文自动转大写功能, 参考: KeyboardContext.preferredAutocapitalizedKeyboardType
   }
   
   // MARK: - KeyboardController
@@ -215,7 +216,9 @@ extension HamsterKeyboardViewController {
     let rimeColorSchemaName = self.appSettings.rimeColorSchema
     self.log.info("enableRimeColorSchema and rimeInputSchema: \(enableColorSchema), \(rimeColorSchemaName)")
     if enableColorSchema {
-      self.rimeEngine.currentColorSchema = self.getCurrentColorSchema()
+      DispatchQueue.main.async {
+        self.rimeEngine.currentColorSchema = self.getCurrentColorSchema()
+      }
     }
   }
   

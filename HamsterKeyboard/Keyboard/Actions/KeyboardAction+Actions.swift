@@ -19,18 +19,7 @@ extension KeyboardAction {
    The action that by default should be triggered when the
    action is double tapped.
    */
-  var hamsterStandardDoubleTapAction: GestureAction? {
-    switch self {
-    case .shift(let currentState):
-      return {
-        switch currentState {
-        case .lowercased: $0?.setKeyboardType(.alphabetic(.capsLocked))
-        case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
-        }
-      }
-    default: return nil
-    }
-  }
+  var hamsterStandardDoubleTapAction: GestureAction? { nil }
 
   /**
    The action that by default should be triggered when the
@@ -63,18 +52,11 @@ extension KeyboardAction {
     switch self {
     case .character(let char), .characterMargin(let char): return {
         $0?.insertText(char)
-        if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          if ivc.keyboardContext.keyboardType.isAlphabetic(.uppercased) {
-            ivc.setKeyboardType(.alphabetic(.lowercased))
-          }
-        }
       }
-//    case .characterMargin(let char): return { $0?.insertText(char) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return {
-//      $0?.insertText(emoji.char)
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          ivc.keyboardContext.textDocumentProxy.insertText(emoji.char)
+          ivc.textDocumentProxy.insertText(emoji.char)
         }
       }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }

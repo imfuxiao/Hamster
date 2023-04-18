@@ -109,6 +109,21 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     triggerFeedback(for: gesture, on: action)
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
     gestureAction(keyboardController)
+    // TODO: 这里可以添加中英自动加入空格等特性
+    // tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
+    // tryEndSentence(after: gesture, on: action)
+    // 这里改变键盘类型: 比如双击, 不能在KeyboardAction+Action那里改
+    tryChangeKeyboardType(after: gesture, on: action)
+  }
+
+  /**
+   Try to change `keyboardType` after a `gesture` has been
+   performed on the provided `action`.
+   */
+  override func tryChangeKeyboardType(after gesture: KeyboardGesture, on action: KeyboardAction) {
+    guard keyboardBehavior.shouldSwitchToPreferredKeyboardType(after: gesture, on: action) else { return }
+    let newType = keyboardBehavior.preferredKeyboardType(after: gesture, on: action)
+    keyboardContext.keyboardType = newType
   }
 
   override func triggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {

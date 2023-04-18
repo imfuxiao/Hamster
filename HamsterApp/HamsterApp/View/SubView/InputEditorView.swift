@@ -82,6 +82,20 @@ struct InputEditorView: View {
         .animation(.linear, value: appSettings.showSpaceLeftButton)
         .functionCell()
 
+        VStack {
+          HStack {
+            Toggle(isOn: $appSettings.enableKeyboardAutomaticallyLowercase) {
+              Text("Shift自动转小写")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+            }
+          }
+          HStack {
+            Text("默认键盘大小写会保持自身状态. 开启此选项后, 当在大写状态在下输入一个字母后会自动转为小写状态. 注意: 双击Shift会保持锁定")
+                .font(.system(size: 14))
+          }
+        }
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
 
         VStack {
           HStack {
