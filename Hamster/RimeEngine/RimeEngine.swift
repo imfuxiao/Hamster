@@ -146,14 +146,17 @@ enum RimeDeployStatus {
 }
 
 public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
+  typealias DeployCallbackFunction = () -> Void
+  typealias ChangeCallbackFunction = (String) -> Void
+
   private let rimeAPI: IRimeAPI = .init()
   private var isFirstRunning = true
   private var traits: IRimeTraits?
-  private var deployStartCallback: () -> Void = {}
-  private var deploySuccessCallback: () -> Void = {}
-  private var deployFailureCallback: () -> Void = {}
-  private var changeModeCallback: (String) -> Void = { _ in }
-  private var loadingSchemaCallback: (String) -> Void = { _ in }
+  private var deployStartCallback: DeployCallbackFunction?
+  private var deploySuccessCallback: DeployCallbackFunction?
+  private var deployFailureCallback: DeployCallbackFunction?
+  private var changeModeCallback: ChangeCallbackFunction?
+  private var loadingSchemaCallback: ChangeCallbackFunction?
 
   /// rime session
   var session: RimeSessionId = 0
@@ -458,7 +461,7 @@ public extension RimeEngine {
 
   // MARK: 通知回调函数
 
-  func setDelployStartCallback(callback: @escaping () -> Void) {
+  func setDeployStartCallback(callback: @escaping () -> Void) {
     deployStartCallback = callback
   }
 
@@ -482,33 +485,33 @@ public extension RimeEngine {
 // MARK: implementation IRimeNotificationDelegate
 
 public extension RimeEngine {
-  func onDelployStart() {
-    Logger.shared.log.info("HamsterRimeNotification: onDelployStart")
+  func onDeployStart() {
+    Logger.shared.log.info("HamsterRimeNotification: onDeployStart")
 //    DispatchQueue.main.async { [weak self] in
 //      if let self = self {
 //        self.deployState = .Begin
 //      }
 //    }
-    deployStartCallback()
+    deployStartCallback?()
   }
 
   func onDeploySuccess() {
     Logger.shared.log.info("HamsterRimeNotification: onDeploySuccess")
-    deploySuccessCallback()
+    deploySuccessCallback?()
   }
 
   func onDeployFailure() {
     Logger.shared.log.info("HamsterRimeNotification: onDeployFailure")
-    deployFailureCallback()
+    deployFailureCallback?()
   }
 
   func onChangeMode(_ mode: String) {
     Logger.shared.log.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
-    changeModeCallback(mode)
+    changeModeCallback?(mode)
   }
 
   func onLoadingSchema(_ schema: String) {
     Logger.shared.log.info("HamsterRimeNotification: onLoadingSchema, schema: \(schema)")
-    loadingSchemaCallback(schema)
+    loadingSchemaCallback?(schema)
   }
 }
