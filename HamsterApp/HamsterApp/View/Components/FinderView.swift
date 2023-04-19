@@ -20,11 +20,29 @@ struct FinderView: View {
 
   var urls: [URL] {
     do {
-      return try FileManager.default.contentsOfDirectory(
+      let fileManager = FileManager.default
+      let fileUrls = try fileManager.contentsOfDirectory(
         at: finderURL.appendingPathComponent(pathStack.joined(separator: "/")),
         includingPropertiesForKeys: [.fileResourceTypeKey],
         options: [.skipsHiddenFiles]
       )
+      let sortedUrls = fileUrls.sorted(by: { (url1, url2) -> Bool in
+        var isDirectory1: ObjCBool = false
+        var isDirectory2: ObjCBool = false
+        fileManager.fileExists(atPath: url1.path, isDirectory: &isDirectory1)
+        fileManager.fileExists(atPath: url2.path, isDirectory: &isDirectory2)
+
+        // directory comes first
+        if isDirectory1.boolValue && !isDirectory2.boolValue {
+          return true
+        } else if !isDirectory1.boolValue && isDirectory2.boolValue {
+          return false
+        }
+        
+        // both are directories or files, sort by filename alphabetically
+        return url1.lastPathComponent.lowercased() < url2.lastPathComponent.lowercased()
+      })
+      return sortedUrls
     } catch {
       Logger.shared.log.error("FinderView currentURL get error: \(error.localizedDescription)")
       return []
