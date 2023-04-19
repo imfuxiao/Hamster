@@ -209,10 +209,19 @@ extension CollectionView {
       }
     }
 
+    // 询问委托一个部分连续的行或列之间的间距。
+    // 对于一个垂直滚动的网格，这个值表示连续的行之间的最小间距。
+    // 对于一个水平滚动的网格，这个值代表连续的列之间的最小间距。
+    // 这个间距不应用于标题和第一行之间的空间或最后一行和页脚之间的空间。
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
       return self.view.itemSpacing.mainAxisSpacing
     }
 
+    // 向委托询问某部分的行或列中连续项目之间的间距。
+    // 你对这个方法的实现可以返回一个固定的值或者为每个部分返回不同的间距值。
+    // 对于一个垂直滚动的网格，这个值代表了同一行中项目之间的最小间距。
+    // 对于一个水平滚动的网格，这个值代表同一列中项目之间的最小间距。
+    // 这个间距是用来计算单行可以容纳多少个项目的，但是在确定了项目的数量之后，实际的间距可能会被向上调整。
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
       return self.view.itemSpacing.crossAxisSpacing
     }

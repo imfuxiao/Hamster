@@ -94,13 +94,11 @@ struct AlphabetKeyboard: View {
                   }
               }
             }
+            .frame(minWidth: 0, maxWidth: .infinity, minHeight: appSettings.enableInputEmbeddedMode ? 40 : 50, maxHeight: .infinity)
           } else {
             HamsterAutocompleteToolbar(ivc: ivc)
-              .coordinateSpace(name: ActionCalloutContext.coordinateSpace)
           }
         }
-        .frame(minWidth: 0, maxWidth: .infinity)
-        .frame(minHeight: 50)
       }
       keyboard
     }

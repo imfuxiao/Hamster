@@ -96,6 +96,17 @@ struct InputEditorView: View {
         }
         .animation(.linear, value: appSettings.showSpaceLeftButton)
         .functionCell()
+        
+        VStack {
+          HStack {
+            Toggle(isOn: $appSettings.enableInputEmbeddedMode) {
+              Text("候选栏内嵌模式")
+                .font(.system(size: 16, weight: .bold, design: .rounded))
+            }
+          }
+        }
+        .animation(.linear, value: appSettings.showSpaceLeftButton)
+        .functionCell()
 
         VStack {
           HStack {
