@@ -14,10 +14,16 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     guard let ivc = ivc else { return { _, _ in } }
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
     return { [weak ivc] action, offset in
-      if case .character(let char) = action {
+      var tempChar = ""
+        if case .character(let char) = action {
+            tempChar = char
+        } else if .space == action {
+            tempChar = "space"
+        }
+      if "" != tempChar {
         let actionKey = offset < 0 ?
-          char.lowercased() + KeyboardConstant.Character.SlideDown :
-          char.lowercased() + KeyboardConstant.Character.SlideUp
+          tempChar.lowercased() + KeyboardConstant.Character.SlideDown :
+          tempChar.lowercased() + KeyboardConstant.Character.SlideUp
 
         guard let value = actionConfig[actionKey] else {
           return
@@ -57,6 +63,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       }
     }
   }
+    
 
   public init(
     inputViewController ivc: HamsterKeyboardViewController,
@@ -64,9 +71,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     keyboardFeedbackHandler: KeyboardFeedbackHandler
   ) {
     weak var keyboardController = ivc
-    self.hamsterKeyboardController = keyboardController
-    self.appSettings = ivc.appSettings
-    self.characterGragActionHandler = CharacterDragHandler(
+    hamsterKeyboardController = keyboardController
+    appSettings = ivc.appSettings
+    characterGragActionHandler = CharacterDragHandler(
       keyboardContext: keyboardContext,
       feedbackHandler: keyboardFeedbackHandler,
       action: characterGragAction(ivc)
@@ -105,7 +112,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   }
 
   override func handle(_ gesture: KeyboardGesture, on action: KeyboardAction, replaced: Bool) {
-    if !replaced && tryHandleReplacementAction(before: gesture, on: action) { return }
+    if !replaced, tryHandleReplacementAction(before: gesture, on: action) { return }
     triggerFeedback(for: gesture, on: action)
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
     gestureAction(keyboardController)
@@ -138,6 +145,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     case .space:
       if appSettings.slideBySapceButton {
         spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
+      }
+      if appSettings.enableKeyboardUpAndDownSlideSymbol {
+        characterGragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     case .character:
       if appSettings.enableKeyboardUpAndDownSlideSymbol {

@@ -116,9 +116,11 @@ private extension HamsterKeyboardActionButtonContent {
 //      Text(spaceText)
 //    }
     if rimeEngine.asciiMode {
-      Text("西文")
+//      Text("西文")
+        textView(for: "西文")
     } else {
-      Text("中文")
+//      Text("中文")
+      textView(for: "中文")
     }
   }
 
