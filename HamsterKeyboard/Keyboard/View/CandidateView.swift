@@ -74,9 +74,11 @@ struct CandidateHStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let text = data.title + (data.comment ?? "")
-        let fontSize = (text as NSString).size(withAttributes: titleFontAttributes)
-        return CGSize(width: fontSize.width + CGFloat(15), height: collectionView.bounds.height)
+        let titleFont = (data.title as NSString).size(withAttributes: titleFontAttributes)
+
+        let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
+        let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
+        return CGSize(width: titleFont.width + commentFont.width + CGFloat(15), height: collectionView.bounds.height)
       },
       itemSpacing: .init(mainAxisSpacing: 5, crossAxisSpacing: 5),
       rawCustomize: { collectionView in
