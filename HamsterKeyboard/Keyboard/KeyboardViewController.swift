@@ -125,6 +125,18 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         self.rimeEngine.maxCandidateCount = rimeMaxCandidateSize
       }
       .store(in: &self.cancellables)
+    
+    // 候选输入内嵌功能
+    if self.appSettings.enableInputEmbeddedMode {
+      self.rimeEngine.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] userInputKey in
+          guard let self = self else { return }
+          self.log.info("combine $userInputKey: \(userInputKey)")
+          self.textDocumentProxy.setMarkedText(userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0))
+        }
+        .store(in: &self.cancellables)
+    }
   }
   
   private func setupRimeEngine() {

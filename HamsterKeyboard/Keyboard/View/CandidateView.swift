@@ -22,7 +22,7 @@ struct CandidateView: View {
   }
 
   var body: some View {
-    HStack(spacing: 0) {
+    HStack(alignment: .bottom, spacing: 0) {
       Text(data.text)
         .font(style.item.titleFont)
         .foregroundColor(
@@ -42,9 +42,12 @@ struct CandidateView: View {
       }
     }
     .padding(.all, 5)
-    .background(data.isAutocomplete ? hamsterColor.hilitedCandidateBackColor ?? .secondary : Color.clearInteractable)
+//    .background(
+//      RoundedRectangle(cornerRadius: style.autocompleteBackground.cornerRadius)
+//        .fill(data.isAutocomplete ? hamsterColor.hilitedCandidateBackColor ?? .gray : Color.clearInteractable)
+//    )
+    .background(data.isAutocomplete ? hamsterColor.hilitedCandidateBackColor ?? .gray : Color.clearInteractable)
     .cornerRadius(style.autocompleteBackground.cornerRadius)
-    .contentShape(Rectangle())
     .onTapGesture {
       action(data)
     }
@@ -71,11 +74,13 @@ struct CandidateHStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let text = data.title + (data.comment ?? "")
-        let fontSize = (text as NSString).size(withAttributes: titleFontAttributes)
-        return CGSize(width: fontSize.width + CGFloat(15), height: collectionView.bounds.height)
+        let titleFont = (data.title as NSString).size(withAttributes: titleFontAttributes)
+
+        let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
+        let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
+        return CGSize(width: titleFont.width + commentFont.width + CGFloat(15), height: collectionView.bounds.height)
       },
-      itemSpacing: .init(mainAxisSpacing: 5, crossAxisSpacing: 0),
+      itemSpacing: .init(mainAxisSpacing: 5, crossAxisSpacing: 5),
       rawCustomize: { collectionView in
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentOffset.x = .zero

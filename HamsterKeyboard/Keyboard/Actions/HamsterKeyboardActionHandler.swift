@@ -5,11 +5,12 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public weak var hamsterKeyboardController: HamsterKeyboardViewController?
 
   // 其他按键滑动处理
-  public let characterGragActionHandler: SlideGestureHandler
+  public let characterDragActionHandler: SlideGestureHandler
   public let appSettings: HamsterAppSettings
+  public let rimeEngine: RimeEngine
 
   // 键盘上下滑动处理
-  let characterGragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { keyboardController in
+  let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { keyboardController in
     weak var ivc = keyboardController
     guard let ivc = ivc else { return { _, _ in } }
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
@@ -33,7 +34,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
         // TODO: 以#开头为功能
         if value.hasPrefix("#"), value.count > 1 {
-          let function = SlideFuction(rawValue: value)
+          let function = SlideFunction(rawValue: value)
           switch function {
           case .SimplifiedTraditionalSwitch:
             ivc.switchTraditionalSimplifiedChinese()
@@ -71,12 +72,13 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     keyboardFeedbackHandler: KeyboardFeedbackHandler
   ) {
     weak var keyboardController = ivc
-    hamsterKeyboardController = keyboardController
-    appSettings = ivc.appSettings
-    characterGragActionHandler = CharacterDragHandler(
+    self.hamsterKeyboardController = keyboardController
+    self.appSettings = ivc.appSettings
+    self.rimeEngine = ivc.rimeEngine
+    self.characterDragActionHandler = CharacterDragHandler(
       keyboardContext: keyboardContext,
       feedbackHandler: keyboardFeedbackHandler,
-      action: characterGragAction(ivc)
+      action: characterDragAction(ivc)
     )
 
     super.init(
@@ -143,15 +145,19 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     switch action {
     case .space:
-      if appSettings.slideBySapceButton {
+      if appSettings.slideBySpaceButton {
+        if appSettings.enableInputEmbeddedMode && !rimeEngine.userInputKey.isEmpty {
+          return
+        }
         spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
       }
       if appSettings.enableKeyboardUpAndDownSlideSymbol {
-        characterGragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+        characterDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
+      break;
     case .character:
       if appSettings.enableKeyboardUpAndDownSlideSymbol {
-        characterGragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+        characterDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     default: break
     }

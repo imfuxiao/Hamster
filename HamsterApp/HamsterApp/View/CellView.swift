@@ -129,15 +129,19 @@ struct CellView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      imageView
-        .padding(.bottom, 15)
       if !cellViewModel.destinationType.isNone() {
         NavigationLink {
           cellDestinationRoute.view(type: cellViewModel.destinationType)
         } label: {
-          titleView
+          VStack(alignment: .leading, spacing: 0) {
+            imageView
+              .padding(.bottom, 15)
+            titleView
+          }
         }
       } else {
+        imageView
+          .padding(.bottom, 15)
         titleView
       }
     }
@@ -229,9 +233,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "空格滑动",
       imageName: "lasso",
       destinationType: .none,
-      toggleValue: appSettings.slideBySapceButton,
+      toggleValue: appSettings.slideBySpaceButton,
       toggleDidSet: { value in
-        appSettings.slideBySapceButton = value
+        appSettings.slideBySpaceButton = value
       }
     ),
     CellViewModel(

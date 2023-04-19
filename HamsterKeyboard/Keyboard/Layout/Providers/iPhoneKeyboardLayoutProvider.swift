@@ -116,7 +116,7 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       if context.keyboardType == .symbolic && type.isAlphabetic {
         return lastRowNoCharacterButtonWidth(for: context)
       }
-      return bottomSystemButtonWidth(for: context)
+      return lowerSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary: return context.isGridViewKeyboardType ? .input : lastRowNoCharacterButtonWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
@@ -127,6 +127,16 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     default: return .available
     }
   }
+
+  // TODO: 通过此方法调节键盘高度
+  // 注意: 这里是行高
+  /**
+   Get a layout item height for the provided parameters.
+   */
+//  override func itemSizeHeight(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> CGFloat {
+//    let config = KeyboardLayoutConfiguration.standard(for: context)
+//    return config.rowHeight
+//  }
 
   // MARK: - iPhone Specific
 
@@ -153,34 +163,41 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       result.append(.custom(named: appSettings.spaceLeftButtonValue))
     }
 
+    // 空格左侧添加中英文切换按键
+    if appSettings.showSpaceRightSwitchLanguageButton && appSettings.switchLanguageButtonInSpaceLeft && context.keyboardType.isAlphabetic {
+      result.append(switchLanguageButtonAction())
+    }
+
     result.append(.space)
 
     if appSettings.showSpaceRightButton {
       result.append(.custom(named: appSettings.spaceRightButtonValue))
     }
 
-    if appSettings.showSpaceRightSwitchLanguageButton && context.keyboardType.isAlphabetic {
-      if rimeEngine.asciiMode {
-        result.append(
-          .image(
-            description: "中英切换",
-            keyboardImageName: "",
-            imageName: KeyboardConstant.ImageName.EnglishLanguageImageName)
-        )
-      } else {
-        result.append(
-          .image(
-            description: "中英切换",
-            keyboardImageName: "",
-            imageName: KeyboardConstant.ImageName.ChineseLanguageImageName)
-        )
-      }
+    // 空格右侧添加中英文切换按键
+    if appSettings.showSpaceRightSwitchLanguageButton && !appSettings.switchLanguageButtonInSpaceLeft && context.keyboardType.isAlphabetic {
+      result.append(switchLanguageButtonAction())
     }
 
     // 根据当前上下文显示不同功能的回车键
     result.append(keyboardReturnAction(for: context))
 
     return result
+  }
+
+  // 中英文切换按钮Action
+  func switchLanguageButtonAction() -> KeyboardAction {
+    if rimeEngine.asciiMode {
+      return .image(
+        description: "中英切换",
+        keyboardImageName: "",
+        imageName: KeyboardConstant.ImageName.EnglishLanguageImageName)
+    } else {
+      return .image(
+        description: "中英切换",
+        keyboardImageName: "",
+        imageName: KeyboardConstant.ImageName.ChineseLanguageImageName)
+    }
   }
 
   override open func keyboardSwitchActionForBottomInputRow(for context: KeyboardContext) -> KeyboardAction? {
