@@ -229,9 +229,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "空格滑动",
       imageName: "lasso",
       destinationType: .none,
-      toggleValue: appSettings.slideBySapceButton,
+      toggleValue: appSettings.slideBySpaceButton,
       toggleDidSet: { value in
-        appSettings.slideBySapceButton = value
+        appSettings.slideBySpaceButton = value
       }
     ),
     CellViewModel(

@@ -128,6 +128,16 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     }
   }
 
+  // TODO: 通过此方法调节键盘高度
+  // 注意: 这里是行高
+  /**
+   Get a layout item height for the provided parameters.
+   */
+//  override func itemSizeHeight(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> CGFloat {
+//    let config = KeyboardLayoutConfiguration.standard(for: context)
+//    return config.rowHeight
+//  }
+
   // MARK: - iPhone Specific
 
   /**
