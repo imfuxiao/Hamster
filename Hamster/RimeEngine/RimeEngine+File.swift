@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ZIPFoundation
 
 extension RimeEngine {
   // AppGroup共享目录
@@ -49,9 +50,8 @@ extension RimeEngine {
 
   // 初始化AppGroup共享目录下SharedSupport目录资源
   static func initAppGroupSharedSupportDirectory(override: Bool = false) throws {
-    let fm = FileManager.default
+    let fm = FileManager()
     let dst = appGroupSharedSupportDirectoryURL
-    let src = appSharedSupportDirectory
     if fm.fileExists(atPath: dst.path) {
       if override {
         try fm.removeItem(atPath: dst.path)
@@ -59,10 +59,15 @@ extension RimeEngine {
         return
       }
     }
-    if !fm.fileExists(atPath: dst.deletingLastPathComponent().path) {
-      try fm.createDirectory(at: dst.deletingLastPathComponent(), withIntermediateDirectories: true)
+
+    if !fm.fileExists(atPath: dst.path) {
+      try fm.createDirectory(at: dst, withIntermediateDirectories: true, attributes: nil)
     }
-    try fm.copyItem(at: src, to: dst)
+
+    let src = appSharedSupportDirectory.appendingPathComponent(AppConstants.inputSchemaZipFile)
+    // 解压缩输入方案zip文件
+    // 因为zip文件中已经包含了SharedSupport目录, 所以需要解压到appSharedSupportDirectory的上层目录
+    try fm.unzipItem(at: src, to: shareURL)
   }
 
   // 初始化AppGroup共享目录下UserData目录资源
@@ -76,10 +81,7 @@ extension RimeEngine {
         return
       }
     }
-    if !fm.fileExists(atPath: dst.deletingLastPathComponent().path) {
-      try fm.createDirectory(at: dst.deletingLastPathComponent(), withIntermediateDirectories: true)
-    }
-    try fm.createDirectory(at: dst, withIntermediateDirectories: true)
+    try fm.createDirectory(at: dst, withIntermediateDirectories: true, attributes: nil)
   }
 
   // 初始化应用沙盒目录下UserData目录

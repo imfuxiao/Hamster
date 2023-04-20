@@ -142,7 +142,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   private func setupRimeEngine() {
     do {
       try RimeEngine.syncAppGroupSharedSupportDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
-      try RimeEngine.initUserDataDirectory()
       try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
