@@ -216,6 +216,8 @@
 		C0D671A929EF9AB5002D0439 /* wubi86.dict.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D6713B29EF9A2E002D0439 /* wubi86.dict.yaml */; };
 		C0D671AA29EF9AB5002D0439 /* wubi86.schema.yaml in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D6713F29EF9A2E002D0439 /* wubi86.schema.yaml */; };
 		C0D671AB29EF9AB5002D0439 /* zh-hans-t-essay-bgw.gram in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D6711629EF9A2D002D0439 /* zh-hans-t-essay-bgw.gram */; };
+		C0D671AD29F0B8DF002D0439 /* HamsterKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D671AC29F0B8DF002D0439 /* HamsterKeyboard.swift */; };
+		C0D671AF29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */; };
 		C0DAFD2629DA9DD000762D2B /* HamsterInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */; };
 		C0F858C329A2AA38003A2ED4 /* RimeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */; };
 /* End PBXBuildFile section */
@@ -635,6 +637,8 @@
 		C0D6713F29EF9A2E002D0439 /* wubi86.schema.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = wubi86.schema.yaml; sourceTree = "<group>"; };
 		C0D6714029EF9A2E002D0439 /* extended.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = extended.dict.yaml; sourceTree = "<group>"; };
 		C0D6714129EF9A2E002D0439 /* clover.phrase.dict.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = clover.phrase.dict.yaml; sourceTree = "<group>"; };
+		C0D671AC29F0B8DF002D0439 /* HamsterKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboard.swift; sourceTree = "<group>"; };
+		C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterInputSetProvider.swift; sourceTree = "<group>"; };
 		C0E458A7298B938B007F5FE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
@@ -691,6 +695,7 @@
 			isa = PBXGroup;
 			children = (
 				C00BAA0929ED507200325ED2 /* CollectionView.swift */,
+				C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -944,6 +949,7 @@
 				C04FA8DA299A65AC00F8CC32 /* AlphabetKeyboard.swift */,
 				C04FA8DB299A65AC00F8CC32 /* HamsterKeyboardButtonContent.swift */,
 				C04FA8DC299A65AC00F8CC32 /* HamsterKeyboardButtonText.swift */,
+				C0D671AC29F0B8DF002D0439 /* HamsterKeyboard.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1453,6 +1459,7 @@
 				C0C9F03329CF4355004B2C33 /* RimeEngine+Color.swift in Sources */,
 				C0C9F03429CF4355004B2C33 /* RimeEngine+File.swift in Sources */,
 				C0C9F03529CF4355004B2C33 /* RimeEngine+LibrimeKit.swift in Sources */,
+				C0D671AD29F0B8DF002D0439 /* HamsterKeyboard.swift in Sources */,
 				C0CB388129E9294E007211E7 /* HamsterCalloutActionProvider.swift in Sources */,
 				C0C9F03629CF4355004B2C33 /* AppConstants.swift in Sources */,
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
@@ -1484,6 +1491,7 @@
 				C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */,
 				C0C9F02929CF4316004B2C33 /* AlphabetKeyboard.swift in Sources */,
 				C0C9F02A29CF4316004B2C33 /* HamsterKeyboardButtonContent.swift in Sources */,
+				C0D671AF29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
 				C0C9F02B29CF4316004B2C33 /* HamsterKeyboardButtonText.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
