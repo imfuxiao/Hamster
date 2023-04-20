@@ -28,7 +28,7 @@ struct HamsterApp: App {
             })
           }
         if launchScreenState {
-          LaunchScreen()
+          LaunchScreen(appSettings.isFirstLaunch)
         } else {
           ContentView()
         }
@@ -37,7 +37,7 @@ struct HamsterApp: App {
         Logger.shared.log.debug("open url: \(url)")
       }
       .onAppear {
-        DispatchQueue.main.async(qos: .background) {
+        DispatchQueue.global().async {
           // 检测应用是否首次加载
           if appSettings.isFirstLaunch {
             // 加载系统默认配置上下滑动符号
@@ -47,10 +47,9 @@ struct HamsterApp: App {
             do {
               try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
               try RimeEngine.initAppGroupUserDataDirectory(override: true)
-              appSettings.isFirstLaunch = false
             } catch {
               appSettings.isFirstLaunch = true
-              Logger.shared.log.error("rime init file drectory error: \(error), \(error.localizedDescription)")
+              Logger.shared.log.error("rime init file directory error: \(error), \(error.localizedDescription)")
               showError = true
               err = error
             }
@@ -63,6 +62,9 @@ struct HamsterApp: App {
             if let schema = rimeEngine.getSchemas().first {
               appSettings.rimeInputSchema = schema.schemaId
             }
+            rimeEngine.shutdownRime()
+            appSettings.isFirstLaunch = false
+            appSettings.rimeNeedOverrideUserDataDirectory = true
           } else {
             rimeEngine.setupRime(
               sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,

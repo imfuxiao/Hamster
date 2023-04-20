@@ -8,6 +8,7 @@
 .deps
 .HamsterInputSchemas
 Resources/SharedSupport/**
+*.zip
 
 
 # xcode gitignore
