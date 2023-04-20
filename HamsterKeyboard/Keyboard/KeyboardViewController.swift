@@ -291,6 +291,22 @@ extension HamsterKeyboardViewController {
     return false
   }
   
+  func changeStateOfOnehandOnLeft() {
+      let oldValue = appSettings.onehandedkeyboardOnRight
+      appSettings.onehandedkeyboardOnRight = false
+      if !oldValue {
+        appSettings.enableOnehandKeyboardMode = !appSettings.enableOnehandKeyboardMode
+      }
+    }
+    
+    func changeStateOfOneHandOnRight() {
+      let oldValue = appSettings.onehandedkeyboardOnRight
+      appSettings.onehandedkeyboardOnRight = true
+      if oldValue {
+        appSettings.enableOnehandKeyboardMode = !appSettings.enableOnehandKeyboardMode
+      }
+    }
+  
   // 光标移动句首
   func moveBeginOfSentence() {
     if let beforInput = self.textDocumentProxy.documentContextBeforeInput {

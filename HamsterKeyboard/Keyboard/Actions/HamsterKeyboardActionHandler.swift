@@ -40,6 +40,10 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
             ivc.moveBeginOfSentence()
           case .EndOfSentence:
             ivc.moveEndOfSentence()
+          case .OnehandOnLeft:
+            ivc.changeStateOfOnehandOnLeft()
+          case .OnehandOnRight:
+            ivc.changeStateOfOneHandOnRight()
           default:
             break
           }

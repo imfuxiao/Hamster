@@ -10,6 +10,8 @@ enum SlideFunction: String, CaseIterable, Equatable, Identifiable {
   case BeginOfSentence = "#行首"
   case EndOfSentence = "#行尾"
   case SelectSecond = "#次选上屏"
+  case OnehandOnLeft = "#左手模式"
+  case OnehandOnRight = "#右手模式"
   case none = "无"
 
   var text: String {
@@ -24,6 +26,10 @@ enum SlideFunction: String, CaseIterable, Equatable, Identifiable {
       return "⇥"
     case .SelectSecond:
       return "次"
+    case .OnehandOnLeft:
+      return "左"
+    case .OnehandOnRight:
+      return "右"
     default:
       return ""
     }
@@ -127,6 +133,10 @@ private enum HamsterAppSettingKeys: String {
   
   // 输入嵌入模式
   case enableInputEmbeddedMode = "keyboard.enableInputEmbeddedMode"
+  
+  // 是否开启键盘震动
+  case enableKeyboardSingleHandMode = "app.keyboard.enableSingleHandMode"
+  case keyboardSingleHandModeRight = "app.keyboard.singleHandModeIntensity"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -162,6 +172,8 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
+      HamsterAppSettingKeys.enableKeyboardSingleHandMode.rawValue: false,
+      HamsterAppSettingKeys.keyboardSingleHandModeRight.rawValue: true,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -191,6 +203,8 @@ public class HamsterAppSettings: ObservableObject {
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
     self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     self.enableInputEmbeddedMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
+    self.enableOnehandKeyboardMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardSingleHandMode.rawValue)
+    self.onehandedkeyboardOnRight = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.keyboardSingleHandModeRight.rawValue)
   }
 
   // App是否首次运行
@@ -459,6 +473,26 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, enableInputEmbeddedMode": enableInputEmbeddedMode])
       UserDefaults.hamsterSettingsDefault.set(
         enableInputEmbeddedMode, forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
+    }
+  }
+  
+  // 键盘: 启用单手模式
+  @Published
+  var enableOnehandKeyboardMode: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableSingleHandMode": enableOnehandKeyboardMode])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableOnehandKeyboardMode, forKey: HamsterAppSettingKeys.enableKeyboardSingleHandMode.rawValue)
+    }
+  }
+  
+  // 键盘: 右单手模式
+  @Published
+  var onehandedkeyboardOnRight: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, keyboardFeedbackHapticIntensity": onehandedkeyboardOnRight])
+      UserDefaults.hamsterSettingsDefault.set(
+        onehandedkeyboardOnRight, forKey: HamsterAppSettingKeys.keyboardSingleHandModeRight.rawValue)
     }
   }
 }

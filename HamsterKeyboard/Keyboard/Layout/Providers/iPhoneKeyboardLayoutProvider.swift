@@ -156,7 +156,7 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     if needsInputSwitch { result.append(.nextKeyboard) }
 
     // emojis键盘
-    // if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
+//     if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
 
     // 底部根据配置, 添加自定义功能键
     if appSettings.showSpaceLeftButton {

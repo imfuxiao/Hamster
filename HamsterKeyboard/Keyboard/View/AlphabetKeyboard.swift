@@ -74,6 +74,7 @@ struct AlphabetKeyboard: View {
       SystemKeyboard(
         controller: ivc,
         autocompleteToolbarMode: .none,
+        width: keyboardWidth,
         buttonView: { layoutItem, keyboardWidth, inputWidth in
           SystemKeyboardButtonRowItem(
             content: HamsterKeyboardActionButtonContent(
@@ -115,26 +116,100 @@ struct AlphabetKeyboard: View {
       })
     }
   }
+  
+  // 在iphone上单手模式切换面板宽度
+    var handModeChangePaneWidth: CGFloat {
+      
+      if keyboardContext.isPortrait
+          && keyboardContext.deviceType == .phone
+          && appSettings.enableOnehandKeyboardMode {
+          return 72
+      }
+      return 0
+    }
+    
+    // 键盘宽度
+    var keyboardWidth: CGFloat {
+      return standardKeyboardWidth - handModeChangePaneWidth
+    }
+
+   @ViewBuilder
+    var panelOfOnehandOnLeft: some View {
+      VStack(spacing: 20) {
+        Image(systemName: "keyboard.onehanded.left")
+          .foregroundColor(hamsterColor.candidateTextColor ?? .gray)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.onehandedkeyboardOnRight = false
+          }
+        Image(systemName: "keyboard")
+          .foregroundColor(hamsterColor.candidateTextColor ?? .gray)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.enableOnehandKeyboardMode = false
+          }
+      }
+      .padding(.top, 40)
+      .frame(width: handModeChangePaneWidth)
+      
+    }
+
+    @ViewBuilder
+    var panelOfOnehandOnRight: some View {
+      VStack(spacing: 20) {
+        Image(systemName: "keyboard.onehanded.right")
+          .foregroundColor(hamsterColor.candidateTextColor ?? .gray)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.onehandedkeyboardOnRight = true
+            
+          }
+        Image(systemName: "keyboard")
+          .foregroundColor(hamsterColor.candidateTextColor ?? .gray)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.enableOnehandKeyboardMode = false
+          }
+      }
+      .padding(.top, 40)
+      .frame(width: handModeChangePaneWidth)
+      
+    }
 
   var body: some View {
     GeometryReader { _ in
-      VStack(spacing: 0) {
-        // 候选区域
-        HStack(spacing: 0) {
-          ZStack(alignment: .topLeading) {
-            // 横向滑动条: 候选文字
-            HamsterAutocompleteToolbar(ivc: ivc, style: style)
-              .background(backgroundColor)
-
-            // 候选栏箭头按钮
-            candidateBarView
-          }
+      HStack(spacing: 0) {
+        if appSettings.enableOnehandKeyboardMode && appSettings.onehandedkeyboardOnRight {
+          panelOfOnehandOnLeft
         }
-        .frame(height: 50)
+        
+        VStack(spacing: 0) {
+          // 候选区域
+          HStack(spacing: 0) {
+            ZStack(alignment: .topLeading) {
+              // 横向滑动条: 候选文字
+              HamsterAutocompleteToolbar(ivc: ivc, style: style)
+                .background(backgroundColor)
 
-        // 键盘
-        keyboard
+              // 候选栏箭头按钮
+              candidateBarView
+            }
+          }
+          .frame(height: 50)
+
+          // 键盘
+          keyboard
+        }
+        
+        if appSettings.enableOnehandKeyboardMode && !appSettings.onehandedkeyboardOnRight {
+          panelOfOnehandOnRight
+        }
       }
+      
       .background(backgroundColor)
     }
   }
@@ -170,7 +245,10 @@ struct CandidateBarArrowButton: View {
   }
 
   var backgroundColor: Color {
-    .standardKeyboardBackground
+    if keyboardContext.traitCollection.userInterfaceStyle == .dark {
+      return .standardKeyboardBackgroundForDarkAppearance
+    }
+   return .standardKeyboardBackground
   }
 
   var body: some View {
@@ -181,6 +259,7 @@ struct CandidateBarArrowButton: View {
           Divider()
             .frame(width: 1, height: 35)
             .overlay(hamsterColor.candidateTextColor ?? foregroundColor)
+            .opacity(0.7)
 
           Spacer()
         }
