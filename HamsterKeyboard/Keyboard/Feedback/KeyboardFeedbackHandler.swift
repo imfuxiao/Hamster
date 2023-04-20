@@ -24,6 +24,8 @@ class HamsterKeyboardFeedbackHandler: StandardKeyboardFeedbackHandler {
       var hapticFeedfack: HapticFeedback = .mediumImpact
       if let hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) {
         switch hapticIntensity {
+        case .ultraLightImpact:
+          hapticFeedfack = .selectionChanged
         case .lightImpact:
           hapticFeedfack = .lightImpact
         case .mediumImpact:
