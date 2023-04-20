@@ -131,7 +131,7 @@ extension UIDevice {
           return nil
         }
         let addrFamily = interface.ifa_addr.pointee.sa_family
-        if addrFamily == UInt8(AF_INET) || addrFamily == UInt8(AF_INET6) {
+        if addrFamily == UInt8(AF_INET) {
           guard let ifa_name = interface.ifa_name else {
             return nil
           }
