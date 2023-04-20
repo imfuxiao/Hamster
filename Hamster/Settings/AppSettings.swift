@@ -35,12 +35,15 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
     return rawValue
   }
 
+  case ultraLightImpact
   case lightImpact
   case mediumImpact
   case heavyImpact
 
   var text: String {
     switch self {
+    case .ultraLightImpact:
+      return "超轻"
     case .lightImpact:
       return "轻"
     case .mediumImpact:
