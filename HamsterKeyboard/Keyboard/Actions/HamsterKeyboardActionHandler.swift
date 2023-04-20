@@ -91,7 +91,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         keyboardContext: ivc.keyboardContext,
         feedbackHandler: ivc.keyboardFeedbackHandler,
         action: { [weak ivc] in
-          ivc?.adjustTextPosition(byCharacterOffset: $0)
+          ivc?.adjustTextPosition(byCharacterOffset: $0 > 0 ? 1 : -1)
         }
       ),
       spaceDragSensitivity: .medium
@@ -149,6 +149,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         if appSettings.enableInputEmbeddedMode && !rimeEngine.userInputKey.isEmpty {
           return
         }
+        triggerFeedback(for: .longPress, on: action)
         spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
       }
       if appSettings.enableKeyboardUpAndDownSlideSymbol {

@@ -269,7 +269,7 @@ private extension HamsteriPhoneKeyboardLayoutProvider {
    最后一行非字母按钮宽度
    */
   func lastRowNoCharacterButtonWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
-    .percentage(isPortrait(context) ? 0.17 : 0.195)
+    .percentage(isPortrait(context) ? 0.19 : 0.195)
   }
 
   /**

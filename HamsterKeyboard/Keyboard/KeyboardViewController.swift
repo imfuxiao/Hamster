@@ -91,10 +91,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   
   override public func viewWillSetupKeyboard() {
     self.log.debug("viewWillSetupKeyboard() begin")
-    let alphabetKeyboard = AlphabetKeyboard(keyboardInputViewController: self)
+    let hamsterKeyboard = HamsterKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)
-    setup(with: alphabetKeyboard)
+    setup(with: hamsterKeyboard)
   }
   
   override public func viewDidDisappear(_ animated: Bool) {
