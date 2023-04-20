@@ -128,7 +128,10 @@ extension CollectionView {
     fileprivate let collectionView: UICollectionView
 
     init(coordinator: Coordinator, scrollDirection: ScrollDirection) {
-      let layout = UICollectionViewFlowLayout()
+      // 添加分隔线
+//      let layout = UICollectionViewFlowLayout()
+//      layout.scrollDirection = scrollDirection
+      let layout = SeparatorCollectionViewFlowLayout()
       layout.scrollDirection = scrollDirection
       self.layout = layout
 

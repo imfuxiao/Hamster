@@ -11,6 +11,7 @@ import SwiftUI
 @available(iOS 14, *)
 struct HamsterAutocompleteToolbar: View {
   weak var ivc: HamsterKeyboardViewController?
+  let style: AutocompleteToolbarStyle
 
   @EnvironmentObject
   private var keyboardContext: KeyboardContext
@@ -21,23 +22,10 @@ struct HamsterAutocompleteToolbar: View {
   @EnvironmentObject
   private var rimeEngine: RimeEngine
 
-  var style: AutocompleteToolbarStyle
-
-  init(ivc: HamsterKeyboardViewController?) {
+  init(ivc: HamsterKeyboardViewController?, style: AutocompleteToolbarStyle) {
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
-    self.style = AutocompleteToolbarStyle(
-      item: AutocompleteToolbarItemStyle(
-        titleFont: .system(
-          size: CGFloat(ivc?.appSettings.rimeCandidateTitleFontSize ?? 20)
-        ),
-        titleColor: .primary,
-        subtitleFont: .system(
-          size: CGFloat(ivc?.appSettings.rimeCandidateCommentFontSize ?? 14)
-        )
-      ),
-      autocompleteBackground: .init(cornerRadius: 5)
-    )
+    self.style = style
   }
 
   var hamsterColor: ColorSchema {
@@ -52,21 +40,22 @@ struct HamsterAutocompleteToolbar: View {
           Text(rimeEngine.userInputKey)
             .font(style.item.subtitleFont)
             .foregroundColor(hamsterColor.hilitedTextColor)
-            .minimumScaleFactor(0.8)
+            .minimumScaleFactor(0.7)
           Spacer()
         }
         .padding(.leading, 5)
         .padding(.vertical, 2)
-        .frame(maxHeight: 10)
+        .frame(minHeight: 0, maxHeight: 10)
       }
-
       // 候选区
       CandidateHStackView(style: style, hamsterColor: hamsterColor, suggestions: $rimeEngine.suggestions) { [weak ivc] item in
         guard let ivc = ivc else { return }
         ivc.selectCandidateIndex(index: item.index)
       }
       .padding(.leading, 1)
-      .frame(minWidth: 0, maxWidth: .infinity, minHeight: 40, maxHeight: .infinity)
+      .padding(.trailing, 50)
+      .frame(minHeight: 40, maxHeight: 50)
+      .frame(minWidth: 0, maxWidth: .infinity)
 
       // TODO: 使用 ScrollView + LazyHStack 存在误触问题
 //        ScrollView(.horizontal, showsIndicators: false) {
