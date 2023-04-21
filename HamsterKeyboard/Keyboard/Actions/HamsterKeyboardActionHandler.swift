@@ -101,7 +101,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   }
 
   override func handle(_ gesture: KeyboardGesture, on action: KeyboardAction, replaced: Bool) {
-    if !replaced && tryHandleReplacementAction(before: gesture, on: action) { return }
+    // 反馈触发
     triggerFeedback(for: gesture, on: action)
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
     // TODO: 这里前后可以添加中英自动加入空格等特性
