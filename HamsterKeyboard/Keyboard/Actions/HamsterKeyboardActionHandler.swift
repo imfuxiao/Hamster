@@ -7,6 +7,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   // 其他按键滑动处理
   public let characterDragActionHandler: SlideGestureHandler
   public let spaceDragActionHandler: SpaceDragHandler
+  public let characterDragActionHandler: SlideGestureHandler
+  public let spaceDragActionHandler: SpaceDragHandler
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
@@ -131,12 +133,16 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     switch action {
     case .space:
-      if appSettings.slideBySpaceButton {
-        if appSettings.enableInputEmbeddedMode && !rimeEngine.userInputKey.isEmpty {
-          return
+      spaceDragActionHandler.setHorizontalDraggingEventAndAllowAction(horizontalDragging: { [self] in
+        if appSettings.slideBySpaceButton {
+          if appSettings.enableInputEmbeddedMode, !rimeEngine.userInputKey.isEmpty {
+            return
+          }
+          triggerFeedback(for: .longPress, on: action)
+          spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
         }
-        spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
-      }
+      }, allowAction: appSettings.enableKeyboardUpAndDownSlideSymbol)
+      spaceDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
     case .character:
       if appSettings.enableKeyboardUpAndDownSlideSymbol {
         characterDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
