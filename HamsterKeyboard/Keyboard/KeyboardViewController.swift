@@ -190,6 +190,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
     // TODO: 这里添加英文自动转大写功能, 参考: KeyboardContext.preferredAutocapitalizedKeyboardType
+    
+    if (!self.textDocumentProxy.hasText) {
+      self.rimeEngine.reset()
+    }
   }
   
   // MARK: - KeyboardController
