@@ -37,7 +37,7 @@ public extension KeyboardAction {
 //      return KKL10n.space.hamsterText(for: context)
     // 自定义按键显示文字
     case .custom(let name):
-      return name
+      return KKL10n.hamsterText(forKey: name, locale: context.locale)
     default: return nil
     }
   }

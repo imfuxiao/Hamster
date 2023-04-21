@@ -27,7 +27,13 @@ extension KeyboardAction {
    */
   var hamsterStandardLongPressAction: GestureAction? {
     switch self {
-    case .space: return nil
+    case .keyboardType(let type):
+      if type == .numeric {
+        return { _ in }
+      }
+      return nil
+    // .space不返回nil, 是因为需要触发反馈
+    case .space: return { _ in }
     default: return nil
     }
   }
@@ -39,7 +45,7 @@ extension KeyboardAction {
   var hamsterStandardPressAction: GestureAction? {
     switch self {
     case .backspace: return { $0?.deleteBackward() }
-    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
+//    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     default: return nil
     }
   }
@@ -85,8 +91,9 @@ extension KeyboardAction {
           ivc.inputRimeKeycode(keycode: XK_Tab)
         }
       }
-    // 自定义按键动作处理
-    case .custom(let name): return { $0?.insertText(name) }
+    // TODO: 自定义按键动作处理
+//    case .custom(let name): return { $0?.insertText(name) }
+    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     case .image(_, _, let imageName):
       if imageName.isEmpty {
         return nil

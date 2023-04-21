@@ -20,21 +20,6 @@ class KeyboardConstant {
     }
   }
 
-  // 自定义按钮
-  enum CustomButton {
-    case ReverseLookupButton(reverseLookup: String) // 反查按钮
-    case SelectSecondChoiceButton(selectSecondChoice: String) // 次选按钮
-
-    var buttonText: String {
-      switch self {
-      case .ReverseLookupButton(let reverseLookup):
-        return reverseLookup
-      case .SelectSecondChoiceButton(let selectSecondChoice):
-        return selectSecondChoice
-      }
-    }
-  }
-
   enum Character: String {
     case Equal = "="
     case Plus = "+"
@@ -47,33 +32,11 @@ class KeyboardConstant {
   }
 
   enum Action {
-    static let endDragGesture = "endGragGesture"
+    static let endDragGesture = "endDragGesture"
   }
-  
+
   enum ImageName {
     static let ChineseLanguageImageName = "cn"
     static let EnglishLanguageImageName = "en"
   }
 }
-
-//enum KeySymbol: Int32 {
-//  case Backspace = 0xff08 // 退格键(删除键) Back space, back char
-//  case Tab = 0xff09 //
-//  case Return = 0xff0d // 回车键
-//  case QuoteLeft = 0x0060 // 反引号(`), 标准键盘数字1左边的键
-//  case Plus = 0x002b // +
-//  case Minus = 0x002d // -
-//  case Comma = 0x002c // ,
-//  case Period = 0x002e // .
-//  case BracketLeft = 0x005b // [
-//  case BracketRight = 0x005d // ]
-//  case PageUp = 0xff55
-//  case PageDown = 0xff56
-//
-//  func string() -> String {
-//    if let scalarValue = Unicode.Scalar(UInt32(rawValue)) {
-//      return String(scalarValue)
-//    }
-//    return ""
-//  }
-//}

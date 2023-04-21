@@ -287,8 +287,8 @@ public extension RimeEngine {
     return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
   }
 
-  // context响应
-  func contextReact() {
+  // 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
+  func syncContext() {
     let context = context()
 
     if context.composition != nil {

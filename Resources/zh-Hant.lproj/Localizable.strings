@@ -20,6 +20,8 @@
 "keyboardTypeNumeric" = "123";
 "keyboardTypeSymbolic" = "#+=";
 
+"keyboard.action.switchInputSchema" = "#方案切換";
+
 "searchEmoji" = "搜索Emoji";
 
 /* [😀] */ "Emoji.GrinningFace" = "";
