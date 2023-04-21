@@ -30,7 +30,7 @@ struct HamsterKeyboardActionButtonContent: View {
     self.appSettings = appSettings
 
     let translateFunctionText = { (name: String) -> String in
-      if name.hasPrefix("#"), let slidFunction = SlideFunction(rawValue: name) {
+      if name.hasPrefix("#"), let slidFunction = FunctionalInstructions(rawValue: name) {
         return slidFunction.text
       }
       return name

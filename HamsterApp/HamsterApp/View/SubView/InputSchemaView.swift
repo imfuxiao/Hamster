@@ -41,24 +41,12 @@ struct InputSchemaView: View {
 
         ScrollView {
           ForEach(schemas) { schema in
-            VStack {
-              HStack {
-                RadioButton(width: 24, fontSize: 12, isSelected: isSelect(schema)) {
-                  appSettings.rimeInputSchema = schema.schemaId
-                }
-                Text(schema.schemaName)
-                  .font(.system(.body, design: .rounded))
-                Spacer()
-              }
-              .frame(minWidth: 0, maxWidth: .infinity)
-              .frame(minHeight: 0, maxHeight: .infinity)
-              .frame(height: 40)
-              .contentShape(Rectangle())
-              .onTapGesture {
-                appSettings.rimeInputSchema = schema.schemaId
-              }
-
-              Divider()
+            InputSchemaCell(
+              schema: schema,
+              isSelect: appSettings.rimeInputSchema == schema.schemaId,
+              showDivider: true
+            ) {
+              appSettings.rimeInputSchema = $0.schemaId
             }
           }
         }
@@ -86,10 +74,6 @@ struct InputSchemaView: View {
       }
       rimeEngine.shutdownRime()
     }
-  }
-
-  func isSelect(_ schema: Schema) -> Bool {
-    return schema.schemaId == appSettings.rimeInputSchema
   }
 }
 
