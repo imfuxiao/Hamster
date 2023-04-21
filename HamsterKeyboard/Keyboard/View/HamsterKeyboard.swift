@@ -8,28 +8,16 @@
 import KeyboardKit
 import SwiftUI
 
-/// 键盘状态
-enum HamsterKeyboardStatus: Equatable {
-  /// 正常情况, 即只显示键盘
-  case normal
-  /// 键盘区域展开候选文字
-  case KeyboardAreaToExpandCandidates
-  /// 键盘区域调节高度
-  case KeyboardAreaAdjustmentHeight
-}
-
 @available(iOS 14, *)
 struct HamsterKeyboard: View {
   weak var ivc: HamsterKeyboardViewController?
-  let style: AutocompleteToolbarStyle
-  let keyboardLayout: KeyboardLayout
-
-  @State var hamsterKeyboardSize: CGSize
+  var style: AutocompleteToolbarStyle
+  var keyboardLayout: KeyboardLayout
 
   // MARK: 自身状态变量
 
-  // 键盘当前状态
-  @State var keyboardStatus: HamsterKeyboardStatus = .normal
+  // 键盘尺寸
+  @State var hamsterKeyboardSize: CGSize
 
   // MARK: 依赖注入
 
@@ -48,7 +36,7 @@ struct HamsterKeyboard: View {
   @Environment(\.openURL) var openURL
 
   init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
-    Logger.shared.log.debug("AlphabetKeyboard init")
+    Logger.shared.log.debug("HamsterKeyboard init")
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
     self.style = AutocompleteToolbarStyle(
@@ -83,41 +71,44 @@ struct HamsterKeyboard: View {
     return hamsterColor.backColor ?? Color.standardKeyboardBackground
   }
 
+  // 全键盘展示候选字
+  var expandCandidatesView: some View {
+    ExpandCandidatesView(
+      style: style,
+      hamsterKeyboardSize: $hamsterKeyboardSize
+    ) { [weak ivc] item in
+      guard let ivc = ivc else { return }
+      ivc.selectCandidateIndex(index: item.index)
+      appSettings.keyboardStatus = .normal
+    }
+  }
+
+  // 输入方案切换视图
+  var switchInputSchemaView: some View {
+    SelectInputSchemaView(
+      hamsterKeyboardSize: hamsterKeyboardSize,
+      hamsterColor: hamsterColor,
+      schemas: rimeEngine.getSchemas()
+    )
+  }
+
   var body: some View {
     ZStack {
       // 正常键盘状态
-      if keyboardStatus == .normal, let ivc = ivc {
-        AlphabetKeyboard(keyboardInputViewController: ivc, keyboardStatus: $keyboardStatus)
-          .frame(height: hamsterKeyboardSize.height)
+      if appSettings.keyboardStatus == .normal {
+        AlphabetKeyboard(
+          keyboardInputViewController: ivc ?? NextKeyboardController.shared as! HamsterKeyboardViewController
+        )
       }
 
       // 全区域展示候选键盘
-      if keyboardStatus == .KeyboardAreaToExpandCandidates {
-        HStack(alignment: .top, spacing: 0) {
-          // 纵向候选区
-          CandidateVStackView(style: style, hamsterColor: hamsterColor, suggestions: $rimeEngine.suggestions) { [weak ivc] item in
-            guard let ivc = ivc else { return }
-            ivc.selectCandidateIndex(index: item.index)
-            keyboardStatus = .normal
-          }
-          .frame(height: hamsterKeyboardSize.height)
-          .background(backgroundColor)
-          .transition(.move(edge: .top).combined(with: .opacity))
+      if appSettings.keyboardStatus == .keyboardAreaToExpandCandidates {
+        expandCandidatesView
+      }
 
-          VStack(alignment: .center, spacing: 0) {
-            // 收起按钮
-            CandidateBarArrowButton(hamsterColor: hamsterColor, keyboardStatus: keyboardStatus, action: {
-              withAnimation(.linear) {
-                keyboardStatus = .normal
-              }
-            })
-            Spacer()
-            // TODO: 这里可以增加删除按钮
-            // Image.keyboardBackspace
-          }
-        }
-        .transition(.move(edge: .top))
-        .background(backgroundColor)
+      // 输入方案切换视图
+      if appSettings.keyboardStatus == .switchInputSchema {
+        switchInputSchemaView
       }
     }
   }
@@ -131,5 +122,53 @@ struct HamsterKeyboard: View {
     }
 
     typealias Value = CGSize
+  }
+}
+
+/// 切换输入方案视图
+struct SelectInputSchemaView: View {
+  var hamsterKeyboardSize: CGSize
+  var hamsterColor: ColorSchema
+  var schemas: [Schema]
+
+  var backgroundColor: Color {
+    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+  }
+
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeEngine: RimeEngine
+
+  var body: some View {
+    HStack(alignment: .top, spacing: 0) {
+      CollectionView(
+        collection: schemas,
+        scrollDirection: .vertical,
+        contentSize: .crossAxisFilled(mainAxisLength: 60),
+        itemSpacing: .init(mainAxisSpacing: 0, crossAxisSpacing: 0),
+        rawCustomize: { collectionView in
+          collectionView.showsHorizontalScrollIndicator = false
+          collectionView.showsVerticalScrollIndicator = false
+          collectionView.contentOffset.x = .zero
+        },
+        contentForData: {
+          InputSchemaCell(schema: $0, isSelect: appSettings.rimeInputSchema == $0.schemaId, showDivider: false, action: {
+            appSettings.rimeInputSchema = $0.schemaId
+            let handled = rimeEngine.setSchema($0.schemaId)
+            Logger.shared.log.debug("switch input schema: \($0.schemaId), handled: \(handled)")
+            rimeEngine.reset()
+            appSettings.keyboardStatus = .normal
+          })
+        }
+      )
+      .frame(height: hamsterKeyboardSize.height)
+      .background(backgroundColor)
+
+      // 收起按钮
+      CandidateBarArrowButton(hamsterColor: hamsterColor, action: {
+        appSettings.keyboardStatus = .normal
+      })
+    }
+    .frame(minWidth: 0, maxWidth: .infinity)
+    .frame(height: hamsterKeyboardSize.height)
   }
 }

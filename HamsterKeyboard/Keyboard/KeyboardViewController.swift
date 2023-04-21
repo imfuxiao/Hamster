@@ -51,7 +51,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       rimeEngine: self.rimeEngine
     )
     
-    // TODO: 长按按钮设置
+    // 气泡功能设置
     self.calloutActionProvider = HamsterCalloutActionProvider(
       keyboardContext: self.keyboardContext,
       rimeEngine: self.rimeEngine
@@ -73,6 +73,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       keyboardFeedbackHandler: self.keyboardFeedbackHandler
     )
     
+    // Action 结束后可执行的动作
     self.calloutContext = KeyboardCalloutContext(
       action: HamsterActionCalloutContext(
         actionHandler: keyboardActionHandler,
@@ -142,7 +143,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   private func setupRimeEngine() {
     do {
       try RimeEngine.syncAppGroupSharedSupportDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
-      try RimeEngine.initUserDataDirectory()
       try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
@@ -190,6 +190,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
     // TODO: 这里添加英文自动转大写功能, 参考: KeyboardContext.preferredAutocapitalizedKeyboardType
+    
+    if (!self.textDocumentProxy.hasText) {
+      self.rimeEngine.reset()
+    }
   }
   
   // MARK: - KeyboardController
@@ -316,7 +320,7 @@ extension HamsterKeyboardViewController {
   // 候选字上一页
   func previousPageOfCandidates() {
     if self.rimeEngine.inputKeyCode(XK_Page_Up) {
-      self.rimeEngine.contextReact()
+      self.rimeEngine.syncContext()
     } else {
       Logger.shared.log.warning("rime input pageup result error")
     }
@@ -325,7 +329,7 @@ extension HamsterKeyboardViewController {
   // 候选字下一页
   func nextPageOfCandidates() {
     if self.rimeEngine.inputKeyCode(XK_Page_Down) {
-      self.rimeEngine.contextReact()
+      self.rimeEngine.syncContext()
     } else {
       Logger.shared.log.debug("rime input pageDown result error")
     }
@@ -365,17 +369,24 @@ extension HamsterKeyboardViewController {
       if !status.isComposing {
         self.rimeEngine.reset()
       } else {
-        self.rimeEngine.contextReact()
+        self.rimeEngine.syncContext()
       }
     }
   }
   
   /// 字符输入
   func inputCharacter(key: String) {
+    // 功能指令处理
+    if functionalInstructionsHandled(key) {
+      return
+    }
+    
     let keyUTF8 = key.utf8
     if keyUTF8.count == 1, let first = keyUTF8.first {
       self.inputRimeKeycode(keycode: Int32(first))
     } else {
+      // 符号顶码上屏
+      _ = self.candidateTextOnScreen()
       self.textDocumentProxy.insertText(key)
     }
   }
@@ -399,7 +410,16 @@ extension HamsterKeyboardViewController {
         break
       }
     }
+ 
+    self.updateRimeEngine(handled)
     
+    // 符号键直接上屏
+    if !handled, let str = String(data: Data([UInt8(keycode)]), encoding: .utf8) {
+      self.textDocumentProxy.insertText(String(str))
+    }
+  }
+  
+  private func updateRimeEngine(_ handled: Bool) {
     // 唯一码直接上屏
     let commitText = self.rimeEngine.getCommitText()
     if !commitText.isEmpty {
@@ -408,17 +428,45 @@ extension HamsterKeyboardViewController {
       
     // 查看输入法状态
     let status = self.rimeEngine.status()
+    
     // 如不存在候选字,则重置输入法
     if !status.isComposing {
       self.rimeEngine.reset()
-    } else {
-      self.rimeEngine.contextReact()
+      return
     }
     
-    // 符号键直接上屏
-    if !handled, let str = String(data: Data([UInt8(keycode)]), encoding: .utf8) {
-      self.textDocumentProxy.insertText(String(str))
+    if handled {
+      self.rimeEngine.syncContext()
     }
+  }
+  
+  // TODO: 以#开头为功能
+  /// 功能指令处理
+  /// 返回值, 指令是否执行成功
+  func functionalInstructionsHandled(_ instruction: String) -> Bool {
+    if !instruction.hasPrefix("#") {
+      return false
+    }
+    
+    let function = FunctionalInstructions(rawValue: instruction)
+    switch function {
+    case .simplifiedTraditionalSwitch:
+      self.switchTraditionalSimplifiedChinese()
+    case .switchChineseOrEnglish:
+      self.switchEnglishChinese()
+    case .selectSecond:
+      _ = self.secondCandidateTextOnScreen()
+    case .beginOfSentence:
+      self.moveBeginOfSentence()
+    case .endOfSentence:
+      self.moveEndOfSentence()
+    case .selectInputSchema:
+      self.appSettings.keyboardStatus = .switchInputSchema
+    default:
+      return false
+    }
+    
+    return true
   }
 }
 #endif

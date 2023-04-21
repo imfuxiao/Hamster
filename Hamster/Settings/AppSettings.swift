@@ -1,28 +1,31 @@
 import Foundation
 
-enum SlideFunction: String, CaseIterable, Equatable, Identifiable {
+// 功能指令
+enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
   var id: Self {
     self
   }
 
-  case SimplifiedTraditionalSwitch = "#繁简切换"
-  case ChineseEnglishSwitch = "#中英切换"
-  case BeginOfSentence = "#行首"
-  case EndOfSentence = "#行尾"
-  case SelectSecond = "#次选上屏"
+  case simplifiedTraditionalSwitch = "#繁简切换"
+  case switchChineseOrEnglish = "#中英切换"
+  case beginOfSentence = "#行首"
+  case endOfSentence = "#行尾"
+  case selectSecond = "#次选上屏"
+  case selectInputSchema = "#方案切换"
+  case selectColorSchema = "#配色切换"
   case none = "无"
 
   var text: String {
     switch self {
-    case .SimplifiedTraditionalSwitch:
+    case .simplifiedTraditionalSwitch:
       return "繁"
-    case .ChineseEnglishSwitch:
+    case .switchChineseOrEnglish:
       return "英"
-    case .BeginOfSentence:
+    case .beginOfSentence:
       return "⇤"
-    case .EndOfSentence:
+    case .endOfSentence:
       return "⇥"
-    case .SelectSecond:
+    case .selectSecond:
       return "次"
     default:
       return ""
@@ -121,10 +124,10 @@ private enum HamsterAppSettingKeys: String {
 
   // 启用数字九宫格键盘
   case enableNumberNineGrid = "keyboard.enableNumberNineGrid"
-  
+
   // 键盘是否自动小写
   case enableKeyboardAutomaticallyLowercase = "keyboard.enableKeyboardAutomaticallyLowercase"
-  
+
   // 输入嵌入模式
   case enableInputEmbeddedMode = "keyboard.enableInputEmbeddedMode"
 }
@@ -322,6 +325,7 @@ public class HamsterAppSettings: ObservableObject {
         showSpaceRightSwitchLanguageButton, forKey: HamsterAppSettingKeys.showSpaceRightSwitchLanguageButton.rawValue)
     }
   }
+
   // 中英切换按键位于空格左侧: true = 左侧 false = 右侧
   @Published
   var switchLanguageButtonInSpaceLeft: Bool {
@@ -331,7 +335,6 @@ public class HamsterAppSettings: ObservableObject {
         switchLanguageButtonInSpaceLeft, forKey: HamsterAppSettingKeys.switchLanguageButtonInSpaceLeft.rawValue)
     }
   }
-
 
   @Published
   var rimeMaxCandidateSize: Int32 {
@@ -441,7 +444,7 @@ public class HamsterAppSettings: ObservableObject {
         enableNumberNineGrid, forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
     }
   }
-  
+
   // 键盘: 启用键盘自动转小写
   @Published
   var enableKeyboardAutomaticallyLowercase: Bool {
@@ -451,7 +454,7 @@ public class HamsterAppSettings: ObservableObject {
         enableKeyboardAutomaticallyLowercase, forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     }
   }
-  
+
   // 键盘: 启用输入嵌入模式
   @Published
   var enableInputEmbeddedMode: Bool {
@@ -461,8 +464,26 @@ public class HamsterAppSettings: ObservableObject {
         enableInputEmbeddedMode, forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
     }
   }
+
+  // 键盘当前状态
+  @Published
+  var keyboardStatus: HamsterKeyboardStatus = .normal
 }
 
 public extension UserDefaults {
   static let hamsterSettingsDefault = UserDefaults(suiteName: AppConstants.appGroupName)!
+}
+
+/// 键盘状态
+enum HamsterKeyboardStatus: Equatable {
+  /// 正常情况, 即只显示键盘
+  case normal
+  /// 键盘区域展开候选文字
+  case keyboardAreaToExpandCandidates
+  /// 键盘区域调节高度
+  case keyboardAreaAdjustmentHeight
+  /// (输入)方案切换
+  case switchInputSchema
+  /// 配色切换
+  case switchColorSchema
 }

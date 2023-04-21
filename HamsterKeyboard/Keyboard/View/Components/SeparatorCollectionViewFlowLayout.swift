@@ -122,7 +122,7 @@ private final class CollectionSeparatorView: UICollectionReusableView {
   static let reusableIdentifier = "separator"
   override init(frame: CGRect) {
     super.init(frame: frame)
-    self.backgroundColor = .gray
+    self.backgroundColor = .gray.withAlphaComponent(0.1)
   }
 
   @available(*, unavailable)

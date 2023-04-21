@@ -19,6 +19,14 @@ class HamsterCalloutActionProvider: CalloutActionProvider {
 
   func calloutActions(for action: KeyboardKit.KeyboardAction) -> [KeyboardKit.KeyboardAction] {
     switch action {
+    case .keyboardType(let type):
+      if type == .numeric {
+        return [
+          .character(FunctionalInstructions.selectInputSchema.rawValue),
+//          .character(FunctionalInstructions.selectColorSchema.rawValue),
+        ]
+      }
+      return []
     default:
       return []
     }

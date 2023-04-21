@@ -22,7 +22,7 @@ struct UpAndDownSlideInputSymbolView: View {
   @State var editKey: String?
   @State var editValueType: ValueType = .String
   @State var editValue: String = ""
-  @State var editValueSlideFunction: SlideFunction = .none
+  @State var editValueSlideFunction: FunctionalInstructions = .none
   @State var upAndDownSlideSymbols: [String: String] = [:]
   @State var restState = false
 
@@ -101,7 +101,7 @@ struct UpAndDownSlideInputSymbolView: View {
               Button {
                 self.editValue = upAndDownSlideSymbols[key] ?? ""
                 self.editValueType = self.editValue.hasPrefix("#") ? .Function : .String
-                if self.editValueType == .Function, let function = SlideFunction(rawValue: self.editValue) {
+                if self.editValueType == .Function, let function = FunctionalInstructions(rawValue: self.editValue) {
                   self.editValueSlideFunction = function
                 }
                 self.editKey = key
@@ -212,7 +212,7 @@ struct EditActionValueView: View {
   let actionKey: String
   @Binding var editValueType: ValueType
   @Binding var editValue: String
-  @Binding var editValueSlideFunction: SlideFunction
+  @Binding var editValueSlideFunction: FunctionalInstructions
 
   var dismiss: () -> Void
   var saveAction: () -> Void
@@ -257,7 +257,7 @@ struct EditActionValueView: View {
               Text("功能")
               Spacer()
               Picker("功能", selection: $editValueSlideFunction) {
-                ForEach(SlideFunction.allCases) {
+                ForEach(FunctionalInstructions.allCases) {
                   Text("\($0.rawValue)\($0.text == "" ? "(不显示)" : ("(显示:" + $0.text + ")"))")
                     .tag($0)
                 }

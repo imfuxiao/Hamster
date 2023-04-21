@@ -111,6 +111,22 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     action.hamsterButtonText(for: keyboardContext)
   }
 
+  /**
+   The callout style to apply to action and input callouts.
+   应用于Action和Input Callout的Callout样式。
+   */
+  override var calloutStyle: KeyboardCalloutStyle {
+    var style = KeyboardCalloutStyle.hamsterStandard
+    style.buttonCornerRadius = 5
+    return style
+  }
+
+  override var actionCalloutStyle: KeyboardActionCalloutStyle {
+    var style = KeyboardActionCalloutStyle.hamsterStandard
+    style.callout = calloutStyle
+    return style
+  }
+
   // TODO: 根据 squirrel 颜色方案动态变更
   override func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
     if appSettings.enableRimeColorSchema {
@@ -133,4 +149,30 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
       shadow: buttonShadowStyle(for: action)
     )
   }
+}
+
+extension KeyboardCalloutStyle {
+  static var hamsterStandard = KeyboardCalloutStyle(
+    backgroundColor: .standardButtonBackground,
+    borderColor: Color.black.opacity(0.5),
+    buttonCornerRadius: 5,
+    buttonInset: CGSize(width: 5, height: 5),
+    cornerRadius: 10,
+    curveSize: CGSize(width: 8, height: 15),
+    shadowColor: Color.black.opacity(0.1),
+    shadowRadius: 5,
+    textColor: .primary
+  )
+}
+
+extension KeyboardActionCalloutStyle {
+  static var hamsterStandard = KeyboardActionCalloutStyle(
+    callout: KeyboardCalloutStyle.hamsterStandard,
+    font: .system(size: 12),
+    maxButtonSize: CGSize(width: 1000, height: 500),
+    selectedBackgroundColor: .blue,
+    selectedForegroundColor: .white,
+    verticalOffset: nil,
+    verticalTextPadding: 6
+  )
 }

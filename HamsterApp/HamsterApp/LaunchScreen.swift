@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct LaunchScreen: View {
+  init(_ isAppFirstRun: Bool) {
+    self.isAppFirstRun = isAppFirstRun
+  }
+
+  let isAppFirstRun: Bool
   @Environment(\.colorScheme) var colorScheme
 
   @State var start = UnitPoint(x: 0, y: 0)
@@ -47,7 +52,7 @@ struct LaunchScreen: View {
           endPoint: end
         )
         .frame(minWidth: 0, maxWidth: .infinity)
-        .frame(height: 80)
+        .frame(height: 150)
         .animation(.easeOut(duration: 1.5).repeatForever(autoreverses: false))
         .onReceive(timer, perform: { _ in
           self.start = UnitPoint(x: 2, y: 2)
@@ -57,6 +62,12 @@ struct LaunchScreen: View {
             Text("仓输入法")
             Text("powered by 中州韻輸入法引擎".uppercased())
               .padding(.top, 3)
+
+            if isAppFirstRun {
+              Text("应用首次运行会编译输入方案, 请稍后...")
+                .font(.system(size: 14))
+                .padding(.top, 10)
+            }
           }
           .font(.system(size: 20, weight: .bold, design: .rounded))
         )
@@ -69,6 +80,6 @@ struct LaunchScreen: View {
 
 struct LaunchScreen_Previews: PreviewProvider {
   static var previews: some View {
-    LaunchScreen()
+    LaunchScreen(true)
   }
 }

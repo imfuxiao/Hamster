@@ -13,7 +13,7 @@ enum DestinationType {
   case fileManager
   case fileEditor
   case feedback
-  case inputKeyFuction
+  case inputKeyFunction
   case upAndDownSlideInputSymbol
   case about
   case none
@@ -48,7 +48,7 @@ struct CellDestinationRoute: CellDestination {
       EditorView()
     case .feedback:
       FeedbackView()
-    case .inputKeyFuction:
+    case .inputKeyFunction:
       InputEditorView()
     case .upAndDownSlideInputSymbol:
       UpAndDownSlideInputSymbolView()
@@ -254,7 +254,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellHeight: cellHeight,
       cellName: "输入功能调整",
       imageName: "gear",
-      destinationType: .inputKeyFuction
+      destinationType: .inputKeyFunction
     ),
     CellViewModel(
       cellWidth: cellWidth,

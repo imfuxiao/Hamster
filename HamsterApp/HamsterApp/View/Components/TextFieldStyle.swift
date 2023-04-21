@@ -1,5 +1,5 @@
 //
-//  TextFieldStyple.swift
+//  TextFieldStyle.swift
 //  HamsterApp
 //
 //  Created by morse on 2023/3/21.
@@ -15,12 +15,12 @@ struct BorderTextFieldBackground: TextFieldStyle {
   init(systemImageString: String,
        height: CGFloat = 40,
        borderColor: Color = .secondary,
-       cornerRedius: CGFloat = 8.0)
+       cornerRadius: CGFloat = 8.0)
   {
     self.systemImageString = systemImageString
     self.height = height
     self.borderColor = borderColor
-    self.cornerRadius = cornerRedius
+    self.cornerRadius = cornerRadius
   }
 
   // Hidden function to conform to this protocol
@@ -39,7 +39,7 @@ struct BorderTextFieldBackground: TextFieldStyle {
   }
 }
 
-struct TextFieldStyple_Previews: PreviewProvider {
+struct TextFieldStyle_Previews: PreviewProvider {
   @State static var text: String = ""
   static var previews: some View {
     Rectangle()
