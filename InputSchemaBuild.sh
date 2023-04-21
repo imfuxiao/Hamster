@@ -14,4 +14,4 @@ rm -rf $OUTPUT && (
     git clone --depth 1 https://github.com/imfuxiao/HamsterInputSchemas.git $OUTPUT
     cd $OUTPUT
     make
-) && cp -R $OUTPUT/.SharedSupport/* Resources/SharedSupport/
+) && cp -R .tmp/SharedSupport/* Resources/SharedSupport/
