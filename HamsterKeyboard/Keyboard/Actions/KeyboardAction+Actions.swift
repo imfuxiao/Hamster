@@ -62,7 +62,7 @@ extension KeyboardAction {
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return {
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          ivc.textDocumentProxy.insertText(emoji.char)
+          ivc.inputTextPatch(emoji.char)
         }
       }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }

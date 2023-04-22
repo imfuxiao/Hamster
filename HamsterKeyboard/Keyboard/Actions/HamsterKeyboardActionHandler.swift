@@ -37,10 +37,6 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
         // 字符处理
         ivc.insertText(value)
-//        ivc.textDocumentProxy.insertText(value)
-        if value.count > 1 {
-          ivc.adjustTextPosition(byCharacterOffset: -1)
-        }
       }
     }
   }
