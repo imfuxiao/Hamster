@@ -134,7 +134,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         .receive(on: DispatchQueue.main)
         .sink { [weak self] userInputKey in
           guard let self = self else { return }
-          self.log.info("combine $userInputKey: \(userInputKey)")
+          if userInputKey.isEmpty {
+            return
+          }
+          self.log.debug("combine $userInputKey: \(userInputKey)")
           self.textDocumentProxy.setMarkedText(
             userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0)
           )
