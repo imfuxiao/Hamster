@@ -152,6 +152,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         .sink { [weak self] userInputKey in
           guard let self = self else { return }
           if userInputKey.isEmpty {
+            self.textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
             return
           }
           self.log.debug("combine $userInputKey: \(userInputKey)")
