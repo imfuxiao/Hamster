@@ -92,7 +92,7 @@ extension KeyboardAction {
         }
       }
     // TODO: 自定义按键动作处理
-//    case .custom(let name): return { $0?.insertText(name) }
+    case .custom(let name): return { $0?.insertText(name) }
     case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     case .image(_, _, let imageName):
       if imageName.isEmpty {

@@ -16,8 +16,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeEngine = RimeEngine()
   public var appSettings = HamsterAppSettings()
   var cancellables = Set<AnyCancellable>()
+
   lazy var hamsterInputSetProvider: HamsterInputSetProvider = .init(
-    keyboardContext: keyboardContext)
+    keyboardContext: keyboardContext,
+    appSettings: appSettings,
+    rimeEngine: rimeEngine
+  )
 
   override public func viewDidLoad() {
     self.log.info("viewDidLoad() begin")
@@ -115,6 +119,19 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         guard let self = self else { return }
         self.log.info("combine $showKeyPressBubble \($0)")
         self.calloutContext.input.isEnabled = $0
+      }
+      .store(in: &self.cancellables)
+
+    // 数字九宫格不显示按键气泡
+    self.keyboardContext.$keyboardType
+      .receive(on: RunLoop.main)
+      .sink { [weak self] keyboard in
+        guard let self = self else { return }
+        if (keyboard == .numeric || keyboard == .symbolic) && self.appSettings.enableNumberNineGrid {
+          self.calloutContext.input.isEnabled = false
+          return
+        }
+        self.calloutContext.input.isEnabled = self.appSettings.showKeyPressBubble
       }
       .store(in: &self.cancellables)
 
@@ -398,6 +415,14 @@ extension HamsterKeyboardViewController {
   func inputCharacter(key: String) {
     // 功能指令处理
     if self.functionalInstructionsHandled(key) {
+      return
+    }
+
+    // 数字及符号键盘顶码上屏
+    if keyboardContext.keyboardType == .numeric || keyboardContext.keyboardType == .symbolic {
+      // 符号顶码上屏
+      _ = self.candidateTextOnScreen()
+      self.inputTextPatch(key)
       return
     }
 

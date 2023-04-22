@@ -40,23 +40,12 @@ class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
     return context.deviceType == .pad ? hamsteriPadProvider : hamsteriPhoneProvider
   }
 
+  // TODO: 也可以在这里改变键盘布局
   override open func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
     let layout = keyboardLayoutProvider(for: context)
       .keyboardLayout(for: context)
 
     layout.idealItemInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-
-    // TODO: 也可以在这里改变键盘布局
-    if keyboardContext.isGridViewKeyboardType {
-//      var rows = layout.itemRows
-//      var row = layout.itemRows[0]
-//      let next = row[0]
-//      let size = KeyboardLayoutItemSize(width: .available, height: next.size.height)
-//      let tab = KeyboardLayoutItem(action: .tab, size: size, insets: next.insets)
-//      row.insert(tab, at: 0)
-//      rows[0] = row
-//      layout.itemRows = rows
-    }
     return layout
   }
 }

@@ -84,17 +84,11 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     }
   }
 
-  // 九宫格自定义背景色
+  // TODO：自定义Button背景色
   override func buttonBackgroundColor(for action: KeyboardAction, isPressed: Bool) -> Color {
-    let isGridViewKeyboardType = keyboardContext.isGridViewKeyboardType
-    if isGridViewKeyboardType {
-      if case .character(let character) = action {
-        let char = KeyboardConstant.Character(rawValue: character)
-        if char != .none {
-          return keyboardContext.hasDarkColorScheme
-            ? .standardDarkButtonBackgroundForColorSchemeBug : .standardDarkButtonBackground
-        }
-      }
+    // 数字九宫格键盘颜色一致
+    if appSettings.enableNumberNineGrid && keyboardContext.keyboardType == .numeric {
+      return .standardDarkButtonBackground
     }
     return super.buttonBackgroundColor(for: action, isPressed: isPressed)
   }

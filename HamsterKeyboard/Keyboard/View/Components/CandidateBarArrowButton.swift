@@ -63,6 +63,7 @@ struct CandidateBarArrowButton: View {
         .iconStyle()
     }
     .frame(width: size, height: size)
+    .contentShape(Rectangle())
     .onTapGesture { action() }
   }
 }

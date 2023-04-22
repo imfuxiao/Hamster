@@ -1,17 +1,6 @@
 import KeyboardKit
 
 extension KeyboardContext {
-  // 键盘类型是否为九宫格
-  var isGridViewKeyboardType: Bool {
-    switch self.keyboardType {
-    case .custom(let name):
-      return name == KeyboardConstant.keyboardType.numberNineGrid.rawValue ||
-        name == KeyboardConstant.keyboardType.chineseNineGrid.rawValue
-    default:
-      return false
-    }
-  }
-
   // 屏幕是否纵向
   var isPortrait: Bool {
     #if os(iOS)
