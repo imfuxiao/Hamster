@@ -130,6 +130,9 @@ private enum HamsterAppSettingKeys: String {
 
   // 输入嵌入模式
   case enableInputEmbeddedMode = "keyboard.enableInputEmbeddedMode"
+
+  // 使用鼠须管配置
+  case rimeUseSquirrelSettings = "rime.useSquirrelSettings"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -165,6 +168,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
+      HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -194,6 +198,7 @@ public class HamsterAppSettings: ObservableObject {
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
     self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     self.enableInputEmbeddedMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
+    self.rimeUseSquirrelSettings = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
   }
 
   // App是否首次运行
@@ -468,6 +473,16 @@ public class HamsterAppSettings: ObservableObject {
   // 键盘当前状态
   @Published
   var keyboardStatus: HamsterKeyboardStatus = .normal
+
+  // Rime: 使用鼠须管配置
+  @Published
+  var rimeUseSquirrelSettings: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, rimeUseSquirrelSettings": rimeUseSquirrelSettings])
+      UserDefaults.hamsterSettingsDefault.set(
+        rimeUseSquirrelSettings, forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
+    }
+  }
 }
 
 public extension UserDefaults {
