@@ -37,6 +37,8 @@ struct InputEditorView: View {
 
           CandidateBarShowModeSettingView()
 
+          RimeUseSquirrelSettingsView()
+
           Spacer()
         }
       }
@@ -159,6 +161,26 @@ struct CandidateBarShowModeSettingView: View {
           Text("候选文字体大小: \(appSettings.rimeCandidateTitleFontSize)")
         }
         Spacer()
+      }
+    }
+    .functionCell()
+  }
+}
+
+/// 使用鼠须管配置的设置
+struct RimeUseSquirrelSettingsView: View {
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  var body: some View {
+    VStack {
+      HStack {
+        Toggle(isOn: $appSettings.rimeUseSquirrelSettings) {
+          Text("使用鼠须管配置")
+            .font(.system(size: 16, weight: .bold, design: .rounded))
+        }
+      }
+      HStack {
+        Text("重新部署后生效. 默认使用鼠须管(squirrel)配置. 关闭此选项后, Rime引擎会使用仓(hamster)配置. 您必须保证hamster.yaml存在")
+          .font(.system(size: 14))
       }
     }
     .functionCell()

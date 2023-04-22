@@ -72,7 +72,7 @@ final class RimeEngineTests: XCTestCase {
   }
 
   func testColorSchema() throws {
-    let schemaList = rimeEngine.colorSchema()
+    let schemaList = rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings)
     XCTAssertTrue(!schemaList.isEmpty)
 
     let colorSchema = schemaList.first(where: { $0.schemaName == "solarized_light" })
@@ -83,7 +83,7 @@ final class RimeEngineTests: XCTestCase {
     XCTAssertNotNil(backColor)
     XCTAssertEqual(backColor!.description, "#FBF6E5F0")
 
-    let currentSchemaName = rimeEngine.currentColorSchemaName()
+    let currentSchemaName = rimeEngine.currentColorSchemaName(appSettings.rimeUseSquirrelSettings)
     XCTAssertEqual(currentSchemaName, "metro")
   }
 

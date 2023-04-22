@@ -347,7 +347,7 @@ extension HamsterKeyboardViewController {
     if name.isEmpty {
       return schema
     }
-    guard let colorSchema = self.rimeEngine.colorSchema().first(where: { $0.schemaName == name }) else {
+    guard let colorSchema = self.rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings).first(where: { $0.schemaName == name }) else {
       return schema
     }
     Logger.shared.log.info("call getCurrentColorSchema, schameName = \(colorSchema.schemaName)")

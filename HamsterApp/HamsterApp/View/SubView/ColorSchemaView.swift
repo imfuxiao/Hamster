@@ -69,7 +69,7 @@ struct ColorSchemaView: View {
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
       rimeEngine.startRime()
-      self.colorSchemas = rimeEngine.colorSchema()
+      self.colorSchemas = rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings)
       rimeEngine.shutdownRime()
     }
   }
