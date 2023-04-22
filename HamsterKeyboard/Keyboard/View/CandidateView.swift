@@ -25,7 +25,7 @@ struct CandidateView: View {
   }
 
   var body: some View {
-    HStack(alignment: .bottom, spacing: 0) {
+    HStack(alignment: .center, spacing: 0) {
       Text(data.text)
         .font(style.item.titleFont)
         .foregroundColor(
@@ -36,7 +36,6 @@ struct CandidateView: View {
       if let comment = data.comment {
         Text(comment)
           .font(style.item.subtitleFont)
-          .minimumScaleFactor(0.5)
           .foregroundColor(
             data.isAutocomplete
               ? hamsterColor.hilitedCommentTextColor
@@ -47,7 +46,6 @@ struct CandidateView: View {
     .padding(.all, 5)
     .background(data.isAutocomplete ? hamsterColor.hilitedCandidateBackColor ?? Color.standardButtonBackground(for: keyboardContext) : .clearInteractable)
     .cornerRadius(style.autocompleteBackground.cornerRadius)
-    .frame(maxHeight: 50)
     .onTapGesture {
       action(data)
     }
@@ -79,9 +77,9 @@ struct CandidateHStackView: View {
 
         let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
         let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
-        return CGSize(width: titleFont.width + commentFont.width + CGFloat(15), height: collectionView.bounds.height)
+        return CGSize(width: titleFont.width + commentFont.width + CGFloat(12), height: collectionView.bounds.height)
       },
-      itemSpacing: .init(mainAxisSpacing: 5, crossAxisSpacing: 5),
+      itemSpacing: .init(mainAxisSpacing: 10, crossAxisSpacing: 10),
       rawCustomize: { collectionView in
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentOffset.x = .zero

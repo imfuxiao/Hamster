@@ -44,6 +44,8 @@ class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
     let layout = keyboardLayoutProvider(for: context)
       .keyboardLayout(for: context)
 
+    layout.idealItemInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+
     // TODO: 也可以在这里改变键盘布局
     if keyboardContext.isGridViewKeyboardType {
 //      var rows = layout.itemRows

@@ -46,6 +46,7 @@
 		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
 		C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */; };
+		C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */; };
 		C06197FD29A35A5F004DF94F /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C06197FC29A35A5F004DF94F /* LibrimeKit */; };
 		C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C6D29B3C42F00C27D42 /* SetttingView.swift */; };
 		C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */; };
@@ -262,6 +263,7 @@
 		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
 		C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleActivityView.swift; sourceTree = "<group>"; };
 		C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDragHandler.swift; sourceTree = "<group>"; };
+		C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateBarArrowButton.swift; sourceTree = "<group>"; };
 		C0629C6D29B3C42F00C27D42 /* SetttingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetttingView.swift; sourceTree = "<group>"; };
 		C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 			children = (
 				C00BAA0929ED507200325ED2 /* CollectionView.swift */,
 				C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */,
+				C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1014,6 +1017,7 @@
 				C0D671AD29F0B8DF002D0439 /* HamsterKeyboard.swift in Sources */,
 				C0CB388129E9294E007211E7 /* HamsterCalloutActionProvider.swift in Sources */,
 				C0C9F03629CF4355004B2C33 /* AppConstants.swift in Sources */,
+				C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */,
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
 				C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */,
 				C0C9F01129CF4316004B2C33 /* KeyboardConstants.swift in Sources */,

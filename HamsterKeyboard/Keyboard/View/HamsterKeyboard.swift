@@ -8,6 +8,7 @@
 import KeyboardKit
 import SwiftUI
 
+/// Hamster键盘
 @available(iOS 14, *)
 struct HamsterKeyboard: View {
   weak var ivc: HamsterKeyboardViewController?
@@ -54,11 +55,17 @@ struct HamsterKeyboard: View {
 
     self.keyboardLayout = ivc.keyboardLayoutProvider.keyboardLayout(for: ivc.keyboardContext)
 
-    // 键盘总高度
-    let height = Double(keyboardLayout.itemRows.count) *
-      keyboardLayout.idealItemHeight
-      + keyboardLayout.idealItemInsets.top + keyboardLayout.idealItemInsets.bottom + 40
-    Logger.shared.log.debug("keyboard height \(height)")
+    // 计算键盘总高度
+    let height = Double(keyboardLayout.itemRows.count)
+      * keyboardLayout.idealItemHeight
+      + keyboardLayout.idealItemInsets.top
+      + keyboardLayout.idealItemInsets.bottom
+      + 50
+
+    Logger.shared.log.debug("keyboard idealItemHeight \(keyboardLayout.idealItemHeight)")
+    Logger.shared.log.debug("keyboard idealItemInsets.top \(keyboardLayout.idealItemInsets.top)")
+    Logger.shared.log.debug("keyboard idealItemInsets.bottom \(keyboardLayout.idealItemInsets.bottom)")
+    Logger.shared.log.debug("keyboard total height \(height)")
 
     self._hamsterKeyboardSize = State(initialValue: CGSize(width: 0, height: height))
   }
@@ -161,7 +168,6 @@ struct SelectInputSchemaView: View {
         }
       )
       .frame(height: hamsterKeyboardSize.height)
-      .background(backgroundColor)
 
       // 收起按钮
       CandidateBarArrowButton(hamsterColor: hamsterColor, action: {
@@ -170,5 +176,6 @@ struct SelectInputSchemaView: View {
     }
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(height: hamsterKeyboardSize.height)
+    .background(backgroundColor)
   }
 }
