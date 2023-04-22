@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE43FE0929F37E17004210EA /* SpaceDragHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE43FE0829F37E17004210EA /* SpaceDragHandler.swift */; };
 		C0010B0029B8ED8000CE4869 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */; };
 		C0010B0229B9040B00CE4869 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0010B0129B9040B00CE4869 /* AboutView.swift */; };
 		C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */; };
@@ -202,6 +203,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE43FE0829F37E17004210EA /* SpaceDragHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpaceDragHandler.swift; sourceTree = "<group>"; };
 		C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputViewController.swift; sourceTree = "<group>"; };
 		C0010AFF29B8ED8000CE4869 /* ColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
 		C0010B0129B9040B00CE4869 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 		C04FA8CE299A65AC00F8CC32 /* Gestures */ = {
 			isa = PBXGroup;
 			children = (
+				AE43FE0829F37E17004210EA /* SpaceDragHandler.swift */,
 				C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */,
 				C04FA8D1299A65AC00F8CC32 /* CharacterSlideGestureHandler.swift */,
 				C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */,
@@ -1017,6 +1020,7 @@
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
 				C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */,
 				C0C9F01129CF4316004B2C33 /* KeyboardConstants.swift in Sources */,
+				AE43FE0929F37E17004210EA /* SpaceDragHandler.swift in Sources */,
 				C0C9F01229CF4316004B2C33 /* HamsterKeyboardActionHandler.swift in Sources */,
 				C0C9F01329CF4316004B2C33 /* KeyboardAction+Buttons.swift in Sources */,
 				C0C9F01429CF4316004B2C33 /* KeyboardAction+Actions.swift in Sources */,

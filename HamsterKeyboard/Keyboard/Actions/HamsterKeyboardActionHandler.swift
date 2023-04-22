@@ -6,6 +6,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
 
   // 其他按键滑动处理
   public let characterDragActionHandler: SlideGestureHandler
+  public let spaceDragActionHandler: SpaceDragHandler
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
@@ -15,14 +16,16 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     guard let ivc = ivc else { return { _, _ in } }
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
     return { [weak ivc] action, offset in
-      if case .character(let char) = action {
-        if char.isEmpty {
-          return
-        }
-
+      var tempChar = ""
+      if case let .character(char) = action {
+        tempChar = char
+      } else if action == .space {
+        tempChar = "space"
+      }
+      if tempChar != "" {
         let actionKey = offset < 0 ?
-          char.lowercased() + KeyboardConstant.Character.SlideDown :
-          char.lowercased() + KeyboardConstant.Character.SlideUp
+          tempChar.lowercased() + KeyboardConstant.Character.SlideDown :
+          tempChar.lowercased() + KeyboardConstant.Character.SlideUp
 
         guard let value = actionConfig[actionKey] else {
           return
@@ -51,10 +54,15 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     keyboardFeedbackHandler: KeyboardFeedbackHandler
   ) {
     weak var keyboardController = ivc
-    self.hamsterKeyboardController = keyboardController
-    self.appSettings = ivc.appSettings
-    self.rimeEngine = ivc.rimeEngine
-    self.characterDragActionHandler = CharacterDragHandler(
+    hamsterKeyboardController = keyboardController
+    appSettings = ivc.appSettings
+    rimeEngine = ivc.rimeEngine
+    characterDragActionHandler = CharacterDragHandler(
+      keyboardContext: keyboardContext,
+      feedbackHandler: keyboardFeedbackHandler,
+      action: characterDragAction(ivc)
+    )
+    spaceDragActionHandler = SpaceDragHandler(
       keyboardContext: keyboardContext,
       feedbackHandler: keyboardFeedbackHandler,
       action: characterDragAction(ivc)
@@ -123,12 +131,16 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     switch action {
     case .space:
-      if appSettings.slideBySpaceButton {
-        if appSettings.enableInputEmbeddedMode && !rimeEngine.userInputKey.isEmpty {
-          return
+      spaceDragActionHandler.setHorizontalDraggingEventAndAllowAction(horizontalDragging: { [self] in
+        if appSettings.slideBySpaceButton {
+          if appSettings.enableInputEmbeddedMode, !rimeEngine.userInputKey.isEmpty {
+            return
+          }
+          triggerFeedback(for: .longPress, on: action)
+          spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
         }
-        spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
-      }
+      }, allowAction: appSettings.enableKeyboardUpAndDownSlideSymbol)
+      spaceDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
     case .character:
       if appSettings.enableKeyboardUpAndDownSlideSymbol {
         characterDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)

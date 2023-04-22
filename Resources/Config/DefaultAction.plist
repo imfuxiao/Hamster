@@ -103,8 +103,12 @@
 	<key>y↓</key>
 	<string>^</string>
 	<key>z↑</key>
-	<string>#行首</string>
+	<string>`</string>
 	<key>z↓</key>
+	<string>#行首</string>
+	<key>space↑</key>
+	<string></string>
+	<key>space↓</key>
 	<string></string>
 </dict>
 </plist>
