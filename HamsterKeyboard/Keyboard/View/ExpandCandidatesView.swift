@@ -10,17 +10,12 @@ import SwiftUI
 
 struct ExpandCandidatesView: View {
   var style: AutocompleteToolbarStyle
-  @Binding var hamsterKeyboardSize: CGSize
   @EnvironmentObject var appSettings: HamsterAppSettings
   var candidatesAction: (HamsterSuggestion) -> Void
 
-  init(style: AutocompleteToolbarStyle,
-       hamsterKeyboardSize: Binding<CGSize>,
-       candidatesAction: @escaping (HamsterSuggestion) -> Void)
-  {
+  init(style: AutocompleteToolbarStyle, candidatesAction: @escaping (HamsterSuggestion) -> Void) {
     Logger.shared.log.debug("ExpandCandidatesView init")
     self.style = style
-    self._hamsterKeyboardSize = hamsterKeyboardSize
     self.candidatesAction = candidatesAction
   }
 
@@ -41,7 +36,6 @@ struct ExpandCandidatesView: View {
       CandidateVStackView(style: style, hamsterColor: hamsterColor, suggestions: $rimeEngine.suggestions) {
         candidatesAction($0)
       }
-      .frame(height: hamsterKeyboardSize.height)
       .background(backgroundColor)
       .transition(.move(edge: .top).combined(with: .opacity))
 

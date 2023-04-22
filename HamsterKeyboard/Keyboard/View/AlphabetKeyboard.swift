@@ -119,7 +119,6 @@ struct AlphabetKeyboard: View {
         ZStack(alignment: .topLeading) {
           // 横向滑动条: 候选文字
           HamsterAutocompleteToolbar(ivc: ivc, style: style)
-            .background(backgroundColor)
 
           // 候选栏箭头按钮
           candidateBarView
@@ -131,6 +130,6 @@ struct AlphabetKeyboard: View {
       // 键盘
       keyboard
     }
-    .background(backgroundColor)
+    .background(appSettings.enableRimeColorSchema ? backgroundColor : .clear)
   }
 }

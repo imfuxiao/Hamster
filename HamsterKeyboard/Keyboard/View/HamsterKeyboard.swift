@@ -60,7 +60,7 @@ struct HamsterKeyboard: View {
       * keyboardLayout.idealItemHeight
       + keyboardLayout.idealItemInsets.top
       + keyboardLayout.idealItemInsets.bottom
-      + 50
+      + (ivc.appSettings.enableInputEmbeddedMode ? 40 : 50)
 
     Logger.shared.log.debug("keyboard idealItemHeight \(keyboardLayout.idealItemHeight)")
     Logger.shared.log.debug("keyboard idealItemInsets.top \(keyboardLayout.idealItemInsets.top)")
@@ -80,10 +80,7 @@ struct HamsterKeyboard: View {
 
   // 全键盘展示候选字
   var expandCandidatesView: some View {
-    ExpandCandidatesView(
-      style: style,
-      hamsterKeyboardSize: $hamsterKeyboardSize
-    ) { [weak ivc] item in
+    ExpandCandidatesView(style: style) { [weak ivc] item in
       guard let ivc = ivc else { return }
       ivc.selectCandidateIndex(index: item.index)
       appSettings.keyboardStatus = .normal
@@ -106,16 +103,20 @@ struct HamsterKeyboard: View {
         AlphabetKeyboard(
           keyboardInputViewController: ivc ?? NextKeyboardController.shared as! HamsterKeyboardViewController
         )
+        .frame(height: hamsterKeyboardSize.height)
       }
 
       // 全区域展示候选键盘
       if appSettings.keyboardStatus == .keyboardAreaToExpandCandidates {
         expandCandidatesView
+          .frame(height: hamsterKeyboardSize.height)
       }
 
       // 输入方案切换视图
       if appSettings.keyboardStatus == .switchInputSchema {
         switchInputSchemaView
+          .foregroundColor(hamsterColor.candidateTextColor ?? Color.standardButtonForeground(for: keyboardContext))
+          .frame(height: hamsterKeyboardSize.height)
       }
     }
   }

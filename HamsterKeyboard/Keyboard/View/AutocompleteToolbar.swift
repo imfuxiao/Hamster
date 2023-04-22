@@ -57,7 +57,7 @@ struct HamsterAutocompleteToolbar: View {
       .frame(minHeight: 30, maxHeight: 40)
       .frame(minWidth: 0, maxWidth: .infinity)
     }
-    .background(hamsterColor.backColor)
+//    .background(hamsterColor.backColor)
   }
 }
 

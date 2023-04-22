@@ -32,11 +32,15 @@ struct CandidateBarArrowButton: View {
   }
 
   var foregroundColor: Color {
-    Color.standardButtonForeground(for: keyboardContext)
+    hamsterColor.candidateTextColor ?? Color.standardButtonForeground(for: keyboardContext)
   }
 
   var backgroundColor: Color {
-    .standardKeyboardBackground
+    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+  }
+
+  var size: CGFloat {
+    appSettings.enableInputEmbeddedMode ? 40 : 50
   }
 
   var body: some View {
@@ -46,7 +50,7 @@ struct CandidateBarArrowButton: View {
         HStack {
           Divider()
             .frame(width: 1, height: 30)
-            .overlay((hamsterColor.candidateTextColor ?? foregroundColor).opacity(0.1))
+            .overlay(foregroundColor.opacity(0.1))
             .opacity(appSettings.keyboardStatus == .normal ? 1 : 0)
 
           Spacer()
@@ -55,12 +59,10 @@ struct CandidateBarArrowButton: View {
 
       Image(systemName: imageName)
         .font(.system(size: 18))
-        .foregroundColor(hamsterColor.candidateTextColor ?? foregroundColor)
+        .foregroundColor(foregroundColor)
         .iconStyle()
     }
-    .frame(minWidth: 30, maxWidth: 50)
-    .frame(minHeight: 30, maxHeight: 50)
-    .background(hamsterColor.backColor ?? backgroundColor)
+    .frame(width: size, height: size)
     .onTapGesture { action() }
   }
 }

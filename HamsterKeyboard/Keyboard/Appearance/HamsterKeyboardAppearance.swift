@@ -16,6 +16,17 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
   }
 
   /**
+   The edge insets to apply to the entire keyboard.
+   */
+  override var keyboardEdgeInsets: EdgeInsets {
+    switch keyboardContext.deviceType {
+    case .pad: return EdgeInsets(top: 0, leading: 0, bottom: 4, trailing: 0)
+    case .phone: return EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    default: return EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    }
+  }
+
+  /**
    The button font to use for a certain action.
    */
   override func buttonFont(for action: KeyboardAction) -> Font {
