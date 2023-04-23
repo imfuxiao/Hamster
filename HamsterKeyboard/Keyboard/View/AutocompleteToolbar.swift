@@ -47,6 +47,7 @@ struct HamsterAutocompleteToolbar: View {
         .padding(.vertical, 2)
         .frame(minHeight: 0, maxHeight: 10)
       }
+
       // 候选区
       CandidateHStackView(style: style, hamsterColor: hamsterColor, suggestions: $rimeEngine.suggestions) { [weak ivc] item in
         guard let ivc = ivc else { return }

@@ -145,16 +145,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       }
       .store(in: &self.cancellables)
 
-    // 候选输入内嵌功能
+    // 候选栏如果启用内嵌模式，则监听userInputKey的变化
     if self.appSettings.enableInputEmbeddedMode {
       self.rimeEngine.$userInputKey
         .receive(on: DispatchQueue.main)
         .sink { [weak self] userInputKey in
           guard let self = self else { return }
-          if userInputKey.isEmpty {
-            self.textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
-            return
-          }
           self.log.debug("combine $userInputKey: \(userInputKey)")
           self.textDocumentProxy.setMarkedText(
             userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0)
@@ -394,22 +390,8 @@ extension HamsterKeyboardViewController {
 
   /// 根据索引选择候选字
   func selectCandidateIndex(index: Int) {
-    if self.rimeEngine.selectCandidate(index: index) {
-      // 唯一码直接上屏
-      let commitText = self.rimeEngine.getCommitText()
-      if !commitText.isEmpty {
-        self.inputTextPatch(commitText)
-      }
-
-      // 查看输入法状态
-      let status = self.rimeEngine.status()
-      // 如不存在候选字,则重置输入法
-      if !status.isComposing {
-        self.rimeEngine.reset()
-      } else {
-        self.rimeEngine.syncContext()
-      }
-    }
+    let handled = self.rimeEngine.selectCandidate(index: index)
+    self.updateRimeEngine(handled)
   }
 
   /// 字符输入
@@ -419,18 +401,15 @@ extension HamsterKeyboardViewController {
       return
     }
 
-    // 数字及符号键盘顶码上屏
-    if keyboardContext.keyboardType == .numeric || keyboardContext.keyboardType == .symbolic {
-      // 符号顶码上屏
-      _ = self.candidateTextOnScreen()
-      self.inputTextPatch(key)
-      return
-    }
-
+    // 由rime处理全部符号
+    var handled = false
     let keyUTF8 = key.utf8
     if keyUTF8.count == 1, let first = keyUTF8.first {
-      self.inputRimeKeycode(keycode: Int32(first))
-    } else {
+      handled = self.inputRimeKeycode(keycode: Int32(first))
+    }
+
+    // 符号键直接上屏
+    if !handled {
       // 符号顶码上屏
       _ = self.candidateTextOnScreen()
       self.inputTextPatch(key)
@@ -438,31 +417,29 @@ extension HamsterKeyboardViewController {
   }
 
   /// 转为RimeCode
-  func inputRimeKeycode(keycode: Int32, modifier: Int32 = 0) {
-    let handled = self.rimeEngine.inputKeyCode(keycode, modifier: modifier)
+  func inputRimeKeycode(keycode: Int32, modifier: Int32 = 0) -> Bool {
+    var handled = self.rimeEngine.inputKeyCode(keycode, modifier: modifier)
     if !handled {
       // 特殊功能键处理
       switch keycode {
       case XK_Return:
         self.textDocumentProxy.insertText(.newline)
-        return
-      case XK_BackSpace:
-        self.textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
-        return
+        handled = true
+      case XK_BackSpace: // 退格
+        self.textDocumentProxy.deleteBackward()
+        handled = true
       case XK_Tab:
         self.textDocumentProxy.insertText(.tab)
-        return
+        handled = true
+      case XK_space:
+        self.textDocumentProxy.insertText(.space)
+        handled = true
       default:
         break
       }
     }
-
     self.updateRimeEngine(handled)
-
-    // 符号键直接上屏
-    if !handled, let str = String(data: Data([UInt8(keycode)]), encoding: .utf8) {
-      self.inputTextPatch(String(str))
-    }
+    return handled
   }
 
   private func updateRimeEngine(_ handled: Bool) {
@@ -517,6 +494,10 @@ extension HamsterKeyboardViewController {
 
   func inputTextPatch(_ text: String) {
     if self.appSettings.enableInputEmbeddedMode {
+      guard let _ = self.textDocumentProxy.selectedText else {
+        self.textDocumentProxy.insertText(text)
+        return
+      }
       // fix: 部分App候选文字内嵌模式下上屏异常
       self.textDocumentProxy.setMarkedText(
         text, selectedRange: NSRange(location: text.count, length: 0)
