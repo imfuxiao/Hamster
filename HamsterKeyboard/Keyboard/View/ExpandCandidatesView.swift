@@ -41,9 +41,14 @@ struct ExpandCandidatesView: View {
 
       VStack(alignment: .center, spacing: 0) {
         // 收起按钮
-        CandidateBarArrowButton(hamsterColor: hamsterColor, action: {
-          appSettings.keyboardStatus = .normal
-        })
+        CandidateBarArrowButton(
+          size: appSettings.candidateBarHeight,
+          hamsterColor: hamsterColor,
+          imageName: appSettings.candidateBarArrowButtonImageName,
+          showDivider: appSettings.showDivider,
+          action: {
+            appSettings.keyboardStatus = .normal
+          })
         Spacer()
         // TODO: 这里可以增加删除按钮
         // Image.keyboardBackspace

@@ -14,6 +14,7 @@ struct HamsterKeyboard: View {
   weak var ivc: HamsterKeyboardViewController?
   var style: AutocompleteToolbarStyle
   var keyboardLayout: KeyboardLayout
+  var candidateBarHeight: CGFloat
 
   // MARK: 自身状态变量
 
@@ -54,13 +55,14 @@ struct HamsterKeyboard: View {
     )
 
     self.keyboardLayout = ivc.keyboardLayoutProvider.keyboardLayout(for: ivc.keyboardContext)
+    self.candidateBarHeight = ivc.appSettings.candidateBarHeight
 
     // 计算键盘总高度
     let height = Double(keyboardLayout.itemRows.count)
       * keyboardLayout.idealItemHeight
       + keyboardLayout.idealItemInsets.top
       + keyboardLayout.idealItemInsets.bottom
-      + (ivc.appSettings.enableInputEmbeddedMode ? 40 : 50)
+      + candidateBarHeight
 
     Logger.shared.log.debug("keyboard idealItemHeight \(keyboardLayout.idealItemHeight)")
     Logger.shared.log.debug("keyboard idealItemInsets.top \(keyboardLayout.idealItemInsets.top)")
@@ -90,6 +92,7 @@ struct HamsterKeyboard: View {
   // 输入方案切换视图
   var switchInputSchemaView: some View {
     SelectInputSchemaView(
+      candidateBarHeight: candidateBarHeight,
       hamsterKeyboardSize: hamsterKeyboardSize,
       hamsterColor: hamsterColor,
       schemas: rimeEngine.getSchemas()
@@ -101,7 +104,8 @@ struct HamsterKeyboard: View {
       // 正常键盘状态
       if appSettings.keyboardStatus == .normal {
         AlphabetKeyboard(
-          keyboardInputViewController: ivc ?? NextKeyboardController.shared as! HamsterKeyboardViewController
+          keyboardInputViewController: ivc ?? NextKeyboardController.shared as! HamsterKeyboardViewController,
+          candidateBarHeight: candidateBarHeight
         )
         .frame(height: hamsterKeyboardSize.height)
       }
@@ -135,6 +139,7 @@ struct HamsterKeyboard: View {
 
 /// 切换输入方案视图
 struct SelectInputSchemaView: View {
+  var candidateBarHeight: CGFloat
   var hamsterKeyboardSize: CGSize
   var hamsterColor: ColorSchema
   var schemas: [Schema]
@@ -171,9 +176,15 @@ struct SelectInputSchemaView: View {
       .frame(height: hamsterKeyboardSize.height)
 
       // 收起按钮
-      CandidateBarArrowButton(hamsterColor: hamsterColor, action: {
-        appSettings.keyboardStatus = .normal
-      })
+      CandidateBarArrowButton(
+        size: candidateBarHeight,
+        hamsterColor: hamsterColor,
+        imageName: appSettings.candidateBarArrowButtonImageName,
+        showDivider: appSettings.showDivider,
+        action: {
+          appSettings.keyboardStatus = .normal
+        }
+      )
     }
     .frame(minWidth: 0, maxWidth: .infinity)
     .frame(height: hamsterKeyboardSize.height)

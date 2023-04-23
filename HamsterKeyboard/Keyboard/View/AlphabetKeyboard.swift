@@ -12,9 +12,9 @@ import SwiftUI
 @available(iOS 14, *)
 struct AlphabetKeyboard: View {
   weak var ivc: HamsterKeyboardViewController?
+  var candidateBarHeight: CGFloat
   let appearance: KeyboardAppearance
   let actionHandler: KeyboardActionHandler
-
   let style: AutocompleteToolbarStyle
 
   // MARK: 依赖注入
@@ -33,12 +33,16 @@ struct AlphabetKeyboard: View {
 
   @Environment(\.openURL) var openURL
 
-  init(keyboardInputViewController ivc: HamsterKeyboardViewController) {
+  init(
+    keyboardInputViewController ivc: HamsterKeyboardViewController,
+    candidateBarHeight: CGFloat
+  ) {
     Logger.shared.log.debug("AlphabetKeyboard init")
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
+    self.candidateBarHeight = candidateBarHeight
 
     self.style = AutocompleteToolbarStyle(
       item: AutocompleteToolbarItemStyle(
@@ -101,13 +105,19 @@ struct AlphabetKeyboard: View {
       // Image(systemName: "house.circle.fill")
       Spacer()
 
-      CandidateBarArrowButton(hamsterColor: hamsterColor, action: { [weak ivc] in
-        if rimeEngine.suggestions.isEmpty {
-          ivc?.dismissKeyboard()
-          return
+      CandidateBarArrowButton(
+        size: candidateBarHeight,
+        hamsterColor: hamsterColor,
+        imageName: appSettings.candidateBarArrowButtonImageName,
+        showDivider: appSettings.showDivider,
+        action: { [weak ivc] in
+          if rimeEngine.suggestions.isEmpty {
+            ivc?.dismissKeyboard()
+            return
+          }
+          appSettings.keyboardStatus = appSettings.keyboardStatus == .normal ? .keyboardAreaToExpandCandidates : .normal
         }
-        appSettings.keyboardStatus = appSettings.keyboardStatus == .normal ? .keyboardAreaToExpandCandidates : .normal
-      })
+      )
       .opacity(showCandidateBarArrowButton ? 1 : 0)
     }
   }
@@ -124,7 +134,7 @@ struct AlphabetKeyboard: View {
           candidateBarView
         }
       }
-      .frame(height: appSettings.enableInputEmbeddedMode ? 40 : 50)
+      .frame(height: candidateBarHeight)
       .padding(.top, 5)
 
       // 键盘

@@ -10,25 +10,21 @@ import SwiftUI
 
 /// 候选栏箭头按钮
 struct CandidateBarArrowButton: View {
+  var size: CGFloat
   var hamsterColor: ColorSchema
+  var imageName: String
+  var showDivider: Bool
   var action: () -> Void
 
   @EnvironmentObject
   var keyboardContext: KeyboardContext
 
-  @EnvironmentObject
-  var appSettings: HamsterAppSettings
-
-  init(hamsterColor: ColorSchema, action: @escaping () -> Void) {
+  init(size: CGFloat, hamsterColor: ColorSchema, imageName: String, showDivider: Bool, action: @escaping () -> Void) {
+    self.size = size
     self.hamsterColor = hamsterColor
+    self.imageName = imageName
+    self.showDivider = showDivider
     self.action = action
-  }
-
-  var imageName: String {
-    if appSettings.keyboardStatus == .normal {
-      return "chevron.down"
-    }
-    return "chevron.up"
   }
 
   var foregroundColor: Color {
@@ -39,31 +35,45 @@ struct CandidateBarArrowButton: View {
     return hamsterColor.backColor ?? Color.standardKeyboardBackground
   }
 
-  var size: CGFloat {
-    appSettings.enableInputEmbeddedMode ? 40 : 50
+  @State var tapped: Bool = false
+
+  var tapGesture: some Gesture {
+    TapGesture()
+      .onEnded {
+        tapped = true
+        action()
+        tapped = false
+      }
   }
 
   var body: some View {
     // 控制栏V型按钮
-    ZStack(alignment: .center) {
-      VStack(alignment: .leading) {
-        HStack {
-          Divider()
-            .frame(width: 1, height: 30)
-            .overlay(foregroundColor.opacity(0.1))
-            .opacity(appSettings.keyboardStatus == .normal ? 1 : 0)
+    VStack(alignment: .leading, spacing: 0) {
+      HStack(alignment: .center, spacing: 0) {
+        Divider()
+          .frame(width: 1, height: 30)
+          .overlay(foregroundColor.opacity(0.1))
+          .opacity(showDivider ? 1 : 0)
+          .offset(x: -10)
 
-          Spacer()
-        }
+        Image(systemName: imageName)
+          .font(.system(size: 20))
+          .foregroundColor(foregroundColor)
+          .iconStyle()
       }
-
-      Image(systemName: imageName)
-        .font(.system(size: 18))
-        .foregroundColor(foregroundColor)
-        .iconStyle()
     }
-    .frame(width: size, height: size)
+    .padding(3)
     .contentShape(Rectangle())
-    .onTapGesture { action() }
+    .minimumScaleFactor(0.5)
+    .frame(width: size, height: size)
+    .overlay(
+      Color.clearInteractable
+        .overlay(
+          Color.clear
+            .contentShape(Rectangle())
+            .gesture(tapGesture)
+        )
+        .accessibilityAddTraits(.isButton)
+    )
   }
 }

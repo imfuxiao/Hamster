@@ -502,3 +502,23 @@ enum HamsterKeyboardStatus: Equatable {
   /// 配色切换
   case switchColorSchema
 }
+
+extension HamsterAppSettings {
+  // 候选栏按钮图片
+  var candidateBarArrowButtonImageName: String {
+    if keyboardStatus == .normal {
+      return "chevron.down"
+    }
+    return "chevron.up"
+  }
+
+  // 候选栏高度
+  var candidateBarHeight: CGFloat {
+    enableInputEmbeddedMode ? 40 : 50
+  }
+
+  // 候选栏显示分隔符号
+  var showDivider: Bool {
+    keyboardStatus == .normal ? true : false
+  }
+}
