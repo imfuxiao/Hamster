@@ -7,7 +7,7 @@ class HamsterActionCalloutContext: ActionCalloutContext {
    */
   override func endDragGesture() {
     if let action = actionHandler as? HamsterKeyboardActionHandler {
-      action.characterDragActionHandler.endDragGesture()
+      action.slidingGestureHandler.endDragGesture()
     }
     super.endDragGesture()
   }

@@ -17,27 +17,28 @@ enum ValueType: String, Equatable, CaseIterable, Identifiable {
   case String = "字符"
 }
 
-struct UpAndDownSlideInputSymbolView: View {
+/// 全键盘滑动手势映射功能
+struct SlidingGestureMappingView: View {
   @EnvironmentObject var appSettings: HamsterAppSettings
   @State var editKey: String?
   @State var editValueType: ValueType = .String
   @State var editValue: String = ""
   @State var editValueSlideFunction: FunctionalInstructions = .none
-  @State var upAndDownSlideSymbols: [String: String] = [:]
+  @State var slideGestureMapping: [String: String] = [:]
   @State var restState = false
 
-  var upAndDownSlideSymbolKeys: [String] {
-    upAndDownSlideSymbols.keys.sorted()
+  var slideGestureKeys: [String] {
+    slideGestureMapping.keys.sorted()
   }
 
   let remark: String =
     """
-    • ↑表示上划
-    • ↓表示下划
+    • ↑ 表示上滑 ↓ 表示下滑
+    • ← 表示左滑 → 表示右滑
     • 点击显示项可进行编辑
-        • 请先选选择字符对应的类型.
-        • 字符类型表示上下滑动时会输入的字符, 键盘皮肤也会显示同样字符;
-        • 功能类型表示上下滑动会实现的功能, 比如中英切换等. 键盘皮肤会显示后面的说明文字;
+        • 请先选选择滑动按键对应的类型.
+        • 字符类型表示滑动时会输入的字符, 键盘皮肤也会显示同样字符;
+        • 功能类型表示滑动会实现的功能, 比如中英切换等. 键盘皮肤会显示后面的说明文字;
     """
 
   var body: some View {
@@ -46,7 +47,7 @@ struct UpAndDownSlideInputSymbolView: View {
 
       VStack {
         HStack {
-          Text("上下滑动输入数字符号")
+          Text("全键盘滑动手势映射表")
             .subViewTitleFont()
           Spacer()
         }
@@ -97,9 +98,9 @@ struct UpAndDownSlideInputSymbolView: View {
           .padding(.bottom, 10)
 
           ScrollView {
-            ForEach(upAndDownSlideSymbolKeys, id: \.self) { key in
+            ForEach(slideGestureKeys, id: \.self) { key in
               Button {
-                self.editValue = upAndDownSlideSymbols[key] ?? ""
+                self.editValue = slideGestureMapping[key] ?? ""
                 self.editValueType = self.editValue.hasPrefix("#") ? .Function : .String
                 if self.editValueType == .Function, let function = FunctionalInstructions(rawValue: self.editValue) {
                   self.editValueSlideFunction = function
@@ -112,7 +113,7 @@ struct UpAndDownSlideInputSymbolView: View {
                     Spacer()
                   }
                   HStack {
-                    Text(upAndDownSlideSymbols[key] ?? "")
+                    Text(slideGestureMapping[key] ?? "")
                     Spacer()
                   }
                   .foregroundColor(.secondary)
@@ -158,8 +159,8 @@ struct UpAndDownSlideInputSymbolView: View {
               value = ""
             }
           }
-          upAndDownSlideSymbols[editKey!] = value
-          appSettings.keyboardUpAndDownSlideSymbol = upAndDownSlideSymbols
+          slideGestureMapping[editKey!] = value
+          appSettings.keyboardUpAndDownSlideSymbol = slideGestureMapping
         }
         .transition(.move(edge: .bottom))
       }
@@ -180,7 +181,7 @@ struct UpAndDownSlideInputSymbolView: View {
         title: Text("是否恢复为默认值"),
         primaryButton: .default(Text("确定")) {
           appSettings.keyboardUpAndDownSlideSymbol = Plist.defaultAction
-          upAndDownSlideSymbols = appSettings.keyboardUpAndDownSlideSymbol
+          slideGestureMapping = appSettings.keyboardUpAndDownSlideSymbol
         },
         secondaryButton: .cancel(Text("取消")) {
           restState = false
@@ -188,7 +189,7 @@ struct UpAndDownSlideInputSymbolView: View {
       )
     }
     .onAppear {
-      upAndDownSlideSymbols = appSettings.keyboardUpAndDownSlideSymbol
+      slideGestureMapping = appSettings.keyboardUpAndDownSlideSymbol
     }
     // ZStack End
   }
@@ -317,7 +318,7 @@ struct UpAndDownSlideInputSymbolView_Previews: PreviewProvider {
   }
 
   static var previews: some View {
-    UpAndDownSlideInputSymbolView()
+    SlidingGestureMappingView()
       .environmentObject(appSettings)
   }
 }

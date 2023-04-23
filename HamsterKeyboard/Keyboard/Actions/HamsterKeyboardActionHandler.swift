@@ -3,41 +3,59 @@ import SwiftUI
 
 class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public weak var hamsterKeyboardController: HamsterKeyboardViewController?
-
-  // 其他按键滑动处理
-  public let characterDragActionHandler: SlideGestureHandler
+  // 全键盘滑动处理
+  public let slidingGestureHandler: SlideGestureHandler
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
   // 键盘上下滑动处理
-  let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, Int) -> Void) = { keyboardController in
+  let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, SlidingDirection, Int) -> Void) = { keyboardController in
     weak var ivc = keyboardController
-    guard let ivc = ivc else { return { _, _ in } }
+    guard let ivc = ivc else { return { _, _, _ in } }
+
+    // 滑动配置符号或功能映射
     let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
-    return { [weak ivc] action, offset in
-      if case .character(let char) = action {
-        if char.isEmpty {
+
+    return { [weak ivc] action, direction, offset in
+      guard let ivc = ivc else { return }
+
+      var actionMappingValue: String?
+
+      // 获取滑动动作的映射值
+      switch action {
+      case .character(let char):
+        actionMappingValue = actionConfig[char.actionKey(direction)]
+      case .backspace:
+        actionMappingValue = actionConfig[.backspaceKeyName.actionKey(direction)]
+      case .primary:
+        actionMappingValue = actionConfig[.enterKeyName.actionKey(direction)]
+      case .space:
+        if direction.isXAxis {
+          // 空格左右滑动
+          ivc.adjustTextPosition(byCharacterOffset: offset)
           return
         }
-
-        let actionKey = offset < 0 ?
-          char.lowercased() + KeyboardConstant.Character.SlideDown :
-          char.lowercased() + KeyboardConstant.Character.SlideUp
-
-        guard let value = actionConfig[actionKey] else {
-          return
+        actionMappingValue = actionConfig[.spaceKeyName.actionKey(direction)]
+      case .keyboardType(let type):
+        if type == .numeric && ivc.keyboardContext.keyboardType.isAlphabetic {
+          actionMappingValue = actionConfig[.numberKeyboardButton.actionKey(direction)]
         }
-
-        guard let ivc = ivc else { return }
-
-        // #功能指令处理
-        if ivc.functionalInstructionsHandled(value) {
-          return
-        }
-
-        // 字符处理
-        ivc.insertText(value)
+      default:
+        break
       }
+
+      guard let actionMappingValue = actionMappingValue else {
+        return
+      }
+
+      Logger.shared.log.debug("sliding action mapping: \(actionMappingValue)")
+
+      // #功能指令处理
+      if ivc.functionalInstructionsHandled(actionMappingValue) {
+        return
+      }
+      // 字符处理
+      ivc.insertText(actionMappingValue)
     }
   }
 
@@ -50,9 +68,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     self.hamsterKeyboardController = keyboardController
     self.appSettings = ivc.appSettings
     self.rimeEngine = ivc.rimeEngine
-    self.characterDragActionHandler = CharacterDragHandler(
+    self.slidingGestureHandler = HamsterSlidingGestureHandler(
       keyboardContext: keyboardContext,
-      feedbackHandler: keyboardFeedbackHandler,
+      appSettings: appSettings,
       action: characterDragAction(ivc)
     )
 
@@ -61,15 +79,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       keyboardContext: ivc.keyboardContext,
       keyboardBehavior: ivc.keyboardBehavior,
       keyboardFeedbackHandler: ivc.keyboardFeedbackHandler,
-      autocompleteContext: ivc.autocompleteContext,
-      spaceDragGestureHandler: SpaceCursorDragGestureHandler(
-        keyboardContext: ivc.keyboardContext,
-        feedbackHandler: ivc.keyboardFeedbackHandler,
-        action: { [weak ivc] in
-          ivc?.adjustTextPosition(byCharacterOffset: $0 > 0 ? 1 : -1)
-        }
-      ),
-      spaceDragSensitivity: .medium
+      autocompleteContext: ivc.autocompleteContext
     )
   }
 
@@ -119,17 +129,35 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   ) {
     switch action {
     case .space:
-      if appSettings.slideBySpaceButton {
-        if appSettings.enableInputEmbeddedMode && !rimeEngine.userInputKey.isEmpty {
-          return
-        }
-        spaceDragGestureHandler.handleDragGesture(from: startLocation, to: currentLocation)
-      }
-    case .character:
+      // space滑动的的开关判断
+      slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+    default:
       if appSettings.enableKeyboardUpAndDownSlideSymbol {
-        characterDragActionHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+        slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
-    default: break
     }
+  }
+}
+
+private extension String {
+  // 空格名称
+  static let spaceKeyName = "space"
+  // 删除键名称
+  static let backspaceKeyName = "backspace"
+  // 回车键名称
+  static let enterKeyName = "enter"
+
+  // 数字键盘切换键
+  static let numberKeyboardButton = "123"
+
+  // 获取滑动ActionKey
+  func actionKey(_ slidingDirection: SlidingDirection) -> String {
+    var actionKey: String
+    if slidingDirection.isXAxis {
+      actionKey = lowercased() + (slidingDirection == .right ? KeyboardConstant.Character.SlideRight : KeyboardConstant.Character.SlideLeft)
+    } else {
+      actionKey = lowercased() + (slidingDirection == .down ? KeyboardConstant.Character.SlideDown : KeyboardConstant.Character.SlideUp)
+    }
+    return actionKey
   }
 }

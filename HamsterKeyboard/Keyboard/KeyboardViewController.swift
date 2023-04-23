@@ -485,8 +485,18 @@ extension HamsterKeyboardViewController {
       self.moveEndOfSentence()
     case .selectInputSchema:
       self.appSettings.keyboardStatus = .switchInputSchema
+    case .newLine:
+      self.textDocumentProxy.insertText(.newline)
+    case .deleteInputKey:
+      self.rimeEngine.reset()
+    case .selectColorSchema:
+      // TODO: 颜色方案切换
+      break
+    case .switchLastInputSchema:
+      // TODO: 切换最近一次输入方案
+      break
     default:
-      return false
+      break
     }
 
     return true

@@ -13,6 +13,9 @@ enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
   case selectSecond = "#次选上屏"
   case selectInputSchema = "#方案切换"
   case selectColorSchema = "#配色切换"
+  case newLine = "#换行"
+  case deleteInputKey = "#清屏"
+  case switchLastInputSchema = "#切换上个输入方案"
   case none = "无"
 
   var text: String {
