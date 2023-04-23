@@ -21,5 +21,19 @@
 	<true/>
 	<key>rimeVersion</key>
 	<string>1.8.5</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>zip</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.pkware.zip-archive</string>
+				<string>public.archive</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
