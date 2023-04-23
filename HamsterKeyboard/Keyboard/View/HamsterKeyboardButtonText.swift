@@ -88,7 +88,8 @@ struct HamsterKeyboardButtonText: View {
         VStack(alignment: .center, spacing: 0) {
           Text(text)
             .lineLimit(1)
-            .offset(y: showExtendArea ? -2 : 0)
+            // 纯字母模式，位置向上偏移
+            .offset(y: showExtendArea ? -3 : 0)
         }
       }
     }
