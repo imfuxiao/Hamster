@@ -20,11 +20,30 @@ struct FinderView: View {
 
   var urls: [URL] {
     do {
-      return try FileManager.default.contentsOfDirectory(
+      let urls = try FileManager.default.contentsOfDirectory(
         at: finderURL.appendingPathComponent(pathStack.joined(separator: "/")),
-        includingPropertiesForKeys: [.fileResourceTypeKey],
+        includingPropertiesForKeys: [.fileResourceTypeKey, .isDirectoryKey],
         options: [.skipsHiddenFiles]
       )
+      // 按字母顺序排序, 文件夹优先
+      return urls.sorted(by: {
+        let firstIsDirectory = (try? $0.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+        let secondIsDirectory = (try? $1.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+        // 同是文件夹，则按字母排序
+        if firstIsDirectory, secondIsDirectory {
+          return $0.lastPathComponent < $1.lastPathComponent
+        }
+        // 1是文件夹，2是文件，则不需排序
+        if firstIsDirectory, !secondIsDirectory {
+          return true
+        }
+        // 2是文件夹，1是文件，则需要排序
+        if secondIsDirectory, !firstIsDirectory {
+          return false
+        }
+        // 都是文件则按字母顺序排序
+        return $0.lastPathComponent < $1.lastPathComponent
+      })
     } catch {
       Logger.shared.log.error("FinderView currentURL get error: \(error.localizedDescription)")
       return []
