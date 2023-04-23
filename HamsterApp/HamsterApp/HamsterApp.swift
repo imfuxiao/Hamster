@@ -35,6 +35,51 @@ struct HamsterApp: App {
       }
       .onOpenURL { url in
         Logger.shared.log.debug("open url: \(url)")
+        if url.pathExtension.lowercased() == "zip" {
+          // TODO: 添加loading
+          let fm = FileManager.default
+          let tempPath = URL(fileURLWithPath: NSTemporaryDirectory().appending("/Rime"))
+
+          do {
+            // 先解压到临时目录
+            try fm.unzipItem(at: url, to: tempPath)
+            try fm.removeItem(at: url)
+            let files = try fm.contentsOfDirectory(at: tempPath, includingPropertiesForKeys: nil, options: [])
+            var isRime: Bool = false
+            // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
+            for file in files {
+              if file.lastPathComponent.contains("schema.yaml") {
+                isRime = true
+                break
+              }
+            }
+            if !isRime {
+              // TODO: 提示压缩包内没有Rime 所需文件
+              // 删除临时解压文件
+              try fm.removeItem(at: tempPath)
+            } else {
+              let rimePath = RimeEngine.appGroupUserDataDirectoryURL
+              do {
+                // 判断 Rime 目录是否存在
+                if fm.fileExists(atPath: rimePath.path) {
+                  // 删除 Rime 目录
+                  try fm.removeItem(at: rimePath)
+                }
+                // 移动文件夹
+                try fm.moveItem(at: tempPath, to: rimePath)
+
+                appSettings.rimeNeedOverrideUserDataDirectory = true
+                // TODO: 添加提示
+              } catch {
+                // 处理错误
+                Logger.shared.log.debug("处理 ZIP 文件时发生错误：\(error)")
+              }
+            }
+          } catch {
+            // 处理错误
+            Logger.shared.log.debug("处理 ZIP 文件时发生错误：\(error)")
+          }
+        }
       }
       .onAppear {
         DispatchQueue.global().async {
