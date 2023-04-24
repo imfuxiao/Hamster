@@ -54,6 +54,12 @@ struct HamsterApp: App {
           launchScreenState = true
           loadingMessage = "Zip文件解析中..."
 
+          // 必须添加安全访问资源语句，否则会异常：Operation not permitted
+          // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
+          if !url.startAccessingSecurityScopedResource() {
+            err = ZipParsingError(message: "Zip文件读取权限受限")
+          }
+          
           let fm = FileManager()
           let tempPath = fm.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
           do {
@@ -62,6 +68,9 @@ struct HamsterApp: App {
             }
 
             try fm.copyItem(atPath: url.path, toPath: tempPath.path)
+            
+            // 停止读取url文件
+            url.stopAccessingSecurityScopedResource()
 
             // 读取ZIP内容
             guard let archive = Archive(url: tempPath, accessMode: .read) else {
