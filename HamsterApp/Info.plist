@@ -35,5 +35,9 @@
 	<true/>
 	<key>rimeVersion</key>
 	<string>1.8.5</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UISupportsDocumentBrowser</key>
+	<true/>
 </dict>
 </plist>

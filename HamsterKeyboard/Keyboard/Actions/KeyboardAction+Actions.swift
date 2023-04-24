@@ -71,7 +71,7 @@ extension KeyboardAction {
     case .nextKeyboard: return { $0?.selectNextKeyboard() }
     case .primary: return {
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          ivc.inputRimeKeycode(keycode: XK_Return)
+          _ = ivc.inputRimeKeycode(keycode: XK_Return)
         }
       }
     case .shift(let currentState):
@@ -83,12 +83,12 @@ extension KeyboardAction {
       }
     case .space: return {
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          ivc.inputRimeKeycode(keycode: XK_space)
+          _ = ivc.inputRimeKeycode(keycode: XK_space)
         }
       }
     case .tab: return {
         if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
-          ivc.inputRimeKeycode(keycode: XK_Tab)
+          _ = ivc.inputRimeKeycode(keycode: XK_Tab)
         }
       }
     // TODO: 自定义按键动作处理

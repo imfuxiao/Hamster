@@ -240,7 +240,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override open func deleteBackward() {
-    self.inputRimeKeycode(keycode: XK_BackSpace)
+    _ = self.inputRimeKeycode(keycode: XK_BackSpace)
   }
 
   override open func setKeyboardType(_ type: KeyboardType) {
