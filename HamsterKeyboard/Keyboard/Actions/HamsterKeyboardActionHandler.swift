@@ -30,7 +30,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       case .primary:
         actionMappingValue = actionConfig[.enterKeyName.actionKey(direction)]
       case .space:
-        if direction.isXAxis {
+        if direction.isXAxis && ivc.rimeEngine.suggestions.isEmpty {
           // 空格左右滑动
           ivc.adjustTextPosition(byCharacterOffset: offset)
           return

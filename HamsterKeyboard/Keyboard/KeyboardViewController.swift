@@ -493,8 +493,13 @@ extension HamsterKeyboardViewController {
       // TODO: 颜色方案切换
       break
     case .switchLastInputSchema:
-      // TODO: 切换最近一次输入方案
-      break
+      let currentInputSchema = (self.rimeEngine.currentSchema()?.schemaId) ?? ""
+      if !self.appSettings.lastUseRimeInputSchema.isEmpty {
+        let handled = self.rimeEngine.setSchema(self.appSettings.lastUseRimeInputSchema)
+        Logger.shared.log.debug("switch last use input schema \(self.appSettings.lastUseRimeInputSchema), handled = \(handled)")
+        self.appSettings.lastUseRimeInputSchema = currentInputSchema
+        self.rimeEngine.reset()
+      }
     default:
       break
     }
