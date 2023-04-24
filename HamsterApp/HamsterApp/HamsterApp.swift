@@ -8,8 +8,10 @@
 import Plist
 import SwiftUI
 import SwiftyBeaver
+import ZIPFoundation
 
 @main
+@available(iOS 14, *)
 struct HamsterApp: App {
   var appSettings = HamsterAppSettings()
   var rimeEngine = RimeEngine()
@@ -17,67 +19,88 @@ struct HamsterApp: App {
   @State var launchScreenState = true
   @State var showError: Bool = false
   @State var err: Error?
+  @State var loadingMessage: String = ""
+
+  // Zip文件解析异常
+  struct ZipParsingError: Error {
+    let message: String
+  }
 
   var body: some Scene {
     WindowGroup {
       ZStack {
         Color.clear
           .alert(isPresented: $showError) {
-            Alert(title: Text("RIME初始化异常: \(err?.localizedDescription ?? "")"), dismissButton: .cancel {
-              err = nil
-            })
+            Alert(
+              title: Text("\(err?.localizedDescription ?? "")"),
+              dismissButton: .cancel {
+                err = nil
+                // 异常初始化后跳转主界面
+                launchScreenState = false
+              }
+            )
           }
         if launchScreenState {
-          LaunchScreen(appSettings.isFirstLaunch)
+          LaunchScreen(appSettings.isFirstLaunch, loadingMessage: $loadingMessage)
         } else {
           ContentView()
         }
       }
       .onOpenURL { url in
         Logger.shared.log.debug("open url: \(url)")
+
         if url.pathExtension.lowercased() == "zip" {
-          // TODO: 添加loading
-          let fm = FileManager.default
-          let tempPath = URL(fileURLWithPath: NSTemporaryDirectory().appending("/Rime"))
+          // Loading: 开启加载页面
+          launchScreenState = true
+          loadingMessage = "Zip文件解析中..."
 
+          let fm = FileManager()
+          let tempPath = fm.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
           do {
-            // 先解压到临时目录
-            try fm.unzipItem(at: url, to: tempPath)
-            try fm.removeItem(at: url)
-            let files = try fm.contentsOfDirectory(at: tempPath, includingPropertiesForKeys: nil, options: [])
-            var isRime: Bool = false
-            // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
-            for file in files {
-              if file.lastPathComponent.contains("schema.yaml") {
-                isRime = true
-                break
-              }
-            }
-            if !isRime {
-              // TODO: 提示压缩包内没有Rime 所需文件
-              // 删除临时解压文件
+            if fm.fileExists(atPath: tempPath.path) {
               try fm.removeItem(at: tempPath)
-            } else {
-              let rimePath = RimeEngine.appGroupUserDataDirectoryURL
-              do {
-                // 判断 Rime 目录是否存在
-                if fm.fileExists(atPath: rimePath.path) {
-                  // 删除 Rime 目录
-                  try fm.removeItem(at: rimePath)
-                }
-                // 移动文件夹
-                try fm.moveItem(at: tempPath, to: rimePath)
+            }
 
-                appSettings.rimeNeedOverrideUserDataDirectory = true
-                // TODO: 添加提示
-              } catch {
-                // 处理错误
-                Logger.shared.log.debug("处理 ZIP 文件时发生错误：\(error)")
-              }
+            try fm.copyItem(atPath: url.path, toPath: tempPath.path)
+
+            // 读取ZIP内容
+            guard let archive = Archive(url: tempPath, accessMode: .read) else {
+              showError = true
+              err = ZipParsingError(message: "读取Zip文件异常")
+              return
+            }
+
+            // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
+            guard let _ = archive.filter({ $0.path.contains("schema.yaml") }).first else {
+              showError = true
+              err = ZipParsingError(message: "Zip文件未包含输入方案文件")
+              return
+            }
+
+            // 解压, 解压前先删除旧文件
+            try fm.removeItem(at: RimeEngine.appGroupUserDataDirectoryURL)
+            try fm.unzipItem(at: tempPath, to: RimeEngine.appGroupUserDataDirectoryURL)
+
+            loadingMessage = "方案部署中"
+
+            // Rime重新部署
+            rimeEngine.startRime(nil, fullCheck: true)
+            if let schema = rimeEngine.getSchemas().first {
+              appSettings.rimeInputSchema = schema.schemaId
+            }
+            rimeEngine.shutdownRime()
+            appSettings.rimeNeedOverrideUserDataDirectory = true
+
+            loadingMessage = "部署完毕"
+
+            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+              launchScreenState = false
             }
           } catch {
             // 处理错误
-            Logger.shared.log.debug("处理 ZIP 文件时发生错误：\(error)")
+            Logger.shared.log.debug("zip \(error)")
+            showError = true
+            err = ZipParsingError(message: "Zip文件处理失败: \(error.localizedDescription)")
           }
         }
       }

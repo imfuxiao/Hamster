@@ -8,11 +8,17 @@
 import SwiftUI
 
 struct LaunchScreen: View {
-  init(_ isAppFirstRun: Bool) {
+  init(_ isAppFirstRun: Bool, loadingMessage: Binding<String> = .constant("")) {
     self.isAppFirstRun = isAppFirstRun
+    self._loadingMessage = loadingMessage
+    if isAppFirstRun {
+      self.loadingMessage = "应用首次运行会编译输入方案, 请稍后..."
+    }
   }
 
   let isAppFirstRun: Bool
+  @Binding var loadingMessage: String
+
   @Environment(\.colorScheme) var colorScheme
 
   @State var start = UnitPoint(x: 0, y: 0)
@@ -63,11 +69,9 @@ struct LaunchScreen: View {
             Text("powered by 中州韻輸入法引擎".uppercased())
               .padding(.top, 3)
 
-            if isAppFirstRun {
-              Text("应用首次运行会编译输入方案, 请稍后...")
-                .font(.system(size: 14))
-                .padding(.top, 10)
-            }
+            Text(loadingMessage)
+              .font(.system(size: 14))
+              .padding(.top, 10)
           }
           .font(.system(size: 20, weight: .bold, design: .rounded))
         )
