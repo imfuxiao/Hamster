@@ -486,7 +486,7 @@ extension HamsterKeyboardViewController {
     case .selectInputSchema:
       self.appSettings.keyboardStatus = .switchInputSchema
     case .newLine:
-      self.textDocumentProxy.insertText(.newline)
+      self.textDocumentProxy.insertText("\r\n")
     case .deleteInputKey:
       self.rimeEngine.reset()
     case .selectColorSchema:
