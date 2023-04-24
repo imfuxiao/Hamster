@@ -366,13 +366,6 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
-		C01CF63529F62E3F0039AFAA /* Document */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Document;
-			sourceTree = "<group>";
-		};
 		C02BEA3829C26027008487A4 /* Persistent */ = {
 			isa = PBXGroup;
 			children = (
@@ -492,7 +485,6 @@
 				C03E8028296D4F4C0083E53A /* HamsterApp.swift */,
 				C0532D1529C49469001A8BE6 /* LaunchScreen.swift */,
 				C04FA8AF299A65AC00F8CC32 /* View */,
-				C01CF63529F62E3F0039AFAA /* Document */,
 			);
 			path = HamsterApp;
 			sourceTree = "<group>";
@@ -1261,7 +1253,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1299,7 +1291,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1330,7 +1322,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1360,7 +1352,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.0;
+				MARKETING_VERSION = 1.6.1;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
