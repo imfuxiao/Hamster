@@ -501,7 +501,7 @@ extension HamsterKeyboardViewController {
         self.rimeEngine.reset()
       }
     default:
-      break
+      return false
     }
 
     return true
