@@ -164,16 +164,21 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
   private func setupRimeEngine() {
     do {
-      try RimeEngine.syncAppGroupSharedSupportDirectory(
-        override: self.appSettings.rimeNeedOverrideUserDataDirectory)
+//      TODO: AppGroup下SharedSupport目录共享
+//      try RimeEngine.syncAppGroupSharedSupportDirectory(
+//        override: self.appSettings.rimeNeedOverrideUserDataDirectory)
+      Logger.shared.log.debug("rime syncAppGroupUserDataDirectory: \(self.appSettings.rimeNeedOverrideUserDataDirectory)")
+
+      // 如果有写权限直接使用AppGroup下目录
       try RimeEngine.syncAppGroupUserDataDirectory(
         override: self.appSettings.rimeNeedOverrideUserDataDirectory)
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
     }
 
+    // TODO: 使用AppGroup下的SharedSupport目录
     let traits = self.rimeEngine.createTraits(
-      sharedSupportDir: RimeEngine.sharedSupportDirectory.path,
+      sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
       userDataDir: RimeEngine.userDataDirectory.path
     )
 
@@ -186,7 +191,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       self.rimeEngine.setupRime(traits)
     }
     self.rimeEngine.startRime(
-      traits, fullCheck: self.appSettings.rimeNeedOverrideUserDataDirectory
+      nil, fullCheck: false
     )
     if self.appSettings.rimeNeedOverrideUserDataDirectory {
       self.appSettings.rimeNeedOverrideUserDataDirectory = false

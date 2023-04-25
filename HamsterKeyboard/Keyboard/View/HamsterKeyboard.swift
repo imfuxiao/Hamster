@@ -165,6 +165,7 @@ struct SelectInputSchemaView: View {
         },
         contentForData: {
           InputSchemaCell(schema: $0, isSelect: appSettings.rimeInputSchema == $0.schemaId, showDivider: false, action: {
+            appSettings.lastUseRimeInputSchema = appSettings.rimeInputSchema
             appSettings.rimeInputSchema = $0.schemaId
             let handled = rimeEngine.setSchema($0.schemaId)
             Logger.shared.log.debug("switch input schema: \($0.schemaId), handled: \(handled)")

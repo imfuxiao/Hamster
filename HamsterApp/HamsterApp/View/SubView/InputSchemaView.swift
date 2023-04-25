@@ -46,6 +46,7 @@ struct InputSchemaView: View {
               isSelect: appSettings.rimeInputSchema == schema.schemaId,
               showDivider: true
             ) {
+              appSettings.lastUseRimeInputSchema = appSettings.rimeInputSchema
               appSettings.rimeInputSchema = $0.schemaId
             }
           }

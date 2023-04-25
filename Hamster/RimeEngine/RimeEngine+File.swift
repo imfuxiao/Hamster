@@ -128,5 +128,6 @@ extension RimeEngine {
 
     let src = appGroupUserDataDirectoryURL
     try fm.copyItem(at: src, to: dst)
+    try fm.setAttributes([.posixPermissions: 0o777], ofItemAtPath: dst.path)
   }
 }
