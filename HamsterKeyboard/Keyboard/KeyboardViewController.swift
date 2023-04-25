@@ -96,6 +96,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override public func viewWillSetupKeyboard() {
+    super.viewWillSetupKeyboard()
     self.log.debug("viewWillSetupKeyboard() begin")
     let hamsterKeyboard = HamsterKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
@@ -104,6 +105,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override public func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
     self.log.debug("HamsterKeyboardViewController viewDidDisappear")
   }
 
