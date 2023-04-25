@@ -40,8 +40,9 @@ struct HamsterApp: App {
               }
             )
           }
+
         if launchScreenState {
-          LaunchScreen(appSettings.isFirstLaunch, loadingMessage: $loadingMessage)
+          LaunchScreen(loadingMessage: $loadingMessage)
         } else {
           ContentView()
         }
@@ -59,7 +60,7 @@ struct HamsterApp: App {
           if !url.startAccessingSecurityScopedResource() {
             err = ZipParsingError(message: "Zip文件读取权限受限")
           }
-          
+
           let fm = FileManager()
           let tempPath = fm.temporaryDirectory.appendingPathComponent(url.lastPathComponent)
           do {
@@ -68,7 +69,7 @@ struct HamsterApp: App {
             }
 
             try fm.copyItem(atPath: url.path, toPath: tempPath.path)
-            
+
             // 停止读取url文件
             url.stopAccessingSecurityScopedResource()
 
@@ -117,8 +118,10 @@ struct HamsterApp: App {
         DispatchQueue.global().async {
           // 检测应用是否首次加载
           if appSettings.isFirstLaunch {
+            loadingMessage = "初次启动，需要编译输入方案，请耐心等待……"
+
             // 加载系统默认配置上下滑动符号
-            appSettings.keyboardUpAndDownSlideSymbol = Plist.defaultAction
+            appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
 
             // RIME首次启动需要将输入方案copy到AppGroup共享目录下供Keyboard使用
             do {
@@ -142,6 +145,9 @@ struct HamsterApp: App {
             rimeEngine.shutdownRime()
             appSettings.isFirstLaunch = false
             appSettings.rimeNeedOverrideUserDataDirectory = true
+
+            loadingMessage = "RIME部署完毕"
+
           } else {
             rimeEngine.setupRime(
               sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,

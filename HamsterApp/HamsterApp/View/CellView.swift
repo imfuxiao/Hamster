@@ -14,7 +14,7 @@ enum DestinationType {
   case fileEditor
   case feedback
   case inputKeyFunction
-  case slideGestureMapping
+  case swipeGestureMapping
   case about
   case none
 
@@ -50,8 +50,8 @@ struct CellDestinationRoute: CellDestination {
       FeedbackView()
     case .inputKeyFunction:
       InputEditorView()
-    case .slideGestureMapping:
-      SlidingGestureMappingView()
+    case .swipeGestureMapping:
+      SwipeGestureActionView()
     case .about:
       AboutView()
     default:
@@ -259,9 +259,9 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
-      cellName: "滑动动作映射表",
+      cellName: "按键滑动手势",
       imageName: "arrow.up.arrow.down",
-      destinationType: .slideGestureMapping
+      destinationType: .swipeGestureMapping
     ),
     CellViewModel(
       cellWidth: cellWidth,

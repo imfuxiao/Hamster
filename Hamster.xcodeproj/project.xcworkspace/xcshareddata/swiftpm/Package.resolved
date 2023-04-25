@@ -77,8 +77,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/imfuxiao/Plist",
       "state" : {
-        "revision" : "6e1d79a8daf85bf5adb3f4e4a30e627318cc7450",
-        "version" : "0.3.0"
+        "revision" : "903d3bf2804cf5d11a52a5ccd2fea93e12d6abdf",
+        "version" : "0.4.0"
       }
     },
     {

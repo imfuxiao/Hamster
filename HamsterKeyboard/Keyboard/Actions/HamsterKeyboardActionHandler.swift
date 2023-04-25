@@ -14,7 +14,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     guard let ivc = ivc else { return { _, _, _ in } }
 
     // 滑动配置符号或功能映射
-    let actionConfig: [String: String] = ivc.appSettings.keyboardUpAndDownSlideSymbol
+    let actionConfig: [String: String] = ivc.appSettings.keyboardSwipeGestureSymbol
 
     return { [weak ivc] action, direction, offset in
       guard let ivc = ivc else { return }
@@ -132,7 +132,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       // space滑动的的开关判断
       slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
     default:
-      if appSettings.enableKeyboardUpAndDownSlideSymbol {
+      if appSettings.enableKeyboardSwipeGestureSymbol {
         slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     }

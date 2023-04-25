@@ -123,10 +123,12 @@ private enum HamsterAppSettingKeys: String {
   // rime 是否需要重新同步用户目录
   case rimeNeedOverrideUserDataDirectory = "rime.needOverrideUserDataDirectory"
 
-  // 键盘上下滑动符号
-  case enableKeyboardUpAndDownSlideSymbol = "keyboard.enableUpAndDownSlideSymbol"
-  case showKeyboardUpAndDownSlideSymbol = "keyboard.showUpAndDownSlideSymbol"
-  case keyboardUpAndDownSlideSymbol = "keyboard.upAndDownSlideSymbol"
+  // 键盘滑动手势对应的符号或功能
+  case enableKeyboardSwipeGestureSymbol = "keyboard.enableSwipeGestureSymbol"
+  case keyboardSwipeGestureSymbol = "keyboard.swipeGestureSymbol"
+
+  // 按键副区域是否显示
+  case showKeyExtensionArea = "keyboard.KeyExtensionArea"
 
   // 启用数字九宫格键盘
   case enableNumberNineGrid = "keyboard.enableNumberNineGrid"
@@ -169,9 +171,9 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
       HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue: false,
-      HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue: true,
-      HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue: true,
-      HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue: [:] as [String: String],
+      HamsterAppSettingKeys.enableKeyboardSwipeGestureSymbol.rawValue: true,
+      HamsterAppSettingKeys.showKeyExtensionArea.rawValue: true,
+      HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue: [:] as [String: String],
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
@@ -200,9 +202,9 @@ public class HamsterAppSettings: ObservableObject {
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
     self.rimeNeedOverrideUserDataDirectory = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
-    self.enableKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue)
-    self.showKeyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue)
-    self.keyboardUpAndDownSlideSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue) as! [String: String]
+    self.enableKeyboardSwipeGestureSymbol = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardSwipeGestureSymbol.rawValue)
+    self.showKeyExtensionArea = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyExtensionArea.rawValue)
+    self.keyboardSwipeGestureSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue) as! [String: String]
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
     self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     self.enableInputEmbeddedMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
@@ -434,33 +436,33 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
-  // 键盘: 是否启用上下滑动符号
+  // 键盘: 是否启用键盘滑动手势
   @Published
-  var enableKeyboardUpAndDownSlideSymbol: Bool {
+  var enableKeyboardSwipeGestureSymbol: Bool {
     didSet {
-      Logger.shared.log.info(["AppSettings, enableKeyboardUpAndDownSlideSymbol": enableKeyboardUpAndDownSlideSymbol])
+      Logger.shared.log.info(["AppSettings, enableKeyboardSwipeGestureSymbol": enableKeyboardSwipeGestureSymbol])
       UserDefaults.hamsterSettingsDefault.set(
-        enableKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.enableKeyboardUpAndDownSlideSymbol.rawValue)
+        enableKeyboardSwipeGestureSymbol, forKey: HamsterAppSettingKeys.enableKeyboardSwipeGestureSymbol.rawValue)
     }
   }
 
-  // 键盘: 是否显示上下滑动符号
+  // 键盘: 按键滑动手势对应键值
   @Published
-  var showKeyboardUpAndDownSlideSymbol: Bool {
+  var keyboardSwipeGestureSymbol: [String: String] {
     didSet {
-      Logger.shared.log.info(["AppSettings, enableKeyboardUpAndDownSlideSymbol": enableKeyboardUpAndDownSlideSymbol])
+      Logger.shared.log.info(["AppSettings, keyboardSwipeGestureSymbol": keyboardSwipeGestureSymbol])
       UserDefaults.hamsterSettingsDefault.set(
-        showKeyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.showKeyboardUpAndDownSlideSymbol.rawValue)
+        keyboardSwipeGestureSymbol, forKey: HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue)
     }
   }
 
-  // 键盘: 按键对应上下滑动键值
+  // 键盘: 是否显示按键扩展区域
   @Published
-  var keyboardUpAndDownSlideSymbol: [String: String] {
+  var showKeyExtensionArea: Bool {
     didSet {
-      Logger.shared.log.info(["AppSettings, keyboardUpAndDownSlideSymbol": keyboardUpAndDownSlideSymbol])
+      Logger.shared.log.info(["AppSettings, showKeyExtensionArea": showKeyExtensionArea])
       UserDefaults.hamsterSettingsDefault.set(
-        keyboardUpAndDownSlideSymbol, forKey: HamsterAppSettingKeys.keyboardUpAndDownSlideSymbol.rawValue)
+        showKeyExtensionArea, forKey: HamsterAppSettingKeys.showKeyExtensionArea.rawValue)
     }
   }
 

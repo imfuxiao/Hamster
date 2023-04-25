@@ -37,7 +37,7 @@ struct HamsterKeyboardActionButtonContent: View {
     }
 
     var buttonExtendCharacter: [String: String] = [:]
-    for (fullKey, fullValue) in appSettings.keyboardUpAndDownSlideSymbol {
+    for (fullKey, fullValue) in appSettings.keyboardSwipeGestureSymbol {
       var key = fullKey
       let value = translateFunctionText(fullValue)
       let suffix = String(key.removeLast())

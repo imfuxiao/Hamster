@@ -48,8 +48,8 @@ struct HamsterKeyboardButtonText: View {
 
   // 是否显示按键扩展区域
   var showExtendArea: Bool {
-    appSettings.enableKeyboardUpAndDownSlideSymbol
-      && appSettings.showKeyboardUpAndDownSlideSymbol
+    appSettings.enableKeyboardSwipeGestureSymbol
+      && appSettings.showKeyExtensionArea
       && keyboardContext.keyboardType.isAlphabetic
   }
 

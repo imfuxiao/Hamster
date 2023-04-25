@@ -8,15 +8,10 @@
 import SwiftUI
 
 struct LaunchScreen: View {
-  init(_ isAppFirstRun: Bool, loadingMessage: Binding<String> = .constant("")) {
-    self.isAppFirstRun = isAppFirstRun
+  init(loadingMessage: Binding<String> = .constant("")) {
     self._loadingMessage = loadingMessage
-    if isAppFirstRun {
-      self.loadingMessage = "应用首次运行会编译输入方案, 请稍候..."
-    }
   }
 
-  let isAppFirstRun: Bool
   @Binding var loadingMessage: String
 
   @Environment(\.colorScheme) var colorScheme
@@ -84,6 +79,6 @@ struct LaunchScreen: View {
 
 struct LaunchScreen_Previews: PreviewProvider {
   static var previews: some View {
-    LaunchScreen(true)
+    LaunchScreen()
   }
 }
