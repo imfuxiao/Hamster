@@ -37,6 +37,6 @@ struct DotsLoadingView: View {
 
 struct DotsLoadindView_Preview: PreviewProvider {
   static var previews: some View {
-    DotsLoadingView(text: "重置中,请稍后...")
+    DotsLoadingView(text: "重置中,请稍候...")
   }
 }

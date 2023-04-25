@@ -57,7 +57,7 @@ public struct ContentView: View {
                 buttonText: "重新部署",
                 buttonWidth: proxy.size.width - 40
               ) {
-                loadingText = "正在部署, 请稍后."
+                loadingText = "正在部署, 请稍候."
                 isLoading = true
                 appSettings.rimeNeedOverrideUserDataDirectory = true
                 DispatchQueue.global().async {
@@ -92,7 +92,7 @@ public struct ContentView: View {
               Alert(
                 title: Text("重置会删除个人上传方案, 恢复到原始安装状态, 确定重置?"),
                 primaryButton: .destructive(Text("确定")) {
-                  loadingText = "RIME重置中, 请稍后."
+                  loadingText = "RIME重置中, 请稍候."
                   isLoading = true
                   DispatchQueue.global().async {
                     do {
