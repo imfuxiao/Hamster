@@ -10,11 +10,11 @@
 "done" = "完成";
 "go" = "前往";
 "join" = "加入";
-"ok" = "确定";
-"return" = "换行";
-"search" = "搜索";
+"ok" = "確認";
+"return" = "換行";
+"search" = "搜尋";
 "space" = "空格";
-"send" = "发送";
+"send" = "傳送";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";
@@ -22,7 +22,7 @@
 
 "keyboard.action.switchInputSchema" = "#方案切換";
 
-"searchEmoji" = "搜索Emoji";
+"searchEmoji" = "搜尋Emoji";
 
 /* [😀] */ "Emoji.GrinningFace" = "";
 /* [😃] */ "Emoji.SmilingFaceWithOpenMouth" = "";

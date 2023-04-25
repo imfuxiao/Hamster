@@ -12,7 +12,7 @@ struct LaunchScreen: View {
     self.isAppFirstRun = isAppFirstRun
     self._loadingMessage = loadingMessage
     if isAppFirstRun {
-      self.loadingMessage = "应用首次运行会编译输入方案, 请稍后..."
+      self.loadingMessage = "应用首次运行会编译输入方案, 请稍候..."
     }
   }
 
