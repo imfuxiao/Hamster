@@ -11,6 +11,7 @@ enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
   case beginOfSentence = "#行首"
   case endOfSentence = "#行尾"
   case selectSecond = "#次选上屏"
+  case thirdlySecond = "#三选上屏"
   case selectInputSchema = "#方案切换"
   case selectColorSchema = "#配色切换"
   case newLine = "#换行"

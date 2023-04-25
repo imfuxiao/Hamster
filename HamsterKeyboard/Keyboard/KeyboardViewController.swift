@@ -296,36 +296,19 @@ extension HamsterKeyboardViewController {
     self.rimeEngine.asciiMode.toggle()
   }
 
+  /// 三选上屏
+  func thirdlyCandidateTextOnScreen() -> Bool {
+    return self.selectCandidateIndex(index: 2)
+  }
+
   /// 次选上屏
   func secondCandidateTextOnScreen() -> Bool {
-    let status = self.rimeEngine.status()
-    if status.isComposing {
-      let candidates = self.rimeEngine.suggestions
-      if candidates.isEmpty {
-        return false
-      }
-      if candidates.count >= 2 {
-        self.inputTextPatch(candidates[1].text)
-        self.rimeEngine.reset()
-        return true
-      }
-    }
-    return false
+    return self.selectCandidateIndex(index: 1)
   }
 
   /// 首选候选字上屏
   func candidateTextOnScreen() -> Bool {
-    let status = self.rimeEngine.status()
-    if status.isComposing {
-      let candidates = self.rimeEngine.suggestions
-      if candidates.isEmpty {
-        return false
-      }
-      self.inputTextPatch(candidates[0].text)
-      self.rimeEngine.reset()
-      return true
-    }
-    return false
+    return self.selectCandidateIndex(index: 0)
   }
 
   // 光标移动句首
@@ -389,9 +372,10 @@ extension HamsterKeyboardViewController {
   }
 
   /// 根据索引选择候选字
-  func selectCandidateIndex(index: Int) {
+  func selectCandidateIndex(index: Int) -> Bool {
     let handled = self.rimeEngine.selectCandidate(index: index)
     self.updateRimeEngine(handled)
+    return handled
   }
 
   /// 字符输入
@@ -479,6 +463,8 @@ extension HamsterKeyboardViewController {
       self.switchEnglishChinese()
     case .selectSecond:
       _ = self.secondCandidateTextOnScreen()
+    case .thirdlySecond:
+      _ = self.thirdlyCandidateTextOnScreen()
     case .beginOfSentence:
       self.moveBeginOfSentence()
     case .endOfSentence:
