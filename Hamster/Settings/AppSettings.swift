@@ -197,8 +197,12 @@ public class HamsterAppSettings: ObservableObject {
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeCandidateCommentFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue)
-    self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
+
+    // TODO: 注意先后顺序 lastUseRimeInputSchema, rimeInputSchema
+    // 因为 lastUseRimeInputSchema 会在 rimeInputSchema.willSet() 重新赋值
     self.lastUseRimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.lastUseRimeInputSchema.rawValue) ?? ""
+    self.rimeInputSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue) ?? ""
+
     self.enableRimeColorSchema = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeEnableColorSchema.rawValue)
     self.rimeColorSchema = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeColorSchema.rawValue) ?? ""
     self.rimeNeedOverrideUserDataDirectory = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeNeedOverrideUserDataDirectory.rawValue)
@@ -383,7 +387,15 @@ public class HamsterAppSettings: ObservableObject {
   @Published
   var rimeInputSchema: String {
     willSet {
-      // 修改之前存储当前值
+      if newValue.isEmpty || newValue == rimeInputSchema {
+        return
+      }
+
+      // 当新值与旧值不相等时，且旧值不为空，则把旧值赋值给上一次输入方案存储
+      if rimeInputSchema.isEmpty {
+        return
+      }
+
       lastUseRimeInputSchema = rimeInputSchema
     }
     didSet {
@@ -395,13 +407,13 @@ public class HamsterAppSettings: ObservableObject {
   }
 
   // 最近一次使用的rime输入方案
+  // 注意: lastUseRimeInputSchema 在 rimeInputSchema.willSet时赋值，不要主动修改这个值
   @Published
   var lastUseRimeInputSchema: String {
     didSet {
       Logger.shared.log.info(["AppSettings, lastInputSchema": lastUseRimeInputSchema])
       UserDefaults.hamsterSettingsDefault.set(
         lastUseRimeInputSchema, forKey: HamsterAppSettingKeys.lastUseRimeInputSchema.rawValue)
-      UserDefaults.hamsterSettingsDefault.synchronize()
     }
   }
 

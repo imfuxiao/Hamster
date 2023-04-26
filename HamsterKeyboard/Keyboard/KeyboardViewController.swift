@@ -490,7 +490,9 @@ extension HamsterKeyboardViewController {
       if !self.appSettings.lastUseRimeInputSchema.isEmpty {
         let handled = self.rimeEngine.setSchema(self.appSettings.lastUseRimeInputSchema)
         Logger.shared.log.debug("switch last use input schema \(self.appSettings.lastUseRimeInputSchema), handled = \(handled)")
-        self.appSettings.lastUseRimeInputSchema = currentInputSchema
+        // 注意：这里lastUseRimeInputSchema的值会在rimeInputSchema的值的willSet时期变动。
+        // 所以不需要在交换两个值
+        self.appSettings.rimeInputSchema = self.appSettings.lastUseRimeInputSchema
         self.rimeEngine.reset()
       }
     default:

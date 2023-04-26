@@ -25,13 +25,12 @@ struct SwipeGestureActionView: View {
   @State var editValueType: ValueType = .String
   @State var editValue: String = ""
   @State var editValueSwipeFunction: FunctionalInstructions = .none
-  @State var swipeGestureSymbol: [String: String] = [:]
   @State var restState = false
   @State var showHamsteriCloud = false
   @State var fileData: Data = .init()
 
   var swipeGestureKeys: [String] {
-    swipeGestureSymbol.keys.sorted()
+    appSettings.keyboardSwipeGestureSymbol.keys.sorted()
   }
 
   let remark: String =
@@ -69,7 +68,7 @@ struct SwipeGestureActionView: View {
 
         ForEach(swipeGestureKeys, id: \.self) { key in
           Button {
-            self.editValue = swipeGestureSymbol[key] ?? ""
+            self.editValue = appSettings.keyboardSwipeGestureSymbol[key] ?? ""
             self.editValueType = self.editValue.hasPrefix("#") ? .Function : .String
             if self.editValueType == .Function, let function = FunctionalInstructions(rawValue: self.editValue) {
               self.editValueSwipeFunction = function
@@ -82,7 +81,7 @@ struct SwipeGestureActionView: View {
                 Spacer()
               }
               HStack {
-                Text(swipeGestureSymbol[key] ?? "")
+                Text(appSettings.keyboardSwipeGestureSymbol[key] ?? "")
                   .font(.system(size: 14))
                 Spacer()
               }
@@ -124,10 +123,9 @@ struct SwipeGestureActionView: View {
           value = ""
         }
       }
-      swipeGestureSymbol[editKey!] = value
-      appSettings.keyboardSwipeGestureSymbol = swipeGestureSymbol
+      appSettings.keyboardSwipeGestureSymbol[editKey!] = value
       do {
-        fileData = try Plist(swipeGestureSymbol).toData()
+        fileData = try Plist(appSettings.keyboardSwipeGestureSymbol).toData()
       } catch {
         Logger.shared.log.error("dict to plist data error: \(error)")
       }
@@ -146,7 +144,6 @@ struct SwipeGestureActionView: View {
         Logger.shared.log.debug("file.fileName: \(file.fileName)")
         let plist = Plist(data: file.data)
         appSettings.keyboardSwipeGestureSymbol = plist.strDict
-        swipeGestureSymbol = appSettings.keyboardSwipeGestureSymbol
         fileData = file.data
         showHamsteriCloud = false
       },
@@ -165,9 +162,8 @@ struct SwipeGestureActionView: View {
       title: Text("是否恢复为默认值"),
       primaryButton: .default(Text("确定")) {
         appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
-        swipeGestureSymbol = appSettings.keyboardSwipeGestureSymbol
         do {
-          fileData = try Plist(swipeGestureSymbol).toData()
+          fileData = try Plist(appSettings.keyboardSwipeGestureSymbol).toData()
         } catch {
           Logger.shared.log.error("dict to plist data error: \(error)")
         }
@@ -185,9 +181,8 @@ struct SwipeGestureActionView: View {
         Color.HamsterBackgroundColor.ignoresSafeArea()
 
         VStack {
-          
           header
-          
+
           VStack {
             HStack {
               Toggle(isOn: $appSettings.enableKeyboardSwipeGestureSymbol) {
@@ -240,7 +235,6 @@ struct SwipeGestureActionView: View {
               Logger.shared.log.debug("file.fileName: \(file.fileName)")
               let plist = Plist(data: file.data)
               appSettings.keyboardSwipeGestureSymbol = plist.strDict
-              swipeGestureSymbol = appSettings.keyboardSwipeGestureSymbol
               fileData = file.data
               showHamsteriCloud = false
             },
@@ -268,9 +262,8 @@ struct SwipeGestureActionView: View {
         resetAlert
       }
       .onAppear {
-        swipeGestureSymbol = appSettings.keyboardSwipeGestureSymbol
         do {
-          fileData = try Plist(swipeGestureSymbol).toData()
+          fileData = try Plist(appSettings.keyboardSwipeGestureSymbol).toData()
         } catch {
           Logger.shared.log.error("slideGestureMapping to data error: \(error.localizedDescription)")
         }
