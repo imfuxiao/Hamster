@@ -98,6 +98,19 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   override public func viewWillSetupKeyboard() {
     super.viewWillSetupKeyboard()
     self.log.debug("viewWillSetupKeyboard() begin")
+
+    // 初始键盘类型
+    if let keyboardType = self.textDocumentProxy.keyboardType {
+      switch keyboardType {
+      // 数字键盘
+      case .numberPad, .numbersAndPunctuation, .phonePad, .decimalPad, .asciiCapableNumberPad:
+        self.keyboardContext.keyboardType = .numeric
+      // 默认键盘
+      default:
+        break
+      }
+    }
+    
     let hamsterKeyboard = HamsterKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)
