@@ -12,7 +12,7 @@ import UniformTypeIdentifiers
 /// 用于读取导入的iCloud文件
 class HamsterDocument: FileDocument {
   static var readableContentTypes: [UTType] {
-    [.zip, .plist]
+    [.zip, .plist, .yaml]
   }
 
   var fileName: String
@@ -41,6 +41,8 @@ class HamsterDocument: FileDocument {
 
 /// iCloud导入导出组件
 struct HamsteriCloudView: View {
+  typealias ImportingCallback = (HamsterDocument) -> Void
+  typealias ExportingCallback = (Result<URL, Error>) -> Void
   @Binding var isShow: Bool
   @State var document: HamsterDocument = .init()
   @State var needExporter: Bool = false
@@ -52,8 +54,8 @@ struct HamsteriCloudView: View {
   @Environment(\.colorScheme) var colorScheme
 
   var contentType: UTType
-  var importingCallback: (HamsterDocument) -> Void
-  var exportingCallback: (Result<URL, Error>) -> Void
+  var importingCallback: ImportingCallback?
+  var exportingCallback: ExportingCallback?
 
   var body: some View {
     SheetView(isShow: $isShow) {
@@ -77,14 +79,16 @@ struct HamsteriCloudView: View {
           SectionTitle(title: "导入")
         }
 
-        Section {
-          SectionButton(image: "arrow.up.doc.fill", title: "iCloud") {
-            isExporting = true
-          }
+        if needExporter {
+          Section {
+            SectionButton(image: "arrow.up.doc.fill", title: "iCloud") {
+              isExporting = true
+            }
 
-          // TODO: 添加其他云的支持
-        } header: {
-          SectionTitle(title: "导出")
+            // TODO: 添加其他云的支持
+          } header: {
+            SectionTitle(title: "导出")
+          }
         }
       }
       .frame(minWidth: 0, maxWidth: .infinity)
@@ -97,14 +101,18 @@ struct HamsteriCloudView: View {
       ) { result in
         do {
           guard let selectFile: URL = try result.get().first else { return }
+
+          // 注意使用URL前需要先获取权限，且读取结束后关闭，两条语句必须成对出现
+          // guard selectFile.startAccessingSecurityScopedResource() else { return }
+          // ...
+          // selectFile.stopAccessingSecurityScopedResource()
           guard selectFile.startAccessingSecurityScopedResource() else { return }
 
           document.fileName = selectFile.lastPathComponent
           try document.data = Data(contentsOf: selectFile)
-
           selectFile.stopAccessingSecurityScopedResource()
 
-          self.importingCallback(document)
+          self.importingCallback?(document)
         } catch {
           Logger.shared.log.error("HamsteriCloud importer error: \(error.localizedDescription)")
         }
@@ -124,7 +132,7 @@ struct HamsteriCloudView: View {
           Logger.shared.log.info("Hamster iCloud exporting failure: \(failure.localizedDescription)")
         }
 
-        self.exportingCallback(result)
+        self.exportingCallback?(result)
         isExporting = false
       }
     }

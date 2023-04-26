@@ -185,6 +185,9 @@ struct SwipeGestureActionView: View {
         Color.HamsterBackgroundColor.ignoresSafeArea()
 
         VStack {
+          
+          header
+          
           VStack {
             HStack {
               Toggle(isOn: $appSettings.enableKeyboardSwipeGestureSymbol) {
@@ -196,8 +199,19 @@ struct SwipeGestureActionView: View {
           .functionCell()
 
           if appSettings.enableKeyboardSwipeGestureSymbol {
+            VStack {
+              HStack {
+                Toggle(isOn: $appSettings.showKeyExtensionArea) {
+                  Text("是否显示")
+                    .font(.system(.body, design: .rounded))
+                }
+              }
+            }
+            .functionCell()
+
             content
           }
+          Spacer()
         }
 
         // 单个Action编辑区

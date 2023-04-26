@@ -4,9 +4,14 @@
 //
 //  Created by morse on 7/3/2023.
 //
-
 import Foundation
+import SwiftUI
 import ZIPFoundation
+
+// Zip文件解析异常
+struct ZipParsingError: Error {
+  let message: String
+}
 
 extension RimeEngine {
   // AppGroup共享目录
@@ -129,5 +134,52 @@ extension RimeEngine {
     let src = appGroupUserDataDirectoryURL
     try fm.copyItem(at: src, to: dst)
     try fm.setAttributes([.posixPermissions: 0o777], ofItemAtPath: dst.path)
+  }
+
+  // 解压至用户数据目录
+  // 返回值
+  // Bool 处理是否成功
+  // Error: 处理失败的Error
+  static func unzipUserData(_ zipURL: URL) throws -> (Bool, Error?) {
+    let fm = FileManager()
+    var tempURL = zipURL
+
+    // 检测是否为iCloudURL, 需要特殊处理
+    if zipURL.path.contains("com~apple~CloudDocs") {
+      // iCloud中的URL须添加安全访问资源语句，否则会异常：Operation not permitted
+      // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
+      if !zipURL.startAccessingSecurityScopedResource() {
+        throw ZipParsingError(message: "Zip文件读取权限受限")
+      }
+
+      let tempPath = fm.temporaryDirectory.appendingPathComponent(zipURL.lastPathComponent)
+
+      // 临时文件如果存在需要先删除
+      if fm.fileExists(atPath: tempPath.path) {
+        try fm.removeItem(at: tempPath)
+      }
+
+      try fm.copyItem(atPath: zipURL.path, toPath: tempPath.path)
+
+      // 停止读取url文件
+      zipURL.stopAccessingSecurityScopedResource()
+
+      tempURL = tempPath
+    }
+
+    // 读取ZIP内容
+    guard let archive = Archive(url: tempURL, accessMode: .read) else {
+      return (false, ZipParsingError(message: "读取Zip文件异常"))
+    }
+
+    // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
+    guard let _ = archive.filter({ $0.path.contains("schema.yaml") }).first else {
+      return (false, ZipParsingError(message: "Zip文件未包含输入方案文件"))
+    }
+
+    // 解压前先删除原Rime目录
+    try fm.removeItem(at: RimeEngine.appGroupUserDataDirectoryURL)
+    try fm.unzipItem(at: tempURL, to: RimeEngine.appGroupUserDataDirectoryURL)
+    return (true, nil)
   }
 }
