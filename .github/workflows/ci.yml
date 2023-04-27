@@ -1,0 +1,46 @@
+name: Build Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Download Frameworks
+        uses: robinraju/release-downloader@v1.7
+        with:
+          repository: "imfuxiao/LibrimeKit"
+          latest: true
+          fileName: "Frameworks.tgz"
+
+      - name: Un-tar Frameworks
+        run: |
+          tar -xzf Frameworks.tgz -C Packages/LibrimeKit
+
+      - name: Build Schemas
+        run: |
+          make schema
+
+      - name: Compile
+        run: |
+          xcodebuild archive -archivePath "Hamster" -scheme "HamsterApp" -sdk "iphoneos" -arch arm64 -configuration Release CODE_SIGNING_ALLOWED=NO
+          BUILT_PATH=$(find Hamster.xcarchive -name '*.app' -type d | head -1)
+          find "$BUILT_PATH" -type d -path '*/Frameworks/*.dylib' -exec codesign --force --sign - --timestamp=none \{\} \;
+          codesign --force --sign - --entitlements "HamsterApp/HamsterApp.entitlements" --timestamp=none "$BUILT_PATH"
+          tar -acf Hamster.xcarchive.tgz Hamster.xcarchive
+
+      - name: Upload xcarchive
+        uses: actions/upload-artifact@v3
+        with:
+          name: Hamster-ios-arm64-xcarchive
+          path: Hamster.xcarchive.tgz
