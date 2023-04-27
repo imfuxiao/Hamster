@@ -90,7 +90,7 @@ struct SheetView<Content: View>: View {
   }
 
   var sheetBackgroundColor: Color {
-    colorScheme == .dark ? Color.secondary : Color.white
+    colorScheme == .dark ? Color.HamsterBackgroundColor : Color.white
   }
 
   var indicator: some View {
@@ -126,7 +126,6 @@ struct SheetView<Content: View>: View {
                   .frame(height: 0)
 
                   contentView()
-                    .disabled(false)
                 }
                 .frame(width: proxy.size.width)
                 // TODO: disable会将ContentView()所有事件都disable
