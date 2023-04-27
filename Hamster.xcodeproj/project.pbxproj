@@ -43,6 +43,14 @@
 		C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03E8028296D4F4C0083E53A /* HamsterApp.swift */; };
 		C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA97B299A6C8200F8CC32 /* KeyboardKit */; };
 		C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA99E299A6F3900F8CC32 /* Plist */; };
+		C0519E0329F926CC00513008 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0229F926CC00513008 /* Checkbox.swift */; };
+		C0519E0429F926CC00513008 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0229F926CC00513008 /* Checkbox.swift */; };
+		C0519E0729F947DB00513008 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C0519E0629F947DB00513008 /* Yams */; };
+		C0519E0929F947F000513008 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C0519E0829F947F000513008 /* Yams */; };
+		C0519E0B29F9487300513008 /* AppSettings+Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */; };
+		C0519E0C29F9487300513008 /* AppSettings+Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */; };
+		C0519E0E29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */; };
+		C0519E0F29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */; };
 		C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1529C49469001A8BE6 /* LaunchScreen.swift */; };
 		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
@@ -262,6 +270,9 @@
 		C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterActionCalloutContext.swift; sourceTree = "<group>"; };
 		C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		C04FA93F299A674E00F8CC32 /* DefaultAction.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultAction.plist; sourceTree = "<group>"; };
+		C0519E0229F926CC00513008 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
+		C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Yaml.swift"; sourceTree = "<group>"; };
+		C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+AppSetting.swift"; sourceTree = "<group>"; };
 		C0532D1529C49469001A8BE6 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C0532D1729C4A2C9001A8BE6 /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
@@ -320,6 +331,7 @@
 				C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */,
 				C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */,
 				C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */,
+				C0519E0729F947DB00513008 /* Yams in Frameworks */,
 				C0AB7C1429DBC27A00F8D01E /* TreeSitterYAML in Frameworks */,
 				C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */,
 				C0D672B729F1EFF3002D0439 /* ZIPFoundation in Frameworks */,
@@ -334,6 +346,7 @@
 				C0C9F04029CF44D5004B2C33 /* Plist in Frameworks */,
 				C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */,
 				C0C9F03E29CF442C004B2C33 /* SwiftyBeaver in Frameworks */,
+				C0519E0929F947F000513008 /* Yams in Frameworks */,
 				C0D672B929F1F075002D0439 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -483,6 +496,7 @@
 				C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */,
 				C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */,
 				C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */,
+				C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -518,6 +532,7 @@
 				C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */,
 				C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */,
 				C0CB388629EA51AD007211E7 /* keysymdef.swift */,
+				C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */,
 			);
 			path = RimeEngine;
 			sourceTree = "<group>";
@@ -741,6 +756,7 @@
 			children = (
 				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
 				C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */,
+				C0519E0229F926CC00513008 /* Checkbox.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -799,6 +815,7 @@
 				C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */,
 				C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */,
 				C0D672B629F1EFF3002D0439 /* ZIPFoundation */,
+				C0519E0629F947DB00513008 /* Yams */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* HamsterApp.app */;
@@ -823,6 +840,7 @@
 				C0C9F03D29CF442C004B2C33 /* SwiftyBeaver */,
 				C0C9F03F29CF44D5004B2C33 /* Plist */,
 				C0D672B829F1F075002D0439 /* ZIPFoundation */,
+				C0519E0829F947F000513008 /* Yams */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
@@ -896,6 +914,7 @@
 				C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */,
 				C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */,
 				C0D672B529F1EFF3002D0439 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -968,6 +987,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */,
+				C0519E0B29F9487300513008 /* AppSettings+Yaml.swift in Sources */,
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
 				C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */,
 				C0DA63F529F76C2800F91C74 /* PlusButton.swift in Sources */,
@@ -980,6 +1000,7 @@
 				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
 				C01CF63929F655C80039AFAA /* HamsteriCloudView.swift in Sources */,
 				C0341C6F29C83B2A00016C68 /* LongButton.swift in Sources */,
+				C0519E0329F926CC00513008 /* Checkbox.swift in Sources */,
 				C0341C7329C8558E00016C68 /* SectionView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
 				C037B61329CBDADC00B1BBDC /* SwipeGestureActionView.swift in Sources */,
@@ -997,6 +1018,7 @@
 				C0AB7C1C29DBC8DD00F8D01E /* FinderView.swift in Sources */,
 				C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */,
 				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
+				C0519E0E29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */,
 				C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0DA63F729F77DFD00F91C74 /* SheetView.swift in Sources */,
@@ -1037,6 +1059,7 @@
 				C054BC1129F3BDE10070D7F8 /* ChineseInputSetProvider.swift in Sources */,
 				C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */,
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
+				C0519E0C29F9487300513008 /* AppSettings+Yaml.swift in Sources */,
 				C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */,
 				C0C9F01129CF4316004B2C33 /* KeyboardConstants.swift in Sources */,
 				C0C9F01229CF4316004B2C33 /* HamsterKeyboardActionHandler.swift in Sources */,
@@ -1052,9 +1075,11 @@
 				C0C9F01D29CF4316004B2C33 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0C9F01F29CF4316004B2C33 /* iPadKeyboardLayoutProvider.swift in Sources */,
 				C0D672BE29F1FC0B002D0439 /* ExpandCandidatesView.swift in Sources */,
+				C0519E0429F926CC00513008 /* Checkbox.swift in Sources */,
 				C0CB388529EA3C48007211E7 /* OSXKeyCode.swift in Sources */,
 				C0C9F02029CF4316004B2C33 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C0C9F02129CF4316004B2C33 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
+				C0519E0F29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */,
 				C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */,
 				C0C9F02329CF4316004B2C33 /* KKL10n.swift in Sources */,
 				C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */,
@@ -1485,6 +1510,14 @@
 				version = 7.2.1;
 			};
 		};
+		C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = exactVersion;
+				version = 5.0.5;
+			};
+		};
 		C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
@@ -1538,6 +1571,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */;
 			productName = Plist;
+		};
+		C0519E0629F947DB00513008 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+		C0519E0829F947F000513008 /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
 		};
 		C06197FC29A35A5F004DF94F /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;

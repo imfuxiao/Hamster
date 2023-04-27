@@ -1,13 +1,13 @@
 //
-//  RadioButton.swift
-//  HamsterApp
+//  Checkbox.swift
+//  Hamster
 //
-//  Created by morse on 15/3/2023.
+//  Created by morse on 26/4/2023.
 //
 
 import SwiftUI
 
-struct RadioButton: View {
+struct Checkbox: View {
   var color: Color = .green
   var width: CGFloat = 32
   var fontSize: CGFloat = 16
@@ -20,7 +20,7 @@ struct RadioButton: View {
     } label: {
       ZStack {
         if isSelected {
-          Circle()
+          Rectangle()
             .fill(color)
             .frame(width: width, height: width)
           Image(systemName: "checkmark")
@@ -28,7 +28,7 @@ struct RadioButton: View {
             .foregroundColor(.white)
             .frame(width: width / 2, height: width / 2)
         } else {
-          Circle()
+          Rectangle()
             .stroke(.gray, lineWidth: 1)
             .frame(width: width, height: width)
         }
@@ -39,11 +39,11 @@ struct RadioButton: View {
   }
 }
 
-struct RadioButton_Previews: PreviewProvider {
+struct Checkbox_Previews: PreviewProvider {
   static var previews: some View {
     VStack {
-      RadioButton(isSelected: true)
-      RadioButton(isSelected: false)
+      Checkbox()
+      Checkbox(isSelected: true)
     }
   }
 }

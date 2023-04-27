@@ -51,7 +51,7 @@ struct HamsterAutocompleteToolbar: View {
       // 候选区
       CandidateHStackView(style: style, hamsterColor: hamsterColor, suggestions: $rimeEngine.suggestions) { [weak ivc] item in
         guard let ivc = ivc else { return }
-        ivc.selectCandidateIndex(index: item.index)
+        _ = ivc.selectCandidateIndex(index: item.index)
       }
       .padding(.leading, 2)
       .padding(.trailing, 50)

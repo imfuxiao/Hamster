@@ -253,6 +253,15 @@
       }
     },
     {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "f47ba4838c30dbd59998a4e4c87ab620ff959e8a",
+        "version" : "5.0.5"
+      }
+    },
+    {
       "identity" : "zipfoundation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/weichsel/ZIPFoundation.git",

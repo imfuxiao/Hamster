@@ -102,8 +102,24 @@ public struct Candidate {
   let comment: String
 }
 
-public struct Schema: Identifiable, Equatable {
-  public let id = UUID()
+public struct Schema: Identifiable, Equatable, Hashable, Comparable, Codable {
+  public static func < (lhs: Schema, rhs: Schema) -> Bool {
+    lhs.schemaId <= rhs.schemaId
+  }
+
+  public static func == (lhs: Schema, rhs: Schema) -> Bool {
+    return lhs.schemaId == rhs.schemaId
+  }
+
+  public var hashValue: Int {
+    schemaId.hashValue
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(schemaId)
+  }
+
+  public var id = UUID()
   let schemaId: String
   let schemaName: String
 }
@@ -457,6 +473,18 @@ public extension RimeEngine {
       config?.close()
     }
     return config!.getString("style/color_scheme")
+  }
+
+  func setSelectRimeSchemas(schemas: [Schema]) -> Bool {
+    if schemas.isEmpty {
+      return false
+    }
+    return rimeAPI.selectRimeSchemas(schemas.map { $0.schemaId })
+  }
+
+  func getAvailableRimeSchemas() -> [Schema] {
+    rimeAPI.getAvailableRimeSchemaList()
+      .map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
   // MARK: 通知回调函数

@@ -59,15 +59,13 @@ public struct ContentView: View {
               ) {
                 loadingText = "正在部署, 请稍候."
                 isLoading = true
-                appSettings.rimeNeedOverrideUserDataDirectory = true
                 DispatchQueue.global().async {
                   rimeEngine.deploy()
-                  let schemas = rimeEngine.getSchemas()
-                  let userSelectInputSchema = schemas.first(where: { $0.schemaId == appSettings.rimeInputSchema })
                   DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                    if userSelectInputSchema == nil {
-                      appSettings.rimeInputSchema = schemas.first?.schemaId ?? ""
-                    }
+                    appSettings.rimeNeedOverrideUserDataDirectory = true
+                    appSettings.rimeUserSelectSchema = []
+                    appSettings.rimeInputSchema = ""
+                    rimeEngine.initAppSettingRimeInputSchema(appSettings)
                     rimeEngine.shutdownRime()
                     isLoading = false
                     Logger.shared.log.debug("DispatchQueue.main.async end...")
@@ -105,15 +103,13 @@ public struct ContentView: View {
                     }
 
                     rimeEngine.deploy()
-                    let schemas = rimeEngine.getSchemas()
-                    let userSelectInputSchema = schemas.first(where: { $0.schemaId == appSettings.rimeInputSchema })
-                    rimeEngine.shutdownRime()
 
                     DispatchQueue.main.async {
+                      appSettings.rimeUserSelectSchema = []
+                      appSettings.rimeInputSchema = ""
                       appSettings.rimeNeedOverrideUserDataDirectory = true
-                      if userSelectInputSchema == nil {
-                        appSettings.rimeInputSchema = schemas.first?.schemaId ?? ""
-                      }
+                      rimeEngine.initAppSettingRimeInputSchema(appSettings)
+                      rimeEngine.shutdownRime()
                       isLoading = false
                       Logger.shared.log.debug("DispatchQueue.main.async end...")
                     }

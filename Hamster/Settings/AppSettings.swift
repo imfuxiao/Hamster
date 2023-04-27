@@ -111,6 +111,9 @@ private enum HamsterAppSettingKeys: String {
   case rimeCandidateTitleFontSize = "rime.candidateTitleFontSize"
   case rimeCandidateCommentFontSize = "rime.candidateCommentFontSize"
 
+  // 用户选择输入方案
+  case rimeUserSelectSchema = "rime.rimeUserSelectSchema"
+
   // rime 输入方案
   case rimeInputSchema = "rime.inputSchema"
   // 最近一次使用的输入方案
@@ -167,6 +170,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue: 20,
       HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue: 14,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
+      HamsterAppSettingKeys.rimeUserSelectSchema.rawValue: [] as [Schema],
       HamsterAppSettingKeys.lastUseRimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
       HamsterAppSettingKeys.rimeColorSchema.rawValue: "",
@@ -197,6 +201,14 @@ public class HamsterAppSettings: ObservableObject {
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeCandidateCommentFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue)
+
+    // 对数组类型且为Struct值需要特殊处理
+    if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeUserSelectSchema.rawValue) {
+      let array = try! PropertyListDecoder().decode([Schema].self, from: data)
+      self.rimeUserSelectSchema = array
+    } else {
+      self.rimeUserSelectSchema = []
+    }
 
     // TODO: 注意先后顺序 lastUseRimeInputSchema, rimeInputSchema
     // 因为 lastUseRimeInputSchema 会在 rimeInputSchema.willSet() 重新赋值
@@ -383,7 +395,21 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
-  // Rime: 输入方案
+  // Rime: 用户选择的输入方案
+  @Published
+  var rimeUserSelectSchema: [Schema] {
+    didSet {
+      if let data = try? PropertyListEncoder().encode(rimeUserSelectSchema) {
+        Logger.shared.log.info(["AppSettings, rimeUserSelectSchema": rimeUserSelectSchema])
+        UserDefaults.hamsterSettingsDefault.set(
+          data, forKey: HamsterAppSettingKeys.rimeUserSelectSchema.rawValue)
+      } else {
+        Logger.shared.log.error("AppSettings, rimeUserSelectSchema error")
+      }
+    }
+  }
+
+  // Rime: 当前Rime输入方案
   @Published
   var rimeInputSchema: String {
     willSet {

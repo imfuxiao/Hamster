@@ -67,14 +67,17 @@ struct HamsterApp: App {
 
           // Rime重新部署
           rimeEngine.startRime(nil, fullCheck: true)
-          if let schema = rimeEngine.getSchemas().first {
-            appSettings.rimeInputSchema = schema.schemaId
-          }
+
+          appSettings.rimeUserSelectSchema = []
+          appSettings.rimeInputSchema = ""
+          rimeEngine.initAppSettingRimeInputSchema(appSettings)
+
           rimeEngine.shutdownRime()
           appSettings.rimeNeedOverrideUserDataDirectory = true
 
           loadingMessage = "部署完毕"
 
+          rimeEngine.shutdownRime()
           DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
             launchScreenState = false
           }
@@ -105,10 +108,7 @@ struct HamsterApp: App {
             )
             rimeEngine.setupRime(traits)
             rimeEngine.startRime(traits, fullCheck: true)
-            if let schema = rimeEngine.getSchemas().first {
-              appSettings.rimeInputSchema = schema.schemaId
-            }
-            rimeEngine.shutdownRime()
+
             appSettings.isFirstLaunch = false
             appSettings.rimeNeedOverrideUserDataDirectory = true
 
@@ -119,8 +119,16 @@ struct HamsterApp: App {
               sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
               userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
             )
+            rimeEngine.startRime(nil, fullCheck: false)
           }
 
+          // 初始化用户选择的Schema, 当前Schema, 防止首次启动键盘的时候没有输入选项
+          rimeEngine.initAppSettingRimeInputSchema(appSettings)
+
+          Logger.shared.log.info("appSettings rimeInputSchema: \(appSettings.rimeInputSchema)")
+          Logger.shared.log.info("appSettings rimeUserSelectSchema: \(appSettings.rimeUserSelectSchema)")
+
+          rimeEngine.shutdownRime()
           // 启动屏延迟
           DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             launchScreenState = false

@@ -11,13 +11,20 @@ struct InputSchemaCell: View {
   var schema: Schema
   var isSelect: Bool
   var showDivider: Bool
+  var userCheckbox = true
   var action: (Schema) -> Void
 
   var body: some View {
     VStack(spacing: 0) {
       HStack(spacing: 0) {
-        RadioButton(width: 24, fontSize: 12, isSelected: isSelect) {
-          action(schema)
+        if userCheckbox {
+          Checkbox(width: 24, fontSize: 12, isSelected: isSelect) {
+            action(schema)
+          }
+        } else {
+          RadioButton(width: 24, fontSize: 12, isSelected: isSelect) {
+            action(schema)
+          }
         }
         Text(schema.schemaName)
           .font(.system(.body, design: .rounded))

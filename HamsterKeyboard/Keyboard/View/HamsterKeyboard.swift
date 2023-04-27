@@ -84,7 +84,7 @@ struct HamsterKeyboard: View {
   var expandCandidatesView: some View {
     ExpandCandidatesView(style: style) { [weak ivc] item in
       guard let ivc = ivc else { return }
-      ivc.selectCandidateIndex(index: item.index)
+      _ = ivc.selectCandidateIndex(index: item.index)
       appSettings.keyboardStatus = .normal
     }
   }
@@ -95,7 +95,7 @@ struct HamsterKeyboard: View {
       candidateBarHeight: candidateBarHeight,
       hamsterKeyboardSize: hamsterKeyboardSize,
       hamsterColor: hamsterColor,
-      schemas: rimeEngine.getSchemas()
+      schemas: appSettings.rimeUserSelectSchema
     )
   }
 
@@ -164,13 +164,19 @@ struct SelectInputSchemaView: View {
           collectionView.contentOffset.x = .zero
         },
         contentForData: {
-          InputSchemaCell(schema: $0, isSelect: appSettings.rimeInputSchema == $0.schemaId, showDivider: false, action: {
-            appSettings.rimeInputSchema = $0.schemaId
-            let handled = rimeEngine.setSchema($0.schemaId)
-            Logger.shared.log.debug("switch input schema: \($0.schemaId), handled: \(handled)")
-            rimeEngine.reset()
-            appSettings.keyboardStatus = .normal
-          })
+          InputSchemaCell(
+            schema: $0,
+            isSelect: appSettings.rimeInputSchema == $0.schemaId,
+            showDivider: true,
+            userCheckbox: false,
+            action: {
+              appSettings.rimeInputSchema = $0.schemaId
+              let handled = rimeEngine.setSchema($0.schemaId)
+              Logger.shared.log.debug("switch input schema: \($0.schemaId), handled: \(handled)")
+              rimeEngine.reset()
+              appSettings.keyboardStatus = .normal
+            }
+          )
         }
       )
       .frame(height: hamsterKeyboardSize.height)

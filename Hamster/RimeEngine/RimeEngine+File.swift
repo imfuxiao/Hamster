@@ -47,6 +47,10 @@ extension RimeEngine {
       .appendingPathComponent(AppConstants.rimeUserPathName, isDirectory: true)
   }
 
+  static var defaultCustomYamlPatchFile: URL {
+    userDataDirectory.appendingPathComponent("default.custom.yaml")
+  }
+
   // 安装包ShareSupport资源目录
   private static var appSharedSupportDirectory: URL {
     Bundle.main.bundleURL
