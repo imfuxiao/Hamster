@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # encoding: utf-8
 set -e
-# 如果方案存在就不在执行
+# 如果方案存在就不再执行
 if [[  -f Resources/SharedSupport/SharedSupport.zip ]]
 then
   exit 0
