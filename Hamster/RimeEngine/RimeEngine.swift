@@ -303,52 +303,6 @@ public extension RimeEngine {
     return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
   }
 
-  // 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
-  func syncContext() {
-    let context = context()
-
-    if context.composition != nil {
-      userInputKey = context.composition.preedit
-    }
-
-    let candidates = rimeAPI.getCandidateWith(0, andCount: maxCandidateCount, andSession: session)!
-    // 获取全部候选字
-    // let candidates = rimeAPI.getCandidateList(session)!
-    var result: [HamsterSuggestion] = []
-    for (index, candidate) in candidates.enumerated() {
-      var suggestion = HamsterSuggestion(
-        text: candidate.text
-      )
-      suggestion.index = index
-      suggestion.comment = candidate.comment
-      suggestion.isAutocomplete = index == 0
-      result.append(suggestion)
-    }
-    suggestions = result
-
-    // TODO: 分页
-//    if context.menu != nil {
-//      Logger.shared.log.debug("rime context menu: \(context.menu.description)")
-//      previousPage = context.menu.pageNo != 0
-//      nextPage = !context.menu.isLastPage && context.menu.pageSize != 0
-//
-//      let candidates = context.menu.candidates
-//      var result: [HamsterSuggestion] = []
-//      for i in 0 ..< candidates!.count {
-//        var suggestion = HamsterSuggestion(
-//          text: candidates![i].text
-//        )
-//        suggestion.index = i + 1
-//        suggestion.comment = candidates![i].comment
-//        if i == 0 {
-//          suggestion.isAutocomplete = true
-//        }
-//        result.append(suggestion)
-//      }
-//      suggestions = result
-//    }
-  }
-
   func inputKey(_ key: String) -> Bool {
     createSession()
     return rimeAPI.processKey(key, andSession: session)
@@ -367,6 +321,21 @@ public extension RimeEngine {
       }
     }
     return []
+  }
+
+  func candidateListLimit() -> [HamsterSuggestion] {
+    let candidates = rimeAPI.getCandidateWith(0, andCount: maxCandidateCount, andSession: session)!
+    var result: [HamsterSuggestion] = []
+    for (index, candidate) in candidates.enumerated() {
+      var suggestion = HamsterSuggestion(
+        text: candidate.text
+      )
+      suggestion.index = index
+      suggestion.comment = candidate.comment
+      suggestion.isAutocomplete = index == 0
+      result.append(suggestion)
+    }
+    return result
   }
 
   func selectCandidate(index: Int) -> Bool {

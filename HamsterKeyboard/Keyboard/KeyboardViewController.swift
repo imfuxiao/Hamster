@@ -110,7 +110,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         break
       }
     }
-    
+
     let hamsterKeyboard = HamsterKeyboard(keyboardInputViewController: self)
       .environmentObject(self.rimeEngine)
       .environmentObject(self.appSettings)
@@ -151,28 +151,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .store(in: &self.cancellables)
 
     // 候选字最大数量
-    self.appSettings.$rimeMaxCandidateSize
-      .receive(on: RunLoop.main)
-      .sink { [weak self] rimeMaxCandidateSize in
-        guard let self = self else { return }
-        self.log.info("combine $rimeMaxCandidateSize: \(rimeMaxCandidateSize)")
-        self.rimeEngine.maxCandidateCount = rimeMaxCandidateSize
-      }
-      .store(in: &self.cancellables)
+    self.rimeEngine.maxCandidateCount = self.appSettings.rimeMaxCandidateSize
 
-    // 候选栏如果启用内嵌模式，则监听userInputKey的变化
-    if self.appSettings.enableInputEmbeddedMode {
-      self.rimeEngine.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] userInputKey in
-          guard let self = self else { return }
-          self.log.debug("combine $userInputKey: \(userInputKey)")
-          self.textDocumentProxy.setMarkedText(
-            userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0)
-          )
-        }
-        .store(in: &self.cancellables)
-    }
   }
 
   private func setupRimeEngine() {
@@ -357,7 +337,7 @@ extension HamsterKeyboardViewController {
   // 候选字上一页
   func previousPageOfCandidates() {
     if self.rimeEngine.inputKeyCode(XK_Page_Up) {
-      self.rimeEngine.syncContext()
+      self.syncContext()
     } else {
       Logger.shared.log.warning("rime input pageup result error")
     }
@@ -366,7 +346,7 @@ extension HamsterKeyboardViewController {
   // 候选字下一页
   func nextPageOfCandidates() {
     if self.rimeEngine.inputKeyCode(XK_Page_Down) {
-      self.rimeEngine.syncContext()
+      self.syncContext()
     } else {
       Logger.shared.log.debug("rime input pageDown result error")
     }
@@ -464,8 +444,26 @@ extension HamsterKeyboardViewController {
     }
 
     if handled {
-      self.rimeEngine.syncContext()
+      self.syncContext()
     }
+  }
+
+  // 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
+  func syncContext() {
+    let context = self.rimeEngine.context()
+
+    if context.composition != nil {
+      let userInputKey = context.composition.preedit ?? ""
+      self.rimeEngine.userInputKey = userInputKey
+      if self.appSettings.enableInputEmbeddedMode {
+        self.textDocumentProxy.setMarkedText(
+          userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0)
+        )
+      }
+    }
+
+    // 获取候选字
+    self.rimeEngine.suggestions = self.rimeEngine.candidateListLimit()
   }
 
   // TODO: 以#开头为功能
@@ -517,11 +515,10 @@ extension HamsterKeyboardViewController {
 
   func inputTextPatch(_ text: String) {
     if self.appSettings.enableInputEmbeddedMode {
-      guard let _ = self.textDocumentProxy.selectedText else {
-        self.textDocumentProxy.insertText(text)
-        return
-      }
       // fix: 部分App候选文字内嵌模式下上屏异常
+      if self.textDocumentProxy.selectedText != nil {
+        self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+      }
       self.textDocumentProxy.setMarkedText(
         text, selectedRange: NSRange(location: text.count, length: 0)
       )
