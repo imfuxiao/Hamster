@@ -164,6 +164,16 @@ struct CandidateBarShowModeSettingView: View {
       }
     }
     .functionCell()
+
+    VStack {
+      HStack {
+        Stepper(value: $appSettings.spaceXSpeed, in: 1 ... 30, step: 1) {
+          Text("空格横向移动速度(越小越快): \(appSettings.spaceXSpeed)")
+        }
+        Spacer()
+      }
+    }
+    .functionCell()
   }
 }
 

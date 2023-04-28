@@ -31,14 +31,14 @@ class HamsterSlidingGestureHandler: SlideGestureHandler {
     keyboardContext: KeyboardContext,
     appSettings: HamsterAppSettings,
     // 滑动敏感度：滑动超过阈值才有效
-    sensitivityX: SpaceDragSensitivity = .custom(points: 50),
+    sensitivityX: SpaceDragSensitivity = .custom(points: 10),
     sensitivityY: SpaceDragSensitivity = .custom(points: 20),
     action: @escaping (KeyboardAction, SlidingDirection, Int) -> Void
   ) {
     self.keyboardContext = keyboardContext
     self.appSettings = appSettings
-    self.sensitivityY = sensitivityX
-    self.sensitivityX = sensitivityY
+    self.sensitivityY = sensitivityY
+    self.sensitivityX = .custom(points: appSettings.spaceXSpeed)
     self.action = action
   }
 
@@ -81,9 +81,8 @@ class HamsterSlidingGestureHandler: SlideGestureHandler {
     let dragDeltaX = startLocation.x - currentLocation.x
     let dragOffsetY = Int(dragDeltaY / CGFloat(sensitivityY.points))
     let dragOffsetX = Int(dragDeltaX / CGFloat(sensitivityX.points))
-
     // x，y轴都没有超过阈值，则不视做一次滑动
-    if dragOffsetX == currentDragOffsetY && dragOffsetY == currentDragOffsetX {
+    if dragOffsetX == currentDragOffsetX && dragOffsetY == currentDragOffsetY {
       return
     }
 
