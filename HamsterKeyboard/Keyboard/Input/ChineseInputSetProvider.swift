@@ -38,9 +38,9 @@ public extension NumericInputSet {
   static func chineseNineGrid() -> NumericInputSet {
     .init(rows: [
       .init(chars: "+123"),
-      .init(chars: "-456*"),
-      .init(chars: "789/"),
-      .init(chars: ".0=")
+      .init(chars: "-456"),
+      .init(chars: "*789"),
+      .init(chars: "/.0=")
     ])
   }
 }

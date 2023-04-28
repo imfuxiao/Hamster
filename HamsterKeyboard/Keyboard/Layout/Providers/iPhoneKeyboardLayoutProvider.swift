@@ -46,20 +46,12 @@ class HamsteriPhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       var result = KeyboardActionRows()
       // 第一行: 添加删除键
       result.append(actions[0] + [.backspace])
-      result.append(actions[1])
-      // 第三行: 添加符号键
-      result.append([.keyboardType(.symbolic)] + actions[2])
-
-      // 第四行: 添加键盘切换键
-      if let action = keyboardSwitchActionForBottomRow(for: context) {
-        result.append([action] + actions[3] + [keyboardReturnAction(for: context)])
-      } else {
-        // TODO: 如果不存在键盘切换键, 则手工添加字母键盘
-        result.append(
-          [.keyboardType(.alphabetic(.lowercased))] + actions[3] + [
-            keyboardReturnAction(for: context)
-          ])
-      }
+      // 第二行: 添加符号键
+      result.append(actions[1] + [.keyboardType(.symbolic)])
+      // 第三行: 添加键盘切换键
+      result.append(actions[2] + [.keyboardType(.alphabetic(.lowercased))])
+      // 第四行：添加回车键
+      result.append(actions[3] + [keyboardReturnAction(for: context)])
       return result
     }
 

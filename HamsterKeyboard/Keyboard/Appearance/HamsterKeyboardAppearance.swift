@@ -86,10 +86,6 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
 
   // TODO：自定义Button背景色
   override func buttonBackgroundColor(for action: KeyboardAction, isPressed: Bool) -> Color {
-    // 数字九宫格键盘颜色一致
-    if appSettings.enableNumberNineGrid && keyboardContext.keyboardType == .numeric {
-      return .standardDarkButtonBackground
-    }
     return super.buttonBackgroundColor(for: action, isPressed: isPressed)
   }
 
