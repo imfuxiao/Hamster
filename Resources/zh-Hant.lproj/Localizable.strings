@@ -5,7 +5,7 @@
   Created by morse on 11/4/2023.
   
 */
-"locale" = "zh-Hans";
+"locale" = "zh-Hant";
 
 "done" = "完成";
 "go" = "前往";
