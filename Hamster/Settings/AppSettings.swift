@@ -144,6 +144,10 @@ private enum HamsterAppSettingKeys: String {
 
   // 使用鼠须管配置
   case rimeUseSquirrelSettings = "rime.useSquirrelSettings"
+    
+    
+  // 空格横向移动速度
+  case spaceXSpeed = "space.x.speed"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -182,6 +186,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
       HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
+      HamsterAppSettingKeys.spaceXSpeed.rawValue: 10,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -201,6 +206,7 @@ public class HamsterAppSettings: ObservableObject {
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeCandidateCommentFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue)
+    self.spaceXSpeed = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.spaceXSpeed.rawValue)
 
     // 对数组类型且为Struct值需要特殊处理
     if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeUserSelectSchema.rawValue) {
@@ -547,6 +553,14 @@ public class HamsterAppSettings: ObservableObject {
         rimeUseSquirrelSettings, forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
     }
   }
+    
+  @Published
+  var spaceXSpeed: Int {
+    didSet {
+      UserDefaults.hamsterSettingsDefault.set(
+        spaceXSpeed, forKey: HamsterAppSettingKeys.spaceXSpeed.rawValue)
+      }
+    }
 }
 
 public extension UserDefaults {
