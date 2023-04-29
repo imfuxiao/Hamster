@@ -15,7 +15,9 @@ struct InputSchemaView: View {
   @State var schemas: [Schema] = []
   @State var rimeError: Error?
   @State var showHamsteriCloud = false
-  @State var showError: Bool = false
+  @State var showError = false
+  @State var isLoading = false
+  @State var loadingText = ""
   @State var selectSchemas: Set<Schema> = []
 
   @EnvironmentObject
@@ -32,50 +34,59 @@ struct InputSchemaView: View {
     self.schemas = schemas
   }
 
+  /// 导入zip文件
+  func importCallback(file: HamsterDocument) {
+    Logger.shared.log.debug("file.fileName: \(file.fileName)")
+    DispatchQueue.main.async {
+      isLoading = true
+      loadingText = "方案导入中。。。"
+    }
+
+    do {
+      let fm = FileManager.default
+      let (handled, zipErr) = try fm.unzip(file.data)
+      if !handled {
+        showError = true
+        rimeError = zipErr
+        return
+      }
+
+      let deployHandled = rimeEngine.deploy()
+      Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
+
+      DispatchQueue.main.async {
+        let resetHandled = appSettings.resetRimeParameter(rimeEngine)
+        Logger.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
+
+        schemas = appSettings.rimeTotalSchemas
+        selectSchemas = Set(appSettings.rimeUserSelectSchema)
+
+        showHamsteriCloud = false
+        isLoading = false
+      }
+    } catch {
+      Logger.shared.log.debug("zip \(error)")
+      DispatchQueue.main.async {
+        // 处理错误
+        showError = true
+        rimeError = error
+      }
+    }
+  }
+
   @ViewBuilder
   var iCloudView: some View {
     HamsteriCloudView(
       isShow: $showHamsteriCloud,
+      isShowMessage: $isLoading,
+      showMessage: $loadingText,
       contentType: .zip,
       importingCallback: { file in
-        Logger.shared.log.debug("file.fileName: \(file.fileName)")
-        do {
-          let fm = FileManager.default
-
-          let tempZipURL = fm.temporaryDirectory.appendingPathComponent("temp.zip")
-          if fm.fileExists(atPath: tempZipURL.path) {
-            try fm.removeItem(at: tempZipURL)
-          }
-          fm.createFile(atPath: tempZipURL.path, contents: file.data)
-
-          let (handled, zipErr) = try RimeEngine.unzipUserData(tempZipURL)
-          if !handled {
-            showError = true
-            rimeError = zipErr
-            return
-          }
-
-          // Rime重新部署
-          rimeEngine.startRime(nil, fullCheck: true)
-
-          appSettings.rimeUserSelectSchema = []
-          appSettings.rimeInputSchema = ""
-          rimeEngine.initAppSettingRimeInputSchema(appSettings)
-          schemas = appSettings.rimeUserSelectSchema
-          selectSchemas = Set(schemas)
-          appSettings.rimeNeedOverrideUserDataDirectory = true
-          showHamsteriCloud = false
-
-          rimeEngine.shutdownRime()
-        } catch {
-          // 处理错误
-          Logger.shared.log.debug("zip \(error)")
-          showError = true
-          rimeError = error
+        DispatchQueue.global().async {
+          importCallback(file: file)
         }
       }
     )
-    .transition(.move(edge: .bottom).animation(.easeInOut(duration: 1)))
   }
 
   var body: some View {
@@ -125,11 +136,9 @@ struct InputSchemaView: View {
                 rimeError = InputSchemaError(message: "请选择输入方案")
                 return
               }
-              let selectSchemas = Array(selectSchemas.sorted())
-              let handled = rimeEngine.setSelectRimeSchemas(schemas: selectSchemas)
-              Logger.shared.log.info("rimeEngine set select input schema handled \(handled)")
-              appSettings.rimeUserSelectSchema = selectSchemas
-              appSettings.rimeInputSchema = appSettings.rimeUserSelectSchema.first!.schemaId
+              appSettings.rimeUserSelectSchema = Array(selectSchemas.sorted())
+              appSettings.rimeInputSchema = appSettings.rimeUserSelectSchema.first?.schemaId ?? ""
+              appSettings.lastUseRimeInputSchema = appSettings.rimeUserSelectSchema.count > 1 ? appSettings.rimeUserSelectSchema[1].schemaId : ""
               dismiss()
             }
           }
@@ -145,9 +154,13 @@ struct InputSchemaView: View {
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           Button {
-            showHamsteriCloud = true
+            withAnimation(.linear) {
+              showHamsteriCloud = true
+            }
           } label: {
             Image(systemName: "plus")
+              .font(.system(size: 20))
+              .contentShape(Rectangle())
           }
         }
       }
@@ -164,18 +177,15 @@ struct InputSchemaView: View {
           title: Text(message),
           dismissButton: .cancel {
             rimeError = nil
+            isLoading = false
           }
         )
       }
       .onAppear {
-        rimeEngine.startRime()
-        self.schemas = rimeEngine.getAvailableRimeSchemas().sorted()
+        self.schemas = appSettings.rimeTotalSchemas
         self.selectSchemas = Set(appSettings.rimeUserSelectSchema)
 
         Logger.shared.log.info("InputSchemaView selectSchemas: \(selectSchemas)")
-      }
-      .onDisappear {
-        rimeEngine.shutdownRime()
       }
     }
   }

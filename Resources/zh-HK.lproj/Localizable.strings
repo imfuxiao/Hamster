@@ -15,6 +15,7 @@
 "search" = "搜尋";
 "space" = "空格";
 "send" = "傳送";
+"next" = "next";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";

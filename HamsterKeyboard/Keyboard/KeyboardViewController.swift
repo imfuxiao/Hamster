@@ -152,7 +152,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
     // 候选字最大数量
     self.rimeEngine.maxCandidateCount = self.appSettings.rimeMaxCandidateSize
-
   }
 
   private func setupRimeEngine() {
@@ -182,9 +181,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       isRimeFirstRun = false
       self.rimeEngine.setupRime(traits)
     }
-    self.rimeEngine.startRime(
-      nil, fullCheck: false
-    )
+    self.rimeEngine.initialize(traits)
     if self.appSettings.rimeNeedOverrideUserDataDirectory {
       self.appSettings.rimeNeedOverrideUserDataDirectory = false
     }
@@ -196,6 +193,20 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.changeRimeColorSchema()
     self.rimeEngine.reset()
     self.rimeEngine.maxCandidateCount = self.appSettings.rimeMaxCandidateSize
+
+    // 内嵌模式
+    if self.appSettings.enableInputEmbeddedMode {
+      self.rimeEngine.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] key in
+          guard let self = self else { return }
+          if let afterInput = self.textDocumentProxy.documentContextAfterInput {
+            self.textDocumentProxy.adjustTextPosition(byCharacterOffset: afterInput.count)
+          }
+          self.textDocumentProxy.setMarkedText(key, selectedRange: NSRange(location: key.count, length: 0))
+        }
+        .store(in: &self.cancellables)
+    }
   }
 
   // MARK: - Text And Selection Change
@@ -241,7 +252,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override open func deleteBackward() {
-    _ = self.inputRimeKeycode(keycode: XK_BackSpace)
+    _ = self.inputRimeKeyCode(keyCode: XK_BackSpace)
   }
 
   override open func setKeyboardType(_ type: KeyboardType) {
@@ -289,7 +300,7 @@ extension HamsterKeyboardViewController {
     var userInputKey = self.rimeEngine.userInputKey
     if !userInputKey.isEmpty {
       userInputKey.removeAll(where: { $0 == " " })
-      self.inputTextPatch(userInputKey)
+      self.textDocumentProxy.insertText(userInputKey)
     }
     self.rimeEngine.reset()
     //    情况3. 首选候选字上屏, 并开启英文输入
@@ -364,7 +375,7 @@ extension HamsterKeyboardViewController {
     if name.isEmpty {
       return schema
     }
-    guard let colorSchema = self.rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings).first(where: { $0.schemaName == name })
+    guard let colorSchema = self.appSettings.rimeTotalColorSchemas.first(where: { $0.schemaName == name })
     else {
       return schema
     }
@@ -390,23 +401,23 @@ extension HamsterKeyboardViewController {
     var handled = false
     let keyUTF8 = key.utf8
     if keyUTF8.count == 1, let first = keyUTF8.first {
-      handled = self.inputRimeKeycode(keycode: Int32(first))
+      handled = self.inputRimeKeyCode(keyCode: Int32(first))
     }
 
     // 符号键直接上屏
     if !handled {
       // 符号顶码上屏
       _ = self.candidateTextOnScreen()
-      self.inputTextPatch(key)
+      self.textDocumentProxy.insertText(key)
     }
   }
 
   /// 转为RimeCode
-  func inputRimeKeycode(keycode: Int32, modifier: Int32 = 0) -> Bool {
-    var handled = self.rimeEngine.inputKeyCode(keycode, modifier: modifier)
+  func inputRimeKeyCode(keyCode: Int32, modifier: Int32 = 0) -> Bool {
+    var handled = self.rimeEngine.inputKeyCode(keyCode, modifier: modifier)
     if !handled {
       // 特殊功能键处理
-      switch keycode {
+      switch keyCode {
       case XK_Return:
         self.textDocumentProxy.insertText(.newline)
         handled = true
@@ -431,7 +442,9 @@ extension HamsterKeyboardViewController {
     // 唯一码直接上屏
     let commitText = self.rimeEngine.getCommitText()
     if !commitText.isEmpty {
-      self.inputTextPatch(commitText)
+      self.rimeEngine.userInputKey = ""
+      self.textDocumentProxy.insertText(commitText)
+      self.rimeEngine.lastScreenContent = commitText
     }
 
     // 查看输入法状态
@@ -455,11 +468,6 @@ extension HamsterKeyboardViewController {
     if context.composition != nil {
       let userInputKey = context.composition.preedit ?? ""
       self.rimeEngine.userInputKey = userInputKey
-      if self.appSettings.enableInputEmbeddedMode {
-        self.textDocumentProxy.setMarkedText(
-          userInputKey, selectedRange: NSMakeRange(userInputKey.count, 0)
-        )
-      }
     }
 
     // 获取候选字
@@ -513,19 +521,20 @@ extension HamsterKeyboardViewController {
     return true
   }
 
-  func inputTextPatch(_ text: String) {
-    if self.appSettings.enableInputEmbeddedMode {
-      // fix: 部分App候选文字内嵌模式下上屏异常
-      if self.textDocumentProxy.selectedText != nil {
-        self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-      }
-      self.textDocumentProxy.setMarkedText(
-        text, selectedRange: NSRange(location: text.count, length: 0)
-      )
-      self.textDocumentProxy.unmarkText()
-    } else {
-      self.textDocumentProxy.insertText(text)
-    }
-  }
+//  func inputTextPatch(_ text: String) {
+//    if self.appSettings.enableInputEmbeddedMode {
+//      // fix: 部分App候选文字内嵌模式下上屏异常
+  ////      if self.textDocumentProxy.selectedText != nil {
+//      self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+  ////      }
+  ////      self.textDocumentProxy.insertText(text)
+//      self.textDocumentProxy.setMarkedText(
+//        text, selectedRange: NSRange(location: text.count, length: 0)
+//      )
+  ////      self.textDocumentProxy.unmarkText()
+//    } else {
+//      self.textDocumentProxy.insertText(text)
+//    }
+//  }
 }
 #endif

@@ -20,6 +20,7 @@ struct HamsterApp: App {
   @State var showError: Bool = false
   @State var err: Error?
   @State var loadingMessage: String = ""
+  @State var isLoading = false
 
   var body: some Scene {
     WindowGroup {
@@ -42,101 +43,115 @@ struct HamsterApp: App {
           ContentView()
         }
       }
-      .onOpenURL { url in
-        Logger.shared.log.info("open url: \(url)")
+      .onOpenURL(perform: openURL)
+      .onAppear(perform: appLoadData)
+      .hud(isShow: $isLoading, message: $loadingMessage)
+      .environmentObject(appSettings)
+      .environmentObject(rimeEngine)
+    }
+  }
 
-        if url.pathExtension.lowercased() == "zip" {
-          // Loading: 开启加载页面
-          launchScreenState = true
-          loadingMessage = "Zip文件解析中..."
-          do {
-            let (handled, zipErr) = try RimeEngine.unzipUserData(url)
-            if !handled {
+  func showLoadingMessage(_ message: String) {
+    withMainAsync {
+      self.loadingMessage = message
+    }
+  }
+
+  func withMainAsync(_ asyncFunc: @escaping () -> Void) {
+    DispatchQueue.main.async(execute: DispatchWorkItem(block: asyncFunc))
+  }
+
+  // App加载数据
+  func appLoadData() {
+    DispatchQueue.global().async {
+      // 检测应用是否首次加载
+      if appSettings.isFirstLaunch {
+        showLoadingMessage("初次启动，需要编译输入方案，请耐心等待……")
+
+        // 加载系统默认配置上下滑动符号
+        appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
+
+        // RIME首次启动需要将输入方案copy到AppGroup共享目录下供Keyboard使用, 同时创建用户数据目录
+        do {
+          try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
+          try RimeEngine.initAppGroupUserDataDirectory(override: true)
+        } catch {
+          Logger.shared.log.error("rime init file directory error: \(error), \(error.localizedDescription)")
+          withMainAsync {
+            showError = true
+            err = error
+          }
+        }
+      }
+
+      rimeEngine.setupRime()
+
+      if appSettings.isFirstLaunch {
+        let deployHandled = rimeEngine.deploy()
+        Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
+        let resetHandled = appSettings.resetRimeParameter(rimeEngine)
+        Logger.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
+        appSettings.isFirstLaunch = false
+        appSettings.rimeNeedOverrideUserDataDirectory = true
+      }
+
+      Logger.shared.log.info("appSettings rimeInputSchema: \(appSettings.rimeInputSchema)")
+      Logger.shared.log.info("appSettings rimeUserSelectSchema: \(appSettings.rimeUserSelectSchema)")
+      Logger.shared.log.info("appSettings rimeTotalSchemas: \(appSettings.rimeTotalSchemas)")
+      Logger.shared.log.info("appSettings rimeTotalSchemas: \(appSettings.rimeTotalColorSchemas)")
+
+      // 启动屏延迟
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        launchScreenState = false
+      }
+    }
+  }
+
+  // 外部调用App
+  func openURL(_ url: URL) {
+    Logger.shared.log.info("open url: \(url)")
+
+    if url.pathExtension.lowercased() == "zip" {
+      // Loading: 开启加载页面
+      isLoading = true
+      loadingMessage = "Zip文件解析中..."
+      DispatchQueue.global().async {
+        let fm = FileManager.default
+        do {
+          let (handled, zipErr) = try fm.unzip(url)
+          if !handled {
+            withMainAsync {
               showError = true
               err = zipErr
-              return
             }
-          } catch {
-            // 处理错误
-            Logger.shared.log.error("zip \(error)")
+            return
+          }
+        } catch {
+          // 处理错误
+          Logger.shared.log.error("zip \(error)")
+          withMainAsync {
             showError = true
             err = ZipParsingError(message: "Zip文件处理失败: \(error.localizedDescription)")
           }
+        }
 
-          loadingMessage = "方案部署中"
+        showLoadingMessage("方案部署中")
 
-          // Rime重新部署
-          rimeEngine.startRime(nil, fullCheck: true)
+        let deployHandled = rimeEngine.deploy()
+        Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
 
-          appSettings.rimeUserSelectSchema = []
-          appSettings.rimeInputSchema = ""
-          rimeEngine.initAppSettingRimeInputSchema(appSettings)
+        let restHandled = appSettings.resetRimeParameter(rimeEngine)
+        Logger.shared.log.debug("rimeEngine resetInputSchemaHandled handled \(restHandled)")
 
-          rimeEngine.shutdownRime()
-          appSettings.rimeNeedOverrideUserDataDirectory = true
+        rimeEngine.shutdownRime()
 
-          loadingMessage = "部署完毕"
+        showLoadingMessage("部署完毕")
 
-          rimeEngine.shutdownRime()
-          DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-            launchScreenState = false
-          }
+        rimeEngine.shutdownRime()
+        withMainAsync {
+          isLoading = false
         }
       }
-      .onAppear {
-        DispatchQueue.global().async {
-          // 检测应用是否首次加载
-          if appSettings.isFirstLaunch {
-            loadingMessage = "初次启动，需要编译输入方案，请耐心等待……"
-
-            // 加载系统默认配置上下滑动符号
-            appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
-
-            // RIME首次启动需要将输入方案copy到AppGroup共享目录下供Keyboard使用
-            do {
-              try RimeEngine.initAppGroupSharedSupportDirectory(override: true)
-              try RimeEngine.initAppGroupUserDataDirectory(override: true)
-            } catch {
-              appSettings.isFirstLaunch = true
-              Logger.shared.log.error("rime init file directory error: \(error), \(error.localizedDescription)")
-              showError = true
-              err = error
-            }
-            let traits = self.rimeEngine.createTraits(
-              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-            )
-            rimeEngine.setupRime(traits)
-            rimeEngine.startRime(traits, fullCheck: true)
-
-            appSettings.isFirstLaunch = false
-            appSettings.rimeNeedOverrideUserDataDirectory = true
-
-            loadingMessage = "RIME部署完毕"
-
-          } else {
-            rimeEngine.setupRime(
-              sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-              userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
-            )
-            rimeEngine.startRime(nil, fullCheck: false)
-          }
-
-          // 初始化用户选择的Schema, 当前Schema, 防止首次启动键盘的时候没有输入选项
-          rimeEngine.initAppSettingRimeInputSchema(appSettings)
-
-          Logger.shared.log.info("appSettings rimeInputSchema: \(appSettings.rimeInputSchema)")
-          Logger.shared.log.info("appSettings rimeUserSelectSchema: \(appSettings.rimeUserSelectSchema)")
-
-          rimeEngine.shutdownRime()
-          // 启动屏延迟
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            launchScreenState = false
-          }
-        }
-      }
-      .environmentObject(appSettings)
-      .environmentObject(rimeEngine)
     }
   }
 }

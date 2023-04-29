@@ -15,6 +15,7 @@
 "search" = "搜索";
 "space" = "空格";
 "send" = "发送";
+"next" = "next";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";

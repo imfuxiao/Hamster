@@ -15,6 +15,7 @@
 "search" = "search";
 "space" = "space";
 "send" = "send";
+"next" = "next";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";

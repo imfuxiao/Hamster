@@ -11,7 +11,7 @@ import XCTest
 @testable import HamsterApp
 
 class RimeTestNotification: IRimeNotificationDelegate {
-  func onDelployStart() {
+  func onDeployStart() {
     print("HamsterRimeNotification: onDelployStart")
   }
 
@@ -33,37 +33,17 @@ class RimeTestNotification: IRimeNotificationDelegate {
 }
 
 final class RimeEngineTests: XCTestCase {
-  var testResourcePath: URL? {
-    Bundle.main.resourceURL?.appending(component: AppConstants.containerAppResourcesPath)
-  }
-
-  var sharedSupportPath: URL? {
-    testResourcePath?.appending(component: AppConstants.rimeSharedSupportPathName)
-  }
-
-  var userPath: URL? {
-    testResourcePath?.appending(component: AppConstants.rimeUserPathName)
-  }
-
   let rimeEngine = RimeEngine()
+  let appSettings = HamsterAppSettings()
 
   override func setUpWithError() throws {
-    let traits = IRimeTraits()
-    traits.sharedDataDir = sharedSupportPath?.path ?? ""
-    traits.userDataDir = userPath?.path ?? ""
-    traits.distributionCodeName = "Hamster"
-    traits.distributionName = "仓鼠"
-    traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-    // TODO: appName设置名字会产生异常
-    // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
-    // traits.appName = "rime.Hamster"
-
-    rimeEngine.startService(traits)
-    rimeEngine.setNotificationDelegate(RimeTestNotification())
+//    rimeEngine.setupRime()
+//    rimeEngine.startRime(nil, fullCheck: false)
+    rimeEngine.initialize()
   }
 
   override func tearDownWithError() throws {
-    rimeEngine.stopService()
+    rimeEngine.shutdownRime()
   }
 
   func testInputCharactor() throws {
@@ -79,9 +59,9 @@ final class RimeEngineTests: XCTestCase {
     XCTAssertNotNil(colorSchema)
 
     print(colorSchema!)
-    let backColor = colorSchema!.backColor.bgrColor
+    let backColor = colorSchema!.backColor
     XCTAssertNotNil(backColor)
-    XCTAssertEqual(backColor!.description, "#FBF6E5F0")
+    XCTAssertEqual(backColor.bgrColor!.description, "#FBF6E5F0")
 
     let currentSchemaName = rimeEngine.currentColorSchemaName(appSettings.rimeUseSquirrelSettings)
     XCTAssertEqual(currentSchemaName, "metro")

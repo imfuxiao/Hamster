@@ -111,6 +111,12 @@ private enum HamsterAppSettingKeys: String {
   case rimeCandidateTitleFontSize = "rime.candidateTitleFontSize"
   case rimeCandidateCommentFontSize = "rime.candidateCommentFontSize"
 
+  // 全部颜色方案
+  case rimeTotalColorSchemas = "rime.rimeTotalColorSchemas"
+
+  // 全部输入方案
+  case rimeTotalSchemas = "rime.rimeTotalSchemas"
+
   // 用户选择输入方案
   case rimeUserSelectSchema = "rime.rimeUserSelectSchema"
 
@@ -174,6 +180,8 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue: 20,
       HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue: 14,
       HamsterAppSettingKeys.rimeInputSchema.rawValue: "",
+      HamsterAppSettingKeys.rimeTotalColorSchemas.rawValue: [] as [ColorSchema],
+      HamsterAppSettingKeys.rimeTotalSchemas.rawValue: [] as [Schema],
       HamsterAppSettingKeys.rimeUserSelectSchema.rawValue: [] as [Schema],
       HamsterAppSettingKeys.lastUseRimeInputSchema.rawValue: "",
       HamsterAppSettingKeys.rimeEnableColorSchema.rawValue: false,
@@ -209,6 +217,21 @@ public class HamsterAppSettings: ObservableObject {
     self.spaceXSpeed = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.spaceXSpeed.rawValue)
 
     // 对数组类型且为Struct值需要特殊处理
+    if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeTotalColorSchemas.rawValue) {
+      let array = try! PropertyListDecoder().decode([ColorSchema].self, from: data)
+      self.rimeTotalColorSchemas = array
+    } else {
+      self.rimeTotalColorSchemas = []
+    }
+
+    // 对数组类型且为Struct值需要特殊处理
+    if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeTotalSchemas.rawValue) {
+      let array = try! PropertyListDecoder().decode([Schema].self, from: data)
+      self.rimeTotalSchemas = array
+    } else {
+      self.rimeTotalSchemas = []
+    }
+
     if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeUserSelectSchema.rawValue) {
       let array = try! PropertyListDecoder().decode([Schema].self, from: data)
       self.rimeUserSelectSchema = array
@@ -401,6 +424,34 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
+  // Rime: 全部颜色方案
+  @Published
+  var rimeTotalColorSchemas: [ColorSchema] {
+    didSet {
+      if let data = try? PropertyListEncoder().encode(rimeTotalColorSchemas) {
+        Logger.shared.log.info(["AppSettings, rimeTotalColorSchemas": rimeTotalColorSchemas])
+        UserDefaults.hamsterSettingsDefault.set(
+          data, forKey: HamsterAppSettingKeys.rimeTotalColorSchemas.rawValue)
+      } else {
+        Logger.shared.log.error("AppSettings, rimeTotalColorSchemas error")
+      }
+    }
+  }
+
+  // Rime: 全部输入方案
+  @Published
+  var rimeTotalSchemas: [Schema] {
+    didSet {
+      if let data = try? PropertyListEncoder().encode(rimeTotalSchemas) {
+        Logger.shared.log.info(["AppSettings, rimeTotalSchemas": rimeTotalSchemas])
+        UserDefaults.hamsterSettingsDefault.set(
+          data, forKey: HamsterAppSettingKeys.rimeTotalSchemas.rawValue)
+      } else {
+        Logger.shared.log.error("AppSettings, rimeTotalSchemas error")
+      }
+    }
+  }
+
   // Rime: 用户选择的输入方案
   @Published
   var rimeUserSelectSchema: [Schema] {
@@ -428,7 +479,9 @@ public class HamsterAppSettings: ObservableObject {
         return
       }
 
-      lastUseRimeInputSchema = rimeInputSchema
+      DispatchQueue.main.async {
+        self.lastUseRimeInputSchema = self.rimeInputSchema
+      }
     }
     didSet {
       Logger.shared.log.info(["AppSettings, rimeInputSchema": rimeInputSchema])
@@ -598,5 +651,61 @@ extension HamsterAppSettings {
   // 候选栏显示分隔符号
   var showDivider: Bool {
     keyboardStatus == .normal ? true : false
+  }
+}
+
+extension HamsterAppSettings {
+  /// 重置输入方案相关参数
+  func resetRimeParameter(_ rimeEngine: RimeEngine) -> Bool {
+    // 注意关闭rime
+    if !rimeEngine.isRunning() {
+      rimeEngine.startRime(fullCheck: true)
+    }
+
+    // 得到当前全部的schema, 注意这里会忽略用户打的patch
+    var rimeTotalSchemas = rimeEngine.getSchemas().sorted()
+    if rimeTotalSchemas.isEmpty {
+      rimeTotalSchemas = rimeEngine.getSelectedRimeSchema().sorted()
+    }
+    if rimeTotalSchemas.isEmpty {
+      rimeEngine.shutdownRime()
+      return false
+    }
+    self.rimeTotalSchemas = rimeTotalSchemas.reduce([] as [Schema]) {
+      if $0.contains($1) {
+        return $0
+      } else {
+        return $0 + [$1]
+      }
+    }
+
+    // 判断当前输入方案是否存在于方案列表中,不存在则输入方案为当前方案中的第一位
+    let firstInputSchema = rimeTotalSchemas.first { rimeInputSchema == $0.schemaId }
+    if firstInputSchema == nil {
+      rimeInputSchema = rimeTotalSchemas[0].schemaId
+    }
+
+    // 用户选择的方案列表
+    if rimeUserSelectSchema.isEmpty {
+      rimeUserSelectSchema = rimeTotalSchemas
+    } else {
+      // 取交集
+      let intersection = Set(rimeUserSelectSchema).intersection(rimeTotalSchemas)
+      if intersection.isEmpty {
+        rimeUserSelectSchema = rimeTotalSchemas
+      } else {
+        rimeUserSelectSchema = Array(intersection)
+      }
+    }
+
+    // 颜色方案
+    let colorSchemas = rimeEngine.colorSchema(rimeUseSquirrelSettings)
+    rimeTotalColorSchemas = colorSchemas
+
+    // 键盘需要重新copy方案
+    rimeNeedOverrideUserDataDirectory = true
+
+    rimeEngine.shutdownRime()
+    return true
   }
 }

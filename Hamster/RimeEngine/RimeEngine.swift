@@ -124,30 +124,30 @@ public struct Schema: Identifiable, Equatable, Hashable, Comparable, Codable {
   let schemaName: String
 }
 
-public struct ColorSchema: Identifiable, Equatable {
-  public let id = UUID()
+public struct ColorSchema: Identifiable, Equatable, Codable {
+  public var id = UUID()
 
   var schemaName: String = ""
   var name: String = ""
   var author: String = ""
 
-  // 窗体背景色
-  var backColor: Color?
-  var borderColor: Color? // 边框颜色: border_color
+  var backColor: String = "" // 窗体背景色 back_color
+  var borderColor: String = "" // 边框颜色 border_color
 
-  // 组字区域
-  var textColor: Color? // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
-  var hilitedTextColor: Color? // 编码高亮: hilited_text_color
-  var hilitedBackColor: Color? // 编码背景高亮: hilited_back_color
+  // MARK: 组字区域，对应键盘候选栏的用户输入字码
+
+  var textColor: String = "" // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
+  var hilitedTextColor: String = "" // 编码高亮: hilited_text_color
+  var hilitedBackColor: String = "" // 编码背景高亮: hilited_back_color
 
   // 候选栏颜色
-  var hilitedCandidateTextColor: Color? // 首选文字颜色: hilited_candidate_text_color
-  var hilitedCandidateBackColor: Color? // 首选背景颜色: hilited_candidate_back_color
+  var hilitedCandidateTextColor: String = "" // 首选文字颜色: hilited_candidate_text_color
+  var hilitedCandidateBackColor: String = "" // 首选背景颜色: hilited_candidate_back_color
   // hilited_candidate_label_color 首选序号颜色
-  var hilitedCommentTextColor: Color? // 首选提示字母色: hilited_comment_text_color
+  var hilitedCommentTextColor: String = "" // 首选提示字母色: hilited_comment_text_color
 
-  var candidateTextColor: Color? // 次选文字色: candidate_text_color
-  var commentTextColor: Color? // 次选提示色: comment_text_color
+  var candidateTextColor: String = "" // 次选文字色: candidate_text_color
+  var commentTextColor: String = "" // 次选提示色: comment_text_color
   // label_color 次选序号颜色
 }
 
@@ -165,9 +165,8 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   typealias DeployCallbackFunction = () -> Void
   typealias ChangeCallbackFunction = (String) -> Void
 
+  private var running = false
   private let rimeAPI: IRimeAPI = .init()
-  private var isFirstRunning = true
-  private var traits: IRimeTraits?
   private var deployStartCallback: DeployCallbackFunction?
   private var deploySuccessCallback: DeployCallbackFunction?
   private var deployFailureCallback: DeployCallbackFunction?
@@ -179,6 +178,10 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
 
   /// 候选字上限
   var maxCandidateCount: Int32 = 100
+
+  /// 上一次上屏内容
+  @Published
+  var lastScreenContent: String = ""
 
   /// 用户输入键值
   @Published
@@ -202,7 +205,7 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
 
   /// 当前颜色
   @Published
-  var currentColorSchema = ColorSchema()
+  var currentColorSchema: ColorSchema = .init()
 }
 
 public extension RimeEngine {
@@ -228,27 +231,43 @@ public extension RimeEngine {
     setupRime(createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
   }
 
-  func setupRime(_ traits: IRimeTraits) {
-    if isFirstRunning {
-      isFirstRunning = false
+  func setupRime(_ traits: IRimeTraits? = nil) {
+    if isFirstRun() {
+      let rimeTraits = traits ?? createTraits(
+        sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
+        userDataDir: RimeEngine.appGroupUserDataDirectoryURL.path
+      )
       setNotificationDelegate(self)
-      rimeAPI.setup(traits)
-      self.traits = traits
+      rimeAPI.setup(rimeTraits)
     }
   }
 
+  func initialize(_ traits: IRimeTraits? = nil) {
+    running = true
+    rimeAPI.initialize(traits)
+  }
+
   func startRime(_ traits: IRimeTraits? = nil, fullCheck: Bool = false) {
+    running = true
     rimeAPI.initialize(traits)
     rimeAPI.startMaintenance(fullCheck)
   }
 
-  // 重新部署
-  func deploy(fullCheck: Bool = true) {
-    shutdownRime()
-    startRime(traits, fullCheck: fullCheck)
+  func deploy() -> Bool {
+    rimeAPI.deployerInitialize(nil)
+    return rimeAPI.deploy()
+  }
+
+  func preBuildAllSchemas() {
+    rimeAPI.preBuildAllSchemas()
+  }
+
+  func isRunning() -> Bool {
+    return running
   }
 
   func shutdownRime() {
+    running = false
     rimeAPI.cleanAllSession()
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
@@ -382,11 +401,9 @@ public extension RimeEngine {
   }
 
   func getSchemas() -> [Schema] {
-    let list = rimeAPI.schemaList()
-    if list == nil {
-      return []
+    return rimeAPI.schemaList().map {
+      Schema(schemaId: $0.schemaId, schemaName: $0.schemaName)
     }
-    return list!.map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
   func currentSchema() -> Schema? {
@@ -396,7 +413,7 @@ public extension RimeEngine {
 
   func setSchema(_ schemaId: String) -> Bool {
     createSession()
-    return rimeAPI.selectSchema(session, andSchameId: schemaId)
+    return rimeAPI.selectSchema(session, andSchemaId: schemaId)
   }
 
   func colorSchema(_ useSquirrel: Bool = true) -> [ColorSchema] {
@@ -406,9 +423,9 @@ public extension RimeEngine {
       return []
     }
 
-    defer {
-      cfg?.close()
-    }
+//    defer {
+//      cfg?.close()
+//    }
 
     let config = cfg!
     // 获取配色名称
@@ -418,16 +435,16 @@ public extension RimeEngine {
       schema.schemaName = item.key
       schema.name = config.getString(item.path + "/name")
       schema.author = config.getString(item.path + "/author")
-      schema.backColor = config.getString(item.path + "/back_color").bgrColor
-      schema.borderColor = config.getString(item.path + "/border_color").bgrColor
-      schema.hilitedCandidateBackColor = config.getString(item.path + "/hilited_candidate_back_color").bgrColor
-      schema.hilitedCandidateTextColor = config.getString(item.path + "/hilited_candidate_text_color").bgrColor
-      schema.hilitedCommentTextColor = config.getString(item.path + "/hilited_comment_text_color").bgrColor
-      schema.candidateTextColor = config.getString(item.path + "/candidate_text_color").bgrColor
-      schema.commentTextColor = config.getString(item.path + "/comment_text_color").bgrColor
-      schema.hilitedTextColor = config.getString(item.path + "/hilited_text_color").bgrColor
-      schema.hilitedBackColor = config.getString(item.path + "/hilited_back_color").bgrColor
-      schema.textColor = config.getString(item.path + "/text_color").bgrColor
+      schema.backColor = config.getString(item.path + "/back_color")
+      schema.borderColor = config.getString(item.path + "/border_color")
+      schema.hilitedCandidateBackColor = config.getString(item.path + "/hilited_candidate_back_color")
+      schema.hilitedCandidateTextColor = config.getString(item.path + "/hilited_candidate_text_color")
+      schema.hilitedCommentTextColor = config.getString(item.path + "/hilited_comment_text_color")
+      schema.candidateTextColor = config.getString(item.path + "/candidate_text_color")
+      schema.commentTextColor = config.getString(item.path + "/comment_text_color")
+      schema.hilitedTextColor = config.getString(item.path + "/hilited_text_color")
+      schema.hilitedBackColor = config.getString(item.path + "/hilited_back_color")
+      schema.textColor = config.getString(item.path + "/text_color")
       return schema
     }
   }
@@ -444,16 +461,53 @@ public extension RimeEngine {
     return config!.getString("style/color_scheme")
   }
 
+  /// Deprecated: 不在适用于目前的方案,请勿调用
   func setSelectRimeSchemas(schemas: [Schema]) -> Bool {
     if schemas.isEmpty {
       return false
     }
-    return rimeAPI.selectRimeSchemas(schemas.map { $0.schemaId })
+    // TODO：selectRimeSchemas 生成的patch格式会造成每次启动编译输入方案
+    // return rimeAPI.selectRimeSchemas(schemas.map { $0.schemaId })
+    // check default.custom.yaml是否存在，不存在则直接写入，存在则需要合并patch
+    let fm = FileManager.default
+
+    let schemaIds = schemas.map { $0.schemaId }
+    var patchContent: String?
+    let filePath = Self.appGroupUserDataDefaultCustomYaml
+    if !fm.fileExists(atPath: filePath.path) {
+      patchContent = fm.patchOfSchemaList(schemaIds)
+    } else {
+      patchContent = fm.mergePatchSchemaList(filePath, schemaIds: schemaIds)
+    }
+
+    guard patchContent != nil else {
+      Logger.shared.log.error("generator patch content is nil")
+      return false
+    }
+
+    do {
+      try patchContent!.write(toFile: Self.appGroupUserDataDefaultCustomYaml.path, atomically: true, encoding: .utf8)
+    } catch {
+      Logger.shared.log.error("create default.custom.yaml file and patch schema_list error: \(error.localizedDescription)")
+      return false
+    }
+
+    return true
   }
 
+  // 注意：用户目录必须存在 "default.coustom.yaml" 文件，调用才有效
   func getAvailableRimeSchemas() -> [Schema] {
     rimeAPI.getAvailableRimeSchemaList()
       .map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
+  }
+
+  func getSelectedRimeSchema() -> [Schema] {
+    rimeAPI.getSelectedRimeSchemaList()
+      .map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
+  }
+
+  func isFirstRun() -> Bool {
+    rimeAPI.isFirstRun()
   }
 
   // MARK: 通知回调函数

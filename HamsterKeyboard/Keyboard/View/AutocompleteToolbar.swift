@@ -38,8 +38,8 @@ struct HamsterAutocompleteToolbar: View {
       if !appSettings.enableInputEmbeddedMode {
         HStack {
           Text(rimeEngine.userInputKey)
-            .font(style.item.subtitleFont)
-            .foregroundColor(hamsterColor.hilitedTextColor)
+            .font(style.item.subtitleFont.font)
+            .foregroundColor(hamsterColor.hilitedTextColor.bgrColor ?? .primary)
             .minimumScaleFactor(0.7)
           Spacer()
         }

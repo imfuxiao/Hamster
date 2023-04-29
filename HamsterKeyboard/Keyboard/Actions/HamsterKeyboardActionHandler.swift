@@ -8,7 +8,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
-  // 键盘上下滑动处理
+  // 键盘滑动处理
   let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, SlidingDirection, Int) -> Void) = { keyboardController in
     weak var ivc = keyboardController
     guard let ivc = ivc else { return { _, _, _ in } }

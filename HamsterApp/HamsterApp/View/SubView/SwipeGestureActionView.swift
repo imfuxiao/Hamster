@@ -136,9 +136,11 @@ struct SwipeGestureActionView: View {
   @ViewBuilder
   var iCloudView: some View {
     HamsteriCloudView(
-      isShow: $showHamsteriCloud,
       document: HamsterDocument(fileName: "SwipeGestureActionBackup.plist", data: fileData),
       needExporter: true,
+      isShow: $showHamsteriCloud,
+      isShowMessage: .constant(false),
+      showMessage: .constant(""),
       contentType: .plist,
       importingCallback: { file in
         Logger.shared.log.debug("file.fileName: \(file.fileName)")
@@ -226,26 +228,7 @@ struct SwipeGestureActionView: View {
 
         // iCloud
         if showHamsteriCloud {
-          HamsteriCloudView(
-            isShow: $showHamsteriCloud,
-            document: HamsterDocument(fileName: "SwipeGestureActionBackup.plist", data: fileData),
-            needExporter: true,
-            contentType: .plist,
-            importingCallback: { file in
-              Logger.shared.log.debug("file.fileName: \(file.fileName)")
-              let plist = Plist(data: file.data)
-              appSettings.keyboardSwipeGestureSymbol = plist.strDict
-              fileData = file.data
-              showHamsteriCloud = false
-            },
-            exportingCallback: { result in
-              if case .failure(let err) = result {
-                Logger.shared.log.error("slide gesture export error: \(err.localizedDescription)")
-              }
-              showHamsteriCloud = false
-            }
-          )
-          .transition(.move(edge: .bottom).animation(.easeInOut(duration: 1)))
+          iCloudView
         }
       }
       .navigationBarTitleDisplayMode(.inline)

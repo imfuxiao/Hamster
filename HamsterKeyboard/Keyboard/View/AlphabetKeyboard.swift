@@ -63,7 +63,7 @@ struct AlphabetKeyboard: View {
   }
 
   var backgroundColor: Color {
-    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+    return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
 
   // 是否显示候选栏按钮

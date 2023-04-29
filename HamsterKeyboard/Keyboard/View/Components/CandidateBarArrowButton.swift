@@ -28,11 +28,11 @@ struct CandidateBarArrowButton: View {
   }
 
   var foregroundColor: Color {
-    hamsterColor.candidateTextColor ?? Color.standardButtonForeground(for: keyboardContext)
+    hamsterColor.candidateTextColor.bgrColor ?? Color.standardButtonForeground(for: keyboardContext)
   }
 
   var backgroundColor: Color {
-    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+    return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
 
   @State var tapped: Bool = false

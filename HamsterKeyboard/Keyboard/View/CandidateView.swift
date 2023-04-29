@@ -27,24 +27,24 @@ struct CandidateView: View {
   var body: some View {
     HStack(alignment: .center, spacing: 0) {
       Text(data.text)
-        .font(style.item.titleFont)
+        .font(style.item.titleFont.font)
         .foregroundColor(
           data.isAutocomplete
-            ? hamsterColor.hilitedCandidateTextColor
-            : hamsterColor.candidateTextColor
+            ? (hamsterColor.hilitedCandidateTextColor.bgrColor ?? .primary)
+            : (hamsterColor.candidateTextColor.bgrColor ?? .primary)
         )
       if let comment = data.comment {
         Text(comment)
-          .font(style.item.subtitleFont)
+          .font(style.item.subtitleFont.font)
           .foregroundColor(
             data.isAutocomplete
-              ? hamsterColor.hilitedCommentTextColor
-              : hamsterColor.commentTextColor
+              ? (hamsterColor.hilitedCommentTextColor.bgrColor ?? .primary)
+              : (hamsterColor.commentTextColor.bgrColor ?? .primary)
           )
       }
     }
     .padding(.all, 5)
-    .background(data.isAutocomplete ? hamsterColor.hilitedCandidateBackColor ?? Color.standardButtonBackground(for: keyboardContext) : .clearInteractable)
+    .background(data.isAutocomplete ? (hamsterColor.hilitedCandidateBackColor.bgrColor ?? Color.standardButtonBackground(for: keyboardContext)) : .clear)
     .cornerRadius(style.autocompleteBackground.cornerRadius)
     .onTapGesture {
       action(data)

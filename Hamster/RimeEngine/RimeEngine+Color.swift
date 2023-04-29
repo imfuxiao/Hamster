@@ -39,11 +39,12 @@ extension String {
         r = CGFloat(hexValue & 0xff) / 255
         g = CGFloat((hexValue & 0xff00) >> 8) / 255
         b = CGFloat((hexValue & 0xff0000) >> 16) / 255
-        alpha = CGFloat((hexValue & 0xff00_0000) >> 24) / 255
+        alpha = CGFloat((hexValue & 0xff000000) >> 24) / 255
       }
     default:
       return nil
     }
+
     return Color(
       red: r,
       green: g,

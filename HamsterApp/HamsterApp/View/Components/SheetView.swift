@@ -25,6 +25,12 @@ struct SheetView<Content: View>: View {
   @Binding
   var isShow: Bool
 
+  @Binding
+  var isShowMessage: Bool
+
+  @Binding
+  var showMessage: String
+
   @ViewBuilder
   var contentView: ContentViewBuilder
 
@@ -107,6 +113,7 @@ struct SheetView<Content: View>: View {
             isShow = false
           }
         }
+        .transition(.opacity)
 
         VStack(alignment: .center, spacing: 0) {
           RoundedRectangle(cornerRadius: 15)
@@ -137,9 +144,11 @@ struct SheetView<Content: View>: View {
             .offset(
               y: proxy.size.height / 2 + positionOffset + self.dragState.translation.height
             )
+            .transition(.move(edge: .bottom))
         }
         .shadow(radius: 10)
         .cornerRadius(15, antialiased: true)
+        .hud(isShow: $isShowMessage, message: $showMessage)
         .gesture(dragGesture)
         .onPreferenceChange(ScrollOffsetKey.self) { value in
           if initScrollOffset == .zero {
@@ -161,7 +170,6 @@ struct SheetView<Content: View>: View {
         .onAppear {
           geometryProxy = proxy
         }
-        .transition(.move(edge: .bottom))
         .ignoresSafeArea()
       }
     }
@@ -222,7 +230,7 @@ enum DragState {
 
 struct SheetView_Previews: PreviewProvider {
   static var previews: some View {
-    SheetView(isShow: .constant(true)) {
+    SheetView(isShow: .constant(true), isShowMessage: .constant(false), showMessage: .constant("")) {
       Text("test")
     }
   }

@@ -68,9 +68,7 @@ struct ColorSchemaView: View {
     }
     .navigationBarTitleDisplayMode(.inline)
     .onAppear {
-      rimeEngine.startRime()
-      self.colorSchemas = rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings)
-      rimeEngine.shutdownRime()
+      self.colorSchemas = appSettings.rimeTotalColorSchemas
     }
   }
 }
@@ -100,12 +98,12 @@ struct WordView: View {
         // 组字区域
         HStack {
           Text("方案")
-            .foregroundColor(colorSchema.textColor)
+            .foregroundColor(colorSchema.textColor.bgrColor ?? .clear)
           Text("pei se˰")
-            .foregroundColor(colorSchema.hilitedTextColor)
+            .foregroundColor(colorSchema.hilitedTextColor.bgrColor ?? .clear)
           Spacer()
         }
-        .background(colorSchema.hilitedBackColor)
+        .background(colorSchema.hilitedBackColor.bgrColor ?? .clear)
         .font(.system(.body))
         .padding(.leading, 5)
 
@@ -113,20 +111,20 @@ struct WordView: View {
           // 首选区域
           HStack {
             Text("1. 配色")
-              .foregroundColor(colorSchema.hilitedCandidateTextColor)
+              .foregroundColor(colorSchema.hilitedCandidateTextColor.bgrColor ?? .clear)
             Text("(pei se)")
-              .foregroundColor(colorSchema.hilitedCommentTextColor)
+              .foregroundColor(colorSchema.hilitedCommentTextColor.bgrColor ?? .clear)
           }
           .background(
             Rectangle()
-              .fill(colorSchema.hilitedCandidateBackColor ?? .clear)
+              .fill(colorSchema.hilitedCandidateBackColor.bgrColor ?? .clear)
           )
 
           Text("2. 陪")
-            .foregroundColor(colorSchema.candidateTextColor)
+            .foregroundColor(colorSchema.candidateTextColor.bgrColor ?? .clear)
 
           Text("(pei)")
-            .foregroundColor(colorSchema.commentTextColor)
+            .foregroundColor(colorSchema.commentTextColor.bgrColor ?? .clear)
 
           Spacer()
         }
@@ -135,7 +133,7 @@ struct WordView: View {
       }
       .background(
         RoundedRectangle(cornerRadius: 5)
-          .fill(colorSchema.backColor ?? .clear)
+          .fill(colorSchema.backColor.bgrColor ?? .clear)
           .frame(height: 50)
       )
     }
@@ -152,14 +150,16 @@ struct ColorSchemaView_Previews: PreviewProvider {
       schemaName: "azure",
       name: "青天／Azure",
       author: "佛振 <chen.sst@gmail.com>",
-      backColor: "0xee8b4e01".bgrColor!,
-      textColor: "0xcfa677".bgrColor!,
-      hilitedTextColor: "0xffeacc".bgrColor!,
-      hilitedCandidateTextColor: "0x7ffeff".bgrColor!,
-      hilitedCandidateBackColor: "0x00000000".bgrColor!,
-      hilitedCommentTextColor: "0xfcac9d".bgrColor!,
-      candidateTextColor: "0xffeacc".bgrColor!,
-      commentTextColor: "0xc69664".bgrColor!
+      backColor: "0xee8b4e01",
+      borderColor: "",
+      textColor: "0xcfa677",
+      hilitedTextColor: "0xffeacc",
+      hilitedBackColor: "",
+      hilitedCandidateTextColor: "0x7ffeff",
+      hilitedCandidateBackColor: "0x00000000",
+      hilitedCommentTextColor: "0xfcac9d",
+      candidateTextColor: "0xffeacc",
+      commentTextColor: "0xc69664"
     ),
   ]
 

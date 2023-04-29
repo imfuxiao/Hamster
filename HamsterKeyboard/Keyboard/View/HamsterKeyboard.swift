@@ -77,7 +77,7 @@ struct HamsterKeyboard: View {
   }
 
   var backgroundColor: Color {
-    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+    return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
 
   // 全键盘展示候选字
@@ -119,7 +119,7 @@ struct HamsterKeyboard: View {
       // 输入方案切换视图
       if appSettings.keyboardStatus == .switchInputSchema {
         switchInputSchemaView
-          .foregroundColor(hamsterColor.candidateTextColor ?? Color.standardButtonForeground(for: keyboardContext))
+          .foregroundColor(hamsterColor.candidateTextColor.bgrColor ?? Color.standardButtonForeground(for: keyboardContext))
           .frame(height: hamsterKeyboardSize.height)
       }
     }
@@ -145,7 +145,7 @@ struct SelectInputSchemaView: View {
   var schemas: [Schema]
 
   var backgroundColor: Color {
-    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+    return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
 
   @EnvironmentObject var appSettings: HamsterAppSettings

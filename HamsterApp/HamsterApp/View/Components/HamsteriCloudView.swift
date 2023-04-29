@@ -43,12 +43,14 @@ class HamsterDocument: FileDocument {
 struct HamsteriCloudView: View {
   typealias ImportingCallback = (HamsterDocument) -> Void
   typealias ExportingCallback = (Result<URL, Error>) -> Void
-  @Binding var isShow: Bool
   @State var document: HamsterDocument = .init()
   @State var needExporter: Bool = false
   @State var isImporting: Bool = false
-
   @State var isExporting: Bool = false
+  
+  @Binding var isShow: Bool
+  @Binding var isShowMessage: Bool
+  @Binding var showMessage: String
 
   @Environment(\.dismiss) var dismiss
   @Environment(\.colorScheme) var colorScheme
@@ -58,7 +60,7 @@ struct HamsteriCloudView: View {
   var exportingCallback: ExportingCallback?
 
   var body: some View {
-    SheetView(isShow: $isShow) {
+    SheetView(isShow: $isShow, isShowMessage: $isShowMessage, showMessage: $showMessage) {
       VStack(spacing: 0) {
         Section {
           SectionButton(image: "arrow.down.doc.fill", title: "iCloud") {
@@ -204,8 +206,10 @@ struct HamsteriCloud_Previews: PreviewProvider {
 
   static var previews: some View {
     HamsteriCloudView(
-      isShow: $isShow,
       needExporter: true,
+      isShow: $isShow,
+      isShowMessage: .constant(false),
+      showMessage: .constant(""),
       contentType: .zip,
       importingCallback: { _ in },
       exportingCallback: { _ in }

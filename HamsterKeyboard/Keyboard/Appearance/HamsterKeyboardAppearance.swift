@@ -29,10 +29,11 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
   /**
    The button font to use for a certain action.
    */
-  override func buttonFont(for action: KeyboardAction) -> Font {
-    let rawFont = Font.system(size: buttonFontSize(for: action))
-    guard let weight = buttonFontWeight(for: action) else { return rawFont }
-    return rawFont.weight(weight)
+  override func buttonFont(for action: KeyboardAction) -> KeyboardFont {
+    let size = buttonFontSize(for: action)
+    let font = KeyboardFont.system(size: size)
+    guard let weight = buttonFontWeight(for: action) else { return font }
+    return font.weight(weight)
   }
 
   /**
@@ -133,11 +134,11 @@ class HamsterKeyboardAppearance: StandardKeyboardAppearance {
     if appSettings.enableRimeColorSchema {
       let colorSchema = rimeEngine.currentColorSchema
       return KeyboardButtonStyle(
-        backgroundColor: colorSchema.backColor ?? buttonBackgroundColor(for: action, isPressed: isPressed),
-        foregroundColor: colorSchema.candidateTextColor ?? buttonForegroundColor(for: action, isPressed: isPressed),
+        backgroundColor: colorSchema.backColor.bgrColor ?? buttonBackgroundColor(for: action, isPressed: isPressed),
+        foregroundColor: colorSchema.candidateTextColor.bgrColor ?? buttonForegroundColor(for: action, isPressed: isPressed),
         font: buttonFont(for: action),
         cornerRadius: buttonCornerRadius(for: action),
-        border: KeyboardButtonBorderStyle(color: colorSchema.borderColor ?? .clearInteractable, size: 1),
+        border: KeyboardButtonBorderStyle(color: colorSchema.borderColor.bgrColor ?? .clear, size: 1),
         shadow: buttonShadowStyle(for: action)
       )
     }

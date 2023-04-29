@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct DotsLoadingView: View {
   @Environment(\.colorScheme) var colorScheme
   let text: String
@@ -26,7 +27,9 @@ struct DotsLoadingView: View {
       VStack {
         Spacer()
         Text(text)
-          .font(.system(size: 20, weight: .bold))
+          .lineLimit(1)
+          .minimumScaleFactor(0.8)
+          .font(.system(size: 16, weight: .bold))
           .foregroundColor(Color.secondary)
         DotsActivityView(color: dotColor)
         Spacer()

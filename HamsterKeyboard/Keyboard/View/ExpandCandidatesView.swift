@@ -27,7 +27,7 @@ struct ExpandCandidatesView: View {
   }
 
   var backgroundColor: Color {
-    return hamsterColor.backColor ?? Color.standardKeyboardBackground
+    return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
 
   var body: some View {

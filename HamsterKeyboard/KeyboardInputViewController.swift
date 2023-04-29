@@ -6,5 +6,6 @@
 //
 
 import Foundation
+import KeyboardKit
 
 public class KeyboardController: HamsterKeyboardViewController {}

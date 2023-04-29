@@ -14,6 +14,12 @@
 		C00BAA0529ED501300325ED2 /* CandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0429ED501300325ED2 /* CandidateView.swift */; };
 		C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0929ED507200325ED2 /* CollectionView.swift */; };
 		C00BAA0B29ED920E00325ED2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C03E802C296D4F4D0083E53A /* Assets.xcassets */; };
+		C016994629FBC24C0047B49E /* File+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994529FBC24C0047B49E /* File+Zip.swift */; };
+		C016994929FBC9BB0047B49E /* HamsterHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994829FBC9BB0047B49E /* HamsterHUD.swift */; };
+		C016994A29FBC9BB0047B49E /* HamsterHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994829FBC9BB0047B49E /* HamsterHUD.swift */; };
+		C016994B29FBCBFB0047B49E /* BlackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DA63F829F7B87500F91C74 /* BlackView.swift */; };
+		C016994C29FBCC690047B49E /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
+		C016994D29FBCC9A0047B49E /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
 		C01CF63929F655C80039AFAA /* HamsteriCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01CF63829F655C80039AFAA /* HamsteriCloudView.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeEngine+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeEngine+File.swift */; };
@@ -47,10 +53,6 @@
 		C0519E0429F926CC00513008 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0229F926CC00513008 /* Checkbox.swift */; };
 		C0519E0729F947DB00513008 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C0519E0629F947DB00513008 /* Yams */; };
 		C0519E0929F947F000513008 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C0519E0829F947F000513008 /* Yams */; };
-		C0519E0B29F9487300513008 /* AppSettings+Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */; };
-		C0519E0C29F9487300513008 /* AppSettings+Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */; };
-		C0519E0E29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */; };
-		C0519E0F29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */; };
 		C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1529C49469001A8BE6 /* LaunchScreen.swift */; };
 		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
@@ -58,9 +60,24 @@
 		C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */; };
 		C054BC1129F3BDE10070D7F8 /* ChineseInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */; };
 		C054BC1329F523970070D7F8 /* HamsterSlidingGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1229F523970070D7F8 /* HamsterSlidingGestureHandler.swift */; };
-		C06197FD29A35A5F004DF94F /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C06197FC29A35A5F004DF94F /* LibrimeKit */; };
 		C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C6D29B3C42F00C27D42 /* SetttingView.swift */; };
 		C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */; };
+		C06C010B29FCA84C00CA7102 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43229FB7A4900718DAD /* File.swift */; };
+		C06C010C29FCA84C00CA7102 /* File+yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43429FB7AD500718DAD /* File+yaml.swift */; };
+		C06C010D29FCA84C00CA7102 /* File+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994529FBC24C0047B49E /* File+Zip.swift */; };
+		C074C43329FB7A4900718DAD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43229FB7A4900718DAD /* File.swift */; };
+		C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43429FB7AD500718DAD /* File+yaml.swift */; };
+		C074C43A29FB7DFD00718DAD /* FileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43929FB7DFD00718DAD /* FileTest.swift */; };
+		C074C43B29FB8B7600718DAD /* SharedSupport.zip in Resources */ = {isa = PBXBuildFile; fileRef = C0D672B329F1E066002D0439 /* SharedSupport.zip */; };
+		C074C43D29FB8C1B00718DAD /* TreeSitterYAML in Frameworks */ = {isa = PBXBuildFile; productRef = C074C43C29FB8C1B00718DAD /* TreeSitterYAML */; };
+		C074C43F29FB8C1B00718DAD /* TreeSitterYAMLQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C074C43E29FB8C1B00718DAD /* TreeSitterYAMLQueries */; };
+		C074C44129FB8C1B00718DAD /* TreeSitterYAMLRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44029FB8C1B00718DAD /* TreeSitterYAMLRunestone */; };
+		C074C44329FB8C3B00718DAD /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44229FB8C3B00718DAD /* LibrimeKit */; };
+		C074C44529FB8C3E00718DAD /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44429FB8C3E00718DAD /* Plist */; };
+		C074C44729FB8C4300718DAD /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44629FB8C4300718DAD /* KeyboardKit */; };
+		C074C44929FB8C4700718DAD /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44829FB8C4700718DAD /* iFilemanager */; };
+		C074C44B29FB8C4B00718DAD /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44A29FB8C4B00718DAD /* SwiftyBeaver */; };
+		C074C44D29FB8C4E00718DAD /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = C074C44C29FB8C4E00718DAD /* Runestone */; };
 		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
 		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
 		C0A301F429C999F600C29E35 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A301F329C999F600C29E35 /* TextFieldStyle.swift */; };
@@ -154,33 +171,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C03665B029A2AC5A002C1C53 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = rime/user;
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C03665BB29A2AC9F002C1C53 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = rime/user/lua;
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C03665BD29A2ACBE002C1C53 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = rime/user/build;
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C03E8047296D53650083E53A /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -203,15 +193,6 @@
 			name = "Copy Rime SharedSupport";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C0F858C429A2AAC5003A2ED4 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = rime/SharedSupport/opencc;
-			dstSubfolderSpec = 7;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -222,6 +203,8 @@
 		C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Bundle.swift"; sourceTree = "<group>"; };
 		C00BAA0429ED501300325ED2 /* CandidateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateView.swift; sourceTree = "<group>"; };
 		C00BAA0929ED507200325ED2 /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		C016994529FBC24C0047B49E /* File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Zip.swift"; sourceTree = "<group>"; };
+		C016994829FBC9BB0047B49E /* HamsterHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHUD.swift; sourceTree = "<group>"; };
 		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
 		C018E6DF29C343A900942E97 /* Color+Extent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extent.swift"; sourceTree = "<group>"; };
 		C01CF63829F655C80039AFAA /* HamsteriCloudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsteriCloudView.swift; sourceTree = "<group>"; };
@@ -271,8 +254,6 @@
 		C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		C04FA93F299A674E00F8CC32 /* DefaultAction.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultAction.plist; sourceTree = "<group>"; };
 		C0519E0229F926CC00513008 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
-		C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Yaml.swift"; sourceTree = "<group>"; };
-		C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeEngine+AppSetting.swift"; sourceTree = "<group>"; };
 		C0532D1529C49469001A8BE6 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C0532D1729C4A2C9001A8BE6 /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
@@ -285,6 +266,9 @@
 		C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
+		C074C43229FB7A4900718DAD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		C074C43429FB7AD500718DAD /* File+yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+yaml.swift"; sourceTree = "<group>"; };
+		C074C43929FB7DFD00718DAD /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
 		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C0A301F329C999F600C29E35 /* TextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
@@ -355,7 +339,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C06197FD29A35A5F004DF94F /* LibrimeKit in Frameworks */,
+				C074C44929FB8C4700718DAD /* iFilemanager in Frameworks */,
+				C074C44D29FB8C4E00718DAD /* Runestone in Frameworks */,
+				C074C44529FB8C3E00718DAD /* Plist in Frameworks */,
+				C074C43D29FB8C1B00718DAD /* TreeSitterYAML in Frameworks */,
+				C074C44129FB8C1B00718DAD /* TreeSitterYAMLRunestone in Frameworks */,
+				C074C44329FB8C3B00718DAD /* LibrimeKit in Frameworks */,
+				C074C44729FB8C4300718DAD /* KeyboardKit in Frameworks */,
+				C074C43F29FB8C1B00718DAD /* TreeSitterYAMLQueries in Frameworks */,
+				C074C44B29FB8C4B00718DAD /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +369,14 @@
 				C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		C016994729FBC99F0047B49E /* HUD */ = {
+			isa = PBXGroup;
+			children = (
+				C016994829FBC9BB0047B49E /* HamsterHUD.swift */,
+			);
+			path = HUD;
 			sourceTree = "<group>";
 		};
 		C018E6DC29C334F800942E97 /* Feedback */ = {
@@ -406,6 +406,7 @@
 		C0333C0A29E81BF50049FA58 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C016994729FBC99F0047B49E /* HUD */,
 				C0D672BA29F1FA32002D0439 /* Components */,
 				C037B61429CC37AD00B1BBDC /* View+Extend.swift */,
 				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
@@ -479,6 +480,7 @@
 		C04FA8AB299A65AB00F8CC32 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C074C43129FB7A3800718DAD /* File */,
 				C0333C0A29E81BF50049FA58 /* View */,
 				C07C1A1F29CD6B5E00FD0572 /* Logger */,
 				C037B60E29CBD50200B1BBDC /* Plist */,
@@ -496,7 +498,6 @@
 				C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */,
 				C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */,
 				C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */,
-				C0519E0A29F9487300513008 /* AppSettings+Yaml.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -532,7 +533,6 @@
 				C020AD4629B73D5400B26142 /* RimeEngine+LibrimeKit.swift */,
 				C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */,
 				C0CB388629EA51AD007211E7 /* keysymdef.swift */,
-				C0519E0D29F9577F00513008 /* RimeEngine+AppSetting.swift */,
 			);
 			path = RimeEngine;
 			sourceTree = "<group>";
@@ -697,6 +697,24 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		C074C43129FB7A3800718DAD /* File */ = {
+			isa = PBXGroup;
+			children = (
+				C074C43229FB7A4900718DAD /* File.swift */,
+				C074C43429FB7AD500718DAD /* File+yaml.swift */,
+				C016994529FBC24C0047B49E /* File+Zip.swift */,
+			);
+			path = File;
+			sourceTree = "<group>";
+		};
+		C074C43629FB7DB100718DAD /* File */ = {
+			isa = PBXGroup;
+			children = (
+				C074C43929FB7DFD00718DAD /* FileTest.swift */,
+			);
+			path = File;
+			sourceTree = "<group>";
+		};
 		C07C1A1F29CD6B5E00FD0572 /* Logger */ = {
 			isa = PBXGroup;
 			children = (
@@ -727,8 +745,6 @@
 			children = (
 				C0341C6E29C83B2A00016C68 /* LongButton.swift */,
 				C02BEA3429C23C58008487A4 /* LoaderView.swift */,
-				C0532D1729C4A2C9001A8BE6 /* DotView.swift */,
-				C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */,
 				C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */,
 				C0341C7029C850A400016C68 /* DotsLoadingView.swift */,
 				C0341C7229C8558E00016C68 /* SectionView.swift */,
@@ -738,7 +754,6 @@
 				C01CF63829F655C80039AFAA /* HamsteriCloudView.swift */,
 				C0DA63F429F76C2800F91C74 /* PlusButton.swift */,
 				C0DA63F629F77DFD00F91C74 /* SheetView.swift */,
-				C0DA63F829F7B87500F91C74 /* BlackView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -754,6 +769,9 @@
 		C0D672BA29F1FA32002D0439 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				C0532D1729C4A2C9001A8BE6 /* DotView.swift */,
+				C0DA63F829F7B87500F91C74 /* BlackView.swift */,
+				C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */,
 				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
 				C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */,
 				C0519E0229F926CC00513008 /* Checkbox.swift */,
@@ -772,6 +790,7 @@
 		C0F858C029A2AA03003A2ED4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C074C43629FB7DB100718DAD /* File */,
 				C0F858C129A2AA38003A2ED4 /* RimeEngine */,
 			);
 			path = Hamster;
@@ -853,10 +872,6 @@
 				C0F858AD29A2A943003A2ED4 /* Sources */,
 				C0F858AE29A2A943003A2ED4 /* Frameworks */,
 				C0F858AF29A2A943003A2ED4 /* Resources */,
-				C0F858C429A2AAC5003A2ED4 /* CopyFiles */,
-				C03665B029A2AC5A002C1C53 /* CopyFiles */,
-				C03665BB29A2AC9F002C1C53 /* CopyFiles */,
-				C03665BD29A2ACBE002C1C53 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -865,7 +880,15 @@
 			);
 			name = HamsterAppTests;
 			packageProductDependencies = (
-				C06197FC29A35A5F004DF94F /* LibrimeKit */,
+				C074C43C29FB8C1B00718DAD /* TreeSitterYAML */,
+				C074C43E29FB8C1B00718DAD /* TreeSitterYAMLQueries */,
+				C074C44029FB8C1B00718DAD /* TreeSitterYAMLRunestone */,
+				C074C44229FB8C3B00718DAD /* LibrimeKit */,
+				C074C44429FB8C3E00718DAD /* Plist */,
+				C074C44629FB8C4300718DAD /* KeyboardKit */,
+				C074C44829FB8C4700718DAD /* iFilemanager */,
+				C074C44A29FB8C4B00718DAD /* SwiftyBeaver */,
+				C074C44C29FB8C4E00718DAD /* Runestone */,
 			);
 			productName = HamsterAppTests;
 			productReference = C0F858B129A2A943003A2ED4 /* HamsterAppTests.xctest */;
@@ -890,6 +913,7 @@
 					};
 					C0F858B029A2A943003A2ED4 = {
 						CreatedOnToolsVersion = 14.2;
+						LastSwiftMigration = 1430;
 						TestTargetID = C03E8024296D4F4C0083E53A;
 					};
 				};
@@ -954,6 +978,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C074C43B29FB8B7600718DAD /* SharedSupport.zip in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -987,7 +1012,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */,
-				C0519E0B29F9487300513008 /* AppSettings+Yaml.swift in Sources */,
 				C0CE234829B5219500F79A74 /* CellView.swift in Sources */,
 				C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */,
 				C0DA63F529F76C2800F91C74 /* PlusButton.swift in Sources */,
@@ -1003,6 +1027,7 @@
 				C0519E0329F926CC00513008 /* Checkbox.swift in Sources */,
 				C0341C7329C8558E00016C68 /* SectionView.swift in Sources */,
 				C0458AA529B133BC00262E69 /* HamsterApp.swift in Sources */,
+				C074C43329FB7A4900718DAD /* File.swift in Sources */,
 				C037B61329CBDADC00B1BBDC /* SwipeGestureActionView.swift in Sources */,
 				C02BEA3529C23C58008487A4 /* LoaderView.swift in Sources */,
 				C02C1EF729BFDBC0007B6AF5 /* FileManagerView.swift in Sources */,
@@ -1017,12 +1042,14 @@
 				C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
 				C0AB7C1C29DBC8DD00F8D01E /* FinderView.swift in Sources */,
 				C0532D1629C49469001A8BE6 /* LaunchScreen.swift in Sources */,
+				C016994929FBC9BB0047B49E /* HamsterHUD.swift in Sources */,
 				C02BEB5A29C32D93008487A4 /* FeedbackView.swift in Sources */,
-				C0519E0E29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */,
+				C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */,
 				C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeEngine.swift in Sources */,
 				C0DA63F729F77DFD00F91C74 /* SheetView.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeEngine+Color.swift in Sources */,
+				C016994629FBC24C0047B49E /* File+Zip.swift in Sources */,
 				C0341C7129C850A400016C68 /* DotsLoadingView.swift in Sources */,
 				C0AB7C1E29DC016A00F8D01E /* EditorView.swift in Sources */,
 				C0AB7C1A29DBC2E900F8D01E /* TextEditView.swift in Sources */,
@@ -1038,6 +1065,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C06C010B29FCA84C00CA7102 /* File.swift in Sources */,
+				C06C010C29FCA84C00CA7102 /* File+yaml.swift in Sources */,
+				C06C010D29FCA84C00CA7102 /* File+Zip.swift in Sources */,
 				C0D672BF29F202E8002D0439 /* RadioButton.swift in Sources */,
 				C0D672C029F202E8002D0439 /* InputSchemaCell.swift in Sources */,
 				C0333C0B29E81C800049FA58 /* View+Extend.swift in Sources */,
@@ -1052,14 +1082,15 @@
 				C0C9F03229CF4355004B2C33 /* RimeEngine.swift in Sources */,
 				C0C9F03329CF4355004B2C33 /* RimeEngine+Color.swift in Sources */,
 				C0C9F03429CF4355004B2C33 /* RimeEngine+File.swift in Sources */,
+				C016994B29FBCBFB0047B49E /* BlackView.swift in Sources */,
 				C0C9F03529CF4355004B2C33 /* RimeEngine+LibrimeKit.swift in Sources */,
 				C0D671AD29F0B8DF002D0439 /* HamsterKeyboard.swift in Sources */,
 				C0CB388129E9294E007211E7 /* HamsterCalloutActionProvider.swift in Sources */,
 				C0C9F03629CF4355004B2C33 /* AppConstants.swift in Sources */,
 				C054BC1129F3BDE10070D7F8 /* ChineseInputSetProvider.swift in Sources */,
 				C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */,
+				C016994A29FBC9BB0047B49E /* HamsterHUD.swift in Sources */,
 				C0C9F02C29CF4326004B2C33 /* KeyboardInputViewController.swift in Sources */,
-				C0519E0C29F9487300513008 /* AppSettings+Yaml.swift in Sources */,
 				C0C9F01029CF4316004B2C33 /* KeyboardViewController.swift in Sources */,
 				C0C9F01129CF4316004B2C33 /* KeyboardConstants.swift in Sources */,
 				C0C9F01229CF4316004B2C33 /* HamsterKeyboardActionHandler.swift in Sources */,
@@ -1071,6 +1102,7 @@
 				C0C9F01929CF4316004B2C33 /* HamsterKeyboardBehavior.swift in Sources */,
 				C0C9F01A29CF4316004B2C33 /* HamsterActionCalloutContext.swift in Sources */,
 				C0C9F01B29CF4316004B2C33 /* KeyboardType+Button.swift in Sources */,
+				C016994D29FBCC9A0047B49E /* DotView.swift in Sources */,
 				C0C9F01C29CF4316004B2C33 /* KeyboardContext+KeyboardType.swift in Sources */,
 				C0C9F01D29CF4316004B2C33 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0C9F01F29CF4316004B2C33 /* iPadKeyboardLayoutProvider.swift in Sources */,
@@ -1079,7 +1111,6 @@
 				C0CB388529EA3C48007211E7 /* OSXKeyCode.swift in Sources */,
 				C0C9F02029CF4316004B2C33 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C0C9F02129CF4316004B2C33 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
-				C0519E0F29F9577F00513008 /* RimeEngine+AppSetting.swift in Sources */,
 				C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */,
 				C0C9F02329CF4316004B2C33 /* KKL10n.swift in Sources */,
 				C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */,
@@ -1088,6 +1119,7 @@
 				C0C9F02629CF4316004B2C33 /* CharacterDragHandler.swift in Sources */,
 				C0C9F02729CF4316004B2C33 /* KeyboardImageReader.swift in Sources */,
 				C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */,
+				C016994C29FBCC690047B49E /* DotsActivityView.swift in Sources */,
 				C0C9F02929CF4316004B2C33 /* AlphabetKeyboard.swift in Sources */,
 				C0C9F02A29CF4316004B2C33 /* HamsterKeyboardButtonContent.swift in Sources */,
 				C0D671AF29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
@@ -1100,6 +1132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0F858C329A2AA38003A2ED4 /* RimeEngineTests.swift in Sources */,
+				C074C43A29FB7DFD00718DAD /* FileTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1294,7 +1327,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1332,7 +1365,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1363,7 +1396,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1393,7 +1426,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.4;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1409,6 +1442,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M4N6995A28;
@@ -1417,7 +1451,11 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.HamsterAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HamsterApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HamsterApp";
@@ -1429,6 +1467,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M4N6995A28;
@@ -1437,6 +1476,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.HamsterAppTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1507,7 +1549,7 @@
 			repositoryURL = "https://github.com/KeyboardKit/KeyboardKit.git";
 			requirement = {
 				kind = exactVersion;
-				version = 7.2.1;
+				version = 7.4.1;
 			};
 		};
 		C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */ = {
@@ -1582,9 +1624,49 @@
 			package = C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */;
 			productName = Yams;
 		};
-		C06197FC29A35A5F004DF94F /* LibrimeKit */ = {
+		C074C43C29FB8C1B00718DAD /* TreeSitterYAML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAML;
+		};
+		C074C43E29FB8C1B00718DAD /* TreeSitterYAMLQueries */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAMLQueries;
+		};
+		C074C44029FB8C1B00718DAD /* TreeSitterYAMLRunestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterYAMLRunestone;
+		};
+		C074C44229FB8C3B00718DAD /* LibrimeKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LibrimeKit;
+		};
+		C074C44429FB8C3E00718DAD /* Plist */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */;
+			productName = Plist;
+		};
+		C074C44629FB8C4300718DAD /* KeyboardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
+			productName = KeyboardKit;
+		};
+		C074C44829FB8C4700718DAD /* iFilemanager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */;
+			productName = iFilemanager;
+		};
+		C074C44A29FB8C4B00718DAD /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		C074C44C29FB8C4E00718DAD /* Runestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */;
+			productName = Runestone;
 		};
 		C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */ = {
 			isa = XCSwiftPackageProductDependency;
