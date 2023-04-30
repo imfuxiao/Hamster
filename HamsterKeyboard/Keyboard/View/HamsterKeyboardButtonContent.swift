@@ -22,45 +22,13 @@ struct HamsterKeyboardActionButtonContent: View {
     action: KeyboardAction,
     appearance: KeyboardAppearance,
     keyboardContext: KeyboardContext,
-    appSettings: HamsterAppSettings
+    appSettings: HamsterAppSettings,
+    buttonExtendCharacter: [String: String]
   ) {
     self.action = action
     self.appearance = appearance
     self.keyboardContext = keyboardContext
     self.appSettings = appSettings
-
-    let translateFunctionText = { (name: String) -> String in
-      if name.hasPrefix("#"), let slidFunction = FunctionalInstructions(rawValue: name) {
-        return slidFunction.text
-      }
-      return name
-    }
-
-    var buttonExtendCharacter: [String: String] = [:]
-    for (fullKey, fullValue) in appSettings.keyboardSwipeGestureSymbol {
-      var key = fullKey
-      let value = translateFunctionText(fullValue)
-      let suffix = String(key.removeLast())
-
-      // 上划
-      if suffix == KeyboardConstant.Character.SlideUp {
-        if let dictValue = buttonExtendCharacter[key] {
-          buttonExtendCharacter[key] = "\(value) \(dictValue)"
-        } else {
-          buttonExtendCharacter[key] = value
-        }
-        continue
-      }
-
-      // 下划
-      if suffix == KeyboardConstant.Character.SlideDown {
-        if let dictValue = buttonExtendCharacter[key] {
-          buttonExtendCharacter[key] = "\(dictValue) \(value)"
-        } else {
-          buttonExtendCharacter[key] = value
-        }
-      }
-    }
     self.buttonExtendCharacter = buttonExtendCharacter
   }
 

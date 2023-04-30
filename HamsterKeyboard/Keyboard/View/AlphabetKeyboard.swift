@@ -12,38 +12,42 @@ import SwiftUI
 @available(iOS 14, *)
 struct AlphabetKeyboard: View {
   weak var ivc: HamsterKeyboardViewController?
-  var candidateBarHeight: CGFloat
-  let appearance: KeyboardAppearance
-  let actionHandler: KeyboardActionHandler
-  let style: AutocompleteToolbarStyle
 
-  // MARK: 依赖注入
-
-  @EnvironmentObject
-  private var keyboardCalloutContext: KeyboardCalloutContext
-
-  @EnvironmentObject
-  private var keyboardContext: KeyboardContext
-
-  @EnvironmentObject
-  private var rimeEngine: RimeEngine
-
-  @EnvironmentObject
+  @ObservedObject
   private var appSettings: HamsterAppSettings
 
+  @ObservedObject
+  private var rimeEngine: RimeEngine
+  private var appearance: KeyboardAppearance
+  private var actionHandler: KeyboardActionHandler
+  private var keyboardCalloutContext: KeyboardCalloutContext
+  private var keyboardContext: KeyboardContext
+  private var autocompleteContext: AutocompleteContext
+  private var keyboardLayout: KeyboardLayout
+  private var candidateBarHeight: CGFloat
+  private let keyboardWidth: CGFloat
+  private let style: AutocompleteToolbarStyle
+  private let buttonExtendCharacter: [String: String]
   @Environment(\.openURL) var openURL
 
   init(
     keyboardInputViewController ivc: HamsterKeyboardViewController,
-    candidateBarHeight: CGFloat
+    candidateBarHeight: CGFloat,
+    buttonExtendCharacter: [String: String]
   ) {
     Logger.shared.log.debug("AlphabetKeyboard init")
     weak var keyboardViewController = ivc
     self.ivc = keyboardViewController
+    self.appSettings = ivc.appSettings
+    self.rimeEngine = ivc.rimeEngine
     self.appearance = ivc.keyboardAppearance
     self.actionHandler = ivc.keyboardActionHandler
+    self.keyboardCalloutContext = ivc.calloutContext
+    self.keyboardContext = ivc.keyboardContext
+    self.autocompleteContext = ivc.autocompleteContext
+    self.keyboardLayout = ivc.keyboardLayoutProvider.keyboardLayout(for: ivc.keyboardContext)
     self.candidateBarHeight = candidateBarHeight
-
+    self.keyboardWidth = ivc.view.frame.width
     self.style = AutocompleteToolbarStyle(
       item: AutocompleteToolbarItemStyle(
         titleFont: .system(
@@ -56,6 +60,7 @@ struct AlphabetKeyboard: View {
       ),
       autocompleteBackground: .init(cornerRadius: 5)
     )
+    self.buttonExtendCharacter = buttonExtendCharacter
   }
 
   var hamsterColor: ColorSchema {
@@ -71,31 +76,31 @@ struct AlphabetKeyboard: View {
     appSettings.showKeyboardDismissButton || !rimeEngine.suggestions.isEmpty
   }
 
+  // 每个按键的显示内容
+  func hamsterButtonContent(item: KeyboardLayoutItem) -> some View {
+    return HamsterKeyboardActionButtonContent(
+      action: item.action,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      appSettings: appSettings,
+      buttonExtendCharacter: buttonExtendCharacter
+    )
+  }
+
   @ViewBuilder
   var keyboard: some View {
-    if let ivc = ivc {
-      SystemKeyboard(
-        controller: ivc,
-        autocompleteToolbarMode: .none,
-        buttonView: { layoutItem, keyboardWidth, inputWidth in
-          SystemKeyboardButtonRowItem(
-            content: HamsterKeyboardActionButtonContent(
-              action: layoutItem.action,
-              appearance: appearance,
-              keyboardContext: keyboardContext,
-              appSettings: appSettings
-            ),
-            item: layoutItem,
-            actionHandler: actionHandler,
-            keyboardContext: keyboardContext,
-            calloutContext: keyboardCalloutContext,
-            keyboardWidth: keyboardWidth,
-            inputWidth: inputWidth,
-            appearance: appearance
-          )
-        }
-      )
-    }
+    SystemKeyboard(
+      layout: self.keyboardLayout,
+      appearance: self.appearance,
+      actionHandler: self.actionHandler,
+      autocompleteContext: self.autocompleteContext,
+      autocompleteToolbar: .none,
+      autocompleteToolbarAction: { _ in },
+      keyboardContext: self.keyboardContext,
+      calloutContext: self.keyboardCalloutContext,
+      width: self.keyboardWidth,
+      buttonContent: self.hamsterButtonContent
+    )
   }
 
   // 候选栏
@@ -115,7 +120,9 @@ struct AlphabetKeyboard: View {
             ivc?.dismissKeyboard()
             return
           }
-          appSettings.keyboardStatus = appSettings.keyboardStatus == .normal ? .keyboardAreaToExpandCandidates : .normal
+          DispatchQueue.main.async {
+            appSettings.keyboardStatus = appSettings.keyboardStatus == .normal ? .keyboardAreaToExpandCandidates : .normal
+          }
         }
       )
       .opacity(showCandidateBarArrowButton ? 1 : 0)
