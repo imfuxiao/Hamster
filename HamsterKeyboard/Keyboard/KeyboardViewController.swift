@@ -96,7 +96,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override public func viewWillSetupKeyboard() {
-    super.viewWillSetupKeyboard()
+//    super.viewWillSetupKeyboard()
     self.log.debug("viewWillSetupKeyboard() begin")
 
     // 初始键盘类型
@@ -515,9 +515,10 @@ extension HamsterKeyboardViewController {
       if !self.appSettings.lastUseRimeInputSchema.isEmpty {
         let handled = self.rimeEngine.setSchema(self.appSettings.lastUseRimeInputSchema)
         Logger.shared.log.debug("switch last use input schema \(self.appSettings.lastUseRimeInputSchema), handled = \(handled)")
-        // 注意：这里lastUseRimeInputSchema的值会在rimeInputSchema的值的willSet时期变动。
-        // 所以不需要在交换两个值
-        self.appSettings.rimeInputSchema = self.appSettings.lastUseRimeInputSchema
+        // 交换两个值
+        let lastUseRimeInputSchema = self.appSettings.lastUseRimeInputSchema
+        self.appSettings.lastUseRimeInputSchema = self.appSettings.rimeInputSchema
+        self.appSettings.rimeInputSchema = lastUseRimeInputSchema
         self.rimeEngine.reset()
       }
     default:

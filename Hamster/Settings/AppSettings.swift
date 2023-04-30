@@ -469,20 +469,6 @@ public class HamsterAppSettings: ObservableObject {
   // Rime: 当前Rime输入方案
   @Published
   var rimeInputSchema: String {
-    willSet {
-      if newValue.isEmpty || newValue == rimeInputSchema {
-        return
-      }
-
-      // 当新值与旧值不相等时，且旧值不为空，则把旧值赋值给上一次输入方案存储
-      if rimeInputSchema.isEmpty {
-        return
-      }
-
-      DispatchQueue.main.async {
-        self.lastUseRimeInputSchema = self.rimeInputSchema
-      }
-    }
     didSet {
       Logger.shared.log.info(["AppSettings, rimeInputSchema": rimeInputSchema])
       UserDefaults.hamsterSettingsDefault.set(
