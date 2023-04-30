@@ -167,21 +167,15 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
     }
 
-    // 注意：这里复用AppGroup下的SharedSupport目录
-    let traits = self.rimeEngine.createTraits(
-      sharedSupportDir: RimeEngine.appGroupSharedSupportDirectoryURL.path,
-      userDataDir: RimeEngine.userDataDirectory.path
-    )
-
     // setupRime不能重复调用, 否则会触发panic
     // utilities.cc:365] Check failed: !IsGoogleLoggingInitialized() You called InitGoogleLogging() twice!
     // rimeEngine是ViewController的成员变量, 每次启动都会被初始化
     // 所以内部的是否首次启动标志不起作用, 这里在ViewController外部定义了全局变量, 用来标记是否首次启动.
     if isRimeFirstRun {
       isRimeFirstRun = false
-      self.rimeEngine.setupRime(traits)
+      self.rimeEngine.setupRime()
     }
-    self.rimeEngine.initialize(traits)
+    self.rimeEngine.initialize()
     if self.appSettings.rimeNeedOverrideUserDataDirectory {
       self.appSettings.rimeNeedOverrideUserDataDirectory = false
     }
@@ -198,12 +192,23 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     if self.appSettings.enableInputEmbeddedMode {
       self.rimeEngine.$userInputKey
         .receive(on: DispatchQueue.main)
-        .sink { [weak self] key in
+        .sink { [weak self] inputKey in
           guard let self = self else { return }
-          if let afterInput = self.textDocumentProxy.documentContextAfterInput {
-            self.textDocumentProxy.adjustTextPosition(byCharacterOffset: afterInput.count)
+
+          Logger.shared.log.debug("keyboardViewController enableInputEmbeddedMode")
+
+          // fix: 部分App(如 bilibili app 端的评论)上屏不会触发
+          if !self.rimeEngine.commitText.isEmpty {
+            self.textDocumentProxy.setMarkedText(self.rimeEngine.commitText, selectedRange: NSRange(location: self.rimeEngine.commitText.count, length: 0))
+            self.textDocumentProxy.unmarkText()
+            self.rimeEngine.commitText = ""
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+              self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
+            }
+            return
           }
-          self.textDocumentProxy.setMarkedText(key, selectedRange: NSRange(location: key.count, length: 0))
+
+          self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
         }
         .store(in: &self.cancellables)
     }
@@ -442,9 +447,11 @@ extension HamsterKeyboardViewController {
     // 唯一码直接上屏
     let commitText = self.rimeEngine.getCommitText()
     if !commitText.isEmpty {
-      self.rimeEngine.userInputKey = ""
-      self.textDocumentProxy.insertText(commitText)
-      self.rimeEngine.lastScreenContent = commitText
+      self.rimeEngine.commitText = commitText
+      // 非内嵌模式直接上屏
+      if !self.appSettings.enableInputEmbeddedMode {
+        self.textDocumentProxy.insertText(commitText)
+      }
     }
 
     // 查看输入法状态
@@ -466,8 +473,7 @@ extension HamsterKeyboardViewController {
     let context = self.rimeEngine.context()
 
     if context.composition != nil {
-      let userInputKey = context.composition.preedit ?? ""
-      self.rimeEngine.userInputKey = userInputKey
+      self.rimeEngine.userInputKey = context.composition.preedit ?? ""
     }
 
     // 获取候选字
