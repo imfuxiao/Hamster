@@ -86,7 +86,9 @@ struct HamsterApp: App {
 
       rimeEngine.setupRime()
 
-      if appSettings.isFirstLaunch {
+      // PATCH：1.6.5 升级时，之前版本没有增加 rimeTotalSchemas/rimeTotalColorSchemas 属性值
+      if appSettings.isFirstLaunch || appSettings.rimeTotalColorSchemas.isEmpty {
+        showLoadingMessage("方案部署中，请耐心等待……")
         let deployHandled = rimeEngine.deploy()
         Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
         let resetHandled = appSettings.resetRimeParameter(rimeEngine)
@@ -95,10 +97,10 @@ struct HamsterApp: App {
         appSettings.rimeNeedOverrideUserDataDirectory = true
       }
 
-      Logger.shared.log.info("appSettings rimeInputSchema: \(appSettings.rimeInputSchema)")
-      Logger.shared.log.info("appSettings rimeUserSelectSchema: \(appSettings.rimeUserSelectSchema)")
-      Logger.shared.log.info("appSettings rimeTotalSchemas: \(appSettings.rimeTotalSchemas)")
-      Logger.shared.log.info("appSettings rimeTotalSchemas: \(appSettings.rimeTotalColorSchemas)")
+      Logger.shared.log.debug("appSettings rimeInputSchema: \(appSettings.rimeInputSchema)")
+      Logger.shared.log.debug("appSettings rimeUserSelectSchema: \(appSettings.rimeUserSelectSchema)")
+      Logger.shared.log.debug("appSettings rimeTotalSchemas: \(appSettings.rimeTotalSchemas)")
+      Logger.shared.log.debug("appSettings rimeTotalColorSchemas: \(appSettings.rimeTotalColorSchemas)")
 
       // 启动屏延迟
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
