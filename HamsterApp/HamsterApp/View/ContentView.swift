@@ -39,9 +39,7 @@ public struct ContentView: View {
             }
             return
           }
-          DispatchQueue.main.async {
-            resetInputSchema()
-          }
+          resetInputSchema()
         }
       },
       secondaryButton: .cancel(Text("取消"))
