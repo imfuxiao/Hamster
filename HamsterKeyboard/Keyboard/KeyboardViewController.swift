@@ -198,17 +198,9 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
           Logger.shared.log.debug("keyboardViewController enableInputEmbeddedMode")
 
           // fix: 部分App(如 bilibili app 端的评论)上屏不会触发
-          if !self.rimeEngine.commitText.isEmpty {
-            self.textDocumentProxy.setMarkedText(self.rimeEngine.commitText, selectedRange: NSRange(location: self.rimeEngine.commitText.count, length: 0))
-            self.textDocumentProxy.unmarkText()
-            self.rimeEngine.commitText = ""
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-              self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
-            }
-            return
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+            self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
           }
-
-          self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
         }
         .store(in: &self.cancellables)
     }
@@ -413,7 +405,9 @@ extension HamsterKeyboardViewController {
     if !handled {
       // 符号顶码上屏
       _ = self.candidateTextOnScreen()
-      self.textDocumentProxy.insertText(key)
+      DispatchQueue.main.async {
+        self.inputTextPatch(key)
+      }
     }
   }
 
@@ -447,11 +441,7 @@ extension HamsterKeyboardViewController {
     // 唯一码直接上屏
     let commitText = self.rimeEngine.getCommitText()
     if !commitText.isEmpty {
-      self.rimeEngine.commitText = commitText
-      // 非内嵌模式直接上屏
-      if !self.appSettings.enableInputEmbeddedMode {
-        self.textDocumentProxy.insertText(commitText)
-      }
+      self.inputTextPatch(commitText)
     }
 
     // 查看输入法状态
@@ -528,20 +518,13 @@ extension HamsterKeyboardViewController {
     return true
   }
 
-//  func inputTextPatch(_ text: String) {
-//    if self.appSettings.enableInputEmbeddedMode {
-//      // fix: 部分App候选文字内嵌模式下上屏异常
-  ////      if self.textDocumentProxy.selectedText != nil {
-//      self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-  ////      }
-  ////      self.textDocumentProxy.insertText(text)
-//      self.textDocumentProxy.setMarkedText(
-//        text, selectedRange: NSRange(location: text.count, length: 0)
-//      )
-  ////      self.textDocumentProxy.unmarkText()
-//    } else {
-//      self.textDocumentProxy.insertText(text)
-//    }
-//  }
+  func inputTextPatch(_ text: String) {
+    if self.appSettings.enableInputEmbeddedMode {
+      self.textDocumentProxy.setMarkedText(text, selectedRange: NSRange(location: text.count, length: 0))
+      self.textDocumentProxy.unmarkText()
+    } else {
+      self.textDocumentProxy.insertText(text)
+    }
+  }
 }
 #endif

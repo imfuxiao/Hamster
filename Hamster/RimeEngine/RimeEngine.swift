@@ -179,9 +179,6 @@ public class RimeEngine: ObservableObject, IRimeNotificationDelegate {
   /// 候选字上限
   var maxCandidateCount: Int32 = 100
 
-  /// 当前上屏内容
-  var commitText: String = ""
-
   /// 用户输入键值
   @Published
   var userInputKey: String = ""
