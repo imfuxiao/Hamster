@@ -17,6 +17,8 @@ struct FinderView: View {
   let finderURL: URL
   @State var pathStack: [String] = []
   @State fileprivate var selectFileURL: FileURL?
+  @State var selectIdx: IndexSet?
+  @State var showDeleteAlert = false
 
   var urls: [URL] {
     do {
@@ -57,19 +59,21 @@ struct FinderView: View {
   var body: some View {
     VStack {
       HStack {
-        Spacer()
-      }
-      .padding(.horizontal)
-
-      HStack {
-        Text("当前路径: \(path)")
-          .lineLimit(2)
+        Text("路径: \(path)")
+          .lineLimit(1)
+          .minimumScaleFactor(0.5)
           .multilineTextAlignment(.leading)
         Spacer()
+        Button {
+          _ = pathStack.popLast()
+        } label: {
+          Text("上一层目录")
+        }
+        .disabled(pathStack.count == 0)
       }
       .padding(.horizontal)
 
-      ScrollView {
+      List {
         ForEach(urls, id: \.path) { url in
           VStack(spacing: 0) {
             if let fileResourceType =
@@ -90,23 +94,49 @@ struct FinderView: View {
               )
             }
           }
+          .listRowBackground(Color.HamsterBackgroundColor)
           .padding(.horizontal)
+
           // VStack
+        }
+        .onDelete(perform: { idx in
+          selectIdx = idx
+          showDeleteAlert = true
+
+        })
+        .alert(isPresented: $showDeleteAlert) {
+          Alert(
+            title: Text("是否确认删除？"),
+            primaryButton: .destructive(Text("删除")) {
+              guard let selectIdx = selectIdx else { return }
+              let tempUrls = urls
+              selectIdx.forEach { idx in
+                if tempUrls.count > idx {
+                  try? FileManager.default.removeItem(at: tempUrls[idx])
+                }
+              }
+            },
+            secondaryButton: .cancel(Text("取消")) {
+              selectIdx = nil
+            }
+          )
         }
         // ForEach
       }
-      // ScrollView
+      .listStyle(.plain)
+      .background(Color.HamsterBackgroundColor)
+      .modifier(ListBackgroundModifier())
     }
-    .toolbar {
-      ToolbarItem(placement: .navigationBarTrailing) {
-        Button {
-          _ = pathStack.popLast()
-        } label: {
-          Text("上一层目录")
-        }
-        .disabled(pathStack.count == 0)
-      }
-    }
+//    .toolbar {
+//      ToolbarItem(placement: .navigationBarTrailing) {
+//        Button {
+//          _ = pathStack.popLast()
+//        } label: {
+//          Text("上一层目录")
+//        }
+//        .disabled(pathStack.count == 0)
+//      }
+//    }
     .fullScreenCover(item: $selectFileURL) { fileURL in
       FileEditorView(fileURL: fileURL.url)
     }
@@ -119,6 +149,17 @@ struct FinderView: View {
     }
     if fileResourceType == .regular {
       selectFileURL = FileURL(url: fileURL)
+    }
+  }
+}
+
+struct ListBackgroundModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    if #available(iOS 16.0, *) {
+      content
+        .scrollContentBackground(.hidden)
+    } else {
+      content
     }
   }
 }
