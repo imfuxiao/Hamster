@@ -58,7 +58,6 @@ public struct ContentView: View {
     let deployHandled = rimeEngine.deploy()
     Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
     DispatchQueue.main.async {
-      appSettings.rimeNeedOverrideUserDataDirectory = true
       let resetHandled = appSettings.resetRimeParameter(rimeEngine)
       Logger.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
       isLoading = false
