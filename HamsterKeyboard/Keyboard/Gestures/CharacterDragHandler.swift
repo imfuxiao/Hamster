@@ -8,7 +8,7 @@
 import Foundation
 import KeyboardKit
 
-class CharacterDragHandler: SlideGestureHandler {
+class CharacterDragHandler: SwipeGestureHandler {
   /**
    Create a handler space cursor drag gesture handler.
 
@@ -34,6 +34,7 @@ class CharacterDragHandler: SlideGestureHandler {
   public let feedbackHandler: KeyboardFeedbackHandler
   public let sensitivity: SpaceDragSensitivity
   public let action: (KeyboardAction, Int) -> Void
+  public var isDragging: Bool = false
 
   // 当前触发开始的Action
   public var currentAction: KeyboardAction?
@@ -50,6 +51,7 @@ class CharacterDragHandler: SlideGestureHandler {
     from startLocation: CGPoint,
     to currentLocation: CGPoint
   ) {
+    isDragging = true
     let isNewAction = action == currentAction
     if isNewAction {
       currentAction = action
@@ -61,7 +63,10 @@ class CharacterDragHandler: SlideGestureHandler {
     let dragDelta = startLocation.y - currentLocation.y
     let dragOffset = Int(dragDelta / CGFloat(sensitivity.points))
     // 重复触发
-    guard dragOffset != currentDragOffset else { return }
+    guard dragOffset != currentDragOffset else {
+      isDragging = false
+      return
+    }
 
     if !currentActionIsFinished {
       self.action(action, dragOffset)
@@ -72,6 +77,7 @@ class CharacterDragHandler: SlideGestureHandler {
   }
 
   func endDragGesture() {
+    isDragging = false
     currentAction = nil
     currentDragOffset = 0
     currentActionIsFinished = false

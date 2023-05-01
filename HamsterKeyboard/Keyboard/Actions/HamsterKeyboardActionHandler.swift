@@ -4,19 +4,19 @@ import SwiftUI
 class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public weak var hamsterKeyboardController: HamsterKeyboardViewController?
   // 全键盘滑动处理
-  public let slidingGestureHandler: SlideGestureHandler
+  public let slidingGestureHandler: SwipeGestureHandler
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
   // 键盘滑动处理
-  let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, SlidingDirection, Int) -> Void) = { keyboardController in
+  let characterDragAction: (HamsterKeyboardViewController) -> ((KeyboardAction, SwipeDirection, Int, Int) -> Void) = { keyboardController in
     weak var ivc = keyboardController
-    guard let ivc = ivc else { return { _, _, _ in } }
+    guard let ivc = ivc else { return { _, _, _, _ in } }
 
     // 滑动配置符号或功能映射
     let actionConfig: [String: String] = ivc.appSettings.keyboardSwipeGestureSymbol
 
-    return { [weak ivc] action, direction, offset in
+    return { [weak ivc] action, direction, offsetX, _ in
       guard let ivc = ivc else { return }
 
       var actionMappingValue: String?
@@ -32,7 +32,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
       case .space:
         if direction.isXAxis && ivc.rimeEngine.suggestions.isEmpty {
           // 空格左右滑动
-          ivc.adjustTextPosition(byCharacterOffset: offset)
+          ivc.adjustTextPosition(byCharacterOffset: offsetX)
           return
         }
         actionMappingValue = actionConfig[.spaceKeyName.actionKey(direction)]
@@ -68,9 +68,9 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     self.hamsterKeyboardController = keyboardController
     self.appSettings = ivc.appSettings
     self.rimeEngine = ivc.rimeEngine
-    self.slidingGestureHandler = HamsterSlidingGestureHandler(
+    self.slidingGestureHandler = HamsterSwipeGestureHandler(
       keyboardContext: keyboardContext,
-      appSettings: appSettings,
+      sensitivityX: .custom(points: appSettings.xSwipeSensitivity),
       action: characterDragAction(ivc)
     )
 
@@ -130,8 +130,14 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     switch action {
     case .space:
       // space滑动的的开关判断
-      slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      if appSettings.enableSpaceSliding {
+        slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+      }
     default:
+      // TODO: 如果上个滑动手势还未结束，在不在进行
+      if slidingGestureHandler.isDragging {
+        return
+      }
       if appSettings.enableKeyboardSwipeGestureSymbol {
         slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
@@ -151,7 +157,7 @@ private extension String {
   static let numberKeyboardButton = "123"
 
   // 获取滑动ActionKey
-  func actionKey(_ slidingDirection: SlidingDirection) -> String {
+  func actionKey(_ slidingDirection: SwipeDirection) -> String {
     var actionKey: String
     if slidingDirection.isXAxis {
       actionKey = lowercased() + (slidingDirection == .right ? KeyboardConstant.Character.SlideRight : KeyboardConstant.Character.SlideLeft)

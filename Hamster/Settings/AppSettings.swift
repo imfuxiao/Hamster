@@ -74,7 +74,7 @@ private enum HamsterAppSettingKeys: String {
   case switchTraditionalChinese = "view.keyboard.switchTraditionalChinese"
 
   // 空格划动
-  case slideBySpaceButton = "view.keyboard.slideBySpaceButton"
+  case enableSpaceSliding = "view.keyboard.enableSpaceSliding"
 
   // 空格上划次选
   case selectSecondChoiceByUpSlideSpaceButton = "app.keyboard.selectSecondChoiceByUpSlideSpaceButton"
@@ -150,10 +150,9 @@ private enum HamsterAppSettingKeys: String {
 
   // 使用鼠须管配置
   case rimeUseSquirrelSettings = "rime.useSquirrelSettings"
-    
-    
-  // 空格横向移动速度
-  case spaceXSpeed = "space.x.speed"
+
+  // x轴滑动灵敏度
+  case xSwipeSensitivity = "keyboard.xSwipeSensitivity"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -165,7 +164,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.appFirstLaunch.rawValue: true,
       HamsterAppSettingKeys.showKeyPressBubble.rawValue: true,
       HamsterAppSettingKeys.switchTraditionalChinese.rawValue: false,
-      HamsterAppSettingKeys.slideBySpaceButton.rawValue: true,
+      HamsterAppSettingKeys.enableSpaceSliding.rawValue: true,
       HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue: false,
       HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue: HapticIntensity.mediumImpact.rawValue,
@@ -194,13 +193,13 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
       HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
-      HamsterAppSettingKeys.spaceXSpeed.rawValue: 10,
+      HamsterAppSettingKeys.xSwipeSensitivity.rawValue: 20,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
     self.showKeyPressBubble = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyPressBubble.rawValue)
     self.switchTraditionalChinese = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
-    self.slideBySpaceButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.slideBySpaceButton.rawValue)
+    self.enableSpaceSliding = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableSpaceSliding.rawValue)
     self.enableKeyboardFeedbackSound = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue)
     self.enableKeyboardFeedbackHaptic = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
     self.keyboardFeedbackHapticIntensity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
@@ -214,7 +213,7 @@ public class HamsterAppSettings: ObservableObject {
     self.rimeMaxCandidateSize = Int32(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeMaxCandidateSize.rawValue))
     self.rimeCandidateTitleFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateTitleFontSize.rawValue)
     self.rimeCandidateCommentFontSize = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.rimeCandidateCommentFontSize.rawValue)
-    self.spaceXSpeed = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.spaceXSpeed.rawValue)
+    self.xSwipeSensitivity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.xSwipeSensitivity.rawValue)
 
     // 对数组类型且为Struct值需要特殊处理
     if let data = UserDefaults.hamsterSettingsDefault.data(forKey: HamsterAppSettingKeys.rimeTotalColorSchemas.rawValue) {
@@ -288,11 +287,11 @@ public class HamsterAppSettings: ObservableObject {
 
   // 空格滑动
   @Published
-  var slideBySpaceButton: Bool {
+  var enableSpaceSliding: Bool {
     didSet {
-      Logger.shared.log.info(["AppSettings, slideBySapceButton": slideBySpaceButton])
+      Logger.shared.log.info(["AppSettings, enableSpaceSliding": enableSpaceSliding])
       UserDefaults.hamsterSettingsDefault.set(
-        slideBySpaceButton, forKey: HamsterAppSettingKeys.slideBySpaceButton.rawValue)
+        enableSpaceSliding, forKey: HamsterAppSettingKeys.enableSpaceSliding.rawValue)
     }
   }
 
@@ -592,14 +591,15 @@ public class HamsterAppSettings: ObservableObject {
         rimeUseSquirrelSettings, forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
     }
   }
-    
+
+  // X 轴滑动灵敏度
   @Published
-  var spaceXSpeed: Int {
+  var xSwipeSensitivity: Int {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
-        spaceXSpeed, forKey: HamsterAppSettingKeys.spaceXSpeed.rawValue)
-      }
+        xSwipeSensitivity, forKey: HamsterAppSettingKeys.xSwipeSensitivity.rawValue)
     }
+  }
 }
 
 public extension UserDefaults {

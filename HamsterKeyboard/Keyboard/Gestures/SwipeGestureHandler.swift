@@ -1,10 +1,12 @@
 import CoreGraphics
 import KeyboardKit
 
-
-
 // 滑动手势
-public protocol SlideGestureHandler {
+public protocol SwipeGestureHandler {
+  
+  // 拖拽进行中
+  var isDragging: Bool { get }
+
   func handleDragGesture(
     action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint
   )

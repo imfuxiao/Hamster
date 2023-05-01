@@ -167,8 +167,8 @@ struct CandidateBarShowModeSettingView: View {
 
     VStack {
       HStack {
-        Stepper(value: $appSettings.spaceXSpeed, in: 1 ... 30, step: 1) {
-          Text("空格横向移动速度(越小越快): \(appSettings.spaceXSpeed)")
+        Stepper(value: $appSettings.xSwipeSensitivity, in: 1 ... 50, step: 1) {
+          Text("横向滑动灵敏度（值越小越灵敏）: \(appSettings.xSwipeSensitivity)")
         }
         Spacer()
       }

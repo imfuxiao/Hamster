@@ -113,7 +113,6 @@ struct SheetView<Content: View>: View {
             isShow = false
           }
         }
-        .transition(.opacity)
 
         VStack(alignment: .center, spacing: 0) {
           RoundedRectangle(cornerRadius: 15)

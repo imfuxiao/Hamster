@@ -59,7 +59,7 @@
 		C0532D1C29C4A548001A8BE6 /* CircleActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */; };
 		C054BC0F29F36CF80070D7F8 /* CandidateBarArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */; };
 		C054BC1129F3BDE10070D7F8 /* ChineseInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */; };
-		C054BC1329F523970070D7F8 /* HamsterSlidingGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1229F523970070D7F8 /* HamsterSlidingGestureHandler.swift */; };
+		C054BC1329F523970070D7F8 /* HamsterSwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */; };
 		C0629C6E29B3C42F00C27D42 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C6D29B3C42F00C27D42 /* SetttingView.swift */; };
 		C0629C7129B3C70F00C27D42 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */; };
 		C06C010B29FCA84C00CA7102 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43229FB7A4900718DAD /* File.swift */; };
@@ -111,7 +111,7 @@
 		C0C9F02129CF4316004B2C33 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */; };
 		C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */; };
 		C0C9F02329CF4316004B2C33 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
-		C0C9F02429CF4316004B2C33 /* SlideGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */; };
+		C0C9F02429CF4316004B2C33 /* SwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */; };
 		C0C9F02629CF4316004B2C33 /* CharacterDragHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */; };
 		C0C9F02729CF4316004B2C33 /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
 		C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */; };
@@ -236,7 +236,7 @@
 		C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPhoneKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterStandardKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
 		C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLocale.swift; sourceTree = "<group>"; };
-		C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlideGestureHandler.swift; sourceTree = "<group>"; };
+		C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureHandler.swift; sourceTree = "<group>"; };
 		C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
 		C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAction+Buttons.swift"; sourceTree = "<group>"; };
 		C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAction+Actions.swift"; sourceTree = "<group>"; };
@@ -261,7 +261,7 @@
 		C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDragHandler.swift; sourceTree = "<group>"; };
 		C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateBarArrowButton.swift; sourceTree = "<group>"; };
 		C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseInputSetProvider.swift; sourceTree = "<group>"; };
-		C054BC1229F523970070D7F8 /* HamsterSlidingGestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSlidingGestureHandler.swift; sourceTree = "<group>"; };
+		C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSwipeGestureHandler.swift; sourceTree = "<group>"; };
 		C0629C6D29B3C42F00C27D42 /* SetttingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetttingView.swift; sourceTree = "<group>"; };
 		C0629C7029B3C70F00C27D42 /* InputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C071BECA297006EF00E21FBC /* HamsterApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
@@ -604,9 +604,9 @@
 		C04FA8CE299A65AC00F8CC32 /* Gestures */ = {
 			isa = PBXGroup;
 			children = (
-				C04FA8D0299A65AC00F8CC32 /* SlideGestureHandler.swift */,
+				C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */,
 				C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */,
-				C054BC1229F523970070D7F8 /* HamsterSlidingGestureHandler.swift */,
+				C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */,
 			);
 			path = Gestures;
 			sourceTree = "<group>";
@@ -1114,8 +1114,8 @@
 				C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */,
 				C0C9F02329CF4316004B2C33 /* KKL10n.swift in Sources */,
 				C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */,
-				C054BC1329F523970070D7F8 /* HamsterSlidingGestureHandler.swift in Sources */,
-				C0C9F02429CF4316004B2C33 /* SlideGestureHandler.swift in Sources */,
+				C054BC1329F523970070D7F8 /* HamsterSwipeGestureHandler.swift in Sources */,
+				C0C9F02429CF4316004B2C33 /* SwipeGestureHandler.swift in Sources */,
 				C0C9F02629CF4316004B2C33 /* CharacterDragHandler.swift in Sources */,
 				C0C9F02729CF4316004B2C33 /* KeyboardImageReader.swift in Sources */,
 				C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */,
