@@ -195,8 +195,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         .sink { [weak self] inputKey in
           guard let self = self else { return }
 
-          Logger.shared.log.debug("keyboardViewController enableInputEmbeddedMode")
-
           // fix: 部分App(如 bilibili app 端的评论)上屏不会触发
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
             self.textDocumentProxy.setMarkedText(inputKey, selectedRange: NSRange(location: inputKey.count, length: 0))
@@ -210,22 +208,18 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
   override open func selectionWillChange(_ textInput: UITextInput?) {
     super.selectionWillChange(textInput)
-    Logger.shared.log.debug("keyboardViewController: selectionWillChange")
   }
 
   override open func selectionDidChange(_ textInput: UITextInput?) {
     super.selectionDidChange(textInput)
-    Logger.shared.log.debug("keyboardViewController: selectionDidChange")
   }
 
   override open func textWillChange(_ textInput: UITextInput?) {
     super.textWillChange(textInput)
-    Logger.shared.log.debug("keyboardViewController: textWillChange")
   }
 
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
-    Logger.shared.log.debug("keyboardViewController: textDidChange")
 
     // TODO: 这里添加英文自动转大写功能, 参考: KeyboardContext.preferredAutocapitalizedKeyboardType
 

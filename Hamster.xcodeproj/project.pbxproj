@@ -112,7 +112,6 @@
 		C0C9F02229CF4316004B2C33 /* KeyboardLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */; };
 		C0C9F02329CF4316004B2C33 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
 		C0C9F02429CF4316004B2C33 /* SwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */; };
-		C0C9F02629CF4316004B2C33 /* CharacterDragHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */; };
 		C0C9F02729CF4316004B2C33 /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
 		C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */; };
 		C0C9F02929CF4316004B2C33 /* AlphabetKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DA299A65AC00F8CC32 /* AlphabetKeyboard.swift */; };
@@ -258,7 +257,6 @@
 		C0532D1729C4A2C9001A8BE6 /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
 		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
 		C0532D1B29C4A548001A8BE6 /* CircleActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleActivityView.swift; sourceTree = "<group>"; };
-		C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDragHandler.swift; sourceTree = "<group>"; };
 		C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateBarArrowButton.swift; sourceTree = "<group>"; };
 		C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseInputSetProvider.swift; sourceTree = "<group>"; };
 		C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSwipeGestureHandler.swift; sourceTree = "<group>"; };
@@ -605,7 +603,6 @@
 			isa = PBXGroup;
 			children = (
 				C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */,
-				C0532D1D29C4AA7D001A8BE6 /* CharacterDragHandler.swift */,
 				C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */,
 			);
 			path = Gestures;
@@ -1116,7 +1113,6 @@
 				C00BAA0A29ED507200325ED2 /* CollectionView.swift in Sources */,
 				C054BC1329F523970070D7F8 /* HamsterSwipeGestureHandler.swift in Sources */,
 				C0C9F02429CF4316004B2C33 /* SwipeGestureHandler.swift in Sources */,
-				C0C9F02629CF4316004B2C33 /* CharacterDragHandler.swift in Sources */,
 				C0C9F02729CF4316004B2C33 /* KeyboardImageReader.swift in Sources */,
 				C0C9F02829CF4316004B2C33 /* AutocompleteToolbar.swift in Sources */,
 				C016994C29FBCC690047B49E /* DotsActivityView.swift in Sources */,

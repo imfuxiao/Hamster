@@ -43,7 +43,8 @@ class HamsterSwipeGestureHandler: SwipeGestureHandler {
     self.action = action
   }
 
-  internal var isDragging: Bool = false
+  var isDragging: Bool = false
+
   private let enableSpaceSliding: Bool = false
   public let keyboardContext: KeyboardContext
   public let sensitivityX: SpaceDragSensitivity
@@ -65,12 +66,7 @@ class HamsterSwipeGestureHandler: SwipeGestureHandler {
   // 保留从开始位置到结束位置X轴偏移量(偏移量需要除以sensitivity的值, 已确定是否超过阈值)
   public var currentDragOffsetX: Int = 0
 
-  public func handleDragGesture(
-    action: KeyboardAction,
-    from startLocation: CGPoint,
-    to currentLocation: CGPoint
-  ) {
-    isDragging = true
+  public func handleDragGesture(action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) {
     let isNewAction = action == currentAction
     if isNewAction {
       currentAction = action
@@ -86,7 +82,6 @@ class HamsterSwipeGestureHandler: SwipeGestureHandler {
     let dragOffsetX = Int(dragDeltaX / CGFloat(sensitivityX.points))
     // x，y轴都没有超过阈值，则不视做一次滑动
     if dragOffsetX == currentDragOffsetX && dragOffsetY == currentDragOffsetY {
-      isDragging = false
       return
     }
 
@@ -103,9 +98,11 @@ class HamsterSwipeGestureHandler: SwipeGestureHandler {
 
     // TODO：目前只有空格左右滑动可以连续触发, 其余Action都是一次性触发
     if action == .space && slidingDirection.isXAxis {
+      isDragging = true
       let offsetDelta = dragOffsetX - currentDragOffsetX
       self.action(action, slidingDirection, -offsetDelta, 0)
     } else if !currentActionIsFinished {
+      isDragging = true
       self.action(action, slidingDirection, dragOffsetX, dragOffsetY)
       currentActionIsFinished = true
     }

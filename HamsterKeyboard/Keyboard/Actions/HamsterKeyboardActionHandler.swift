@@ -4,7 +4,7 @@ import SwiftUI
 class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
   public weak var hamsterKeyboardController: HamsterKeyboardViewController?
   // 全键盘滑动处理
-  public let slidingGestureHandler: SwipeGestureHandler
+  public var swipeGestureHandler: SwipeGestureHandler
   public let appSettings: HamsterAppSettings
   public let rimeEngine: RimeEngine
 
@@ -44,7 +44,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
         break
       }
 
-      guard let actionMappingValue = actionMappingValue else {
+      guard let actionMappingValue = actionMappingValue, !actionMappingValue.isEmpty else {
         return
       }
 
@@ -68,7 +68,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     self.hamsterKeyboardController = keyboardController
     self.appSettings = ivc.appSettings
     self.rimeEngine = ivc.rimeEngine
-    self.slidingGestureHandler = HamsterSwipeGestureHandler(
+    self.swipeGestureHandler = HamsterSwipeGestureHandler(
       keyboardContext: keyboardContext,
       sensitivityX: .custom(points: appSettings.xSwipeSensitivity),
       action: characterDragAction(ivc)
@@ -83,18 +83,19 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     )
   }
 
-  override func action(for gesture: KeyboardGesture, on action: KeyboardAction) -> KeyboardAction
-    .GestureAction?
-  {
+  override func action(for gesture: KeyboardGesture, on action: KeyboardAction) -> KeyboardAction.GestureAction? {
     if let hamsterAction = action.hamsterStanderAction(for: gesture) {
       return hamsterAction
     }
     return nil
   }
 
-  override func handle(
-    _ gesture: KeyboardKit.KeyboardGesture, on action: KeyboardKit.KeyboardAction
-  ) {
+  override func handle(_ gesture: KeyboardKit.KeyboardGesture, on action: KeyboardKit.KeyboardAction) {
+    Logger.shared.log.debug("gesture: \(gesture.rawValue), action: \(action), swipeGesture isDragging: \(swipeGestureHandler.isDragging)")
+    // fix: press与 langPress 同时触发
+    if gesture == .release && swipeGestureHandler.isDragging {
+      return
+    }
     handle(gesture, on: action, replaced: false)
   }
 
@@ -124,22 +125,21 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler {
     keyboardFeedbackHandler.triggerFeedback(for: gesture, on: action)
   }
 
-  override func handleDrag(
-    on action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint
-  ) {
+  override func handleDrag(on action: KeyboardAction, from startLocation: CGPoint, to currentLocation: CGPoint) {
+    Logger.shared.log.debug("handleDrag, action: \(action)")
     switch action {
     case .space:
       // space滑动的的开关判断
       if appSettings.enableSpaceSliding {
-        slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+        swipeGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     default:
       // TODO: 如果上个滑动手势还未结束，在不在进行
-      if slidingGestureHandler.isDragging {
+      if swipeGestureHandler.isDragging {
         return
       }
       if appSettings.enableKeyboardSwipeGestureSymbol {
-        slidingGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+        swipeGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     }
   }
