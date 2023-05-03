@@ -105,7 +105,7 @@ private extension HamsterKeyboardActionButtonContent {
         }
       }()
     )
-    .minimumScaleFactor(0.8)
+//    .minimumScaleFactor(0.8)
   }
 }
 

@@ -60,16 +60,19 @@ struct HamsterKeyboardButtonText: View {
       HStack(alignment: .center, spacing: 0) {
         if !texts.isEmpty {
           Text(texts[0])
+                .opacity(0.64)
         }
         if texts.count > 1 {
           Spacer()
           Text(texts[1])
+                .opacity(0.64)
         }
       }
-      .font(.system(size: 10))
+      .font(.system(size: 9))
       .lineLimit(1)
+      .frame(height: 10)
       .minimumScaleFactor(0.5)
-      .padding(.all, 2)
+      .padding(.init(top: 2, leading: 4, bottom: 2, trailing: 4))
     }
   }
 
@@ -84,15 +87,40 @@ struct HamsterKeyboardButtonText: View {
       VStack(spacing: 0) {
         if showExtendArea {
           characterExtendView
+            .padding(extendTextInsets)
         }
         VStack(alignment: .center, spacing: 0) {
           Text(text)
             .lineLimit(1)
             // 纯字母模式，位置向上偏移
-            .offset(y: showExtendArea ? -3 : 0)
+            .offset(y: keyTextOffsetY)
         }
       }
     }
+  }
+  
+  var keyTextOffsetY: CGFloat {
+    if showExtendArea {
+      switch keyboardContext.deviceType {
+      case .phone:
+        return keyboardContext.isPortrait ? -3 : -8
+      case .pad:
+        return keyboardContext.isPortrait ? 0 : 2
+      default: break
+      }
+    }
+    return 0
+  }
+  
+  var extendTextInsets: EdgeInsets {
+    if !keyboardContext.isPortrait {
+      if keyboardContext.deviceType == .phone {
+        return .init(top: 8, leading: 4, bottom: 0, trailing: 4)
+      } else if keyboardContext.deviceType == .pad {
+        return .init(top: 0, leading: 4, bottom: 2, trailing: 4)
+      }
+    }
+    return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
   }
 }
 

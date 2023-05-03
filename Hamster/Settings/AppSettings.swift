@@ -17,6 +17,8 @@ enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
   case newLine = "#换行"
   case deleteInputKey = "#清屏"
   case switchLastInputSchema = "#切换上个输入方案"
+  case onehandOnLeft = "#左手模式"
+  case onehandOnRight = "#右手模式"
   case none = "无"
 
   var text: String {
@@ -31,6 +33,10 @@ enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
       return "⇥"
     case .selectSecond:
       return "次"
+    case .onehandOnLeft:
+      return "左"
+    case .onehandOnRight:
+      return "右"
     default:
       return ""
     }
@@ -153,6 +159,15 @@ private enum HamsterAppSettingKeys: String {
 
   // x轴滑动灵敏度
   case xSwipeSensitivity = "keyboard.xSwipeSensitivity"
+    
+    
+  // 空格横向移动速度
+  case spaceXSpeed = "space.x.speed"
+  
+  // 是否开启单手键盘模式
+  case enableKeyboardOnehandMode = "app.keyboard.enableKeyboardOnehandMode"
+  // 是否开启单手模式-右手模式
+  case keyboardOnehandOnRight = "app.keyboard.onehandModeIntensity"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -194,6 +209,9 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
       HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
       HamsterAppSettingKeys.xSwipeSensitivity.rawValue: 20,
+      HamsterAppSettingKeys.spaceXSpeed.rawValue: 10,
+      HamsterAppSettingKeys.enableKeyboardOnehandMode.rawValue: false,
+      HamsterAppSettingKeys.keyboardOnehandOnRight.rawValue: true,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -253,6 +271,8 @@ public class HamsterAppSettings: ObservableObject {
     self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     self.enableInputEmbeddedMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
     self.rimeUseSquirrelSettings = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
+    self.enableKeyboardOnehandMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardOnehandMode.rawValue)
+    self.keyboardOnehandOnRight = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.keyboardOnehandOnRight.rawValue)
   }
 
   // App是否首次运行
@@ -598,6 +618,26 @@ public class HamsterAppSettings: ObservableObject {
     didSet {
       UserDefaults.hamsterSettingsDefault.set(
         xSwipeSensitivity, forKey: HamsterAppSettingKeys.xSwipeSensitivity.rawValue)
+    }
+  }
+  
+  // 键盘: 启用单手模式
+  @Published
+  var enableKeyboardOnehandMode: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableKeyboardOnehandMode": enableKeyboardOnehandMode])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableKeyboardOnehandMode, forKey: HamsterAppSettingKeys.enableKeyboardOnehandMode.rawValue)
+    }
+  }
+  
+  // 键盘: 右单手模式
+  @Published
+  var keyboardOnehandOnRight: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, keyboardOnehandOnRight": keyboardOnehandOnRight])
+      UserDefaults.hamsterSettingsDefault.set(
+        keyboardOnehandOnRight, forKey: HamsterAppSettingKeys.keyboardOnehandOnRight.rawValue)
     }
   }
 }
