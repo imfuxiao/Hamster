@@ -313,7 +313,23 @@ extension HamsterKeyboardViewController {
   func candidateTextOnScreen() -> Bool {
     return self.selectCandidateIndex(index: 0)
   }
-
+  
+  func changeStateOfOnehandOnLeft() {
+      let oldValue = appSettings.keyboardOnehandOnRight
+      appSettings.keyboardOnehandOnRight = false
+      if !oldValue {
+        appSettings.enableKeyboardOnehandMode = !appSettings.enableKeyboardOnehandMode
+      }
+    }
+    
+  func changeStateOfOneHandOnRight() {
+    let oldValue = appSettings.keyboardOnehandOnRight
+    appSettings.keyboardOnehandOnRight = true
+    if oldValue {
+      appSettings.enableKeyboardOnehandMode = !appSettings.enableKeyboardOnehandMode
+    }
+  }
+  
   // 光标移动句首
   func moveBeginOfSentence() {
     if let beforInput = self.textDocumentProxy.documentContextBeforeInput {
@@ -505,6 +521,10 @@ extension HamsterKeyboardViewController {
         self.appSettings.rimeInputSchema = lastUseRimeInputSchema
         self.rimeEngine.reset()
       }
+    case .onehandOnLeft:
+      self.changeStateOfOnehandOnLeft()
+    case .onehandOnRight:
+      self.changeStateOfOneHandOnRight()
     default:
       return false
     }

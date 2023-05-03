@@ -22,7 +22,7 @@ class HamsterCalloutActionProvider: CalloutActionProvider {
     case .keyboardType(let type):
       if type == .numeric {
         return [
-          .character(FunctionalInstructions.selectInputSchema.rawValue),
+//          .character(FunctionalInstructions.selectInputSchema.rawValue),
 //          .character(FunctionalInstructions.selectColorSchema.rawValue),
         ]
       }

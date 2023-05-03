@@ -70,6 +70,10 @@ struct AlphabetKeyboard: View {
   var backgroundColor: Color {
     return hamsterColor.backColor.bgrColor ?? Color.standardKeyboardBackground
   }
+  
+  var foregroundColor: Color {
+    Color.standardButtonForeground(for: keyboardContext)
+  }
 
   // 是否显示候选栏按钮
   var showCandidateBarArrowButton: Bool {
@@ -98,7 +102,7 @@ struct AlphabetKeyboard: View {
       autocompleteToolbarAction: { _ in },
       keyboardContext: self.keyboardContext,
       calloutContext: self.keyboardCalloutContext,
-      width: self.keyboardWidth,
+      width: self.realKeyboardWidth,
       buttonContent: self.hamsterButtonContent
     )
   }
@@ -128,25 +132,105 @@ struct AlphabetKeyboard: View {
       .opacity(showCandidateBarArrowButton ? 1 : 0)
     }
   }
+  
+  // 在iphone上单手模式切换面板宽度
+  var handModeChangePaneWidth: CGFloat {
+    
+    if keyboardContext.isPortrait
+        && keyboardContext.deviceType == .phone
+        && appSettings.enableKeyboardOnehandMode {
+      return 72
+    }
+    return 0
+  }
+  
+  var canEnableOnehand: Bool {
+    return keyboardContext.isPortrait
+    && keyboardContext.deviceType == .phone
+  }
+  
+  // 键盘宽度
+  var realKeyboardWidth: CGFloat {
+    return keyboardWidth - handModeChangePaneWidth
+  }
+  
+  @ViewBuilder
+    var panelOfOnehandOnLeft: some View {
+      VStack(spacing: 20) {
+        Image(systemName: "keyboard.onehanded.left")
+          .foregroundColor(foregroundColor)
+          .opacity(0.7)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.keyboardOnehandOnRight = false
+          }
+        Image(systemName: "arrow.up.backward.and.arrow.down.forward")
+          .foregroundColor(foregroundColor)
+          .opacity(0.7)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.enableKeyboardOnehandMode = false
+          }
+      }
+      .padding(.top, 40)
+      .frame(width: handModeChangePaneWidth)
+      
+    }
+
+    @ViewBuilder
+    var panelOfOnehandOnRight: some View {
+      VStack(spacing: 20) {
+        Image(systemName: "keyboard.onehanded.right")
+          .foregroundColor(foregroundColor)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.keyboardOnehandOnRight = true
+            
+          }
+        Image(systemName: "arrow.up.backward.and.arrow.down.forward")
+          .foregroundColor(foregroundColor)
+          .iconStyle()
+          .frame(width: 56, height: 56)
+          .onTapGesture {
+            self.appSettings.enableKeyboardOnehandMode = false
+          }
+      }
+      .padding(.top, 40)
+      .frame(width: handModeChangePaneWidth)
+      
+    }
 
   var body: some View {
-    VStack(spacing: 0) {
-      // 候选区域
+    GeometryReader { _ in
       HStack(spacing: 0) {
-        ZStack(alignment: .topLeading) {
-          // 横向滑动条: 候选文字
-          HamsterAutocompleteToolbar(ivc: ivc, style: style)
+        if canEnableOnehand && appSettings.enableKeyboardOnehandMode && appSettings.keyboardOnehandOnRight {
+          panelOfOnehandOnLeft
+        }
+        
+        VStack(spacing: 0) {
+          // 候选区域
+          HStack(spacing: 0) {
+            ZStack(alignment: .topLeading) {
+              // 横向滑动条: 候选文字
+              HamsterAutocompleteToolbar(ivc: ivc, style: style)
 
-          // 候选栏箭头按钮
-          candidateBarView
+              // 候选栏箭头按钮
+              candidateBarView
+            }
+          }
+          .frame(height: candidateBarHeight)
+
+          // 键盘
+          keyboard
+        }
+        
+        if canEnableOnehand && appSettings.enableKeyboardOnehandMode && !appSettings.keyboardOnehandOnRight {
+          panelOfOnehandOnRight
         }
       }
-      .frame(height: candidateBarHeight)
-      .padding(.top, 5)
-
-      // 键盘
-      keyboard
     }
-    .background(appSettings.enableRimeColorSchema ? backgroundColor : .clear)
   }
 }
