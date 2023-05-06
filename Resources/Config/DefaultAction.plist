@@ -3,61 +3,61 @@
 <plist version="1.0">
 	<dict>
 		<key>a↑</key>
-		<string>+</string>
+		<string>`</string>
 		<key>a↓</key>
-		<string>=</string>
+		<string>~</string>
 		<key>b↑</key>
-		<string>,</string>
+		<string>《》</string>
 		<key>b↓</key>
-		<string>，</string>
+		<string>。</string>
 		<key>c↑</key>
-		<string>!</string>
+		<string>.</string>
 		<key>c↓</key>
-		<string>?</string>
+		<string>&gt;</string>
 		<key>d↑</key>
-		<string>*</string>
+		<string>=</string>
 		<key>d↓</key>
-		<string>°</string>
+		<string>+</string>
 		<key>e↑</key>
 		<string>3</string>
 		<key>e↓</key>
 		<string>#</string>
 		<key>f↑</key>
-		<string>/</string>
+		<string>[</string>
 		<key>f↓</key>
-		<string></string>
+		<string>{</string>
 		<key>g↑</key>
-		<string>&quot;&quot;</string>
+		<string>]</string>
 		<key>g↓</key>
-		<string>“”</string>
+		<string>}</string>
 		<key>h↑</key>
-		<string>《》</string>
+		<string>\</string>
 		<key>h↓</key>
-		<string></string>
+		<string>|</string>
 		<key>i↑</key>
 		<string>8</string>
 		<key>i↓</key>
-		<string>#中英切换</string>
+		<string>*</string>
 		<key>j↑</key>
-		<string>&lt;&gt;</string>
+		<string>/</string>
 		<key>j↓</key>
-		<string></string>
+		<string>?</string>
 		<key>k↑</key>
-		<string>[]</string>
+		<string>;</string>
 		<key>k↓</key>
-		<string></string>
+		<string>:</string>
 		<key>l↑</key>
-		<string>{}</string>
+		<string>'</string>
 		<key>l↓</key>
-		<string></string>
+		<string>"</string>
 		<key>m↑</key>
 		<string>#行尾</string>
 		<key>m↓</key>
-		<string></string>
+		<string>、</string>
 		<key>n↑</key>
-		<string>.</string>
+		<string>『』</string>
 		<key>n↓</key>
-		<string>。</string>
+		<string>；</string>
 		<key>o↑</key>
 		<string>9</string>
 		<key>o↓</key>
@@ -69,7 +69,7 @@
 		<key>q↑</key>
 		<string>1</string>
 		<key>q↓</key>
-		<string>~</string>
+		<string>!</string>
 		<key>r↑</key>
 		<string>4</string>
 		<key>r↓</key>
@@ -84,28 +84,28 @@
 		<string>%</string>
 		<key>u↑</key>
 		<string>7</string>
-		<key>u↓</key>
-		<string>&amp;</string>
+		 <key>u↓</key>
+		<string>&amp;</string> 
 		<key>v↑</key>
-		<string>\</string>
+		<string>“”</string>
 		<key>v↓</key>
-		<string>、</string>
+		<string>，</string>
 		<key>w↑</key>
 		<string>2</string>
 		<key>w↓</key>
 		<string>@</string>
 		<key>x↑</key>
-		<string>:</string>
+		<string>,</string>
 		<key>x↓</key>
-		<string>;</string>
+		<string>&lt;</string>
 		<key>y↑</key>
 		<string>6</string>
 		<key>y↓</key>
-		<string>^</string>
+		<string>^</string> 
 		<key>z↑</key>
 		<string>#行首</string>
 		<key>z↓</key>
-		<string></string>
+		<string>‘’</string>
 		<key>space↑</key>
 		<string>#次选上屏</string>
 		<key>space↓</key>

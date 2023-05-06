@@ -37,6 +37,15 @@
       }
     },
     {
+      "identity" : "isscrolling",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fatbobman/IsScrolling.git",
+      "state" : {
+        "revision" : "7def8d8f789a326b6f725a76cee8ec3fa69511df",
+        "version" : "1.1.2"
+      }
+    },
+    {
       "identity" : "keyboardkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/KeyboardKit/KeyboardKit.git",
@@ -79,6 +88,15 @@
       "state" : {
         "revision" : "903d3bf2804cf5d11a52a5ccd2fea93e12d6abdf",
         "version" : "0.4.0"
+      }
+    },
+    {
+      "identity" : "progresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/relatedcode/ProgressHUD.git",
+      "state" : {
+        "revision" : "2b80c6f5a091c76a01f080545723f9b0bcf928cd",
+        "version" : "13.6.2"
       }
     },
     {
