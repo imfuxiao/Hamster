@@ -64,6 +64,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C03E8024296D4F4C0083E53A"
+            BuildableName = "Hamster.app"
+            BlueprintName = "Hamster"
+            ReferencedContainer = "container:Hamster.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

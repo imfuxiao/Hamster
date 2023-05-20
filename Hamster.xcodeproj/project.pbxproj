@@ -314,7 +314,7 @@
 		C02435922A0490220080CFB4 /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C02435932A0490220080CFB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C02435952A0490220080CFB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C02435962A0490220080CFB4 /* HamsterApp.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = HamsterApp.entitlements; sourceTree = "<group>"; };
+		C02435962A0490220080CFB4 /* Hamster.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Hamster.entitlements; sourceTree = "<group>"; };
 		C02435972A0490220080CFB4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C02435B72A04B8170080CFB4 /* MetadataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataProvider.swift; sourceTree = "<group>"; };
 		C02435BA2A05ECF00080CFB4 /* AppSettings+Yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Yaml.swift"; sourceTree = "<group>"; };
@@ -508,7 +508,7 @@
 				C02435932A0490220080CFB4 /* Assets.xcassets */,
 				C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */,
 				C02435942A0490220080CFB4 /* Preview Content */,
-				C02435962A0490220080CFB4 /* HamsterApp.entitlements */,
+				C02435962A0490220080CFB4 /* Hamster.entitlements */,
 				C02435972A0490220080CFB4 /* Info.plist */,
 			);
 			path = Hamster;
@@ -1613,7 +1613,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/HamsterApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/Hamster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Preview Content\"";
@@ -1653,7 +1653,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/HamsterApp.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/Hamster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Preview Content\"";
