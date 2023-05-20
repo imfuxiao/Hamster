@@ -19,11 +19,11 @@ struct AdvancedSettingsView: View {
 
   var syncAndBackupView: some View {
     SectionView("同步与备份") {
-      NavigationLink {
-        SyncView()
-      } label: {
-        AdvancedSettingCellView(image: "externaldrive.badge.icloud", title: "iCloud同步")
-      }
+//      NavigationLink {
+//        SyncView()
+//      } label: {
+//        AdvancedSettingCellView(image: "externaldrive.badge.icloud", title: "iCloud同步")
+//      }
       NavigationLink {
         BackupView()
       } label: {
