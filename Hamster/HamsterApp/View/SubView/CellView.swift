@@ -15,6 +15,7 @@ enum DestinationType {
   case feedback
   case inputKeyFunction
   case swipeGestureMapping
+  case numberNineGridSetting
   case about
   case none
 
@@ -62,12 +63,13 @@ struct CellViewModel: Identifiable, Equatable {
 
 struct CellView: View {
   init(cellViewModel: CellViewModel) {
-//    Logger.shared.log.debug("CellView init")
     self.cellViewModel = cellViewModel
     self._toggleValue = State(initialValue: cellViewModel.toggleValue)
   }
 
   var cellViewModel: CellViewModel
+
+  @EnvironmentObject var appSettings: HamsterAppSettings
   @State var toggleValue: Bool
 
   var imageView: some View {
@@ -109,18 +111,30 @@ struct CellView: View {
     .foregroundColor(.primary)
   }
 
+  @State var navigationLinkActive = false
+
   var body: some View {
     VStack(alignment: .leading) {
       if !cellViewModel.destinationType.isNone() {
-        NavigationLink {
-          navigationLinkView(type: cellViewModel.destinationType)
-        } label: {
+        NavigationLink(destination: navigationLinkView, label: {
           VStack(alignment: .leading, spacing: 0) {
             imageView
               .padding(.bottom, 15)
             titleView
           }
-        }
+        })
+//        NavigationLink(destination: navigationLinkView,
+//                       isActive: $navigationLinkActive) {}
+//          .isDetailLink(false)
+//        Button {
+//          navigationLinkActive = true
+//        } label: {
+//          VStack(alignment: .leading, spacing: 0) {
+//            imageView
+//              .padding(.bottom, 15)
+//            titleView
+//          }
+//        }
       } else {
         imageView
           .padding(.bottom, 15)
@@ -137,12 +151,11 @@ struct CellView: View {
       }
       cellViewModel.toggleDidSet($0)
     })
-//    .navigationBarBackButtonHidden(true)
   }
 
   @ViewBuilder
-  func navigationLinkView(type: DestinationType) -> some View {
-    switch type {
+  var navigationLinkView: some View {
+    switch cellViewModel.destinationType {
     case .inputSchema:
       InputSchemaView()
     case .colorSchema:
@@ -157,8 +170,8 @@ struct CellView: View {
       InputEditorView()
     case .swipeGestureMapping:
       SwipeGestureActionView()
-//    case .about:
-//      AboutView()
+    case .numberNineGridSetting:
+      NumberNineGridSettingView()
     default:
       EmptyView()
     }
@@ -178,7 +191,6 @@ struct CellView_Previews: PreviewProvider {
         )
       )
     }
-    .environmentObject(HamsterAppSettings())
     .environmentObject(RimeContext())
   }
 }

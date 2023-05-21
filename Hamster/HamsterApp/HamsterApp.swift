@@ -16,12 +16,8 @@ import ZIPFoundation
 @main
 @available(iOS 14, *)
 struct HamsterApp: App {
-  @StateObject
   var appSettings = HamsterAppSettings()
-
-  @StateObject
   var rimeContext = RimeContext()
-
   @State var cancelable = Set<AnyCancellable>()
   @State var launchScreenState = true
   @State var showError: Bool = false
@@ -48,7 +44,37 @@ struct HamsterApp: App {
         if launchScreenState {
           LaunchScreen(loadingMessage: $loadingMessage)
         } else {
-          ContentView()
+          TabView {
+            Navigation {
+              ShortcutSettingsView(
+                rimeViewModel: RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings),
+                cells: ShortcutSettingsView.createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
+              )
+              .navigationBarTitleDisplayMode(.inline)
+              .navigationTitle(Text("快捷设置"))
+              .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
+            }
+            .tabItem {
+              VStack {
+                Image(systemName: "house.fill")
+                Text("快捷设置")
+              }
+            }
+            .tag(0)
+
+            Navigation {
+              AdvancedSettingsView()
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationTitle(Text("其他设置"))
+                .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
+            }
+            .tabItem {
+              Image(systemName: "gear")
+              Text("其他设置")
+            }
+            .tag(1)
+          }
+          .tabViewStyle(.automatic)
         }
       }
       .onOpenURL(perform: openURL)
@@ -59,6 +85,25 @@ struct HamsterApp: App {
       .customHud(isShow: $isLoading, message: $loadingMessage)
       .environmentObject(appSettings)
       .environmentObject(rimeContext)
+    }
+  }
+
+  var toolbarView: some View {
+    VStack {
+      HStack {
+        Image("Hamster")
+          .resizable()
+          .scaledToFill()
+          .frame(width: 25, height: 25)
+          .padding(.all, 5)
+          .background(
+            RoundedRectangle(cornerRadius: 5)
+              .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+          )
+        Text("仓输入法")
+
+        Spacer()
+      }
     }
   }
 
@@ -96,8 +141,10 @@ struct HamsterApp: App {
       if appSettings.isFirstLaunch {
         showLoadingMessage("初次启动，需要编译输入方案，请耐心等待……")
 
-        // 加载系统默认配置上下滑动符号
-        appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
+        DispatchQueue.main.async {
+          // 加载系统默认配置上下滑动符号
+          appSettings.keyboardSwipeGestureSymbol = Plist.defaultAction
+        }
 
         // RIME首次启动需要先初始化输入方案
         do {

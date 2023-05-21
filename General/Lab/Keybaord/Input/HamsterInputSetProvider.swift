@@ -33,26 +33,14 @@ class HamsterInputSetProvider: InputSetProvider {
     rimeContext.asciiMode ? englishProvider : chineseProvider
   }
 
-  /**
-   The input set to use for alphabetic keyboards.
-   */
   var alphabeticInputSet: AlphabeticInputSet {
     provider().alphabeticInputSet
   }
 
-  /**
-   The input set to use for numeric keyboards.
-   */
   var numericInputSet: NumericInputSet {
-    if appSettings.enableNumberNineGrid {
-      return chineseProvider.numericNineGridInputSet
-    }
-    return provider().numericInputSet
+    appSettings.enableNumberNineGrid ? chineseProvider.numericNineGridInputSet : provider().numericInputSet
   }
 
-  /**
-   The input set to use for symbolic keyboards.
-   */
   var symbolicInputSet: SymbolicInputSet {
     provider().symbolicInputSet
   }

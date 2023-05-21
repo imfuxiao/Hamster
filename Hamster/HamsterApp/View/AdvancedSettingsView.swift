@@ -10,13 +10,8 @@ import SwiftUI
 
 /// 高阶设置页
 struct AdvancedSettingsView: View {
-  init(appSettings: HamsterAppSettings, rimeContext: RimeContext) {
-    self.appSettings = appSettings
-    self.rimeContext = rimeContext
-  }
-
-  let appSettings: HamsterAppSettings
-  let rimeContext: RimeContext
+  @EnvironmentObject var appSettings: HamsterAppSettings
+  @EnvironmentObject var rimeContext: RimeContext
 
   var syncAndBackupView: some View {
     SectionView("同步与备份") {
@@ -69,19 +64,38 @@ struct AdvancedSettingsView: View {
     }
   }
 
-  var body: some View {
-    VStack(alignment: .center, spacing: 0) {
-      ScrollView {
-        // 同步与备份区域
-        syncAndBackupView
+  var toolbarView: some View {
+    VStack {
+      HStack {
+        Image("Hamster")
+          .resizable()
+          .scaledToFill()
+          .frame(width: 25, height: 25)
+          .padding(.all, 5)
+          .background(
+            RoundedRectangle(cornerRadius: 5)
+              .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+          )
+        Text("仓输入法")
 
-        // RIME
-        rimeView
-
-        aboutView
+        Spacer()
       }
     }
-    .background(Color.HamsterBackgroundColor.ignoresSafeArea())
+  }
+
+  var body: some View {
+      VStack(alignment: .center, spacing: 0) {
+        ScrollView {
+          // 同步与备份区域
+          syncAndBackupView
+
+          // RIME
+          rimeView
+
+          aboutView
+        }
+      }
+      .background(Color.HamsterBackgroundColor.ignoresSafeArea())
   }
 }
 
@@ -113,6 +127,8 @@ struct AdvancedSettingCellView: View {
 
 struct AdvancedSettingsView_Previews: PreviewProvider {
   static var previews: some View {
-    AdvancedSettingsView(appSettings: HamsterAppSettings(), rimeContext: RimeContext())
+    AdvancedSettingsView()
+      .environmentObject(HamsterAppSettings())
+      .environmentObject(RimeContext())
   }
 }

@@ -30,7 +30,10 @@ public struct HamsterSystemKeyboardButtonRowItem<Content: View>: View {
     calloutContext: KeyboardCalloutContext?,
     keyboardWidth: CGFloat,
     inputWidth: CGFloat,
-    appearance: KeyboardAppearance
+    appearance: KeyboardAppearance,
+    isInScrollView: Bool = false,
+    customButtonStyle: Bool = false,
+    customUseDarkMode: Bool = false
   ) {
     self.content = content
     self.item = item
@@ -39,7 +42,10 @@ public struct HamsterSystemKeyboardButtonRowItem<Content: View>: View {
     self.calloutContext = calloutContext
     self.keyboardWidth = keyboardWidth
     self.inputWidth = inputWidth
-    self.appearance = appearance
+    self.appearance = appearance as! HamsterKeyboardAppearance
+    self.isInScrollView = isInScrollView
+    self.customButtonStyle = customButtonStyle
+    self.customUseDarkMode = customUseDarkMode
   }
 
   private let content: Content
@@ -48,7 +54,10 @@ public struct HamsterSystemKeyboardButtonRowItem<Content: View>: View {
   private let calloutContext: KeyboardCalloutContext?
   private let keyboardWidth: CGFloat
   private let inputWidth: CGFloat
-  private let appearance: KeyboardAppearance
+  private let appearance: HamsterKeyboardAppearance
+  private let isInScrollView: Bool
+  private let customButtonStyle: Bool
+  private let customUseDarkMode: Bool
 
   @ObservedObject
   private var keyboardContext: KeyboardContext
@@ -71,6 +80,7 @@ public struct HamsterSystemKeyboardButtonRowItem<Content: View>: View {
         for: item.action,
         actionHandler: actionHandler,
         calloutContext: calloutContext,
+        isInScrollView: isInScrollView,
         isPressed: $isPressed
       )
   }
@@ -84,8 +94,50 @@ private extension HamsterSystemKeyboardButtonRowItem {
     return false
   }
 
+  var systemBackgroundColor: Color {
+    if customUseDarkMode {
+      return Color.hamsterStandardDarkButtonBackground(for: keyboardContext)
+    }
+    return Color.hamsterStandardButtonBackground(for: keyboardContext)
+  }
+
+  var systemForegroundColor: Color {
+    if customUseDarkMode {
+      return Color.hamsterStandardDarkButtonForeground(for: keyboardContext)
+    }
+    return Color.hamsterStandardButtonForeground(for: keyboardContext)
+  }
+
+  func backgroundColor(_ isPressed: Bool) -> Color {
+    if isPressed {
+      if customUseDarkMode {
+        return .white
+      }
+      return .hamsterStandardDarkButtonBackground(for: keyboardContext)
+    }
+    guard let hamsterColorSchema = appearance.hamsterColorSchema else { return systemBackgroundColor }
+    return hamsterColorSchema.backColor == .clear ? systemBackgroundColor : hamsterColorSchema.backColor
+  }
+
+  var foregroundColor: Color {
+    guard let hamsterColorSchema = appearance.hamsterColorSchema else { return systemForegroundColor }
+    return hamsterColorSchema.candidateTextColor == .clear ? systemForegroundColor : hamsterColorSchema.candidateTextColor
+  }
+
   var buttonStyle: KeyboardButtonStyle {
-    item.action.isSpacer ? .spacer : appearance.buttonStyle(for: item.action, isPressed: isScrolling ? false : isPressed)
+    if !customButtonStyle {
+      return item.action.isSpacer ? .spacer : appearance.buttonStyle(for: item.action, isPressed: isScrolling ? false : isPressed)
+    } else {
+      let action = KeyboardAction.primary(.done)
+      return KeyboardButtonStyle(
+        backgroundColor: backgroundColor(isPressed),
+        foregroundColor: foregroundColor,
+        font: appearance.buttonFont(for: action),
+        cornerRadius: appearance.buttonCornerRadius(for: action),
+        border: KeyboardButtonBorderStyle(color: appearance.hamsterColorSchema?.borderColor ?? Color.clear, size: 1),
+        shadow: appearance.buttonShadowStyle(for: action)
+      )
+    }
   }
 }
 

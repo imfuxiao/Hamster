@@ -85,15 +85,25 @@ public extension HamsterAppSettings {
         self.enableKeyboardSwipeGestureSymbol = value
         Logger.shared.log.debug("set enableKeyboardSwipeGestureSymbol = \(value)")
       }
+    case "enable_rime_color_schema":
+      if let value = node.bool {
+        self.enableRimeColorSchema = value
+        Logger.shared.log.debug("set enableRimeColorSchema = \(value)")
+      }
     case "enable_number_nine_grid":
       if let value = node.bool {
         self.enableNumberNineGrid = value
         Logger.shared.log.debug("set enableNumberNineGrid = \(value)")
       }
-    case "enable_rime_color_schema":
+    case "enable_number_nine_grid_input_on_screen_mode":
       if let value = node.bool {
-        self.enableRimeColorSchema = value
-        Logger.shared.log.debug("set enableRimeColorSchema = \(value)")
+        self.enableNumberNineGridInputOnScreenMode = value
+        Logger.shared.log.debug("set enableNumberNineGridInputOnScreenMode = \(value)")
+      }
+    case "number_nine_grid_symbols":
+      if let value = node.any as? [String] {
+        self.numberNineGridSymbols = value
+        Logger.shared.log.debug("set numberNineGridSymbols = \(numberNineGridSymbols)")
       }
     case "enable_space_sliding":
       if let value = node.bool {

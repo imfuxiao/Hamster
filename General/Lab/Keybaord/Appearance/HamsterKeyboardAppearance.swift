@@ -373,6 +373,7 @@ extension KeyboardAction {
       buttonBackgroundColorForIdleState(for: context)
   }
 
+  /// 空闲状态按钮背景色
   func buttonBackgroundColorForIdleState(for context: KeyboardContext) -> Color {
 //    if isUppercasedShiftAction { return buttonBackgroundColorForPressedState(for: context) }
 //    if isSystemAction { return .standardDarkButtonBackground(for: context) }

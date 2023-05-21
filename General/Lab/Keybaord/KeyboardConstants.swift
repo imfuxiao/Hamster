@@ -1,25 +1,6 @@
 import Foundation
 
 class KeyboardConstant {
-  enum keyboardType: String, CaseIterable, Equatable {
-    // "中文全键盘"
-    case chinese
-    // "拼音九宫格"
-    case chineseNineGrid
-    // "数字九宫格"
-    case numberNineGrid
-    // 中文符号
-    case chineseSymbol
-
-    var buttonName: String {
-      switch self {
-      case .numberNineGrid: return "123"
-      case .chineseSymbol: return "#+="
-      default: return "中"
-      }
-    }
-  }
-
   enum Character: String {
     case equal = "="
     case plus = "+"

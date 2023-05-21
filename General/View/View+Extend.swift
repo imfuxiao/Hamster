@@ -28,19 +28,13 @@ extension View {
     modifier(IconModifier())
   }
 
-  func hiddenListSectionSeparator() -> some View {
-    return self.modifier(ListHiddenRowSeparator())
+  /// 隐藏List行分隔线，支持 iOS14
+  func hideListRowSeparator() -> some View {
+    return self.modifier(ListRowSeperatorModifier())
   }
-}
 
-struct ListHiddenRowSeparator: ViewModifier {
-  func body(content: Content) -> some View {
-    if #available(iOS 15, *) {
-      content
-        .listRowSeparator(.hidden)
-    } else {
-      content
-    }
+  func roundedCorner(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+    clipShape(RoundedCorner(radius: radius, corners: corners))
   }
 }
 
@@ -80,5 +74,30 @@ struct FunctionCellModifier: ViewModifier {
 extension EnvironmentValues {
   var dismiss: () -> Void {
     { presentationMode.wrappedValue.dismiss() }
+  }
+}
+
+struct ListRowSeperatorModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    if #available(iOS 15.0, *) {
+      content.listRowSeparator(.hidden)
+    } else {
+      content.onAppear {
+        UITableView.appearance().separatorStyle = .none
+      }
+      .onDisappear {
+        UITableView.appearance().separatorStyle = .singleLine
+      }
+    }
+  }
+}
+
+struct RoundedCorner: Shape {
+  var radius: CGFloat = .infinity
+  var corners: UIRectCorner = .allCorners
+
+  func path(in rect: CGRect) -> Path {
+    let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+    return Path(path.cgPath)
   }
 }

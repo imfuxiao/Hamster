@@ -13,16 +13,12 @@ import SwiftUI
 
 /// 首屏 快捷设置页
 struct ShortcutSettingsView: View {
-  init(appSettings: HamsterAppSettings, rimeContext: RimeContext) {
+  init(rimeViewModel: RIMEViewModel, cells: [CellViewModel]) {
     Logger.shared.log.debug("ShortcutSettingsView init")
-    self.appSettings = appSettings
-    self.rimeContext = rimeContext
-    self.rimeViewModel = RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings)
-    self.cells = Self.createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
+    self.rimeViewModel = rimeViewModel
+    self.cells = cells
   }
 
-  var appSettings: HamsterAppSettings
-  var rimeContext: RimeContext
   let rimeViewModel: RIMEViewModel
   let cells: [CellViewModel]
 
@@ -220,9 +216,9 @@ extension ShortcutSettingsView {
         cellHeight: cellHeight,
         cellName: "数字九宫格",
         imageName: "number.square",
-        destinationType: .none,
-        toggleValue: appSettings.enableNumberNineGrid,
-        toggleDidSet: { appSettings.enableNumberNineGrid = $0 }
+        destinationType: .numberNineGridSetting
+//        toggleValue: appSettings.enableNumberNineGrid,
+//        toggleDidSet: { appSettings.enableNumberNineGrid = $0 }
       ),
       CellViewModel(
         cellWidth: cellWidth,

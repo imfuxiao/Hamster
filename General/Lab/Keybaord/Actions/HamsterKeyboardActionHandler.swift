@@ -39,7 +39,7 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler, ObservableObj
         }
         actionMappingValue = actionConfig[.spaceKeyName.actionKey(direction)]
       case .keyboardType(let type):
-        if type == .numeric && ivc.keyboardContext.keyboardType.isAlphabetic {
+        if (type == .numeric && ivc.keyboardContext.keyboardType.isAlphabetic) || type.isNumberNineGrid {
           actionMappingValue = actionConfig[.numberKeyboardButton.actionKey(direction)]
         }
       default:

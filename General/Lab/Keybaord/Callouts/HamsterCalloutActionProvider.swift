@@ -20,10 +20,9 @@ class HamsterCalloutActionProvider: CalloutActionProvider {
   func calloutActions(for action: KeyboardKit.KeyboardAction) -> [KeyboardKit.KeyboardAction] {
     switch action {
     case .keyboardType(let type):
-      if type == .numeric {
+      if type == .numeric || type.isNumberNineGrid {
         return [
           .character(FunctionalInstructions.selectInputSchema.rawValue),
-//          .character(FunctionalInstructions.selectColorSchema.rawValue),
         ]
       }
       return []

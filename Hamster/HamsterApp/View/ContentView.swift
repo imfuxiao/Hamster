@@ -10,6 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
   init() {
+    Logger.shared.log.debug("ContentView init")
     // fix ScrollView 会超出Tabbar
     if #available(iOS 15, *) {
       UITabBar.appearance().scrollEdgeAppearance = UITabBarAppearance(idiom: .unspecified)
@@ -44,13 +45,10 @@ struct ContentView: View {
 
   var body: some View {
     TabView {
-      Navigation {
-        ShortcutSettingsView(appSettings: appSettings, rimeContext: rimeContext)
-          .navigationBarTitleDisplayMode(.inline)
-          .navigationTitle(Text("快捷设置"))
-          .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
-      }
-      .navigationViewStyle(.stack)
+      ShortcutSettingsView(
+        rimeViewModel: RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings),
+        cells: ShortcutSettingsView.createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
+      )
       .tabItem {
         VStack {
           Image(systemName: "house.fill")
@@ -59,18 +57,12 @@ struct ContentView: View {
       }
       .tag(0)
 
-      Navigation {
-        AdvancedSettingsView(appSettings: appSettings, rimeContext: rimeContext)
-          .navigationBarTitleDisplayMode(.inline)
-          .navigationTitle(Text("其他设置"))
-          .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
-      }
-      .navigationViewStyle(.stack)
-      .tabItem {
-        Image(systemName: "gear")
-        Text("其他设置")
-      }
-      .tag(1)
+      AdvancedSettingsView()
+        .tabItem {
+          Image(systemName: "gear")
+          Text("其他设置")
+        }
+        .tag(1)
     }
     .tabViewStyle(.automatic)
   }
@@ -81,13 +73,14 @@ struct Navigation<Content: View>: View {
 
   var body: some View {
     if #available(iOS 16, *) {
-      return NavigationStack {
+      NavigationStack {
         content()
       }
-    }
-
-    return NavigationView {
-      content()
+    } else {
+      NavigationView {
+        content()
+      }
+      .navigationViewStyle(.stack)
     }
   }
 }

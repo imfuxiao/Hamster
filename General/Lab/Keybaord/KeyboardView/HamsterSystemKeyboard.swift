@@ -312,14 +312,23 @@ private extension HamsterSystemKeyboard {
 
   @ViewBuilder
   var keyboardViewContent: some View {
-    systemKeyboard
+    switch keyboardContext.keyboardType {
+    case .emojis: emojiKeyboard
+    case .custom(let name):
+      let customKeyboard = keyboardCustomType(rawValue: name)
+      switch customKeyboard {
+      case .numberNineGrid: numNineGridKeyboard
+      default: systemKeyboard
+      }
+    default: systemKeyboard
+    }
   }
 
   var shouldAddAutocompleteToolbar: Bool {
     if !appSettings.enableCandidateBar {
       return false
     }
-//    if keyboardContext.keyboardType == .emojis { return false }
+    if keyboardContext.keyboardType == .emojis { return false }
 //    switch autocompleteToolbarMode {
 //    case .automatic: return true
 //    case .none: return false
@@ -329,6 +338,29 @@ private extension HamsterSystemKeyboard {
 }
 
 private extension HamsterSystemKeyboard {
+  var emojiKeyboard: some View {
+    EmojiCategoryKeyboard(
+      actionHandler: actionHandler,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      appearance: appearance,
+      style: .standard(for: keyboardContext)
+    ).padding(.top)
+  }
+
+  var numNineGridKeyboard: some View {
+    NumNineGridKeyboard(
+      layout: layout,
+      appearance: appearance,
+      actionHandler: actionHandler,
+      calloutContext: calloutContext,
+      keyboardContext: keyboardContext,
+      appSettings: appSettings,
+      width: keyboardWidth,
+      height: keyboardHeight
+    )
+  }
+
   var systemKeyboard: some View {
     VStack(spacing: 0) {
       itemRows(for: layout)
@@ -348,7 +380,6 @@ private extension HamsterSystemKeyboard {
   func items(for layout: KeyboardLayout, itemRow: KeyboardLayoutItemRow) -> some View {
     HStack(spacing: 0) {
       ForEach(Array(itemRow.enumerated()), id: \.offset) { _, element in
-//        buttonView(element, keyboardWidth, inputWidth)
         buttonView(element, realKeyboardWidth, inputWidth)
       }.id(keyboardContext.locale.identifier)
     }

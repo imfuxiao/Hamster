@@ -12,7 +12,7 @@ import SwiftUI
 struct HamsterKeyboardButtonContent: View {
   /**
    Create a system keyboard button content view.
-
+   
    - Parameters:
    - action: The action for which to generate content.
    - appearance: The appearance to apply to the content.
@@ -27,14 +27,14 @@ struct HamsterKeyboardButtonContent: View {
     self.appearance = appearance as! HamsterKeyboardAppearance
     self.keyboardContext = keyboardContext
   }
-
+  
   private let keyboardContext: KeyboardContext
   private let action: KeyboardAction
   private let appearance: HamsterKeyboardAppearance
-
+  
   @EnvironmentObject var appSettings: HamsterAppSettings
   @EnvironmentObject var rimeContext: RimeContext
-
+  
   public var body: some View {
     bodyContent
       .padding(3)
@@ -45,17 +45,17 @@ struct HamsterKeyboardButtonContent: View {
 private extension HamsterKeyboardButtonContent {
   @ViewBuilder
   var bodyContent: some View {
-    #if os(iOS) || os(tvOS)
-      if action == .nextKeyboard {
-        NextKeyboardButton { bodyView }
-      } else {
-        bodyView
-      }
-    #else
+#if os(iOS) || os(tvOS)
+    if action == .nextKeyboard {
+      NextKeyboardButton { bodyView }
+    } else {
       bodyView
-    #endif
+    }
+#else
+    bodyView
+#endif
   }
-
+  
   @ViewBuilder
   var bodyView: some View {
     if action == .space {
@@ -68,25 +68,25 @@ private extension HamsterKeyboardButtonContent {
       Text("")
     }
   }
-
+  
   @ViewBuilder
   var spaceView: some View {
-//    HamsterSystemKeyboardSpaceContent(
-//      localeText: localSpaceText,
-//      spaceView: localSpaceView
-//    )
+    //    HamsterSystemKeyboardSpaceContent(
+    //      localeText: localSpaceText,
+    //      spaceView: localSpaceView
+    //    )
     SystemKeyboardButtonText(
-      text: localSpaceText,
+      text: keyboardContext.keyboardType.isNumberNineGrid ? "空格" : localSpaceText,
       action: .space
     )
     .minimumScaleFactor(0.5)
   }
-
+  
   func textView(for text: String) -> some View {
-//    SystemKeyboardButtonText(
-//        text: text,
-//        action: action
-//    ).minimumScaleFactor(0.5)
+    //    SystemKeyboardButtonText(
+    //        text: text,
+    //        action: action
+    //    ).minimumScaleFactor(0.5)
     HamsterKeyboardButtonText(
       buttonExtendCharacter: appearance.buttonExtendCharacter,
       text: text,
@@ -107,7 +107,7 @@ private extension HamsterKeyboardButtonContent {
   var spaceText: String {
     KKL10n.hamsterText(forKey: "space", locale: keyboardContext.locale)
   }
-
+  
   var localSpaceText: String {
     if rimeContext.asciiMode {
       return "EN"
@@ -116,7 +116,7 @@ private extension HamsterKeyboardButtonContent {
       $0.schemaId == appSettings.rimeInputSchema
     }?.schemaName ?? ""
   }
-
+  
   var localSpaceView: some View {
     if #available(iOS 16, *) {
       return Image(systemName: "space")

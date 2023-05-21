@@ -65,7 +65,7 @@ struct SyncView: View {
           .font(.system(size: 14))
       }
     }
-    .hiddenListSectionSeparator()
+    .hideListRowSeparator()
     .functionCell()
     .listRowBackground(Color.HamsterBackgroundColor)
   }
@@ -115,7 +115,7 @@ struct SyncView: View {
         Spacer()
       }
     }
-    .hiddenListSectionSeparator()
+    .hideListRowSeparator()
     .functionCell()
     .listRowBackground(Color.HamsterBackgroundColor)
   }
@@ -141,7 +141,7 @@ struct SyncView: View {
         ProgressHUD.showSuccess("复制成功", delay: 1.5)
       }
     }
-    .hiddenListSectionSeparator()
+    .hideListRowSeparator()
     .functionCell()
     .listRowBackground(Color.HamsterBackgroundColor)
   }

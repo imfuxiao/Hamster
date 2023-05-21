@@ -205,10 +205,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       .receive(on: RunLoop.main)
       .sink { [weak self] keyboard in
         guard let self = self else { return }
-        if (keyboard == .numeric || keyboard == .symbolic) && self.appSettings.enableNumberNineGrid {
+
+        if keyboard.isNumberNineGrid {
           self.calloutContext.input.isEnabled = false
           return
         }
+
         self.calloutContext.input.isEnabled = self.appSettings.showKeyPressBubble
       }
       .store(in: &self.cancellables)
@@ -332,7 +334,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override open func setKeyboardType(_ type: KeyboardType) {
-    // TODO: 添加shift通配符功能
     keyboardContext.keyboardType = type
   }
 }

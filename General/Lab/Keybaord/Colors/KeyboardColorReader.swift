@@ -82,7 +82,8 @@ public extension KeyboardColorReader {
    The standard background color of a dark keyboard button.
    */
   static var hamsterStandardDarkButtonBackground: Color {
-    color(for: .standardDarkButtonBackground)
+//    color(for: .standardDarkButtonBackground)
+    Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.15))
   }
 
   /**
@@ -166,9 +167,7 @@ public extension KeyboardColorReader {
   static func hamsterStandardDarkButtonBackground(for context: KeyboardContext) -> Color {
     context.hasDarkColorScheme ?
       .hamsterStandardDarkButtonBackgroundForColorSchemeBug :
-      Color(UIColor(red: 0, green: 0, blue: 0, alpha: 0.15))
-//      .hamsterStandardDarkButtonBackground
-//      .opacity(0.4)
+      .hamsterStandardDarkButtonBackground
   }
 
   /**

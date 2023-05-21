@@ -20,11 +20,12 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     case .alphabetic: return hamsterInputSetProvider.alphabeticInputSet.rows
     case .numeric: return hamsterInputSetProvider.numericInputSet.rows
     case .symbolic: return hamsterInputSetProvider.symbolicInputSet.rows
-    // TODO: 自定义键盘
-//    case .custom(let name):
-//      default:
-//        return []
-//      }
+    case .custom(let name):
+      let customType = keyboardCustomType(rawValue: name)
+      switch customType {
+      case .numberNineGrid: return hamsterInputSetProvider.numericInputSet.rows
+      default: return [.init(chars: ["无"])]
+      }
     default: return []
     }
   }
@@ -50,18 +51,31 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
 
     let actions = KeyboardActionRows(characters: actionCharacters(for: inputs, context: context))
 
-    // 数字九宫格布局
-    if actions.count == 4, appSettings.enableNumberNineGrid {
-      var result = KeyboardActionRows()
-      // 第一行: 添加删除键
-      result.append(actions[0] + [.backspace])
-      // 第二行: 添加符号键
-      result.append(actions[1] + [.keyboardType(.symbolic)])
-      // 第三行: 添加键盘切换键
-      result.append(actions[2] + [.keyboardType(.alphabetic(.lowercased))])
-      // 第四行：添加回车键
-      result.append(actions[3] + [keyboardReturnAction(for: context)])
-      return result
+    // 自定义键盘类型布局
+    if case .custom(let name) = context.keyboardType, let customType = keyboardCustomType(rawValue: name) {
+      switch customType {
+      case .numberNineGrid: // 数字九宫格
+        if actions.count != 4 {
+          break
+        }
+
+        var result = KeyboardActionRows()
+        // 第一行: 添加删除键
+        result.append([.none] + actions[0] + [.backspace])
+        // 第二行: 添加符号键
+        result.append([.none] + actions[1] + [.space])
+        // 第三行: 添加键盘切换键
+        result.append([.none] + actions[2] + [.keyboardType(.emojis)])
+
+        // 第四行：添加回车键
+        // 根据键盘类型不同显示不同的切换键: 如数字键盘/字母键盘等切换键
+        // TODO: 这里需要将系统符号改为自定义符号键盘
+        result.append([.none, .keyboardType(.symbolic)] + actions[3] + [keyboardReturnAction(for: context)])
+        return result
+
+      default:
+        break
+      }
     }
 
     guard isExpectedActionSet(actions) else {
@@ -91,8 +105,9 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override func itemSizeWidth(
     for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemWidth
   {
-    // 开启数字九宫格，数字键盘中按键宽度一致
-    if appSettings.enableNumberNineGrid && context.keyboardType == .numeric {
+    // 自定义键盘类型宽度一致
+    // TODO: 其他类型键盘
+    if case .custom = context.keyboardType {
       return .input
     }
 
@@ -220,7 +235,11 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
     switch context.keyboardType {
     case .alphabetic(let casing): return .shift(currentCasing: casing)
     case .numeric: return .keyboardType(.symbolic)
-    case .symbolic: return .keyboardType(.numeric)
+    case .symbolic:
+      if appSettings.enableNumberNineGrid {
+        return keyboardCustomType.numberNineGrid.keyboardAction
+      }
+      return .keyboardType(.numeric)
     default: return nil
     }
   }
@@ -228,11 +247,14 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
     case .alphabetic:
+      if appSettings.enableNumberNineGrid {
+        return keyboardCustomType.numberNineGrid.keyboardAction
+      }
       return .keyboardType(.numeric)
     case .numeric: return .keyboardType(.alphabetic(.auto))
     case .symbolic: return .keyboardType(.alphabetic(.auto))
     case .custom(let name):
-      let customKeyboardType = KeyboardConstant.keyboardType(rawValue: name)
+      let customKeyboardType = keyboardCustomType(rawValue: name)
       switch customKeyboardType {
       case .numberNineGrid:
         return .keyboardType(.alphabetic(.auto))

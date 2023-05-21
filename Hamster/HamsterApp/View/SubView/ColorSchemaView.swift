@@ -163,8 +163,7 @@ struct ColorSchemaView_Previews: PreviewProvider {
   ]
 
   static var previews: some View {
-    ColorSchemaView(colorSchemas: sampleColorSchema)
-      .environmentObject(RimeContext())
+    ColorSchemaView()
       .environmentObject(HamsterAppSettings())
   }
 }

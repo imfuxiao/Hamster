@@ -110,7 +110,7 @@ struct BackupView: View {
         }
       )
     }
-    .hiddenListSectionSeparator()
+    .hideListRowSeparator()
     .functionCell()
     .listRowBackground(Color.HamsterBackgroundColor)
   }
@@ -130,7 +130,7 @@ struct BackupView: View {
           selectRestoreFileURL = backupURL
         }
       }
-      .hiddenListSectionSeparator()
+      .hideListRowSeparator()
       .functionCell()
       .listRowBackground(Color.HamsterBackgroundColor)
     }

@@ -13,6 +13,10 @@ struct InputSchemaError: Error {
 }
 
 struct InputSchemaView: View {
+  init() {
+    Logger.shared.log.debug("InputSchemaView init")
+  }
+
   @State var schemas: [Schema] = []
   @State var rimeError: Error?
   @State var showHamsteriCloud = false
@@ -26,10 +30,6 @@ struct InputSchemaView: View {
 
   @Environment(\.dismiss)
   var dismiss
-
-  init() {
-    Logger.shared.log.debug("InputSchemaView init()")
-  }
 
   /// 导入zip文件
   func importCallback(file: HamsterDocument) {

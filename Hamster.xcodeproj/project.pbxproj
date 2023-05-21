@@ -78,6 +78,11 @@
 		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
 		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
 		C05BDC562A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */; };
+		C0614AA22A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */; };
+		C0614AA32A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */; };
+		C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
+		C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
+		C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */; };
 		C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071A2442A17786B00FBE5A2 /* OneHandedView.swift */; };
 		C0734DCD2A16EF250046173E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = C0734DCC2A16EF250046173E /* ProgressHUD */; };
 		C0734DD12A16EF780046173E /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0734DD02A16EF780046173E /* ProgressHUD.swift */; };
@@ -86,6 +91,7 @@
 		C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43429FB7AD500718DAD /* File+yaml.swift */; };
 		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
 		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
+		C0837F142A1E0A2700530A9B /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
 		C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */; };
 		C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */; };
 		C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */; };
@@ -217,12 +223,19 @@
 		C0B19F272A0CFAD7006AAA28 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F262A0CFAD7006AAA28 /* TreeSitterLuaQueries */; };
 		C0B19F292A0CFAD7006AAA28 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F282A0CFAD7006AAA28 /* TreeSitterLuaRunestone */; };
 		C0B19F2B2A0D997A006AAA28 /* SelectInputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */; };
+		C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
+		C0B7E4822A1F04DF004A839F /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* SymbolView.swift */; };
+		C0B7E4832A1F04DF004A839F /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* SymbolView.swift */; };
+		C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
+		C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
 		C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAF329E5A397008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C9F03C29CF43F9004B2C33 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03B29CF43F9004B2C33 /* LibrimeKit */; };
 		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
+		C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */; };
+		C0CEA4E52A19A8510071ECEB /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */; };
 		C0D672B429F1E0E7002D0439 /* SharedSupport.zip in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D672B329F1E066002D0439 /* SharedSupport.zip */; };
 		C0D672B729F1EFF3002D0439 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C0D672B629F1EFF3002D0439 /* ZIPFoundation */; };
 		C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */; };
@@ -362,6 +375,9 @@
 		C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseInputSetProvider.swift; sourceTree = "<group>"; };
 		C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSwipeGestureHandler.swift; sourceTree = "<group>"; };
 		C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSystemKeyboardSpaceContent.swift; sourceTree = "<group>"; };
+		C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HamsterKeyboardButton.swift"; sourceTree = "<group>"; };
+		C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonBody.swift; sourceTree = "<group>"; };
+		C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingView.swift; sourceTree = "<group>"; };
 		C071A2442A17786B00FBE5A2 /* OneHandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneHandedView.swift; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C0734DD02A16EF780046173E /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
@@ -370,6 +386,7 @@
 		C074C43429FB7AD500718DAD /* File+yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+yaml.swift"; sourceTree = "<group>"; };
 		C074C43929FB7DFD00718DAD /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
 		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridKeyboard.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C09949D72A01604A00E26BA4 /* File+iCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+iCloud.swift"; sourceTree = "<group>"; };
 		C09F6AF92A0872E500F2EF18 /* RIMEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIMEView.swift; sourceTree = "<group>"; };
@@ -387,6 +404,8 @@
 		C0A602F72A18611E000DC924 /* RimeContext+File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+File+Zip.swift"; sourceTree = "<group>"; };
 		C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInputSchemaView.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+Color.swift"; sourceTree = "<group>"; };
+		C0B7E4812A1F04DF004A839F /* SymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolView.swift; sourceTree = "<group>"; };
+		C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+Preview.swift"; sourceTree = "<group>"; };
 		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0C7EAE529E59324008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C0C7EAE729E59F2C008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -399,6 +418,7 @@
 		C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSXKeyCode.swift; sourceTree = "<group>"; };
 		C0CB388629EA51AD007211E7 /* keysymdef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keysymdef.swift; sourceTree = "<group>"; };
 		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardType.swift; sourceTree = "<group>"; };
 		C0D671AC29F0B8DF002D0439 /* HamsterKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboard.swift; sourceTree = "<group>"; };
 		C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		C0D672B329F1E066002D0439 /* SharedSupport.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = SharedSupport.zip; sourceTree = "<group>"; };
@@ -523,8 +543,8 @@
 		C02435732A0490220080CFB4 /* HamsterApp */ = {
 			isa = PBXGroup;
 			children = (
-				C02435922A0490220080CFB4 /* LaunchScreen.swift */,
 				C02435742A0490220080CFB4 /* HamsterApp.swift */,
+				C02435922A0490220080CFB4 /* LaunchScreen.swift */,
 				C02435752A0490220080CFB4 /* View */,
 			);
 			path = HamsterApp;
@@ -575,6 +595,7 @@
 				C02435872A0490220080CFB4 /* SyncView.swift */,
 				C0DEDB8B2A12596F00E17F84 /* BackupView.swift */,
 				C09F6AF92A0872E500F2EF18 /* RIMEView.swift */,
+				C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -787,6 +808,8 @@
 				C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */,
 				C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */,
 				C071A2442A17786B00FBE5A2 /* OneHandedView.swift */,
+				C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */,
+				C0B7E4812A1F04DF004A839F /* SymbolView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -794,6 +817,7 @@
 		C04FA8E4299A65AC00F8CC32 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
+				C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */,
 				C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */,
 			);
 			path = Keyboard;
@@ -916,6 +940,7 @@
 				C04FA8C5299A65AC00F8CC32 /* Layout */,
 				C04FA8CC299A65AC00F8CC32 /* Locals */,
 				C04FA8E7299A65AC00F8CC32 /* Localization */,
+				C0B7E4842A1F0813004A839F /* Preview */,
 				C04FA8CE299A65AC00F8CC32 /* Gestures */,
 				C099464429B28602007FD3CA /* Image */,
 				C04FA8D8299A65AC00F8CC32 /* View */,
@@ -945,6 +970,8 @@
 				C09F6B0B2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift */,
 				C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */,
 				C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */,
+				C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */,
+				C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */,
 			);
 			path = KeyboardView;
 			sourceTree = "<group>";
@@ -957,6 +984,14 @@
 				C0D671AC29F0B8DF002D0439 /* HamsterKeyboard.swift */,
 			);
 			path = remove;
+			sourceTree = "<group>";
+		};
+		C0B7E4842A1F0813004A839F /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		C0D671B029F16D76002D0439 /* SharedSupport */ = {
@@ -1228,6 +1263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */,
 				C0A3CDFA2A0B544E0068D737 /* OSXKeyCode.swift in Sources */,
 				C0A3CDFB2A0B544E0068D737 /* keysymdef.swift in Sources */,
 				C0A3CDE02A0B54000068D737 /* KeyboardViewController.swift in Sources */,
@@ -1275,12 +1311,15 @@
 				C024359C2A0490230080CFB4 /* CircleActivityView.swift in Sources */,
 				C0734DD52A16F9B90046173E /* RIMEViewModel.swift in Sources */,
 				C024359B2A0490230080CFB4 /* DotsLoadingView.swift in Sources */,
+				C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */,
+				C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */,
 				C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
 				C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */,
 				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
 				C02435AD2A0490230080CFB4 /* FileManagerView.swift in Sources */,
 				C09F6B062A08F68100F2EF18 /* HamsterKeyboardGestures.swift in Sources */,
+				C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */,
 				C0519E0329F926CC00513008 /* Checkbox.swift in Sources */,
 				C074C43329FB7A4900718DAD /* File.swift in Sources */,
 				C02435AA2A0490230080CFB4 /* InputEditorView.swift in Sources */,
@@ -1288,6 +1327,7 @@
 				C02435AE2A0490230080CFB4 /* ColorSchemaView.swift in Sources */,
 				C02435AC2A0490230080CFB4 /* ShortcutSettingsView.swift in Sources */,
 				C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */,
+				C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */,
 				C0A3CDD92A0A768F0068D737 /* KeyboardColorReader.swift in Sources */,
 				C02435E52A071BC50080CFB4 /* File+Backup.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */,
@@ -1302,6 +1342,7 @@
 				C037B61529CC37AD00B1BBDC /* View+Extend.swift in Sources */,
 				C02435B82A04B8170080CFB4 /* MetadataProvider.swift in Sources */,
 				C0A602F82A18611E000DC924 /* RimeContext+File+Zip.swift in Sources */,
+				C0B7E4822A1F04DF004A839F /* SymbolView.swift in Sources */,
 				C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */,
 				C09F6AFD2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift in Sources */,
 				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
@@ -1324,6 +1365,7 @@
 				C0458A8029B1339300262E69 /* RimeContext+Color.swift in Sources */,
 				C02435A02A0490230080CFB4 /* HamsteriCloudView.swift in Sources */,
 				C02435B22A0490230080CFB4 /* ContentView.swift in Sources */,
+				C0614AA22A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
 				C0A3CE012A0B59BC0068D737 /* InputCallout.swift in Sources */,
 				C0DEDB892A110AAE00E17F84 /* Rime+Model.swift in Sources */,
 				C016994629FBC24C0047B49E /* File+Zip.swift in Sources */,
@@ -1367,13 +1409,16 @@
 				C0A602B62A185D9A000DC924 /* HamsterKeyboardActionHandler.swift in Sources */,
 				C0A602B72A185D9A000DC924 /* KeyboardAction+Buttons.swift in Sources */,
 				C0A602B82A185D9A000DC924 /* KeyboardAction+Actions.swift in Sources */,
+				C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */,
 				C0A602B92A185D9A000DC924 /* KeyboardAction+Return.swift in Sources */,
 				C0A602BA2A185D9A000DC924 /* KeyboardColor.swift in Sources */,
+				C0837F142A1E0A2700530A9B /* NumNineGridKeyboard.swift in Sources */,
 				C0A602BB2A185D9A000DC924 /* KeyboardColorReader.swift in Sources */,
 				C0A602BC2A185D9A000DC924 /* HamsterKeyboardAppearance.swift in Sources */,
 				C0A602BD2A185D9A000DC924 /* HamsterKeyboardBehavior.swift in Sources */,
 				C0A602BE2A185D9A000DC924 /* HamsterActionCalloutContext.swift in Sources */,
 				C0A602BF2A185D9B000DC924 /* HamsterCalloutActionProvider.swift in Sources */,
+				C0614AA32A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
 				C0A602C02A185D9B000DC924 /* View+Callouts.swift in Sources */,
 				C0A602C12A185D9B000DC924 /* InputCallout.swift in Sources */,
 				C0A602C22A185D9B000DC924 /* KeyboardType+Button.swift in Sources */,
@@ -1383,6 +1428,7 @@
 				C0A602C62A185D9B000DC924 /* iPadKeyboardLayoutProvider.swift in Sources */,
 				C0A602C72A185D9B000DC924 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C0A602C82A185D9B000DC924 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
+				C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */,
 				C0A602C92A185D9B000DC924 /* KeyboardLocale.swift in Sources */,
 				C0A602CA2A185D9B000DC924 /* KKL10n.swift in Sources */,
 				C0A602CB2A185D9B000DC924 /* SwipeGestureHandler.swift in Sources */,
@@ -1405,9 +1451,11 @@
 				C0A602DC2A185D9B000DC924 /* HamsterKeyboardGestures.swift in Sources */,
 				C0A602DD2A185D9B000DC924 /* HamsterGestureButton.swift in Sources */,
 				C0A602DE2A185D9B000DC924 /* HamsterScrollViewGestureButton.swift in Sources */,
+				C0CEA4E52A19A8510071ECEB /* KeyboardType.swift in Sources */,
 				C0A602DF2A185D9B000DC924 /* KeyboardContext+KeyboardType.swift in Sources */,
 				C0A602E02A185D9B000DC924 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
 				C0A602B32A185D88000DC924 /* KeyboardInputViewController.swift in Sources */,
+				C0B7E4832A1F04DF004A839F /* SymbolView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1644,7 +1692,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.9;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1684,7 +1732,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.9;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1716,7 +1764,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.9;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1747,7 +1795,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.9;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";

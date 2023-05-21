@@ -57,7 +57,12 @@ extension KeyboardAction {
   var hamsterStandardReleaseAction: GestureAction? {
     switch self {
     case .character(let char), .characterMargin(let char): return {
-        $0?.insertText(char)
+        guard let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController else { return }
+        if ivc.keyboardContext.keyboardType.isNumberNineGrid, ivc.appSettings.enableNumberNineGridInputOnScreenMode {
+          ivc.textDocumentProxy.insertText(char)
+          return
+        }
+        ivc.insertText(char)
       }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return {

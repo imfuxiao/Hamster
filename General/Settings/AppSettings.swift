@@ -150,6 +150,10 @@ private enum HamsterAppSettingKeys: String {
 
   // 启用数字九宫格键盘
   case enableNumberNineGrid = "keyboard.enableNumberNineGrid"
+  // 启用数字九宫格直接上屏模式
+  case enableNumberNineGridInputOnScreenMode = "keyboard.enableNumberNineGridInputOnScreenMode"
+  // 数字九宫格符号
+  case numberNineGridSymbols = "keyboard.numberNineGridSymbols"
 
   // 键盘是否自动小写
   case enableKeyboardAutomaticallyLowercase = "keyboard.enableKeyboardAutomaticallyLowercase"
@@ -222,6 +226,8 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.showKeyExtensionArea.rawValue: true,
       HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue: [:] as [String: String],
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
+      HamsterAppSettingKeys.enableNumberNineGridInputOnScreenMode.rawValue: true,
+      HamsterAppSettingKeys.numberNineGridSymbols.rawValue: ["+", "-", "×", "÷", "%", "@"] as [String],
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
       HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
@@ -289,6 +295,8 @@ public class HamsterAppSettings: ObservableObject {
     self.showKeyExtensionArea = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyExtensionArea.rawValue)
     self.keyboardSwipeGestureSymbol = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue) as! [String: String]
     self.enableNumberNineGrid = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
+    self.enableNumberNineGridInputOnScreenMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNumberNineGridInputOnScreenMode.rawValue)
+    self.numberNineGridSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.numberNineGridSymbols.rawValue) as! [String]
     self.enableKeyboardAutomaticallyLowercase = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue)
     self.enableInputEmbeddedMode = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue)
     self.rimeUseSquirrelSettings = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue)
@@ -600,6 +608,26 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, enableNumberNineGrid": enableNumberNineGrid])
       UserDefaults.hamsterSettingsDefault.set(
         enableNumberNineGrid, forKey: HamsterAppSettingKeys.enableNumberNineGrid.rawValue)
+    }
+  }
+
+  // 键盘: 启用数字九宫格直接上屏模式
+  @Published
+  var enableNumberNineGridInputOnScreenMode: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableNumberNineGridInputOnScreenMode": enableNumberNineGridInputOnScreenMode])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableNumberNineGridInputOnScreenMode, forKey: HamsterAppSettingKeys.enableNumberNineGridInputOnScreenMode.rawValue)
+    }
+  }
+
+  // 键盘: 数字九宫格符号
+  @Published
+  var numberNineGridSymbols: [String] {
+    didSet {
+      Logger.shared.log.info(["AppSettings, numberNineGridSymbols": numberNineGridSymbols])
+      UserDefaults.hamsterSettingsDefault.set(
+        numberNineGridSymbols, forKey: HamsterAppSettingKeys.numberNineGridSymbols.rawValue)
     }
   }
 

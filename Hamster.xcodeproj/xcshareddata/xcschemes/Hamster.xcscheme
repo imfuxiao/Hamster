@@ -33,17 +33,6 @@
             parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C0F858B029A2A943003A2ED4"
-               BuildableName = "HamsterAppTests.xctest"
-               BlueprintName = "HamsterAppTests"
-               ReferencedContainer = "container:Hamster.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "C02435BF2A05F2E20080CFB4"
                BuildableName = "HamsterTests.xctest"
                BlueprintName = "HamsterTests"

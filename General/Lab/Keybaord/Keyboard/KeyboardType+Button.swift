@@ -11,7 +11,7 @@ extension KeyboardType {
     case .numeric: return KKL10n.keyboardTypeNumeric.hamsterText(for: context)
     case .symbolic: return KKL10n.keyboardTypeSymbolic.hamsterText(for: context)
     case .custom(let name):
-      if let customKeyboard = KeyboardConstant.keyboardType(rawValue: name) {
+      if let customKeyboard = keyboardCustomType(rawValue: name) {
         return customKeyboard.buttonName
       }
       return nil
