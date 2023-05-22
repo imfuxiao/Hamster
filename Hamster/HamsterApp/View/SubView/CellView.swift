@@ -52,8 +52,8 @@ struct CellDestinationRoute: CellDestination {
       InputEditorView()
     case .swipeGestureMapping:
       SwipeGestureActionView()
-    case .about:
-      AboutView()
+//    case .about:
+//      AboutView()
     default:
       EmptyView()
     }
@@ -271,13 +271,13 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: ObservedO
       destinationType: .swipeGestureMapping,
       toggleValue: .constant(false)
     ),
-    CellViewModel(
-      cellWidth: cellWidth,
-      cellHeight: cellHeight,
-      cellName: "关于",
-      imageName: "info.circle",
-      destinationType: .about
-    ),
+//    CellViewModel(
+//      cellWidth: cellWidth,
+//      cellHeight: cellHeight,
+//      cellName: "关于",
+//      imageName: "info.circle",
+//      destinationType: .about
+//    ),
   ]
 }
 

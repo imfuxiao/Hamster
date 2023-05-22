@@ -12,10 +12,10 @@ struct AboutView: View {
   @Environment(\.openURL) var openURL
 
   let openSourceSoftLists = """
-    • https://github.com/rime/librime
-    • https://github.com/KeyboardKit/KeyboardKit
-    • https://github.com/SwiftyBeaver/SwiftyBeaver
-    • https://github.com/vapor/vapor
+  • https://github.com/rime/librime
+  • https://github.com/KeyboardKit/KeyboardKit
+  • https://github.com/SwiftyBeaver/SwiftyBeaver
+  • https://github.com/simonbs/Runestone
   """
 
   var body: some View {
@@ -48,10 +48,12 @@ struct AboutView: View {
           }
 
           SectionView("使用开源库") {
-            VStack {
-              HStack {
+            VStack(alignment: .leading, spacing: 0) {
+              HStack(alignment: .center, spacing: 0) {
                 Text(openSourceSoftLists)
-                  .scaleEffect(0.8)
+                  .font(.system(size: 10))
+                  .minimumScaleFactor(0.5)
+
                 Spacer()
               }
             }
@@ -77,12 +79,12 @@ struct AboutView: View {
           SectionView("寻求帮助") {
             VStack {
               HStack {
-                Text("个人能力有限, 目前软件还不完善, 给您造成困扰, 我感到万分抱歉. 您可以给我发邮件, 把您遇到的问题发给我.  如果您有能力动手改代码, 也欢迎您提交PR.")
+                Text("个人能力有限，目前软件还不完善，给您造成困扰，我感到万分抱歉。您可以给我发邮件，把您遇到的问题发给我。如果您可以动手改代码，也欢迎您提交PR。")
                 Spacer()
               }
 
               HStack {
-                Text("邮箱:")
+                Text("邮箱：")
                 Spacer()
               }
               HStack {
@@ -91,7 +93,7 @@ struct AboutView: View {
               }
 
               HStack {
-                Text("项目地址:")
+                Text("项目地址：")
                 Spacer()
               }
               HStack {

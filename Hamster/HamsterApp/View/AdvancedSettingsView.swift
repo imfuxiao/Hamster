@@ -59,6 +59,16 @@ struct AdvancedSettingsView: View {
     }
   }
 
+  var aboutView: some View {
+    SectionView("关于") {
+      NavigationLink {
+        AboutView()
+      } label: {
+        AdvancedSettingCellView(image: "info.circle", title: "关于")
+      }
+    }
+  }
+
   var body: some View {
     VStack(alignment: .center, spacing: 0) {
       ScrollView {
@@ -67,6 +77,8 @@ struct AdvancedSettingsView: View {
 
         // RIME
         rimeView
+
+        aboutView
       }
     }
     .background(Color.HamsterBackgroundColor.ignoresSafeArea())
