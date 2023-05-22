@@ -30,6 +30,18 @@ extension FileManager {
     return schemaIds
   }
 
+  func getSyncPath(_ url: URL) -> String? {
+    guard let yamlContent = getStringFromFile(at: url) else { return nil }
+    do {
+      if let yamlFileContent = try Yams.load(yaml: yamlContent) as? [String: Any] {
+        return yamlFileContent["sync_dir"] as? String
+      }
+    } catch {
+      Logger.shared.log.error("yaml load error \(error.localizedDescription), url:\(url)")
+    }
+    return nil
+  }
+
   func mergePatchSchemaList(_ yamlURL: URL, schemaIds: [String]) -> String? {
     guard let yamlContent = getStringFromFile(at: yamlURL) else {
       Logger.shared.log.error("get yaml content is nil. url = \(yamlURL)")

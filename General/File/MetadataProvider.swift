@@ -21,7 +21,7 @@ class MetadataProvider {
     let publishers = names.map { NotificationCenter.default.publisher(for: $0) }
     querySubscriber = Publishers
       .MergeMany(publishers)
-      .receive(on: DispatchQueue.main)
+      .receive(on: DispatchQueue.global())
       .sink { notification in
         guard notification.object as? NSMetadataQuery === self.metadataQuery else { return }
         

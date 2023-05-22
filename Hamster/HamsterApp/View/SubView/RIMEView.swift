@@ -20,10 +20,9 @@ sync_dir: "/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~ha
 
 let _rimeSyncRemark = """
 注意：
-1. 如果没有开启完全访问权限，无法将键盘中的词库文件拷贝至应用；
-2. RIME同步配置需要手工添加参数至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；
-3. 示例中的`installation_id`与`sync_dir`可自行修改，注意：如果路径错误会导致应用Crash；
-4. 同步配置示例：(点击可复制)
+1. RIME同步配置需要手工添加参数至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；
+2. 示例中的`installation_id`与`sync_dir`可自行修改，注意：如果路径错误会导致应用Crash；
+3. 同步配置示例：(点击可复制)
 ```
 \(_rimeSyncDemo)
 ```
@@ -87,14 +86,7 @@ struct RIMEView: View {
                 buttonText: "RIME同步"
               ) {
                 DispatchQueue.global().async {
-                  let handled = rimeViewModel.rimeSync()
-                  DispatchQueue.main.async {
-                    if !handled {
-                      showAlert = true
-                      alertTitle = "同步"
-                      alertMessage = "同步失败"
-                    }
-                  }
+                  rimeViewModel.rimeSync()
                 }
               }
 
@@ -104,26 +96,6 @@ struct RIMEView: View {
                 showResetAlert = true
               }
               .alert(isPresented: $showResetAlert) { resetAlert }
-
-              LongButton(
-                buttonText: "拷贝键盘词库文件至应用目录"
-              ) {
-                DispatchQueue.global().async {
-                  ProgressHUD.show("拷贝中……", interaction: true)
-                  do {
-                    try rimeContext.copyAppGroupUserDict()
-                  } catch {
-                    DispatchQueue.main.async {
-                      ProgressHUD.dismiss()
-                      showAlert = true
-                      alertTitle = "拷贝词库文件"
-                      alertMessage = "拷贝失败：\(error.localizedDescription)"
-                    }
-                    return
-                  }
-                  ProgressHUD.showSuccess("拷贝词库成功", delay: 1.5)
-                }
-              }
             }
             .padding(.horizontal)
 

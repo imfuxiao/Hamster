@@ -15,7 +15,10 @@ import ZIPFoundation
 @main
 @available(iOS 14, *)
 struct HamsterApp: App {
+  @StateObject
   var appSettings = HamsterAppSettings()
+
+  @StateObject
   var rimeContext = RimeContext()
   @State var cancelable = Set<AnyCancellable>()
   @State var launchScreenState = true
@@ -70,7 +73,7 @@ struct HamsterApp: App {
   // App加载数据
   func appLoadData() {
     appSettings.$enableAppleCloud
-      .receive(on: RunLoop.main)
+      .receive(on: DispatchQueue.main)
       .sink {
         if $0 {
           Logger.shared.log.info("apple cloud MetadataProvider create.")

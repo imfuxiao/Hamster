@@ -83,13 +83,14 @@ extension RimeContext {
   }
 
   /// RIME同步
-  func syncRime() throws {
+  func syncRime() throws -> Bool {
     Rime.shared.shutdown()
     Rime.shared.start(Rime.createTraits(
       sharedSupportDir: RimeContext.sandboxSharedSupportDirectory.path,
       userDataDir: RimeContext.sandboxUserDataDirectory.path
     ), maintenance: true, fullCheck: true)
-    Rime.shared.API().syncUserData()
+    let handled = Rime.shared.API().syncUserData()
     Rime.shared.shutdown()
+    return handled
   }
 }

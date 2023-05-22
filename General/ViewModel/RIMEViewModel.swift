@@ -40,25 +40,45 @@ struct RIMEViewModel {
   }
 
   /// Rime同步
-  func rimeSync() -> Bool {
+  func rimeSync() {
     ProgressHUD.show("RIME同步中……", interaction: false)
 
-    // TODO: 增加同步路径检测（sync_dir），检测是否有权限写入。
     // 先打开iCloud地址，防止Crash
     _ = FileManager.iCloudDocumentURL
+
+    // 增加同步路径检测（sync_dir），检测是否有权限写入。
+    if let syncDir = FileManager.default.getSyncPath(RimeContext.sandboxInstallationYaml) {
+      if !FileManager.default.fileExists(atPath: syncDir) {
+        do {
+          try FileManager.default.createDirectory(atPath: syncDir, withIntermediateDirectories: true)
+        } catch {
+          ProgressHUD.showError("同步地址：\(syncDir)，无写入权限", delay: 1.5)
+          return
+        }
+      } else {
+        if !FileManager.default.isWritableFile(atPath: syncDir) {
+          ProgressHUD.showError("同步地址：\(syncDir)，无写入权限", delay: 1.5)
+          return
+        }
+      }
+    }
+
     do {
       // TODO: 将AppGroup下词库文件copy至应用目录
       // 只copy用户词库文件
       // try rimeContext.copyAppGroupUserDict()
-      try rimeContext.syncRime()
+      let handled = try rimeContext.syncRime()
+      if !handled {
+        ProgressHUD.showError("同步失败", delay: 1.5)
+        return
+      }
     } catch {
       ProgressHUD.showError("同步失败", delay: 1.5)
       Logger.shared.log.error("rime sync error \(error.localizedDescription)")
-      return false
+      return
     }
 
     ProgressHUD.showSuccess("同步成功", delay: 1.5)
-    return true
   }
 
   /// Rime重置

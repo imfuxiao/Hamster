@@ -12,24 +12,20 @@ import SwiftUI
 
 let _iCloudRemark = """
 注意：
-1. 与其他修改方案相同，iCloud中变动必须点击“重新部署”方能生效；
-2. 启用iCloud后，每次“重新部署”，会增量（文件名相同且内容相同的文件或文件夹会跳过）形式将iCloud中的文件拷贝至应用内部；
-3. 启用iCloud后，输入方案会存储在iCloud下的`Hamster/RIME`文件夹下（中文系统为：仓输入法/RIME）;
-4. 在启用iCloud后，仓应用在启动时会在后台监听iCloud文件变化，但因网络等因素，仓不能保证同步一定会成功, 需要您在点击“重新部署”按钮前自行确认;
-  （您可使用系统内置应用Files应用确认文件是否已全部同步完毕）；
-5. 如果方案还没有同步到手机端，此时点击“重新部署”会可能导致输入法输入异常；
+1. 启用后，每次运行“重新部署”会复制与iCloud中不同的文件；
+2. 当iCloud中文件没有从云端下载，此时点击“重新部署”可能会导致输入法异常；
 """
 
 let _copyRemark = """
 注意：
-1. 应用内部的方案文件（如自造词文件）在变动后，不会自动同步到iCloud，需要您手工点击“拷贝方案至iCloud”；
-2. “拷贝方案至iCloud”与“RIME同步”是不同的功能；
+1. 应用内的文件不会自动同步到iCloud，需要您手工执行此功能；
+2. 拷贝行为默认为全量拷贝，如需过滤拷贝内容，需要配合下面的过滤表达式一起使用；
+3. 过滤表达式在“重新部署”功能中也会生效；
 """
 
 let _copyToCloudFilterRegexRemark = """
 1. 多个正则表达式使用英文逗号分隔；
-2. 需要过滤功能的伙伴，请自行设置;
-3. 常用正则示例（点击可复制全部表达式，记得按需修改或调整）:
+2. 常用示例（点击可复制全部表达式，请按需修改）:
    * 过滤userdb目录 ^.*[.]userdb.*$
    * 过滤build目录 ^.*build.*$
    * 过滤SharedSupport目录 ^.*SharedSupport.*$
@@ -77,7 +73,7 @@ struct SyncView: View {
   var copyInputSchemaToAppleCloud: some View {
     VStack {
       HStack {
-        Text("拷贝方案至iCloud")
+        Text("拷贝本地文件至iCloud")
 
         Spacer()
 
@@ -89,7 +85,7 @@ struct SyncView: View {
                 Color.clear
                   .contentShape(Rectangle())
                   .onTapGesture {
-                    ProgressHUD.show("拷贝方案至iCloud中……", interaction: false)
+                    ProgressHUD.show("拷贝本地文件至iCloud中……", interaction: false)
                     DispatchQueue.global().async {
                       do {
                         let regexList = appSettings.copyToCloudFilterRegex.split(separator: ",").map { String($0) }
@@ -99,7 +95,7 @@ struct SyncView: View {
                         DispatchQueue.main.async {
                           ProgressHUD.dismiss()
                           showAlert = true
-                          alertMessage = "拷贝方案至iCloud异常：\(error.localizedDescription)"
+                          alertMessage = "拷贝异常：\(error.localizedDescription)"
                         }
                         return
                       }
@@ -127,7 +123,7 @@ struct SyncView: View {
   var regexFilterView: some View {
     VStack {
       HStack {
-        TextField("拷贝过滤表达式", text: $appSettings.copyToCloudFilterRegex)
+        TextField("过滤表达式", text: $appSettings.copyToCloudFilterRegex)
           .textFieldStyle(BorderTextFieldBackground(systemImageString: "pencil"))
           .padding(.vertical, 5)
           .foregroundColor(.secondary)
@@ -168,7 +164,7 @@ struct SyncView: View {
             regexFilterView
               .padding(.horizontal)
           }
-          .background(Color.HamsterBackgroundColor)
+          .padding(.top, 10)
         }
         .frame(minWidth: 0, maxWidth: .infinity)
       }
