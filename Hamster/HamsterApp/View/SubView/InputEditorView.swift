@@ -188,6 +188,16 @@ struct CandidateBarShowModeSettingView: View {
 
     VStack {
       HStack {
+        Toggle(isOn: $appSettings.enableShowCandidateIndex) {
+          Text("显示候选项索引")
+            .font(.system(size: 16, weight: .bold, design: .rounded))
+        }
+      }
+    }
+    .functionCell()
+
+    VStack {
+      HStack {
         Stepper(value: $appSettings.xSwipeSensitivity, in: 1 ... 50, step: 1) {
           Text("横向滑动灵敏度（值越小越灵敏）: \(appSettings.xSwipeSensitivity)")
         }

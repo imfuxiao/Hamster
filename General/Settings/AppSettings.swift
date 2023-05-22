@@ -180,6 +180,9 @@ private enum HamsterAppSettingKeys: String {
 
   // 候选栏开关
   case enableCandidateBar = "app.keyboard.enableCandidateBar"
+
+  // 开启候选文字索引显示
+  case enableShowCandidateIndex = "app.keyboard.enableShowCandidateIndex"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -229,6 +232,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.copyToCloudFilterRegex.rawValue: "",
       HamsterAppSettingKeys.candidateBarHeight.rawValue: 50,
       HamsterAppSettingKeys.enableCandidateBar.rawValue: true,
+      HamsterAppSettingKeys.enableShowCandidateIndex.rawValue: false,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -294,6 +298,7 @@ public class HamsterAppSettings: ObservableObject {
     self.copyToCloudFilterRegex = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.copyToCloudFilterRegex.rawValue) ?? ""
     self.candidateBarHeight = CGFloat(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.candidateBarHeight.rawValue))
     self.enableCandidateBar = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableCandidateBar.rawValue)
+    self.enableShowCandidateIndex = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableShowCandidateIndex.rawValue)
   }
 
   // App是否首次运行
@@ -660,12 +665,11 @@ public class HamsterAppSettings: ObservableObject {
         keyboardOneHandOnRight, forKey: HamsterAppSettingKeys.keyboardOneHandOnRight.rawValue)
     }
   }
-  
+
   // TODO: 单手模式宽度
   var keyboardOneHandWidth: CGFloat {
     72
   }
-
 
   // 启用iCloud
   @Published
@@ -704,6 +708,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, enableCandidateBar": enableCandidateBar])
       UserDefaults.hamsterSettingsDefault.set(
         enableCandidateBar, forKey: HamsterAppSettingKeys.enableCandidateBar.rawValue)
+    }
+  }
+
+  // 是否显示候选文字索引
+  @Published
+  var enableShowCandidateIndex: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableShowCandidateIndex": enableShowCandidateIndex])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableShowCandidateIndex, forKey: HamsterAppSettingKeys.enableShowCandidateIndex.rawValue)
     }
   }
 }

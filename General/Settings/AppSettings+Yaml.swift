@@ -225,6 +225,11 @@ public extension HamsterAppSettings {
         self.enableCandidateBar = value
         Logger.shared.log.debug("set enableCandidateBar = \(value)")
       }
+    case "enable_show_candidate_index":
+      if let value = node.bool {
+        self.enableShowCandidateIndex = value
+        Logger.shared.log.debug("set enableShowCandidateIndex = \(value)")
+      }
     default:
       break
     }

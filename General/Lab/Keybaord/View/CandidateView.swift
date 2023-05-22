@@ -35,6 +35,7 @@ struct CandidateView: View {
 
   @State private var isPressed: Bool = false
   @EnvironmentObject var keyboardContext: KeyboardContext
+  @EnvironmentObject var appSettings: HamsterAppSettings
 
   var foregroundColor: Color {
     guard let colorSchema = appearance.hamsterColorSchema else { return .primary }
@@ -61,7 +62,7 @@ struct CandidateView: View {
 
   var body: some View {
     HStack(alignment: .center, spacing: 0) {
-      Text(data.text)
+      Text(appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.text)" : data.text)
         .font(style.item.titleFont.font)
         .foregroundColor(foregroundColor)
 
@@ -150,7 +151,7 @@ struct CandidateHStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let titleFont = (data.title as NSString).size(withAttributes: titleFontAttributes)
+        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
 
         let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
         let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
@@ -206,7 +207,7 @@ struct CandidateVStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let titleFont = (data.title as NSString).size(withAttributes: titleFontAttributes)
+        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
 
         let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
         let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
