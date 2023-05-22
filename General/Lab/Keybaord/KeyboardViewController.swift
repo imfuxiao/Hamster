@@ -7,18 +7,18 @@ import os
 import UIKit
 
 /// TODO 键盘启动时间监控
-//@available(iOS 15.0, *)
-//let signposter = OSSignposter(subsystem: "com.ihsiao.app.hamster", category: "keybaord")
+// @available(iOS 15.0, *)
+// let signposter = OSSignposter(subsystem: "com.ihsiao.app.hamster", category: "keybaord")
 //
-//@available(iOS 15.0, *)
-//let signpostID = signposter.makeSignpostID()
+// @available(iOS 15.0, *)
+// let signpostID = signposter.makeSignpostID()
 //
-//let name: StaticString = "keyboard"
+// let name: StaticString = "keyboard"
 //
 //// Begin a signposted interval and keep a reference to the
 //// returned interval state.
-//@available(iOS 15.0, *)
-//var state = signposter.beginInterval(name, id: signpostID, "keyboard start begin")
+// @available(iOS 15.0, *)
+// var state = signposter.beginInterval(name, id: signpostID, "keyboard start begin")
 
 // Hamster键盘Controller
 open class HamsterKeyboardViewController: KeyboardInputViewController {
@@ -125,11 +125,19 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.setup {
       let ivc = $0 as! HamsterKeyboardViewController
 
-//      let screenWidth = UIScreen.main.bounds.size.width
-//      Logger.shared.log.debug("screenWidth: \(screenWidth)")
-//      let screenWidthInPixels = screenWidth * UIScreen.main.scale
-//      Logger.shared.log.debug("screenWidthInPixels: \(screenWidthInPixels)")
-//      Logger.shared.log.debug("ivc.view.frame.width: \(ivc.view.frame.width)")
+      // let screenWidth = UIScreen.main.bounds.size.width
+      // Logger.shared.log.debug("screenWidth: \(screenWidth)")
+      // let screenWidthInPixels = screenWidth * UIScreen.main.scale
+      // Logger.shared.log.debug("screenWidthInPixels: \(screenWidthInPixels)")
+      // Logger.shared.log.debug("ivc.view.frame.width: \(ivc.view.frame.width)")
+
+      // fix: 横向状态下 ivc.view.frame.width 与 UIScreen.main.bounds.size.width 相等，导致键盘显示溢出
+      // 150 为键盘两边切换按钮和听写区域宽度
+      // 812 - 662 = 150
+      var width = ivc.view.frame.width
+      if !ivc.keyboardContext.isPortrait && width == UIScreen.main.bounds.size.width && ivc.keyboardContext.isFullScreen {
+        width -= 150
+      }
 
       return HamsterSystemKeyboard(
         layout: ivc.keyboardLayoutProvider.keyboardLayout(for: ivc.keyboardContext),
@@ -138,7 +146,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         keyboardContext: ivc.keyboardContext,
         calloutContext: ivc.calloutContext,
         appSettings: ivc.appSettings,
-        width: ivc.view.frame.width
+        width: width
       )
       .environmentObject(ivc.rimeContext)
       .environmentObject(ivc.appSettings)
