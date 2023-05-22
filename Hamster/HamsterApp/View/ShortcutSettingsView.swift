@@ -13,14 +13,20 @@ import SwiftUI
 /// 首屏 快捷设置页
 struct ShortcutSettingsView: View {
   init(appSettings: HamsterAppSettings, rimeContext: RimeContext) {
-    self.appSettings = appSettings
-    self.rimeContext = rimeContext
+    self._appSettings = ObservedObject(wrappedValue: appSettings)
+    self._rimeContext = ObservedObject(wrappedValue: rimeContext)
     self.rimeViewModel = RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings)
+    self.cells = createCells(cellWidth: 160, cellHeight: 100, appSettings: self._appSettings)
   }
 
-  let appSettings: HamsterAppSettings
-  let rimeContext: RimeContext
+  @ObservedObject
+  var appSettings: HamsterAppSettings
+
+  @ObservedObject
+  var rimeContext: RimeContext
+
   let rimeViewModel: RIMEViewModel
+  let cells: [CellViewModel]
 
   @Environment(\.openURL) var openURL
 
@@ -28,7 +34,6 @@ struct ShortcutSettingsView: View {
   @State var showDeploymentAlert: Bool = false
   @State var isLoading: Bool = false
   @State var loadingText: String = ""
-  @State var cells: [CellViewModel] = []
   @State var restState = false
 
   let cellDestinationRoute = CellDestinationRoute()
@@ -60,7 +65,7 @@ struct ShortcutSettingsView: View {
       .background(Color("dots"))
       .onTapGesture {
         // 点击跳转设置
-        openURL(URL(string: AppConstants.addKeyboardPath)!)
+        self.openURL(URL(string: AppConstants.addKeyboardPath)!)
         print(UIApplication.openSettingsURLString)
       }
     }
@@ -90,8 +95,8 @@ struct ShortcutSettingsView: View {
       GeometryReader { proxy in
         ScrollView {
           // 启用仓输入法
-          if !appSettings.isKeyboardEnabled {
-            enableHamsterView
+          if !self.appSettings.isKeyboardEnabled {
+            self.enableHamsterView
           }
 
           SectionView("RIME") {
@@ -99,29 +104,26 @@ struct ShortcutSettingsView: View {
               buttonText: "重新部署"
             ) {
               DispatchQueue.global().async {
-                let handled = !rimeViewModel.deployment()
+                let handled = !self.rimeViewModel.deployment()
                 DispatchQueue.main.async {
-                  showDeploymentAlert = handled
+                  self.showDeploymentAlert = handled
                 }
               }
             }
             .frame(width: proxy.size.width - 40)
           }
-          .alert(isPresented: $showDeploymentAlert) { Alert(title: Text("部署失败"), message: Text(rimeError?.localizedDescription ?? "")) }
+          .alert(isPresented: self.$showDeploymentAlert) { Alert(title: Text("部署失败"), message: Text(self.rimeError?.localizedDescription ?? "")) }
 
           SettingView(
-            cells: cells,
-            cellDestinationRoute: cellDestinationRoute
+            cells: self.cells,
+            cellDestinationRoute: self.cellDestinationRoute
           )
 
-          footView
+          self.footView
         }
       }
     }
     .background(Color.HamsterBackgroundColor.ignoresSafeArea())
-    .onAppear {
-      cells = createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
-    }
   }
 }
 

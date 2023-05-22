@@ -43,7 +43,7 @@ struct RowView_Previews: PreviewProvider {
         cells: createCells(
           cellWidth: 180,
           cellHeight: 100,
-          appSettings: HamsterAppSettings()
+          appSettings: ObservedObject(wrappedValue: HamsterAppSettings())
         ),
         cellDestinationRoute: Self.cellDestinationRoute
       )

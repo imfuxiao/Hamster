@@ -67,25 +67,41 @@ struct CellViewModel: Identifiable, Equatable {
 
   let id = UUID()
 
+  init(
+    cellWidth: CGFloat,
+    cellHeight: CGFloat,
+    cellName: String,
+    imageName: String,
+    destinationType: DestinationType,
+    toggleValue: Binding<Bool>
+  ) {
+    self.cellWidth = cellWidth
+    self.cellHeight = cellHeight
+    self.cellName = cellName
+    self.imageName = imageName
+    self.destinationType = destinationType
+    self._toggleValue = toggleValue
+  }
+
 //  var appSettings: HamsterAppSettings
   var cellWidth: CGFloat
   var cellHeight: CGFloat
   var cellName: String
   var imageName: String
   var destinationType: DestinationType
-  var toggleValue: Bool = false
-  var toggleDidSet: (_ value: Bool) -> Void = { _ in }
+  @Binding
+  var toggleValue: Bool
 }
 
 struct CellView: View {
   let cellDestinationRoute: CellDestinationRoute
   var cellViewModel: CellViewModel
-  @State var toggleState: Bool
+  @Binding var toggleState: Bool
 
   init(cellDestinationRoute: CellDestinationRoute, cellViewModel: CellViewModel) {
     self.cellDestinationRoute = cellDestinationRoute
     self.cellViewModel = cellViewModel
-    self._toggleState = State(initialValue: cellViewModel.toggleValue)
+    self._toggleState = cellViewModel.$toggleValue
   }
 
   var imageView: some View {
@@ -150,49 +166,51 @@ struct CellView: View {
     .cornerRadius(15)
     .hamsterShadow()
     .navigationBarBackButtonHidden(true)
-    .onChange(of: toggleState, perform: {
-      cellViewModel.toggleDidSet($0)
-    })
   }
 }
 
 /// cell创建
-func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAppSettings) -> [CellViewModel] {
+func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: ObservedObject<HamsterAppSettings>) -> [CellViewModel] {
   [
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "输入方案",
       imageName: "keyboard",
-      destinationType: .inputSchema
+      destinationType: .inputSchema,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "配色选择",
       imageName: "paintpalette",
-      destinationType: .colorSchema
+      destinationType: .colorSchema,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "键盘反馈",
       imageName: "hand.tap",
-      destinationType: .feedback
+      destinationType: .feedback,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "输入方案上传",
       imageName: "network",
-      destinationType: .fileManager
+      destinationType: .fileManager,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "文件编辑",
       imageName: "creditcard",
-      destinationType: .fileEditor
+      destinationType: .fileEditor,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
@@ -200,10 +218,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "按键气泡",
       imageName: "bubble.middle.bottom",
       destinationType: .none,
-      toggleValue: appSettings.showKeyPressBubble,
-      toggleDidSet: { value in
-        appSettings.showKeyPressBubble = value
-      }
+      toggleValue: appSettings.projectedValue.showKeyPressBubble
     ),
     CellViewModel(
       cellWidth: cellWidth,
@@ -211,10 +226,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "键盘收起键",
       imageName: "chevron.down.circle",
       destinationType: .none,
-      toggleValue: appSettings.showKeyboardDismissButton,
-      toggleDidSet: { value in
-        appSettings.showKeyboardDismissButton = value
-      }
+      toggleValue: appSettings.projectedValue.showKeyboardDismissButton
     ),
 //    CellViewModel(
 //      cellWidth: cellWidth,
@@ -233,10 +245,7 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "空格滑动",
       imageName: "lasso",
       destinationType: .none,
-      toggleValue: appSettings.enableSpaceSliding,
-      toggleDidSet: { value in
-        appSettings.enableSpaceSliding = value
-      }
+      toggleValue: appSettings.projectedValue.enableSpaceSliding
     ),
     CellViewModel(
       cellWidth: cellWidth,
@@ -244,24 +253,23 @@ func createCells(cellWidth: CGFloat, cellHeight: CGFloat, appSettings: HamsterAp
       cellName: "数字九宫格",
       imageName: "number.square",
       destinationType: .none,
-      toggleValue: appSettings.enableNumberNineGrid,
-      toggleDidSet: { value in
-        appSettings.enableNumberNineGrid = value
-      }
+      toggleValue: appSettings.projectedValue.enableNumberNineGrid
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "输入功能调整",
       imageName: "gear",
-      destinationType: .inputKeyFunction
+      destinationType: .inputKeyFunction,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
       cellHeight: cellHeight,
       cellName: "按键滑动手势",
       imageName: "arrow.up.arrow.down",
-      destinationType: .swipeGestureMapping
+      destinationType: .swipeGestureMapping,
+      toggleValue: .constant(false)
     ),
     CellViewModel(
       cellWidth: cellWidth,
@@ -285,7 +293,8 @@ struct CellView_Previews: PreviewProvider {
           cellHeight: 100,
           cellName: "按键气泡",
           imageName: "keyboard",
-          destinationType: .none
+          destinationType: .none,
+          toggleValue: .constant(false)
         )
       )
     }
