@@ -278,6 +278,8 @@
 		C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Bundle.swift"; sourceTree = "<group>"; };
 		C00BAA0429ED501300325ED2 /* CandidateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateView.swift; sourceTree = "<group>"; };
 		C00BAA0929ED507200325ED2 /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		C00E006B2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C016994529FBC24C0047B49E /* File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Zip.swift"; sourceTree = "<group>"; };
 		C016994829FBC9BB0047B49E /* HamsterHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHUD.swift; sourceTree = "<group>"; };
 		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
@@ -1122,6 +1124,7 @@
 				"zh-HK",
 				"zh-Hant",
 				Base,
+				zh,
 			);
 			mainGroup = C03E801C296D4F4C0083E53A;
 			packageReferences = (
@@ -1426,6 +1429,7 @@
 				C0C7EAE529E59324008D4EE1 /* zh-Hans */,
 				C0C7EAE729E59F2C008D4EE1 /* zh-HK */,
 				C0C7EAE829E59F32008D4EE1 /* zh-Hant */,
+				C00E006B2A1B6AFD00180F81 /* zh */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1437,6 +1441,7 @@
 				C0C7EAF029E5A23A008D4EE1 /* zh-HK */,
 				C0C7EAF129E5A23B008D4EE1 /* zh-Hant */,
 				C0C7EAF229E5A23C008D4EE1 /* en */,
+				C00E006C2A1B6AFD00180F81 /* zh */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

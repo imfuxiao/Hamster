@@ -29,12 +29,14 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // 注意初始化的顺序
 
     // TODO: 动态设置 local
-    self.keyboardContext.locale = Locale(identifier: "zh-Hans")
-    //    self.log.info("local language: \(Locale.preferredLanguages[0])")
-    //    self.log.info("local language: \(Locale.autoupdatingCurrent.identifier)")
-    //    self.log.info("local language: \(Locale.autoupdatingCurrent.languageCode)")
-    //    self.log.info("local language: \(Locale.current.identifier)")
-    //    self.log.info("local language: \(Locale.current.languageCode)")
+//    self.keyboardContext.locale = Locale(identifier: "zh-Hans")
+//    self.log.info("local language: \(Locale.preferredLanguages[0])")
+//    self.log.info("local language: \(Locale.autoupdatingCurrent.identifier)")
+//    self.log.info("local language: \(Locale.autoupdatingCurrent.languageCode)")
+//    self.log.info("local language: \(Locale.current.identifier)")
+//    self.log.info("local language: \(Locale.current.languageCode)")
+    let identifier = String(Locale.current.identifier.split(separator: "_")[0])
+    self.keyboardContext.locale = Locale(identifier: identifier)
 
     // 外观
     self.keyboardAppearance = HamsterKeyboardAppearance(
