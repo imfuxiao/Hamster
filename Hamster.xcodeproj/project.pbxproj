@@ -87,6 +87,9 @@
 		C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43429FB7AD500718DAD /* File+yaml.swift */; };
 		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
 		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
+		C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */; };
+		C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */; };
+		C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */; };
 		C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09949D72A01604A00E26BA4 /* File+iCloud.swift */; };
 		C09F6AF72A07FB3900F2EF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C09F6AF82A07FB4B00F2EF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
@@ -417,12 +420,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */,
 				C02435D22A05F3770080CFB4 /* iFilemanager in Frameworks */,
 				C02435DA2A05F3770080CFB4 /* TreeSitterYAMLQueries in Frameworks */,
 				C02435CC2A05F3770080CFB4 /* LibrimeKit in Frameworks */,
 				C02435D42A05F3770080CFB4 /* SwiftyBeaver in Frameworks */,
 				C02435DC2A05F3770080CFB4 /* TreeSitterYAMLRunestone in Frameworks */,
+				C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */,
 				C02435D02A05F3770080CFB4 /* KeyboardKit in Frameworks */,
+				C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */,
 				C02435D62A05F3770080CFB4 /* Runestone in Frameworks */,
 				C02435D82A05F3770080CFB4 /* TreeSitterYAML in Frameworks */,
 				C02435CE2A05F3770080CFB4 /* Plist in Frameworks */,
@@ -1024,6 +1030,9 @@
 				C02435DB2A05F3770080CFB4 /* TreeSitterYAMLRunestone */,
 				C02435DD2A05F3910080CFB4 /* ZIPFoundation */,
 				C02435DF2A05F3910080CFB4 /* Yams */,
+				C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */,
+				C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */,
+				C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */,
 			);
 			productName = HamsterTests;
 			productReference = C02435C02A05F2E20080CFB4 /* HamsterTests.xctest */;
@@ -1965,6 +1974,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
 			productName = SwiftyBeaver;
+		};
+		C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterLua;
+		};
+		C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterLuaQueries;
+		};
+		C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
+			productName = TreeSitterLuaRunestone;
 		};
 		C09F6B002A08DF1900F2EF18 /* KeyboardKit */ = {
 			isa = XCSwiftPackageProductDependency;

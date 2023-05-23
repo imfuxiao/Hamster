@@ -21,7 +21,7 @@ final class FileTest: XCTestCase {
 
   func testGetSchemaIds() throws {
     let fm = FileManager.default
-    let urls = fm.getSchemesFile(for: RimeEngine.appGroupSharedSupportDirectoryURL)
+    let urls = fm.getSchemesFile(for: RimeContext.appGroupSharedSupportDirectoryURL)
     XCTAssertTrue(!urls.isEmpty)
     let schemaIds = fm.getSchemaIds(urls)
     XCTAssertTrue(!schemaIds.isEmpty)
@@ -37,7 +37,7 @@ final class FileTest: XCTestCase {
 
   func testMergePatch() throws {
     let fm = FileManager.default
-    let patchContent = fm.mergePatchSchemaList(RimeEngine.appGroupUserDataDefaultCustomYaml, schemaIds: ["xkjd6"])
+    let patchContent = fm.mergePatchSchemaList(RimeContext.appGroupUserDataDefaultCustomYaml, schemaIds: ["xkjd6"])
     XCTAssertNotNil(patchContent)
     Logger.shared.log.info("patchContent:\n \(patchContent ?? "")")
   }

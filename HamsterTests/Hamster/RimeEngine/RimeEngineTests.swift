@@ -38,16 +38,17 @@ final class RimeEngineTests: XCTestCase {
   }
 
   override func tearDownWithError() throws {
-    Rime.shared.shutdownRime()
+    Rime.shared.shutdown()
   }
 
   func testInputCharactor() throws {
-    XCTAssertTrue(rimeEngine.inputKey("w"))
-    print(rimeEngine.candidateList())
+    XCTAssertTrue(Rime.shared.inputKey("w"))
+    print(Rime.shared.candidateList())
   }
 
   func testColorSchema() throws {
-    let schemaList = rimeEngine.colorSchema(appSettings.rimeUseSquirrelSettings)
+    let appSettings = HamsterAppSettings()
+    let schemaList = Rime.shared.colorSchema(appSettings.rimeUseSquirrelSettings)
     XCTAssertTrue(!schemaList.isEmpty)
 
     let colorSchema = schemaList.first(where: { $0.schemaName == "solarized_light" })
@@ -58,7 +59,7 @@ final class RimeEngineTests: XCTestCase {
     XCTAssertNotNil(backColor)
     XCTAssertEqual(backColor.bgrColor!.description, "#FBF6E5F0")
 
-    let currentSchemaName = rimeEngine.currentColorSchemaName(appSettings.rimeUseSquirrelSettings)
+    let currentSchemaName = Rime.shared.currentColorSchemaName(appSettings.rimeUseSquirrelSettings)
     XCTAssertEqual(currentSchemaName, "metro")
   }
 
