@@ -291,6 +291,7 @@ struct EditActionValueView: View {
                 Text($0.rawValue).tag($0)
               }
             }
+            .pickerStyle(.menu)
           }
           .frame(height: 40)
           .padding(.horizontal)
@@ -313,6 +314,7 @@ struct EditActionValueView: View {
                   Text("\($0.rawValue)").tag($0)
                 }
               }
+              .pickerStyle(.menu)
             }
             .frame(height: 40)
             .padding(.horizontal)

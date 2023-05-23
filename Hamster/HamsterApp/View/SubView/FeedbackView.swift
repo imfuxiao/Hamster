@@ -23,7 +23,7 @@ struct FeedbackView: View {
       ZStack {
         Color.HamsterBackgroundColor.ignoresSafeArea()
 
-        VStack {
+        VStack(alignment: .center, spacing: 0) {
           HStack {
             Text("键盘反馈")
               .subViewTitleFont()
@@ -57,6 +57,7 @@ struct FeedbackView: View {
                     Text($0.text).tag($0)
                   }
                 }
+                .pickerStyle(.menu)
               }
             }
           }
@@ -78,16 +79,17 @@ struct FeedbackView: View {
 
             VStack {
               Text("因系统限制, 震动需要开启键盘**完全访问权限**.")
-                .lineLimit(2)
                 .multilineTextAlignment(.leading)
-                .scaleEffect(0.8)
-                .font(.system(size: 20, weight: .bold))
+                .font(.system(size: 18, weight: .bold))
+                .minimumScaleFactor(0.6)
                 .foregroundColor(.primary)
                 .padding(.top, 30)
                 .padding(.horizontal, 30)
 
               Text("点击\"开启\"跳转系统设置, 点击\"键盘 -> 允许完全访问\", 选择\"允许\".")
-                .font(.system(size: 16, weight: .bold))
+                .multilineTextAlignment(.leading)
+                .font(.system(size: 12, weight: .bold))
+                .minimumScaleFactor(0.6)
                 .foregroundColor(.secondary)
                 .padding(.top, 5)
                 .padding(.horizontal, 30)
@@ -111,6 +113,7 @@ struct FeedbackView: View {
                 }
               }
               .padding(.bottom, 100)
+              .padding(.horizontal)
             }
             .frame(width: proxy.size.width, height: proxy.size.height / 3)
             .background(colorScheme == .dark ? Color.secondary : Color.white)
