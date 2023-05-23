@@ -8,9 +8,8 @@
 import Foundation
 
 extension HamsterAppSettings {
-  
   var appVersion: String {
-    infoDictionary["CFBundleShortVersionString"] as? String ?? ""
+    (infoDictionary["CFBundleShortVersionString"] as? String ?? "") + "(" + (infoDictionary["CFBundleVersion"] as? String ?? "") + ")"
   }
 
   var rimeVersion: String {
