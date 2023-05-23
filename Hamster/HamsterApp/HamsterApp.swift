@@ -8,6 +8,7 @@
 import Combine
 import LibrimeKit
 import Plist
+import ProgressHUD
 import SwiftUI
 import SwiftyBeaver
 import ZIPFoundation
@@ -153,32 +154,23 @@ struct HamsterApp: App {
 
     if url.pathExtension.lowercased() == "zip" {
       // Loading: 开启加载页面
-      isLoading = true
-      loadingMessage = "Zip文件解析中..."
+      ProgressHUD.show("Zip文件解析中...", interaction: false)
       DispatchQueue.global().async {
         let fm = FileManager.default
         do {
-          let (handled, zipErr) = try fm.unzip(
-            url,
-            dst: RimeContext.sandboxUserDataDirectory
-          )
+          let (handled, zipErr) = try fm.unzip(url, dst: RimeContext.sandboxUserDataDirectory)
           if !handled {
-            withMainAsync {
-              showError = true
-              err = zipErr
-            }
+            ProgressHUD.showError("Zip文件解析失败。\(zipErr?.localizedDescription ?? "")", delay: 1.5)
             return
           }
         } catch {
           // 处理错误
           Logger.shared.log.error("zip \(error)")
-          withMainAsync {
-            showError = true
-            err = ZipParsingError(message: "Zip文件处理失败: \(error.localizedDescription)")
-          }
+          ProgressHUD.showError("Zip文件解析失败。\(error.localizedDescription)", delay: 1.5)
+          return
         }
 
-        showLoadingMessage("方案部署中")
+        ProgressHUD.show("方案部署中……", interaction: false)
 
         let traits = Rime.createTraits(
           sharedSupportDir: RimeContext.sandboxSharedSupportDirectory.path,
@@ -187,15 +179,14 @@ struct HamsterApp: App {
         let deployHandled = Rime.shared.deploy(traits)
         Logger.shared.log.debug("rimeEngine deploy handled \(deployHandled)")
 
-        let restHandled = appSettings.resetRimeParameter()
-        Logger.shared.log.debug("rimeEngine resetInputSchemaHandled handled \(restHandled)")
+        DispatchQueue.main.async {
+          let restHandled = appSettings.resetRimeParameter()
+          Logger.shared.log.debug("rimeEngine resetInputSchemaHandled handled \(restHandled)")
+        }
 
         try? RimeContext.syncAppGroupUserDataDirectoryToSandbox(override: true)
 
-        showLoadingMessage("部署完毕")
-        withMainAsync {
-          isLoading = false
-        }
+        ProgressHUD.showSuccess("Zip文件导入成功", interaction: false, delay: 1.5)
       }
     }
   }
