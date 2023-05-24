@@ -54,7 +54,7 @@ struct HamsteriCloudView: View {
   var contentType: UTType
   var importingCallback: ImportingCallback?
   var exportingCallback: ExportingCallback?
-  
+
   @Environment(\.dismiss) var dismiss
   @Environment(\.colorScheme) var colorScheme
   var body: some View {
@@ -73,6 +73,40 @@ struct HamsteriCloudView: View {
               isImporting = true
             }
           }
+          .fileImporter(
+            isPresented: $isImporting,
+            allowedContentTypes: [contentType],
+            onCompletion: { result in
+              switch result {
+                case .success(let url):
+                  print("Read from \(url)")
+                case .failure(let error):
+                  print(error.localizedDescription)
+              }
+              guard case .success(let selectFile) = result else {
+                Logger.shared.log.error("HamsteriCloud result case error")
+                //            isImporting = false
+                return
+              }
+              do {
+                // guard let selectFile: URL = try result.get().first else { return }
+                // 注意使用URL前需要先获取权限，且读取结束后关闭，两条语句必须成对出现
+                // guard selectFile.startAccessingSecurityScopedResource() else { return }
+                // ...
+                // selectFile.stopAccessingSecurityScopedResource()
+                guard selectFile.startAccessingSecurityScopedResource() else { return }
+
+                document.fileName = selectFile.lastPathComponent
+                try document.data = Data(contentsOf: selectFile)
+                selectFile.stopAccessingSecurityScopedResource()
+
+                self.importingCallback?(document)
+              } catch {
+                Logger.shared.log.error("HamsteriCloud importer error: \(error.localizedDescription)")
+              }
+              //          isImporting = false
+            }
+          )
 
           // TODO: 添加其他云的支持
         } header: {
@@ -94,30 +128,6 @@ struct HamsteriCloudView: View {
       .frame(minWidth: 0, maxWidth: .infinity)
       .frame(minHeight: 0, maxHeight: .infinity)
       .padding(.horizontal)
-      .fileImporter(
-        isPresented: $isImporting,
-        allowedContentTypes: [contentType],
-        allowsMultipleSelection: false
-      ) { result in
-        do {
-          guard let selectFile: URL = try result.get().first else { return }
-
-          // 注意使用URL前需要先获取权限，且读取结束后关闭，两条语句必须成对出现
-          // guard selectFile.startAccessingSecurityScopedResource() else { return }
-          // ...
-          // selectFile.stopAccessingSecurityScopedResource()
-          guard selectFile.startAccessingSecurityScopedResource() else { return }
-
-          document.fileName = selectFile.lastPathComponent
-          try document.data = Data(contentsOf: selectFile)
-          selectFile.stopAccessingSecurityScopedResource()
-
-          self.importingCallback?(document)
-        } catch {
-          Logger.shared.log.error("HamsteriCloud importer error: \(error.localizedDescription)")
-        }
-        isImporting = false
-      }
       .fileExporter(
         isPresented: $isExporting,
         document: document,
@@ -164,9 +174,6 @@ struct SectionButton: View {
         .font(.system(size: 30))
         .foregroundColor(.blue)
         .padding(5)
-        .onTapGesture {
-          Logger.shared.log.debug("section button import")
-        }
 
       VStack(alignment: .center, spacing: 0) {
         HStack(alignment: .bottom, spacing: 0) {

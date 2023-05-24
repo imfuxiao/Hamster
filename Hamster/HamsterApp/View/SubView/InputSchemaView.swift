@@ -24,15 +24,11 @@ struct InputSchemaView: View {
   @EnvironmentObject
   var appSettings: HamsterAppSettings
 
-  @EnvironmentObject
-  var rimeContext: RimeContext
-
   @Environment(\.dismiss)
   var dismiss
 
-  init(schemas: [Schema] = []) {
+  init() {
     Logger.shared.log.debug("InputSchemaView init()")
-    self.schemas = schemas
   }
 
   /// 导入zip文件
@@ -103,7 +99,6 @@ struct InputSchemaView: View {
     GeometryReader { _ in
       ZStack(alignment: .center) {
         Color.HamsterBackgroundColor.ignoresSafeArea()
-
         VStack {
           HStack {
             Text("选择输入方案")
@@ -161,13 +156,10 @@ struct InputSchemaView: View {
           iCloudView
         }
       }
-      .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItem(placement: .navigationBarTrailing) {
           Button {
-            withAnimation(.linear) {
-              showHamsteriCloud = true
-            }
+            showHamsteriCloud = true
           } label: {
             Image(systemName: "plus")
               .font(.system(size: 20))
@@ -195,7 +187,6 @@ struct InputSchemaView: View {
       .onAppear {
         self.schemas = appSettings.rimeTotalSchemas
         self.selectSchemas = Set(appSettings.rimeUserSelectSchema)
-
         Logger.shared.log.info("InputSchemaView selectSchemas: \(selectSchemas)")
       }
     }
@@ -212,10 +203,8 @@ struct InputSchemaView_Previews: PreviewProvider {
   ]
 
   static var previews: some View {
-    InputSchemaView(
-      schemas: sampleSchemas
-    )
-    .environmentObject(HamsterAppSettings())
-    .environmentObject(RimeContext())
+    InputSchemaView()
+      .environmentObject(HamsterAppSettings())
+      .environmentObject(RimeContext())
   }
 }

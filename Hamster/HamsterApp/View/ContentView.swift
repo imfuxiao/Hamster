@@ -16,8 +16,11 @@ struct ContentView: View {
     }
   }
 
-  @EnvironmentObject var appSettings: HamsterAppSettings
-  @EnvironmentObject var rimeContext: RimeContext
+  @EnvironmentObject
+  var appSettings: HamsterAppSettings
+
+  @EnvironmentObject
+  var rimeContext: RimeContext
 
   var toolbarView: some View {
     VStack(alignment: .center, spacing: 0) {
@@ -40,30 +43,36 @@ struct ContentView: View {
   }
 
   var body: some View {
-    Navigation {
-      TabView {
+    TabView {
+      Navigation {
         ShortcutSettingsView(appSettings: appSettings, rimeContext: rimeContext)
-          .tabItem {
-            VStack {
-              Image(systemName: "house.fill")
-              Text("快捷设置")
-            }
-          }
-          .tag(0)
-
-        AdvancedSettingsView(appSettings: appSettings, rimeContext: rimeContext)
-          .tabItem {
-            Image(systemName: "gear")
-            Text("其他设置")
-          }
-          .tag(1)
+          .navigationBarTitleDisplayMode(.inline)
+          .navigationTitle(Text("快捷设置"))
+          .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
       }
-      .tabViewStyle(.automatic)
-      .navigationBarTitleDisplayMode(.inline)
-      .navigationTitle(Text("仓输入法"))
-      .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
+      .navigationViewStyle(.stack)
+      .tabItem {
+        VStack {
+          Image(systemName: "house.fill")
+          Text("快捷设置")
+        }
+      }
+      .tag(0)
+
+      Navigation {
+        AdvancedSettingsView(appSettings: appSettings, rimeContext: rimeContext)
+          .navigationBarTitleDisplayMode(.inline)
+          .navigationTitle(Text("其他设置"))
+          .toolbar { ToolbarItem(placement: .principal) { toolbarView } }
+      }
+      .navigationViewStyle(.stack)
+      .tabItem {
+        Image(systemName: "gear")
+        Text("其他设置")
+      }
+      .tag(1)
     }
-    .navigationViewStyle(.stack)
+    .tabViewStyle(.automatic)
   }
 }
 

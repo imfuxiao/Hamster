@@ -21,6 +21,7 @@ struct HamsterApp: App {
 
   @StateObject
   var rimeContext = RimeContext()
+
   @State var cancelable = Set<AnyCancellable>()
   @State var launchScreenState = true
   @State var showError: Bool = false
@@ -172,6 +173,7 @@ struct HamsterApp: App {
 
         ProgressHUD.show("方案部署中……", interaction: false)
 
+        Rime.shared.shutdown()
         let traits = Rime.createTraits(
           sharedSupportDir: RimeContext.sandboxSharedSupportDirectory.path,
           userDataDir: RimeContext.sandboxUserDataDirectory.path
@@ -184,7 +186,8 @@ struct HamsterApp: App {
           Logger.shared.log.debug("rimeEngine resetInputSchemaHandled handled \(restHandled)")
         }
 
-        try? RimeContext.syncAppGroupUserDataDirectoryToSandbox(override: true)
+        // 将 App 沙箱 UserData 目录复制到 AppGroup 目录下供键盘使用
+        try? RimeContext.syncSandboxUserDataDirectoryToApGroup(override: true)
 
         ProgressHUD.showSuccess("Zip文件导入成功", interaction: false, delay: 1.5)
       }

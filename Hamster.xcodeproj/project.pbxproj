@@ -39,7 +39,6 @@
 		C02435AE2A0490230080CFB4 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358D2A0490220080CFB4 /* ColorSchemaView.swift */; };
 		C02435AF2A0490230080CFB4 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358E2A0490220080CFB4 /* EditorView.swift */; };
 		C02435B02A0490230080CFB4 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358F2A0490220080CFB4 /* FeedbackView.swift */; };
-		C02435B12A0490230080CFB4 /* SetttingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435902A0490220080CFB4 /* SetttingView.swift */; };
 		C02435B22A0490230080CFB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435912A0490220080CFB4 /* ContentView.swift */; };
 		C02435B32A0490230080CFB4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435922A0490220080CFB4 /* LaunchScreen.swift */; };
 		C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
@@ -314,7 +313,6 @@
 		C024358D2A0490220080CFB4 /* ColorSchemaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
 		C024358E2A0490220080CFB4 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		C024358F2A0490220080CFB4 /* FeedbackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
-		C02435902A0490220080CFB4 /* SetttingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetttingView.swift; sourceTree = "<group>"; };
 		C02435912A0490220080CFB4 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C02435922A0490220080CFB4 /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C02435932A0490220080CFB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -574,7 +572,6 @@
 				C024358D2A0490220080CFB4 /* ColorSchemaView.swift */,
 				C024358E2A0490220080CFB4 /* EditorView.swift */,
 				C024358F2A0490220080CFB4 /* FeedbackView.swift */,
-				C02435902A0490220080CFB4 /* SetttingView.swift */,
 				C02435872A0490220080CFB4 /* SyncView.swift */,
 				C0DEDB8B2A12596F00E17F84 /* BackupView.swift */,
 				C09F6AF92A0872E500F2EF18 /* RIMEView.swift */,
@@ -1280,7 +1277,6 @@
 				C024359B2A0490230080CFB4 /* DotsLoadingView.swift in Sources */,
 				C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
-				C02435B12A0490230080CFB4 /* SetttingView.swift in Sources */,
 				C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */,
 				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
 				C02435AD2A0490230080CFB4 /* FileManagerView.swift in Sources */,
@@ -1648,7 +1644,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1688,7 +1684,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1720,7 +1716,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1751,7 +1747,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6.8;
+				MARKETING_VERSION = 1.7.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
