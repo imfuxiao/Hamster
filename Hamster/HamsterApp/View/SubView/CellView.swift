@@ -39,32 +39,36 @@ struct CellViewModel: Identifiable, Equatable {
     cellName: String,
     imageName: String,
     destinationType: DestinationType,
-    toggleValue: Binding<Bool>
+    toggleValue: Bool = false,
+    toggleDidSet: @escaping (Bool) -> Void = { _ in }
   ) {
     self.cellWidth = cellWidth
     self.cellHeight = cellHeight
     self.cellName = cellName
     self.imageName = imageName
     self.destinationType = destinationType
-    self._toggleValue = toggleValue
+    self.toggleValue = toggleValue
+    self.toggleDidSet = toggleDidSet
   }
 
-//  var appSettings: HamsterAppSettings
   var cellWidth: CGFloat
   var cellHeight: CGFloat
   var cellName: String
   var imageName: String
   var destinationType: DestinationType
-  @Binding var toggleValue: Bool
+  var toggleValue: Bool
+  var toggleDidSet: (Bool) -> Void
 }
 
 struct CellView: View {
   init(cellViewModel: CellViewModel) {
 //    Logger.shared.log.debug("CellView init")
     self.cellViewModel = cellViewModel
+    self._toggleValue = State(initialValue: cellViewModel.toggleValue)
   }
 
-  let cellViewModel: CellViewModel
+  var cellViewModel: CellViewModel
+  @State var toggleValue: Bool
 
   var imageView: some View {
     HStack {
@@ -75,7 +79,7 @@ struct CellView: View {
       Spacer()
 
       if cellViewModel.destinationType.isNone() {
-        Toggle("", isOn: cellViewModel.$toggleValue)
+        Toggle("", isOn: $toggleValue)
           .fixedSize()
           .frame(width: 0, height: 0)
           .scaleEffect(0.7)
@@ -127,6 +131,12 @@ struct CellView: View {
     .background(Color.HamsterCellColor)
     .cornerRadius(15)
     .hamsterShadow()
+    .onChange(of: toggleValue, perform: {
+      if toggleValue != $0 {
+        return
+      }
+      cellViewModel.toggleDidSet($0)
+    })
 //    .navigationBarBackButtonHidden(true)
   }
 
@@ -164,8 +174,7 @@ struct CellView_Previews: PreviewProvider {
           cellHeight: 100,
           cellName: "按键气泡",
           imageName: "keyboard",
-          destinationType: .none,
-          toggleValue: .constant(false)
+          destinationType: .none
         )
       )
     }

@@ -18,12 +18,13 @@ struct ShortcutSettingsView: View {
     self.appSettings = appSettings
     self.rimeContext = rimeContext
     self.rimeViewModel = RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings)
+    self.cells = Self.createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
   }
 
-  let rimeViewModel: RIMEViewModel
-  @State var cells: [CellViewModel] = []
   var appSettings: HamsterAppSettings
   var rimeContext: RimeContext
+  let rimeViewModel: RIMEViewModel
+  let cells: [CellViewModel]
 
   @Environment(\.openURL) var openURL
   @StateObject var keybaordState = KeyboardEnabledState(bundleId: "dev.fuxiao.app.Hamster.*")
@@ -134,9 +135,6 @@ struct ShortcutSettingsView: View {
       }
     }
     .background(Color.HamsterBackgroundColor.ignoresSafeArea())
-    .onAppear {
-      self.cells = Self.createCells(cellWidth: 160, cellHeight: 100, appSettings: appSettings)
-    }
   }
 }
 
@@ -149,40 +147,35 @@ extension ShortcutSettingsView {
         cellHeight: cellHeight,
         cellName: "输入方案",
         imageName: "keyboard",
-        destinationType: .inputSchema,
-        toggleValue: .constant(false)
+        destinationType: .inputSchema
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "配色选择",
         imageName: "paintpalette",
-        destinationType: .colorSchema,
-        toggleValue: .constant(false)
+        destinationType: .colorSchema
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "键盘反馈",
         imageName: "hand.tap",
-        destinationType: .feedback,
-        toggleValue: .constant(false)
+        destinationType: .feedback
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "输入方案上传",
         imageName: "network",
-        destinationType: .fileManager,
-        toggleValue: .constant(false)
+        destinationType: .fileManager
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "文件编辑",
         imageName: "creditcard",
-        destinationType: .fileEditor,
-        toggleValue: .constant(false)
+        destinationType: .fileEditor
       ),
       CellViewModel(
         cellWidth: cellWidth,
@@ -190,7 +183,8 @@ extension ShortcutSettingsView {
         cellName: "按键气泡",
         imageName: "bubble.middle.bottom",
         destinationType: .none,
-        toggleValue: .init(get: { appSettings.showKeyPressBubble }, set: { appSettings.showKeyPressBubble = $0 })
+        toggleValue: appSettings.showKeyPressBubble,
+        toggleDidSet: { appSettings.showKeyPressBubble = $0 }
       ),
       CellViewModel(
         cellWidth: cellWidth,
@@ -198,7 +192,8 @@ extension ShortcutSettingsView {
         cellName: "键盘收起键",
         imageName: "chevron.down.circle",
         destinationType: .none,
-        toggleValue: .init(get: { appSettings.showKeyboardDismissButton }, set: { appSettings.showKeyboardDismissButton = $0 })
+        toggleValue: appSettings.showKeyboardDismissButton,
+        toggleDidSet: { appSettings.showKeyboardDismissButton = $0 }
       ),
       //    CellViewModel(
       //      cellWidth: cellWidth,
@@ -217,7 +212,8 @@ extension ShortcutSettingsView {
         cellName: "空格滑动",
         imageName: "lasso",
         destinationType: .none,
-        toggleValue: .init(get: { appSettings.enableSpaceSliding }, set: { appSettings.enableSpaceSliding = $0 })
+        toggleValue: appSettings.enableSpaceSliding,
+        toggleDidSet: { appSettings.enableSpaceSliding = $0 }
       ),
       CellViewModel(
         cellWidth: cellWidth,
@@ -225,23 +221,22 @@ extension ShortcutSettingsView {
         cellName: "数字九宫格",
         imageName: "number.square",
         destinationType: .none,
-        toggleValue: .init(get: { appSettings.enableNumberNineGrid }, set: { appSettings.enableNumberNineGrid = $0 })
+        toggleValue: appSettings.enableNumberNineGrid,
+        toggleDidSet: { appSettings.enableNumberNineGrid = $0 }
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "输入功能调整",
         imageName: "gear",
-        destinationType: .inputKeyFunction,
-        toggleValue: .constant(false)
+        destinationType: .inputKeyFunction
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
         cellName: "按键滑动手势",
         imageName: "arrow.up.arrow.down",
-        destinationType: .swipeGestureMapping,
-        toggleValue: .constant(false)
+        destinationType: .swipeGestureMapping
       ),
       //    CellViewModel(
       //      cellWidth: cellWidth,
