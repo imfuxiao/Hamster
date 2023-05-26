@@ -24,8 +24,16 @@ import UIKit
 open class HamsterKeyboardViewController: KeyboardInputViewController {
   // MARK: - View Controller Lifecycle
 
+//  @objc func keyboardWillShow(note: NSNotification) {
+//
+//  }
+
   override public func viewDidLoad() {
     self.log.info("viewDidLoad() begin")
+
+    // 注册通知
+    // NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+
     // 注意初始化的顺序
 
     // TODO: 动态设置 local
@@ -106,6 +114,9 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.log.debug("viewDidDisappear()")
     Rime.shared.shutdown()
     super.viewDidDisappear(animated)
+
+    // 取消监听
+    // NotificationCenter.default.removeObserver(self)
   }
 
   override public func viewWillSetupKeyboard() {
@@ -127,18 +138,24 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.setup {
       let ivc = $0 as! HamsterKeyboardViewController
 
-      // let screenWidth = UIScreen.main.bounds.size.width
-      // Logger.shared.log.debug("screenWidth: \(screenWidth)")
-      // let screenWidthInPixels = screenWidth * UIScreen.main.scale
-      // Logger.shared.log.debug("screenWidthInPixels: \(screenWidthInPixels)")
-      // Logger.shared.log.debug("ivc.view.frame.width: \(ivc.view.frame.width)")
+//      let screenWidth = UIScreen.main.bounds.size.width
+//      Logger.shared.log.debug("screenWidth: \(screenWidth)")
+//      let screenWidthInPixels = screenWidth * UIScreen.main.scale
+//      Logger.shared.log.debug("screenWidthInPixels: \(screenWidthInPixels)")
+//      Logger.shared.log.debug("ivc.view.frame.width: \(ivc.view.frame.width)")
+//      Logger.shared.log.debug("ivc.view.frame.safeAreaLayoutGuide: \(ivc.view.safeAreaLayoutGuide)")
+//      Logger.shared.log.debug("ivc.view.frame.safeAreaLayoutGuide: \(ivc.view.bounds.size.width)")
 
       // fix: 横向状态下 ivc.view.frame.width 与 UIScreen.main.bounds.size.width 相等，导致键盘显示溢出
       // 150 为键盘两边切换按钮和听写区域宽度
       // 812 - 662 = 150
       var width = ivc.view.frame.width
       if !ivc.keyboardContext.isPortrait && width == UIScreen.main.bounds.size.width && ivc.keyboardContext.isFullScreen {
-        width -= 150
+        if width > 900 {
+          width -= 230
+        } else {
+          width -= 150
+        }
       }
 
       return HamsterSystemKeyboard(
