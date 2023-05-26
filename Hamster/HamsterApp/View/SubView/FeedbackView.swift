@@ -32,14 +32,18 @@ struct FeedbackView: View {
           }
           .padding(.horizontal)
 
-          HStack {
-            Toggle(isOn: $appSettings.enableKeyboardFeedbackSound) {
-              Text("声音")
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+          
+          VStack {
+            HStack {
+              Toggle(isOn: $appSettings.enableKeyboardFeedbackSound) {
+                Text("声音")
+                  .font(.system(size: 16, weight: .bold, design: .rounded))
+              }
             }
           }
           .functionCell()
-
+          .padding(.vertical, 10)
+          
           VStack {
             HStack {
               Toggle(isOn: $appSettings.enableKeyboardFeedbackHaptic) {
