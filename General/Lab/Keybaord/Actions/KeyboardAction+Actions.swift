@@ -60,6 +60,10 @@ extension KeyboardAction {
         guard let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController else { return }
         if ivc.keyboardContext.keyboardType.isNumberNineGrid, ivc.appSettings.enableNumberNineGridInputOnScreenMode {
           ivc.textDocumentProxy.insertText(char)
+          ivc.cursorBackOfSymbols(key: char)
+          if ivc.returnToPrimaryKeyboardOfSymbols(key: char) {
+            ivc.keyboardContext.keyboardType = .alphabetic(.lowercased)
+          }
           return
         }
         ivc.insertText(char)

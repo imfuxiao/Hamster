@@ -234,13 +234,13 @@ extension ShortcutSettingsView {
         imageName: "arrow.up.arrow.down",
         destinationType: .swipeGestureMapping
       ),
-      //    CellViewModel(
-      //      cellWidth: cellWidth,
-      //      cellHeight: cellHeight,
-      //      cellName: "关于",
-      //      imageName: "info.circle",
-      //      destinationType: .about
-      //    ),
+      CellViewModel(
+        cellWidth: cellWidth,
+        cellHeight: cellHeight,
+        cellName: "符号设置",
+        imageName: "command",
+        destinationType: .symbolSetting
+      ),
     ]
   }
 }

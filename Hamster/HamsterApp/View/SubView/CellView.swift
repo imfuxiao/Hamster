@@ -16,6 +16,7 @@ enum DestinationType {
   case inputKeyFunction
   case swipeGestureMapping
   case numberNineGridSetting
+  case symbolSetting
   case about
   case none
 
@@ -172,6 +173,8 @@ struct CellView: View {
       SwipeGestureActionView()
     case .numberNineGridSetting:
       NumberNineGridSettingView()
+    case .symbolSetting:
+      SymbolsSettingsView()
     default:
       EmptyView()
     }

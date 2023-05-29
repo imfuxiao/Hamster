@@ -228,6 +228,7 @@
 		C0B7E4832A1F04DF004A839F /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* SymbolView.swift */; };
 		C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
 		C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
+		C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */; };
 		C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
@@ -406,6 +407,7 @@
 		C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+Color.swift"; sourceTree = "<group>"; };
 		C0B7E4812A1F04DF004A839F /* SymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolView.swift; sourceTree = "<group>"; };
 		C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+Preview.swift"; sourceTree = "<group>"; };
+		C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSettingsView.swift; sourceTree = "<group>"; };
 		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0C7EAE529E59324008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C0C7EAE729E59F2C008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -596,6 +598,7 @@
 				C0DEDB8B2A12596F00E17F84 /* BackupView.swift */,
 				C09F6AF92A0872E500F2EF18 /* RIMEView.swift */,
 				C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */,
+				C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */,
 			);
 			path = SubView;
 			sourceTree = "<group>";
@@ -1277,6 +1280,7 @@
 				C0A3CDE82A0B54000068D737 /* HamsterInputSetProvider.swift in Sources */,
 				C0A3CDE92A0B54000068D737 /* ChineseInputSetProvider.swift in Sources */,
 				C0A3CDEA2A0B54000068D737 /* iPadKeyboardLayoutProvider.swift in Sources */,
+				C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */,
 				C0A3CDEB2A0B54000068D737 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
 				C0A3CDEC2A0B54000068D737 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
 				C0A3CDED2A0B54000068D737 /* KeyboardLocale.swift in Sources */,

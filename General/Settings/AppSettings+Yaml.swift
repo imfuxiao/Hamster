@@ -29,6 +29,8 @@ public extension HamsterAppSettings {
         value.projectedValue.sink { map[yamlKey] = $0 }.store(in: &cancelable)
       case var value as Published<Int32>:
         value.projectedValue.sink { map[yamlKey] = $0 }.store(in: &cancelable)
+      case var value as Published<[String]>:
+        value.projectedValue.sink { map[yamlKey] = $0 }.store(in: &cancelable)
       // 以下属性在其他地方存储
 //      case var value as Published<[ColorSchema]>:
 //      case var value as Published<[Schema]>:
@@ -239,6 +241,16 @@ public extension HamsterAppSettings {
       if let value = node.bool {
         self.enableShowCandidateIndex = value
         Logger.shared.log.debug("set enableShowCandidateIndex = \(value)")
+      }
+    case "cursor_back_of_symbols":
+      if let value = node.any as? [String] {
+        self.cursorBackOfSymbols = value
+        Logger.shared.log.debug("set cursorBackOfSymbols = \(value)")
+      }
+    case "return_to_primary_keyboard_of_symbols":
+      if let value = node.any as? [String] {
+        self.returnToPrimaryKeyboardOfSymbols = value
+        Logger.shared.log.debug("set returnToPrimaryKeyboardOfSymbols = \(value)")
       }
     default:
       break

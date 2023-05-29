@@ -425,6 +425,18 @@ extension HamsterKeyboardViewController {
     }
   }
 
+  // 光标回退
+  func cursorBackOfSymbols(key: String) {
+    if self.appSettings.cursorBackOfSymbols.contains(key) {
+      self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+    }
+  }
+
+  // 返回主键盘
+  func returnToPrimaryKeyboardOfSymbols(key: String) -> Bool {
+    self.appSettings.returnToPrimaryKeyboardOfSymbols.contains(key)
+  }
+
   // 候选字上一页
   func previousPageOfCandidates() {
     if Rime.shared.inputKeyCode(XK_Page_Up) {
@@ -465,6 +477,9 @@ extension HamsterKeyboardViewController {
       _ = self.candidateTextOnScreen()
       DispatchQueue.main.async {
         self.inputTextPatch(key)
+        DispatchQueue.main.async {
+          self.cursorBackOfSymbols(key: key)
+        }
       }
     }
   }

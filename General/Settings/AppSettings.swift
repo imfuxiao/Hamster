@@ -187,6 +187,12 @@ private enum HamsterAppSettingKeys: String {
 
   // 开启候选文字索引显示
   case enableShowCandidateIndex = "app.keyboard.enableShowCandidateIndex"
+
+  // 光标回退的符号
+  case cursorBackOfSymbols = "app.keyboard.cursorBackOfSymbols"
+
+  // 输入后返回主键盘的符号
+  case returnToPrimaryKeyboardOfSymbols = "app.keyboard.returnToPrimaryKeyboardOfSymbols"
 }
 
 public class HamsterAppSettings: ObservableObject {
@@ -227,7 +233,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.keyboardSwipeGestureSymbol.rawValue: [:] as [String: String],
       HamsterAppSettingKeys.enableNumberNineGrid.rawValue: false,
       HamsterAppSettingKeys.enableNumberNineGridInputOnScreenMode.rawValue: true,
-      HamsterAppSettingKeys.numberNineGridSymbols.rawValue: ["+", "-", "×", "÷", "%", "@"] as [String],
+      HamsterAppSettingKeys.numberNineGridSymbols.rawValue: ["+", "-", "*", "/", "=", "%", "@", "!", ","] as [String],
       HamsterAppSettingKeys.enableKeyboardAutomaticallyLowercase.rawValue: false,
       HamsterAppSettingKeys.enableInputEmbeddedMode.rawValue: false,
       HamsterAppSettingKeys.rimeUseSquirrelSettings.rawValue: true,
@@ -239,6 +245,8 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.candidateBarHeight.rawValue: 50,
       HamsterAppSettingKeys.enableCandidateBar.rawValue: true,
       HamsterAppSettingKeys.enableShowCandidateIndex.rawValue: false,
+      HamsterAppSettingKeys.cursorBackOfSymbols.rawValue: ["\"\"", "“”", "‘’", "''", "《》", "[]", "「」", "『』"] as [String],
+      HamsterAppSettingKeys.returnToPrimaryKeyboardOfSymbols.rawValue: ["@", ",", ".", "，", "。", "！", "!", "?", "？"] as [String],
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -307,6 +315,8 @@ public class HamsterAppSettings: ObservableObject {
     self.candidateBarHeight = CGFloat(UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.candidateBarHeight.rawValue))
     self.enableCandidateBar = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableCandidateBar.rawValue)
     self.enableShowCandidateIndex = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableShowCandidateIndex.rawValue)
+    self.cursorBackOfSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.cursorBackOfSymbols.rawValue) as! [String]
+    self.returnToPrimaryKeyboardOfSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.returnToPrimaryKeyboardOfSymbols.rawValue) as! [String]
   }
 
   // App是否首次运行
@@ -746,6 +756,26 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, enableShowCandidateIndex": enableShowCandidateIndex])
       UserDefaults.hamsterSettingsDefault.set(
         enableShowCandidateIndex, forKey: HamsterAppSettingKeys.enableShowCandidateIndex.rawValue)
+    }
+  }
+
+  // 键盘: 光标回退的符号
+  @Published
+  var cursorBackOfSymbols: [String] {
+    didSet {
+      Logger.shared.log.info(["AppSettings, cursorBackOfSymbols": cursorBackOfSymbols])
+      UserDefaults.hamsterSettingsDefault.set(
+        cursorBackOfSymbols, forKey: HamsterAppSettingKeys.cursorBackOfSymbols.rawValue)
+    }
+  }
+
+  // 键盘：返回主键盘的符号
+  @Published
+  var returnToPrimaryKeyboardOfSymbols: [String] {
+    didSet {
+      Logger.shared.log.info(["AppSettings, returnToPrimaryKeyboardOfSymbols": returnToPrimaryKeyboardOfSymbols])
+      UserDefaults.hamsterSettingsDefault.set(
+        returnToPrimaryKeyboardOfSymbols, forKey: HamsterAppSettingKeys.returnToPrimaryKeyboardOfSymbols.rawValue)
     }
   }
 }

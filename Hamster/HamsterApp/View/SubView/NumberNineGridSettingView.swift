@@ -55,51 +55,7 @@ struct NumberNineGridSettingView: View {
           .functionCell()
           .padding(.vertical, 10)
 
-          Section {
-            List {
-              ForEach(appSettings.numberNineGridSymbols, id: \.self) { symbol in
-                VStack(spacing: 0) {
-                  Spacer()
-                  HStack(spacing: 0) {
-                    if let index = index(symbol) {
-                      TextField(symbol, text: $appSettings.numberNineGridSymbols[index])
-                        .textFieldStyle(.roundedBorder)
-                        .frame(width: 50)
-                        .multilineTextAlignment(.center)
-                    }
-
-                    Spacer()
-
-                    if #available(iOS 15, *) {
-                      Image(systemName: "line.3.horizontal")
-                    } else {
-                      Image(systemName: "pencil")
-                    }
-                  }
-                  .padding(.horizontal)
-                  .padding(.vertical, 3)
-                  Spacer()
-                  Divider()
-                }
-                .hideListRowSeparator()
-                .listRowBackground(Color.HamsterBackgroundColor)
-              }
-              .onMove(perform: move)
-              .onDelete(perform: delete)
-            }
-            .listStyle(.plain)
-          } header: {
-            HStack(spacing: 0) {
-              Text("自定义符号栏")
-              Spacer()
-              Button {
-                addEmptySymbol()
-              } label: {
-                Image(systemName: "plus")
-              }
-            }
-            .padding(.horizontal)
-          }
+          SymbolEditView(symbols: $appSettings.numberNineGridSymbols, title: "九宫格符号")
         }
 
         Spacer()
@@ -107,31 +63,6 @@ struct NumberNineGridSettingView: View {
       .padding(.horizontal)
     }
     .navigationBarTitleDisplayMode(.inline)
-  }
-}
-
-extension NumberNineGridSettingView {
-  func index(_ symbol: String) -> Int? {
-    if let index = appSettings.numberNineGridSymbols.firstIndex(of: symbol) {
-      return index
-    }
-    return nil
-  }
-
-  func move(from source: IndexSet, to destination: Int) {
-    appSettings.numberNineGridSymbols.move(fromOffsets: source, toOffset: destination)
-  }
-
-  func delete(from source: IndexSet) {
-    appSettings.numberNineGridSymbols.remove(atOffsets: source)
-  }
-
-  func addEmptySymbol() {
-    if let _ = appSettings.numberNineGridSymbols.first(where: { $0 == "" }) {
-      ProgressHUD.showError("请先修改值为空的符号")
-      return
-    }
-    appSettings.numberNineGridSymbols.append("")
   }
 }
 

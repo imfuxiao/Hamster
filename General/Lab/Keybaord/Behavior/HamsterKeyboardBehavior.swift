@@ -71,7 +71,12 @@ class HamsterKeyboardBehavior: KeyboardBehavior {
         return .alphabetic(.lowercased)
       }
     }
-    return keyboardContext.keyboardType
+    switch action {
+    case .character, .characterMargin:
+      return .alphabetic(.lowercased)
+    default:
+      return keyboardContext.keyboardType
+    }
   }
 
   /**
@@ -128,9 +133,19 @@ class HamsterKeyboardBehavior: KeyboardBehavior {
     case .shift: return true
     default:
       // 检测键盘是否开启自动小写功能
-      if appSettings.enableKeyboardAutomaticallyLowercase {
+      if keyboardContext.keyboardType.isAlphabeticUppercased && appSettings.enableKeyboardAutomaticallyLowercase {
         return true
       }
+
+      // 判断是否需要返回主键盘
+      if case .character(let char) = action {
+        return appSettings.returnToPrimaryKeyboardOfSymbols.contains(char)
+      }
+
+      if case .characterMargin(let char) = action {
+        return appSettings.returnToPrimaryKeyboardOfSymbols.contains(char)
+      }
+
       return false
     }
   }
