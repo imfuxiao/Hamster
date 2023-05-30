@@ -36,6 +36,7 @@ struct CollectionView<Collections, CellContent>: UIViewControllerRepresentable w
   typealias SizeForData = (Data) -> CGSize
   typealias CustomSizeForData = (UICollectionView, UICollectionViewLayout, Data) -> CGSize
   typealias RawCustomize = (UICollectionView) -> Void
+  typealias SelectItemBuild = (Data) -> Void
 
   enum ContentSize {
     // 固定宽度
@@ -56,6 +57,7 @@ struct CollectionView<Collections, CellContent>: UIViewControllerRepresentable w
   fileprivate let contentSize: ContentSize
   fileprivate let itemSpacing: ItemSpacing
   fileprivate let rawCustomize: RawCustomize?
+  fileprivate let selectItemBuilder: SelectItemBuild?
 
   init(
     collections: Collections,
@@ -63,7 +65,8 @@ struct CollectionView<Collections, CellContent>: UIViewControllerRepresentable w
     contentSize: ContentSize,
     itemSpacing: ItemSpacing = ItemSpacing(mainAxisSpacing: 0, crossAxisSpacing: 0),
     rawCustomize: RawCustomize? = nil,
-    contentForData: @escaping ContentForData)
+    contentForData: @escaping ContentForData,
+    selectItemBuilder: SelectItemBuild? = nil)
   {
     self.collections = collections
     self.scrollDirection = scrollDirection
@@ -71,6 +74,7 @@ struct CollectionView<Collections, CellContent>: UIViewControllerRepresentable w
     self.itemSpacing = itemSpacing
     self.rawCustomize = rawCustomize
     self.contentForData = contentForData
+    self.selectItemBuilder = selectItemBuilder
   }
 
   func makeCoordinator() -> Coordinator {
@@ -104,7 +108,8 @@ extension CollectionView {
     contentSize: ContentSize,
     itemSpacing: ItemSpacing = ItemSpacing(mainAxisSpacing: 0, crossAxisSpacing: 0),
     rawCustomize: RawCustomize? = nil,
-    contentForData: @escaping ContentForData) where Collections == [Collection]
+    contentForData: @escaping ContentForData,
+    selectItemBuilder: SelectItemBuild? = nil) where Collections == [Collection]
   {
     self.init(
       collections: [collection],
@@ -112,7 +117,8 @@ extension CollectionView {
       contentSize: contentSize,
       itemSpacing: itemSpacing,
       rawCustomize: rawCustomize,
-      contentForData: contentForData)
+      contentForData: contentForData,
+      selectItemBuilder: selectItemBuilder)
   }
 }
 
@@ -140,6 +146,9 @@ extension CollectionView {
       collectionView.register(HostedCollectionViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
       collectionView.dataSource = coordinator
       collectionView.delegate = coordinator
+      if scrollDirection == .vertical {
+        collectionView.alwaysBounceVertical = true
+      }
       self.collectionView = collectionView
 
       super.init(nibName: nil, bundle: nil)
@@ -157,7 +166,7 @@ extension CollectionView {
 }
 
 extension CollectionView {
-  final class Coordinator: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+  final class Coordinator: NSObject, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     fileprivate var view: CollectionView
     fileprivate var viewController: ViewController?
 
@@ -229,22 +238,33 @@ extension CollectionView {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
       return self.view.itemSpacing.crossAxisSpacing
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+      let data = self.view.collections[indexPath.section][indexPath.item]
+      self.view.selectItemBuilder?(data)
+    }
   }
 }
 
 private extension CollectionView {
+  final class HamsterHostingController<CellContent: View>: UIHostingController<CellContent> {
+    override public func viewWillLayoutSubviews() {
+      super.viewWillLayoutSubviews()
+      updateViewConstraints()
+    }
+  }
+
   final class HostedCollectionViewCell: UICollectionViewCell {
-    var viewController: UIHostingController<CellContent>?
+    var viewController: HamsterHostingController<CellContent>?
 
     func provide(_ content: CellContent) {
-      // TODO: 临时解决cell复用导致点击错乱问题，目前会有性能问题。。。
-//      if let viewController = self.viewController {
-//        viewController.rootView = content
-//      } else {
-      let hostingController = UIHostingController(rootView: content)
-      hostingController.view.backgroundColor = nil
-      self.viewController = hostingController
-//      }
+      if let viewController = self.viewController {
+        viewController.rootView = content
+      } else {
+        let hostingController = HamsterHostingController(rootView: content)
+        hostingController.view.backgroundColor = nil
+        self.viewController = hostingController
+      }
     }
 
     func attach(to parentController: UIViewController) {
@@ -252,7 +272,7 @@ private extension CollectionView {
       let hostedView = hostedController.view!
       let contentView = self.contentView
 
-      parentController.addChild(hostedController)
+//      parentController.addChild(hostedController)
 
       hostedView.translatesAutoresizingMaskIntoConstraints = false
       contentView.addSubview(hostedView)
@@ -261,7 +281,7 @@ private extension CollectionView {
       hostedView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
       hostedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
 
-      hostedController.didMove(toParent: parentController)
+//      hostedController.didMove(toParent: parentController)
     }
 
     func detach() {

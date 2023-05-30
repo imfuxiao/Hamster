@@ -18,6 +18,7 @@ struct CandidateView: View {
     actionHandler: KeyboardActionHandler,
     isInScrollView: Bool = false
   ) {
+    // Logger.shared.log.debug("\(data.index):\(data.text)")
     self.appearance = appearance
     self.data = data
     self.style = style
@@ -62,7 +63,7 @@ struct CandidateView: View {
 
   var body: some View {
     HStack(alignment: .center, spacing: 0) {
-      Text(appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.text)" : data.text)
+      Text(appSettings.enableShowCandidateIndex ? "\(data.index + 1).\(data.text)" : data.text)
         .font(style.item.titleFont.font)
         .foregroundColor(foregroundColor)
 
@@ -76,13 +77,13 @@ struct CandidateView: View {
     .background(backgroundColor)
     .cornerRadius(style.autocompleteBackground.cornerRadius)
     .background(Color.clearInteractable)
-    .hamsterKeyboardGestures(
-      for: KeyboardAction.custom(named: "#selectIndex:\(data.index)"),
-      actionHandler: actionHandler,
-      calloutContext: nil,
-      isInScrollView: isInScrollView,
-      isPressed: $isPressed
-    )
+//    .hamsterKeyboardGestures(
+//      for: KeyboardAction.custom(named: "#selectIndex:\(data.index):\(data.text)"),
+//      actionHandler: actionHandler,
+//      calloutContext: nil,
+//      isInScrollView: isInScrollView,
+//      isPressed: $isPressed
+//    )
   }
 }
 
@@ -151,7 +152,7 @@ struct CandidateHStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
+        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index + 1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
 
         let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
         let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
@@ -172,6 +173,12 @@ struct CandidateHStackView: View {
           isInScrollView: true
         )
         .contentShape(Rectangle())
+      },
+      selectItemBuilder: {
+        let data = $0
+        let action = KeyboardAction.custom(named: "#selectIndex:\(data.index)")
+        self.actionHandler.handle(.press, on: action)
+        self.actionHandler.handle(.release, on: action)
       }
     )
   }
@@ -207,7 +214,7 @@ struct CandidateVStackView: View {
         // 注意需要使用: UIFont
         // TODO: 这里使用了系统字体, 如果将来换成用户维护代字体, 需要修改此处方法
         let titleFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateTitleFontSize))]
-        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index+1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
+        let titleFont = ((appSettings.enableShowCandidateIndex ? "\(data.index + 1).\(data.title)" : data.title) as NSString).size(withAttributes: titleFontAttributes)
 
         let commentFontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: CGFloat(appSettings.rimeCandidateCommentFontSize))]
         let commentFont = ((data.comment ?? "") as NSString).size(withAttributes: commentFontAttributes)
@@ -242,6 +249,12 @@ struct CandidateVStackView: View {
           isInScrollView: true
         )
         .contentShape(Rectangle())
+      },
+      selectItemBuilder: {
+        let data = $0
+        let action = KeyboardAction.custom(named: "#selectIndex:\(data.index)")
+        self.actionHandler.handle(.press, on: action)
+        self.actionHandler.handle(.release, on: action)
       }
     )
   }
