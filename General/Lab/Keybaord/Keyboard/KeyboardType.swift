@@ -26,6 +26,10 @@ enum keyboardCustomType: String, CaseIterable, Equatable {
     }
   }
 
+  var keyboardType: KeyboardType {
+    return .custom(named: self.rawValue)
+  }
+
   var keyboardAction: KeyboardAction? {
     switch self {
     case .numberNineGrid: return .keyboardType(.custom(named: self.rawValue))
@@ -35,18 +39,17 @@ enum keyboardCustomType: String, CaseIterable, Equatable {
 }
 
 extension KeyboardType {
-  
   /**
    * 是否数字九宫格
    */
   var isNumberNineGrid: Bool {
-      switch self {
-      case .custom(let name):
-        if name == keyboardCustomType.numberNineGrid.rawValue {
-          return true
-        }
-        return false
-      default: return false
+    switch self {
+    case .custom(let name):
+      if name == keyboardCustomType.numberNineGrid.rawValue {
+        return true
       }
+      return false
+    default: return false
+    }
   }
 }

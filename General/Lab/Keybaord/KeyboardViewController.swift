@@ -124,15 +124,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     self.log.debug("viewWillSetupKeyboard() begin")
 
     // 初始键盘类型
-    if let keyboardType = self.textDocumentProxy.keyboardType {
-      switch keyboardType {
-      // 数字键盘
-      case .numberPad, .numbersAndPunctuation, .phonePad, .decimalPad, .asciiCapableNumberPad:
-        self.keyboardContext.keyboardType = .numeric
-      // 默认键盘
-      default:
-        break
-      }
+    if let keyboardType = self.textDocumentProxy.keyboardType, keyboardType.isNumberType {
+      self.keyboardContext.keyboardType = keyboardCustomType.numberNineGrid.keyboardType
     }
 
     self.setup {
@@ -608,4 +601,15 @@ extension HamsterKeyboardViewController {
     }
   }
 }
+
+extension UIKeyboardType {
+  var isNumberType: Bool {
+    switch self {
+    // 数字键盘
+    case .numberPad, .numbersAndPunctuation, .phonePad, .decimalPad, .asciiCapableNumberPad: return true
+    default: return false
+    }
+  }
+}
+
 #endif

@@ -38,7 +38,7 @@ class HamsterInputSetProvider: InputSetProvider {
   }
 
   var numericInputSet: NumericInputSet {
-    appSettings.enableNumberNineGrid ? chineseProvider.numericNineGridInputSet : provider().numericInputSet
+    keyboardContext.keyboardType.isNumberNineGrid ? chineseProvider.numericNineGridInputSet : provider().numericInputSet
   }
 
   var symbolicInputSet: SymbolicInputSet {

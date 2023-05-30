@@ -247,7 +247,7 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
     case .alphabetic:
-      if appSettings.enableNumberNineGrid {
+      if appSettings.enableNumberNineGrid || (context.textDocumentProxy.keyboardType != nil && context.textDocumentProxy.keyboardType!.isNumberType) {
         return keyboardCustomType.numberNineGrid.keyboardAction
       }
       return .keyboardType(.numeric)
