@@ -59,8 +59,9 @@ extension KeyboardAction {
     case .character(let char), .characterMargin(let char): return {
         guard let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController else { return }
         if ivc.keyboardContext.keyboardType.isNumberNineGrid, ivc.appSettings.enableNumberNineGridInputOnScreenMode {
-          ivc.textDocumentProxy.insertText(char)
-          ivc.cursorBackOfSymbols(key: char)
+          let pairKey = ivc.getPairSymbols(char)
+          ivc.textDocumentProxy.insertText(pairKey)
+          _ = ivc.cursorBackOfSymbols(key: pairKey)
           if ivc.returnToPrimaryKeyboardOfSymbols(key: char) {
             ivc.keyboardContext.keyboardType = .alphabetic(.lowercased)
           }
@@ -109,6 +110,18 @@ extension KeyboardAction {
             _ = ivc.selectCandidateIndex(index: index)
             if ivc.rimeContext.userInputKey.isEmpty {
               ivc.appSettings.keyboardStatus = .normal
+            }
+          }
+          return
+        } else if name.hasPrefix("#selectSymbol") {
+          let symbol = String(name.dropFirst("#selectSymbol".count))
+          if let ivc = $0, let ivc = ivc as? HamsterKeyboardViewController {
+            let selectText = ivc.textDocumentProxy.selectedText ?? ""
+            let pairSymbol = ivc.getPairSymbols(symbol)
+            ivc.textDocumentProxy.insertText(pairSymbol)
+            if ivc.cursorBackOfSymbols(key: pairSymbol), !selectText.isEmpty {
+              ivc.textDocumentProxy.insertText(selectText)
+              ivc.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
             }
           }
           return

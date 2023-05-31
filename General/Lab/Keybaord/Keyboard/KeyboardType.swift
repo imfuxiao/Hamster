@@ -33,6 +33,7 @@ enum keyboardCustomType: String, CaseIterable, Equatable {
   var keyboardAction: KeyboardAction? {
     switch self {
     case .numberNineGrid: return .keyboardType(.custom(named: self.rawValue))
+    case .symbol: return .keyboardType(.custom(named: self.rawValue))
     default: return nil
     }
   }
@@ -46,6 +47,20 @@ extension KeyboardType {
     switch self {
     case .custom(let name):
       if name == keyboardCustomType.numberNineGrid.rawValue {
+        return true
+      }
+      return false
+    default: return false
+    }
+  }
+
+  /**
+   * 是否数字九宫格
+   */
+  var isCustomSymbol: Bool {
+    switch self {
+    case .custom(let name):
+      if name == keyboardCustomType.symbol.rawValue {
         return true
       }
       return false

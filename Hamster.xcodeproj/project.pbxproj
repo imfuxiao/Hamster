@@ -15,6 +15,11 @@
 		C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01BA3432A15C23600D30048 /* MBProgressHUD+SwiftUI.swift */; };
 		C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */; };
 		C020AD4729B73D5400B26142 /* RimeContext+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */; };
+		C02415282A25DC34004E282B /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415272A25DC34004E282B /* Symbol.swift */; };
+		C024152A2A25E831004E282B /* SymbolCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415292A25E831004E282B /* SymbolCategory.swift */; };
+		C024152C2A25EB8A004E282B /* SymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152B2A25EB8A004E282B /* SymbolProvider.swift */; };
+		C024152E2A25EC2F004E282B /* FrequentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */; };
+		C02415302A25ED6D004E282B /* MostRecentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */; };
 		C02435982A0490230080CFB4 /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435742A0490220080CFB4 /* HamsterApp.swift */; };
 		C02435992A0490230080CFB4 /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435772A0490220080CFB4 /* TextEditView.swift */; };
 		C024359A2A0490230080CFB4 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435782A0490220080CFB4 /* SectionView.swift */; };
@@ -92,6 +97,13 @@
 		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
 		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
 		C0837F142A1E0A2700530A9B /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
+		C08B1A5E2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */; };
+		C08B1A5F2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */; };
+		C08B1A602A260D6C00668CA4 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415272A25DC34004E282B /* Symbol.swift */; };
+		C08B1A612A260D6C00668CA4 /* SymbolCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415292A25E831004E282B /* SymbolCategory.swift */; };
+		C08B1A622A260D6C00668CA4 /* SymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152B2A25EB8A004E282B /* SymbolProvider.swift */; };
+		C08B1A632A260D6C00668CA4 /* FrequentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */; };
+		C08B1A642A260D6C00668CA4 /* MostRecentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */; };
 		C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */; };
 		C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */; };
 		C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */; };
@@ -224,8 +236,8 @@
 		C0B19F292A0CFAD7006AAA28 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F282A0CFAD7006AAA28 /* TreeSitterLuaRunestone */; };
 		C0B19F2B2A0D997A006AAA28 /* SelectInputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */; };
 		C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
-		C0B7E4822A1F04DF004A839F /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* SymbolView.swift */; };
-		C0B7E4832A1F04DF004A839F /* SymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* SymbolView.swift */; };
+		C0B7E4822A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */; };
+		C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */; };
 		C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
 		C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
 		C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */; };
@@ -303,6 +315,11 @@
 		C01BA3432A15C23600D30048 /* MBProgressHUD+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+SwiftUI.swift"; sourceTree = "<group>"; };
 		C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+File.swift"; sourceTree = "<group>"; };
 		C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+LibrimeKit.swift"; sourceTree = "<group>"; };
+		C02415272A25DC34004E282B /* Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbol.swift; sourceTree = "<group>"; };
+		C02415292A25E831004E282B /* SymbolCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolCategory.swift; sourceTree = "<group>"; };
+		C024152B2A25EB8A004E282B /* SymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolProvider.swift; sourceTree = "<group>"; };
+		C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequentSymbolProvider.swift; sourceTree = "<group>"; };
+		C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostRecentSymbolProvider.swift; sourceTree = "<group>"; };
 		C02435742A0490220080CFB4 /* HamsterApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterApp.swift; sourceTree = "<group>"; };
 		C02435772A0490220080CFB4 /* TextEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
 		C02435782A0490220080CFB4 /* SectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
@@ -388,6 +405,7 @@
 		C074C43929FB7DFD00718DAD /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
 		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridKeyboard.swift; sourceTree = "<group>"; };
+		C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolKeyboard.swift; sourceTree = "<group>"; };
 		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
 		C09949D72A01604A00E26BA4 /* File+iCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+iCloud.swift"; sourceTree = "<group>"; };
 		C09F6AF92A0872E500F2EF18 /* RIMEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIMEView.swift; sourceTree = "<group>"; };
@@ -405,7 +423,7 @@
 		C0A602F72A18611E000DC924 /* RimeContext+File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+File+Zip.swift"; sourceTree = "<group>"; };
 		C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInputSchemaView.swift; sourceTree = "<group>"; };
 		C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+Color.swift"; sourceTree = "<group>"; };
-		C0B7E4812A1F04DF004A839F /* SymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolView.swift; sourceTree = "<group>"; };
+		C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridSymbolView.swift; sourceTree = "<group>"; };
 		C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+Preview.swift"; sourceTree = "<group>"; };
 		C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSettingsView.swift; sourceTree = "<group>"; };
 		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -527,6 +545,18 @@
 				C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */,
 			);
 			path = Feedback;
+			sourceTree = "<group>";
+		};
+		C02415262A25DC10004E282B /* Symbol */ = {
+			isa = PBXGroup;
+			children = (
+				C02415272A25DC34004E282B /* Symbol.swift */,
+				C02415292A25E831004E282B /* SymbolCategory.swift */,
+				C024152B2A25EB8A004E282B /* SymbolProvider.swift */,
+				C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */,
+				C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */,
+			);
+			path = Symbol;
 			sourceTree = "<group>";
 		};
 		C02435722A0490220080CFB4 /* Hamster */ = {
@@ -812,7 +842,8 @@
 				C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */,
 				C071A2442A17786B00FBE5A2 /* OneHandedView.swift */,
 				C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */,
-				C0B7E4812A1F04DF004A839F /* SymbolView.swift */,
+				C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */,
+				C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -948,6 +979,7 @@
 				C099464429B28602007FD3CA /* Image */,
 				C04FA8D8299A65AC00F8CC32 /* View */,
 				C0A3CDDF2A0B53780068D737 /* KeyboardView */,
+				C02415262A25DC10004E282B /* Symbol */,
 			);
 			path = Keybaord;
 			sourceTree = "<group>";
@@ -1268,6 +1300,7 @@
 			files = (
 				C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */,
 				C0A3CDFA2A0B544E0068D737 /* OSXKeyCode.swift in Sources */,
+				C02415302A25ED6D004E282B /* MostRecentSymbolProvider.swift in Sources */,
 				C0A3CDFB2A0B544E0068D737 /* keysymdef.swift in Sources */,
 				C0A3CDE02A0B54000068D737 /* KeyboardViewController.swift in Sources */,
 				C0A3CDE12A0B54000068D737 /* KeyboardConstants.swift in Sources */,
@@ -1275,6 +1308,7 @@
 				C0A3CDE32A0B54000068D737 /* HamsterKeyboardBehavior.swift in Sources */,
 				C0A3CDE42A0B54000068D737 /* HamsterActionCalloutContext.swift in Sources */,
 				C0A3CDE52A0B54000068D737 /* HamsterCalloutActionProvider.swift in Sources */,
+				C02415282A25DC34004E282B /* Symbol.swift in Sources */,
 				C0A3CDE62A0B54000068D737 /* KeyboardType+Button.swift in Sources */,
 				C0A3CDE72A0B54000068D737 /* KeyboardFeedbackHandler.swift in Sources */,
 				C0A3CDE82A0B54000068D737 /* HamsterInputSetProvider.swift in Sources */,
@@ -1285,6 +1319,7 @@
 				C0A3CDEC2A0B54000068D737 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
 				C0A3CDED2A0B54000068D737 /* KeyboardLocale.swift in Sources */,
 				C0A3CDEE2A0B54000068D737 /* KKL10n.swift in Sources */,
+				C024152E2A25EC2F004E282B /* FrequentSymbolProvider.swift in Sources */,
 				C0A3CDEF2A0B54000068D737 /* SwipeGestureHandler.swift in Sources */,
 				C0A3CDF02A0B54000068D737 /* HamsterSwipeGestureHandler.swift in Sources */,
 				C0A3CDF12A0B54000068D737 /* KeyboardImageReader.swift in Sources */,
@@ -1318,6 +1353,7 @@
 				C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */,
 				C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */,
 				C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */,
+				C08B1A5E2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */,
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
 				C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */,
 				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
@@ -1337,6 +1373,7 @@
 				C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */,
 				C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */,
 				C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */,
+				C024152C2A25EB8A004E282B /* SymbolProvider.swift in Sources */,
 				C02435BB2A05ECF00080CFB4 /* AppSettings+Yaml.swift in Sources */,
 				C02435982A0490230080CFB4 /* HamsterApp.swift in Sources */,
 				C09F6B092A08F71000F2EF18 /* HamsterGestureButton.swift in Sources */,
@@ -1345,8 +1382,9 @@
 				C09F6AFA2A0872E500F2EF18 /* RIMEView.swift in Sources */,
 				C037B61529CC37AD00B1BBDC /* View+Extend.swift in Sources */,
 				C02435B82A04B8170080CFB4 /* MetadataProvider.swift in Sources */,
+				C024152A2A25E831004E282B /* SymbolCategory.swift in Sources */,
 				C0A602F82A18611E000DC924 /* RimeContext+File+Zip.swift in Sources */,
-				C0B7E4822A1F04DF004A839F /* SymbolView.swift in Sources */,
+				C0B7E4822A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */,
 				C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */,
 				C09F6AFD2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift in Sources */,
 				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
@@ -1390,7 +1428,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C08B1A602A260D6C00668CA4 /* Symbol.swift in Sources */,
+				C08B1A612A260D6C00668CA4 /* SymbolCategory.swift in Sources */,
+				C08B1A622A260D6C00668CA4 /* SymbolProvider.swift in Sources */,
+				C08B1A632A260D6C00668CA4 /* FrequentSymbolProvider.swift in Sources */,
+				C08B1A642A260D6C00668CA4 /* MostRecentSymbolProvider.swift in Sources */,
 				C0A602F22A185F84000DC924 /* File+iCloud.swift in Sources */,
+				C08B1A5F2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */,
 				C0A602F12A185F57000DC924 /* File.swift in Sources */,
 				C0A602F02A185F33000DC924 /* RadioButton.swift in Sources */,
 				C0A602EE2A185F14000DC924 /* Checkbox.swift in Sources */,
@@ -1459,7 +1503,7 @@
 				C0A602DF2A185D9B000DC924 /* KeyboardContext+KeyboardType.swift in Sources */,
 				C0A602E02A185D9B000DC924 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
 				C0A602B32A185D88000DC924 /* KeyboardInputViewController.swift in Sources */,
-				C0B7E4832A1F04DF004A839F /* SymbolView.swift in Sources */,
+				C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

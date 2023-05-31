@@ -175,6 +175,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   public var rimeContext = RimeContext()
   public var appSettings = HamsterAppSettings()
   var cancellables = Set<AnyCancellable>()
+  var pairsSymbols = [String: String]()
 
   lazy var hamsterInputSetProvider: HamsterInputSetProvider = .init(
     keyboardContext: keyboardContext,
@@ -183,6 +184,15 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   )
 
   private func setupAppSettings() {
+    self.pairsSymbols = self.appSettings.pairsOfSymbols.reduce([String: String]()) {
+      let pair = $1.trimmingCharacters(in: .whitespacesAndNewlines).chars
+      guard pair.count == 2 else { return $0 }
+      guard $0[pair[0]] == nil else { return $0 }
+      var result = $0
+      result[pair[0]] = $1
+      return result
+    }
+
     // 按键气泡
     self.appSettings.$showKeyPressBubble
       .receive(on: RunLoop.main)
@@ -314,7 +324,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
     // 是否英文模式
     if self.rimeContext.asciiMode {
-      textDocumentProxy.insertText(text)
+      self.inputTextPatch(text, false)
+      // textDocumentProxy.insertText(text)
       return
     }
 
@@ -419,10 +430,20 @@ extension HamsterKeyboardViewController {
   }
 
   // 光标回退
-  func cursorBackOfSymbols(key: String) {
+  func cursorBackOfSymbols(key: String) -> Bool {
     if self.appSettings.cursorBackOfSymbols.contains(key) {
       self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+      return true
     }
+    return false
+  }
+
+  // 成对上屏符号
+  func getPairSymbols(_ key: String) -> String {
+    if let pairValue = self.pairsSymbols[key] {
+      return pairValue
+    }
+    return key
   }
 
   // 返回主键盘
@@ -469,10 +490,7 @@ extension HamsterKeyboardViewController {
       // 符号顶码上屏
       _ = self.candidateTextOnScreen()
       DispatchQueue.main.async {
-        self.inputTextPatch(key)
-        DispatchQueue.main.async {
-          self.cursorBackOfSymbols(key: key)
-        }
+        self.inputTextPatch(key, false)
       }
     }
   }
@@ -487,7 +505,26 @@ extension HamsterKeyboardViewController {
         self.textDocumentProxy.insertText(.newline)
         handled = true
       case XK_BackSpace: // 退格
-        self.textDocumentProxy.deleteBackward()
+        let beforeInput = self.textDocumentProxy.documentContextBeforeInput ?? ""
+        let afterInput = self.textDocumentProxy.documentContextAfterInput ?? ""
+        if !beforeInput.isEmpty && !afterInput.isEmpty {
+          // 光标居中符号处理
+          if self.appSettings.cursorBackOfSymbols.contains(String(beforeInput.last!) + String(afterInput.first!)) {
+            self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+            self.textDocumentProxy.deleteBackward(times: 2)
+          } else if self.appSettings.cursorBackOfSymbols.contains(String(beforeInput.suffix(2))) { // 光标在成对符号后面
+            self.textDocumentProxy.deleteBackward(times: 2)
+          } else {
+            self.textDocumentProxy.deleteBackward()
+          }
+        } else {
+          let char = String(beforeInput.suffix(2))
+          if self.appSettings.cursorBackOfSymbols.contains(char) {
+            self.textDocumentProxy.deleteBackward(times: 2)
+          } else {
+            self.textDocumentProxy.deleteBackward()
+          }
+        }
         handled = true
       case XK_Tab:
         self.textDocumentProxy.insertText(.tab)
@@ -591,13 +628,28 @@ extension HamsterKeyboardViewController {
     return true
   }
 
-  func inputTextPatch(_ text: String) {
-    if self.appSettings.enableInputEmbeddedMode {
+  // 上屏补丁
+  func inputTextPatch(_ text: String, _ rimeHandled: Bool = true) {
+    let pairKeys = self.getPairSymbols(text)
+    if rimeHandled, self.appSettings.enableInputEmbeddedMode, !self.rimeContext.asciiMode {
+      let selectText = self.textDocumentProxy.selectedText ?? ""
+
       // 这使用utf16计数，以避免表情符号和类似的问题。
-      self.textDocumentProxy.setMarkedText(text, selectedRange: NSRange(location: text.utf16.count, length: 0))
+      self.textDocumentProxy.setMarkedText(pairKeys, selectedRange: NSRange(location: pairKeys.utf16.count, length: 0))
       self.textDocumentProxy.unmarkText()
+      DispatchQueue.main.async {
+        if self.cursorBackOfSymbols(key: pairKeys), !selectText.isEmpty, self.rimeContext.userInputKey.isEmpty {
+          self.textDocumentProxy.insertText(selectText)
+          self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+        }
+      }
     } else {
-      self.textDocumentProxy.insertText(text)
+      let selectText = self.textDocumentProxy.selectedText ?? ""
+      self.textDocumentProxy.insertText(pairKeys)
+      if self.cursorBackOfSymbols(key: pairKeys), !selectText.isEmpty {
+        self.textDocumentProxy.insertText(selectText)
+        self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+      }
     }
   }
 }

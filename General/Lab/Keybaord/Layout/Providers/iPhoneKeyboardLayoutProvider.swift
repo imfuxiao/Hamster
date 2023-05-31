@@ -69,8 +69,8 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
 
         // 第四行：添加回车键
         // 根据键盘类型不同显示不同的切换键: 如数字键盘/字母键盘等切换键
-        // TODO: 这里需要将系统符号改为自定义符号键盘
-        result.append([.none, .keyboardType(.symbolic)] + actions[3] + [keyboardReturnAction(for: context)])
+        // 这里将系统符号改为自定义符号键盘
+        result.append([.none, keyboardCustomType.symbol.keyboardAction!] + actions[3] + [keyboardReturnAction(for: context)])
         return result
 
       default:
@@ -179,6 +179,19 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   // MARK: - iPhone Specific
 
   /**
+   Additional leading actions to apply to the lower row.
+   */
+  override func lowerLeadingActions(
+    for actions: KeyboardActionRows,
+    context: KeyboardContext) -> KeyboardActions
+  {
+    guard isExpectedActionSet(actions) else { return [] }
+    let margin = actions[2].leadingCharacterMarginAction
+    guard let switcher = keyboardSwitchActionForBottomInputRow(for: context) else { return [] }
+    return [switcher, margin]
+  }
+
+  /**
    Get the actions of the bottommost space key row.
    */
   override func bottomActions(for context: KeyboardContext) -> KeyboardActions {
@@ -234,12 +247,15 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override open func keyboardSwitchActionForBottomInputRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
     case .alphabetic(let casing): return .shift(currentCasing: casing)
-    case .numeric: return .keyboardType(.symbolic)
+    // 替换为自定义符号键盘
+//    case .numeric: return .keyboardType(.symbolic)
+    case .numeric: return keyboardCustomType.symbol.keyboardAction
     case .symbolic:
-      if appSettings.enableNumberNineGrid {
-        return keyboardCustomType.numberNineGrid.keyboardAction
-      }
-      return .keyboardType(.numeric)
+      return keyboardCustomType.symbol.keyboardAction
+//      if appSettings.enableNumberNineGrid {
+//        return keyboardCustomType.numberNineGrid.keyboardAction
+//      }
+//      return .keyboardType(.numeric)
     default: return nil
     }
   }

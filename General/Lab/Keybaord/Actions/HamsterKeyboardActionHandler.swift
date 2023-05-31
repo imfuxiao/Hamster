@@ -108,6 +108,8 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler, ObservableObj
     gestureAction(keyboardController)
     // 这里改变键盘类型: 比如双击, 不能在KeyboardAction+Action那里改
     tryChangeKeyboardType(after: gesture, on: action)
+    tryRegisterEmoji(after: gesture, on: action)
+    // TODO: 常用符号
     keyboardController?.performTextContextSync()
   }
 

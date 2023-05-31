@@ -65,7 +65,7 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
   ) {
     Logger.shared.log.debug("HamsterSystemKeyboard init")
     // 计算键盘总高度
-    self.keyboardHeight = Double(layout.itemRows.count) * layout.idealItemHeight
+    self.keyboardHeight = 4 * layout.idealItemHeight
 //      + layout.idealItemInsets.top + layout.idealItemInsets.bottom + appSettings.candidateBarHeight
 //      + appSettings.candidateBarHeight
 
@@ -74,6 +74,7 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
 
     // 键盘宽度
     self.keyboardWidth = width
+    Logger.shared.log.debug("HamsterSystemKeyboard width: \(keyboardWidth), height: \(keyboardHeight)")
 
     self.layout = layout
     self.layoutConfig = .standard(for: keyboardContext)
@@ -318,6 +319,7 @@ private extension HamsterSystemKeyboard {
       let customKeyboard = keyboardCustomType(rawValue: name)
       switch customKeyboard {
       case .numberNineGrid: numNineGridKeyboard
+      case .symbol: symbolKeyboard
       default: systemKeyboard
       }
     default: systemKeyboard
@@ -328,7 +330,7 @@ private extension HamsterSystemKeyboard {
     if !appSettings.enableCandidateBar {
       return false
     }
-    if keyboardContext.keyboardType == .emojis { return false }
+    if keyboardContext.keyboardType == .emojis || keyboardContext.keyboardType.isCustomSymbol { return false }
 //    switch autocompleteToolbarMode {
 //    case .automatic: return true
 //    case .none: return false
@@ -358,6 +360,19 @@ private extension HamsterSystemKeyboard {
       appSettings: appSettings,
       width: keyboardWidth,
       height: keyboardHeight
+    )
+  }
+
+  var symbolKeyboard: some View {
+    SymbolKeyboard(
+      layout: layout,
+      appearance: appearance,
+      actionHandler: actionHandler,
+      calloutContext: calloutContext,
+      keyboardContext: keyboardContext,
+      appSettings: appSettings,
+      width: keyboardWidth,
+      height: totalKeyboardHeight
     )
   }
 

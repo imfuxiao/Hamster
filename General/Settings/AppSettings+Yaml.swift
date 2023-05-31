@@ -242,15 +242,26 @@ public extension HamsterAppSettings {
         self.enableShowCandidateIndex = value
         Logger.shared.log.debug("set enableShowCandidateIndex = \(value)")
       }
+    // 光标回退与成对上屏符号共用
     case "cursor_back_of_symbols":
       if let value = node.any as? [String] {
         self.cursorBackOfSymbols = value
         Logger.shared.log.debug("set cursorBackOfSymbols = \(value)")
       }
+    case "pairs_of_symbols":
+      if let value = node.any as? [String] {
+        self.pairsOfSymbols = value
+        Logger.shared.log.debug("set pairsOfSymbols = \(value)")
+      }
     case "return_to_primary_keyboard_of_symbols":
       if let value = node.any as? [String] {
         self.returnToPrimaryKeyboardOfSymbols = value
         Logger.shared.log.debug("set returnToPrimaryKeyboardOfSymbols = \(value)")
+      }
+    case "symbol_keyboard_lock_state":
+      if let value = node.bool {
+        self.symbolKeyboardLockState = value
+        Logger.shared.log.debug("set symbolKeyboardLockState = \(value)")
       }
     default:
       break

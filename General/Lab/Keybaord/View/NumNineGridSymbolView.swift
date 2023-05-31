@@ -8,7 +8,7 @@
 import KeyboardKit
 import SwiftUI
 
-struct SymbolView: View {
+struct NumNineGridSymbolView: View {
   init(
     appearance: HamsterKeyboardAppearance,
     actionHandler: KeyboardActionHandler,
@@ -70,7 +70,7 @@ struct SymbolView: View {
   }
 }
 
-extension SymbolView {
+extension NumNineGridSymbolView {
   var foregroundColor: Color {
     guard let colorSchema = appearance.hamsterColorSchema else { return .primary }
     return colorSchema.candidateTextColor == .clear ? .primary : colorSchema.candidateTextColor
@@ -98,9 +98,9 @@ extension SymbolView {
   }
 }
 
-struct SymbolView_Previews: PreviewProvider {
+struct NumNineGridSymbolView_Previews: PreviewProvider {
   static var previews: some View {
-    SymbolView(
+    NumNineGridSymbolView(
       appearance: HamsterKeyboardAppearance.preview,
       actionHandler: KeyboardInputViewController.preview.keyboardActionHandler,
       calloutContext: KeyboardCalloutContext.preview,

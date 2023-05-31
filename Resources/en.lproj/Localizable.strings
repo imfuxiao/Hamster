@@ -24,6 +24,41 @@
 
 "keyboard.action.switchInputSchema" = "#方案切换";
 
+// 常用符号
+"frequent" = "Frequent";
+// 英文符号
+"ascii" = "English";
+// 中文符号
+"cn" = "Chinese";
+// 数学符号
+"math" = "Math";
+// 特殊符号
+"special" = "Special";
+// 单位
+"unit" = "Unit";
+// 列表
+"list" = "List";
+// 拼音
+"pinyin" = "Pinyin";
+// 注音
+"bopomofo" = "Bopomofo";
+// 部首
+"radical" = "Radical";
+// 希腊
+"grease" = "Greek";
+// 俄语
+"rusa" = "Rus";
+// 拉丁
+"lation" = "Lation";
+// 韩文
+"korea" = "Korea";
+// 音标
+"phonetic" = "IPA";
+// 颜文字
+"kaomoji" = "Kaomoji";
+// 假名
+"jp" = "Katakana";
+
 "searchEmoji" = "Search Emoji";
 
 /* [😀] */ "Emoji.GrinningFace" = "";

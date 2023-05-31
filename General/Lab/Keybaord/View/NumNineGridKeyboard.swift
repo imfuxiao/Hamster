@@ -106,7 +106,7 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
         List {
           ForEach(Array(appSettings.numberNineGridSymbols.enumerated()), id: \.offset) { index, symbol in
             if !symbol.isEmpty {
-              SymbolView(
+              NumNineGridSymbolView(
                 appearance: appearance,
                 actionHandler: actionHandler,
                 calloutContext: calloutContext,
