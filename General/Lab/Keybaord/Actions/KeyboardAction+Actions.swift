@@ -2,6 +2,21 @@ import Foundation
 import KeyboardKit
 
 extension KeyboardAction {
+  var isHamsterInputAction: Bool {
+    switch self {
+    case .character: return true
+    case .characterMargin: return true
+    case .emoji: return true
+    case .image: return true
+    case .space: return true
+    case .systemImage: return true
+    case .custom: return true
+    default: return false
+    }
+  }
+}
+
+extension KeyboardAction {
 //  // 用于注入 HamsterInputViewController 并兼容 KeyboardKit
 //  typealias HamsterGestureAction = (HamsterKeyboardViewController?) -> GestureAction
 

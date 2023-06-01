@@ -97,8 +97,9 @@ public enum HamsterAppSettingKeys: String {
 
   // 是否显示键盘收起按键
   case showKeyboardDismissButton = "app.keyboard.showDismissButton"
-
-
+  // 是否显示分号键
+  case showSemicolonButton = "app.keyboard.showSemicolonButton"
+  
   // 是否显示空格左边按键
   case showSpaceLeftButton = "app.keyboard.showSpaceLeftButton"
   // 空格左边按键键值
@@ -231,6 +232,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue: HapticIntensity.mediumImpact.rawValue,
       HamsterAppSettingKeys.showKeyboardDismissButton.rawValue: true,
       HamsterAppSettingKeys.showSpaceLeftButton.rawValue: true,
+      HamsterAppSettingKeys.showSemicolonButton.rawValue: false,
       HamsterAppSettingKeys.spaceLeftButtonValue.rawValue: ",",
       HamsterAppSettingKeys.showSpaceRightButton.rawValue: false,
       HamsterAppSettingKeys.showSpaceRightSwitchLanguageButton.rawValue: true,
@@ -279,6 +281,7 @@ public class HamsterAppSettings: ObservableObject {
     self.keyboardFeedbackHapticIntensity = UserDefaults.hamsterSettingsDefault.integer(forKey: HamsterAppSettingKeys.keyboardFeedbackHapticIntensity.rawValue)
     self.showKeyboardDismissButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
     self.showSpaceLeftButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceLeftButton.rawValue)
+    self.showSemicolonButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSemicolonButton.rawValue)
     self.spaceLeftButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceLeftButtonValue.rawValue) ?? ""
     self.showSpaceRightButton = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showSpaceRightButton.rawValue)
     self.spaceRightButtonValue = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.spaceRightButtonValue.rawValue) ?? ""
@@ -419,6 +422,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, showKeyboardDismissButton": showKeyboardDismissButton])
       UserDefaults.hamsterSettingsDefault.set(
         showKeyboardDismissButton, forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
+    }
+  }
+  
+  // 是否显示分号键
+  @Published
+  var showSemicolonButton: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, showSemicolonButton": showSemicolonButton])
+      UserDefaults.hamsterSettingsDefault.set(
+        showSemicolonButton, forKey: HamsterAppSettingKeys.showSemicolonButton.rawValue)
     }
   }
 

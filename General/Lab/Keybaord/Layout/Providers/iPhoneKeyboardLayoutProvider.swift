@@ -87,8 +87,12 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
       topLeadingActions(for: actions, context: context) + actions[0]
         + topTrailingActions(for: actions, context: context))
 
+    var secondLineAction = actions[1]
+    if appSettings.showSemicolonButton && context.keyboardType.isAlphabetic {
+      secondLineAction.append(.custom(named: ";"))
+    }
     result.append(
-      middleLeadingActions(for: actions, context: context) + actions[1] +
+      middleLeadingActions(for: actions, context: context) + secondLineAction +
         middleTrailingActions(for: actions, context: context))
 
     result.append(

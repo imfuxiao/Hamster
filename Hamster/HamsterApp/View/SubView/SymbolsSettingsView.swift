@@ -152,12 +152,11 @@ struct SymbolEditView: View {
             }
           }
         }
-        .onHover(perform: { moveState = $0 })
         .padding(.horizontal)
         .padding(.vertical, 3)
         Spacer()
       }
-      .moveDisabled(moveDisabled && moveState)
+      .moveDisabled(moveDisabled)
       .deleteDisabled(deleteDisabled)
 //      .hideListRowSeparator() // 隐藏行线在onMove中有bug
       .listRowBackground(Color.HamsterBackgroundColor)

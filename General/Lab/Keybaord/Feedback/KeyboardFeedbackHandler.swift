@@ -37,4 +37,13 @@ class HamsterKeyboardFeedbackHandler: StandardKeyboardFeedbackHandler {
       HapticFeedback.engine.trigger(hapticFeedfack)
     }
   }
+
+  override func triggerAudioFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {
+    let custom = audioConfig.actions.first { $0.action == action }
+    if let custom = custom { return custom.feedback.trigger() }
+    if action == .space && gesture == .longPress { return }
+    if action == .backspace { return audioConfig.delete.trigger() }
+    if action.isHamsterInputAction { return audioConfig.input.trigger() }
+    if action.isSystemAction { return audioConfig.system.trigger() }
+  }
 }

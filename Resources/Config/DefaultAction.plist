@@ -84,8 +84,8 @@
 		<string>%</string>
 		<key>u↑</key>
 		<string>7</string>
-		 <key>u↓</key>
-		<string>&amp;</string> 
+		<key>u↓</key>
+		<string>&amp;</string>
 		<key>v↑</key>
 		<string>“”</string>
 		<key>v↓</key>
@@ -101,7 +101,7 @@
 		<key>y↑</key>
 		<string>6</string>
 		<key>y↓</key>
-		<string>^</string> 
+		<string>^</string>
 		<key>z↑</key>
 		<string>#行首</string>
 		<key>z↓</key>
@@ -118,5 +118,13 @@
 		<string>#清屏</string>
 		<key>123↑</key>
 		<string>#切换上个输入方案</string>
+		<key>;↑</key>
+		<string>:</string>
+		<key>,↑</key>
+		<string>.</string>
+		<key>`↑</key>
+		<string></string>
+		<key>shift↑</key>
+		<string></string>
 	</dict>
 </plist>

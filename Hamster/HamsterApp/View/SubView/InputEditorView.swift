@@ -55,6 +55,16 @@ struct BothSidesOfTheSpaceView: View {
   var body: some View {
     VStack {
       HStack {
+        Toggle(isOn: $appSettings.showSemicolonButton) {
+          Text("启用分号键")
+            .font(.system(size: 16, weight: .bold, design: .rounded))
+        }
+      }
+    }
+    .functionCell()
+
+    VStack {
+      HStack {
         Toggle(isOn: $appSettings.showSpaceLeftButton) {
           Text("空格左边按键")
             .font(.system(size: 16, weight: .bold, design: .rounded))

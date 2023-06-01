@@ -182,6 +182,11 @@ public extension HamsterAppSettings {
         self.showKeyboardDismissButton = value
         Logger.shared.log.debug("set showKeyboardDismissButton = \(value)")
       }
+    case "show_semicolon_button":
+      if let value = node.bool {
+        self.showSemicolonButton = value
+        Logger.shared.log.debug("set showSemicolonButton = \(value)")
+      }
     case "show_space_left_button":
       if let value = node.bool {
         self.showSpaceLeftButton = value

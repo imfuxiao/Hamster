@@ -38,10 +38,14 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler, ObservableObj
           return
         }
         actionMappingValue = actionConfig[.spaceKeyName.actionKey(direction)]
+      case .shift:
+        actionMappingValue = actionConfig[.shiftKeyName.actionKey(direction)]
       case .keyboardType(let type):
         if (type == .numeric && ivc.keyboardContext.keyboardType.isAlphabetic) || type.isNumberNineGrid {
           actionMappingValue = actionConfig[.numberKeyboardButton.actionKey(direction)]
         }
+      case .custom(let char): // 自定义按钮映射
+        actionMappingValue = actionConfig[char.actionKey(direction)]
       default:
         break
       }
@@ -155,7 +159,8 @@ private extension String {
   static let backspaceKeyName = "backspace"
   // 回车键名称
   static let enterKeyName = "enter"
-
+  // shift
+  static let shiftKeyName = "shift"
   // 数字键盘切换键
   static let numberKeyboardButton = "123"
 
