@@ -66,6 +66,7 @@ class HamsterKeyboardBehavior: KeyboardBehavior {
     on action: KeyboardAction
   ) -> KeyboardType {
     if shouldSwitchToCapsLock(after: gesture, on: action) { return .alphabetic(.capsLocked) }
+    // 检测开启 shift 自动转小写
     if appSettings.enableKeyboardAutomaticallyLowercase && action.isCharacterAction {
       if keyboardContext.keyboardType == .alphabetic(.uppercased) {
         return .alphabetic(.lowercased)
@@ -73,6 +74,9 @@ class HamsterKeyboardBehavior: KeyboardBehavior {
     }
     switch action {
     case .character, .characterMargin:
+      if keyboardContext.keyboardType == .alphabetic(.capsLocked) {
+        return keyboardContext.keyboardType
+      }
       return .alphabetic(.lowercased)
     default:
       return keyboardContext.keyboardType
@@ -133,7 +137,7 @@ class HamsterKeyboardBehavior: KeyboardBehavior {
     case .shift: return true
     default:
       // 检测键盘是否开启自动小写功能
-      if keyboardContext.keyboardType.isAlphabeticUppercased && appSettings.enableKeyboardAutomaticallyLowercase {
+      if keyboardContext.keyboardType.isAlphabetic(.uppercased) && appSettings.enableKeyboardAutomaticallyLowercase {
         return true
       }
 
