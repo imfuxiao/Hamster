@@ -22,7 +22,7 @@
 "keyboardTypeSymbolic" = "#+=";
 
 
-"keyboard.action.switchInputSchema" = "#方案切换";
+"keyboard.action.switchInputSchema" = "#Switch";
 
 // 常用符号
 "frequent" = "Frequent";

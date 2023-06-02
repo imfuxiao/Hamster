@@ -10,18 +10,18 @@
 "done" = "完成";
 "go" = "前往";
 "join" = "加入";
-"ok" = "確認";
+"ok" = "好";
 "return" = "換行";
 "search" = "搜尋";
 "space" = "空格";
-"send" = "發送";
-"next" = "next";
+"send" = "傳送";
+"next" = "下一個";
 
 "keyboardTypeAlphabetic" = "ABC";
 "keyboardTypeNumeric" = "123";
 "keyboardTypeSymbolic" = "#+=";
 
-"keyboard.action.switchInputSchema" = "#方案切換";
+"keyboard.action.switchInputSchema" = "#切換方案";
 
 // 常用符號
 "frequent" = "常用";
