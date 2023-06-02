@@ -55,8 +55,8 @@ let XK_Delete: Int32 = 0xffff
 /// Return, enter
 let XK_Return: Int32 = 0xff0d
 /// U+0020 SPACE
-let XK_space: Int32 = 0x0020
 let XK_Tab: Int32 = 0xff09
+let XK_Eisu_toggle: Int32 = 0xff30
 
 // Mark: function
 
@@ -113,6 +113,7 @@ let XK_KP_6: Int32 = 0xffb6
 let XK_KP_7: Int32 = 0xffb7
 let XK_KP_8: Int32 = 0xffb8
 let XK_KP_9: Int32 = 0xffb9
+let XK_Clear: Int32 = 0xff0b
 /// , Separator, often comma
 let XK_KP_Separator: Int32 = 0xffac
 /// .
@@ -139,11 +140,101 @@ let XK_Pause: Int32 = 0xff13
 let XK_Print: Int32 = 0xff61
 let XK_Scroll_Lock: Int32 = 0xff14
 
-/// U+005B LEFT SQUARE BRACKET
-let XK_bracketleft: Int32 = 0x005b
-/// U+005C REVERSE SOLIDUS
-let XK_backslash: Int32 = 0x005c
-/// U+005D RIGHT SQUARE BRACKET
-let XK_bracketright: Int32 = 0x005d
-/// U+002D HYPHEN-MINUS
+// ASCII
+let XK_space: Int32 = 0x0020
+let XK_exclam: Int32 = 0x0021
+let XK_quotedbl: Int32 = 0x0022
+let XK_numbersign: Int32 = 0x0023
+let XK_dollar: Int32 = 0x0024
+let XK_percent: Int32 = 0x0025
+let XK_ampersand: Int32 = 0x0026
+let XK_apostrophe: Int32 = 0x0027
+let XK_quoteright: Int32 = 0x0027
+let XK_parenleft: Int32 = 0x0028
+let XK_parenright: Int32 = 0x0029
+let XK_asterisk: Int32 = 0x002a
+let XK_plus: Int32 = 0x002b
+let XK_comma: Int32 = 0x002c
 let XK_minus: Int32 = 0x002d
+let XK_period: Int32 = 0x002e
+let XK_slash: Int32 = 0x002f
+let XK_0: Int32 = 0x0030
+let XK_1: Int32 = 0x0031
+let XK_2: Int32 = 0x0032
+let XK_3: Int32 = 0x0033
+let XK_4: Int32 = 0x0034
+let XK_5: Int32 = 0x0035
+let XK_6: Int32 = 0x0036
+let XK_7: Int32 = 0x0037
+let XK_8: Int32 = 0x0038
+let XK_9: Int32 = 0x0039
+let XK_colon: Int32 = 0x003a
+let XK_semicolon: Int32 = 0x003b
+let XK_less: Int32 = 0x003c
+let XK_equal: Int32 = 0x003d
+let XK_greater: Int32 = 0x003e
+let XK_question: Int32 = 0x003f
+let XK_at: Int32 = 0x0040
+let XK_A: Int32 = 0x0041
+let XK_B: Int32 = 0x0042
+let XK_C: Int32 = 0x0043
+let XK_D: Int32 = 0x0044
+let XK_E: Int32 = 0x0045
+let XK_F: Int32 = 0x0046
+let XK_G: Int32 = 0x0047
+let XK_H: Int32 = 0x0048
+let XK_I: Int32 = 0x0049
+let XK_J: Int32 = 0x004a
+let XK_K: Int32 = 0x004b
+let XK_L: Int32 = 0x004c
+let XK_M: Int32 = 0x004d
+let XK_N: Int32 = 0x004e
+let XK_O: Int32 = 0x004f
+let XK_P: Int32 = 0x0050
+let XK_Q: Int32 = 0x0051
+let XK_R: Int32 = 0x0052
+let XK_S: Int32 = 0x0053
+let XK_T: Int32 = 0x0054
+let XK_U: Int32 = 0x0055
+let XK_V: Int32 = 0x0056
+let XK_W: Int32 = 0x0057
+let XK_X: Int32 = 0x0058
+let XK_Y: Int32 = 0x0059
+let XK_Z: Int32 = 0x005a
+let XK_bracketleft: Int32 = 0x005b
+let XK_backslash: Int32 = 0x005c
+let XK_bracketright: Int32 = 0x005d
+let XK_asciicircum: Int32 = 0x005e
+let XK_underscore: Int32 = 0x005f
+let XK_grave: Int32 = 0x0060
+let XK_quoteleft: Int32 = 0x0060
+let XK_a: Int32 = 0x0061
+let XK_b: Int32 = 0x0062
+let XK_c: Int32 = 0x0063
+let XK_d: Int32 = 0x0064
+let XK_e: Int32 = 0x0065
+let XK_f: Int32 = 0x0066
+let XK_g: Int32 = 0x0067
+let XK_h: Int32 = 0x0068
+let XK_i: Int32 = 0x0069
+let XK_j: Int32 = 0x006a
+let XK_k: Int32 = 0x006b
+let XK_l: Int32 = 0x006c
+let XK_m: Int32 = 0x006d
+let XK_n: Int32 = 0x006e
+let XK_o: Int32 = 0x006f
+let XK_p: Int32 = 0x0070
+let XK_q: Int32 = 0x0071
+let XK_r: Int32 = 0x0072
+let XK_s: Int32 = 0x0073
+let XK_t: Int32 = 0x0074
+let XK_u: Int32 = 0x0075
+let XK_v: Int32 = 0x0076
+let XK_w: Int32 = 0x0077
+let XK_x: Int32 = 0x0078
+let XK_y: Int32 = 0x0079
+let XK_z: Int32 = 0x007a
+let XK_braceleft: Int32 = 0x007b
+let XK_bar: Int32 = 0x007c
+let XK_braceright: Int32 = 0x007d
+let XK_asciitilde: Int32 = 0x007e
