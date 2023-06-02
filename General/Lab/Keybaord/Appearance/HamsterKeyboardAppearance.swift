@@ -265,7 +265,7 @@ open class HamsterKeyboardAppearance: KeyboardAppearance {
     if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
     let text = buttonText(for: action) ?? ""
-    if action.isInputAction && text.isLowercased { return 26 }
+    if action.isHamsterInputAction && text.isLowercased { return 26 }
     if action.isSystemAction || action.isPrimaryAction { return 16 }
     return 23
   }
@@ -288,8 +288,8 @@ open class HamsterKeyboardAppearance: KeyboardAppearance {
     guard keyboardContext.deviceType == .pad else { return nil }
     let isLandscape = keyboardContext.interfaceOrientation.isLandscape
     guard isLandscape else { return nil }
-    if action.isAlphabeticKeyboardTypeAction { return 22 }
-    if action.isKeyboardTypeAction(.numeric) { return 22 }
+    if action.isAlphabeticKeyboardTypeAction || action.isHamsterInputAction { return 22 }
+    if action.isKeyboardTypeAction(.numeric) || action.isHamsterInputAction { return 22 }
     if action.isKeyboardTypeAction(.symbolic) { return 20 }
     return nil
   }
@@ -302,6 +302,7 @@ open class HamsterKeyboardAppearance: KeyboardAppearance {
     case .alphabetic: return 15
     case .numeric: return 16
     case .symbolic: return 14
+    case .custom: return 16
     default: return 14
     }
   }

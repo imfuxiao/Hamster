@@ -128,7 +128,7 @@ private extension HamsterSystemKeyboardButtonRowItem {
     if !customButtonStyle {
       return item.action.isSpacer ? .spacer : appearance.buttonStyle(for: item.action, isPressed: isScrolling ? false : isPressed)
     } else {
-      let action = KeyboardAction.primary(.done)
+      let action = item.action
       return KeyboardButtonStyle(
         backgroundColor: backgroundColor(isPressed),
         foregroundColor: foregroundColor,

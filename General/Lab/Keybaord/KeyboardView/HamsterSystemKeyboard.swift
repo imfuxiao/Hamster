@@ -65,7 +65,7 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
   ) {
     Logger.shared.log.debug("HamsterSystemKeyboard init")
     // 计算键盘总高度
-    self.keyboardHeight = 4 * layout.idealItemHeight
+    self.keyboardHeight = 4 * KeyboardLayoutConfiguration.standard(for: keyboardContext).rowHeight
 //      + layout.idealItemInsets.top + layout.idealItemInsets.bottom + appSettings.candidateBarHeight
 //      + appSettings.candidateBarHeight
 
@@ -75,6 +75,7 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
     // 键盘宽度
     self.keyboardWidth = width
     Logger.shared.log.debug("HamsterSystemKeyboard width: \(keyboardWidth), height: \(keyboardHeight)")
+    self.keyboardSize = CGSize(width: keyboardWidth, height: keyboardHeight)
 
     self.layout = layout
     self.layoutConfig = .standard(for: keyboardContext)
@@ -247,7 +248,7 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
 
   // 动态计算键盘尺寸
   @State
-  private var keyboardSize: CGSize = .zero
+  private var keyboardSize: CGSize
 
   // MARK: 计算属性
 
@@ -279,11 +280,11 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
       keyboardView
         .frame(width: realKeyboardWidth)
         .opacity(appSettings.keyboardStatus == .normal ? 1 : 0)
-        .overlay(GeometryReader { proxy in Color.clear.preference(key: SizePreferenceKey.self, value: proxy.size) })
+//        .overlay(GeometryReader { proxy in Color.clear.preference(key: SizePreferenceKey.self, value: proxy.size) })
     }
     .frame(width: realKeyboardWidth)
     .background(appearance.backgroundStyle.backgroundView)
-    .onPreferenceChange(SizePreferenceKey.self) { value in keyboardSize = value }
+//    .onPreferenceChange(SizePreferenceKey.self) { value in keyboardSize = value }
     .oneHandKeyboard(enable: canEnableOneHand, realKeyboardWidth: realKeyboardWidth, oneHandWidth: handModeChangePaneWidth)
   }
 }
@@ -347,7 +348,8 @@ private extension HamsterSystemKeyboard {
       calloutContext: calloutContext,
       appearance: appearance,
       style: .standard(for: keyboardContext)
-    ).padding(.top)
+    )
+    .frame(width: keyboardWidth, height: totalKeyboardHeight)
   }
 
   var numNineGridKeyboard: some View {
