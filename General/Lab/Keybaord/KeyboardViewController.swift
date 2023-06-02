@@ -250,7 +250,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     do {
       if !FileManager.default.isWritableFile(atPath: RimeContext.appGroupInstallationYaml.path) {
         useSandboxUserDataDirectory = true
+      } else {
+        // appGroup 补充 default.custom.yaml
+        let handled = FileManager.default.createFile(atPath: RimeContext.appGroupUserDataDefaultCustomYaml.path, contents: nil)
+        Logger.shared.log.debug("create file \(RimeContext.appGroupUserDataDefaultCustomYaml.path), handled: \(handled)")
       }
+
       Logger.shared.log.info("rime syncAppGroupUserDataDirectory: \(self.appSettings.rimeNeedOverrideUserDataDirectory), useSandboxUserDataDirectory: \(useSandboxUserDataDirectory)")
       if useSandboxUserDataDirectory {
         try RimeContext.syncAppGroupUserDataDirectoryToSandbox(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
@@ -259,6 +264,10 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
             self.appSettings.rimeNeedOverrideUserDataDirectory = false
           }
         }
+
+        // Sandbox 补充 default.custom.yaml
+        let handled = FileManager.default.createFile(atPath: RimeContext.sandboxUserDataDefaultCustomYaml.path, contents: nil)
+        Logger.shared.log.debug("create file \(RimeContext.sandboxUserDataDefaultCustomYaml.path), handled: \(handled)")
       }
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
@@ -287,6 +296,36 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         }
         .store(in: &self.cancellables)
     }
+
+    // 加载Switcher切换键
+    let hotKeys = Rime.shared.getHotkeys().split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+    if !hotKeys.isEmpty {
+      self.rimeContext.hotKeys = hotKeys
+    }
+    Logger.shared.log.debug("hotkeys: \(self.rimeContext.hotKeys)")
+
+    // 输入方案切换状态同步
+    Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
+      guard let self = self else { return }
+      let chars = loadSchema.split(separator: "/").map { String($0) }
+      if !chars.isEmpty {
+        if self.appSettings.rimeInputSchema != chars[0] {
+          DispatchQueue.main.async {
+            self.appSettings.lastUseRimeInputSchema = self.appSettings.rimeInputSchema
+            self.appSettings.rimeInputSchema = chars[0]
+          }
+        }
+        Logger.shared.log.debug("loading schema callback: rimeInputSchema = \(self.appSettings.rimeInputSchema), lastUseRimeInputSchema = \(self.appSettings.lastUseRimeInputSchema)")
+      }
+    })
+
+    // mode切换同步
+    Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
+      guard let self = self else { return }
+      if mode.hasSuffix("ascii_mode") {
+        self.rimeContext.asciiMode = !mode.hasPrefix("!")
+      }
+    })
   }
 
   // MARK: - Text And Selection Change
@@ -354,7 +393,10 @@ extension HamsterKeyboardViewController {
   // 简繁切换
   func switchTraditionalSimplifiedChinese() {
     self.rimeContext.simplifiedChineseMode.toggle()
-    _ = Rime.shared.simplifiedChineseMode(self.rimeContext.simplifiedChineseMode)
+    _ = Rime.shared.simplifiedChineseMode(
+      optionkey: self.appSettings.rimeSimplifiedAndTraditionalSwitcherKey,
+      value: self.rimeContext.simplifiedChineseMode
+    )
   }
 
   // 中英切换
@@ -374,6 +416,8 @@ extension HamsterKeyboardViewController {
     //    情况3. 首选候选字上屏, 并开启英文输入
     //    _ = self.candidateTextOnScreen()
     self.rimeContext.asciiMode.toggle()
+    let handled = Rime.shared.asciiMode(self.rimeContext.asciiMode)
+    Logger.shared.log.debug("rime set ascii_mode handled \(handled)")
   }
 
   /// 三选上屏
@@ -607,20 +651,26 @@ extension HamsterKeyboardViewController {
     case .switchLastInputSchema:
       if !self.appSettings.lastUseRimeInputSchema.isEmpty {
         let handled = Rime.shared.setSchema(self.appSettings.lastUseRimeInputSchema)
-        Logger.shared.log.debug("switch last use input schema \(self.appSettings.lastUseRimeInputSchema), handled = \(handled)")
-        // 交换两个值
-        let lastUseRimeInputSchema = self.appSettings.lastUseRimeInputSchema
-        self.appSettings.lastUseRimeInputSchema = self.appSettings.rimeInputSchema
-        self.appSettings.rimeInputSchema = lastUseRimeInputSchema
+        // 两个值的交换在加载inputSchema的回调函数中处理: setLoadingSchemaCallback
+//        let lastUseRimeInputSchema = self.appSettings.lastUseRimeInputSchema
+//        self.appSettings.lastUseRimeInputSchema = self.appSettings.rimeInputSchema
+//        self.appSettings.rimeInputSchema = lastUseRimeInputSchema
         self.rimeContext.reset()
+        Logger.shared.log.debug("switch last input schema: rimeInputSchema = \(self.appSettings.rimeInputSchema), lastUseRimeInputSchema = \(self.appSettings.lastUseRimeInputSchema), handled = \(handled)")
       }
     case .onehandOnLeft:
       self.changeStateOfOnehandOnLeft()
     case .onehandOnRight:
       self.changeStateOfOneHandOnRight()
     case .rimeSwitcher:
-      // TODO: 这里需要改为动态从RIME中读取Switcher切换键
-      _ = self.inputRimeKeyCode(keyCode: XK_F4)
+      // 从RIME中读取Switcher切换键
+      if !self.rimeContext.hotKeys.isEmpty {
+        let hotkey = self.rimeContext.hotKeys[0] // 取第一个
+        let hotKeyCode = RimeContext.hotKeyCodeMapping[hotkey, default: XK_F4]
+        let hotKeyModifier = RimeContext.hotKeyCodeModifiersMapping[hotkey, default: Int32(0)]
+        Logger.shared.log.debug("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
+        _ = self.inputRimeKeyCode(keyCode: hotKeyCode, modifier: hotKeyModifier)
+      }
     default:
       return false
     }

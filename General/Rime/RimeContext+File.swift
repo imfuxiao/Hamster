@@ -44,6 +44,11 @@ extension RimeContext {
   static var appGroupUserDataDefaultCustomYaml: URL {
     appGroupUserDataDirectoryURL.appendingPathComponent("default.custom.yaml")
   }
+  
+  // Sandbox下：userData目录下: default.custom.yaml文件路径
+  static var sandboxUserDataDefaultCustomYaml: URL {
+    sandboxUserDataDirectory.appendingPathComponent("default.custom.yaml")
+  }
 
   // AppGroup共享下：userData目录下: installation.yaml文件路径
   static var appGroupInstallationYaml: URL {

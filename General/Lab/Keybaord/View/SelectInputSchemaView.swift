@@ -44,7 +44,7 @@ struct SelectInputSchemaView: View {
             appSettings.rimeInputSchema = $0.schemaId
             appSettings.lastUseRimeInputSchema = inputSchema
             let handled = Rime.shared.setSchema($0.schemaId)
-            Logger.shared.log.debug("switch input schema: \($0.schemaId), handled: \(handled)")
+            Logger.shared.log.debug("switch input schema: rimeInputSchema = \(appSettings.rimeInputSchema), lastUseRimeInputSchema = \(appSettings.lastUseRimeInputSchema), handled: \(handled)")
             rimeContext.reset()
             appSettings.keyboardStatus = .normal
           }

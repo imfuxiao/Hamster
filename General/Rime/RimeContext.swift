@@ -4,8 +4,24 @@ import ProgressHUD
 import SwiftUI
 
 public class RimeContext: ObservableObject {
+  /// switcher hotkeys 键值映射
+  static let hotKeyCodeMapping = [
+    "f4": XK_F4,
+    "control+grave": Int32("`".utf8.first!),
+    "control+shift+grave": Int32("`".utf8.first!),
+  ]
+
+  static let hotKeyCodeModifiersMapping = [
+    "f4": Int32(0),
+    "control+grave": RimeModifier.kControlMask,
+    "control+shift+grave": RimeModifier.kControlMask | RimeModifier.kShiftMask,
+  ]
+
   /// 候选字上限
   var maxCandidateCount: Int = 100
+
+  /// switcher hotkeys
+  var hotKeys = ["f4"]
 
   /// 用户输入键值
   @Published

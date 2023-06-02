@@ -65,6 +65,21 @@ struct BothSidesOfTheSpaceView: View {
 
     VStack {
       HStack {
+        Text("简繁切换：")
+          .font(.system(size: 16, weight: .bold, design: .rounded))
+
+        TextField("", text: $appSettings.rimeSimplifiedAndTraditionalSwitcherKey)
+          .textFieldStyle(.roundedBorder)
+      }
+      HStack {
+        Text("输入方案中 switches 对应简繁转换的名称，用于中文简体与繁体之间切换。")
+          .font(.system(size: 12, weight: .light, design: .rounded))
+      }
+    }
+    .functionCell()
+
+    VStack {
+      HStack {
         Toggle(isOn: $appSettings.showSpaceLeftButton) {
           Text("空格左边按键")
             .font(.system(size: 16, weight: .bold, design: .rounded))

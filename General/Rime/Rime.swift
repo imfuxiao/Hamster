@@ -135,9 +135,9 @@ class Rime: IRimeNotificationDelegate {
     return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
   }
 
-  func simplifiedChineseMode(_ value: Bool) -> Bool {
+  func simplifiedChineseMode(optionkey: String, value: Bool) -> Bool {
     createSession()
-    return rimeAPI.setOption(session, andOption: simplifiedChineseKey, andValue: !value)
+    return rimeAPI.setOption(session, andOption: optionkey, andValue: !value)
   }
 
   func inputKey(_ key: String) -> Bool {
@@ -164,9 +164,10 @@ class Rime: IRimeNotificationDelegate {
 //    return rimeAPI.getOption(session, andOption: asciiModeKey)
 //  }
 //
-//  func asciiMode(_ value: Bool) -> Bool {
-//    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
-//  }
+  func asciiMode(_ value: Bool) -> Bool {
+    createSession()
+    return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
+  }
 
   func getCandidate(index: Int, count: Int) -> [IRimeCandidate] {
     rimeAPI.getCandidateWith(Int32(index), andCount: Int32(count), andSession: session) ?? []
@@ -285,8 +286,7 @@ class Rime: IRimeNotificationDelegate {
     rimeAPI.getSelectedRimeSchemaList()
       .map { Schema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
-  
-  
+
   func getHotkeys() -> String {
     rimeAPI.getHotkeys()
   }

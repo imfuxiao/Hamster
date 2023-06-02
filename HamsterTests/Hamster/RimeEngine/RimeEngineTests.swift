@@ -46,6 +46,13 @@ final class RimeEngineTests: XCTestCase {
     print(Rime.shared.candidateList())
   }
 
+  func testCustomSetting() throws {
+    let handled = Rime.shared.customString(key: "switcher/hotkeys", value: "F4")
+    print("setting: \(handled)")
+    let hotKeys = Rime.shared.getHotkeys()
+    print("hotKeys: \(hotKeys)")
+  }
+
   func testColorSchema() throws {
     let appSettings = HamsterAppSettings()
     let schemaList = Rime.shared.colorSchema(appSettings.rimeUseSquirrelSettings)

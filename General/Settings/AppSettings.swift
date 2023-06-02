@@ -99,7 +99,7 @@ public enum HamsterAppSettingKeys: String {
   case showKeyboardDismissButton = "app.keyboard.showDismissButton"
   // 是否显示分号键
   case showSemicolonButton = "app.keyboard.showSemicolonButton"
-  
+
   // 是否显示空格左边按键
   case showSpaceLeftButton = "app.keyboard.showSpaceLeftButton"
   // 空格左边按键键值
@@ -202,6 +202,9 @@ public enum HamsterAppSettingKeys: String {
   // 符号键盘锁定状态
   case symbolKeyboardLockState = "app.keyboard.symbolKeyboardLockState"
 
+  // RIME: 简繁切换option key
+  case rimeSimplifiedAndTraditionalSwitcherKey = "rime.rimeSimplifiedAndTraditionalSwitcherKey"
+
   // 九宮格符号列重置
   static let defaultNumberNineGridSymbols = ["+", "-", "*", "/", "=", "%", "@", "!", ",", "."]
 
@@ -270,6 +273,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.pairsOfSymbols.rawValue: HamsterAppSettingKeys.defaultPairsOfSymbols as [String],
       HamsterAppSettingKeys.cursorBackOfSymbols.rawValue: HamsterAppSettingKeys.defaultCursorBackOfSymbols as [String],
       HamsterAppSettingKeys.symbolKeyboardLockState.rawValue: false,
+      HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue: "simplification",
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -343,6 +347,7 @@ public class HamsterAppSettings: ObservableObject {
     self.returnToPrimaryKeyboardOfSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.returnToPrimaryKeyboardOfSymbols.rawValue) as! [String]
     self.pairsOfSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.pairsOfSymbols.rawValue) as! [String]
     self.symbolKeyboardLockState = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.symbolKeyboardLockState.rawValue)
+    self.rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue) ?? ""
   }
 
   // App是否首次运行
@@ -424,7 +429,7 @@ public class HamsterAppSettings: ObservableObject {
         showKeyboardDismissButton, forKey: HamsterAppSettingKeys.showKeyboardDismissButton.rawValue)
     }
   }
-  
+
   // 是否显示分号键
   @Published
   var showSemicolonButton: Bool {
@@ -572,7 +577,6 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeInputSchema": rimeInputSchema])
       UserDefaults.hamsterSettingsDefault.set(
         rimeInputSchema, forKey: HamsterAppSettingKeys.rimeInputSchema.rawValue)
-      UserDefaults.hamsterSettingsDefault.synchronize()
     }
   }
 
@@ -832,6 +836,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, symbolKeyboardLockState": symbolKeyboardLockState])
       UserDefaults.hamsterSettingsDefault.set(
         symbolKeyboardLockState, forKey: HamsterAppSettingKeys.symbolKeyboardLockState.rawValue)
+    }
+  }
+
+  // RIME简繁切换Key
+  @Published
+  var rimeSimplifiedAndTraditionalSwitcherKey: String {
+    didSet {
+      Logger.shared.log.info(["AppSettings, rimeSimplifiedAndTraditionalSwitcherKey": rimeSimplifiedAndTraditionalSwitcherKey])
+      UserDefaults.hamsterSettingsDefault.set(
+        rimeSimplifiedAndTraditionalSwitcherKey, forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue)
     }
   }
 }
