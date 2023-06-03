@@ -33,7 +33,13 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
     self.actionHandler = actionHandler
     self.appearance = appearance as! HamsterKeyboardAppearance
     self.layout = layout
-    self.layoutConfig = self.appearance.keyboardLayoutConfiguration
+    let layoutConfig = self.appearance.keyboardLayoutConfiguration
+    self.buttonInsets = .init(
+      top: layoutConfig.buttonInsets.leading,
+      leading: layoutConfig.buttonInsets.leading,
+      bottom: layoutConfig.buttonInsets.trailing,
+      trailing: layoutConfig.buttonInsets.trailing
+    )
     
     self._keyboardContext = ObservedObject(wrappedValue: keyboardContext)
     self._calloutContext = ObservedObject(wrappedValue: calloutContext)
@@ -66,13 +72,13 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
       ),
       item: .init(
         action: .keyboardType(.alphabetic(.lowercased)),
-        size: .init(width: .input, height: layoutConfig.rowHeight),
-        insets: layoutConfig.buttonInsets
+        size: .init(width: .available, height: layoutConfig.rowHeight),
+        insets: buttonInsets
       ),
       actionHandler: actionHandler,
       keyboardContext: keyboardContext,
       calloutContext: calloutContext,
-      keyboardWidth: keyboardWidth - inputWidth,
+      keyboardWidth: keyboardWidth,
       inputWidth: inputWidth,
       appearance: appearance,
       customButtonStyle: true,
@@ -83,13 +89,13 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
   private let actionHandler: KeyboardActionHandler
   private let appearance: HamsterKeyboardAppearance
   private let layout: KeyboardLayout
-  private let layoutConfig: KeyboardLayoutConfiguration
+  private let buttonInsets: EdgeInsets
   private let buttonView: ButtonViewBuilder
   
   public typealias KeyboardWidth = CGFloat
   public typealias KeyboardItemWidth = CGFloat
-  public typealias IsLastItem = Bool
-  public typealias ButtonViewBuilder = (IsLastItem, KeyboardLayoutItem, KeyboardWidth, KeyboardItemWidth) -> ButtonView
+  public typealias darkModeItem = Bool
+  public typealias ButtonViewBuilder = (darkModeItem, KeyboardLayoutItem, KeyboardWidth, KeyboardItemWidth) -> ButtonView
   
   private let keyboardWidth: CGFloat
   private let keyboardHegith: CGFloat
@@ -110,7 +116,6 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
                 appearance: appearance,
                 actionHandler: actionHandler,
                 calloutContext: calloutContext,
-                padding: layoutConfig.buttonInsets,
                 width: inputWidth,
                 symbol: symbol,
                 enableRoundedCorners: index == 0
@@ -127,8 +132,9 @@ struct NumNineGridKeyboard<ButtonView: View>: View {
             .stroke(Color.gray.opacity(0.3), lineWidth: 1)
             .background(RoundedRectangle(cornerRadius: 5).fill(darkBackgroundColor))
         )
-        .padding(layoutConfig.buttonInsets)
-        
+        .padding(self.buttonInsets)
+        .environment(\.defaultMinListRowHeight, 10)
+
         // 返回键
         self.alphabeticButton
       }
@@ -177,7 +183,7 @@ extension NumNineGridKeyboard {
     let items = Array(itemRow.enumerated())
     return HStack(spacing: 0) {
       ForEach(items, id: \.offset) { index, element in
-        if index == 0 {
+        if element.action == .none {
           EmptyView()
         } else {
           buttonView(index + 1 == items.count, element, keyboardWidth - inputWidth, inputWidth)

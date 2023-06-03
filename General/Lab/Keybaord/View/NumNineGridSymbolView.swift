@@ -13,7 +13,6 @@ struct NumNineGridSymbolView: View {
     appearance: HamsterKeyboardAppearance,
     actionHandler: KeyboardActionHandler,
     calloutContext: KeyboardCalloutContext,
-    padding: EdgeInsets,
     width: CGFloat,
     symbol: String,
     isInScrollView: Bool = true,
@@ -22,7 +21,6 @@ struct NumNineGridSymbolView: View {
     self.appearance = appearance
     self.width = width
     self.actionHandler = actionHandler
-    self.padding = padding
     self.symbol = symbol
     self.isInScrollView = isInScrollView
     self.enableRoundedCorners = enableRoundedCorners
@@ -31,7 +29,6 @@ struct NumNineGridSymbolView: View {
 
   let appearance: HamsterKeyboardAppearance
   let width: CGFloat
-  let padding: EdgeInsets
   let symbol: String
   private let actionHandler: KeyboardActionHandler
   private let isInScrollView: Bool
@@ -53,6 +50,7 @@ struct NumNineGridSymbolView: View {
       Spacer()
       Divider()
     }
+    .frame(width: width, height: 38.5)
     .foregroundColor(foregroundColor)
     .hamsterKeyboardGestures(
       for: KeyboardAction.character(symbol),
@@ -61,12 +59,9 @@ struct NumNineGridSymbolView: View {
       isInScrollView: isInScrollView,
       isPressed: $isPressed
     )
-    .frame(width: width, height: 45)
     .listRowBackground(backgroundColor(isPressed).roundedCorner(enableRoundedCorners ? appearance.keyboardLayoutConfiguration.buttonCornerRadius : 0, corners: [.topLeft, .topRight]))
     .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
     .hideListRowSeparator()
-    // iOS 16 版本可以通过下面函数制定对齐方式
-//    .alignmentGuide(.listRowSeparatorLeading, computeValue: { _ in 0 })
   }
 }
 
@@ -85,17 +80,6 @@ extension NumNineGridSymbolView {
     }
     return colorSchema.backColor
   }
-
-  var buttonStyle: KeyboardButtonStyle {
-    KeyboardButtonStyle(
-      backgroundColor: backgroundColor(isPressed),
-      foregroundColor: foregroundColor,
-      font: .body,
-      cornerRadius: appearance.keyboardLayoutConfiguration.buttonCornerRadius,
-      border: .noBorder,
-      shadow: .noShadow
-    )
-  }
 }
 
 struct NumNineGridSymbolView_Previews: PreviewProvider {
@@ -104,7 +88,6 @@ struct NumNineGridSymbolView_Previews: PreviewProvider {
       appearance: HamsterKeyboardAppearance.preview,
       actionHandler: KeyboardInputViewController.preview.keyboardActionHandler,
       calloutContext: KeyboardCalloutContext.preview,
-      padding: .init(top: 0, leading: 0, bottom: 0, trailing: 0),
       width: 50,
       symbol: "+"
     )

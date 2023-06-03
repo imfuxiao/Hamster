@@ -35,7 +35,11 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
    */
   override func item(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItem {
     let size = itemSize(for: action, row: row, index: index, context: context)
-    let insets = itemInsets(for: action, row: row, index: index, context: context)
+    var insets = itemInsets(for: action, row: row, index: index, context: context)
+    // 数字键盘间距保持一致
+    if context.keyboardType.isNumberNineGrid {
+      insets = .init(top: insets.leading, leading: insets.leading, bottom: insets.trailing, trailing: insets.trailing)
+    }
     return KeyboardLayoutItem(action: action, size: size, insets: insets)
   }
 
@@ -70,7 +74,9 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
         // 第四行：添加回车键
         // 根据键盘类型不同显示不同的切换键: 如数字键盘/字母键盘等切换键
         // 这里将系统符号改为自定义符号键盘
-        result.append([.none, appSettings.enableSymbolKeyboard ? keyboardCustomType.symbol.keyboardAction! : .keyboardType(.symbolic)] + actions[3] + [keyboardReturnAction(for: context)])
+        result.append([appSettings.enableSymbolKeyboard ? keyboardCustomType.symbol.keyboardAction! : .keyboardType(.symbolic)]
+          + actions[3]
+          + [keyboardReturnAction(for: context)])
         return result
 
       default:
