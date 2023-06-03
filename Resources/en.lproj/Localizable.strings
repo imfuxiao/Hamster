@@ -26,38 +26,38 @@
 
 // 常用符号
 "frequent" = "Frequent";
-// 英文符号
-"ascii" = "English";
-// 中文符号
-"cn" = "Chinese";
+// 拉丁标点符号
+"ascii" = "Latin Punct";
+// 汉语标点符号
+"hani" = "Chinese Punct";
 // 数学符号
-"math" = "Math";
-// 特殊符号
-"special" = "Special";
+"math" = "Math Symbol";
+// 装饰符号
+"dingbat" = "Dingbat";
 // 单位
 "unit" = "Unit";
-// 列表
-"list" = "List";
+// 数字
+"numeral" = "Numeral";
 // 拼音
 "pinyin" = "Pinyin";
 // 注音
 "bopomofo" = "Bopomofo";
 // 部首
-"radical" = "Radical";
-// 希腊
-"grease" = "Greek";
-// 俄语
-"rusa" = "Rus";
-// 拉丁
-"lation" = "Lation";
-// 韩文
-"korea" = "Korea";
+"radical" = "Hanzi Radical";
+// 希腊字母
+"hellenic" = "Greek Alph";
+// 西里尔字母
+"cyrillic" = "Cyrillic Alph";
+// 拉丁字母
+"latin" = "Latin Alph";
+// 谚文字母
+"hangul" = "Hangul Alph";
 // 音标
-"phonetic" = "IPA";
+"IPA" = "IPA";
 // 颜文字
 "kaomoji" = "Kaomoji";
 // 假名
-"jp" = "Katakana";
+"kana" = "Kana";
 
 "searchEmoji" = "Search Emoji";
 
