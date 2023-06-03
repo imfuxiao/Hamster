@@ -551,23 +551,12 @@ extension HamsterKeyboardViewController {
       case XK_BackSpace: // 退格
         let beforeInput = self.textDocumentProxy.documentContextBeforeInput ?? ""
         let afterInput = self.textDocumentProxy.documentContextAfterInput ?? ""
-        if !beforeInput.isEmpty && !afterInput.isEmpty {
-          // 光标居中符号处理
-          if self.appSettings.cursorBackOfSymbols.contains(String(beforeInput.last!) + String(afterInput.first!)) {
-            self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
-            self.textDocumentProxy.deleteBackward(times: 2)
-          } else if self.appSettings.cursorBackOfSymbols.contains(String(beforeInput.suffix(2))) { // 光标在成对符号后面
-            self.textDocumentProxy.deleteBackward(times: 2)
-          } else {
-            self.textDocumentProxy.deleteBackward()
-          }
+        // 光标可以居中的符号，成对删除
+        if self.appSettings.cursorBackOfSymbols.contains(String(beforeInput.suffix(1) + afterInput.prefix(1))) {
+          self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+          self.textDocumentProxy.deleteBackward(times: 2)
         } else {
-          let char = String(beforeInput.suffix(2))
-          if self.appSettings.cursorBackOfSymbols.contains(char) {
-            self.textDocumentProxy.deleteBackward(times: 2)
-          } else {
-            self.textDocumentProxy.deleteBackward()
-          }
+          self.textDocumentProxy.deleteBackward()
         }
         handled = true
       case XK_Tab:
