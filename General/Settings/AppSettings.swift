@@ -205,6 +205,9 @@ public enum HamsterAppSettingKeys: String {
   // RIME: 简繁切换option key
   case rimeSimplifiedAndTraditionalSwitcherKey = "rime.rimeSimplifiedAndTraditionalSwitcherKey"
 
+  // 键盘: 符号键盘开关
+  case enableSymbolKeyboard = "app.keyboard.enableSymbolKeyboard"
+
   // 九宮格符号列重置
   static let defaultNumberNineGridSymbols = ["+", "-", "*", "/", "=", "%", "@", "!", ",", "."]
 
@@ -274,6 +277,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.cursorBackOfSymbols.rawValue: HamsterAppSettingKeys.defaultCursorBackOfSymbols as [String],
       HamsterAppSettingKeys.symbolKeyboardLockState.rawValue: false,
       HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue: "simplification",
+      HamsterAppSettingKeys.enableSymbolKeyboard.rawValue: true,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -348,6 +352,7 @@ public class HamsterAppSettings: ObservableObject {
     self.pairsOfSymbols = UserDefaults.hamsterSettingsDefault.object(forKey: HamsterAppSettingKeys.pairsOfSymbols.rawValue) as! [String]
     self.symbolKeyboardLockState = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.symbolKeyboardLockState.rawValue)
     self.rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue) ?? ""
+    self.enableSymbolKeyboard = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableSymbolKeyboard.rawValue)
   }
 
   // App是否首次运行
@@ -846,6 +851,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeSimplifiedAndTraditionalSwitcherKey": rimeSimplifiedAndTraditionalSwitcherKey])
       UserDefaults.hamsterSettingsDefault.set(
         rimeSimplifiedAndTraditionalSwitcherKey, forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue)
+    }
+  }
+
+  // 键盘：符号键盘开关
+  @Published
+  var enableSymbolKeyboard: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, rimeSimplifiedAndTraditionalSwitcherKey": enableSymbolKeyboard])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableSymbolKeyboard, forKey: HamsterAppSettingKeys.enableSymbolKeyboard.rawValue)
     }
   }
 }

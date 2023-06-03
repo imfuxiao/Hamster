@@ -65,6 +65,21 @@ struct BothSidesOfTheSpaceView: View {
 
     VStack {
       HStack {
+        Toggle(isOn: $appSettings.enableSymbolKeyboard) {
+          Text("启用符号键盘")
+            .font(.system(size: 16, weight: .bold, design: .rounded))
+        }
+      }
+      HStack {
+        Text("启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。")
+          .font(.system(size: 12, weight: .light, design: .rounded))
+        Spacer()
+      }
+    }
+    .functionCell()
+
+    VStack {
+      HStack {
         Text("简繁切换：")
           .font(.system(size: 16, weight: .bold, design: .rounded))
 
@@ -74,6 +89,8 @@ struct BothSidesOfTheSpaceView: View {
       HStack {
         Text("输入方案中 switches 对应简繁转换的名称，用于中文简体与繁体之间切换。")
           .font(.system(size: 12, weight: .light, design: .rounded))
+
+        Spacer()
       }
     }
     .functionCell()

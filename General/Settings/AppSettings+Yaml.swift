@@ -268,6 +268,11 @@ public extension HamsterAppSettings {
         self.symbolKeyboardLockState = value
         Logger.shared.log.debug("set symbolKeyboardLockState = \(value)")
       }
+    case "enable_symbol_keyboard":
+      if let value = node.bool {
+        self.enableSymbolKeyboard = value
+        Logger.shared.log.debug("set enableSymbolKeyboard = \(value)")
+      }
     default:
       break
     }

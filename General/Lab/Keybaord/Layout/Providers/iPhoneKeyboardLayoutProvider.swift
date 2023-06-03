@@ -70,7 +70,7 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
         // 第四行：添加回车键
         // 根据键盘类型不同显示不同的切换键: 如数字键盘/字母键盘等切换键
         // 这里将系统符号改为自定义符号键盘
-        result.append([.none, keyboardCustomType.symbol.keyboardAction!] + actions[3] + [keyboardReturnAction(for: context)])
+        result.append([.none, appSettings.enableSymbolKeyboard ? keyboardCustomType.symbol.keyboardAction! : .keyboardType(.symbolic)] + actions[3] + [keyboardReturnAction(for: context)])
         return result
 
       default:
@@ -251,15 +251,16 @@ class HamsterApplePhoneKeyboardLayoutProvider: iPhoneKeyboardLayoutProvider {
   override open func keyboardSwitchActionForBottomInputRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
     case .alphabetic(let casing): return .shift(currentCasing: casing)
-    // 替换为自定义符号键盘
-//    case .numeric: return .keyboardType(.symbolic)
-    case .numeric: return keyboardCustomType.symbol.keyboardAction
+    case .numeric:
+      if appSettings.enableSymbolKeyboard {
+        return keyboardCustomType.symbol.keyboardAction
+      }
+      return .keyboardType(.symbolic)
     case .symbolic:
-      return keyboardCustomType.symbol.keyboardAction
-//      if appSettings.enableNumberNineGrid {
-//        return keyboardCustomType.numberNineGrid.keyboardAction
-//      }
-//      return .keyboardType(.numeric)
+      if appSettings.enableSymbolKeyboard {
+        return keyboardCustomType.symbol.keyboardAction
+      }
+      return .keyboardType(.numeric)
     default: return nil
     }
   }
