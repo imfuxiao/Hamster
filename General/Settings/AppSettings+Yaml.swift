@@ -217,11 +217,11 @@ public extension HamsterAppSettings {
         self.switchLanguageButtonInSpaceLeft = value
         Logger.shared.log.debug("set switchLanguageButtonInSpaceLeft = \(value)")
       }
-    case "switch_traditional_chinese":
-      if let value = node.bool {
-        self.switchTraditionalChinese = value
-        Logger.shared.log.debug("set switch_traditional_chinese = \(value)")
-      }
+//    case "switch_traditional_chinese":
+//      if let value = node.bool {
+//        self.switchTraditionalChinese = value
+//        Logger.shared.log.debug("set switch_traditional_chinese = \(value)")
+//      }
     case "x_swipe_sensitivity":
       if let value = node.int {
         self.xSwipeSensitivity = value

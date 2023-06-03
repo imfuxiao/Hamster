@@ -80,7 +80,7 @@ public enum HamsterAppSettingKeys: String {
   case showKeyPressBubble = "view.keyboard.showKeyPressBubble"
 
   // 切换繁体中文
-  case switchTraditionalChinese = "view.keyboard.switchTraditionalChinese"
+//  case switchTraditionalChinese = "view.keyboard.switchTraditionalChinese"
 
   // 空格划动
   case enableSpaceSliding = "view.keyboard.enableSpaceSliding"
@@ -231,7 +231,7 @@ public class HamsterAppSettings: ObservableObject {
     UserDefaults.hamsterSettingsDefault.register(defaults: [
       HamsterAppSettingKeys.appFirstLaunch.rawValue: true,
       HamsterAppSettingKeys.showKeyPressBubble.rawValue: true,
-      HamsterAppSettingKeys.switchTraditionalChinese.rawValue: false,
+//      HamsterAppSettingKeys.switchTraditionalChinese.rawValue: false,
       HamsterAppSettingKeys.enableSpaceSliding.rawValue: true,
       HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue: false,
       HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue: false,
@@ -282,7 +282,7 @@ public class HamsterAppSettings: ObservableObject {
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
     self.showKeyPressBubble = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.showKeyPressBubble.rawValue)
-    self.switchTraditionalChinese = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
+//    self.switchTraditionalChinese = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
     self.enableSpaceSliding = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableSpaceSliding.rawValue)
     self.enableKeyboardFeedbackSound = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackSound.rawValue)
     self.enableKeyboardFeedbackHaptic = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableKeyboardFeedbackHaptic.rawValue)
@@ -375,15 +375,16 @@ public class HamsterAppSettings: ObservableObject {
     }
   }
 
-  // 简繁切换
-  @Published
-  var switchTraditionalChinese: Bool {
-    didSet {
-      Logger.shared.log.info(["AppSettings, switchTraditionalChinese": switchTraditionalChinese])
-      UserDefaults.hamsterSettingsDefault.set(
-        switchTraditionalChinese, forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
-    }
-  }
+  // 用来保存中文繁体状态
+  // 因为每个输入方案状态值0或1对应的含义是不同的。所以无法表示当前为中文简体还是繁体
+//  @Published
+//  var switchTraditionalChinese: Bool {
+//    didSet {
+//      Logger.shared.log.info(["AppSettings, switchTraditionalChinese": switchTraditionalChinese])
+//      UserDefaults.hamsterSettingsDefault.set(
+//        switchTraditionalChinese, forKey: HamsterAppSettingKeys.switchTraditionalChinese.rawValue)
+//    }
+//  }
 
   // 空格滑动
   @Published

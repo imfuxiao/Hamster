@@ -25,6 +25,8 @@ class Rime: IRimeNotificationDelegate {
   /// rime session
   private var session: RimeSessionId = 0
   private var currentInputSchema: String = ""
+  private var currentSimplifiedModeKey: String = ""
+  private var currentSimplifiedModeValue: Bool = false
   private let rimeAPI = IRimeAPI()
 
   private var deployStartCallback: DeployCallbackFunction?
@@ -118,6 +120,9 @@ class Rime: IRimeNotificationDelegate {
       if !currentInputSchema.isEmpty {
         _ = setSchema(currentInputSchema)
       }
+      if !currentSimplifiedModeKey.isEmpty, simplifiedChineseMode(key: currentInputSchema) != currentSimplifiedModeValue {
+        _ = setSimplifiedChineseMode(key: currentSimplifiedModeKey, value: currentSimplifiedModeValue)
+      }
     }
   }
 
@@ -130,14 +135,14 @@ class Rime: IRimeNotificationDelegate {
     rimeAPI.openSchema(schema)
   }
 
-  func isSimplifiedMode() -> Bool {
-    createSession()
-    return !rimeAPI.getOption(session, andOption: simplifiedChineseKey)
+  func simplifiedChineseMode(key: String) -> Bool {
+    return rimeAPI.getOption(session, andOption: key)
   }
 
-  func simplifiedChineseMode(optionkey: String, value: Bool) -> Bool {
-    createSession()
-    return rimeAPI.setOption(session, andOption: optionkey, andValue: !value)
+  func setSimplifiedChineseMode(key: String, value: Bool) -> Bool {
+    currentSimplifiedModeKey = key
+    currentSimplifiedModeValue = value
+    return rimeAPI.setOption(session, andOption: key, andValue: value)
   }
 
   func inputKey(_ key: String) -> Bool {
@@ -165,7 +170,6 @@ class Rime: IRimeNotificationDelegate {
 //  }
 //
   func asciiMode(_ value: Bool) -> Bool {
-    createSession()
     return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
   }
 
@@ -228,7 +232,6 @@ class Rime: IRimeNotificationDelegate {
   }
 
   func setSchema(_ schemaId: String) -> Bool {
-    createSession()
     currentInputSchema = schemaId
     return rimeAPI.selectSchema(session, andSchemaId: schemaId)
   }
@@ -289,6 +292,13 @@ class Rime: IRimeNotificationDelegate {
 
   func getHotkeys() -> String {
     rimeAPI.getHotkeys()
+  }
+
+  func getConfigFileValue(configFileName: String, key: String) -> String? {
+    guard let config = rimeAPI.openUserConfig(configFileName) else { return nil }
+    let value = config.getString(key)
+    config.close()
+    return value
   }
 
   // MARK: 通知回调函数

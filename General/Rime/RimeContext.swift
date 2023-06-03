@@ -27,10 +27,6 @@ public class RimeContext: ObservableObject {
   @Published
   var userInputKey: String = ""
 
-  /// 简繁中文模式
-  @Published
-  var simplifiedChineseMode: Bool = true
-
   /// 字母模式
   @Published
   var asciiMode: Bool = false

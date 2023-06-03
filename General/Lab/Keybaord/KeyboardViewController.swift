@@ -171,9 +171,12 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     }
   }
 
+  // MARK: fields
+
   private let log = Logger.shared.log
   public var rimeContext = RimeContext()
   public var appSettings = HamsterAppSettings()
+  public var defaultCustomFilePath = RimeContext.appGroupUserDataDefaultCustomYaml.path
   var cancellables = Set<AnyCancellable>()
   var pairsSymbols = [String: String]()
 
@@ -220,28 +223,6 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
 
     // 候选字最大数量
     self.rimeContext.maxCandidateCount = Int(self.appSettings.rimeMaxCandidateSize)
-
-    // TODO: 添加监听可能导致用户键盘输入异常
-//    // 需要重新覆盖更新方案,重启RIME
-//    self.appSettings.$rimeNeedOverrideUserDataDirectory
-//      .receive(on: RunLoop.main)
-//      .sink(receiveValue: { [weak self] needOverrideUserDataDirectory in
-//        if !needOverrideUserDataDirectory {
-//          return
-//        }
-//        guard let self = self else { return }
-//
-//        do {
-//          Logger.shared.log.info("rime syncAppGroupUserDataDirectory: \(self.appSettings.rimeNeedOverrideUserDataDirectory)")
-//          try RimeEngine.syncAppGroupUserDataDirectory(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
-//        } catch {
-//          self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
-//        }
-//
-//        self.rimeEngine.shutdownRime()
-//        self.rimeEngine.initialize()
-//      })
-//      .store(in: &self.cancellables)
   }
 
   private func setupRime() {
@@ -252,11 +233,15 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         useSandboxUserDataDirectory = true
       } else {
         // appGroup 补充 default.custom.yaml
-        let handled = FileManager.default.createFile(atPath: RimeContext.appGroupUserDataDefaultCustomYaml.path, contents: nil)
-        Logger.shared.log.debug("create file \(RimeContext.appGroupUserDataDefaultCustomYaml.path), handled: \(handled)")
+        self.defaultCustomFilePath = RimeContext.appGroupUserDataDefaultCustomYaml.path
+        if !FileManager.default.fileExists(atPath: self.defaultCustomFilePath) {
+          let handled = FileManager.default.createFile(atPath: self.defaultCustomFilePath, contents: nil)
+          Logger.shared.log.debug("create file \(self.defaultCustomFilePath), handled: \(handled)")
+        }
       }
 
       Logger.shared.log.info("rime syncAppGroupUserDataDirectory: \(self.appSettings.rimeNeedOverrideUserDataDirectory), useSandboxUserDataDirectory: \(useSandboxUserDataDirectory)")
+
       if useSandboxUserDataDirectory {
         try RimeContext.syncAppGroupUserDataDirectoryToSandbox(override: self.appSettings.rimeNeedOverrideUserDataDirectory)
         if self.appSettings.rimeNeedOverrideUserDataDirectory {
@@ -266,8 +251,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
         }
 
         // Sandbox 补充 default.custom.yaml
-        let handled = FileManager.default.createFile(atPath: RimeContext.sandboxUserDataDefaultCustomYaml.path, contents: nil)
-        Logger.shared.log.debug("create file \(RimeContext.sandboxUserDataDefaultCustomYaml.path), handled: \(handled)")
+        self.defaultCustomFilePath = RimeContext.sandboxUserDataDefaultCustomYaml.path
+        if !FileManager.default.fileExists(atPath: self.defaultCustomFilePath) {
+          let handled = FileManager.default.createFile(atPath: self.defaultCustomFilePath, contents: nil)
+          Logger.shared.log.debug("create file \(self.defaultCustomFilePath), handled: \(handled)")
+        }
       }
     } catch {
       self.log.error("create rime directory error: \(error), \(error.localizedDescription)")
@@ -281,7 +269,13 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       sharedSupportDir: RimeContext.appGroupSharedSupportDirectoryURL.path,
       userDataDir: useSandboxUserDataDirectory ? RimeContext.sandboxUserDataDirectory.path : RimeContext.appGroupUserDataDirectoryURL.path
     ))
+
+    // 设置输入方案
     self.changeRimeInputSchema()
+
+    // 中文简繁状态切换
+    self.syncTraditionalSimplifiedChineseMode()
+
     // 内嵌模式
     if self.appSettings.enableInputEmbeddedMode {
       self.rimeContext.$userInputKey
@@ -323,7 +317,9 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
       guard let self = self else { return }
       if mode.hasSuffix("ascii_mode") {
-        self.rimeContext.asciiMode = !mode.hasPrefix("!")
+        DispatchQueue.main.async {
+          self.rimeContext.asciiMode = !mode.hasPrefix("!")
+        }
       }
     })
   }
@@ -390,13 +386,37 @@ extension HamsterKeyboardViewController {
     )
   }
 
-  // 简繁切换
+  // 同步中文简繁状态
+  func syncTraditionalSimplifiedChineseMode() {
+    let simplifiedModeKey = self.appSettings.rimeSimplifiedAndTraditionalSwitcherKey
+
+    // 获取运行时状态
+    let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
+
+    // 获取文件中保存状态
+    let value = Rime.shared.API().getCustomize("patch/\(simplifiedModeKey)") ?? ""
+    if !value.isEmpty {
+      let handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: (value as NSString).boolValue)
+      Logger.shared.log.debug("syncTraditionalSimplifiedChineseMode set runtime state. key: \(simplifiedModeKey), value: \(value), handled: \(handled)")
+    } else {
+      // 首次加载保存简繁状态
+      let handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(simplifiedModeValue))
+      Logger.shared.log.debug("syncTraditionalSimplifiedChineseMode first save. key: \(simplifiedModeKey), value: \(simplifiedModeValue), handled: \(handled)")
+    }
+  }
+
+  // rime 中文简繁状态切换
   func switchTraditionalSimplifiedChinese() {
-    self.rimeContext.simplifiedChineseMode.toggle()
-    _ = Rime.shared.simplifiedChineseMode(
-      optionkey: self.appSettings.rimeSimplifiedAndTraditionalSwitcherKey,
-      value: self.rimeContext.simplifiedChineseMode
-    )
+    let simplifiedModeKey = self.appSettings.rimeSimplifiedAndTraditionalSwitcherKey
+    let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
+
+    // 设置运行时状态
+    var handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: !simplifiedModeValue)
+    Logger.shared.log.debug("switchTraditionalSimplifiedChinese key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
+
+    // 保存运行时状态
+    handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(!simplifiedModeValue))
+    Logger.shared.log.debug("switchTraditionalSimplifiedChinese save file state. key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
   }
 
   // 中英切换
