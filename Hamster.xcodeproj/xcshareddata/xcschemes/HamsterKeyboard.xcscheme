@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1500"
    wasCreatedForAppExtension = "YES"
    version = "2.0">
    <BuildAction
@@ -81,8 +81,8 @@
       launchAutomaticallySubstyle = "2">
       <RemoteRunnable
          runnableDebuggingMode = "1"
-         BundleIdentifier = "com.apple.mobilenotes"
-         RemotePath = "/var/containers/Bundle/Application/58B83887-91D7-4ADB-A56E-D676A8331F1D/MobileNotes.app">
+         BundleIdentifier = "com.apple.MobileSMS"
+         RemotePath = "/Applications/MobileSMS.app">
       </RemoteRunnable>
       <MacroExpansion>
          <BuildableReference

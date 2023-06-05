@@ -1,0 +1,61 @@
+/* 
+  Localizable.strings
+  Hamster
+
+  Created by morse on 11/4/2023.
+  
+*/
+"locale" = "zh-Hant";
+
+"done" = "完成";
+"go" = "前往";
+"join" = "加入";
+"ok" = "確認";
+"return" = "換行";
+"search" = "搜尋";
+"space" = "空格";
+"send" = "發送";
+"next" = "next";
+
+"keyboardTypeAlphabetic" = "英";
+"keyboardTypeNumeric" = "123";
+"keyboardTypeSymbolic" = "#+=";
+
+"keyboard.action.switchInputSchema" = "#方案切換";
+
+// 常用符號
+"frequent" = "常用";
+// 英文符號
+"ascii" = "英文";
+// 中文符號
+"cn" = "中文";
+// 數學符號
+"math" = "數學";
+// 特殊符號
+"special" = "特殊";
+// 單位
+"unit" = "單位";
+// 列表
+"list" = "列表";
+// 拼音
+"pinyin" = "拼音";
+// 注音
+"bopomofo" = "注音";
+// 部首
+"radical" = "部首";
+// 希臘
+"grease" = "希臘";
+// 俄語
+"rusa" = "俄文";
+// 拉丁
+"lation" = "拉丁";
+// 韓文
+"korea" = "韓文";
+// 音標
+"phonetic" = "音標";
+// 顏文字
+"kaomoji" = "顏文字";
+// 假名
+"jp" = "片假";
+
+"searchEmoji" = "搜尋Emoji";

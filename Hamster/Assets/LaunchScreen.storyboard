@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_72" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="430" height="932"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POWERED BY 中州韻輸入法引擎" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Oi-V5-g2a" userLabel="FootLabel">
+                                <rect key="frame" x="0.0" y="869" width="430" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="tertiaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="仓输入法" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eD4-J0-MYb" userLabel="Name">
+                                <rect key="frame" x="170.33333333333334" y="549" width="89.333333333333343" height="26.333333333333371"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Hamster" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qCd-kK-6Zx">
+                                <rect key="frame" x="140" y="391" width="150" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="FsO-Qf-FrM"/>
+                                    <constraint firstAttribute="width" secondItem="qCd-kK-6Zx" secondAttribute="height" multiplier="1:1" id="qQp-dB-C4I"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <constraints>
+                            <constraint firstItem="9Oi-V5-g2a" firstAttribute="centerX" secondItem="qCd-kK-6Zx" secondAttribute="centerX" id="6Y7-nx-Kq0"/>
+                            <constraint firstItem="9Oi-V5-g2a" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="ENd-zv-cUe"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="9Oi-V5-g2a" secondAttribute="trailing" id="GNi-S3-UD8"/>
+                            <constraint firstItem="qCd-kK-6Zx" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nzZ-hB-Av7"/>
+                            <constraint firstItem="eD4-J0-MYb" firstAttribute="centerX" secondItem="qCd-kK-6Zx" secondAttribute="centerX" id="pRM-H9-5h0"/>
+                            <constraint firstItem="eD4-J0-MYb" firstAttribute="top" secondItem="qCd-kK-6Zx" secondAttribute="bottom" constant="8" symbolic="YES" id="s9d-jq-aZ6"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="9Oi-V5-g2a" secondAttribute="bottom" constant="8" id="wjH-Tz-mpk"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Hamster" width="1024" height="1024"/>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tertiaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -7,8 +7,9 @@
 .plum
 .deps
 .HamsterInputSchemas
-Resources/SharedSupport/**
+Resources/SharedSupport/*.zip
 *.zip
+*.tgz
 
 
 # xcode gitignore
@@ -19,3 +20,4 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 .history
+Frameworks/

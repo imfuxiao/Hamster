@@ -25,7 +25,7 @@ jobs:
 
       - name: Un-tar Frameworks
         run: |
-          tar -xzf Frameworks.tgz -C Packages/LibrimeKit
+          tar -xzf Frameworks.tgz -C Packages/RimeKit
 
       - name: Build Schemas
         run: |
