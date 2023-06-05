@@ -299,17 +299,6 @@ private extension HamsterSystemKeyboard {
 
   var keyboardView: some View {
     keyboardViewContent
-      .hamsterKeyboardActionCallout(
-        calloutContext: actionCalloutContext,
-        keyboardContext: keyboardContext,
-        style: actionCalloutStyle,
-        emojiKeyboardStyle: .standard(for: keyboardContext)
-      )
-      .hamsterKeyboardInputCallout(
-        calloutContext: inputCalloutContext,
-        keyboardContext: keyboardContext,
-        style: inputCalloutStyle
-      )
   }
 
   @ViewBuilder
@@ -321,9 +310,21 @@ private extension HamsterSystemKeyboard {
       switch customKeyboard {
       case .numberNineGrid: numNineGridKeyboard
       case .symbol: symbolKeyboard
-      default: systemKeyboard
+      default: EmptyView()
       }
-    default: systemKeyboard
+    default:
+      systemKeyboard
+        .hamsterKeyboardActionCallout(
+          calloutContext: actionCalloutContext,
+          keyboardContext: keyboardContext,
+          style: actionCalloutStyle,
+          emojiKeyboardStyle: .standard(for: keyboardContext)
+        )
+        .hamsterKeyboardInputCallout(
+          calloutContext: inputCalloutContext,
+          keyboardContext: keyboardContext,
+          style: inputCalloutStyle
+        )
     }
   }
 

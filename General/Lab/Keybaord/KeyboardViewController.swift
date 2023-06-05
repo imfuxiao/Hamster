@@ -92,6 +92,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // Action 结束后可执行的动作
     self.calloutContext = KeyboardCalloutContext(
       action: HamsterActionCalloutContext(
+        keyboardContext: keyboardContext,
         actionHandler: keyboardActionHandler,
         actionProvider: calloutActionProvider
       ),
@@ -373,6 +374,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   }
 
   override open func setKeyboardType(_ type: KeyboardType) {
+    Logger.shared.log.debug("set keyboard: \(type)")
     keyboardContext.keyboardType = type
   }
 }
@@ -679,6 +681,16 @@ extension HamsterKeyboardViewController {
         let hotKeyModifier = RimeContext.hotKeyCodeModifiersMapping[hotkey, default: Int32(0)]
         Logger.shared.log.debug("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
         _ = self.inputRimeKeyCode(keyCode: hotKeyCode, modifier: hotKeyModifier)
+      }
+    case .emojiKeyboard:
+      (calloutContext.action as? HamsterActionCalloutContext)?.calloutAction = {
+        Logger.shared.log.debug("change keyboard: emojiKeyboard")
+        $0.keyboardType = .emojis
+      }
+    case .symbolKeyboard:
+      (calloutContext.action as? HamsterActionCalloutContext)?.calloutAction = {
+        Logger.shared.log.debug("change keyboard: symbolKeyboard")
+        $0.keyboardType = keyboardCustomType.symbol.keyboardType
       }
     default:
       return false

@@ -22,6 +22,8 @@ enum FunctionalInstructions: String, CaseIterable, Equatable, Identifiable {
   case onehandOnLeft = "#左手模式"
   case onehandOnRight = "#右手模式"
   case rimeSwitcher = "#RimeSwitcher"
+  case emojiKeyboard = "#emojiKeyboard"
+  case symbolKeyboard = "#symbolKeyboard"
   case none = "无"
 
   var text: String {
