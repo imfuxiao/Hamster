@@ -64,9 +64,11 @@ struct RIMEViewModel {
     }
 
     do {
-      // TODO: 将AppGroup下词库文件copy至应用目录
-      // 只copy用户词库文件
-      // try rimeContext.copyAppGroupUserDict()
+      // 将AppGroup下词库文件copy至应用目录
+      // 默认只拷贝 userdb 格式（二进制格式）用户词库文件
+      try rimeContext.copyAppGroupUserDict()
+      
+      // 同步
       let handled = try rimeContext.syncRime()
       if !handled {
         ProgressHUD.showError("同步失败", delay: 1.5)

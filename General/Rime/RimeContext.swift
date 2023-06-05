@@ -59,10 +59,11 @@ extension RimeContext {
   }
 
   // 拷贝 AppGroup 下词库文件
-  func copyAppGroupUserDict() throws {
+  func copyAppGroupUserDict(_ regex: [String] = ["^.*[.]userdb.*$"]) throws {
     // TODO: 将AppGroup下词库文件copy至应用目录
     // 只copy用户词库文件
-    let regex = ["^.*[.]userdb.*$", "^.*[.]txt$"]
+    // let regex = ["^.*[.]userdb.*$", "^.*[.]txt$"]
+    // let regex = ["^.*[.]userdb.*$"]
     try RimeContext.copyAppGroupSharedSupportDirectoryToSandbox(regex, filterMatchBreak: false)
     try RimeContext.copyAppGroupUserDirectoryToSandbox(regex, filterMatchBreak: false)
   }
