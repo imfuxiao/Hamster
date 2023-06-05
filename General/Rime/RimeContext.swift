@@ -81,6 +81,11 @@ extension RimeContext {
         throw error
       }
     }
+    
+    // 判断是否需要覆盖键盘词库文件，如果为否，则先copy键盘词库文件至应用目录
+    if !appSettings.enableOverrideKeyboardUserDictFileOnRimeDeploy {
+      try copyAppGroupUserDict(["^.*[.]userdb.*$", "^.*[.]txt$"])
+    }
 
     // 重新部署
     Rime.shared.shutdown()
@@ -104,6 +109,11 @@ extension RimeContext {
     ), maintenance: true, fullCheck: true)
     let handled = Rime.shared.API().syncUserData()
     Rime.shared.shutdown()
+    
+    // 将 Sandbox 目录下方案复制到AppGroup下
+    try RimeContext.syncSandboxSharedSupportDirectoryToApGroup(override: true)
+    try RimeContext.syncSandboxUserDataDirectoryToApGroup(override: true)
+    
     return handled
   }
 }

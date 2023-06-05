@@ -30,13 +30,13 @@ let _rimeSyncRemark = """
 
 struct RIMEView: View {
   init(appSettings: HamsterAppSettings, rimeContext: RimeContext) {
-    self.appSettings = appSettings
-    self.rimeContext = rimeContext
+    self._appSettings = ObservedObject(wrappedValue: appSettings)
+    self._rimeContext = ObservedObject(wrappedValue: rimeContext)
     self.rimeViewModel = RIMEViewModel(rimeContext: rimeContext, appSettings: appSettings)
   }
 
-  let appSettings: HamsterAppSettings
-  let rimeContext: RimeContext
+  @ObservedObject var appSettings: HamsterAppSettings
+  @ObservedObject var rimeContext: RimeContext
   let rimeViewModel: RIMEViewModel
 
   @State var cancellables = Set<AnyCancellable>()
@@ -66,6 +66,21 @@ struct RIMEView: View {
 
           ScrollView {
             Group {
+              VStack {
+                HStack {
+                  Toggle(isOn: $appSettings.enableOverrideKeyboardUserDictFileOnRimeDeploy) {
+                    Text("部署时覆盖键盘词库文件")
+                      .font(.system(size: 16, weight: .bold, design: .rounded))
+                  }
+                }
+                HStack {
+                  Text("如果您未使用自造词功能，保持默认开启状态。")
+                    .font(.system(size: 12, weight: .light, design: .rounded))
+                  Spacer()
+                }
+              }
+              .functionCell()
+
               LongButton(
                 buttonText: "重新部署"
               ) {

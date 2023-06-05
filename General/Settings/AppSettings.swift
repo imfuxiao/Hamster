@@ -208,6 +208,9 @@ public enum HamsterAppSettingKeys: String {
   // 键盘: 符号键盘开关
   case enableSymbolKeyboard = "app.keyboard.enableSymbolKeyboard"
 
+  // RIME：重新部署时覆盖键盘词库文件
+  case enableOverrideKeyboardUserDictFileOnRimeDeploy = "rime.enableOverrideKeyboardUserDictFileOnRimeDeploy"
+
   // 九宮格符号列重置
   static let defaultNumberNineGridSymbols = ["+", "-", "*", "/", "=", "%", "@", "!", ",", "."]
 
@@ -278,6 +281,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.symbolKeyboardLockState.rawValue: false,
       HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue: "simplification",
       HamsterAppSettingKeys.enableSymbolKeyboard.rawValue: true,
+      HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue: true,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -353,6 +357,7 @@ public class HamsterAppSettings: ObservableObject {
     self.symbolKeyboardLockState = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.symbolKeyboardLockState.rawValue)
     self.rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue) ?? ""
     self.enableSymbolKeyboard = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableSymbolKeyboard.rawValue)
+    self.enableOverrideKeyboardUserDictFileOnRimeDeploy = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue)
   }
 
   // App是否首次运行
@@ -862,6 +867,16 @@ public class HamsterAppSettings: ObservableObject {
       Logger.shared.log.info(["AppSettings, rimeSimplifiedAndTraditionalSwitcherKey": enableSymbolKeyboard])
       UserDefaults.hamsterSettingsDefault.set(
         enableSymbolKeyboard, forKey: HamsterAppSettingKeys.enableSymbolKeyboard.rawValue)
+    }
+  }
+
+  // RIME: 重新部署是否覆盖键盘词库文件
+  @Published
+  var enableOverrideKeyboardUserDictFileOnRimeDeploy: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableOverrideKeyboardUserDictFileOnRimeDeploy": enableOverrideKeyboardUserDictFileOnRimeDeploy])
+      UserDefaults.hamsterSettingsDefault.set(
+        enableOverrideKeyboardUserDictFileOnRimeDeploy, forKey: HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue)
     }
   }
 }

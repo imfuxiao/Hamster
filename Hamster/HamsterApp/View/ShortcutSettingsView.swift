@@ -164,14 +164,14 @@ extension ShortcutSettingsView {
         cellHeight: cellHeight,
         cellName: "输入方案上传",
         imageName: "network",
-        destinationType: .fileManager
+        destinationType: .uploadManager
       ),
       CellViewModel(
         cellWidth: cellWidth,
         cellHeight: cellHeight,
-        cellName: "文件编辑",
+        cellName: "文件管理",
         imageName: "creditcard",
-        destinationType: .fileEditor
+        destinationType: .fileManager
       ),
       CellViewModel(
         cellWidth: cellWidth,

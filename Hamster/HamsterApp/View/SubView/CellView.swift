@@ -10,8 +10,8 @@ import SwiftUI
 enum DestinationType {
   case inputSchema
   case colorSchema
+  case uploadManager
   case fileManager
-  case fileEditor
   case feedback
   case inputKeyFunction
   case swipeGestureMapping
@@ -161,10 +161,10 @@ struct CellView: View {
       InputSchemaView()
     case .colorSchema:
       ColorSchemaView()
+    case .uploadManager:
+      UploadManagerView()
     case .fileManager:
-      FileManagerView()
-    case .fileEditor:
-      EditorView()
+      FileManagerView(appSettings: appSettings)
     case .feedback:
       FeedbackView()
     case .inputKeyFunction:

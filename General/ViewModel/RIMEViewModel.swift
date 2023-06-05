@@ -67,12 +67,17 @@ struct RIMEViewModel {
       // 将AppGroup下词库文件copy至应用目录
       // 默认只拷贝 userdb 格式（二进制格式）用户词库文件
       try rimeContext.copyAppGroupUserDict()
-      
+
       // 同步
       let handled = try rimeContext.syncRime()
       if !handled {
         ProgressHUD.showError("同步失败", delay: 1.5)
         return
+      }
+
+      // 键盘需要重新copy方案
+      DispatchQueue.main.async {
+        appSettings.rimeNeedOverrideUserDataDirectory = true
       }
     } catch {
       ProgressHUD.showError("同步失败", delay: 1.5)

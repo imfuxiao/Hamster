@@ -15,22 +15,6 @@ struct AdvancedSettingsView: View {
 
   var syncAndBackupView: some View {
     SectionView("同步与备份") {
-      LongButton(
-        buttonText: "拷贝键盘词库文件至应用"
-      ) {
-        DispatchQueue.global().async {
-          ProgressHUD.show("拷贝中……", interaction: true)
-          do {
-            try rimeContext.copyAppGroupUserDict()
-          } catch {
-            ProgressHUD.showError("拷贝失败：\(error.localizedDescription)")
-            return
-          }
-          ProgressHUD.showSuccess("拷贝词库成功", delay: 1.5)
-        }
-      }
-      .padding(.horizontal)
-
       NavigationLink {
         SyncView()
       } label: {

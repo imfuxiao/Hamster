@@ -40,9 +40,9 @@
 		C02435AA2A0490230080CFB4 /* InputEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435892A0490220080CFB4 /* InputEditorView.swift */; };
 		C02435AB2A0490230080CFB4 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358A2A0490220080CFB4 /* InputSchemaView.swift */; };
 		C02435AC2A0490230080CFB4 /* ShortcutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358B2A0490220080CFB4 /* ShortcutSettingsView.swift */; };
-		C02435AD2A0490230080CFB4 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358C2A0490220080CFB4 /* FileManagerView.swift */; };
+		C02435AD2A0490230080CFB4 /* UploadManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358C2A0490220080CFB4 /* UploadManagerView.swift */; };
 		C02435AE2A0490230080CFB4 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358D2A0490220080CFB4 /* ColorSchemaView.swift */; };
-		C02435AF2A0490230080CFB4 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358E2A0490220080CFB4 /* EditorView.swift */; };
+		C02435AF2A0490230080CFB4 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358E2A0490220080CFB4 /* FileManagerView.swift */; };
 		C02435B02A0490230080CFB4 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358F2A0490220080CFB4 /* FeedbackView.swift */; };
 		C02435B22A0490230080CFB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435912A0490220080CFB4 /* ContentView.swift */; };
 		C02435B32A0490230080CFB4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435922A0490220080CFB4 /* LaunchScreen.swift */; };
@@ -334,9 +334,9 @@
 		C02435892A0490220080CFB4 /* InputEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputEditorView.swift; sourceTree = "<group>"; };
 		C024358A2A0490220080CFB4 /* InputSchemaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
 		C024358B2A0490220080CFB4 /* ShortcutSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutSettingsView.swift; sourceTree = "<group>"; };
-		C024358C2A0490220080CFB4 /* FileManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
+		C024358C2A0490220080CFB4 /* UploadManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerView.swift; sourceTree = "<group>"; };
 		C024358D2A0490220080CFB4 /* ColorSchemaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
-		C024358E2A0490220080CFB4 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		C024358E2A0490220080CFB4 /* FileManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
 		C024358F2A0490220080CFB4 /* FeedbackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
 		C02435912A0490220080CFB4 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C02435922A0490220080CFB4 /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
@@ -611,9 +611,9 @@
 				C02435882A0490220080CFB4 /* SwipeGestureActionView.swift */,
 				C02435892A0490220080CFB4 /* InputEditorView.swift */,
 				C024358A2A0490220080CFB4 /* InputSchemaView.swift */,
-				C024358C2A0490220080CFB4 /* FileManagerView.swift */,
+				C024358C2A0490220080CFB4 /* UploadManagerView.swift */,
 				C024358D2A0490220080CFB4 /* ColorSchemaView.swift */,
-				C024358E2A0490220080CFB4 /* EditorView.swift */,
+				C024358E2A0490220080CFB4 /* FileManagerView.swift */,
 				C024358F2A0490220080CFB4 /* FeedbackView.swift */,
 				C02435872A0490220080CFB4 /* SyncView.swift */,
 				C0DEDB8B2A12596F00E17F84 /* BackupView.swift */,
@@ -1334,7 +1334,7 @@
 				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
 				C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */,
 				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
-				C02435AD2A0490230080CFB4 /* FileManagerView.swift in Sources */,
+				C02435AD2A0490230080CFB4 /* UploadManagerView.swift in Sources */,
 				C09F6B062A08F68100F2EF18 /* HamsterKeyboardGestures.swift in Sources */,
 				C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */,
 				C0519E0329F926CC00513008 /* Checkbox.swift in Sources */,
@@ -1394,7 +1394,7 @@
 				C0B19F2B2A0D997A006AAA28 /* SelectInputSchemaView.swift in Sources */,
 				C02435AB2A0490230080CFB4 /* InputSchemaView.swift in Sources */,
 				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
-				C02435AF2A0490230080CFB4 /* EditorView.swift in Sources */,
+				C02435AF2A0490230080CFB4 /* FileManagerView.swift in Sources */,
 				C05BDC562A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
 				C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */,
 				C02435A62A0490230080CFB4 /* AdvancedSettingsView.swift in Sources */,
@@ -1875,7 +1875,7 @@
 			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
 			requirement = {
 				kind = exactVersion;
-				version = 0.7.15;
+				version = 0.7.16;
 			};
 		};
 		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {
