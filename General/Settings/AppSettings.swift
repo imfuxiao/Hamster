@@ -213,6 +213,9 @@ public enum HamsterAppSettingKeys: String {
   // RIME：重新部署时覆盖键盘词库文件
   case enableOverrideKeyboardUserDictFileOnRimeDeploy = "rime.enableOverrideKeyboardUserDictFileOnRimeDeploy"
 
+  // APP: 开启新UI
+  case enableNewUI = "app.enableNewUI"
+
   // 九宮格符号列重置
   static let defaultNumberNineGridSymbols = ["+", "-", "*", "/", "=", "%", "@", "!", ",", "."]
 
@@ -284,6 +287,7 @@ public class HamsterAppSettings: ObservableObject {
       HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue: "simplification",
       HamsterAppSettingKeys.enableSymbolKeyboard.rawValue: true,
       HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue: true,
+      HamsterAppSettingKeys.enableNewUI.rawValue: false,
     ])
 
     self.isFirstLaunch = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.appFirstLaunch.rawValue)
@@ -360,6 +364,7 @@ public class HamsterAppSettings: ObservableObject {
     self.rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamsterSettingsDefault.string(forKey: HamsterAppSettingKeys.rimeSimplifiedAndTraditionalSwitcherKey.rawValue) ?? ""
     self.enableSymbolKeyboard = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableSymbolKeyboard.rawValue)
     self.enableOverrideKeyboardUserDictFileOnRimeDeploy = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue)
+    self.enableNewUI = UserDefaults.hamsterSettingsDefault.bool(forKey: HamsterAppSettingKeys.enableNewUI.rawValue)
   }
 
   // App是否首次运行
@@ -881,6 +886,15 @@ public class HamsterAppSettings: ObservableObject {
         enableOverrideKeyboardUserDictFileOnRimeDeploy, forKey: HamsterAppSettingKeys.enableOverrideKeyboardUserDictFileOnRimeDeploy.rawValue)
     }
   }
+
+  // APP: 开启新的UI
+  @Published
+  var enableNewUI: Bool {
+    didSet {
+      Logger.shared.log.info(["AppSettings, enableNewUI": enableNewUI])
+      UserDefaults.hamsterSettingsDefault.set(enableNewUI, forKey: HamsterAppSettingKeys.enableNewUI.rawValue)
+    }
+  }
 }
 
 public extension UserDefaults {
@@ -972,7 +986,8 @@ extension HamsterAppSettings {
     if rimeTotalSchemas.isEmpty {
       return false
     }
-    self.rimeTotalSchemas = rimeTotalSchemas.reduce([] as [Schema]) {
+
+    self.rimeTotalSchemas = rimeTotalSchemas.reduce([Schema]()) {
       if $0.contains($1) {
         return $0
       } else {
@@ -1009,6 +1024,7 @@ extension HamsterAppSettings {
     if Rime.shared.isRunning() {
       Rime.shared.shutdown()
     }
+
     return true
   }
 }

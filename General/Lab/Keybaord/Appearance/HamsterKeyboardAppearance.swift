@@ -464,6 +464,9 @@ extension KeyboardActionCalloutStyle {
 
 public struct HamsterColorSchema: Identifiable, Equatable, Codable {
   init(schema: ColorSchema) {
+    self.schemaName = schema.schemaName
+    self.name = schema.name
+    self.author = schema.author
     self.backColor = schema.backColor.bgrColor ?? .clear
     self.borderColor = schema.borderColor.bgrColor ?? .clear
     self.textColor = schema.textColor.bgrColor ?? .clear
@@ -477,6 +480,12 @@ public struct HamsterColorSchema: Identifiable, Equatable, Codable {
   }
 
   public var id = UUID()
+
+  // 配置使用的名称
+  var schemaName: String
+  // 方案名称(可读显示)
+  var name: String
+  var author: String
 
   var backColor: Color // 窗体背景色 back_color
   var borderColor: Color // 边框颜色 border_color
