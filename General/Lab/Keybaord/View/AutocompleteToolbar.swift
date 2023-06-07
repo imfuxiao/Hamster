@@ -70,7 +70,7 @@ struct HamsterAutocompleteToolbar: View {
       .padding(.leading, 2)
       .padding(.trailing, 50)
       .frame(height: appSettings.enableInputEmbeddedMode ? appSettings.candidateBarHeight : appSettings.candidateBarHeight - 10)
-      .frame(minWidth: 0, maxWidth: .infinity)
+//      .frame(minWidth: 0, maxWidth: .infinity)
   }
 
   // 水平候选区 测试版

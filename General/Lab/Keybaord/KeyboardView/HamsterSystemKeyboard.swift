@@ -280,11 +280,11 @@ public struct HamsterSystemKeyboard<ButtonView: View>: View {
       keyboardView
         .frame(width: realKeyboardWidth)
         .opacity(appSettings.keyboardStatus == .normal ? 1 : 0)
-//        .overlay(GeometryReader { proxy in Color.clear.preference(key: SizePreferenceKey.self, value: proxy.size) })
+        .overlay(GeometryReader { proxy in Color.clear.preference(key: SizePreferenceKey.self, value: proxy.size) })
     }
     .frame(width: realKeyboardWidth)
     .background(appearance.backgroundStyle.backgroundView)
-//    .onPreferenceChange(SizePreferenceKey.self) { value in keyboardSize = value }
+    .onPreferenceChange(SizePreferenceKey.self) { value in keyboardSize = value }
     .oneHandKeyboard(enable: canEnableOneHand, realKeyboardWidth: realKeyboardWidth, oneHandWidth: handModeChangePaneWidth)
   }
 }
@@ -350,7 +350,7 @@ private extension HamsterSystemKeyboard {
       appearance: appearance,
       style: .standard(for: keyboardContext)
     )
-    .frame(width: keyboardWidth, height: totalKeyboardHeight)
+    .frame(width: keyboardSize.width, height: totalKeyboardHeight)
   }
 
   var numNineGridKeyboard: some View {
@@ -361,7 +361,7 @@ private extension HamsterSystemKeyboard {
       calloutContext: calloutContext,
       keyboardContext: keyboardContext,
       appSettings: appSettings,
-      width: keyboardWidth,
+      width: keyboardSize.width,
       height: keyboardHeight
     )
   }
@@ -374,7 +374,7 @@ private extension HamsterSystemKeyboard {
       calloutContext: calloutContext,
       keyboardContext: keyboardContext,
       appSettings: appSettings,
-      width: keyboardWidth,
+      width: keyboardSize.width,
       height: totalKeyboardHeight
     )
   }
