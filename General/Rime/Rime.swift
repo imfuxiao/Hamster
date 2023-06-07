@@ -165,10 +165,10 @@ class Rime: IRimeNotificationDelegate {
     return []
   }
 
-//  func isAsciiMode() -> Bool {
-//    return rimeAPI.getOption(session, andOption: asciiModeKey)
-//  }
-//
+  func isAsciiMode() -> Bool {
+    return rimeAPI.getOption(session, andOption: asciiModeKey)
+  }
+
   func asciiMode(_ value: Bool) -> Bool {
     return rimeAPI.setOption(session, andOption: asciiModeKey, andValue: value)
   }

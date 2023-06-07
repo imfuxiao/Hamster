@@ -277,6 +277,11 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // 中文简繁状态切换
     self.syncTraditionalSimplifiedChineseMode()
 
+    // 中英状态同步
+    DispatchQueue.main.async {
+      self.rimeContext.asciiMode = Rime.shared.isAsciiMode()
+    }
+
     // 内嵌模式
     if self.appSettings.enableInputEmbeddedMode {
       self.rimeContext.$userInputKey
@@ -320,6 +325,7 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
       if mode.hasSuffix("ascii_mode") {
         DispatchQueue.main.async {
           self.rimeContext.asciiMode = !mode.hasPrefix("!")
+          Logger.shared.log.debug("loading setChangeModeCallback asciiMode = \(self.rimeContext.asciiMode)")
         }
       }
     })
