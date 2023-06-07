@@ -271,6 +271,9 @@ struct ListButtonStyle: ButtonStyle {
 extension SymbolCategoryView {
   var foregroundColor: Color {
     guard let colorSchema = appearance.hamsterColorSchema else { return .primary }
+    if symbol == symbolCategory.rawValue {
+      return colorSchema.hilitedCandidateTextColor == .clear ? .primary : colorSchema.hilitedCandidateTextColor
+    }
     return colorSchema.candidateTextColor == .clear ? .primary : colorSchema.candidateTextColor
   }
 
@@ -285,9 +288,11 @@ extension SymbolCategoryView {
       return Color.clear
     }
     if symbol == symbolCategory.rawValue {
-      return colorSchema.backColor.opacity(0.3)
+      if colorSchema.hilitedCandidateBackColor != .clear {
+        return colorSchema.hilitedCandidateBackColor
+      }
     }
-    return colorSchema.backColor
+    return Color.clear
   }
 
   var buttonStyle: KeyboardButtonStyle {
