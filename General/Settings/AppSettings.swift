@@ -223,7 +223,7 @@ public enum HamsterAppSettingKeys: String {
   static let defaultCursorBackOfSymbols = ["()", "（）", "\"\"", "“”", "''", "‘’", "<>", "《》", "«»", "{}", "｛｝", "[]", "［］", "〈〉", "『』", "「」", "【】", "〖〗"]
 
   // 默认返回主键盘的符号
-  static let defaultReturnToPrimaryKeyboardOfSymbols = ["@", ",", ".", "，", "。", "！", "!", "?", "？"]
+  static let defaultReturnToPrimaryKeyboardOfSymbols = ["@", ",", "，", "。", "！", "!", "?", "？"]
 }
 
 public class HamsterAppSettings: ObservableObject {
