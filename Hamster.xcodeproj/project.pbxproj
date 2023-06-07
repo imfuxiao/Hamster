@@ -88,6 +88,12 @@
 		C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
 		C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
 		C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */; };
+		C06916962A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
+		C06916972A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
+		C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */; };
+		C069169A2A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */; };
+		C069169C2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */; };
+		C069169D2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */; };
 		C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071A2442A17786B00FBE5A2 /* OneHandedView.swift */; };
 		C0734DCD2A16EF250046173E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = C0734DCC2A16EF250046173E /* ProgressHUD */; };
 		C0734DD12A16EF780046173E /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0734DD02A16EF780046173E /* ProgressHUD.swift */; };
@@ -389,6 +395,9 @@
 		C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HamsterKeyboardButton.swift"; sourceTree = "<group>"; };
 		C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonBody.swift; sourceTree = "<group>"; };
 		C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingView.swift; sourceTree = "<group>"; };
+		C06916952A302E60006917CA /* EmojiKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiKeyboard.swift; sourceTree = "<group>"; };
+		C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboard.swift; sourceTree = "<group>"; };
+		C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboardMenu.swift; sourceTree = "<group>"; };
 		C071A2442A17786B00FBE5A2 /* OneHandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneHandedView.swift; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C0734DD02A16EF780046173E /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
@@ -834,6 +843,9 @@
 				C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */,
 				C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */,
 				C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */,
+				C06916952A302E60006917CA /* EmojiKeyboard.swift */,
+				C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */,
+				C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1327,6 +1339,7 @@
 				C024359C2A0490230080CFB4 /* CircleActivityView.swift in Sources */,
 				C0734DD52A16F9B90046173E /* RIMEViewModel.swift in Sources */,
 				C024359B2A0490230080CFB4 /* DotsLoadingView.swift in Sources */,
+				C06916962A302E60006917CA /* EmojiKeyboard.swift in Sources */,
 				C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */,
 				C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */,
 				C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */,
@@ -1349,6 +1362,7 @@
 				C02435E52A071BC50080CFB4 /* File+Backup.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */,
 				C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */,
+				C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
 				C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */,
 				C024152C2A25EB8A004E282B /* SymbolProvider.swift in Sources */,
 				C02435BB2A05ECF00080CFB4 /* AppSettings+Yaml.swift in Sources */,
@@ -1386,6 +1400,7 @@
 				C02435B22A0490230080CFB4 /* ContentView.swift in Sources */,
 				C0614AA22A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
 				C0A3CE012A0B59BC0068D737 /* InputCallout.swift in Sources */,
+				C069169C2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */,
 				C0DEDB892A110AAE00E17F84 /* Rime+Model.swift in Sources */,
 				C016994629FBC24C0047B49E /* File+Zip.swift in Sources */,
 				C02435A12A0490230080CFB4 /* LoaderView.swift in Sources */,
@@ -1458,6 +1473,7 @@
 				C0A602CA2A185D9B000DC924 /* KKL10n.swift in Sources */,
 				C0A602CB2A185D9B000DC924 /* SwipeGestureHandler.swift in Sources */,
 				C0A602CC2A185D9B000DC924 /* HamsterSwipeGestureHandler.swift in Sources */,
+				C069169A2A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
 				C0A602CD2A185D9B000DC924 /* KeyboardImageReader.swift in Sources */,
 				C0A602D12A185D9B000DC924 /* CollectionView.swift in Sources */,
 				C0A602D22A185D9B000DC924 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
@@ -1470,6 +1486,7 @@
 				C0A602D92A185D9B000DC924 /* HamsterSystemKeyboardButtonRowItem.swift in Sources */,
 				C0A602DA2A185D9B000DC924 /* HamsterKeyboardButtonContent.swift in Sources */,
 				C0A602DB2A185D9B000DC924 /* HamsterKeyboardButtonText.swift in Sources */,
+				C069169D2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */,
 				C0A602DC2A185D9B000DC924 /* HamsterKeyboardGestures.swift in Sources */,
 				C0A602DD2A185D9B000DC924 /* HamsterGestureButton.swift in Sources */,
 				C0A602DE2A185D9B000DC924 /* HamsterScrollViewGestureButton.swift in Sources */,
@@ -1478,6 +1495,7 @@
 				C0A602E02A185D9B000DC924 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
 				C0A602B32A185D88000DC924 /* KeyboardInputViewController.swift in Sources */,
 				C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */,
+				C06916972A302E60006917CA /* EmojiKeyboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

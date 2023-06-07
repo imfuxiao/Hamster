@@ -343,7 +343,7 @@ private extension HamsterSystemKeyboard {
 
 private extension HamsterSystemKeyboard {
   var emojiKeyboard: some View {
-    EmojiCategoryKeyboard(
+    HamsterEmojiCategoryKeyboard(
       actionHandler: actionHandler,
       keyboardContext: keyboardContext,
       calloutContext: calloutContext,
