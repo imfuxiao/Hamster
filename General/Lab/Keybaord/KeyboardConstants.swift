@@ -21,7 +21,7 @@ class KeyboardConstant {
 
   enum ImageName {
     static let switchLanguage = "switchLanguage"
-    static let chineseLanguageImageName = "cn"
-    static let englishLanguageImageName = "en"
+    static let chineseLanguageImageName = "hani"
+    static let englishLanguageImageName = "latn"
   }
 }

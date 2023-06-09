@@ -27,11 +27,11 @@
 // 常用符号
 "frequent" = "Frequent";
 // 拉丁标点符号
-"ascii" = "Latin Punct";
+"ascii" = "❜Punct";
 // 汉语标点符号
-"hani" = "Chinese Punct";
+"hani" = "﹅Punct";
 // 数学符号
-"math" = "Math Symbol";
+"math" = "􀓪Math";
 // 装饰符号
 "dingbat" = "Dingbat";
 // 单位
@@ -43,21 +43,21 @@
 // 注音
 "bopomofo" = "Bopomofo";
 // 部首
-"radical" = "Hanzi Radical";
+"radical" = "⾋Radical";
 // 希腊字母
-"hellenic" = "Greek Alph";
+"hellenic" = "Ω Greek";
 // 西里尔字母
-"cyrillic" = "Cyrillic Alph";
+"cyrillic" = "Ж Cyrl";
 // 拉丁字母
-"latin" = "Latin Alph";
+"latin" = "Æ Latin";
 // 谚文字母
-"hangul" = "Hangul Alph";
+"hangul" = "가Hangul";
 // 音标
-"IPA" = "IPA";
+"IPA" = "ʤ IPA";
 // 颜文字
 "kaomoji" = "Kaomoji";
 // 假名
-"kana" = "Kana";
+"kana" = "あKana";
 
 "searchEmoji" = "Search Emoji";
 
