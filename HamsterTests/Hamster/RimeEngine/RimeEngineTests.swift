@@ -47,8 +47,6 @@ final class RimeEngineTests: XCTestCase {
   }
 
   func testCustomSetting() throws {
-    let handled = Rime.shared.customString(key: "switcher/hotkeys", value: "F4")
-    print("setting: \(handled)")
     let hotKeys = Rime.shared.getHotkeys()
     print("hotKeys: \(hotKeys)")
   }

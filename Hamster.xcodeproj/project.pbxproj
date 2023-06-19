@@ -11,6 +11,8 @@
 		C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */; };
 		C01093D92A3FFD6200D34AC9 /* HamsterColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093D82A3FFD6200D34AC9 /* HamsterColorSchemaView.swift */; };
 		C01093DB2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093DA2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift */; };
+		C01093DF2A40893400D34AC9 /* HamsterSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */; };
+		C01093E22A408BB200D34AC9 /* YamlToModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */; };
 		C016994629FBC24C0047B49E /* File+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994529FBC24C0047B49E /* File+Zip.swift */; };
 		C016994929FBC9BB0047B49E /* HamsterHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994829FBC9BB0047B49E /* HamsterHUD.swift */; };
 		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
@@ -359,6 +361,8 @@
 		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C01093D82A3FFD6200D34AC9 /* HamsterColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterColorSchemaView.swift; sourceTree = "<group>"; };
 		C01093DA2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaTableViewCell.swift; sourceTree = "<group>"; };
+		C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSettingModel.swift; sourceTree = "<group>"; };
+		C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YamlToModelTest.swift; sourceTree = "<group>"; };
 		C016994529FBC24C0047B49E /* File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Zip.swift"; sourceTree = "<group>"; };
 		C016994829FBC9BB0047B49E /* HamsterHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHUD.swift; sourceTree = "<group>"; };
 		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
@@ -627,6 +631,22 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		C01093DC2A4088F600D34AC9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		C01093E02A408BA400D34AC9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		C016994729FBC99F0047B49E /* HUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -881,6 +901,7 @@
 		C04FA8AB299A65AB00F8CC32 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				C01093DC2A4088F600D34AC9 /* Model */,
 				C0F2A8962A383C9600ACCAA2 /* Extension */,
 				C0734DD32A16F8BA0046173E /* ViewModel */,
 				C09F6AFB2A089CBD00F2EF18 /* Lab */,
@@ -1336,6 +1357,7 @@
 		C0F858C029A2AA03003A2ED4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C01093E02A408BA400D34AC9 /* Model */,
 				C02435E12A07175D0080CFB4 /* Settings */,
 				C074C43629FB7DB100718DAD /* File */,
 				C0F858C129A2AA38003A2ED4 /* RimeEngine */,
@@ -1572,6 +1594,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01093E22A408BB200D34AC9 /* YamlToModelTest.swift in Sources */,
 				C02435E32A0717850080CFB4 /* HamsterAppSettingsTest.swift in Sources */,
 				C02435C92A05F3270080CFB4 /* FileTest.swift in Sources */,
 				C02435CA2A05F3270080CFB4 /* RimeEngineTests.swift in Sources */,
@@ -1621,6 +1644,7 @@
 				C0A3CDF32A0B54000068D737 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
 				C0A3CDF42A0B54000068D737 /* CandidateBarArrowButton.swift in Sources */,
 				C0A3CDF52A0B54000068D737 /* CandidateView.swift in Sources */,
+				C01093DF2A40893400D34AC9 /* HamsterSettingModel.swift in Sources */,
 				C0A3CDF62A0B54000068D737 /* AutocompleteToolbar.swift in Sources */,
 				C0B6E5AA2A3D915100813EF3 /* StepperTableViewCell.swift in Sources */,
 				C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */,

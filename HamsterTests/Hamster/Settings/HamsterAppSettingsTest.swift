@@ -20,14 +20,14 @@ final class HamsterAppSettingsTest: XCTestCase {
   }
 
   func testAppSettingToYaml() throws {
-    let settings = Hamster.HamsterAppSettings()
+    let settings = HamsterAppSettings()
     let yaml = settings.yaml()
     Logger.shared.log.debug("yaml:\n" + yaml)
     if let node = try Yams.compose(yaml: yaml) {
       settings.reset(node: node)
     }
   }
-  
+
   func testPerformanceExample() throws {
     // This is an example of a performance test case.
     self.measure {
