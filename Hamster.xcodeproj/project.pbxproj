@@ -307,6 +307,10 @@
 		C0F2A8A12A38A67A00ACCAA2 /* FinderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A02A38A67A00ACCAA2 /* FinderViewModel.swift */; };
 		C0F2A8A32A38A94F00ACCAA2 /* FinderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A22A38A94F00ACCAA2 /* FinderTableView.swift */; };
 		C0F2A8A52A38A9D800ACCAA2 /* FinderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A42A38A9D800ACCAA2 /* FinderViewCell.swift */; };
+		C0F5B4892A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */; };
+		C0F5B48A2A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */; };
+		C0F5B48D2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */; };
+		C0F5B48E2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -552,6 +556,8 @@
 		C0F2A8A02A38A67A00ACCAA2 /* FinderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderViewModel.swift; sourceTree = "<group>"; };
 		C0F2A8A22A38A94F00ACCAA2 /* FinderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTableView.swift; sourceTree = "<group>"; };
 		C0F2A8A42A38A9D800ACCAA2 /* FinderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderViewCell.swift; sourceTree = "<group>"; };
+		C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHapticFeedbackEngine.swift; sourceTree = "<group>"; };
+		C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHapticFeedback.swift; sourceTree = "<group>"; };
 		C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RimeEngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -634,6 +640,7 @@
 		C01093DC2A4088F600D34AC9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				C0F5B48B2A41337700A427D2 /* Feedback */,
 				C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */,
 			);
 			path = Model;
@@ -661,6 +668,7 @@
 			isa = PBXGroup;
 			children = (
 				C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */,
+				C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */,
 			);
 			path = Feedback;
 			sourceTree = "<group>";
@@ -1354,6 +1362,14 @@
 			path = FileManager;
 			sourceTree = "<group>";
 		};
+		C0F5B48B2A41337700A427D2 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
 		C0F858C029A2AA03003A2ED4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
@@ -1652,6 +1668,7 @@
 				C0A3CDDC2A0B533B0068D737 /* KeyboardAction+Buttons.swift in Sources */,
 				C0A3CDDD2A0B533B0068D737 /* KeyboardAction+Actions.swift in Sources */,
 				C0A3CDDE2A0B533B0068D737 /* KeyboardAction+Return.swift in Sources */,
+				C0F5B48D2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */,
 				C0A3CE042A0CB7130068D737 /* File+Crypto.swift in Sources */,
 				C0A3CDCE2A09C6790068D737 /* HamsterKeyboardButtonText.swift in Sources */,
 				C0B27A672A39F49500EFD667 /* BackupViewModel.swift in Sources */,
@@ -1751,6 +1768,7 @@
 				C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */,
 				C02435A92A0490230080CFB4 /* SwipeGestureActionView.swift in Sources */,
 				C0A3CDCF2A09C92A0068D737 /* KeyboardContext+KeyboardType.swift in Sources */,
+				C0F5B4892A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */,
 				C0458A7F29B1339300262E69 /* RimeContext.swift in Sources */,
 				C0458A8029B1339300262E69 /* RimeContext+Color.swift in Sources */,
 				C02435A02A0490230080CFB4 /* HamsteriCloudView.swift in Sources */,
@@ -1823,6 +1841,7 @@
 				C0A602BE2A185D9A000DC924 /* HamsterActionCalloutContext.swift in Sources */,
 				C0A602BF2A185D9B000DC924 /* HamsterCalloutActionProvider.swift in Sources */,
 				C0614AA32A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
+				C0F5B48A2A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */,
 				C0A602C02A185D9B000DC924 /* View+Callouts.swift in Sources */,
 				C0A602C12A185D9B000DC924 /* InputCallout.swift in Sources */,
 				C0A602C22A185D9B000DC924 /* KeyboardType+Button.swift in Sources */,
@@ -1836,6 +1855,7 @@
 				C0A602C92A185D9B000DC924 /* KeyboardLocale.swift in Sources */,
 				C0A602CA2A185D9B000DC924 /* KKL10n.swift in Sources */,
 				C0A602CB2A185D9B000DC924 /* SwipeGestureHandler.swift in Sources */,
+				C0F5B48E2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */,
 				C0A602CC2A185D9B000DC924 /* HamsterSwipeGestureHandler.swift in Sources */,
 				C069169A2A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
 				C0A602CD2A185D9B000DC924 /* KeyboardImageReader.swift in Sources */,

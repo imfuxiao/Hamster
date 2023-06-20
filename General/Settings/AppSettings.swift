@@ -53,21 +53,39 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
     return rawValue
   }
 
-  case ultraLightImpact
-  case lightImpact
-  case mediumImpact
-  case heavyImpact
+  case softImpact = 0
+  case lightImpact = 1
+  case rigidImpact = 2
+  case mediumImpact = 3
+  case heavyImpact = 4
 
   var text: String {
     switch self {
-    case .ultraLightImpact:
+    case .softImpact:
       return "超轻"
     case .lightImpact:
       return "轻"
+    case .rigidImpact:
+      return "默认"
     case .mediumImpact:
       return "中"
     case .heavyImpact:
       return "强"
+    }
+  }
+
+  func toHapticFeedback() -> HamsterHapticFeedback {
+    switch self {
+    case .softImpact:
+      return .softImpact
+    case .lightImpact:
+      return .lightImpact
+    case .rigidImpact:
+      return .rigidImpact
+    case .mediumImpact:
+      return .mediumImpact
+    case .heavyImpact:
+      return .heavyImpact
     }
   }
 }

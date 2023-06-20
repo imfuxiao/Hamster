@@ -21,20 +21,11 @@ class HamsterKeyboardFeedbackHandler: StandardKeyboardFeedbackHandler {
     }
 
     if appSettings.enableKeyboardFeedbackHaptic {
-      var hapticFeedfack: HapticFeedback = .mediumImpact
+      var hapticFeedback: HamsterHapticFeedback = .success
       if let hapticIntensity = HapticIntensity(rawValue: appSettings.keyboardFeedbackHapticIntensity) {
-        switch hapticIntensity {
-        case .ultraLightImpact:
-          hapticFeedfack = .selectionChanged
-        case .lightImpact:
-          hapticFeedfack = .lightImpact
-        case .mediumImpact:
-          hapticFeedfack = .mediumImpact
-        case .heavyImpact:
-          hapticFeedfack = .heavyImpact
-        }
+        hapticFeedback = hapticIntensity.toHapticFeedback()
       }
-      HapticFeedback.engine.trigger(hapticFeedfack)
+      HamsterHapticFeedback.engine.trigger(hapticFeedback)
     }
   }
 

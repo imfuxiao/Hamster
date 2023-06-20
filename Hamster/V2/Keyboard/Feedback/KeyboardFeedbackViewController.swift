@@ -46,7 +46,7 @@ class KeyboardFeedbackViewController: UIViewController, UITableViewDelegate, UIT
     // UIImpactFeedbackGenerator.FeedbackStyle
     let slider = newSlider
     slider.minimumValue = 0
-    slider.maximumValue = 1
+    slider.maximumValue = 4
     slider.isContinuous = false
     slider.value = Float(appSettings.keyboardFeedbackHapticIntensity)
     slider.addTarget(self, action: #selector(changeHaptic(_:)), for: .valueChanged)
@@ -88,13 +88,13 @@ extension KeyboardFeedbackViewController {
   }
 
   @objc func changeHaptic(_ sender: UISlider) {
-//    let roundedValue = Int(sender.value)
-//    sender.value = Float(roundedValue)
-    Logger.shared.log.debug("change haptic: \(sender.value)")
-//    let style = UIImpactFeedbackGenerator.FeedbackStyle(rawValue: roundedValue) ?? .medium
-    UIImpactFeedbackGenerator(style: .medium).impactOccurred(intensity: CGFloat(sender.value))
-    // TODO: 改为float类型
-    appSettings.keyboardFeedbackHapticIntensity = Int(sender.value)
+    // 取整
+    sender.value.round()
+    let senderValue = Int(sender.value)
+    Logger.shared.log.debug("change haptic: \(senderValue)")
+    let haptic = HapticIntensity(rawValue: senderValue) ?? .rigidImpact
+    haptic.toHapticFeedback().trigger()
+    appSettings.keyboardFeedbackHapticIntensity = haptic.rawValue
   }
 }
 
