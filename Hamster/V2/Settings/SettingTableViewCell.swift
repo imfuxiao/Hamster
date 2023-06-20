@@ -20,7 +20,7 @@ class SettingTableViewCell: UITableViewCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  var setting: SettingModel?
+  var setting: SettingItemModel?
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
@@ -30,12 +30,8 @@ class SettingTableViewCell: UITableViewCell {
 
     config.text = setting.text
     config.secondaryText = setting.navigationLinkLabel()
-
     config.image = setting.icon
-
-    if let accessoryType = setting.accessoryType {
-      self.accessoryType = accessoryType
-    }
+    accessoryType = setting.accessoryType
     contentConfiguration = config
   }
 }

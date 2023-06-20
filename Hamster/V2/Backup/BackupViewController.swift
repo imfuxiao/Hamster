@@ -8,7 +8,8 @@
 import UIKit
 
 class BackupViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-  init(appSettings: HamsterAppSettings) {
+  init(parentController: SettingsViewController, appSettings: HamsterAppSettings) {
+    self.parentController = parentController
     self.appSettings = appSettings
     super.init(nibName: nil, bundle: nil)
   }
@@ -18,8 +19,9 @@ class BackupViewController: UIViewController, UITableViewDelegate, UITableViewDa
     fatalError("init(coder:) has not been implemented")
   }
 
+  unowned let parentController: SettingsViewController
   let appSettings: HamsterAppSettings
-  lazy var backupViewModel = BackupViewModel(controller: self)
+  lazy var backupViewModel: BackupViewModel = .init(controller: self)
   let finderViewModel = FinderViewModel(rootURL: RimeContext.sandboxBackupDirectory)
   var backupFiles: [FileInfo] = []
 
@@ -68,6 +70,12 @@ extension BackupViewController {
 
     loadBackupFiles()
   }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    parentController.restSettingSections()
+  }
 }
 
 // MARK: implementation UITableViewDelegate, UITableViewDataSource
@@ -86,7 +94,7 @@ extension BackupViewController {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
-      return ButtonTableViewCell(text: "软件备份") { [unowned self] in
+      return ButtonTableViewCell(text: "软件备份", favoriteButton: .appBackup) { [unowned self] in
         backupViewModel.backup()
         loadBackupFiles()
       }
@@ -136,7 +144,7 @@ extension BackupViewController {
       alertController.addAction(UIAlertAction(title: "确认", style: .destructive, handler: { [unowned self, alertController] _ in
         guard let textFields = alertController.textFields else { return }
         let newFileName = textFields[0].text ?? ""
-        self.backupViewModel.rename(at: fileInfo.url,newFileName: newFileName)
+        self.backupViewModel.rename(at: fileInfo.url, newFileName: newFileName)
         completion(true)
       }))
       alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { _ in completion(false) }))

@@ -44,7 +44,7 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
     hStack.distribution = .equalCentering
     hStack.translatesAutoresizingMaskIntoConstraints = true
 
-    let image = UIImage(named: "Hamster")
+    let image = UIImage(named: traitCollection.userInterfaceStyle == .dark ? "HamsterWhite" : "Hamster")
     let imageView = UIImageView(image: image)
     imageView.contentMode = .scaleAspectFit
     imageView.clipsToBounds = true

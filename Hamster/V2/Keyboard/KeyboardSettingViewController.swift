@@ -20,7 +20,7 @@ class KeyboardSettingViewController: UIViewController, UITableViewDataSource, UI
 
   let appSettings: HamsterAppSettings
 
-  lazy var settingsItems: [KeyboardSettingSection] = [
+  lazy var settingsItems: [SettingSectionModel] = [
     .init(
       footer: Self.enableKeyboardAutomaticallyLowercaseRemark,
       items: [
@@ -203,6 +203,10 @@ extension KeyboardSettingViewController {
       return ToggleTableViewCell(text: setting.text, secondaryText: setting.secondaryText, toggleValue: setting.toggleValue, toggleHandled: setting.toggleHandled)
     case .textField:
       return TextFieldTableViewCell(iconName: "square.and.pencil", text: setting.textValue ?? "", textHandled: setting.textHandled ?? { _ in })
+    case .button:
+      return ButtonTableViewCell(text: setting.text, textTintColor: setting.textTintColor, buttonAction: {
+        setting.buttonAction?()
+      })
     }
   }
 
@@ -230,56 +234,4 @@ extension KeyboardSettingViewController {
 extension KeyboardSettingViewController {
   static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
   static let enableKeyboardAutomaticallyLowercaseRemark = "默认键盘大小写会保持自身状态. 开启此选项后, 当在大写状态在下输入一个字母后会自动转为小写状态. 注意: 双击Shift会保持锁定"
-}
-
-struct KeyboardSettingSection {
-  init(title: String = "", footer: String? = nil, items: [SettingItem]) {
-    self.title = title
-    self.footer = footer
-    self.items = items
-  }
-
-  let title: String
-  let footer: String?
-  let items: [SettingItem]
-}
-
-enum SettingType {
-  case navigation
-  case toggle
-  case textField
-}
-
-struct SettingItem {
-  init(
-    text: String = "",
-    secondaryText: String? = nil,
-    type: SettingType,
-    toggleValue: Bool = false,
-    toggleHandled: ((Bool) -> Void)? = nil,
-    navigationLinkLabel: @escaping (() -> String) = { "" },
-    navigationLink: (() -> UIViewController)? = nil,
-    textValue: String? = nil,
-    textHandled: ((String) -> Void)? = nil)
-  {
-    self.text = text
-    self.secondaryText = secondaryText
-    self.type = type
-    self.toggleValue = toggleValue
-    self.toggleHandled = toggleHandled
-    self.navigationLinkLabel = navigationLinkLabel
-    self.navigationLink = navigationLink
-    self.textValue = textValue
-    self.textHandled = textHandled
-  }
-
-  let text: String
-  let secondaryText: String?
-  let type: SettingType
-  let toggleValue: Bool
-  let toggleHandled: ((Bool) -> Void)?
-  let navigationLink: (() -> UIViewController)?
-  let navigationLinkLabel: () -> String
-  let textValue: String?
-  let textHandled: ((String) -> Void)?
 }

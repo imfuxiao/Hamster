@@ -9,7 +9,8 @@ import ProgressHUD
 import UIKit
 
 class RimeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-  init(appSettings: HamsterAppSettings, rimeContext: RimeContext) {
+  init(parentController: SettingsViewController, appSettings: HamsterAppSettings, rimeContext: RimeContext) {
+    self.parentController = parentController
     self.appSettings = appSettings
     self.rimeContext = rimeContext
     self.rimeViewModel = RimeViewModel(appSettings: appSettings, rimeContext: rimeContext)
@@ -21,6 +22,7 @@ class RimeViewController: UIViewController, UITableViewDelegate, UITableViewData
     fatalError("init(coder:) has not been implemented")
   }
 
+  unowned let parentController: SettingsViewController
   let appSettings: HamsterAppSettings
   let rimeContext: RimeContext
   let rimeViewModel: RimeViewModel
@@ -49,6 +51,12 @@ extension RimeViewController {
       tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
     ])
+  }
+
+  override func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    parentController.restSettingSections()
   }
 }
 
@@ -91,15 +99,15 @@ extension RimeViewController {
         }
       )
     case 3:
-      return ButtonTableViewCell(text: "重新部署", buttonAction: { [unowned self] in
+      return ButtonTableViewCell(text: "重新部署", favoriteButton: .rimeDeploy, buttonAction: { [unowned self] in
         rimeViewModel.rimeDeploy()
       })
     case 4:
-      return ButtonTableViewCell(text: "RIME同步", buttonAction: { [unowned self] in
+      return ButtonTableViewCell(text: "RIME同步", favoriteButton: .rimeSync, buttonAction: { [unowned self] in
         rimeViewModel.rimeSync()
       })
     case 5:
-      return ButtonTableViewCell(text: "RIME重置", textTintColor: .systemRed, buttonAction: { [unowned self] in
+      return ButtonTableViewCell(text: "RIME重置", textTintColor: .systemRed, favoriteButton: .rimeRest, buttonAction: { [unowned self] in
         rimeViewModel.rimeRest()
       })
     default:

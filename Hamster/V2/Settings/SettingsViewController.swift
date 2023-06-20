@@ -5,7 +5,7 @@
 //  Created by morse on 2023/6/12.
 //
 
-import SwiftUI
+import ProgressHUD
 import UIKit
 
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -13,6 +13,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     self.appSettings = appSettings
     self.rimeContext = rimeContext
     self.settingViewModel = SettingViewModel(appSettings: appSettings)
+    self.rimeViewModel = RimeViewModel(appSettings: appSettings, rimeContext: rimeContext)
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -24,12 +25,22 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
   private var appSettings: HamsterAppSettings
   private var rimeContext: RimeContext
   private let settingViewModel: SettingViewModel
+  let rimeViewModel: RimeViewModel
 
-  lazy var settingSections: [SettingSection] = Self.settingSections(parentController: self, appSettings: appSettings, rimeContext: rimeContext)
+  lazy var settingSections: [SettingSectionModel] = {
+    // TODO:
+    // 偏好设置，可动态添加快捷
+    let preferenceSettings: [SettingSectionModel] = Self.preferenceSettingSections(controller: self)
+
+    return preferenceSettings + Self.settingSections(parentController: self, appSettings: appSettings, rimeContext: rimeContext)
+  }()
 
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 }
@@ -44,10 +55,7 @@ extension SettingsViewController {
 //    navigationController?.navigationBar.prefersLargeTitles = true
 
     let tableView = tableView
-    tableView.delegate = self
-    tableView.dataSource = self
     view.addSubview(tableView)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       tableView.topAnchor.constraint(equalTo: view.topAnchor),
       tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -83,6 +91,21 @@ extension SettingsViewController {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let model = settingSections[indexPath.section].items[indexPath.row]
+    if model.type == .button {
+      return ButtonTableViewCell(
+        text: model.text,
+        textTintColor: model.textTintColor,
+        favoriteButton: model.favoriteButton,
+        favoriteButtonHandler: { [unowned self] in
+          self.restSettingSections()
+        },
+        buttonAction: {
+          model.buttonAction?()
+        }
+      )
+    }
+
     let cell = self.tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
     if let cell = cell as? SettingTableViewCell {
       let model = settingSections[indexPath.section].items[indexPath.row]
@@ -98,12 +121,62 @@ extension SettingsViewController {
     }
     tableView.deselectRow(at: indexPath, animated: false)
   }
+
+  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    if section == 0, !UserDefaults.standard.getFavoriteButtons().isEmpty {
+      return "快捷区域"
+    }
+    return nil
+  }
+
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    if section == 0, !UserDefaults.standard.getFavoriteButtons().isEmpty {
+      return Self.favoriteRemark
+    }
+    return nil
+  }
 }
 
-// MARK: 初始设置页面数据配置
+// MARK: custom method
 
 extension SettingsViewController {
-  static func settingSections(parentController: SettingsViewController, appSettings: HamsterAppSettings, rimeContext: RimeContext) -> [SettingSection] {
+  func restSettingSections() {
+    settingSections = Self.preferenceSettingSections(controller: self) + Self.settingSections(parentController: self, appSettings: appSettings, rimeContext: rimeContext)
+    tableView.reloadData()
+  }
+
+  // 快捷设置
+  static func preferenceSettingSections(controller: SettingsViewController) -> [SettingSectionModel] {
+    let favoriteButtons = UserDefaults.standard.getFavoriteButtons()
+    if favoriteButtons.isEmpty { return [] }
+
+    // TODO: 对收藏的button做处理
+    let sectionItems: [SettingItemModel] = favoriteButtons.map {
+      switch $0 {
+      case .appBackup:
+        return SettingItemModel(text: "应用备份", type: .button, favoriteButton: $0, buttonAction: {
+          controller.settingViewModel.backup()
+        })
+      case .rimeDeploy:
+        return SettingItemModel(text: "重新部署", type: .button, favoriteButton: $0, buttonAction: {
+          controller.rimeViewModel.rimeDeploy()
+        })
+      case .rimeSync:
+        return SettingItemModel(text: "RIME同步", type: .button, favoriteButton: $0, buttonAction: {
+          controller.rimeViewModel.rimeSync()
+        })
+      case .rimeRest:
+        return SettingItemModel(text: "RIME重置", textTintColor: .systemRed, type: .button, favoriteButton: $0, buttonAction: {
+          controller.rimeViewModel.rimeRest()
+        })
+      }
+    }
+    return [
+      .init(title: "快捷区域", footer: Self.favoriteRemark, items: sectionItems),
+    ]
+  }
+
+  static func settingSections(parentController: SettingsViewController, appSettings: HamsterAppSettings, rimeContext: RimeContext) -> [SettingSectionModel] {
     [
       .init(title: "输入相关", items: [
         .init(
@@ -176,7 +249,7 @@ extension SettingsViewController {
           text: "软件备份",
           accessoryType: .disclosureIndicator,
           navigationLink: {
-            BackupViewController(appSettings: appSettings)
+            BackupViewController(parentController: parentController, appSettings: appSettings)
           }
         ),
       ]),
@@ -186,7 +259,7 @@ extension SettingsViewController {
           text: "RIME",
           accessoryType: .disclosureIndicator,
           navigationLink: {
-            RimeViewController(appSettings: appSettings, rimeContext: rimeContext)
+            RimeViewController(parentController: parentController, appSettings: appSettings, rimeContext: rimeContext)
           }
         ),
       ]),
@@ -202,4 +275,10 @@ extension SettingsViewController {
       ]),
     ]
   }
+}
+
+extension SettingsViewController {
+  static let favoriteRemark = """
+  长按设置按钮可添加或移除至快捷区域；
+  """
 }

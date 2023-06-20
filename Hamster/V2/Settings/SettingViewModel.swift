@@ -21,6 +21,20 @@ class SettingViewModel {
 }
 
 extension SettingViewModel {
+  func backup() {
+    ProgressHUD.show("软件备份中，请等待……", interaction: false)
+    DispatchQueue.global().async { [unowned self] in
+      do {
+        try FileManager.default.hamsterBackup(appSettings: appSettings)
+      } catch {
+        Logger.shared.log.error("App backup error: \(error.localizedDescription)")
+        ProgressHUD.showError("备份异常", interaction: false, delay: 1.5)
+        return
+      }
+      ProgressHUD.showSuccess("备份成功", interaction: false, delay: 1.5)
+    }
+  }
+  
   // App启动加载数据
   func appLoadData() {
     appSettings.$enableAppleCloud
