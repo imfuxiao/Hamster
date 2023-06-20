@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
   var window: UIWindow?
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -22,11 +22,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     if !appSettings.enableNewUI {
       let settingsViewController = SettingsViewController(appSettings: appSettings, rimeContext: rimeContext)
       window.rootViewController = HamsterNavigationViewController(rootViewController: settingsViewController)
+      self.window = window
+      window.makeKeyAndVisible()
+
+      // 通过快捷方式打开
+      if let shortItem = connectionOptions.shortcutItem, let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle) {
+        switch shortItemType {
+        case .rimeDeploy:
+          settingsViewController.rimeViewModel.rimeDeploy()
+        case .rimeSync:
+          settingsViewController.rimeViewModel.rimeSync()
+        case .rimeReset:
+          settingsViewController.rimeViewModel.rimeRest()
+        }
+      }
     } else {
       window.rootViewController = UIHostingController(rootView: MainTab())
+      self.window = window
+      window.makeKeyAndVisible()
     }
-    self.window = window
-    window.makeKeyAndVisible()
   }
 
   // 通过URL打开App
@@ -60,6 +74,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
   }
 
+  // 程序已启动下，通过 quick action 打开
+  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    guard let window = window else { return }
+    guard let rootController = window.rootViewController else { return }
+    guard let navigationController = rootController as? HamsterNavigationViewController else { return }
+
+    navigationController.popToRootViewController(animated: false)
+
+    guard let settingsViewController = navigationController.topViewController as? SettingsViewController else { return }
+
+    // 通过快捷方式打开
+    if let shortItemType = ShortcutItemType(rawValue: shortcutItem.localizedTitle) {
+      switch shortItemType {
+      case .rimeDeploy:
+        settingsViewController.rimeViewModel.rimeDeploy()
+      case .rimeSync:
+        settingsViewController.rimeViewModel.rimeSync()
+      case .rimeReset:
+        settingsViewController.rimeViewModel.rimeRest()
+      }
+    }
+  }
+
   func sceneDidDisconnect(_ scene: UIScene) {
     // Called as the scene is being released by the system.
     // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -73,8 +110,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneWillResignActive(_ scene: UIScene) {
-    // Called when the scene will move from an active state to an inactive state.
-    // This may occur due to temporary interruptions (ex. an incoming phone call).
+    let application = UIApplication.shared
+    let rimeDeploy = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeDeploy.rawValue)
+    let rimeSync = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeSync.rawValue)
+    let rimeReset = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeReset.rawValue)
+    application.shortcutItems = [rimeDeploy, rimeSync, rimeReset]
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {
@@ -87,4 +127,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
   }
+}
+
+enum ShortcutItemType: String {
+  case rimeDeploy = "RIME重新部署"
+  case rimeSync = "RIME同步"
+  case rimeReset = "RIME重置"
 }
