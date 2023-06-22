@@ -110,6 +110,6 @@ struct NumberNineGridSettingView: View {
 struct NumberNineGridSettingView_Previews: PreviewProvider {
   static var previews: some View {
     NumberNineGridSettingView()
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }

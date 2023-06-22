@@ -194,6 +194,6 @@ struct CellView_Previews: PreviewProvider {
         )
       )
     }
-    .environmentObject(RimeContext())
+    .environmentObject(RimeContext.shared)
   }
 }

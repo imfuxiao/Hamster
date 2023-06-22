@@ -100,7 +100,7 @@ extension View {
 
 struct OneHandedView_Previews: PreviewProvider {
   static var appSettings: HamsterAppSettings {
-    let appSettings = HamsterAppSettings()
+    let appSettings = HamsterAppSettings.shared
     appSettings.enableKeyboardOneHandMode = true
     appSettings.keyboardOneHandOnRight = true
     return appSettings

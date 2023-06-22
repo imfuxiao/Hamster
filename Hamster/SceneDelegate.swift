@@ -16,8 +16,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    let appSettings = HamsterAppSettings()
-    let rimeContext = RimeContext()
+    let appSettings = HamsterAppSettings.shared
+    let rimeContext = RimeContext.shared
     let window = UIWindow(windowScene: windowScene)
     if !appSettings.enableNewUI {
       let settingsViewController = SettingsViewController(appSettings: appSettings, rimeContext: rimeContext)
@@ -46,8 +46,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
   // 通过URL打开App
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    let appSettings = HamsterAppSettings()
-    let rimeContext = RimeContext()
+    let appSettings = HamsterAppSettings.shared
+    let rimeContext = RimeContext.shared
     let window = UIWindow(windowScene: windowScene)
     if !appSettings.enableNewUI {
       let settingsViewController = SettingsViewController(appSettings: appSettings, rimeContext: rimeContext)
@@ -113,8 +113,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     let application = UIApplication.shared
     let rimeDeploy = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeDeploy.rawValue)
     let rimeSync = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeSync.rawValue)
-    let rimeReset = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeReset.rawValue)
-    application.shortcutItems = [rimeDeploy, rimeSync, rimeReset]
+//    let rimeReset = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeReset.rawValue)
+    application.shortcutItems = [rimeDeploy, rimeSync]
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {

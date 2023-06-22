@@ -280,6 +280,6 @@ struct RimeUseSquirrelSettingsView: View {
 struct InputEditorView_Previews: PreviewProvider {
   static var previews: some View {
     InputEditorView()
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }

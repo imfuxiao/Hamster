@@ -157,6 +157,6 @@ struct RIMEView: View {
 
 struct RIMEView_Previews: PreviewProvider {
   static var previews: some View {
-    RIMEView(appSettings: HamsterAppSettings(), rimeContext: RimeContext())
+    RIMEView(appSettings: HamsterAppSettings.shared, rimeContext: RimeContext.shared)
   }
 }

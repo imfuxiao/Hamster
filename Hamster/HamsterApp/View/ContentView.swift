@@ -89,7 +89,7 @@ struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
     ContentView()
       .previewDevice("iPhone 13 mini")
-      .environmentObject(HamsterAppSettings())
-      .environmentObject(RimeContext())
+      .environmentObject(HamsterAppSettings.shared)
+      .environmentObject(RimeContext.shared)
   }
 }

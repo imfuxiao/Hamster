@@ -14,8 +14,8 @@ import SwiftyBeaver
 import ZIPFoundation
 
 struct MainTab: View {
-  var appSettings = HamsterAppSettings()
-  var rimeContext = RimeContext()
+  var appSettings = HamsterAppSettings.shared
+  var rimeContext = RimeContext.shared
   @State var cancelable = Set<AnyCancellable>()
   @State var launchScreenState = true
   @State var showError: Bool = false

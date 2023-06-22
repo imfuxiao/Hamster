@@ -14,6 +14,6 @@ public extension HamsterKeyboardAppearance {
 
 class PreviewHamstterKeyboardAppearance: HamsterKeyboardAppearance {
   init() {
-    super.init(keyboardContext: KeyboardContext.preview, rimeContext: RimeContext(), appSettings: HamsterAppSettings())
+    super.init(keyboardContext: KeyboardContext.preview, rimeContext: RimeContext.shared, appSettings: HamsterAppSettings.shared)
   }
 }

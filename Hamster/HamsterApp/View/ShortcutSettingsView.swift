@@ -269,8 +269,8 @@ struct HamsterNavigationBarView: View {
 // struct ShortcutSettingsView_Previews: PreviewProvider {
 //  static var previews: some View {
 //    ShortcutSettingsView(
-//      appSettings: HamsterAppSettings(),
-//      rimeContext: RimeContext()
+//      appSettings: HamsterAppSettings.shared,
+//      rimeContext: RimeContext.shared
 //    )
 //    .previewDevice("iPhone 13 mini")
 //  }

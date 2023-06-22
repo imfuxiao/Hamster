@@ -164,6 +164,6 @@ struct ColorSchemaView_Previews: PreviewProvider {
 
   static var previews: some View {
     ColorSchemaView()
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }

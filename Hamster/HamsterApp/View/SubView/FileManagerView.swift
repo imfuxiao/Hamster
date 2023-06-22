@@ -181,6 +181,6 @@ extension FileManagerView {
 
 struct EditorView_Previews: PreviewProvider {
   static var previews: some View {
-    FileManagerView(appSettings: HamsterAppSettings())
+    FileManagerView(appSettings: HamsterAppSettings.shared)
   }
 }

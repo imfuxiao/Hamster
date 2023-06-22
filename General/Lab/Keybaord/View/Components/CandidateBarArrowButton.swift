@@ -75,7 +75,7 @@ struct CandidateBarArrowButton: View {
 }
 
 struct CandidateBarArrowButton_Preview: PreviewProvider {
-  static let appSettings = HamsterAppSettings()
+  static let appSettings = HamsterAppSettings.shared
   static var previews: some View {
     VStack {
       CandidateBarArrowButton(foregroundColor: .red, backgroundColor: .yellow, size: 50, imageName: appSettings.candidateBarArrowButtonImageName, showDivider: true) {}

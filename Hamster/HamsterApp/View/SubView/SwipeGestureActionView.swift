@@ -364,7 +364,7 @@ struct UpAndDownSlideInputSymbolView_Previews: PreviewProvider {
   static var defaultAction: Plist
 
   static var appSettings: HamsterAppSettings {
-    let settings = HamsterAppSettings()
+    let settings = HamsterAppSettings.shared
     settings.keyboardSwipeGestureSymbol = defaultAction.strDict
     return settings
   }

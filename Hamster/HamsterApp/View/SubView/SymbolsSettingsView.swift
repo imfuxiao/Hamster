@@ -113,7 +113,7 @@ struct SymbolsSettingsView: View {
 struct SymbolsSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     SymbolsSettingsView()
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }
 

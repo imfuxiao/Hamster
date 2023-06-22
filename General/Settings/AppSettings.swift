@@ -248,11 +248,12 @@ public enum HamsterAppSettingKeys: String {
 }
 
 public class HamsterAppSettings: ObservableObject {
+  static let shared = HamsterAppSettings()
   let infoDictionary = Bundle.main.infoDictionary ?? [:]
 
   var cancelable = Set<AnyCancellable>()
 
-  public init() {
+  private init() {
     // 选项初始值
     UserDefaults.hamsterSettingsDefault.register(defaults: [
       HamsterAppSettingKeys.appFirstLaunch.rawValue: true,

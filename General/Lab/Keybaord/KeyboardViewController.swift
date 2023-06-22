@@ -175,8 +175,8 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
   // MARK: fields
 
   private let log = Logger.shared.log
-  public var rimeContext = RimeContext()
-  public var appSettings = HamsterAppSettings()
+  public var rimeContext = RimeContext.shared
+  public var appSettings = HamsterAppSettings.shared
   public var defaultCustomFilePath = RimeContext.appGroupUserDataDefaultCustomYaml.path
   var cancellables = Set<AnyCancellable>()
   var pairsSymbols = [String: String]()

@@ -276,6 +276,8 @@
 		C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */; };
 		C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
 		C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
+		C0C490C42A445BC600A64659 /* RimeDeployIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */; };
+		C0C490C62A4460B200A64659 /* RimeSyncIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */; };
 		C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */; };
 		C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
@@ -518,6 +520,8 @@
 		C0B6E5AD2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleCustomTableViewCell.swift; sourceTree = "<group>"; };
 		C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridSymbolView.swift; sourceTree = "<group>"; };
 		C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+Preview.swift"; sourceTree = "<group>"; };
+		C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployIntent.swift; sourceTree = "<group>"; };
+		C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeSyncIntent.swift; sourceTree = "<group>"; };
 		C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSettingsView.swift; sourceTree = "<group>"; };
 		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0C7EAE529E59324008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -688,6 +692,7 @@
 		C02435722A0490220080CFB4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C0C490C12A445B8100A64659 /* Shortcuts */,
 				C03319B82A2DFCAE00CE4950 /* V2 */,
 				C02435732A0490220080CFB4 /* HamsterApp */,
 				C02435932A0490220080CFB4 /* Assets.xcassets */,
@@ -1300,6 +1305,23 @@
 			path = Preview;
 			sourceTree = "<group>";
 		};
+		C0C490C12A445B8100A64659 /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				C0C490C22A445B9E00A64659 /* Actions */,
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		C0C490C22A445B9E00A64659 /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */,
+				C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
 		C0D671B029F16D76002D0439 /* SharedSupport */ = {
 			isa = PBXGroup;
 			children = (
@@ -1723,10 +1745,12 @@
 				C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */,
 				C0A3CDD92A0A768F0068D737 /* KeyboardColorReader.swift in Sources */,
 				C02435E52A071BC50080CFB4 /* File+Backup.swift in Sources */,
+				C0C490C42A445BC600A64659 /* RimeDeployIntent.swift in Sources */,
 				C0F2A8952A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift in Sources */,
 				C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */,
 				C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */,
 				C0F2A89B2A385E6900ACCAA2 /* FileManagerViewController.swift in Sources */,
+				C0C490C62A4460B200A64659 /* RimeSyncIntent.swift in Sources */,
 				C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
 				C047BA502A3ACAD70038F83C /* OpenSourceProjectViewController.swift in Sources */,
 				C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */,

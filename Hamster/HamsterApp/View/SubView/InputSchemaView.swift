@@ -204,7 +204,7 @@ struct InputSchemaView_Previews: PreviewProvider {
 
   static var previews: some View {
     InputSchemaView()
-      .environmentObject(HamsterAppSettings())
-      .environmentObject(RimeContext())
+      .environmentObject(HamsterAppSettings.shared)
+      .environmentObject(RimeContext.shared)
   }
 }

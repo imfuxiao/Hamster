@@ -52,7 +52,7 @@ final class RimeEngineTests: XCTestCase {
   }
 
   func testColorSchema() throws {
-    let appSettings = HamsterAppSettings()
+    let appSettings = HamsterAppSettings.shared
     let schemaList = Rime.shared.colorSchema(appSettings.rimeUseSquirrelSettings)
     XCTAssertTrue(!schemaList.isEmpty)
 

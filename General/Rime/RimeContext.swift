@@ -4,6 +4,9 @@ import ProgressHUD
 import SwiftUI
 
 public class RimeContext: ObservableObject {
+  static let shared = RimeContext()
+
+  private init() {}
   /// switcher hotkeys 键值映射
   static let hotKeyCodeMapping = [
     "f4": XK_F4,
@@ -81,7 +84,7 @@ extension RimeContext {
         throw error
       }
     }
-    
+
     // 判断是否需要覆盖键盘词库文件，如果为否，则先copy键盘词库文件至应用目录
     if !appSettings.enableOverrideKeyboardUserDictFileOnRimeDeploy {
       try copyAppGroupUserDict(["^.*[.]userdb.*$", "^.*[.]txt$"])
@@ -109,11 +112,11 @@ extension RimeContext {
     ), maintenance: true, fullCheck: true)
     let handled = Rime.shared.API().syncUserData()
     Rime.shared.shutdown()
-    
+
     // 将 Sandbox 目录下方案复制到AppGroup下
     try RimeContext.syncSandboxSharedSupportDirectoryToApGroup(override: true)
     try RimeContext.syncSandboxUserDataDirectoryToApGroup(override: true)
-    
+
     return handled
   }
 }

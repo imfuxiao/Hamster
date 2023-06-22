@@ -151,6 +151,6 @@ struct FeedbackView: View {
 struct FeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     FeedbackView(hapticIntensity: .mediumImpact)
-      .environmentObject(HamsterAppSettings())
+      .environmentObject(HamsterAppSettings.shared)
   }
 }

@@ -20,7 +20,7 @@ final class HamsterAppSettingsTest: XCTestCase {
   }
 
   func testAppSettingToYaml() throws {
-    let settings = HamsterAppSettings()
+    let settings = HamsterAppSettings.shared
     let yaml = settings.yaml()
     Logger.shared.log.debug("yaml:\n" + yaml)
     if let node = try Yams.compose(yaml: yaml) {
