@@ -24,7 +24,10 @@ class HamsterStandardKeyboardLayoutProvider: StandardKeyboardLayoutProvider {
    The layout provider that is used for iPad devices.
    */
   lazy var hamsteriPadProvider = HamsteriPadKeyboardLayoutProvider(
-    inputSetProvider: inputSetProvider)
+    inputSetProvider: hamsterInputSetProvider,
+    appSettings: appSettings,
+    rimeContext: rimeContext
+  )
 
   /**
    The layout provider that is used for iPhone devices.

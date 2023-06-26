@@ -30,8 +30,12 @@ public extension NumericInputSet {
   static func chinese() -> NumericInputSet {
     NumericInputSet(rows: [
       .init(chars: "1234567890"),
-      .init(phone: "-/：；（）￥@“”", pad: "-/：；（）￥@“”"),
-      .init(phone: "。，、？！.", pad: "。，、？！.")
+      .init(
+        phone: "-/：；（）￥@“”",
+        pad: "%-～…、；：，。"),
+      .init(
+        phone: "。，、？！.",
+        pad: "%-～…、；：，。")
     ])
   }
 
@@ -48,12 +52,15 @@ public extension NumericInputSet {
 public extension SymbolicInputSet {
   static func chinese() -> SymbolicInputSet {
     SymbolicInputSet(rows: [
-      .init(phone: "【】｛｝#%^*+=", pad: "【】｛｝#%^*+="),
+      .init(
+        phone: "【】｛｝#%^*+=",
+        pad: "^_｜\\<>{},."),
       .init(
         phone: "_—\\｜～《》$&·",
-        pad: "_—\\｜～《》$&·"
-      ),
-      .init(phone: "…，。？！‘", pad: "…，。？！‘")
+        pad: "&$€*【】「」•"),
+      .init(
+        phone: "…，。？！‘",
+        pad: "。—+=·《》！？")
     ])
   }
 }
