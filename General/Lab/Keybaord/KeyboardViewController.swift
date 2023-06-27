@@ -120,6 +120,24 @@ open class HamsterKeyboardViewController: KeyboardInputViewController {
     // NotificationCenter.default.removeObserver(self)
   }
 
+  override open func viewDidLayoutSubviews() {
+    self.log.debug("viewDidLayoutSubviews()")
+
+    super.viewDidLayoutSubviews()
+
+    // 过滤掉不合理的 view width
+    guard self.view.frame.width > 0 else {
+      return
+    }
+
+    // 在 iPad 浮动键盘里强制显示 iPhone 布局
+    let deviceTypeToUse = DeviceType.current == .pad && self.keyboardContext.isKeyboardFloating ? DeviceType.phone : DeviceType.current
+    if self.keyboardContext.deviceType != deviceTypeToUse {
+      self.keyboardContext.deviceType = deviceTypeToUse
+      viewWillSetupKeyboard()
+    }
+  }
+
   override public func viewWillSetupKeyboard() {
 //    super.viewWillSetupKeyboard()
     self.log.debug("viewWillSetupKeyboard() begin")
