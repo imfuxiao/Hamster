@@ -17,13 +17,14 @@ class HamsterInputSetProvider: InputSetProvider {
     self.keyboardContext = keyboardContext
     self.appSettings = appSettings
     self.rimeContext = rimeContext
+    self.chineseProvider = ChineseInputSetProvider(keyboardContext: self.keyboardContext)
   }
 
   public let keyboardContext: KeyboardContext
   var appSettings: HamsterAppSettings
   var rimeContext: RimeContext
 
-  let chineseProvider = ChineseInputSetProvider()
+  let chineseProvider: ChineseInputSetProvider
   let englishProvider = EnglishInputSetProvider()
 
   /**

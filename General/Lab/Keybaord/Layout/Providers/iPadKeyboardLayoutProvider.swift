@@ -49,16 +49,12 @@ class HamsteriPadKeyboardLayoutProvider: iPadKeyboardLayoutProvider {
     if context.needsInputModeSwitchKey {
       result.append(.nextKeyboard)
     }
-    
+
     // 听写键
-    if context.hasDictationKey {
-      if let action = context.keyboardDictationReplacement {
-        result.append(action)
-      } else {
-        result.append(.dictation)
-      }
+    if context.hasDictationKey, let action = context.keyboardDictationReplacement {
+      result.append(action)
     }
-    
+
     // 底部根据配置, 添加自定义功能键
     if appSettings.showSpaceLeftButton {
       result.append(.custom(named: appSettings.spaceLeftButtonValue))
