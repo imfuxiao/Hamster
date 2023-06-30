@@ -141,13 +141,14 @@ class HamsterKeyboardActionHandler: StandardKeyboardActionHandler, ObservableObj
         swipeGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
       }
     default:
-      // TODO: 如果上个滑动手势还未结束，在不在进行
-      if swipeGestureHandler.isDragging {
-        return
-      }
-      if appSettings.enableKeyboardSwipeGestureSymbol {
-        swipeGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
-      }
+      break
+//      // TODO: 如果上个滑动手势还未结束，在不在进行
+//      if swipeGestureHandler.isDragging {
+//        return
+//      }
+//      if appSettings.enableKeyboardSwipeGestureSymbol {
+//        swipeGestureHandler.handleDragGesture(action: action, from: startLocation, to: currentLocation)
+//      }
     }
   }
 }

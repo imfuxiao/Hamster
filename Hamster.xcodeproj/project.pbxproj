@@ -106,6 +106,7 @@
 		C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
 		C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
 		C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */; };
+		C0689B142A48453F00E0EA99 /* SwipeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */; };
 		C06916962A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
 		C06916972A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
 		C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */; };
@@ -470,6 +471,7 @@
 		C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HamsterKeyboardButton.swift"; sourceTree = "<group>"; };
 		C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonBody.swift; sourceTree = "<group>"; };
 		C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingView.swift; sourceTree = "<group>"; };
+		C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSettingsViewController.swift; sourceTree = "<group>"; };
 		C06916952A302E60006917CA /* EmojiKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiKeyboard.swift; sourceTree = "<group>"; };
 		C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboard.swift; sourceTree = "<group>"; };
 		C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboardMenu.swift; sourceTree = "<group>"; };
@@ -812,6 +814,7 @@
 		C03319B82A2DFCAE00CE4950 /* V2 */ = {
 			isa = PBXGroup;
 			children = (
+				C0689B122A48450600E0EA99 /* Swipe */,
 				C047BA512A3B01480038F83C /* Keyboard */,
 				C0B27A5A2A39A99700EFD667 /* Components */,
 				C047BA4C2A3A95630038F83C /* About */,
@@ -1071,6 +1074,14 @@
 				C04FA93F299A674E00F8CC32 /* DefaultAction.plist */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		C0689B122A48450600E0EA99 /* Swipe */ = {
+			isa = PBXGroup;
+			children = (
+				C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */,
+			);
+			path = Swipe;
 			sourceTree = "<group>";
 		};
 		C071BECC2970108000E21FBC /* Resources */ = {
@@ -1683,6 +1694,7 @@
 				C0A3CDF42A0B54000068D737 /* CandidateBarArrowButton.swift in Sources */,
 				C0A3CDF52A0B54000068D737 /* CandidateView.swift in Sources */,
 				C01093DF2A40893400D34AC9 /* HamsterSettingModel.swift in Sources */,
+				C0689B142A48453F00E0EA99 /* SwipeSettingsViewController.swift in Sources */,
 				C0A3CDF62A0B54000068D737 /* AutocompleteToolbar.swift in Sources */,
 				C0B6E5AA2A3D915100813EF3 /* StepperTableViewCell.swift in Sources */,
 				C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */,

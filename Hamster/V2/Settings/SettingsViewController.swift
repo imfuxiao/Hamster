@@ -231,7 +231,14 @@ extension SettingsViewController {
             KeyboardFeedbackViewController(appSettings: appSettings)
           }
         ),
-        .init(icon: UIImage(systemName: "hand.draw")!, text: "按键滑动设置", accessoryType: .disclosureIndicator),
+        .init(
+          icon: UIImage(systemName: "hand.draw")!,
+          text: "按键滑动设置",
+          accessoryType: .disclosureIndicator,
+          navigationLink: {
+            SwipeSettingsViewController(appSettings: appSettings)
+          }
+        ),
       ]),
       .init(title: "同步与备份", items: [
         // TODO: 键盘界面设置包含颜色方案
