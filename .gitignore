@@ -7,7 +7,7 @@
 .plum
 .deps
 .HamsterInputSchemas
-Resources/SharedSupport/**
+Resources/SharedSupport/*.zip
 *.zip
 
 
@@ -19,3 +19,4 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 .history
+Frameworks/

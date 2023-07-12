@@ -7,323 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */; };
-		C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */; };
-		C01093D92A3FFD6200D34AC9 /* HamsterColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093D82A3FFD6200D34AC9 /* HamsterColorSchemaView.swift */; };
-		C01093DB2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093DA2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift */; };
-		C01093DF2A40893400D34AC9 /* HamsterSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */; };
-		C01093E22A408BB200D34AC9 /* YamlToModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */; };
-		C016994629FBC24C0047B49E /* File+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994529FBC24C0047B49E /* File+Zip.swift */; };
-		C016994929FBC9BB0047B49E /* HamsterHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C016994829FBC9BB0047B49E /* HamsterHUD.swift */; };
-		C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
-		C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01BA3432A15C23600D30048 /* MBProgressHUD+SwiftUI.swift */; };
-		C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */; };
-		C020AD4729B73D5400B26142 /* RimeContext+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */; };
-		C02415282A25DC34004E282B /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415272A25DC34004E282B /* Symbol.swift */; };
-		C024152A2A25E831004E282B /* SymbolCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415292A25E831004E282B /* SymbolCategory.swift */; };
-		C024152C2A25EB8A004E282B /* SymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152B2A25EB8A004E282B /* SymbolProvider.swift */; };
-		C024152E2A25EC2F004E282B /* FrequentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */; };
-		C02415302A25ED6D004E282B /* MostRecentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */; };
-		C02435982A0490230080CFB4 /* HamsterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435742A0490220080CFB4 /* HamsterApp.swift */; };
-		C02435992A0490230080CFB4 /* TextEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435772A0490220080CFB4 /* TextEditView.swift */; };
-		C024359A2A0490230080CFB4 /* SectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435782A0490220080CFB4 /* SectionView.swift */; };
-		C024359B2A0490230080CFB4 /* DotsLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435792A0490220080CFB4 /* DotsLoadingView.swift */; };
-		C024359C2A0490230080CFB4 /* CircleActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357A2A0490220080CFB4 /* CircleActivityView.swift */; };
-		C024359D2A0490230080CFB4 /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357B2A0490220080CFB4 /* PlusButton.swift */; };
-		C024359E2A0490230080CFB4 /* FinderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357C2A0490220080CFB4 /* FinderView.swift */; };
-		C024359F2A0490230080CFB4 /* LongButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357D2A0490220080CFB4 /* LongButton.swift */; };
-		C02435A02A0490230080CFB4 /* HamsteriCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357E2A0490220080CFB4 /* HamsteriCloudView.swift */; };
-		C02435A12A0490230080CFB4 /* LoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024357F2A0490220080CFB4 /* LoaderView.swift */; };
-		C02435A22A0490230080CFB4 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435802A0490220080CFB4 /* SheetView.swift */; };
-		C02435A32A0490230080CFB4 /* TextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435812A0490220080CFB4 /* TextFieldStyle.swift */; };
-		C02435A42A0490230080CFB4 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435832A0490220080CFB4 /* AboutView.swift */; };
-		C02435A62A0490230080CFB4 /* AdvancedSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435852A0490220080CFB4 /* AdvancedSettingsView.swift */; };
-		C02435A72A0490230080CFB4 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435862A0490220080CFB4 /* CellView.swift */; };
-		C02435A82A0490230080CFB4 /* SyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435872A0490220080CFB4 /* SyncView.swift */; };
-		C02435A92A0490230080CFB4 /* SwipeGestureActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435882A0490220080CFB4 /* SwipeGestureActionView.swift */; };
-		C02435AA2A0490230080CFB4 /* InputEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435892A0490220080CFB4 /* InputEditorView.swift */; };
-		C02435AB2A0490230080CFB4 /* InputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358A2A0490220080CFB4 /* InputSchemaView.swift */; };
-		C02435AC2A0490230080CFB4 /* ShortcutSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358B2A0490220080CFB4 /* ShortcutSettingsView.swift */; };
-		C02435AD2A0490230080CFB4 /* UploadManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358C2A0490220080CFB4 /* UploadManagerView.swift */; };
-		C02435AE2A0490230080CFB4 /* ColorSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358D2A0490220080CFB4 /* ColorSchemaView.swift */; };
-		C02435AF2A0490230080CFB4 /* FileManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358E2A0490220080CFB4 /* FileManagerView.swift */; };
-		C02435B02A0490230080CFB4 /* FeedbackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024358F2A0490220080CFB4 /* FeedbackView.swift */; };
-		C02435B22A0490230080CFB4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435912A0490220080CFB4 /* ContentView.swift */; };
-		C02435B32A0490230080CFB4 /* LaunchScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435922A0490220080CFB4 /* LaunchScreen.swift */; };
 		C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C02435B52A0490230080CFB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
-		C02435B82A04B8170080CFB4 /* MetadataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435B72A04B8170080CFB4 /* MetadataProvider.swift */; };
-		C02435BB2A05ECF00080CFB4 /* AppSettings+Yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435BA2A05ECF00080CFB4 /* AppSettings+Yaml.swift */; };
-		C02435C92A05F3270080CFB4 /* FileTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43929FB7DFD00718DAD /* FileTest.swift */; };
-		C02435CA2A05F3270080CFB4 /* RimeEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */; };
-		C02435CC2A05F3770080CFB4 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02435CB2A05F3770080CFB4 /* LibrimeKit */; };
-		C02435CE2A05F3770080CFB4 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C02435CD2A05F3770080CFB4 /* Plist */; };
-		C02435D02A05F3770080CFB4 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02435CF2A05F3770080CFB4 /* KeyboardKit */; };
-		C02435D22A05F3770080CFB4 /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C02435D12A05F3770080CFB4 /* iFilemanager */; };
-		C02435D42A05F3770080CFB4 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C02435D32A05F3770080CFB4 /* SwiftyBeaver */; };
-		C02435D62A05F3770080CFB4 /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = C02435D52A05F3770080CFB4 /* Runestone */; };
-		C02435D82A05F3770080CFB4 /* TreeSitterYAML in Frameworks */ = {isa = PBXBuildFile; productRef = C02435D72A05F3770080CFB4 /* TreeSitterYAML */; };
-		C02435DA2A05F3770080CFB4 /* TreeSitterYAMLQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C02435D92A05F3770080CFB4 /* TreeSitterYAMLQueries */; };
-		C02435DC2A05F3770080CFB4 /* TreeSitterYAMLRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C02435DB2A05F3770080CFB4 /* TreeSitterYAMLRunestone */; };
-		C02435DE2A05F3910080CFB4 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C02435DD2A05F3910080CFB4 /* ZIPFoundation */; };
-		C02435E02A05F3910080CFB4 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C02435DF2A05F3910080CFB4 /* Yams */; };
-		C02435E32A0717850080CFB4 /* HamsterAppSettingsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435E22A0717850080CFB4 /* HamsterAppSettingsTest.swift */; };
-		C02435E52A071BC50080CFB4 /* File+Backup.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02435E42A071BC50080CFB4 /* File+Backup.swift */; };
-		C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02BEA3629C25D72008487A4 /* PersistentController.swift */; };
-		C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EF429BFDB7B007B6AF5 /* iFilemanager */; };
-		C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C02C1EFB29C07C96007B6AF5 /* LibrimeKit */; };
 		C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */; };
 		C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */; };
-		C03319E02A2E056B00CE4950 /* MainTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319DF2A2E056B00CE4950 /* MainTab.swift */; };
 		C03319E22A2E1BEA00CE4950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */; };
 		C037B60C29CBD2C600B1BBDC /* DefaultAction.plist in Resources */ = {isa = PBXBuildFile; fileRef = C04FA93F299A674E00F8CC32 /* DefaultAction.plist */; };
-		C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B60F29CBD50F00B1BBDC /* Plist.swift */; };
-		C037B61529CC37AD00B1BBDC /* View+Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B61429CC37AD00B1BBDC /* View+Extend.swift */; };
 		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */; };
-		C0458A7F29B1339300262E69 /* RimeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8BD299A65AC00F8CC32 /* RimeContext.swift */; };
-		C0458A8029B1339300262E69 /* RimeContext+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */; };
-		C0458A8129B1339300262E69 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */; };
-		C047BA492A3A887B0038F83C /* RimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA482A3A887B0038F83C /* RimeViewController.swift */; };
-		C047BA4B2A3A8F2D0038F83C /* RimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA4A2A3A8F2D0038F83C /* RimeViewModel.swift */; };
-		C047BA4E2A3A95750038F83C /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA4D2A3A95750038F83C /* AboutViewController.swift */; };
-		C047BA502A3ACAD70038F83C /* OpenSourceProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA4F2A3ACAD70038F83C /* OpenSourceProjectViewController.swift */; };
-		C047BA532A3B01640038F83C /* KeyboardSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA522A3B01640038F83C /* KeyboardSettingViewController.swift */; };
-		C047BA552A3B082F0038F83C /* KeyboardFeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA542A3B082F0038F83C /* KeyboardFeedbackViewController.swift */; };
-		C047BA572A3B09680038F83C /* ColorSchemaSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA562A3B09680038F83C /* ColorSchemaSettingViewController.swift */; };
-		C047BA5B2A3B0AB50038F83C /* NumberNineGridSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA5A2A3B0AB50038F83C /* NumberNineGridSettingViewController.swift */; };
-		C047BA5D2A3B0C610038F83C /* CandidateTextBarSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA5C2A3B0C610038F83C /* CandidateTextBarSettingViewController.swift */; };
-		C047BA5F2A3B15BD0038F83C /* NavigationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C047BA5E2A3B15BD0038F83C /* NavigationTableViewCell.swift */; };
-		C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA97B299A6C8200F8CC32 /* KeyboardKit */; };
-		C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */ = {isa = PBXBuildFile; productRef = C04FA99E299A6F3900F8CC32 /* Plist */; };
-		C0519E0329F926CC00513008 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0229F926CC00513008 /* Checkbox.swift */; };
-		C0519E0729F947DB00513008 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = C0519E0629F947DB00513008 /* Yams */; };
-		C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1729C4A2C9001A8BE6 /* DotView.swift */; };
-		C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */; };
-		C05BDC562A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */; };
-		C0614AA22A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */; };
-		C0614AA32A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */; };
-		C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
-		C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */; };
-		C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */; };
-		C0689B142A48453F00E0EA99 /* SwipeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */; };
-		C06916962A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
-		C06916972A302E60006917CA /* EmojiKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916952A302E60006917CA /* EmojiKeyboard.swift */; };
-		C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */; };
-		C069169A2A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */; };
-		C069169C2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */; };
-		C069169D2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */; };
-		C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071A2442A17786B00FBE5A2 /* OneHandedView.swift */; };
-		C0734DCD2A16EF250046173E /* ProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = C0734DCC2A16EF250046173E /* ProgressHUD */; };
-		C0734DD12A16EF780046173E /* ProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0734DD02A16EF780046173E /* ProgressHUD.swift */; };
-		C0734DD52A16F9B90046173E /* RIMEViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0734DD42A16F9B90046173E /* RIMEViewModel.swift */; };
-		C074C43329FB7A4900718DAD /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43229FB7A4900718DAD /* File.swift */; };
-		C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43429FB7AD500718DAD /* File+yaml.swift */; };
-		C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */; };
-		C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
-		C0837F142A1E0A2700530A9B /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
-		C08B1A5E2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */; };
-		C08B1A5F2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */; };
-		C08B1A602A260D6C00668CA4 /* Symbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415272A25DC34004E282B /* Symbol.swift */; };
-		C08B1A612A260D6C00668CA4 /* SymbolCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02415292A25E831004E282B /* SymbolCategory.swift */; };
-		C08B1A622A260D6C00668CA4 /* SymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152B2A25EB8A004E282B /* SymbolProvider.swift */; };
-		C08B1A632A260D6C00668CA4 /* FrequentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */; };
-		C08B1A642A260D6C00668CA4 /* MostRecentSymbolProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */; };
-		C08F66602A37064000914473 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F665F2A37064000914473 /* SettingsViewController.swift */; };
-		C08F66622A3706B400914473 /* SettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F66612A3706B400914473 /* SettingModel.swift */; };
-		C08F66652A37077A00914473 /* HamsterNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F66642A37077A00914473 /* HamsterNavigationViewController.swift */; };
-		C08F66672A37089F00914473 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F66662A37089F00914473 /* SettingTableViewCell.swift */; };
-		C08F666A2A375B4100914473 /* InputSchemaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F66692A375B4100914473 /* InputSchemaViewController.swift */; };
-		C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */; };
-		C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */; };
-		C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */; };
-		C0988FB22A3BFDF600C3111D /* Keyboard+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0988FB12A3BFDF600C3111D /* Keyboard+Layout.swift */; };
-		C0988FB52A3C459F00C3111D /* NumberNineGridSettingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0988FB42A3C459F00C3111D /* NumberNineGridSettingTableView.swift */; };
-		C0988FB72A3C45F300C3111D /* NumberNineGridSymbolListTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0988FB62A3C45F300C3111D /* NumberNineGridSymbolListTableView.swift */; };
-		C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09949D72A01604A00E26BA4 /* File+iCloud.swift */; };
+		C053ADC32A5D503200EA7EEE /* HamsteriOS in Frameworks */ = {isa = PBXBuildFile; productRef = C053ADC22A5D503200EA7EEE /* HamsteriOS */; };
 		C09F6AF72A07FB3900F2EF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C09F6AF82A07FB4B00F2EF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
-		C09F6AFA2A0872E500F2EF18 /* RIMEView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6AF92A0872E500F2EF18 /* RIMEView.swift */; };
-		C09F6AFD2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6AFC2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift */; };
-		C09F6B012A08DF1900F2EF18 /* KeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C09F6B002A08DF1900F2EF18 /* KeyboardKit */; };
-		C09F6B032A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B022A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift */; };
-		C09F6B062A08F68100F2EF18 /* HamsterKeyboardGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B052A08F68100F2EF18 /* HamsterKeyboardGestures.swift */; };
-		C09F6B092A08F71000F2EF18 /* HamsterGestureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B082A08F71000F2EF18 /* HamsterGestureButton.swift */; };
-		C09F6B0C2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B0B2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift */; };
-		C09F6B102A0942C800F2EF18 /* IsScrolling in Frameworks */ = {isa = PBXBuildFile; productRef = C09F6B0F2A0942C800F2EF18 /* IsScrolling */; };
-		C09F6B122A0942E200F2EF18 /* IsScrolling in Frameworks */ = {isa = PBXBuildFile; productRef = C09F6B112A0942E200F2EF18 /* IsScrolling */; };
-		C0A3CDCD2A09C6550068D737 /* HamsterKeyboardButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DB299A65AC00F8CC32 /* HamsterKeyboardButtonContent.swift */; };
-		C0A3CDCE2A09C6790068D737 /* HamsterKeyboardButtonText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DC299A65AC00F8CC32 /* HamsterKeyboardButtonText.swift */; };
-		C0A3CDCF2A09C92A0068D737 /* KeyboardContext+KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */; };
 		C0A3CDD22A0A73C90068D737 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */; };
 		C0A3CDD32A0A73D10068D737 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */; };
-		C0A3CDD62A0A750F0068D737 /* KeyboardColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDD52A0A750F0068D737 /* KeyboardColor.swift */; };
-		C0A3CDD92A0A768F0068D737 /* KeyboardColorReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDD82A0A768F0068D737 /* KeyboardColorReader.swift */; };
-		C0A3CDDB2A0B533B0068D737 /* HamsterKeyboardActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */; };
-		C0A3CDDC2A0B533B0068D737 /* KeyboardAction+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */; };
-		C0A3CDDD2A0B533B0068D737 /* KeyboardAction+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */; };
-		C0A3CDDE2A0B533B0068D737 /* KeyboardAction+Return.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */; };
-		C0A3CDE02A0B54000068D737 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */; };
-		C0A3CDE12A0B54000068D737 /* KeyboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */; };
-		C0A3CDE22A0B54000068D737 /* HamsterKeyboardAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */; };
-		C0A3CDE32A0B54000068D737 /* HamsterKeyboardBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */; };
-		C0A3CDE42A0B54000068D737 /* HamsterActionCalloutContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */; };
-		C0A3CDE52A0B54000068D737 /* HamsterCalloutActionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */; };
-		C0A3CDE62A0B54000068D737 /* KeyboardType+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */; };
-		C0A3CDE72A0B54000068D737 /* KeyboardFeedbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */; };
-		C0A3CDE82A0B54000068D737 /* HamsterInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */; };
-		C0A3CDE92A0B54000068D737 /* ChineseInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */; };
-		C0A3CDEA2A0B54000068D737 /* iPadKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */; };
-		C0A3CDEB2A0B54000068D737 /* iPhoneKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */; };
-		C0A3CDEC2A0B54000068D737 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */; };
-		C0A3CDED2A0B54000068D737 /* KeyboardLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */; };
-		C0A3CDEE2A0B54000068D737 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
-		C0A3CDEF2A0B54000068D737 /* SwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */; };
-		C0A3CDF02A0B54000068D737 /* HamsterSwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */; };
-		C0A3CDF12A0B54000068D737 /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
-		C0A3CDF22A0B54000068D737 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0929ED507200325ED2 /* CollectionView.swift */; };
-		C0A3CDF32A0B54000068D737 /* SeparatorCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */; };
-		C0A3CDF42A0B54000068D737 /* CandidateBarArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */; };
-		C0A3CDF52A0B54000068D737 /* CandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0429ED501300325ED2 /* CandidateView.swift */; };
-		C0A3CDF62A0B54000068D737 /* AutocompleteToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */; };
-		C0A3CDFA2A0B544E0068D737 /* OSXKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */; };
-		C0A3CDFB2A0B544E0068D737 /* keysymdef.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388629EA51AD007211E7 /* keysymdef.swift */; };
-		C0A3CDFE2A0B577A0068D737 /* View+Callouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDFD2A0B577A0068D737 /* View+Callouts.swift */; };
-		C0A3CE012A0B59BC0068D737 /* InputCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CE002A0B59BC0068D737 /* InputCallout.swift */; };
-		C0A3CE042A0CB7130068D737 /* File+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CE032A0CB7130068D737 /* File+Crypto.swift */; };
 		C0A602B32A185D88000DC924 /* KeyboardInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */; };
-		C0A602B42A185D9A000DC924 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */; };
-		C0A602B52A185D9A000DC924 /* KeyboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */; };
-		C0A602B62A185D9A000DC924 /* HamsterKeyboardActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */; };
-		C0A602B72A185D9A000DC924 /* KeyboardAction+Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */; };
-		C0A602B82A185D9A000DC924 /* KeyboardAction+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */; };
-		C0A602B92A185D9A000DC924 /* KeyboardAction+Return.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */; };
-		C0A602BA2A185D9A000DC924 /* KeyboardColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDD52A0A750F0068D737 /* KeyboardColor.swift */; };
-		C0A602BB2A185D9A000DC924 /* KeyboardColorReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDD82A0A768F0068D737 /* KeyboardColorReader.swift */; };
-		C0A602BC2A185D9A000DC924 /* HamsterKeyboardAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */; };
-		C0A602BD2A185D9A000DC924 /* HamsterKeyboardBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */; };
-		C0A602BE2A185D9A000DC924 /* HamsterActionCalloutContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */; };
-		C0A602BF2A185D9B000DC924 /* HamsterCalloutActionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */; };
-		C0A602C02A185D9B000DC924 /* View+Callouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CDFD2A0B577A0068D737 /* View+Callouts.swift */; };
-		C0A602C12A185D9B000DC924 /* InputCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A3CE002A0B59BC0068D737 /* InputCallout.swift */; };
-		C0A602C22A185D9B000DC924 /* KeyboardType+Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */; };
-		C0A602C32A185D9B000DC924 /* KeyboardFeedbackHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */; };
-		C0A602C42A185D9B000DC924 /* HamsterInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */; };
-		C0A602C52A185D9B000DC924 /* ChineseInputSetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */; };
-		C0A602C62A185D9B000DC924 /* iPadKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */; };
-		C0A602C72A185D9B000DC924 /* iPhoneKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */; };
-		C0A602C82A185D9B000DC924 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */; };
-		C0A602C92A185D9B000DC924 /* KeyboardLocale.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */; };
-		C0A602CA2A185D9B000DC924 /* KKL10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */; };
-		C0A602CB2A185D9B000DC924 /* SwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */; };
-		C0A602CC2A185D9B000DC924 /* HamsterSwipeGestureHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */; };
-		C0A602CD2A185D9B000DC924 /* KeyboardImageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C099464529B28625007FD3CA /* KeyboardImageReader.swift */; };
-		C0A602D12A185D9B000DC924 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0929ED507200325ED2 /* CollectionView.swift */; };
-		C0A602D22A185D9B000DC924 /* SeparatorCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */; };
-		C0A602D32A185D9B000DC924 /* CandidateBarArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */; };
-		C0A602D42A185D9B000DC924 /* CandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00BAA0429ED501300325ED2 /* CandidateView.swift */; };
-		C0A602D52A185D9B000DC924 /* AutocompleteToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */; };
-		C0A602D62A185D9B000DC924 /* SelectInputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */; };
-		C0A602D72A185D9B000DC924 /* OneHandedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C071A2442A17786B00FBE5A2 /* OneHandedView.swift */; };
-		C0A602D82A185D9B000DC924 /* HamsterSystemKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6AFC2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift */; };
-		C0A602D92A185D9B000DC924 /* HamsterSystemKeyboardButtonRowItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B022A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift */; };
-		C0A602DA2A185D9B000DC924 /* HamsterKeyboardButtonContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DB299A65AC00F8CC32 /* HamsterKeyboardButtonContent.swift */; };
-		C0A602DB2A185D9B000DC924 /* HamsterKeyboardButtonText.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8DC299A65AC00F8CC32 /* HamsterKeyboardButtonText.swift */; };
-		C0A602DC2A185D9B000DC924 /* HamsterKeyboardGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B052A08F68100F2EF18 /* HamsterKeyboardGestures.swift */; };
-		C0A602DD2A185D9B000DC924 /* HamsterGestureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B082A08F71000F2EF18 /* HamsterGestureButton.swift */; };
-		C0A602DE2A185D9B000DC924 /* HamsterScrollViewGestureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F6B0B2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift */; };
-		C0A602DF2A185D9B000DC924 /* KeyboardContext+KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */; };
-		C0A602E02A185D9B000DC924 /* HamsterSystemKeyboardSpaceContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */; };
-		C0A602E12A185DD2000DC924 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07C1A2029CD6B6D00FD0572 /* Logger.swift */; };
-		C0A602E22A185DD2000DC924 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */; };
-		C0A602E32A185DD2000DC924 /* RimeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8BD299A65AC00F8CC32 /* RimeContext.swift */; };
-		C0A602E42A185DD2000DC924 /* RimeContext+LibrimeKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */; };
-		C0A602E52A185DD2000DC924 /* OSXKeyCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */; };
-		C0A602E62A185DD2000DC924 /* keysymdef.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB388629EA51AD007211E7 /* keysymdef.swift */; };
-		C0A602E72A185DD2000DC924 /* Rime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DEDB852A1108B300E17F84 /* Rime.swift */; };
-		C0A602E82A185DD2000DC924 /* Rime+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DEDB882A110AAE00E17F84 /* Rime+Model.swift */; };
-		C0A602E92A185E06000DC924 /* View+Extend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C037B61429CC37AD00B1BBDC /* View+Extend.swift */; };
-		C0A602EA2A185E27000DC924 /* RimeContext+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */; };
-		C0A602EB2A185E46000DC924 /* RimeContext+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */; };
-		C0A602EC2A185E6F000DC924 /* InputSchemaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */; };
-		C0A602ED2A185EE8000DC924 /* Color+Extent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C018E6DF29C343A900942E97 /* Color+Extent.swift */; };
-		C0A602EE2A185F14000DC924 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0519E0229F926CC00513008 /* Checkbox.swift */; };
-		C0A602EF2A185F14000DC924 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */; };
-		C0A602F02A185F33000DC924 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
-		C0A602F12A185F57000DC924 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = C074C43229FB7A4900718DAD /* File.swift */; };
-		C0A602F22A185F84000DC924 /* File+iCloud.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09949D72A01604A00E26BA4 /* File+iCloud.swift */; };
-		C0A602F42A185FEE000DC924 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = C0A602F32A185FEE000DC924 /* SwiftyBeaver */; };
-		C0A602F82A18611E000DC924 /* RimeContext+File+Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A602F72A18611E000DC924 /* RimeContext+File+Zip.swift */; };
-		C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1029DBC1F800F8D01E /* Runestone */; };
-		C0AB7C1429DBC27A00F8D01E /* TreeSitterYAML in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */; };
-		C0AB7C1629DBC27A00F8D01E /* TreeSitterYAMLQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */; };
-		C0AB7C1829DBC27A00F8D01E /* TreeSitterYAMLRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */; };
-		C0B19F252A0CFAD7006AAA28 /* TreeSitterLua in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F242A0CFAD7006AAA28 /* TreeSitterLua */; };
-		C0B19F272A0CFAD7006AAA28 /* TreeSitterLuaQueries in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F262A0CFAD7006AAA28 /* TreeSitterLuaQueries */; };
-		C0B19F292A0CFAD7006AAA28 /* TreeSitterLuaRunestone in Frameworks */ = {isa = PBXBuildFile; productRef = C0B19F282A0CFAD7006AAA28 /* TreeSitterLuaRunestone */; };
-		C0B19F2B2A0D997A006AAA28 /* SelectInputSchemaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */; };
-		C0B27A562A39756300EFD667 /* TextEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A552A39756300EFD667 /* TextEditViewController.swift */; };
-		C0B27A592A3988D600EFD667 /* AppleCloudViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A582A3988D600EFD667 /* AppleCloudViewController.swift */; };
-		C0B27A5C2A39A9FC00EFD667 /* ToggleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A5B2A39A9FC00EFD667 /* ToggleTableViewCell.swift */; };
-		C0B27A5E2A39AFB900EFD667 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A5D2A39AFB900EFD667 /* ButtonTableViewCell.swift */; };
-		C0B27A602A39B05400EFD667 /* TableFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A5F2A39B05400EFD667 /* TableFooterView.swift */; };
-		C0B27A622A39BFF500EFD667 /* TextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A612A39BFF500EFD667 /* TextFieldTableViewCell.swift */; };
-		C0B27A652A39EF3E00EFD667 /* BackupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A642A39EF3E00EFD667 /* BackupViewController.swift */; };
-		C0B27A672A39F49500EFD667 /* BackupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B27A662A39F49500EFD667 /* BackupViewModel.swift */; };
-		C0B6E5AA2A3D915100813EF3 /* StepperTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B6E5A92A3D915100813EF3 /* StepperTableViewCell.swift */; };
-		C0B6E5AE2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B6E5AD2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift */; };
-		C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */; };
-		C0B7E4822A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */; };
-		C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */; };
-		C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
-		C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */; };
-		C0C490C42A445BC600A64659 /* RimeDeployIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */; };
-		C0C490C62A4460B200A64659 /* RimeSyncIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */; };
-		C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */; };
 		C0C7EAE629E59B8C008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAF329E5A397008D4EE1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAE429E5931E008D4EE1 /* Localizable.strings */; };
-		C0C9F03C29CF43F9004B2C33 /* LibrimeKit in Frameworks */ = {isa = PBXBuildFile; productRef = C0C9F03B29CF43F9004B2C33 /* LibrimeKit */; };
-		C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */; };
-		C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */; };
-		C0CEA4E52A19A8510071ECEB /* KeyboardType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */; };
 		C0D672B429F1E0E7002D0439 /* SharedSupport.zip in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D672B329F1E066002D0439 /* SharedSupport.zip */; };
-		C0D672B729F1EFF3002D0439 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = C0D672B629F1EFF3002D0439 /* ZIPFoundation */; };
-		C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */; };
-		C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DA63F829F7B87500F91C74 /* BlackView.swift */; };
-		C0DDB5352A3EE4C700E1A7C4 /* UIRadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DDB5342A3EE4C700E1A7C4 /* UIRadioButton.swift */; };
-		C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DEDB852A1108B300E17F84 /* Rime.swift */; };
-		C0DEDB892A110AAE00E17F84 /* Rime+Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DEDB882A110AAE00E17F84 /* Rime+Model.swift */; };
-		C0DEDB8C2A12596F00E17F84 /* BackupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DEDB8B2A12596F00E17F84 /* BackupView.swift */; };
-		C0EE5BFA2A3D3EFF00BFDB89 /* SymbolSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EE5BF92A3D3EFF00BFDB89 /* SymbolSettingsViewController.swift */; };
-		C0EE5BFC2A3D412400BFDB89 /* SymbolEditTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EE5BFB2A3D412400BFDB89 /* SymbolEditTableView.swift */; };
-		C0EE5BFE2A3D484100BFDB89 /* SymbolTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EE5BFD2A3D484100BFDB89 /* SymbolTableView.swift */; };
-		C0EE5C002A3D7C5D00BFDB89 /* SymbolKeyboardSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EE5BFF2A3D7C5D00BFDB89 /* SymbolKeyboardSettingViewController.swift */; };
-		C0F2A88E2A38108B00ACCAA2 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A88D2A38108B00ACCAA2 /* SettingViewModel.swift */; };
-		C0F2A8902A38156E00ACCAA2 /* InputSchemaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A88F2A38156E00ACCAA2 /* InputSchemaViewModel.swift */; };
-		C0F2A8932A383AF300ACCAA2 /* UploadInputSchemaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8922A383AF300ACCAA2 /* UploadInputSchemaViewController.swift */; };
-		C0F2A8952A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8942A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift */; };
-		C0F2A8982A383CB900ACCAA2 /* UIDevice+Extention.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8972A383CB900ACCAA2 /* UIDevice+Extention.swift */; };
-		C0F2A89B2A385E6900ACCAA2 /* FileManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A89A2A385E6900ACCAA2 /* FileManagerViewController.swift */; };
-		C0F2A89F2A3871DC00ACCAA2 /* FileManagerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A89E2A3871DC00ACCAA2 /* FileManagerViewModel.swift */; };
-		C0F2A8A12A38A67A00ACCAA2 /* FinderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A02A38A67A00ACCAA2 /* FinderViewModel.swift */; };
-		C0F2A8A32A38A94F00ACCAA2 /* FinderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A22A38A94F00ACCAA2 /* FinderTableView.swift */; };
-		C0F2A8A52A38A9D800ACCAA2 /* FinderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F2A8A42A38A9D800ACCAA2 /* FinderViewCell.swift */; };
-		C0F5B4892A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */; };
-		C0F5B48A2A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */; };
-		C0F5B48D2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */; };
-		C0F5B48E2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C02435C42A05F2E20080CFB4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C03E801D296D4F4C0083E53A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C03E8024296D4F4C0083E53A;
-			remoteInfo = Hamster;
-		};
 		C03E8041296D53650083E53A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C03E801D296D4F4C0083E53A /* Project object */;
@@ -360,171 +64,26 @@
 
 /* Begin PBXFileReference section */
 		C000CA9D296EA72600EC5323 /* KeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputViewController.swift; sourceTree = "<group>"; };
-		C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Permission.swift"; sourceTree = "<group>"; };
-		C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Bundle.swift"; sourceTree = "<group>"; };
-		C00BAA0429ED501300325ED2 /* CandidateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CandidateView.swift; sourceTree = "<group>"; };
-		C00BAA0929ED507200325ED2 /* CollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
 		C00E006B2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C01093D82A3FFD6200D34AC9 /* HamsterColorSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterColorSchemaView.swift; sourceTree = "<group>"; };
-		C01093DA2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaTableViewCell.swift; sourceTree = "<group>"; };
-		C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSettingModel.swift; sourceTree = "<group>"; };
-		C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YamlToModelTest.swift; sourceTree = "<group>"; };
-		C016994529FBC24C0047B49E /* File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Zip.swift"; sourceTree = "<group>"; };
-		C016994829FBC9BB0047B49E /* HamsterHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHUD.swift; sourceTree = "<group>"; };
-		C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackHandler.swift; sourceTree = "<group>"; };
-		C018E6DF29C343A900942E97 /* Color+Extent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extent.swift"; sourceTree = "<group>"; };
-		C01BA3432A15C23600D30048 /* MBProgressHUD+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+SwiftUI.swift"; sourceTree = "<group>"; };
-		C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+File.swift"; sourceTree = "<group>"; };
-		C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+LibrimeKit.swift"; sourceTree = "<group>"; };
-		C02415272A25DC34004E282B /* Symbol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbol.swift; sourceTree = "<group>"; };
-		C02415292A25E831004E282B /* SymbolCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolCategory.swift; sourceTree = "<group>"; };
-		C024152B2A25EB8A004E282B /* SymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolProvider.swift; sourceTree = "<group>"; };
-		C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrequentSymbolProvider.swift; sourceTree = "<group>"; };
-		C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostRecentSymbolProvider.swift; sourceTree = "<group>"; };
-		C02435742A0490220080CFB4 /* HamsterApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterApp.swift; sourceTree = "<group>"; };
-		C02435772A0490220080CFB4 /* TextEditView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditView.swift; sourceTree = "<group>"; };
-		C02435782A0490220080CFB4 /* SectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionView.swift; sourceTree = "<group>"; };
-		C02435792A0490220080CFB4 /* DotsLoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DotsLoadingView.swift; sourceTree = "<group>"; };
-		C024357A2A0490220080CFB4 /* CircleActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleActivityView.swift; sourceTree = "<group>"; };
-		C024357B2A0490220080CFB4 /* PlusButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
-		C024357C2A0490220080CFB4 /* FinderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinderView.swift; sourceTree = "<group>"; };
-		C024357D2A0490220080CFB4 /* LongButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LongButton.swift; sourceTree = "<group>"; };
-		C024357E2A0490220080CFB4 /* HamsteriCloudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsteriCloudView.swift; sourceTree = "<group>"; };
-		C024357F2A0490220080CFB4 /* LoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoaderView.swift; sourceTree = "<group>"; };
-		C02435802A0490220080CFB4 /* SheetView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
-		C02435812A0490220080CFB4 /* TextFieldStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldStyle.swift; sourceTree = "<group>"; };
-		C02435832A0490220080CFB4 /* AboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
-		C02435852A0490220080CFB4 /* AdvancedSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsView.swift; sourceTree = "<group>"; };
-		C02435862A0490220080CFB4 /* CellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
-		C02435872A0490220080CFB4 /* SyncView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncView.swift; sourceTree = "<group>"; };
-		C02435882A0490220080CFB4 /* SwipeGestureActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureActionView.swift; sourceTree = "<group>"; };
-		C02435892A0490220080CFB4 /* InputEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputEditorView.swift; sourceTree = "<group>"; };
-		C024358A2A0490220080CFB4 /* InputSchemaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputSchemaView.swift; sourceTree = "<group>"; };
-		C024358B2A0490220080CFB4 /* ShortcutSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShortcutSettingsView.swift; sourceTree = "<group>"; };
-		C024358C2A0490220080CFB4 /* UploadManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadManagerView.swift; sourceTree = "<group>"; };
-		C024358D2A0490220080CFB4 /* ColorSchemaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSchemaView.swift; sourceTree = "<group>"; };
-		C024358E2A0490220080CFB4 /* FileManagerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManagerView.swift; sourceTree = "<group>"; };
-		C024358F2A0490220080CFB4 /* FeedbackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackView.swift; sourceTree = "<group>"; };
-		C02435912A0490220080CFB4 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		C02435922A0490220080CFB4 /* LaunchScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		C02435932A0490220080CFB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C02435952A0490220080CFB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C02435962A0490220080CFB4 /* Hamster.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Hamster.entitlements; sourceTree = "<group>"; };
 		C02435972A0490220080CFB4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C02435B72A04B8170080CFB4 /* MetadataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataProvider.swift; sourceTree = "<group>"; };
-		C02435BA2A05ECF00080CFB4 /* AppSettings+Yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+Yaml.swift"; sourceTree = "<group>"; };
-		C02435C02A05F2E20080CFB4 /* HamsterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HamsterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C02435E22A0717850080CFB4 /* HamsterAppSettingsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterAppSettingsTest.swift; sourceTree = "<group>"; };
-		C02435E42A071BC50080CFB4 /* File+Backup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Backup.swift"; sourceTree = "<group>"; };
-		C02BEA3629C25D72008487A4 /* PersistentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentController.swift; sourceTree = "<group>"; };
-		C02C1EFA29C07C85007B6AF5 /* LibrimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = LibrimeKit; path = Packages/LibrimeKit; sourceTree = "<group>"; };
 		C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegete.swift; sourceTree = "<group>"; };
 		C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C03319DF2A2E056B00CE4950 /* MainTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTab.swift; sourceTree = "<group>"; };
 		C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
-		C037B60F29CBD50F00B1BBDC /* Plist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plist.swift; sourceTree = "<group>"; };
-		C037B61429CC37AD00B1BBDC /* View+Extend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extend.swift"; sourceTree = "<group>"; };
 		C03E8025296D4F4C0083E53A /* Hamster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hamster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E803C296D53650083E53A /* HamsterKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HamsterKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8040296D53650083E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C047BA482A3A887B0038F83C /* RimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeViewController.swift; sourceTree = "<group>"; };
-		C047BA4A2A3A8F2D0038F83C /* RimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeViewModel.swift; sourceTree = "<group>"; };
-		C047BA4D2A3A95750038F83C /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
-		C047BA4F2A3ACAD70038F83C /* OpenSourceProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenSourceProjectViewController.swift; sourceTree = "<group>"; };
-		C047BA522A3B01640038F83C /* KeyboardSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardSettingViewController.swift; sourceTree = "<group>"; };
-		C047BA542A3B082F0038F83C /* KeyboardFeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardFeedbackViewController.swift; sourceTree = "<group>"; };
-		C047BA562A3B09680038F83C /* ColorSchemaSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSchemaSettingViewController.swift; sourceTree = "<group>"; };
-		C047BA5A2A3B0AB50038F83C /* NumberNineGridSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingViewController.swift; sourceTree = "<group>"; };
-		C047BA5C2A3B0C610038F83C /* CandidateTextBarSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateTextBarSettingViewController.swift; sourceTree = "<group>"; };
-		C047BA5E2A3B15BD0038F83C /* NavigationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTableViewCell.swift; sourceTree = "<group>"; };
-		C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
-		C04FA8BD299A65AC00F8CC32 /* RimeContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RimeContext.swift; sourceTree = "<group>"; };
-		C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardBehavior.swift; sourceTree = "<group>"; };
-		C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardAppearance.swift; sourceTree = "<group>"; };
-		C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPhoneKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
-		C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterStandardKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
-		C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardLocale.swift; sourceTree = "<group>"; };
-		C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeGestureHandler.swift; sourceTree = "<group>"; };
-		C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
-		C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAction+Buttons.swift"; sourceTree = "<group>"; };
-		C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAction+Actions.swift"; sourceTree = "<group>"; };
-		C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardActionHandler.swift; sourceTree = "<group>"; };
-		C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardAction+Return.swift"; sourceTree = "<group>"; };
-		C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteToolbar.swift; sourceTree = "<group>"; };
-		C04FA8DB299A65AC00F8CC32 /* HamsterKeyboardButtonContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonContent.swift; sourceTree = "<group>"; };
-		C04FA8DC299A65AC00F8CC32 /* HamsterKeyboardButtonText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonText.swift; sourceTree = "<group>"; };
-		C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardConstants.swift; sourceTree = "<group>"; };
-		C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardType+Button.swift"; sourceTree = "<group>"; };
-		C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyboardContext+KeyboardType.swift"; sourceTree = "<group>"; };
-		C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KKL10n.swift; sourceTree = "<group>"; };
-		C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HamsterActionCalloutContext.swift; sourceTree = "<group>"; };
-		C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		C04FA93F299A674E00F8CC32 /* DefaultAction.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultAction.plist; sourceTree = "<group>"; };
-		C0519E0229F926CC00513008 /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
-		C0532D1729C4A2C9001A8BE6 /* DotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotView.swift; sourceTree = "<group>"; };
-		C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DotsActivityView.swift; sourceTree = "<group>"; };
-		C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateBarArrowButton.swift; sourceTree = "<group>"; };
-		C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChineseInputSetProvider.swift; sourceTree = "<group>"; };
-		C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSwipeGestureHandler.swift; sourceTree = "<group>"; };
-		C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSystemKeyboardSpaceContent.swift; sourceTree = "<group>"; };
-		C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+HamsterKeyboardButton.swift"; sourceTree = "<group>"; };
-		C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardButtonBody.swift; sourceTree = "<group>"; };
-		C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingView.swift; sourceTree = "<group>"; };
-		C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwipeSettingsViewController.swift; sourceTree = "<group>"; };
-		C06916952A302E60006917CA /* EmojiKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiKeyboard.swift; sourceTree = "<group>"; };
-		C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboard.swift; sourceTree = "<group>"; };
-		C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCategoryKeyboardMenu.swift; sourceTree = "<group>"; };
-		C071A2442A17786B00FBE5A2 /* OneHandedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneHandedView.swift; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
-		C0734DD02A16EF780046173E /* ProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUD.swift; sourceTree = "<group>"; };
-		C0734DD42A16F9B90046173E /* RIMEViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIMEViewModel.swift; sourceTree = "<group>"; };
-		C074C43229FB7A4900718DAD /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
-		C074C43429FB7AD500718DAD /* File+yaml.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+yaml.swift"; sourceTree = "<group>"; };
-		C074C43929FB7DFD00718DAD /* FileTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTest.swift; sourceTree = "<group>"; };
-		C07C1A2029CD6B6D00FD0572 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridKeyboard.swift; sourceTree = "<group>"; };
-		C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolKeyboard.swift; sourceTree = "<group>"; };
-		C08F665F2A37064000914473 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		C08F66612A3706B400914473 /* SettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingModel.swift; sourceTree = "<group>"; };
-		C08F66642A37077A00914473 /* HamsterNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterNavigationViewController.swift; sourceTree = "<group>"; };
-		C08F66662A37089F00914473 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
-		C08F66692A375B4100914473 /* InputSchemaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaViewController.swift; sourceTree = "<group>"; };
-		C0988FB12A3BFDF600C3111D /* Keyboard+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keyboard+Layout.swift"; sourceTree = "<group>"; };
-		C0988FB42A3C459F00C3111D /* NumberNineGridSettingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSettingTableView.swift; sourceTree = "<group>"; };
-		C0988FB62A3C45F300C3111D /* NumberNineGridSymbolListTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberNineGridSymbolListTableView.swift; sourceTree = "<group>"; };
-		C099464529B28625007FD3CA /* KeyboardImageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardImageReader.swift; sourceTree = "<group>"; };
-		C09949D72A01604A00E26BA4 /* File+iCloud.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+iCloud.swift"; sourceTree = "<group>"; };
-		C09F6AF92A0872E500F2EF18 /* RIMEView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RIMEView.swift; sourceTree = "<group>"; };
-		C09F6AFC2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSystemKeyboard.swift; sourceTree = "<group>"; };
-		C09F6B022A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterSystemKeyboardButtonRowItem.swift; sourceTree = "<group>"; };
-		C09F6B052A08F68100F2EF18 /* HamsterKeyboardGestures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardGestures.swift; sourceTree = "<group>"; };
-		C09F6B082A08F71000F2EF18 /* HamsterGestureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterGestureButton.swift; sourceTree = "<group>"; };
-		C09F6B0B2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterScrollViewGestureButton.swift; sourceTree = "<group>"; };
+		C08387F12A55897700EA8082 /* RimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RimeKit; path = Packages/RimeKit; sourceTree = "<group>"; };
+		C08387F22A55899700EA8082 /* HamsterModel */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterModel; path = Packages/HamsterModel; sourceTree = "<group>"; };
+		C08387F32A5589A400EA8082 /* HamsterUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterUIKit; path = Packages/HamsterUIKit; sourceTree = "<group>"; };
+		C08387F42A5589AF00EA8082 /* HamsterKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterKit; path = Packages/HamsterKit; sourceTree = "<group>"; };
+		C08387F52A5589DF00EA8082 /* HamsteriOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsteriOS; path = Packages/HamsteriOS; sourceTree = "<group>"; };
 		C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
-		C0A3CDD52A0A750F0068D737 /* KeyboardColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardColor.swift; sourceTree = "<group>"; };
-		C0A3CDD82A0A768F0068D737 /* KeyboardColorReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardColorReader.swift; sourceTree = "<group>"; };
-		C0A3CDFD2A0B577A0068D737 /* View+Callouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Callouts.swift"; sourceTree = "<group>"; };
-		C0A3CE002A0B59BC0068D737 /* InputCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCallout.swift; sourceTree = "<group>"; };
-		C0A3CE032A0CB7130068D737 /* File+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "File+Crypto.swift"; sourceTree = "<group>"; };
-		C0A602F72A18611E000DC924 /* RimeContext+File+Zip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+File+Zip.swift"; sourceTree = "<group>"; };
-		C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInputSchemaView.swift; sourceTree = "<group>"; };
-		C0B27A552A39756300EFD667 /* TextEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextEditViewController.swift; sourceTree = "<group>"; };
-		C0B27A582A3988D600EFD667 /* AppleCloudViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleCloudViewController.swift; sourceTree = "<group>"; };
-		C0B27A5B2A39A9FC00EFD667 /* ToggleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleTableViewCell.swift; sourceTree = "<group>"; };
-		C0B27A5D2A39AFB900EFD667 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
-		C0B27A5F2A39B05400EFD667 /* TableFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableFooterView.swift; sourceTree = "<group>"; };
-		C0B27A612A39BFF500EFD667 /* TextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldTableViewCell.swift; sourceTree = "<group>"; };
-		C0B27A642A39EF3E00EFD667 /* BackupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewController.swift; sourceTree = "<group>"; };
-		C0B27A662A39F49500EFD667 /* BackupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupViewModel.swift; sourceTree = "<group>"; };
-		C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RimeContext+Color.swift"; sourceTree = "<group>"; };
-		C0B6E5A92A3D915100813EF3 /* StepperTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepperTableViewCell.swift; sourceTree = "<group>"; };
-		C0B6E5AD2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleCustomTableViewCell.swift; sourceTree = "<group>"; };
-		C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumNineGridSymbolView.swift; sourceTree = "<group>"; };
-		C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Appearance+Preview.swift"; sourceTree = "<group>"; };
-		C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployIntent.swift; sourceTree = "<group>"; };
-		C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeSyncIntent.swift; sourceTree = "<group>"; };
-		C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolsSettingsView.swift; sourceTree = "<group>"; };
 		C0C7EAE329E5931E008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0C7EAE529E59324008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C0C7EAE729E59F2C008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -533,82 +92,16 @@
 		C0C7EAF029E5A23A008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF129E5A23B008D4EE1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF229E5A23C008D4EE1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterCalloutActionProvider.swift; sourceTree = "<group>"; };
-		C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSXKeyCode.swift; sourceTree = "<group>"; };
-		C0CB388629EA51AD007211E7 /* keysymdef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = keysymdef.swift; sourceTree = "<group>"; };
-		C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
-		C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardType.swift; sourceTree = "<group>"; };
-		C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		C0C9041C2A56412200AF3F15 /* hamster.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = hamster.yaml; sourceTree = "<group>"; };
 		C0D672B329F1E066002D0439 /* SharedSupport.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = SharedSupport.zip; sourceTree = "<group>"; };
-		C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaCell.swift; sourceTree = "<group>"; };
-		C0DA63F829F7B87500F91C74 /* BlackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackView.swift; sourceTree = "<group>"; };
-		C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterInputSetProvider.swift; sourceTree = "<group>"; };
-		C0DDB5342A3EE4C700E1A7C4 /* UIRadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIRadioButton.swift; sourceTree = "<group>"; };
-		C0DEDB852A1108B300E17F84 /* Rime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rime.swift; sourceTree = "<group>"; };
-		C0DEDB882A110AAE00E17F84 /* Rime+Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rime+Model.swift"; sourceTree = "<group>"; };
-		C0DEDB8B2A12596F00E17F84 /* BackupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupView.swift; sourceTree = "<group>"; };
-		C0EE5BF92A3D3EFF00BFDB89 /* SymbolSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolSettingsViewController.swift; sourceTree = "<group>"; };
-		C0EE5BFB2A3D412400BFDB89 /* SymbolEditTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolEditTableView.swift; sourceTree = "<group>"; };
-		C0EE5BFD2A3D484100BFDB89 /* SymbolTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolTableView.swift; sourceTree = "<group>"; };
-		C0EE5BFF2A3D7C5D00BFDB89 /* SymbolKeyboardSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolKeyboardSettingViewController.swift; sourceTree = "<group>"; };
-		C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadKeyboardLayoutProvider.swift; sourceTree = "<group>"; };
-		C0F2A88D2A38108B00ACCAA2 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
-		C0F2A88F2A38156E00ACCAA2 /* InputSchemaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSchemaViewModel.swift; sourceTree = "<group>"; };
-		C0F2A8922A383AF300ACCAA2 /* UploadInputSchemaViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadInputSchemaViewController.swift; sourceTree = "<group>"; };
-		C0F2A8942A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadInputSchemaViewModel.swift; sourceTree = "<group>"; };
-		C0F2A8972A383CB900ACCAA2 /* UIDevice+Extention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extention.swift"; sourceTree = "<group>"; };
-		C0F2A89A2A385E6900ACCAA2 /* FileManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerViewController.swift; sourceTree = "<group>"; };
-		C0F2A89E2A3871DC00ACCAA2 /* FileManagerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerViewModel.swift; sourceTree = "<group>"; };
-		C0F2A8A02A38A67A00ACCAA2 /* FinderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderViewModel.swift; sourceTree = "<group>"; };
-		C0F2A8A22A38A94F00ACCAA2 /* FinderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderTableView.swift; sourceTree = "<group>"; };
-		C0F2A8A42A38A9D800ACCAA2 /* FinderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderViewCell.swift; sourceTree = "<group>"; };
-		C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHapticFeedbackEngine.swift; sourceTree = "<group>"; };
-		C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterHapticFeedback.swift; sourceTree = "<group>"; };
-		C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RimeEngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C02435BD2A05F2E20080CFB4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C092C4D02A1C4EFC000A3169 /* TreeSitterLuaQueries in Frameworks */,
-				C02435D22A05F3770080CFB4 /* iFilemanager in Frameworks */,
-				C02435DA2A05F3770080CFB4 /* TreeSitterYAMLQueries in Frameworks */,
-				C02435CC2A05F3770080CFB4 /* LibrimeKit in Frameworks */,
-				C02435D42A05F3770080CFB4 /* SwiftyBeaver in Frameworks */,
-				C02435DC2A05F3770080CFB4 /* TreeSitterYAMLRunestone in Frameworks */,
-				C092C4D22A1C4EFC000A3169 /* TreeSitterLuaRunestone in Frameworks */,
-				C02435D02A05F3770080CFB4 /* KeyboardKit in Frameworks */,
-				C092C4CE2A1C4EFC000A3169 /* TreeSitterLua in Frameworks */,
-				C02435D62A05F3770080CFB4 /* Runestone in Frameworks */,
-				C02435D82A05F3770080CFB4 /* TreeSitterYAML in Frameworks */,
-				C02435CE2A05F3770080CFB4 /* Plist in Frameworks */,
-				C02435E02A05F3910080CFB4 /* Yams in Frameworks */,
-				C02435DE2A05F3910080CFB4 /* ZIPFoundation in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C03E8022296D4F4C0083E53A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0AB7C1829DBC27A00F8D01E /* TreeSitterYAMLRunestone in Frameworks */,
-				C0734DCD2A16EF250046173E /* ProgressHUD in Frameworks */,
-				C0B19F292A0CFAD7006AAA28 /* TreeSitterLuaRunestone in Frameworks */,
-				C02C1EF529BFDB7B007B6AF5 /* iFilemanager in Frameworks */,
-				C0B19F252A0CFAD7006AAA28 /* TreeSitterLua in Frameworks */,
-				C0AB7C1629DBC27A00F8D01E /* TreeSitterYAMLQueries in Frameworks */,
-				C07C1A1C29CD4C1D00FD0572 /* SwiftyBeaver in Frameworks */,
-				C09F6B102A0942C800F2EF18 /* IsScrolling in Frameworks */,
-				C02C1EFC29C07C96007B6AF5 /* LibrimeKit in Frameworks */,
-				C0AB7C1129DBC1F800F8D01E /* Runestone in Frameworks */,
-				C0519E0729F947DB00513008 /* Yams in Frameworks */,
-				C0B19F272A0CFAD7006AAA28 /* TreeSitterLuaQueries in Frameworks */,
-				C0AB7C1429DBC27A00F8D01E /* TreeSitterYAML in Frameworks */,
-				C09F6B012A08DF1900F2EF18 /* KeyboardKit in Frameworks */,
-				C04FA99F299A6F3900F8CC32 /* Plist in Frameworks */,
-				C0D672B729F1EFF3002D0439 /* ZIPFoundation in Frameworks */,
+				C053ADC32A5D503200EA7EEE /* HamsteriOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,10 +109,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0C9F03C29CF43F9004B2C33 /* LibrimeKit in Frameworks */,
-				C0A602F42A185FEE000DC924 /* SwiftyBeaver in Frameworks */,
-				C09F6B122A0942E200F2EF18 /* IsScrolling in Frameworks */,
-				C04FA97C299A6C8200F8CC32 /* KeyboardKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,142 +122,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		C00BAA0629ED502000325ED2 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C00BAA0929ED507200325ED2 /* CollectionView.swift */,
-				C0D671AE29F14127002D0439 /* SeparatorCollectionViewFlowLayout.swift */,
-				C054BC0E29F36CF80070D7F8 /* CandidateBarArrowButton.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		C01093DC2A4088F600D34AC9 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				C0F5B48B2A41337700A427D2 /* Feedback */,
-				C01093DE2A40893400D34AC9 /* HamsterSettingModel.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		C01093E02A408BA400D34AC9 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				C01093E12A408BB200D34AC9 /* YamlToModelTest.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		C016994729FBC99F0047B49E /* HUD */ = {
-			isa = PBXGroup;
-			children = (
-				C016994829FBC9BB0047B49E /* HamsterHUD.swift */,
-				C01BA3432A15C23600D30048 /* MBProgressHUD+SwiftUI.swift */,
-				C0734DD02A16EF780046173E /* ProgressHUD.swift */,
-			);
-			path = HUD;
-			sourceTree = "<group>";
-		};
-		C018E6DC29C334F800942E97 /* Feedback */ = {
-			isa = PBXGroup;
-			children = (
-				C018E6DD29C3354C00942E97 /* KeyboardFeedbackHandler.swift */,
-				C0F5B4882A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift */,
-			);
-			path = Feedback;
-			sourceTree = "<group>";
-		};
-		C02415262A25DC10004E282B /* Symbol */ = {
-			isa = PBXGroup;
-			children = (
-				C02415272A25DC34004E282B /* Symbol.swift */,
-				C02415292A25E831004E282B /* SymbolCategory.swift */,
-				C024152B2A25EB8A004E282B /* SymbolProvider.swift */,
-				C024152D2A25EC2F004E282B /* FrequentSymbolProvider.swift */,
-				C024152F2A25ED6D004E282B /* MostRecentSymbolProvider.swift */,
-			);
-			path = Symbol;
-			sourceTree = "<group>";
-		};
 		C02435722A0490220080CFB4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
-				C0C490C12A445B8100A64659 /* Shortcuts */,
-				C03319B82A2DFCAE00CE4950 /* V2 */,
-				C02435732A0490220080CFB4 /* HamsterApp */,
-				C02435932A0490220080CFB4 /* Assets.xcassets */,
-				C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */,
-				C02435942A0490220080CFB4 /* Preview Content */,
-				C02435962A0490220080CFB4 /* Hamster.entitlements */,
-				C02435972A0490220080CFB4 /* Info.plist */,
+				C08387EE2A55467900EA8082 /* Assets */,
 				C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */,
 				C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */,
-				C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */,
 			);
 			path = Hamster;
-			sourceTree = "<group>";
-		};
-		C02435732A0490220080CFB4 /* HamsterApp */ = {
-			isa = PBXGroup;
-			children = (
-				C03319DF2A2E056B00CE4950 /* MainTab.swift */,
-				C02435742A0490220080CFB4 /* HamsterApp.swift */,
-				C02435922A0490220080CFB4 /* LaunchScreen.swift */,
-				C02435752A0490220080CFB4 /* View */,
-			);
-			path = HamsterApp;
-			sourceTree = "<group>";
-		};
-		C02435752A0490220080CFB4 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C02435912A0490220080CFB4 /* ContentView.swift */,
-				C024358B2A0490220080CFB4 /* ShortcutSettingsView.swift */,
-				C02435852A0490220080CFB4 /* AdvancedSettingsView.swift */,
-				C02435822A0490220080CFB4 /* SubView */,
-				C02435762A0490220080CFB4 /* Components */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		C02435762A0490220080CFB4 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C02435772A0490220080CFB4 /* TextEditView.swift */,
-				C02435782A0490220080CFB4 /* SectionView.swift */,
-				C02435792A0490220080CFB4 /* DotsLoadingView.swift */,
-				C024357A2A0490220080CFB4 /* CircleActivityView.swift */,
-				C024357B2A0490220080CFB4 /* PlusButton.swift */,
-				C024357C2A0490220080CFB4 /* FinderView.swift */,
-				C024357D2A0490220080CFB4 /* LongButton.swift */,
-				C024357E2A0490220080CFB4 /* HamsteriCloudView.swift */,
-				C024357F2A0490220080CFB4 /* LoaderView.swift */,
-				C02435802A0490220080CFB4 /* SheetView.swift */,
-				C02435812A0490220080CFB4 /* TextFieldStyle.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		C02435822A0490220080CFB4 /* SubView */ = {
-			isa = PBXGroup;
-			children = (
-				C02435832A0490220080CFB4 /* AboutView.swift */,
-				C02435862A0490220080CFB4 /* CellView.swift */,
-				C02435882A0490220080CFB4 /* SwipeGestureActionView.swift */,
-				C02435892A0490220080CFB4 /* InputEditorView.swift */,
-				C024358A2A0490220080CFB4 /* InputSchemaView.swift */,
-				C024358C2A0490220080CFB4 /* UploadManagerView.swift */,
-				C024358D2A0490220080CFB4 /* ColorSchemaView.swift */,
-				C024358E2A0490220080CFB4 /* FileManagerView.swift */,
-				C024358F2A0490220080CFB4 /* FeedbackView.swift */,
-				C02435872A0490220080CFB4 /* SyncView.swift */,
-				C0DEDB8B2A12596F00E17F84 /* BackupView.swift */,
-				C09F6AF92A0872E500F2EF18 /* RIMEView.swift */,
-				C0614AA92A20AC4200BA6BE2 /* NumberNineGridSettingView.swift */,
-				C0C532872A24A6BF00574D9C /* SymbolsSettingsView.swift */,
-			);
-			path = SubView;
 			sourceTree = "<group>";
 		};
 		C02435942A0490220080CFB4 /* Preview Content */ = {
@@ -779,86 +140,14 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C02435C12A05F2E20080CFB4 /* HamsterTests */ = {
-			isa = PBXGroup;
-			children = (
-				C0F858C029A2AA03003A2ED4 /* Hamster */,
-			);
-			path = HamsterTests;
-			sourceTree = "<group>";
-		};
-		C02435E12A07175D0080CFB4 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				C02435E22A0717850080CFB4 /* HamsterAppSettingsTest.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		C02BEA3829C26027008487A4 /* Persistent */ = {
-			isa = PBXGroup;
-			children = (
-				C02BEA3629C25D72008487A4 /* PersistentController.swift */,
-			);
-			path = Persistent;
-			sourceTree = "<group>";
-		};
-		C02C1EF829C07BFE007B6AF5 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				C02C1EFA29C07C85007B6AF5 /* LibrimeKit */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
-		C03319B82A2DFCAE00CE4950 /* V2 */ = {
-			isa = PBXGroup;
-			children = (
-				C0689B122A48450600E0EA99 /* Swipe */,
-				C047BA512A3B01480038F83C /* Keyboard */,
-				C0B27A5A2A39A99700EFD667 /* Components */,
-				C047BA4C2A3A95630038F83C /* About */,
-				C047BA472A3A88660038F83C /* Rime */,
-				C0B27A632A39EF2100EFD667 /* Backup */,
-				C0B27A572A3988B800EFD667 /* iCloud */,
-				C0F2A8992A385E3E00ACCAA2 /* FileManager */,
-				C0F2A8912A383AD500ACCAA2 /* UploadInputSchema */,
-				C08F66632A37074500914473 /* Navigation */,
-				C08F66682A37572C00914473 /* InputSchema */,
-				C08F665E2A37061C00914473 /* Settings */,
-			);
-			path = V2;
-			sourceTree = "<group>";
-		};
-		C0333C0A29E81BF50049FA58 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C016994729FBC99F0047B49E /* HUD */,
-				C0D672BA29F1FA32002D0439 /* Components */,
-				C037B61429CC37AD00B1BBDC /* View+Extend.swift */,
-				C018E6DF29C343A900942E97 /* Color+Extent.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		C037B60E29CBD50200B1BBDC /* Plist */ = {
-			isa = PBXGroup;
-			children = (
-				C037B60F29CBD50F00B1BBDC /* Plist.swift */,
-			);
-			path = Plist;
-			sourceTree = "<group>";
-		};
 		C03E801C296D4F4C0083E53A = {
 			isa = PBXGroup;
 			children = (
 				C02435722A0490220080CFB4 /* Hamster */,
 				C03E803D296D53650083E53A /* HamsterKeyboard */,
-				C04FA8AB299A65AB00F8CC32 /* General */,
-				C02435C12A05F2E20080CFB4 /* HamsterTests */,
+				C08387E82A55101A00EA8082 /* Packages */,
 				C071BECC2970108000E21FBC /* Resources */,
 				C03E8026296D4F4C0083E53A /* Products */,
-				C02C1EF829C07BFE007B6AF5 /* Packages */,
 				C000CA98296EA48D00EC5323 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -868,7 +157,6 @@
 			children = (
 				C03E8025296D4F4C0083E53A /* Hamster.app */,
 				C03E803C296D53650083E53A /* HamsterKeyboard.appex */,
-				C02435C02A05F2E20080CFB4 /* HamsterTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -883,205 +171,12 @@
 			path = HamsterKeyboard;
 			sourceTree = "<group>";
 		};
-		C047BA472A3A88660038F83C /* Rime */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA482A3A887B0038F83C /* RimeViewController.swift */,
-				C047BA4A2A3A8F2D0038F83C /* RimeViewModel.swift */,
-			);
-			path = Rime;
-			sourceTree = "<group>";
-		};
-		C047BA4C2A3A95630038F83C /* About */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA4D2A3A95750038F83C /* AboutViewController.swift */,
-				C047BA4F2A3ACAD70038F83C /* OpenSourceProjectViewController.swift */,
-			);
-			path = About;
-			sourceTree = "<group>";
-		};
-		C047BA512A3B01480038F83C /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				C0B6E5AC2A3D9E4200813EF3 /* Candidate */,
-				C0B6E5AB2A3D9E1A00813EF3 /* Feedback */,
-				C0EE5BF82A3D3ED800BFDB89 /* SymbolSetting */,
-				C0988FB82A3C599700C3111D /* ColorSetting */,
-				C0988FB32A3C450B00C3111D /* NumberNineGridSetting */,
-				C047BA522A3B01640038F83C /* KeyboardSettingViewController.swift */,
-			);
-			path = Keyboard;
-			sourceTree = "<group>";
-		};
-		C04FA8AB299A65AB00F8CC32 /* General */ = {
-			isa = PBXGroup;
-			children = (
-				C01093DC2A4088F600D34AC9 /* Model */,
-				C0F2A8962A383C9600ACCAA2 /* Extension */,
-				C0734DD32A16F8BA0046173E /* ViewModel */,
-				C09F6AFB2A089CBD00F2EF18 /* Lab */,
-				C074C43129FB7A3800718DAD /* File */,
-				C0333C0A29E81BF50049FA58 /* View */,
-				C07C1A1F29CD6B5E00FD0572 /* Logger */,
-				C037B60E29CBD50200B1BBDC /* Plist */,
-				C02BEA3829C26027008487A4 /* Persistent */,
-				C04FA8AC299A65AC00F8CC32 /* Settings */,
-				C04FA8BC299A65AC00F8CC32 /* Rime */,
-				C04FA8EB299A65AC00F8CC32 /* AppConstants.swift */,
-			);
-			path = General;
-			sourceTree = "<group>";
-		};
-		C04FA8AC299A65AC00F8CC32 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8AD299A65AC00F8CC32 /* AppSettings.swift */,
-				C00699FA29CE9A2300087879 /* AppSettings+Permission.swift */,
-				C00699FD29CE9C7E00087879 /* AppSettings+Bundle.swift */,
-				C02435BA2A05ECF00080CFB4 /* AppSettings+Yaml.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		C04FA8BC299A65AC00F8CC32 /* Rime */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8BD299A65AC00F8CC32 /* RimeContext.swift */,
-				C0B42C9529AE7C860037DE15 /* RimeContext+Color.swift */,
-				C020ABEC29B72F9B00B26142 /* RimeContext+File.swift */,
-				C0A602F72A18611E000DC924 /* RimeContext+File+Zip.swift */,
-				C020AD4629B73D5400B26142 /* RimeContext+LibrimeKit.swift */,
-				C0CB388429EA3C48007211E7 /* OSXKeyCode.swift */,
-				C0CB388629EA51AD007211E7 /* keysymdef.swift */,
-				C0DEDB852A1108B300E17F84 /* Rime.swift */,
-				C0DEDB882A110AAE00E17F84 /* Rime+Model.swift */,
-			);
-			path = Rime;
-			sourceTree = "<group>";
-		};
-		C04FA8BF299A65AC00F8CC32 /* Behavior */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8C0299A65AC00F8CC32 /* HamsterKeyboardBehavior.swift */,
-			);
-			path = Behavior;
-			sourceTree = "<group>";
-		};
-		C04FA8C3299A65AC00F8CC32 /* Appearance */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8C4299A65AC00F8CC32 /* HamsterKeyboardAppearance.swift */,
-			);
-			path = Appearance;
-			sourceTree = "<group>";
-		};
-		C04FA8C5299A65AC00F8CC32 /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8C6299A65AC00F8CC32 /* Providers */,
-			);
-			path = Layout;
-			sourceTree = "<group>";
-		};
-		C04FA8C6299A65AC00F8CC32 /* Providers */ = {
-			isa = PBXGroup;
-			children = (
-				C0F1D04229AFEF93009B9417 /* iPadKeyboardLayoutProvider.swift */,
-				C04FA8C7299A65AC00F8CC32 /* iPhoneKeyboardLayoutProvider.swift */,
-				C04FA8CA299A65AC00F8CC32 /* HamsterStandardKeyboardLayoutProvider.swift */,
-			);
-			path = Providers;
-			sourceTree = "<group>";
-		};
-		C04FA8CC299A65AC00F8CC32 /* Locals */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8CD299A65AC00F8CC32 /* KeyboardLocale.swift */,
-			);
-			path = Locals;
-			sourceTree = "<group>";
-		};
-		C04FA8CE299A65AC00F8CC32 /* Gestures */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8D0299A65AC00F8CC32 /* SwipeGestureHandler.swift */,
-				C054BC1229F523970070D7F8 /* HamsterSwipeGestureHandler.swift */,
-			);
-			path = Gestures;
-			sourceTree = "<group>";
-		};
-		C04FA8D3299A65AC00F8CC32 /* Actions */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8D6299A65AC00F8CC32 /* HamsterKeyboardActionHandler.swift */,
-				C04FA8D4299A65AC00F8CC32 /* KeyboardAction+Buttons.swift */,
-				C04FA8D5299A65AC00F8CC32 /* KeyboardAction+Actions.swift */,
-				C04FA8D7299A65AC00F8CC32 /* KeyboardAction+Return.swift */,
-			);
-			path = Actions;
-			sourceTree = "<group>";
-		};
-		C04FA8D8299A65AC00F8CC32 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				C00BAA0629ED502000325ED2 /* Components */,
-				C00BAA0429ED501300325ED2 /* CandidateView.swift */,
-				C04FA8D9299A65AC00F8CC32 /* AutocompleteToolbar.swift */,
-				C0B19F2A2A0D997A006AAA28 /* SelectInputSchemaView.swift */,
-				C071A2442A17786B00FBE5A2 /* OneHandedView.swift */,
-				C0837F132A1E0A2700530A9B /* NumNineGridKeyboard.swift */,
-				C0B7E4812A1F04DF004A839F /* NumNineGridSymbolView.swift */,
-				C08B1A5D2A260C5E00668CA4 /* SymbolKeyboard.swift */,
-				C06916952A302E60006917CA /* EmojiKeyboard.swift */,
-				C06916982A302EDF006917CA /* EmojiCategoryKeyboard.swift */,
-				C069169B2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		C04FA8E4299A65AC00F8CC32 /* Keyboard */ = {
-			isa = PBXGroup;
-			children = (
-				C0CEA4E32A19A8510071ECEB /* KeyboardType.swift */,
-				C04FA8E5299A65AC00F8CC32 /* KeyboardType+Button.swift */,
-			);
-			path = Keyboard;
-			sourceTree = "<group>";
-		};
-		C04FA8E7299A65AC00F8CC32 /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8E8299A65AC00F8CC32 /* KKL10n.swift */,
-			);
-			path = Localization;
-			sourceTree = "<group>";
-		};
-		C04FA8E9299A65AC00F8CC32 /* Callouts */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8EA299A65AC00F8CC32 /* HamsterActionCalloutContext.swift */,
-				C0CB388029E9294E007211E7 /* HamsterCalloutActionProvider.swift */,
-				C0A3CDFD2A0B577A0068D737 /* View+Callouts.swift */,
-				C0A3CE002A0B59BC0068D737 /* InputCallout.swift */,
-			);
-			path = Callouts;
-			sourceTree = "<group>";
-		};
 		C04FA93E299A674E00F8CC32 /* Config */ = {
 			isa = PBXGroup;
 			children = (
 				C04FA93F299A674E00F8CC32 /* DefaultAction.plist */,
 			);
 			path = Config;
-			sourceTree = "<group>";
-		};
-		C0689B122A48450600E0EA99 /* Swipe */ = {
-			isa = PBXGroup;
-			children = (
-				C0689B132A48453F00E0EA99 /* SwipeSettingsViewController.swift */,
-			);
-			path = Swipe;
 			sourceTree = "<group>";
 		};
 		C071BECC2970108000E21FBC /* Resources */ = {
@@ -1095,370 +190,43 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		C0734DD32A16F8BA0046173E /* ViewModel */ = {
+		C08387E82A55101A00EA8082 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				C0734DD42A16F9B90046173E /* RIMEViewModel.swift */,
+				C08387F52A5589DF00EA8082 /* HamsteriOS */,
+				C08387F32A5589A400EA8082 /* HamsterUIKit */,
+				C08387F42A5589AF00EA8082 /* HamsterKit */,
+				C08387F22A55899700EA8082 /* HamsterModel */,
+				C08387F12A55897700EA8082 /* RimeKit */,
 			);
-			path = ViewModel;
+			name = Packages;
 			sourceTree = "<group>";
 		};
-		C074C43129FB7A3800718DAD /* File */ = {
+		C08387EE2A55467900EA8082 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				C074C43229FB7A4900718DAD /* File.swift */,
-				C074C43429FB7AD500718DAD /* File+yaml.swift */,
-				C016994529FBC24C0047B49E /* File+Zip.swift */,
-				C09949D72A01604A00E26BA4 /* File+iCloud.swift */,
-				C02435B72A04B8170080CFB4 /* MetadataProvider.swift */,
-				C02435E42A071BC50080CFB4 /* File+Backup.swift */,
-				C0A3CE032A0CB7130068D737 /* File+Crypto.swift */,
+				C02435972A0490220080CFB4 /* Info.plist */,
+				C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */,
+				C02435932A0490220080CFB4 /* Assets.xcassets */,
+				C0A3CDD12A0A73AD0068D737 /* Colors.xcassets */,
+				C02435942A0490220080CFB4 /* Preview Content */,
+				C02435962A0490220080CFB4 /* Hamster.entitlements */,
 			);
-			path = File;
-			sourceTree = "<group>";
-		};
-		C074C43629FB7DB100718DAD /* File */ = {
-			isa = PBXGroup;
-			children = (
-				C074C43929FB7DFD00718DAD /* FileTest.swift */,
-			);
-			path = File;
-			sourceTree = "<group>";
-		};
-		C07C1A1F29CD6B5E00FD0572 /* Logger */ = {
-			isa = PBXGroup;
-			children = (
-				C07C1A2029CD6B6D00FD0572 /* Logger.swift */,
-			);
-			path = Logger;
-			sourceTree = "<group>";
-		};
-		C08F665E2A37061C00914473 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				C08F665F2A37064000914473 /* SettingsViewController.swift */,
-				C08F66612A3706B400914473 /* SettingModel.swift */,
-				C08F66662A37089F00914473 /* SettingTableViewCell.swift */,
-				C0F2A88D2A38108B00ACCAA2 /* SettingViewModel.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		C08F66632A37074500914473 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				C08F66642A37077A00914473 /* HamsterNavigationViewController.swift */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
-		C08F66682A37572C00914473 /* InputSchema */ = {
-			isa = PBXGroup;
-			children = (
-				C08F66692A375B4100914473 /* InputSchemaViewController.swift */,
-				C0F2A88F2A38156E00ACCAA2 /* InputSchemaViewModel.swift */,
-			);
-			path = InputSchema;
-			sourceTree = "<group>";
-		};
-		C0988FB32A3C450B00C3111D /* NumberNineGridSetting */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA5A2A3B0AB50038F83C /* NumberNineGridSettingViewController.swift */,
-				C0988FB42A3C459F00C3111D /* NumberNineGridSettingTableView.swift */,
-				C0988FB62A3C45F300C3111D /* NumberNineGridSymbolListTableView.swift */,
-			);
-			path = NumberNineGridSetting;
-			sourceTree = "<group>";
-		};
-		C0988FB82A3C599700C3111D /* ColorSetting */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA562A3B09680038F83C /* ColorSchemaSettingViewController.swift */,
-				C01093D82A3FFD6200D34AC9 /* HamsterColorSchemaView.swift */,
-				C01093DA2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift */,
-			);
-			path = ColorSetting;
-			sourceTree = "<group>";
-		};
-		C099464129B27F6E007FD3CA /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				C0DAFD2529DA9DD000762D2B /* HamsterInputSetProvider.swift */,
-				C054BC1029F3BDE10070D7F8 /* ChineseInputSetProvider.swift */,
-			);
-			path = Input;
-			sourceTree = "<group>";
-		};
-		C099464429B28602007FD3CA /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				C099464529B28625007FD3CA /* KeyboardImageReader.swift */,
-			);
-			path = Image;
-			sourceTree = "<group>";
-		};
-		C09F6AFB2A089CBD00F2EF18 /* Lab */ = {
-			isa = PBXGroup;
-			children = (
-				C09F6AFF2A089E2600F2EF18 /* Keybaord */,
-			);
-			path = Lab;
-			sourceTree = "<group>";
-		};
-		C09F6AFF2A089E2600F2EF18 /* Keybaord */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA8D2299A65AC00F8CC32 /* KeyboardViewController.swift */,
-				C04FA8E3299A65AC00F8CC32 /* KeyboardConstants.swift */,
-				C04FA8D3299A65AC00F8CC32 /* Actions */,
-				C0A3CDD42A0A74580068D737 /* Colors */,
-				C04FA8C3299A65AC00F8CC32 /* Appearance */,
-				C04FA8BF299A65AC00F8CC32 /* Behavior */,
-				C04FA8E9299A65AC00F8CC32 /* Callouts */,
-				C04FA8E4299A65AC00F8CC32 /* Keyboard */,
-				C018E6DC29C334F800942E97 /* Feedback */,
-				C099464129B27F6E007FD3CA /* Input */,
-				C04FA8C5299A65AC00F8CC32 /* Layout */,
-				C04FA8CC299A65AC00F8CC32 /* Locals */,
-				C04FA8E7299A65AC00F8CC32 /* Localization */,
-				C0B7E4842A1F0813004A839F /* Preview */,
-				C04FA8CE299A65AC00F8CC32 /* Gestures */,
-				C099464429B28602007FD3CA /* Image */,
-				C04FA8D8299A65AC00F8CC32 /* View */,
-				C0A3CDDF2A0B53780068D737 /* KeyboardView */,
-				C02415262A25DC10004E282B /* Symbol */,
-			);
-			path = Keybaord;
-			sourceTree = "<group>";
-		};
-		C0A3CDD42A0A74580068D737 /* Colors */ = {
-			isa = PBXGroup;
-			children = (
-				C0A3CDD52A0A750F0068D737 /* KeyboardColor.swift */,
-				C0A3CDD82A0A768F0068D737 /* KeyboardColorReader.swift */,
-			);
-			path = Colors;
-			sourceTree = "<group>";
-		};
-		C0A3CDDF2A0B53780068D737 /* KeyboardView */ = {
-			isa = PBXGroup;
-			children = (
-				C09F6AFC2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift */,
-				C09F6B022A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift */,
-				C04FA8DB299A65AC00F8CC32 /* HamsterKeyboardButtonContent.swift */,
-				C04FA8DC299A65AC00F8CC32 /* HamsterKeyboardButtonText.swift */,
-				C09F6B052A08F68100F2EF18 /* HamsterKeyboardGestures.swift */,
-				C09F6B082A08F71000F2EF18 /* HamsterGestureButton.swift */,
-				C09F6B0B2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift */,
-				C04FA8E6299A65AC00F8CC32 /* KeyboardContext+KeyboardType.swift */,
-				C05BDC552A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift */,
-				C0614AA12A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift */,
-				C0614AA42A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift */,
-			);
-			path = KeyboardView;
-			sourceTree = "<group>";
-		};
-		C0B27A572A3988B800EFD667 /* iCloud */ = {
-			isa = PBXGroup;
-			children = (
-				C0B27A582A3988D600EFD667 /* AppleCloudViewController.swift */,
-			);
-			path = iCloud;
-			sourceTree = "<group>";
-		};
-		C0B27A5A2A39A99700EFD667 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C0B27A5B2A39A9FC00EFD667 /* ToggleTableViewCell.swift */,
-				C0B27A5D2A39AFB900EFD667 /* ButtonTableViewCell.swift */,
-				C0B27A5F2A39B05400EFD667 /* TableFooterView.swift */,
-				C0B27A612A39BFF500EFD667 /* TextFieldTableViewCell.swift */,
-				C047BA5E2A3B15BD0038F83C /* NavigationTableViewCell.swift */,
-				C0988FB12A3BFDF600C3111D /* Keyboard+Layout.swift */,
-				C0B6E5A92A3D915100813EF3 /* StepperTableViewCell.swift */,
-				C0B6E5AD2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift */,
-				C0DDB5342A3EE4C700E1A7C4 /* UIRadioButton.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		C0B27A632A39EF2100EFD667 /* Backup */ = {
-			isa = PBXGroup;
-			children = (
-				C0B27A642A39EF3E00EFD667 /* BackupViewController.swift */,
-				C0B27A662A39F49500EFD667 /* BackupViewModel.swift */,
-			);
-			path = Backup;
-			sourceTree = "<group>";
-		};
-		C0B6E5AB2A3D9E1A00813EF3 /* Feedback */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA542A3B082F0038F83C /* KeyboardFeedbackViewController.swift */,
-			);
-			path = Feedback;
-			sourceTree = "<group>";
-		};
-		C0B6E5AC2A3D9E4200813EF3 /* Candidate */ = {
-			isa = PBXGroup;
-			children = (
-				C047BA5C2A3B0C610038F83C /* CandidateTextBarSettingViewController.swift */,
-			);
-			path = Candidate;
-			sourceTree = "<group>";
-		};
-		C0B7E4842A1F0813004A839F /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				C0B7E4852A1F086D004A839F /* Appearance+Preview.swift */,
-			);
-			path = Preview;
-			sourceTree = "<group>";
-		};
-		C0C490C12A445B8100A64659 /* Shortcuts */ = {
-			isa = PBXGroup;
-			children = (
-				C0C490C22A445B9E00A64659 /* Actions */,
-			);
-			path = Shortcuts;
-			sourceTree = "<group>";
-		};
-		C0C490C22A445B9E00A64659 /* Actions */ = {
-			isa = PBXGroup;
-			children = (
-				C0C490C32A445BC600A64659 /* RimeDeployIntent.swift */,
-				C0C490C52A4460B200A64659 /* RimeSyncIntent.swift */,
-			);
-			path = Actions;
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		C0D671B029F16D76002D0439 /* SharedSupport */ = {
 			isa = PBXGroup;
 			children = (
+				C0C9041C2A56412200AF3F15 /* hamster.yaml */,
 				C0D672B329F1E066002D0439 /* SharedSupport.zip */,
 			);
 			path = SharedSupport;
 			sourceTree = "<group>";
 		};
-		C0D672BA29F1FA32002D0439 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				C0532D1729C4A2C9001A8BE6 /* DotView.swift */,
-				C0DA63F829F7B87500F91C74 /* BlackView.swift */,
-				C0532D1929C4A353001A8BE6 /* DotsActivityView.swift */,
-				C0CDF6E729C0FA4400CA2493 /* RadioButton.swift */,
-				C0D672BB29F1FA8D002D0439 /* InputSchemaCell.swift */,
-				C0519E0229F926CC00513008 /* Checkbox.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
-		C0EE5BF82A3D3ED800BFDB89 /* SymbolSetting */ = {
-			isa = PBXGroup;
-			children = (
-				C0EE5BF92A3D3EFF00BFDB89 /* SymbolSettingsViewController.swift */,
-				C0EE5BFB2A3D412400BFDB89 /* SymbolEditTableView.swift */,
-				C0EE5BFD2A3D484100BFDB89 /* SymbolTableView.swift */,
-				C0EE5BFF2A3D7C5D00BFDB89 /* SymbolKeyboardSettingViewController.swift */,
-			);
-			path = SymbolSetting;
-			sourceTree = "<group>";
-		};
-		C0F2A8912A383AD500ACCAA2 /* UploadInputSchema */ = {
-			isa = PBXGroup;
-			children = (
-				C0F2A8922A383AF300ACCAA2 /* UploadInputSchemaViewController.swift */,
-				C0F2A8942A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift */,
-			);
-			path = UploadInputSchema;
-			sourceTree = "<group>";
-		};
-		C0F2A8962A383C9600ACCAA2 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				C0F2A8972A383CB900ACCAA2 /* UIDevice+Extention.swift */,
-			);
-			path = Extension;
-			sourceTree = "<group>";
-		};
-		C0F2A8992A385E3E00ACCAA2 /* FileManager */ = {
-			isa = PBXGroup;
-			children = (
-				C0F2A89A2A385E6900ACCAA2 /* FileManagerViewController.swift */,
-				C0F2A89E2A3871DC00ACCAA2 /* FileManagerViewModel.swift */,
-				C0F2A8A02A38A67A00ACCAA2 /* FinderViewModel.swift */,
-				C0F2A8A22A38A94F00ACCAA2 /* FinderTableView.swift */,
-				C0F2A8A42A38A9D800ACCAA2 /* FinderViewCell.swift */,
-				C0B27A552A39756300EFD667 /* TextEditViewController.swift */,
-			);
-			path = FileManager;
-			sourceTree = "<group>";
-		};
-		C0F5B48B2A41337700A427D2 /* Feedback */ = {
-			isa = PBXGroup;
-			children = (
-				C0F5B48C2A41338A00A427D2 /* HamsterHapticFeedback.swift */,
-			);
-			path = Feedback;
-			sourceTree = "<group>";
-		};
-		C0F858C029A2AA03003A2ED4 /* Hamster */ = {
-			isa = PBXGroup;
-			children = (
-				C01093E02A408BA400D34AC9 /* Model */,
-				C02435E12A07175D0080CFB4 /* Settings */,
-				C074C43629FB7DB100718DAD /* File */,
-				C0F858C129A2AA38003A2ED4 /* RimeEngine */,
-			);
-			path = Hamster;
-			sourceTree = "<group>";
-		};
-		C0F858C129A2AA38003A2ED4 /* RimeEngine */ = {
-			isa = PBXGroup;
-			children = (
-				C0F858C229A2AA38003A2ED4 /* RimeEngineTests.swift */,
-			);
-			path = RimeEngine;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C02435BF2A05F2E20080CFB4 /* HamsterTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C02435C62A05F2E20080CFB4 /* Build configuration list for PBXNativeTarget "HamsterTests" */;
-			buildPhases = (
-				C02435BC2A05F2E20080CFB4 /* Sources */,
-				C02435BD2A05F2E20080CFB4 /* Frameworks */,
-				C02435BE2A05F2E20080CFB4 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C02435C52A05F2E20080CFB4 /* PBXTargetDependency */,
-			);
-			name = HamsterTests;
-			packageProductDependencies = (
-				C02435CB2A05F3770080CFB4 /* LibrimeKit */,
-				C02435CD2A05F3770080CFB4 /* Plist */,
-				C02435CF2A05F3770080CFB4 /* KeyboardKit */,
-				C02435D12A05F3770080CFB4 /* iFilemanager */,
-				C02435D32A05F3770080CFB4 /* SwiftyBeaver */,
-				C02435D52A05F3770080CFB4 /* Runestone */,
-				C02435D72A05F3770080CFB4 /* TreeSitterYAML */,
-				C02435D92A05F3770080CFB4 /* TreeSitterYAMLQueries */,
-				C02435DB2A05F3770080CFB4 /* TreeSitterYAMLRunestone */,
-				C02435DD2A05F3910080CFB4 /* ZIPFoundation */,
-				C02435DF2A05F3910080CFB4 /* Yams */,
-				C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */,
-				C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */,
-				C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */,
-			);
-			productName = HamsterTests;
-			productReference = C02435C02A05F2E20080CFB4 /* HamsterTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		C03E8024296D4F4C0083E53A /* Hamster */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C03E8033296D4F4D0083E53A /* Build configuration list for PBXNativeTarget "Hamster" */;
@@ -1477,22 +245,7 @@
 			);
 			name = Hamster;
 			packageProductDependencies = (
-				C04FA99E299A6F3900F8CC32 /* Plist */,
-				C02C1EF429BFDB7B007B6AF5 /* iFilemanager */,
-				C02C1EFB29C07C96007B6AF5 /* LibrimeKit */,
-				C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */,
-				C0AB7C1029DBC1F800F8D01E /* Runestone */,
-				C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */,
-				C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */,
-				C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */,
-				C0D672B629F1EFF3002D0439 /* ZIPFoundation */,
-				C0519E0629F947DB00513008 /* Yams */,
-				C09F6B002A08DF1900F2EF18 /* KeyboardKit */,
-				C09F6B0F2A0942C800F2EF18 /* IsScrolling */,
-				C0B19F242A0CFAD7006AAA28 /* TreeSitterLua */,
-				C0B19F262A0CFAD7006AAA28 /* TreeSitterLuaQueries */,
-				C0B19F282A0CFAD7006AAA28 /* TreeSitterLuaRunestone */,
-				C0734DCC2A16EF250046173E /* ProgressHUD */,
+				C053ADC22A5D503200EA7EEE /* HamsteriOS */,
 			);
 			productName = Hamster;
 			productReference = C03E8025296D4F4C0083E53A /* Hamster.app */;
@@ -1512,10 +265,6 @@
 			);
 			name = HamsterKeyboard;
 			packageProductDependencies = (
-				C04FA97B299A6C8200F8CC32 /* KeyboardKit */,
-				C0C9F03B29CF43F9004B2C33 /* LibrimeKit */,
-				C09F6B112A0942E200F2EF18 /* IsScrolling */,
-				C0A602F32A185FEE000DC924 /* SwiftyBeaver */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
@@ -1531,10 +280,6 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
-					C02435BF2A05F2E20080CFB4 = {
-						CreatedOnToolsVersion = 14.3;
-						TestTargetID = C03E8024296D4F4C0083E53A;
-					};
 					C03E8024296D4F4C0083E53A = {
 						CreatedOnToolsVersion = 14.2;
 					};
@@ -1558,16 +303,6 @@
 			);
 			mainGroup = C03E801C296D4F4C0083E53A;
 			packageReferences = (
-				C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */,
-				C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */,
-				C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */,
-				C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
-				C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */,
-				C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */,
-				C0D672B529F1EFF3002D0439 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
-				C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */,
-				C09F6B0E2A0942C800F2EF18 /* XCRemoteSwiftPackageReference "IsScrolling" */,
-				C0734DCB2A16EF250046173E /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 			);
 			productRefGroup = C03E8026296D4F4C0083E53A /* Products */;
 			projectDirPath = "";
@@ -1575,19 +310,11 @@
 			targets = (
 				C03E8024296D4F4C0083E53A /* Hamster */,
 				C03E803B296D53650083E53A /* HamsterKeyboard */,
-				C02435BF2A05F2E20080CFB4 /* HamsterTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C02435BE2A05F2E20080CFB4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C03E803A296D53650083E53A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1639,198 +366,12 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C02435BC2A05F2E20080CFB4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C01093E22A408BB200D34AC9 /* YamlToModelTest.swift in Sources */,
-				C02435E32A0717850080CFB4 /* HamsterAppSettingsTest.swift in Sources */,
-				C02435C92A05F3270080CFB4 /* FileTest.swift in Sources */,
-				C02435CA2A05F3270080CFB4 /* RimeEngineTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C03E8021296D4F4C0083E53A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C047BA532A3B01640038F83C /* KeyboardSettingViewController.swift in Sources */,
-				C0B7E4802A1EF272004A839F /* NumNineGridKeyboard.swift in Sources */,
-				C0A3CDFA2A0B544E0068D737 /* OSXKeyCode.swift in Sources */,
-				C02415302A25ED6D004E282B /* MostRecentSymbolProvider.swift in Sources */,
-				C0A3CDFB2A0B544E0068D737 /* keysymdef.swift in Sources */,
-				C0A3CDE02A0B54000068D737 /* KeyboardViewController.swift in Sources */,
-				C0A3CDE12A0B54000068D737 /* KeyboardConstants.swift in Sources */,
-				C0A3CDE22A0B54000068D737 /* HamsterKeyboardAppearance.swift in Sources */,
-				C0A3CDE32A0B54000068D737 /* HamsterKeyboardBehavior.swift in Sources */,
-				C0A3CDE42A0B54000068D737 /* HamsterActionCalloutContext.swift in Sources */,
-				C0A3CDE52A0B54000068D737 /* HamsterCalloutActionProvider.swift in Sources */,
-				C02415282A25DC34004E282B /* Symbol.swift in Sources */,
-				C0A3CDE62A0B54000068D737 /* KeyboardType+Button.swift in Sources */,
-				C0A3CDE72A0B54000068D737 /* KeyboardFeedbackHandler.swift in Sources */,
-				C047BA492A3A887B0038F83C /* RimeViewController.swift in Sources */,
-				C0A3CDE82A0B54000068D737 /* HamsterInputSetProvider.swift in Sources */,
-				C0A3CDE92A0B54000068D737 /* ChineseInputSetProvider.swift in Sources */,
-				C0A3CDEA2A0B54000068D737 /* iPadKeyboardLayoutProvider.swift in Sources */,
-				C0988FB72A3C45F300C3111D /* NumberNineGridSymbolListTableView.swift in Sources */,
-				C0C532882A24A6BF00574D9C /* SymbolsSettingsView.swift in Sources */,
-				C08F66652A37077A00914473 /* HamsterNavigationViewController.swift in Sources */,
-				C0A3CDEB2A0B54000068D737 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
-				C0B27A602A39B05400EFD667 /* TableFooterView.swift in Sources */,
-				C0F2A88E2A38108B00ACCAA2 /* SettingViewModel.swift in Sources */,
-				C0F2A8A12A38A67A00ACCAA2 /* FinderViewModel.swift in Sources */,
-				C03319E02A2E056B00CE4950 /* MainTab.swift in Sources */,
-				C0A3CDEC2A0B54000068D737 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
 				C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */,
-				C0A3CDED2A0B54000068D737 /* KeyboardLocale.swift in Sources */,
-				C0A3CDEE2A0B54000068D737 /* KKL10n.swift in Sources */,
-				C024152E2A25EC2F004E282B /* FrequentSymbolProvider.swift in Sources */,
-				C0A3CDEF2A0B54000068D737 /* SwipeGestureHandler.swift in Sources */,
-				C0A3CDF02A0B54000068D737 /* HamsterSwipeGestureHandler.swift in Sources */,
-				C0A3CDF12A0B54000068D737 /* KeyboardImageReader.swift in Sources */,
-				C047BA552A3B082F0038F83C /* KeyboardFeedbackViewController.swift in Sources */,
-				C0A3CDF22A0B54000068D737 /* CollectionView.swift in Sources */,
-				C0A3CDF32A0B54000068D737 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
-				C0A3CDF42A0B54000068D737 /* CandidateBarArrowButton.swift in Sources */,
-				C0A3CDF52A0B54000068D737 /* CandidateView.swift in Sources */,
-				C01093DF2A40893400D34AC9 /* HamsterSettingModel.swift in Sources */,
-				C0689B142A48453F00E0EA99 /* SwipeSettingsViewController.swift in Sources */,
-				C0A3CDF62A0B54000068D737 /* AutocompleteToolbar.swift in Sources */,
-				C0B6E5AA2A3D915100813EF3 /* StepperTableViewCell.swift in Sources */,
-				C071A2452A17786B00FBE5A2 /* OneHandedView.swift in Sources */,
-				C0A3CDDB2A0B533B0068D737 /* HamsterKeyboardActionHandler.swift in Sources */,
-				C0A3CDDC2A0B533B0068D737 /* KeyboardAction+Buttons.swift in Sources */,
-				C0A3CDDD2A0B533B0068D737 /* KeyboardAction+Actions.swift in Sources */,
-				C0A3CDDE2A0B533B0068D737 /* KeyboardAction+Return.swift in Sources */,
-				C0F5B48D2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */,
-				C0A3CE042A0CB7130068D737 /* File+Crypto.swift in Sources */,
-				C0A3CDCE2A09C6790068D737 /* HamsterKeyboardButtonText.swift in Sources */,
-				C0B27A672A39F49500EFD667 /* BackupViewModel.swift in Sources */,
-				C0A3CDCD2A09C6550068D737 /* HamsterKeyboardButtonContent.swift in Sources */,
-				C09F6B0C2A08FB1600F2EF18 /* HamsterScrollViewGestureButton.swift in Sources */,
-				C02435B32A0490230080CFB4 /* LaunchScreen.swift in Sources */,
-				C047BA572A3B09680038F83C /* ColorSchemaSettingViewController.swift in Sources */,
-				C02435B02A0490230080CFB4 /* FeedbackView.swift in Sources */,
-				C0734DD12A16EF780046173E /* ProgressHUD.swift in Sources */,
-				C018E6E029C343A900942E97 /* Color+Extent.swift in Sources */,
-				C0EE5BFA2A3D3EFF00BFDB89 /* SymbolSettingsViewController.swift in Sources */,
-				C09F6B032A08E3EA00F2EF18 /* HamsterSystemKeyboardButtonRowItem.swift in Sources */,
-				C020AD4729B73D5400B26142 /* RimeContext+LibrimeKit.swift in Sources */,
-				C00699FE29CE9C7E00087879 /* AppSettings+Bundle.swift in Sources */,
-				C024359C2A0490230080CFB4 /* CircleActivityView.swift in Sources */,
-				C0734DD52A16F9B90046173E /* RIMEViewModel.swift in Sources */,
-				C0988FB22A3BFDF600C3111D /* Keyboard+Layout.swift in Sources */,
-				C024359B2A0490230080CFB4 /* DotsLoadingView.swift in Sources */,
-				C06916962A302E60006917CA /* EmojiKeyboard.swift in Sources */,
-				C0F2A8902A38156E00ACCAA2 /* InputSchemaViewModel.swift in Sources */,
-				C047BA4B2A3A8F2D0038F83C /* RimeViewModel.swift in Sources */,
-				C0B7E4862A1F086D004A839F /* Appearance+Preview.swift in Sources */,
-				C0CEA4E42A19A8510071ECEB /* KeyboardType.swift in Sources */,
-				C0DA63F929F7B87500F91C74 /* BlackView.swift in Sources */,
-				C08B1A5E2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */,
-				C0532D1A29C4A353001A8BE6 /* DotsActivityView.swift in Sources */,
-				C0DEDB862A1108B300E17F84 /* Rime.swift in Sources */,
-				C0B27A592A3988D600EFD667 /* AppleCloudViewController.swift in Sources */,
-				C047BA5D2A3B0C610038F83C /* CandidateTextBarSettingViewController.swift in Sources */,
-				C07C1A2129CD6B6D00FD0572 /* Logger.swift in Sources */,
-				C02435AD2A0490230080CFB4 /* UploadManagerView.swift in Sources */,
-				C08F66622A3706B400914473 /* SettingModel.swift in Sources */,
-				C09F6B062A08F68100F2EF18 /* HamsterKeyboardGestures.swift in Sources */,
-				C0F2A8A52A38A9D800ACCAA2 /* FinderViewCell.swift in Sources */,
-				C0614AAA2A20AC4200BA6BE2 /* NumberNineGridSettingView.swift in Sources */,
-				C0F2A8982A383CB900ACCAA2 /* UIDevice+Extention.swift in Sources */,
-				C0B6E5AE2A3DA09B00813EF3 /* ToggleCustomTableViewCell.swift in Sources */,
-				C0988FB52A3C459F00C3111D /* NumberNineGridSettingTableView.swift in Sources */,
-				C0F2A8A32A38A94F00ACCAA2 /* FinderTableView.swift in Sources */,
-				C0519E0329F926CC00513008 /* Checkbox.swift in Sources */,
-				C074C43329FB7A4900718DAD /* File.swift in Sources */,
-				C0B27A5C2A39A9FC00EFD667 /* ToggleTableViewCell.swift in Sources */,
-				C01093DB2A403EBF00D34AC9 /* ColorSchemaTableViewCell.swift in Sources */,
-				C02435AA2A0490230080CFB4 /* InputEditorView.swift in Sources */,
-				C0EE5BFC2A3D412400BFDB89 /* SymbolEditTableView.swift in Sources */,
-				C0532D1829C4A2C9001A8BE6 /* DotView.swift in Sources */,
-				C02435AE2A0490230080CFB4 /* ColorSchemaView.swift in Sources */,
-				C0B27A5E2A39AFB900EFD667 /* ButtonTableViewCell.swift in Sources */,
-				C02435AC2A0490230080CFB4 /* ShortcutSettingsView.swift in Sources */,
-				C08F66672A37089F00914473 /* SettingTableViewCell.swift in Sources */,
-				C0458A7D29B1339300262E69 /* AppSettings.swift in Sources */,
-				C0614AA52A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */,
-				C0A3CDD92A0A768F0068D737 /* KeyboardColorReader.swift in Sources */,
-				C02435E52A071BC50080CFB4 /* File+Backup.swift in Sources */,
-				C0C490C42A445BC600A64659 /* RimeDeployIntent.swift in Sources */,
-				C0F2A8952A383C0E00ACCAA2 /* UploadInputSchemaViewModel.swift in Sources */,
-				C020ABED29B72F9B00B26142 /* RimeContext+File.swift in Sources */,
-				C01BA3442A15C23600D30048 /* MBProgressHUD+SwiftUI.swift in Sources */,
-				C0F2A89B2A385E6900ACCAA2 /* FileManagerViewController.swift in Sources */,
-				C0C490C62A4460B200A64659 /* RimeSyncIntent.swift in Sources */,
-				C06916992A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
-				C047BA502A3ACAD70038F83C /* OpenSourceProjectViewController.swift in Sources */,
-				C09949D82A01604A00E26BA4 /* File+iCloud.swift in Sources */,
-				C024152C2A25EB8A004E282B /* SymbolProvider.swift in Sources */,
-				C02435BB2A05ECF00080CFB4 /* AppSettings+Yaml.swift in Sources */,
-				C0B27A622A39BFF500EFD667 /* TextFieldTableViewCell.swift in Sources */,
-				C02435982A0490230080CFB4 /* HamsterApp.swift in Sources */,
-				C09F6B092A08F71000F2EF18 /* HamsterGestureButton.swift in Sources */,
-				C0A3CDD62A0A750F0068D737 /* KeyboardColor.swift in Sources */,
-				C08F666A2A375B4100914473 /* InputSchemaViewController.swift in Sources */,
-				C0B27A652A39EF3E00EFD667 /* BackupViewController.swift in Sources */,
-				C0F2A89F2A3871DC00ACCAA2 /* FileManagerViewModel.swift in Sources */,
-				C02435992A0490230080CFB4 /* TextEditView.swift in Sources */,
-				C09F6AFA2A0872E500F2EF18 /* RIMEView.swift in Sources */,
-				C037B61529CC37AD00B1BBDC /* View+Extend.swift in Sources */,
-				C02435B82A04B8170080CFB4 /* MetadataProvider.swift in Sources */,
-				C0EE5BFE2A3D484100BFDB89 /* SymbolTableView.swift in Sources */,
-				C024152A2A25E831004E282B /* SymbolCategory.swift in Sources */,
-				C0A602F82A18611E000DC924 /* RimeContext+File+Zip.swift in Sources */,
-				C0B7E4822A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */,
-				C037B61029CBD50F00B1BBDC /* Plist.swift in Sources */,
-				C09F6AFD2A089CEB00F2EF18 /* HamsterSystemKeyboard.swift in Sources */,
-				C02BEA3729C25D72008487A4 /* PersistentController.swift in Sources */,
-				C0F2A8932A383AF300ACCAA2 /* UploadInputSchemaViewController.swift in Sources */,
-				C01093D92A3FFD6200D34AC9 /* HamsterColorSchemaView.swift in Sources */,
-				C00699FB29CE9A2300087879 /* AppSettings+Permission.swift in Sources */,
-				C016994929FBC9BB0047B49E /* HamsterHUD.swift in Sources */,
-				C074C43529FB7AD500718DAD /* File+yaml.swift in Sources */,
-				C02435A22A0490230080CFB4 /* SheetView.swift in Sources */,
-				C024359A2A0490230080CFB4 /* SectionView.swift in Sources */,
-				C024359F2A0490230080CFB4 /* LongButton.swift in Sources */,
-				C0DEDB8C2A12596F00E17F84 /* BackupView.swift in Sources */,
-				C02435A82A0490230080CFB4 /* SyncView.swift in Sources */,
-				C024359E2A0490230080CFB4 /* FinderView.swift in Sources */,
-				C0A3CDFE2A0B577A0068D737 /* View+Callouts.swift in Sources */,
-				C0DDB5352A3EE4C700E1A7C4 /* UIRadioButton.swift in Sources */,
-				C024359D2A0490230080CFB4 /* PlusButton.swift in Sources */,
-				C02435A42A0490230080CFB4 /* AboutView.swift in Sources */,
-				C0D672BC29F1FA8D002D0439 /* InputSchemaCell.swift in Sources */,
-				C02435A92A0490230080CFB4 /* SwipeGestureActionView.swift in Sources */,
-				C0A3CDCF2A09C92A0068D737 /* KeyboardContext+KeyboardType.swift in Sources */,
-				C0F5B4892A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */,
-				C0458A7F29B1339300262E69 /* RimeContext.swift in Sources */,
-				C0458A8029B1339300262E69 /* RimeContext+Color.swift in Sources */,
-				C02435A02A0490230080CFB4 /* HamsteriCloudView.swift in Sources */,
-				C08F66602A37064000914473 /* SettingsViewController.swift in Sources */,
-				C047BA5F2A3B15BD0038F83C /* NavigationTableViewCell.swift in Sources */,
-				C02435B22A0490230080CFB4 /* ContentView.swift in Sources */,
-				C0614AA22A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
 				C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */,
-				C0A3CE012A0B59BC0068D737 /* InputCallout.swift in Sources */,
-				C047BA5B2A3B0AB50038F83C /* NumberNineGridSettingViewController.swift in Sources */,
-				C069169C2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */,
-				C0DEDB892A110AAE00E17F84 /* Rime+Model.swift in Sources */,
-				C016994629FBC24C0047B49E /* File+Zip.swift in Sources */,
-				C02435A12A0490230080CFB4 /* LoaderView.swift in Sources */,
-				C0EE5C002A3D7C5D00BFDB89 /* SymbolKeyboardSettingViewController.swift in Sources */,
-				C02435A32A0490230080CFB4 /* TextFieldStyle.swift in Sources */,
-				C047BA4E2A3A95750038F83C /* AboutViewController.swift in Sources */,
-				C02435A72A0490230080CFB4 /* CellView.swift in Sources */,
-				C0B19F2B2A0D997A006AAA28 /* SelectInputSchemaView.swift in Sources */,
-				C02435AB2A0490230080CFB4 /* InputSchemaView.swift in Sources */,
-				C0458A8129B1339300262E69 /* AppConstants.swift in Sources */,
-				C02435AF2A0490230080CFB4 /* FileManagerView.swift in Sources */,
-				C05BDC562A0E264100539335 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
-				C0B27A562A39756300EFD667 /* TextEditViewController.swift in Sources */,
-				C0CDF6E829C0FA4400CA2493 /* RadioButton.swift in Sources */,
-				C02435A62A0490230080CFB4 /* AdvancedSettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1838,95 +379,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C08B1A602A260D6C00668CA4 /* Symbol.swift in Sources */,
-				C08B1A612A260D6C00668CA4 /* SymbolCategory.swift in Sources */,
-				C08B1A622A260D6C00668CA4 /* SymbolProvider.swift in Sources */,
-				C08B1A632A260D6C00668CA4 /* FrequentSymbolProvider.swift in Sources */,
-				C08B1A642A260D6C00668CA4 /* MostRecentSymbolProvider.swift in Sources */,
-				C0A602F22A185F84000DC924 /* File+iCloud.swift in Sources */,
-				C08B1A5F2A260C5E00668CA4 /* SymbolKeyboard.swift in Sources */,
-				C0A602F12A185F57000DC924 /* File.swift in Sources */,
-				C0A602F02A185F33000DC924 /* RadioButton.swift in Sources */,
-				C0A602EE2A185F14000DC924 /* Checkbox.swift in Sources */,
-				C0A602EF2A185F14000DC924 /* AppConstants.swift in Sources */,
-				C0A602ED2A185EE8000DC924 /* Color+Extent.swift in Sources */,
-				C0A602EC2A185E6F000DC924 /* InputSchemaCell.swift in Sources */,
-				C0A602EB2A185E46000DC924 /* RimeContext+File.swift in Sources */,
-				C0A602EA2A185E27000DC924 /* RimeContext+Color.swift in Sources */,
-				C0A602E92A185E06000DC924 /* View+Extend.swift in Sources */,
-				C0A602E12A185DD2000DC924 /* Logger.swift in Sources */,
-				C0A602E22A185DD2000DC924 /* AppSettings.swift in Sources */,
-				C0A602E32A185DD2000DC924 /* RimeContext.swift in Sources */,
-				C0A602E42A185DD2000DC924 /* RimeContext+LibrimeKit.swift in Sources */,
-				C0A602E52A185DD2000DC924 /* OSXKeyCode.swift in Sources */,
-				C0A602E62A185DD2000DC924 /* keysymdef.swift in Sources */,
-				C0A602E72A185DD2000DC924 /* Rime.swift in Sources */,
-				C0A602E82A185DD2000DC924 /* Rime+Model.swift in Sources */,
-				C0A602B42A185D9A000DC924 /* KeyboardViewController.swift in Sources */,
-				C0A602B52A185D9A000DC924 /* KeyboardConstants.swift in Sources */,
-				C0A602B62A185D9A000DC924 /* HamsterKeyboardActionHandler.swift in Sources */,
-				C0A602B72A185D9A000DC924 /* KeyboardAction+Buttons.swift in Sources */,
-				C0A602B82A185D9A000DC924 /* KeyboardAction+Actions.swift in Sources */,
-				C0614AA62A203FF000BA6BE2 /* HamsterKeyboardButtonBody.swift in Sources */,
-				C0A602B92A185D9A000DC924 /* KeyboardAction+Return.swift in Sources */,
-				C0A602BA2A185D9A000DC924 /* KeyboardColor.swift in Sources */,
-				C0837F142A1E0A2700530A9B /* NumNineGridKeyboard.swift in Sources */,
-				C0A602BB2A185D9A000DC924 /* KeyboardColorReader.swift in Sources */,
-				C0A602BC2A185D9A000DC924 /* HamsterKeyboardAppearance.swift in Sources */,
-				C0A602BD2A185D9A000DC924 /* HamsterKeyboardBehavior.swift in Sources */,
-				C0A602BE2A185D9A000DC924 /* HamsterActionCalloutContext.swift in Sources */,
-				C0A602BF2A185D9B000DC924 /* HamsterCalloutActionProvider.swift in Sources */,
-				C0614AA32A203F5A00BA6BE2 /* View+HamsterKeyboardButton.swift in Sources */,
-				C0F5B48A2A412BEB00A427D2 /* HamsterHapticFeedbackEngine.swift in Sources */,
-				C0A602C02A185D9B000DC924 /* View+Callouts.swift in Sources */,
-				C0A602C12A185D9B000DC924 /* InputCallout.swift in Sources */,
-				C0A602C22A185D9B000DC924 /* KeyboardType+Button.swift in Sources */,
-				C0A602C32A185D9B000DC924 /* KeyboardFeedbackHandler.swift in Sources */,
-				C0A602C42A185D9B000DC924 /* HamsterInputSetProvider.swift in Sources */,
-				C0A602C52A185D9B000DC924 /* ChineseInputSetProvider.swift in Sources */,
-				C0A602C62A185D9B000DC924 /* iPadKeyboardLayoutProvider.swift in Sources */,
-				C0A602C72A185D9B000DC924 /* iPhoneKeyboardLayoutProvider.swift in Sources */,
-				C0A602C82A185D9B000DC924 /* HamsterStandardKeyboardLayoutProvider.swift in Sources */,
-				C0B7E4872A1F086D004A839F /* Appearance+Preview.swift in Sources */,
-				C0A602C92A185D9B000DC924 /* KeyboardLocale.swift in Sources */,
-				C0A602CA2A185D9B000DC924 /* KKL10n.swift in Sources */,
-				C0A602CB2A185D9B000DC924 /* SwipeGestureHandler.swift in Sources */,
-				C0F5B48E2A41338A00A427D2 /* HamsterHapticFeedback.swift in Sources */,
-				C0A602CC2A185D9B000DC924 /* HamsterSwipeGestureHandler.swift in Sources */,
-				C069169A2A302EDF006917CA /* EmojiCategoryKeyboard.swift in Sources */,
-				C0A602CD2A185D9B000DC924 /* KeyboardImageReader.swift in Sources */,
-				C0A602D12A185D9B000DC924 /* CollectionView.swift in Sources */,
-				C0A602D22A185D9B000DC924 /* SeparatorCollectionViewFlowLayout.swift in Sources */,
-				C0A602D32A185D9B000DC924 /* CandidateBarArrowButton.swift in Sources */,
-				C0A602D42A185D9B000DC924 /* CandidateView.swift in Sources */,
-				C0A602D52A185D9B000DC924 /* AutocompleteToolbar.swift in Sources */,
-				C0A602D62A185D9B000DC924 /* SelectInputSchemaView.swift in Sources */,
-				C0A602D72A185D9B000DC924 /* OneHandedView.swift in Sources */,
-				C0A602D82A185D9B000DC924 /* HamsterSystemKeyboard.swift in Sources */,
-				C0A602D92A185D9B000DC924 /* HamsterSystemKeyboardButtonRowItem.swift in Sources */,
-				C0A602DA2A185D9B000DC924 /* HamsterKeyboardButtonContent.swift in Sources */,
-				C0A602DB2A185D9B000DC924 /* HamsterKeyboardButtonText.swift in Sources */,
-				C069169D2A302FBC006917CA /* EmojiCategoryKeyboardMenu.swift in Sources */,
-				C0A602DC2A185D9B000DC924 /* HamsterKeyboardGestures.swift in Sources */,
-				C0A602DD2A185D9B000DC924 /* HamsterGestureButton.swift in Sources */,
-				C0A602DE2A185D9B000DC924 /* HamsterScrollViewGestureButton.swift in Sources */,
-				C0CEA4E52A19A8510071ECEB /* KeyboardType.swift in Sources */,
-				C0A602DF2A185D9B000DC924 /* KeyboardContext+KeyboardType.swift in Sources */,
-				C0A602E02A185D9B000DC924 /* HamsterSystemKeyboardSpaceContent.swift in Sources */,
 				C0A602B32A185D88000DC924 /* KeyboardInputViewController.swift in Sources */,
-				C0B7E4832A1F04DF004A839F /* NumNineGridSymbolView.swift in Sources */,
-				C06916972A302E60006917CA /* EmojiKeyboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C02435C52A05F2E20080CFB4 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C03E8024296D4F4C0083E53A /* Hamster */;
-			targetProxy = C02435C42A05F2E20080CFB4 /* PBXContainerItemProxy */;
-		};
 		C03E8042296D53650083E53A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C03E803B296D53650083E53A /* HamsterKeyboard */;
@@ -1962,44 +421,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C02435C72A05F2E20080CFB4 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M4N6995A28;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.apps.HamsterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hamster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hamster";
-			};
-			name = Debug;
-		};
-		C02435C82A05F2E20080CFB4 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M4N6995A28;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.apps.HamsterTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hamster.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hamster";
-			};
-			name = Release;
-		};
 		C03E8031296D4F4D0083E53A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2131,15 +552,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/Hamster.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/assets/Hamster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Assets/Preview Content\"";
 				DEVELOPMENT_TEAM = M4N6995A28;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Hamster/Info.plist;
+				INFOPLIST_FILE = Hamster/Assets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hamster;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
@@ -2154,7 +575,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2173,15 +594,15 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/Hamster.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/assets/Hamster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Assets/Preview Content\"";
 				DEVELOPMENT_TEAM = M4N6995A28;
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Hamster/Info.plist;
+				INFOPLIST_FILE = Hamster/Assets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hamster;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
@@ -2196,7 +617,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2228,7 +649,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2259,7 +680,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.9.0;
+				MARKETING_VERSION = 2.1.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2273,15 +694,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C02435C62A05F2E20080CFB4 /* Build configuration list for PBXNativeTarget "HamsterTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C02435C72A05F2E20080CFB4 /* Debug */,
-				C02435C82A05F2E20080CFB4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C03E8020296D4F4C0083E53A /* Build configuration list for PBXProject "Hamster" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2311,256 +723,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/imfuxiao/iFilemanager";
-			requirement = {
-				kind = exactVersion;
-				version = 0.7.16;
-			};
-		};
-		C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/imfuxiao/Plist";
-			requirement = {
-				kind = exactVersion;
-				version = 0.4.0;
-			};
-		};
-		C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/KeyboardKit/KeyboardKit.git";
-			requirement = {
-				kind = exactVersion;
-				version = 7.4.1;
-			};
-		};
-		C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams.git";
-			requirement = {
-				kind = exactVersion;
-				version = 5.0.5;
-			};
-		};
-		C0734DCB2A16EF250046173E /* XCRemoteSwiftPackageReference "ProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/relatedcode/ProgressHUD.git";
-			requirement = {
-				kind = exactVersion;
-				version = 13.6.2;
-			};
-		};
-		C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-		C09F6B0E2A0942C800F2EF18 /* XCRemoteSwiftPackageReference "IsScrolling" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/fatbobman/IsScrolling.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.1.2;
-			};
-		};
-		C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simonbs/Runestone.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.3.0;
-			};
-		};
-		C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simonbs/TreeSitterLanguages.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.1.7;
-			};
-		};
-		C0D672B529F1EFF3002D0439 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
-			requirement = {
-				kind = exactVersion;
-				version = 0.9.16;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		C02435CB2A05F3770080CFB4 /* LibrimeKit */ = {
+		C053ADC22A5D503200EA7EEE /* HamsteriOS */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = LibrimeKit;
-		};
-		C02435CD2A05F3770080CFB4 /* Plist */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */;
-			productName = Plist;
-		};
-		C02435CF2A05F3770080CFB4 /* KeyboardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
-			productName = KeyboardKit;
-		};
-		C02435D12A05F3770080CFB4 /* iFilemanager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */;
-			productName = iFilemanager;
-		};
-		C02435D32A05F3770080CFB4 /* SwiftyBeaver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
-			productName = SwiftyBeaver;
-		};
-		C02435D52A05F3770080CFB4 /* Runestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */;
-			productName = Runestone;
-		};
-		C02435D72A05F3770080CFB4 /* TreeSitterYAML */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAML;
-		};
-		C02435D92A05F3770080CFB4 /* TreeSitterYAMLQueries */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAMLQueries;
-		};
-		C02435DB2A05F3770080CFB4 /* TreeSitterYAMLRunestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAMLRunestone;
-		};
-		C02435DD2A05F3910080CFB4 /* ZIPFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0D672B529F1EFF3002D0439 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
-			productName = ZIPFoundation;
-		};
-		C02435DF2A05F3910080CFB4 /* Yams */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
-		};
-		C02C1EF429BFDB7B007B6AF5 /* iFilemanager */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C02C1EF329BFDB7B007B6AF5 /* XCRemoteSwiftPackageReference "iFilemanager" */;
-			productName = iFilemanager;
-		};
-		C02C1EFB29C07C96007B6AF5 /* LibrimeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LibrimeKit;
-		};
-		C04FA97B299A6C8200F8CC32 /* KeyboardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
-			productName = KeyboardKit;
-		};
-		C04FA99E299A6F3900F8CC32 /* Plist */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA977299A6C5300F8CC32 /* XCRemoteSwiftPackageReference "Plist" */;
-			productName = Plist;
-		};
-		C0519E0629F947DB00513008 /* Yams */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0519E0529F947DB00513008 /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
-		};
-		C0734DCC2A16EF250046173E /* ProgressHUD */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0734DCB2A16EF250046173E /* XCRemoteSwiftPackageReference "ProgressHUD" */;
-			productName = ProgressHUD;
-		};
-		C07C1A1B29CD4C1D00FD0572 /* SwiftyBeaver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
-			productName = SwiftyBeaver;
-		};
-		C092C4CD2A1C4EFC000A3169 /* TreeSitterLua */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLua;
-		};
-		C092C4CF2A1C4EFC000A3169 /* TreeSitterLuaQueries */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLuaQueries;
-		};
-		C092C4D12A1C4EFC000A3169 /* TreeSitterLuaRunestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLuaRunestone;
-		};
-		C09F6B002A08DF1900F2EF18 /* KeyboardKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C04FA97A299A6C8200F8CC32 /* XCRemoteSwiftPackageReference "KeyboardKit" */;
-			productName = KeyboardKit;
-		};
-		C09F6B0F2A0942C800F2EF18 /* IsScrolling */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09F6B0E2A0942C800F2EF18 /* XCRemoteSwiftPackageReference "IsScrolling" */;
-			productName = IsScrolling;
-		};
-		C09F6B112A0942E200F2EF18 /* IsScrolling */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C09F6B0E2A0942C800F2EF18 /* XCRemoteSwiftPackageReference "IsScrolling" */;
-			productName = IsScrolling;
-		};
-		C0A602F32A185FEE000DC924 /* SwiftyBeaver */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C07C1A1A29CD4C1D00FD0572 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
-			productName = SwiftyBeaver;
-		};
-		C0AB7C1029DBC1F800F8D01E /* Runestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C0F29DBC1F800F8D01E /* XCRemoteSwiftPackageReference "Runestone" */;
-			productName = Runestone;
-		};
-		C0AB7C1329DBC27A00F8D01E /* TreeSitterYAML */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAML;
-		};
-		C0AB7C1529DBC27A00F8D01E /* TreeSitterYAMLQueries */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAMLQueries;
-		};
-		C0AB7C1729DBC27A00F8D01E /* TreeSitterYAMLRunestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterYAMLRunestone;
-		};
-		C0B19F242A0CFAD7006AAA28 /* TreeSitterLua */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLua;
-		};
-		C0B19F262A0CFAD7006AAA28 /* TreeSitterLuaQueries */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLuaQueries;
-		};
-		C0B19F282A0CFAD7006AAA28 /* TreeSitterLuaRunestone */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0AB7C1229DBC27A00F8D01E /* XCRemoteSwiftPackageReference "TreeSitterLanguages" */;
-			productName = TreeSitterLuaRunestone;
-		};
-		C0C9F03B29CF43F9004B2C33 /* LibrimeKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LibrimeKit;
-		};
-		C0D672B629F1EFF3002D0439 /* ZIPFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0D672B529F1EFF3002D0439 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
-			productName = ZIPFoundation;
+			productName = HamsteriOS;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

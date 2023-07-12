@@ -5,7 +5,6 @@
 //  Created by morse on 11/1/2023.
 //
 
-import Foundation
-import KeyboardKit
+import UIKit
 
-public class KeyboardController: HamsterKeyboardViewController {}
+public class KeyboardController: UIInputViewController {}
