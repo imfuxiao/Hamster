@@ -7,15 +7,12 @@
 import Combine
 import HamsterKit
 import HamsterUIKit
-import os
 import ProgressHUD
 import RimeKit
 import UIKit
 
 public class InputSchemaViewModel {
   // MARK: properties
-
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "InputSchemaViewModel")
 
   public let rimeContext: RimeContext
 
@@ -91,6 +88,7 @@ extension InputSchemaViewModel {
       reloadTableStateSubject.send(true)
       await ProgressHUD.showSuccess("导入成功", interaction: false, delay: 1.5)
     } catch {
+      await ProgressHUD.dismiss()
       logger.debug("zip \(error)")
       errorMessageSubject.send(ErrorMessage(title: "导入Zip文件", message: "导入失败, \(error.localizedDescription)"))
     }

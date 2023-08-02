@@ -16,6 +16,9 @@ public class RimeRootView: NibLessView {
 
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
+    tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     tableView.allowsSelection = false
     return tableView
   }()
@@ -35,13 +38,7 @@ public class RimeRootView: NibLessView {
   }
 
   override public func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 
   @objc func copySyncConfig() {
@@ -61,7 +58,7 @@ public extension RimeRootView {
 
 extension RimeRootView: UITableViewDataSource {
   public func numberOfSections(in tableView: UITableView) -> Int {
-    5
+    rimeViewModel.settings.count
   }
 
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -69,56 +66,25 @@ extension RimeRootView: UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch indexPath.section {
-    case 0:
-      return TextFieldTableViewCell(settingItem: .init(
-        icon: UIImage(systemName: "square.and.pencil"),
-        text: rimeViewModel.keyValueOfSwitchSimplifiedAndTraditional,
-        placeholder: "简繁切换键值",
-        textHandled: { [unowned self] in
-          rimeViewModel.keyValueOfSwitchSimplifiedAndTraditional = $0
-        }
-      ))
-    case 1:
-      return ToggleTableViewCell(settingItem: .init(
-        text: "部署时覆盖键盘词库文件",
-        toggleValue: rimeViewModel.overrideDictFiles,
-        toggleHandled: { [unowned self] in
-          rimeViewModel.overrideDictFiles = $0
-        }
-      ))
-    case 2:
-      return ButtonTableViewCell(settingItem: .init(
-        text: "重新部署",
-        buttonAction: { [unowned self] in
-          Task {
-            try await rimeViewModel.rimeDeploy()
-          }
-        },
-        favoriteButton: .rimeDeploy
-      ))
-    case 3:
-      return ButtonTableViewCell(settingItem: .init(
-        text: "RIME同步",
-        buttonAction: { [unowned self] in
-          Task {
-            try await rimeViewModel.rimeSync()
-          }
-        },
-        favoriteButton: .rimeSync
-      ))
-    case 4:
-      return ButtonTableViewCell(settingItem: .init(
-        text: "RIME重置", textTintColor: .systemRed, buttonAction: { [unowned self] in
-          Task {
-            try await rimeViewModel.rimeRest()
-          }
-        },
-        favoriteButton: .rimeRest
-      ))
-    default:
-      return UITableViewCell(frame: .zero)
+    let settingItem = rimeViewModel.settings[indexPath.section]
+    if settingItem.type == .textField {
+      let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? TextFieldTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
     }
+
+    if settingItem.type == .button {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
+    }
+
+    let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? ToggleTableViewCell else { return cell }
+    cell.settingItem = settingItem
+    return cell
   }
 
   public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

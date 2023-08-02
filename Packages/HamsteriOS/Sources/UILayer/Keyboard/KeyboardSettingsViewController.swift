@@ -9,28 +9,31 @@ import Combine
 import HamsterUIKit
 import UIKit
 
-protocol KeyboardSettingsViewModelFactory {
-  func makeKeyboardSettingsViewModel() -> KeyboardSettingsViewModel
-}
-
 protocol KeyboardSettingsSubViewControllerFactory {
   func makeNumberNineGridSettingsViewController() -> NumberNineGridSettingsViewController
   func makeSymbolSettingsViewController() -> SymbolSettingsViewController
+  func makeSymbolKeyboardSettingsViewController() -> SymbolKeyboardSettingsViewController
   func makeToolbarSettingsViewController() -> ToolbarSettingsViewController
 }
 
-class KeyboardSettingsViewController: NibLessViewController {
+public class KeyboardSettingsViewController: NibLessViewController {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
-  private let keyboardSettingsViewModelFactory: KeyboardSettingsViewModelFactory
   private let keyboardSettingsSubViewControllerFactory: KeyboardSettingsSubViewControllerFactory
+  private let numberNineGridSettingsViewController: NumberNineGridSettingsViewController
+  private let toolbarSettingsViewController: ToolbarSettingsViewController
+  private let symbolSettingsViewController: SymbolSettingsViewController
+  private let symbolKeyboardSettingsViewController: SymbolKeyboardSettingsViewController
 
   private var subscriptions = Set<AnyCancellable>()
 
-  init(keyboardSettingsViewModelFactory: KeyboardSettingsViewModelFactory, keyboardSettingsSubViewControllerFactory: KeyboardSettingsSubViewControllerFactory) {
-    self.keyboardSettingsViewModelFactory = keyboardSettingsViewModelFactory
+  init(keyboardSettingsViewModel: KeyboardSettingsViewModel, keyboardSettingsSubViewControllerFactory: KeyboardSettingsSubViewControllerFactory) {
+    self.keyboardSettingsViewModel = keyboardSettingsViewModel
     self.keyboardSettingsSubViewControllerFactory = keyboardSettingsSubViewControllerFactory
 
-    self.keyboardSettingsViewModel = keyboardSettingsViewModelFactory.makeKeyboardSettingsViewModel()
+    self.numberNineGridSettingsViewController = keyboardSettingsSubViewControllerFactory.makeNumberNineGridSettingsViewController()
+    self.toolbarSettingsViewController = keyboardSettingsSubViewControllerFactory.makeToolbarSettingsViewController()
+    self.symbolSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolSettingsViewController()
+    self.symbolKeyboardSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolKeyboardSettingsViewController()
 
     super.init()
 
@@ -48,35 +51,37 @@ class KeyboardSettingsViewController: NibLessViewController {
       presentNumberNineGridSettings()
     case .symbols:
       presentSymbolSettings()
+    case .symbolKeyboard:
+      presentSymbolKeyboardSettings()
     case .toolbar:
       presentToolbar()
     }
   }
 
   func presentNumberNineGridSettings() {
-    let controller = keyboardSettingsSubViewControllerFactory.makeNumberNineGridSettingsViewController()
-    navigationController?.pushViewController(controller, animated: true)
+    navigationController?.pushViewController(numberNineGridSettingsViewController, animated: true)
   }
 
   func presentSymbolSettings() {
-    let controller = keyboardSettingsSubViewControllerFactory.makeSymbolSettingsViewController()
-    navigationController?.pushViewController(controller, animated: true)
+    navigationController?.pushViewController(symbolSettingsViewController, animated: true)
+  }
+
+  func presentSymbolKeyboardSettings() {
+    navigationController?.pushViewController(symbolKeyboardSettingsViewController, animated: true)
   }
 
   func presentToolbar() {
-    let controller = keyboardSettingsSubViewControllerFactory.makeToolbarSettingsViewController()
-    navigationController?.pushViewController(controller, animated: true)
+    navigationController?.pushViewController(toolbarSettingsViewController, animated: true)
   }
 }
 
 // MARK: override UIViewController
 
-extension KeyboardSettingsViewController {
+public extension KeyboardSettingsViewController {
   override func loadView() {
     super.loadView()
 
     title = "键盘设置"
-    let keyboardSettingsViewModel = keyboardSettingsViewModelFactory.makeKeyboardSettingsViewModel()
     view = KeyboardSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }
 }

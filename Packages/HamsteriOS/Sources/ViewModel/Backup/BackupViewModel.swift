@@ -7,15 +7,26 @@
 
 import Foundation
 import HamsterKit
-import os
 import ProgressHUD
 import ZIPFoundation
 
 class BackupViewModel {
   // MARK: properties
 
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "BackupViewModel")
-
+  lazy var settingItem = SettingItemModel(
+    text: "软件备份",
+    buttonAction: { [unowned self] in
+      Task {
+        do {
+          try await backup()
+        } catch {
+          // TODO: 异常处理
+          //            backupViewModel.error = error
+        }
+      }
+    },
+    favoriteButton: .appBackup
+  )
   /// 备份文件列表
   @Published
   var backupFiles: [FileInfo] = []

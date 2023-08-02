@@ -6,13 +6,12 @@
 //
 
 import Foundation
+import HamsterKit
 import iFilemanager
 import Network
-import os
 import UIKit
 
 class UploadInputSchemaViewModel {
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "UploadInputSchemaViewModel")
   private var fileServer: FileServer?
   public private(set) var fileServerRunning = false
   private var wifiEnable = false
@@ -34,7 +33,7 @@ extension UploadInputSchemaViewModel {
   }
 
   @objc func startFileServer() {
-    self.logger.debug("start file server")
+    logger.debug("start file server")
     let fileServer = FileServer(
       port: 80,
       publicDirectory: FileManager.sandboxDirectory
@@ -45,7 +44,7 @@ extension UploadInputSchemaViewModel {
   }
 
   @objc func stopFileServer() {
-    self.logger.debug("stop file server")
+    logger.debug("stop file server")
     self.fileServer?.shutdown()
     self.fileServerRunning = false
   }

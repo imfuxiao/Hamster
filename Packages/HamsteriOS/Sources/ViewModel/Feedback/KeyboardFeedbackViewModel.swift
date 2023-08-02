@@ -5,6 +5,7 @@
 //  Created by morse on 14/7/2023.
 //
 
+import Combine
 import HamsterModel
 import UIKit
 
@@ -22,6 +23,11 @@ public class KeyboardFeedbackViewModel {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback = enableHapticFeedback
     }
+  }
+
+  public let hapticFeedbackStateSubject = PassthroughSubject<Bool, Never>()
+  public var hapticFeedbackStatePublished: AnyPublisher<Bool, Never> {
+    hapticFeedbackStateSubject.eraseToAnyPublisher()
   }
 
   public var hapticFeedbackIntensity: Int {

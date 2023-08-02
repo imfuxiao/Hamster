@@ -9,11 +9,11 @@ import Combine
 import HamsterUIKit
 import UIKit
 
-class ColorSchemaRootView: NibLessView {
+class KeyboardColorRootView: NibLessView {
   // MARK: properties
 
   private var subscriptions = Set<AnyCancellable>()
-  private let colorSchemaViewModel: ColorSchemaViewModel
+  private let keyboardColorViewModel: KeyboardColorViewModel
 
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
@@ -24,10 +24,10 @@ class ColorSchemaRootView: NibLessView {
 
   lazy var toggle: UISwitch = {
     let toggle = UISwitch(frame: .zero)
-    toggle.isOn = colorSchemaViewModel.enableColorSchema
+    toggle.isOn = keyboardColorViewModel.enableColorSchema
     toggle.addTarget(
-      colorSchemaViewModel,
-      action: #selector(colorSchemaViewModel.colorSchemaEnableHandled(_:)),
+      keyboardColorViewModel,
+      action: #selector(keyboardColorViewModel.colorSchemaEnableHandled(_:)),
       for: .valueChanged)
     return toggle
   }()
@@ -47,7 +47,7 @@ class ColorSchemaRootView: NibLessView {
 
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    tableView.isHidden = !colorSchemaViewModel.enableColorSchema
+    tableView.isHidden = !keyboardColorViewModel.enableColorSchema
     tableView.register(KeyboardColorTableViewCell.self, forCellReuseIdentifier: KeyboardColorTableViewCell.identifier)
     tableView.delegate = self
     tableView.dataSource = self
@@ -60,8 +60,8 @@ class ColorSchemaRootView: NibLessView {
 
   // MARK: methods
 
-  init(frame: CGRect = .zero, colorSchemaViewModel: ColorSchemaViewModel) {
-    self.colorSchemaViewModel = colorSchemaViewModel
+  init(frame: CGRect = .zero, keyboardColorViewModel: KeyboardColorViewModel) {
+    self.keyboardColorViewModel = keyboardColorViewModel
 
     super.init(frame: frame)
   }
@@ -95,7 +95,7 @@ class ColorSchemaRootView: NibLessView {
     constructViewHierarchy()
     activateViewConstraints()
 
-    colorSchemaViewModel.$enableColorSchema
+    keyboardColorViewModel.$enableColorSchema
       .receive(on: DispatchQueue.main)
       .sink {
         guard !$0 else { return }
@@ -113,9 +113,9 @@ class ColorSchemaRootView: NibLessView {
   }
 }
 
-extension ColorSchemaRootView: UITableViewDataSource, UITableViewDelegate {
+extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
   func numberOfSections(in tableView: UITableView) -> Int {
-    colorSchemaViewModel.keyboardColorList.count
+    keyboardColorViewModel.keyboardColorList.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -124,7 +124,7 @@ extension ColorSchemaRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: KeyboardColorTableViewCell.identifier, for: indexPath)
-    let keyboardColor = colorSchemaViewModel.keyboardColorList[indexPath.section]
+    let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
     if let cell = cell as? KeyboardColorTableViewCell {
       cell.keyboardColor = keyboardColor
     }
@@ -132,7 +132,7 @@ extension ColorSchemaRootView: UITableViewDataSource, UITableViewDelegate {
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let keyboardColor = colorSchemaViewModel.keyboardColorList[indexPath.section]
-    colorSchemaViewModel.useColorSchema = keyboardColor.schemaName
+    let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
+    keyboardColorViewModel.useColorSchema = keyboardColor.schemaName
   }
 }

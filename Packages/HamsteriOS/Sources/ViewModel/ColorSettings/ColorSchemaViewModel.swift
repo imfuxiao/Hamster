@@ -8,7 +8,7 @@
 import HamsterModel
 import UIKit
 
-class ColorSchemaViewModel {
+class KeyboardColorViewModel {
   // MARK: properties
   
   private unowned let settingsViewModel: SettingsViewModel

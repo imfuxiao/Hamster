@@ -15,7 +15,7 @@ public class SettingsRootView: NibLessView {
   let settingsViewModel: SettingsViewModel
 
   let tableView: UITableView = {
-    let tableView = InsetGroupedTableView()
+    let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
     tableView.contentInsetAdjustmentBehavior = .automatic
     return tableView
@@ -45,13 +45,7 @@ public class SettingsRootView: NibLessView {
   }
 
   override public func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 }
 

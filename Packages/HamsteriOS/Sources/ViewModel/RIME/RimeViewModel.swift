@@ -8,6 +8,7 @@
 import Foundation
 import HamsterKit
 import ProgressHUD
+import UIKit
 
 public class RimeViewModel {
   private let rimeContext: RimeContext
@@ -32,6 +33,57 @@ public class RimeViewModel {
       HamsterAppDependencyContainer.shared.configuration.rime?.overrideDictFiles = newValue
     }
   }
+
+  lazy var settings: [SettingItemModel] = [
+    .init(
+      icon: UIImage(systemName: "square.and.pencil"),
+      text: keyValueOfSwitchSimplifiedAndTraditional,
+      placeholder: "简繁切换键值",
+      type: .textField,
+      textHandled: { [unowned self] in
+        keyValueOfSwitchSimplifiedAndTraditional = $0
+      }
+    ),
+    .init(
+      text: "部署时覆盖键盘词库文件",
+      type: .toggle,
+      toggleValue: overrideDictFiles,
+      toggleHandled: { [unowned self] in
+        overrideDictFiles = $0
+      }
+    ),
+    .init(
+      text: "重新部署",
+      type: .button,
+      buttonAction: { [unowned self] in
+        Task {
+          try await rimeDeploy()
+        }
+      },
+      favoriteButton: .rimeDeploy
+    ),
+    .init(
+      text: "RIME同步",
+      type: .button,
+      buttonAction: { [unowned self] in
+        Task {
+          try await rimeSync()
+        }
+      },
+      favoriteButton: .rimeSync
+    ),
+    .init(
+      text: "RIME重置",
+      textTintColor: .systemRed,
+      type: .button,
+      buttonAction: { [unowned self] in
+        Task {
+          try await rimeRest()
+        }
+      },
+      favoriteButton: .rimeRest
+    )
+  ]
 
   init(rimeContext: RimeContext) {
     self.rimeContext = rimeContext

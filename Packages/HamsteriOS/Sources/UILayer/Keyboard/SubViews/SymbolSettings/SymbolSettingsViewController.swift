@@ -8,7 +8,7 @@
 import HamsterUIKit
 import UIKit
 
-class SymbolSettingsViewController: NibLessViewController {
+public class SymbolSettingsViewController: NibLessViewController {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
@@ -18,7 +18,7 @@ class SymbolSettingsViewController: NibLessViewController {
   }
 }
 
-extension SymbolSettingsViewController {
+public extension SymbolSettingsViewController {
   override func loadView() {
     super.loadView()
 

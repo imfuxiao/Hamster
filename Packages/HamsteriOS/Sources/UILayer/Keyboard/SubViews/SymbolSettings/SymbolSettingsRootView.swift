@@ -22,14 +22,12 @@ class SymbolSettingsRootView: NibLessView {
       action: #selector(keyboardSettingsViewModel.symbolsSegmentedControlChange(_:)),
       for: .valueChanged
     )
-    segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     return segmentedControl
   }()
 
   lazy var containerView: UIView = {
     let view = UIView()
     view.backgroundColor = .secondarySystemBackground
-    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -65,28 +63,38 @@ class SymbolSettingsRootView: NibLessView {
     symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher()
   )
 
+  // MARK: methods
+
   init(frame: CGRect = .zero, keyboardSettingsViewModel: KeyboardSettingsViewModel) {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupSubview()
+
+    keyboardSettingsViewModel.symbolSettingsSubviewPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        presentTabView($0)
+      }
+      .store(in: &subscriptions)
   }
 
-  // MARK: methods
-
-  override func constructViewHierarchy() {
+  func setupSubview() {
     backgroundColor = .secondarySystemBackground
     addSubview(segmentedView)
     addSubview(containerView)
-  }
 
-  override func activateViewConstraints() {
+    segmentedView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+
     NSLayoutConstraint.activate([
-      segmentedView.topAnchor.constraint(equalToSystemSpacingBelow: safeAreaLayoutGuide.topAnchor, multiplier: 1.0),
+      segmentedView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
       segmentedView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
       segmentedView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
 
       containerView.topAnchor.constraint(equalToSystemSpacingBelow: segmentedView.bottomAnchor, multiplier: 1.0),
-      containerView.bottomAnchor.constraint(equalTo: CustomKeyboardLayoutGuideNoSafeArea.topAnchor),
+      containerView.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor),
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
@@ -111,28 +119,6 @@ class SymbolSettingsRootView: NibLessView {
     containerView.subviews.forEach { $0.removeFromSuperview() }
 
     containerView.addSubview(tabView)
-
-    NSLayoutConstraint.activate([
-      tabView.topAnchor.constraint(equalTo: containerView.topAnchor),
-      tabView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-      tabView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-      tabView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-    ])
-  }
-}
-
-extension SymbolSettingsRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
-
-    keyboardSettingsViewModel.selectedSegmentIndexOfSymbolsSettingPublished
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        presentTabView($0)
-      }
-      .store(in: &subscriptions)
+    tabView.fillSuperview()
   }
 }

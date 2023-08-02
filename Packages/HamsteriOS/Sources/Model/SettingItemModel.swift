@@ -25,7 +25,7 @@ public struct SettingItemModel {
     textValue: String? = nil,
     textHandled: ((String) -> Void)? = nil,
     shouldBeginEditing: ((UITextField) -> Bool)? = nil,
-    buttonAction: (() -> Void)? = nil,
+    buttonAction: (() throws -> Void)? = nil,
     favoriteButton: FavoriteButton? = nil,
     favoriteButtonHandler: (() -> Void)? = nil
   ) {
@@ -65,7 +65,7 @@ public struct SettingItemModel {
   public var textValue: String?
   public var textHandled: ((String) -> Void)?
   public var shouldBeginEditing: ((UITextField) -> Bool)?
-  public var buttonAction: (() -> Void)?
+  public var buttonAction: (() throws -> Void)?
   public var favoriteButton: FavoriteButton?
   public var favoriteButtonHandler: (() -> Void)?
 }

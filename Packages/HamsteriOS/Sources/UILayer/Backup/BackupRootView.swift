@@ -18,34 +18,21 @@ class BackupRootView: NibLessView {
     self.backupViewModel = backupViewModel
 
     super.init(frame: frame)
+
+    setupTableView()
   }
 
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(FinderViewCell.self, forCellReuseIdentifier: FinderViewCell.identifier)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 
-  override func constructViewHierarchy() {
+  func setupTableView() {
     addSubview(tableView)
     tableView.delegate = self
     tableView.dataSource = self
-  }
-
-  override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
-  }
-}
-
-extension BackupRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
+    tableView.fillSuperview()
 
     backupViewModel.$backupFiles
       .receive(on: DispatchQueue.main)
@@ -53,9 +40,12 @@ extension BackupRootView {
         tableView.reloadData()
       }
       .store(in: &subscriptions)
+  }
+}
 
-    constructViewHierarchy()
-    activateViewConstraints()
+extension BackupRootView {
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
 
     Task {
       await backupViewModel.loadBackupFiles()
@@ -104,22 +94,9 @@ extension BackupRootView: UITableViewDataSource {
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
-      return ButtonTableViewCell(
-        settingItem: .init(
-          text: "软件备份",
-          buttonAction: { [unowned self] in
-            Task {
-              do {
-                try await backupViewModel.backup()
-              } catch {
-                // TODO:
-                //            backupViewModel.error = error
-              }
-            }
-          },
-          favoriteButton: .appBackup
-        )
-      )
+      let cell = ButtonTableViewCell(style: .default, reuseIdentifier: ButtonTableViewCell.identifier)
+      cell.settingItem = backupViewModel.settingItem
+      return cell
     }
 
     let fileInfo = backupViewModel.backupFiles[indexPath.row]

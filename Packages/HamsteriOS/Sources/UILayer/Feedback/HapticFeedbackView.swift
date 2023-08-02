@@ -12,8 +12,6 @@ import UIKit
 class HapticFeedbackView: NibLessView {
   // MARK: properties
 
-  private var subscriptions = Set<AnyCancellable>()
-
   private let keyboardFeedbackViewModel: KeyboardFeedbackViewModel
 
   lazy var label: UILabel = {
@@ -33,33 +31,19 @@ class HapticFeedbackView: NibLessView {
     return switchView
   }()
 
-  private lazy var firstView: UIStackView = {
-    let stackView = UIStackView()
+  private lazy var firstRowView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [label, switchView])
 
     stackView.axis = .horizontal
     stackView.alignment = .center
-    stackView.distribution = .fill
+    stackView.distribution = .equalSpacing
     stackView.spacing = 8
 
-    stackView.addArrangedSubview(label)
-    stackView.addArrangedSubview(switchView)
-    stackView.translatesAutoresizingMaskIntoConstraints = false
     return stackView
   }()
 
-  private lazy var secondaryView: UIStackView = {
-    let stackView = UIStackView()
-
-    stackView.axis = .horizontal
-    stackView.alignment = .center
-    stackView.distribution = .fill
-    stackView.spacing = 8
-
-    stackView.translatesAutoresizingMaskIntoConstraints = false
-    return stackView
-  }()
-
-  lazy var hapticFeedbackIntensitySlideView: UISlider = {
+  /// 反馈强度滑动
+  private lazy var hapticFeedbackIntensitySlideView: UISlider = {
     let slider = UISlider(frame: .zero)
     slider.minimumValue = Float(keyboardFeedbackViewModel.minimumHapticFeedbackIntensity)
     slider.maximumValue = Float(keyboardFeedbackViewModel.maximumHapticFeedbackIntensity)
@@ -73,8 +57,9 @@ class HapticFeedbackView: NibLessView {
     return slider
   }()
 
-  lazy var hapticsSettingView: UIView = {
-    let stackView = UIStackView(frame: .zero)
+  private lazy var secondaryRowView: UIStackView = {
+    let stackView = UIStackView()
+
     stackView.axis = .horizontal
     stackView.alignment = .center
     stackView.distribution = .fill
@@ -96,43 +81,42 @@ class HapticFeedbackView: NibLessView {
     self.keyboardFeedbackViewModel = keyboardFeedbackViewModel
 
     super.init(frame: frame)
-  }
-
-  override func constructViewHierarchy() {
-    addSubview(firstView)
-    addSubview(secondaryView)
-  }
-
-  override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      firstView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-      firstView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-      firstView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-
-      secondaryView.topAnchor.constraint(equalToSystemSpacingBelow: firstView.bottomAnchor, multiplier: 1.0),
-      secondaryView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-      secondaryView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-      secondaryView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-    ])
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
 
     constructViewHierarchy()
     activateViewConstraints()
+  }
 
-    keyboardFeedbackViewModel.$enableHapticFeedback
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        if $0 {
-          secondaryView.addArrangedSubview(hapticsSettingView)
-        } else {
-          hapticsSettingView.removeFromSuperview()
-          secondaryView.removeArrangedSubview(hapticsSettingView)
-        }
-      }
-      .store(in: &subscriptions)
+  override func constructViewHierarchy() {
+    addSubview(firstRowView)
+    if keyboardFeedbackViewModel.enableHapticFeedback {
+      addSubview(secondaryRowView)
+    }
+  }
+
+  override func activateViewConstraints() {
+    firstRowView.translatesAutoresizingMaskIntoConstraints = false
+
+    if keyboardFeedbackViewModel.enableHapticFeedback {
+      secondaryRowView.translatesAutoresizingMaskIntoConstraints = false
+
+      NSLayoutConstraint.activate([
+        firstRowView.topAnchor.constraint(equalTo: topAnchor),
+        firstRowView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        firstRowView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+        secondaryRowView.topAnchor.constraint(equalTo: firstRowView.bottomAnchor, constant: 8),
+        secondaryRowView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        secondaryRowView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        secondaryRowView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      ])
+    } else {
+      NSLayoutConstraint.activate([
+        firstRowView.topAnchor.constraint(equalTo: topAnchor),
+        firstRowView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        firstRowView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        firstRowView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      ])
+    }
   }
 }
 

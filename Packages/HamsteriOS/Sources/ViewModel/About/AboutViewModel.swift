@@ -7,13 +7,10 @@
 
 import Combine
 import HamsterKit
-import os
 import ProgressHUD
 import UIKit
 
 public class AboutViewModel: ObservableObject {
-  let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "AboutViewModel")
-
   private unowned var mainViewModel: MainViewModel
 
   init(mainViewModel: MainViewModel) {

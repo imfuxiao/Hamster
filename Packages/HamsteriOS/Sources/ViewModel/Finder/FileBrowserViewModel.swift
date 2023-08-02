@@ -6,15 +6,13 @@
 //
 
 import Combine
+import HamsterKit
 import HamsterModel
-import os
 import ProgressHUD
 import UIKit
 
 public class FileBrowserViewModel {
   // MARK: properties
-
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "FileBrowserViewModel")
 
   private let rootURL: URL
 

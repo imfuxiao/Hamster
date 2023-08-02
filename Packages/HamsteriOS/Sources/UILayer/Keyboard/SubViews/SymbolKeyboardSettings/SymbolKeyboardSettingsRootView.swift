@@ -15,6 +15,9 @@ class SymbolKeyboardSettingsRootView: NibLessView {
 
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.allowsSelection = false
+    tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     return tableView
   }()
 
@@ -24,28 +27,21 @@ class SymbolKeyboardSettingsRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupTableView()
   }
 
-  override func constructViewHierarchy() {
+  func setupTableView() {
     addSubview(tableView)
     tableView.delegate = self
     tableView.dataSource = self
-  }
-
-  override func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 }
 
 extension SymbolKeyboardSettingsRootView: UITableViewDataSource, UITableViewDelegate {
   func numberOfSections(in tableView: UITableView) -> Int {
-    2
+    keyboardSettingsViewModel.symbolKeyboardSettings.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -53,24 +49,24 @@ extension SymbolKeyboardSettingsRootView: UITableViewDataSource, UITableViewDele
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if indexPath.section == 0 {
-      return ToggleTableViewCell(settingItem: .init(
-        text: "启用符号键盘",
-        toggleValue: keyboardSettingsViewModel.enableSymbolKeyboard,
-        toggleHandled: { [unowned self] in
-          keyboardSettingsViewModel.enableSymbolKeyboard = $0
-        }
-      ))
+    let settingItem = keyboardSettingsViewModel.symbolKeyboardSettings[indexPath.section]
+    if settingItem.type == .button {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
     }
 
-    return ButtonTableViewCell(settingItem: .init(
-      text: "常用符号 - 恢复默认值",
-      textTintColor: .systemRed,
-      buttonAction: {
-        // TODO: 补充重置符号逻辑
-//        SymbolCategory.frequentSymbolProvider.rest()
-//        ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
-      }
-    ))
+    let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? ToggleTableViewCell else { return cell }
+    cell.settingItem = settingItem
+    return cell
+  }
+
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    if section == 0 {
+      return KeyboardSettingsViewModel.symbolKeyboardRemark
+    }
+    return nil
   }
 }

@@ -11,7 +11,7 @@ import UIKit
 class SymbolSettingsView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
-  lazy var tableView: UITableView = {
+  let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     return tableView
@@ -21,6 +21,15 @@ class SymbolSettingsView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupTableView()
+  }
+
+  func setupTableView() {
+    addSubview(tableView)
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.fillSuperview()
   }
 }
 
@@ -35,9 +44,7 @@ extension SymbolSettingsView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
-
     guard let cell = cell as? ButtonTableViewCell else { return cell }
-
     cell.settingItem = keyboardSettingsViewModel.buttonSettingItems[indexPath.row]
     return cell
   }

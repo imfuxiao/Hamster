@@ -16,13 +16,20 @@ class ToolbarSettingsRootView: NibLessView {
     tableView.allowsSelection = false
     tableView.register(StepperTableViewCell.self, forCellReuseIdentifier: StepperTableViewCell.identifier)
     tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 
   init(frame: CGRect = .zero, keyboardSettingsViewModel: KeyboardSettingsViewModel) {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
+
     super.init(frame: frame)
+
+    setupTableView()
+  }
+
+  func setupTableView() {
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   override func constructViewHierarchy() {
@@ -32,12 +39,7 @@ class ToolbarSettingsRootView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: CustomKeyboardLayoutGuideNoSafeArea.topAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 }
 

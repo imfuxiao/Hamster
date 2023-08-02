@@ -13,6 +13,7 @@ public enum KeyboardSettingsSubView {
   case toolbar
   case numberNineGrid
   case symbols
+  case symbolKeyboard
 }
 
 public enum NumberNineGridTabView {
@@ -77,6 +78,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  @Published
   public var enableToolbar: Bool {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.enableToolbar = enableToolbar
@@ -89,6 +91,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  @Published
   public var enableNineGridOfNumericKeyboard: Bool {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard = enableNineGridOfNumericKeyboard
@@ -101,6 +104,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  @Published
   public var enableSymbolKeyboard: Bool {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard = enableSymbolKeyboard
@@ -122,6 +126,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
   public var heightOfCodingArea: Int {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfCodingArea = heightOfCodingArea
+    }
+  }
+
+  public var codingAreaFontSize: Int {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.codingAreaFontSize = codingAreaFontSize
+    }
+  }
+
+  public var candidateCommentFontSize: Int {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize = candidateCommentFontSize
     }
   }
 
@@ -208,7 +224,8 @@ public class KeyboardSettingsViewModel: ObservableObject {
             displaySpaceLeftButton = $0
           }),
         .init(
-          text: "左侧按键键值",
+          icon: UIImage(systemName: "square.and.pencil"),
+          placeholder: "左侧按键键值",
           type: .textField,
           textValue: keyValueOfSpaceLeftButton,
           textHandled: { [unowned self] in
@@ -222,7 +239,8 @@ public class KeyboardSettingsViewModel: ObservableObject {
             displaySpaceRightButton = $0
           }),
         .init(
-          text: "右侧按键键值",
+          icon: UIImage(systemName: "square.and.pencil"),
+          placeholder: "右侧按键键值",
           type: .textField,
           textValue: keyValueOfSpaceRightButton,
           textHandled: { [unowned self] in
@@ -251,16 +269,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
     .init(
       items: [
         .init(
-          text: "候选栏设置",
+          text: "候选工具栏设置",
+          accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationLinkLabel: { [unowned self] in enableToolbar ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
-            // TODO: 打开候选栏
-            // CandidateTextBarSettingViewController(parentController: self, appSettings: appSettings)
+            self.subViewSubject.send(.toolbar)
           })
       ]),
     .init(
-      footer: Self.symbolKeyboardRemark,
       items: [
         .init(
           text: "启用分号按键",
@@ -271,30 +288,27 @@ public class KeyboardSettingsViewModel: ObservableObject {
           }),
         .init(
           text: "数字九宫格",
+          accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationLinkLabel: { [unowned self] in enableNineGridOfNumericKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
-            // TODO: 数字九宫格
-            // NumberNineGridSettingViewController(appSettings: appSettings, parentController: self)
+            self.subViewSubject.send(.numberNineGrid)
           }),
         .init(
           text: "符号设置",
+          accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationAction: { [unowned self] in
-            // TODO: 符号设置
-            // SymbolSettingsViewController(appSettings: appSettings)
+            self.subViewSubject.send(.symbols)
           }),
         .init(
           text: "符号键盘",
+          accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
-            // TODO: 符号键盘设置
-            // SymbolKeyboardSettingViewController(appSettings: appSettings, parentController: self)
+            self.subViewSubject.send(.symbolKeyboard)
           })
-      ]),
-    .init(
-      items: [
       ])
   ]
 
@@ -349,6 +363,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
         candidateWordFontSize = Int($0)
       }),
     .init(
+      text: "候选备注字体大小",
+      value: Double(candidateCommentFontSize),
+      minValue: 5,
+      maxValue: 30,
+      stepValue: 1,
+      valueChangeHandled: { [unowned self] in
+        candidateCommentFontSize = Int($0)
+      }),
+    .init(
       text: "工具栏高度",
       value: Double(heightOfToolbar),
       minValue: 30,
@@ -365,12 +388,21 @@ public class KeyboardSettingsViewModel: ObservableObject {
       stepValue: 1,
       valueChangeHandled: { [unowned self] in
         heightOfCodingArea = Int($0)
+      }),
+    .init(
+      text: "编码区字体大小",
+      value: Double(codingAreaFontSize),
+      minValue: 5,
+      maxValue: 20,
+      stepValue: 1,
+      valueChangeHandled: { [unowned self] in
+        codingAreaFontSize = Int($0)
       })
   ]
 
   lazy var toolbarToggles: [SettingItemModel] = [
     .init(
-      text: "启用工具栏",
+      text: "启用候选工具栏",
       toggleValue: enableToolbar,
       toggleHandled: { [unowned self] in
         enableToolbar = $0
@@ -389,24 +421,68 @@ public class KeyboardSettingsViewModel: ObservableObject {
       })
   ]
 
+  lazy var numberNineGridSettings: [SettingItemModel] = [
+    .init(
+      text: "启用数字九宫格",
+      type: .toggle,
+      toggleValue: enableNineGridOfNumericKeyboard,
+      toggleHandled: { [unowned self] in
+        enableNineGridOfNumericKeyboard = $0
+      }),
+    .init(
+      text: "是否直接上屏",
+      type: .toggle,
+      toggleValue: enterDirectlyOnScreenByNineGridOfNumericKeyboard,
+      toggleHandled: { [unowned self] in
+        enterDirectlyOnScreenByNineGridOfNumericKeyboard = $0
+      }),
+    .init(
+      text: "符号列表 - 恢复默认值",
+      textTintColor: .systemRed,
+      type: .button,
+      buttonAction: { [unowned self] in
+        // TODO: 恢复默认值
+//            appSettings.numberNineGridSymbols = HamsterAppSettingKeys.defaultNumberNineGridSymbols
+//            parentController.symbolsTableView.reloadData()
+//            ProgressHUD.showSuccess("重置成功")
+      })
+  ]
+
+  lazy var symbolKeyboardSettings: [SettingItemModel] = [
+    .init(
+      text: "启用符号键盘",
+      type: .toggle,
+      toggleValue: enableSymbolKeyboard,
+      toggleHandled: { [unowned self] in
+        enableSymbolKeyboard = $0
+      }),
+    .init(
+      text: "常用符号 - 恢复默认值",
+      textTintColor: .systemRed,
+      type: .button,
+      buttonAction: {
+        // TODO: 补充重置符号逻辑
+//        SymbolCategory.frequentSymbolProvider.rest()
+//        ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      })
+  ]
+
+  // navigation 转 subview
   private let subViewSubject = PassthroughSubject<KeyboardSettingsSubView, Never>()
   public var subViewPublished: AnyPublisher<KeyboardSettingsSubView, Never> {
     subViewSubject.eraseToAnyPublisher()
   }
 
-  private let numberNineGridTabViewSubject = CurrentValueSubject<NumberNineGridTabView, Never>(.settings)
-  public var numberNineGridTabViewPublished: AnyPublisher<NumberNineGridTabView, Never> {
-    numberNineGridTabViewSubject.eraseToAnyPublisher()
+  // 数字九宫格页面切换
+  private let numberNineGridSubviewSwitchSubject = CurrentValueSubject<NumberNineGridTabView, Never>(.settings)
+  public var numberNineGridSubviewSwitchPublished: AnyPublisher<NumberNineGridTabView, Never> {
+    numberNineGridSubviewSwitchSubject.eraseToAnyPublisher()
   }
 
-  private let selectedSegmentIndexSubject = PassthroughSubject<Int, Never>()
-  public var selectedSegmentIndexPublished: AnyPublisher<Int, Never> {
-    selectedSegmentIndexSubject.eraseToAnyPublisher()
-  }
-
-  private let selectedSegmentIndexOfSymbolsSettingSubject = PassthroughSubject<Int, Never>()
-  public var selectedSegmentIndexOfSymbolsSettingPublished: AnyPublisher<Int, Never> {
-    selectedSegmentIndexOfSymbolsSettingSubject.eraseToAnyPublisher()
+  // 符号设置页面切换
+  private let symbolSettingsSubviewSwitchSubject = CurrentValueSubject<Int, Never>(0)
+  public var symbolSettingsSubviewPublished: AnyPublisher<Int, Never> {
+    symbolSettingsSubviewSwitchSubject.eraseToAnyPublisher()
   }
 
   @Published
@@ -438,12 +514,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.candidateWordFontSize = configuration.toolbar?.candidateWordFontSize ?? 20
     self.heightOfToolbar = configuration.toolbar?.heightOfToolbar ?? 50
     self.heightOfCodingArea = configuration.toolbar?.heightOfCodingArea ?? 10
+    self.codingAreaFontSize = configuration.toolbar?.codingAreaFontSize ?? 12
+    self.candidateCommentFontSize = configuration.toolbar?.candidateCommentFontSize ?? 12
     self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
     self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
   }
 
   @objc func numberNineGridSegmentedControlChange(_ sender: UISegmentedControl) {
-    selectedSegmentIndexSubject.send(sender.selectedSegmentIndex)
+    if sender.selectedSegmentIndex == 0 {
+      numberNineGridSubviewSwitchSubject.send(.settings)
+      return
+    }
+    numberNineGridSubviewSwitchSubject.send(.symbols)
   }
 
   @objc func changeTableEditModel() {
@@ -451,11 +533,11 @@ public class KeyboardSettingsViewModel: ObservableObject {
   }
 
   @objc func symbolsSegmentedControlChange(_ sender: UISegmentedControl) {
-    selectedSegmentIndexOfSymbolsSettingSubject.send(sender.selectedSegmentIndex)
+    symbolSettingsSubviewSwitchSubject.send(sender.selectedSegmentIndex)
   }
 }
 
 extension KeyboardSettingsViewModel {
-  static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
+  public static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
   static let enableKeyboardAutomaticallyLowercaseRemark = "默认键盘大小写会保持自身状态. 开启此选项后, 当在大写状态在下输入一个字母后会自动转为小写状态. 注意: 双击Shift会保持锁定"
 }

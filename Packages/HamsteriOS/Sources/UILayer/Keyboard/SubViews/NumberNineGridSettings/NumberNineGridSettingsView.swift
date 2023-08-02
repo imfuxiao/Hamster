@@ -16,6 +16,8 @@ class NumberNineGridSettingsView: NibLessView {
 
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     return tableView
   }()
 
@@ -25,71 +27,39 @@ class NumberNineGridSettingsView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupTableView()
   }
 
-  override func constructViewHierarchy() {
+  func setupTableView() {
     addSubview(tableView)
     tableView.delegate = self
     tableView.dataSource = self
-  }
-
-  override func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 }
 
 extension NumberNineGridSettingsView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 3
+    keyboardSettingsViewModel.numberNineGridSettings.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    1
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch indexPath.section {
-    case 0:
-      return ToggleTableViewCell(
-        settingItem: .init(
-          text: "启用数字九宫格",
-          toggleValue: keyboardSettingsViewModel.enableNineGridOfNumericKeyboard,
-          toggleHandled: { [unowned self] in
-            keyboardSettingsViewModel.enableNineGridOfNumericKeyboard = $0
-          }
-        )
-      )
-    case 1:
-      return ToggleTableViewCell(
-        settingItem: .init(
-          text: "是否直接上屏",
-          toggleValue: keyboardSettingsViewModel.enterDirectlyOnScreenByNineGridOfNumericKeyboard,
-          toggleHandled: { [unowned self] in
-            keyboardSettingsViewModel.enterDirectlyOnScreenByNineGridOfNumericKeyboard = $0
-          }
-        )
-      )
-    case 2:
-      return ButtonTableViewCell(
-        settingItem: .init(
-          text: "符号列表 - 恢复默认值",
-          textTintColor: .systemRed,
-          buttonAction: { [unowned self] in
-            // TODO: 恢复默认值
-//            appSettings.numberNineGridSymbols = HamsterAppSettingKeys.defaultNumberNineGridSymbols
-//            parentController.symbolsTableView.reloadData()
-//            ProgressHUD.showSuccess("重置成功")
-          }
-        ))
-    default:
-      return UITableViewCell()
+    let settingItem = keyboardSettingsViewModel.numberNineGridSettings[indexPath.section]
+    if settingItem.type == .button {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
     }
+    let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? ToggleTableViewCell else { return cell }
+    cell.settingItem = settingItem
+    return cell
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -8,7 +8,6 @@
 import Combine
 import HamsterKit
 import HamsterUIKit
-import os
 import ProgressHUD
 import UIKit
 
@@ -16,7 +15,6 @@ class InputSchemaRootView: NibLessView {
   // MARK: properties
 
   private static let cellIdentifier = "InputSchemaTableCell"
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "InputSchemaRootView")
 
   private let inputSchemaViewModel: InputSchemaViewModel
 
@@ -50,13 +48,7 @@ class InputSchemaRootView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 }
 

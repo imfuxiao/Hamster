@@ -13,7 +13,11 @@ class ToggleTableViewCell: NibLessTableViewCell {
 
   // MARK: properties
 
-  public var settingItem: SettingItemModel
+  public var settingItem: SettingItemModel {
+    didSet {
+      setupToggleView()
+    }
+  }
 
   let switchView: UISwitch = {
     let switchView = UISwitch(frame: .zero)
@@ -22,19 +26,22 @@ class ToggleTableViewCell: NibLessTableViewCell {
 
   // MARK: methods
 
-  init(settingItem: SettingItemModel) {
-    self.settingItem = settingItem
-
-    super.init(style: .default, reuseIdentifier: Self.identifier)
-  }
-
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.settingItem = SettingItemModel()
 
     super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    setupToggleView()
+  }
+
+  func setupToggleView() {
+    switchView.setOn(settingItem.toggleValue, animated: false)
+    switchView.addTarget(self, action: #selector(toggleAction), for: .valueChanged)
+    accessoryView = switchView
   }
 
   @objc func toggleAction(_ sender: UISwitch) {
+    settingItem.toggleValue = sender.isOn
     settingItem.toggleHandled?(sender.isOn)
   }
 
@@ -43,13 +50,13 @@ class ToggleTableViewCell: NibLessTableViewCell {
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
+    super.updateConfiguration(using: state)
+
     var config = UIListContentConfiguration.cell()
     config.text = settingItem.text
     config.secondaryText = settingItem.secondaryText
     contentConfiguration = config
 
-    switchView.setOn(settingItem.toggleValue, animated: false)
-    switchView.addTarget(self, action: #selector(toggleAction), for: .valueChanged)
-    accessoryView = switchView
+    setupToggleView()
   }
 }

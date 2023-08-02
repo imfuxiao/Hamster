@@ -10,7 +10,7 @@ import HamsterUIKit
 import ProgressHUD
 import UIKit
 
-class NumberNineGridSettingsViewController: NibLessViewController {
+public class NumberNineGridSettingsViewController: NibLessViewController {
   private var subscriptions = Set<AnyCancellable>()
 
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
@@ -35,20 +35,20 @@ class NumberNineGridSettingsViewController: NibLessViewController {
 
 // MARK: override UIViewController
 
-extension NumberNineGridSettingsViewController {
+public extension NumberNineGridSettingsViewController {
   override func loadView() {
     super.loadView()
 
     navigationItem.titleView = segmentedView
     view = NumberNineGridSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
 
-    keyboardSettingsViewModel.selectedSegmentIndexPublished
+    keyboardSettingsViewModel.numberNineGridSubviewSwitchPublished
       .combineLatest(keyboardSettingsViewModel.$symbolTableIsEditing)
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] index, isEditing in
-        if index == 1 {
+      .sink { [unowned self] subview, isEditing in
+        if subview == .symbols {
           let rightBarButtonItem = UIBarButtonItem(
-            title: isEditing ? "编辑" : "完成",
+            title: isEditing ? "完成" : "编辑",
             style: .plain,
             target: keyboardSettingsViewModel,
             action: #selector(keyboardSettingsViewModel.changeTableEditModel)

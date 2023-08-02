@@ -5,8 +5,8 @@
 //  Created by morse on 2023/6/14.
 //
 
+import HamsterKit
 import HamsterUIKit
-import os
 import ProgressHUD
 import Runestone
 import TreeSitterLua
@@ -22,7 +22,6 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
   // MARK: properties
 
   let fileURL: URL
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "TextEditorViewController")
 
   // MARK: methods
 
@@ -75,16 +74,8 @@ extension TextEditorViewController {
       textView.text = fileContent
     }
 
-    textView.translatesAutoresizingMaskIntoConstraints = false
-
     view.addSubview(textView)
-
-    NSLayoutConstraint.activate([
-      textView.topAnchor.constraint(equalTo: view.topAnchor),
-      textView.bottomAnchor.constraint(equalTo: view.CustomKeyboardLayoutGuide.topAnchor),
-      textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    ])
+    textView.fillSuperview()
 
     // navigation item
     // 添加导入按钮

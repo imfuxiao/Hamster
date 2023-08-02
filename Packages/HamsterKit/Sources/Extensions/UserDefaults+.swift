@@ -7,13 +7,11 @@
 
 import Foundation
 import HamsterModel
-import os
 import RimeKit
 import Yams
 
 /// UserDefault 扩展
 public extension UserDefaults {
-  private static let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsterKit", category: "UserDefaults")
   /// AppGroup 共享 UserDefaults
   static let hamster = UserDefaults(suiteName: HamsterConstants.appGroupName)!
 
@@ -27,7 +25,7 @@ public extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Self.isFirstRunningOfKey)
-      Self.logger.debug("save isFirstRunning: \(newValue)")
+      logger.debug("save isFirstRunning: \(newValue)")
     }
   }
 
@@ -41,7 +39,7 @@ public extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Self.overrideRimeDirectoryOfKey)
-      Self.logger.debug("save overrideRimeDirectory: \(newValue)")
+      logger.debug("save overrideRimeDirectory: \(newValue)")
     }
   }
 
@@ -59,7 +57,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.schemasForKey)
-        Self.logger.debug("save schemas: \(newValue)")
+        logger.debug("save schemas: \(newValue)")
       }
     }
   }
@@ -78,7 +76,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.selectSchemasForKey)
-        Self.logger.debug("save selectSchemas: \(newValue)")
+        logger.debug("save selectSchemas: \(newValue)")
       }
     }
   }
@@ -96,7 +94,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.currentSchemaForKey)
-        Self.logger.debug("save currentSchema: \(data)")
+        logger.debug("save currentSchema: \(data)")
       }
     }
   }
@@ -114,7 +112,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.latestSchemaForKey)
-        Self.logger.debug("save latestSchema: \(data)")
+        logger.debug("save latestSchema: \(data)")
       }
     }
   }

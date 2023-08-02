@@ -7,9 +7,9 @@
 
 import Combine
 import Foundation
+import HamsterKit
 import HamsterModel
 import HamsterUIKit
-import os
 import ProgressHUD
 import UIKit
 
@@ -23,7 +23,6 @@ public enum FinderSegmentAction {
 public class FinderViewModel: ObservableObject {
   // MARK: properties
 
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "FinderViewModel")
   private let configuration: HamsterConfiguration
 
   public var segmentActionPublished: AnyPublisher<FinderSegmentAction, Never> {
@@ -51,6 +50,27 @@ public class FinderViewModel: ObservableObject {
   var regexOnCopyAppGroupDictFile: [String] {
     configuration.rime?.regexOnCopyAppGroupDictFile ?? ["^.*[.]userdb.*$", "^.*[.]txt$"]
   }
+
+  lazy var settingItems: [SettingItemModel] = [
+    .init(
+      text: "拷贝键盘词库文件至应用",
+      buttonAction: { [unowned self] in
+        Task {
+          try await copyAppGroupDictFileToAppDocument()
+        }
+      }
+    ),
+    .init(
+      text: "使用键盘文件覆盖应用文件",
+      buttonAction: { [unowned self] in
+        overrideDirectoryConform { [unowned self] in
+          Task {
+            try await overrideAppDocument()
+          }
+        }
+      }
+    )
+  ]
 
   // MARK: methods
 

@@ -13,8 +13,10 @@ class FinderSettingsView: NibLessView {
 
   lazy var settingTableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     tableView.delegate = self
     tableView.dataSource = self
+    tableView.rowHeight = UITableView.automaticDimension
     return tableView
   }()
 
@@ -29,13 +31,7 @@ class FinderSettingsView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    settingTableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      settingTableView.topAnchor.constraint(equalTo: topAnchor),
-      settingTableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      settingTableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      settingTableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    settingTableView.fillSuperview()
   }
 }
 
@@ -65,30 +61,11 @@ extension FinderSettingsView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch (indexPath.section, indexPath.row) {
-      case (0, 0):
-        return ButtonTableViewCell(settingItem: .init(
-          text: "拷贝键盘词库文件至应用",
-          buttonAction: { [unowned self] in
-            Task {
-              try await self.finderViewModel.copyAppGroupDictFileToAppDocument()
-            }
-          }
-        ))
-      case (1, 0):
-        return ButtonTableViewCell(settingItem: .init(
-          text: "使用键盘文件覆盖应用文件",
-          buttonAction: { [unowned self] in
-            self.finderViewModel.overrideDirectoryConform {
-              Task {
-                try await self.finderViewModel.overrideAppDocument()
-              }
-            }
-          }
-        ))
-      default:
-        return UITableViewCell(frame: .zero)
-    }
+    let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? ButtonTableViewCell else { return cell }
+    guard indexPath.section < finderViewModel.settingItems.count else { return cell }
+    cell.settingItem = finderViewModel.settingItems[indexPath.section]
+    return cell
   }
 }
 

@@ -5,12 +5,14 @@
 //  Created by morse on 14/7/2023.
 //
 
+import Combine
 import HamsterUIKit
 import UIKit
 
 class KeyboardFeedbackRootView: NibLessView {
   // MARK: properties
 
+  private var subscriptions = Set<AnyCancellable>()
   private let keyboardFeedbackViewModel: KeyboardFeedbackViewModel
 
   lazy var tableView: UITableView = {
@@ -18,7 +20,7 @@ class KeyboardFeedbackRootView: NibLessView {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.allowsSelection = false
-    tableView.translatesAutoresizingMaskIntoConstraints = false
+    tableView.rowHeight = UITableView.automaticDimension
     return tableView
   }()
 
@@ -35,12 +37,21 @@ class KeyboardFeedbackRootView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    constructViewHierarchy()
+    activateViewConstraints()
+
+    keyboardFeedbackViewModel.$enableHapticFeedback
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
+      }
+      .store(in: &subscriptions)
   }
 }
 
@@ -55,15 +66,16 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
-      return ToggleTableViewCell(settingItem: .init(
+      let cell = ToggleTableViewCell(style: .default, reuseIdentifier: ToggleTableViewCell.identifier)
+      cell.settingItem = .init(
         text: "开启按键声",
         toggleValue: keyboardFeedbackViewModel.enableKeySounds,
         toggleHandled: { [unowned self] in
           keyboardFeedbackViewModel.enableKeySounds = $0
         }
-      ))
+      )
+      return cell
     }
-
     return HapticFeedbackTableViewCell(keyboardFeedbackViewModel: keyboardFeedbackViewModel)
   }
 

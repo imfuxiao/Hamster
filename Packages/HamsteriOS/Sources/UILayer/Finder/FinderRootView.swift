@@ -86,14 +86,12 @@ class FinderRootView: NibLessView {
 
   override func activateViewConstraints() {
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    contentView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
       segmentedControl.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
       segmentedControl.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
       segmentedControl.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-    ])
 
-    contentView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
       contentView.topAnchor.constraint(equalToSystemSpacingBelow: segmentedControl.bottomAnchor, multiplier: 1.0),
       contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
       contentView.leadingAnchor.constraint(equalTo: leadingAnchor),

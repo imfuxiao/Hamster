@@ -81,7 +81,6 @@ class AboutRootView: NibLessView {
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(AboutTableViewCell.self, forCellReuseIdentifier: AboutTableViewCell.identifier)
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 
@@ -93,12 +92,7 @@ class AboutRootView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
 
     headerStackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([

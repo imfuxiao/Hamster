@@ -4,8 +4,8 @@
 //  Created by morse on 2023/6/12.
 //
 
+import HamsterKit
 import HamsterUIKit
-import os
 import ProgressHUD
 import UIKit
 
@@ -16,7 +16,6 @@ protocol SettingsViewModelFactory {
 public class SettingsViewController: NibLessViewController {
   // MARK: - properties
 
-  private let logger = Logger(subsystem: "com.ihsiao.apps.hamster.HamsteriOS", category: "SettingsViewController")
   private var settingsViewModel: SettingsViewModel
 
   init(settingsViewModel: SettingsViewModel) {
@@ -40,7 +39,7 @@ public extension SettingsViewController {
         try await self.settingsViewModel.loadAppData()
       } catch {
         ProgressHUD.showError("导入数据异常", interaction: false, delay: 2)
-        self.logger.error("load app data error: \(error)")
+        logger.error("load app data error: \(error)")
       }
     }
   }

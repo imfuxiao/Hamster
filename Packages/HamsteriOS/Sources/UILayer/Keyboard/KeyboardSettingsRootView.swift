@@ -5,12 +5,14 @@
 //  Created by morse on 2023/7/12.
 //
 
+import Combine
 import HamsterUIKit
 import UIKit
 
 class KeyboardSettingsRootView: NibLessView {
   // MARK: properties
 
+  private var subscriptions = Set<AnyCancellable>()
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   let tableView: UITableView = {
@@ -28,35 +30,22 @@ class KeyboardSettingsRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupTablView()
   }
 
-  override func constructViewHierarchy() {
+  func setupTablView() {
+    addSubview(tableView)
     tableView.dataSource = self
     tableView.delegate = self
-    addSubview(tableView)
-  }
+    tableView.fillSuperview()
 
-  override func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: CustomKeyboardLayoutGuideNoSafeArea.topAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-  }
-}
-
-extension KeyboardSettingsRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
-
-    if let indexPath = tableView.indexPathForSelectedRow {
-      tableView.deselectRow(at: indexPath, animated: false)
-    }
+    keyboardSettingsViewModel.$enableSymbolKeyboard
+      .combineLatest(keyboardSettingsViewModel.$enableNineGridOfNumericKeyboard, keyboardSettingsViewModel.$enableToolbar)
+      .sink { [unowned self] _ in
+        tableView.reloadData()
+      }
+      .store(in: &subscriptions)
   }
 }
 
@@ -71,43 +60,28 @@ extension KeyboardSettingsRootView: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let setting = keyboardSettingsViewModel.keyboardSettingsItems[indexPath.section].items[indexPath.row]
+
     switch setting.type {
     case .navigation:
-      let tableCell: SettingTableViewCell
-      if let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier), let cell = cell as? SettingTableViewCell {
-        tableCell = cell
-      } else {
-        tableCell = SettingTableViewCell(style: .default, reuseIdentifier: SettingTableViewCell.identifier)
-      }
-      tableCell.setting = setting
-      return tableCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? SettingTableViewCell else { return cell }
+      cell.setting = setting
+      return cell
     case .toggle:
-      let toggleCell: ToggleTableViewCell
-      if let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier), let cell = cell as? ToggleTableViewCell {
-        toggleCell = cell
-        toggleCell.settingItem = setting
-      } else {
-        toggleCell = ToggleTableViewCell(settingItem: setting)
-      }
-      return toggleCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ToggleTableViewCell else { return cell }
+      cell.settingItem = setting
+      return cell
     case .textField:
-      let textFieldCell: TextFieldTableViewCell
-      if let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier), let cell = cell as? TextFieldTableViewCell {
-        textFieldCell = cell
-        textFieldCell.settingItem = setting
-      } else {
-        textFieldCell = TextFieldTableViewCell(settingItem: setting)
-      }
-      return textFieldCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? TextFieldTableViewCell else { return cell }
+      cell.settingItem = setting
+      return cell
     case .button:
-      let buttonCell: ButtonTableViewCell
-      if let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier), let cell = cell as? ButtonTableViewCell {
-        buttonCell = cell
-        buttonCell.settingItem = setting
-      } else {
-        buttonCell = ButtonTableViewCell(settingItem: setting)
-      }
-      return buttonCell
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.settingItem = setting
+      return cell
     }
   }
 
@@ -123,11 +97,7 @@ extension KeyboardSettingsRootView: UITableViewDataSource {
 extension KeyboardSettingsRootView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let setting = keyboardSettingsViewModel.keyboardSettingsItems[indexPath.section].items[indexPath.row]
-    if setting.type == .navigation {
-//      if let navigationHandled = setting.navigationLink {
-//        navigationController?.pushViewController(navigationHandled(), animated: true)
-//      }
-    }
+    setting.navigationAction?()
     tableView.deselectRow(at: indexPath, animated: false)
   }
 }

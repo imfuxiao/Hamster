@@ -13,6 +13,9 @@ protocol SubViewControllerFactory {
   func makeSettingsViewController() -> SettingsViewController
   func makeInputSchemaViewController() -> InputSchemaViewController
   func makeFinderViewController() -> FinderViewController
+  func makeKeyboardSettingsViewController() -> KeyboardSettingsViewController
+  func makeKeyboardColorViewController() -> KeyboardColorViewController
+  func makeKeyboardFeedbackViewController() -> KeyboardFeedbackViewController
   func makeUploadInputSchemaViewController() -> UploadInputSchemaViewController
   func makeAppleCloudViewController() -> AppleCloudViewController
   func makeBackupViewController() -> BackupViewController
@@ -23,30 +26,48 @@ protocol SubViewControllerFactory {
 
 open class MainViewController: NibLessNavigationController {
   private let mainViewModel: MainViewModel
-
+  private let subViewControllerFactory: SubViewControllerFactory
   private let settingsViewController: SettingsViewController
-  private let inputSchemaViewController: InputSchemaViewController
-  private let finderViewController: FinderViewController
-  private let uploadInputSchemaViewController: UploadInputSchemaViewController
-  private let rimeViewController: RimeViewController
-  private let backupViewController: BackupViewController
-  private let iCloudViewController: AppleCloudViewController
-  private let aboutViewController: AboutViewController
-  private let openSourceProjectViewController: OpenSourceViewController
+
+  private lazy var inputSchemaViewController: InputSchemaViewController
+    = subViewControllerFactory.makeInputSchemaViewController()
+
+  private lazy var finderViewController: FinderViewController
+    = subViewControllerFactory.makeFinderViewController()
+
+  private lazy var keyboardSettingsViewController: KeyboardSettingsViewController
+    = subViewControllerFactory.makeKeyboardSettingsViewController()
+
+  private lazy var keyboardColorViewController: KeyboardColorViewController
+    = subViewControllerFactory.makeKeyboardColorViewController()
+
+  private lazy var keyboardFeedbackViewController: KeyboardFeedbackViewController
+    = subViewControllerFactory.makeKeyboardFeedbackViewController()
+
+  private lazy var uploadInputSchemaViewController: UploadInputSchemaViewController
+    = subViewControllerFactory.makeUploadInputSchemaViewController()
+
+  private lazy var rimeViewController: RimeViewController
+    = subViewControllerFactory.makeRimeViewController()
+
+  private lazy var backupViewController: BackupViewController
+    = subViewControllerFactory.makeBackupViewController()
+
+  private lazy var iCloudViewController: AppleCloudViewController
+    = subViewControllerFactory.makeAppleCloudViewController()
+
+  private lazy var aboutViewController: AboutViewController
+    = subViewControllerFactory.makeAboutViewController()
+
+  private lazy var openSourceProjectViewController: OpenSourceViewController
+    = subViewControllerFactory.makeOpenSourceProjectViewController()
 
   private var subscriptions = Set<AnyCancellable>()
 
   init(mainViewModel: MainViewModel, subViewControllerFactory: SubViewControllerFactory) {
     self.mainViewModel = mainViewModel
+    self.subViewControllerFactory = subViewControllerFactory
     self.settingsViewController = subViewControllerFactory.makeSettingsViewController()
-    self.inputSchemaViewController = subViewControllerFactory.makeInputSchemaViewController()
-    self.finderViewController = subViewControllerFactory.makeFinderViewController()
-    self.uploadInputSchemaViewController = subViewControllerFactory.makeUploadInputSchemaViewController()
-    self.rimeViewController = subViewControllerFactory.makeRimeViewController()
-    self.backupViewController = subViewControllerFactory.makeBackupViewController()
-    self.iCloudViewController = subViewControllerFactory.makeAppleCloudViewController()
-    self.aboutViewController = subViewControllerFactory.makeAboutViewController()
-    self.openSourceProjectViewController = subViewControllerFactory.makeOpenSourceProjectViewController()
 
     super.init(rootViewController: settingsViewController)
 
@@ -81,6 +102,12 @@ extension MainViewController {
       presentFinderViewController()
     case .uploadInputSchema:
       presentUploadInputSchemaViewController()
+    case .keyboardSettings:
+      presentKeyboardSettingsViewController()
+    case .colorSchema:
+      presentKeyboardColorViewController()
+    case .feedback:
+      presentKeyboardFeedbackViewController()
     case .rime:
       presentRimeViewController()
     case .backup:
@@ -108,6 +135,18 @@ extension MainViewController {
 
   func presentUploadInputSchemaViewController() {
     pushViewController(uploadInputSchemaViewController, animated: true)
+  }
+
+  func presentKeyboardSettingsViewController() {
+    pushViewController(keyboardSettingsViewController, animated: true)
+  }
+
+  func presentKeyboardColorViewController() {
+    pushViewController(keyboardColorViewController, animated: true)
+  }
+
+  func presentKeyboardFeedbackViewController() {
+    pushViewController(keyboardFeedbackViewController, animated: true)
   }
 
   func presentRimeViewController() {

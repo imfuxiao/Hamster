@@ -47,13 +47,7 @@ class NumberNineGridSettingsRootView: NibLessView {
   private func presentTabView(_ tabView: UIView) {
     subviews.forEach { $0.removeFromSuperview() }
     addSubview(tabView)
-
-    NSLayoutConstraint.activate([
-      tabView.topAnchor.constraint(equalTo: topAnchor),
-      tabView.bottomAnchor.constraint(equalTo: CustomKeyboardLayoutGuide.topAnchor),
-      tabView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tabView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tabView.fillSuperview()
   }
 }
 
@@ -61,7 +55,7 @@ extension NumberNineGridSettingsRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    keyboardSettingsViewModel.numberNineGridTabViewPublished
+    keyboardSettingsViewModel.numberNineGridSubviewSwitchPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         presentTabView($0)

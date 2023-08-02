@@ -7,11 +7,8 @@
 
 import Combine
 import Foundation
-import os
 
 class MetadataProvider {
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsterKit", category: "MetadataProvider")
-  
   private let metadataQuery = NSMetadataQuery()
   
   private(set) var containerRootURL: URL?
@@ -31,7 +28,7 @@ class MetadataProvider {
         let items = self.metadataItemList()
         for item in items {
           try? FileManager.default.startDownloadingUbiquitousItem(at: item.url)
-          self.logger.debug("downloading \(item.url)")
+          logger.debug("downloading \(item.url)")
         }
       }
     

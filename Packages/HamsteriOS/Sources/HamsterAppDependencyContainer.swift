@@ -8,7 +8,6 @@
 import Foundation
 import HamsterKit
 import HamsterModel
-import os
 import UIKit
 
 /// Hamster 应用依赖容器
@@ -17,23 +16,61 @@ open class HamsterAppDependencyContainer {
   /// 单例
   public static let shared = HamsterAppDependencyContainer()
 
-  private let logger = Logger(subsystem: "com.ihsiao.apps.hamster.HamsteriOS", category: "HamsterAppDependencyContainer")
-
   // MARK: Long-lived 依赖属性
 
   public let rimeContext: RimeContext
   public let mainViewModel: MainViewModel
-  public let settingsViewModel: SettingsViewModel
-  public let inputSchemaViewModel: InputSchemaViewModel
-  
+
+  public lazy var settingsViewModel: SettingsViewModel = {
+    let vm = SettingsViewModel(
+      mainViewModel: mainViewModel,
+      rimeContext: rimeContext,
+      configuration: configuration
+    )
+    return vm
+  }()
+
+  public lazy var inputSchemaViewModel: InputSchemaViewModel = {
+    let vm = InputSchemaViewModel(rimeContext: rimeContext)
+    return vm
+  }()
+
+  public lazy var keyboardSettingsViewModel: KeyboardSettingsViewModel = {
+    let vm = KeyboardSettingsViewModel(configuration: configuration)
+    return vm
+  }()
+
+  // 应用默认配置
+  // 注意：此配置用于还原系统默认配置
+  public var defaultConfiguration: HamsterConfiguration? {
+    do {
+      return try HamsterConfigurationRepositories.shared.loadFromUserDefaultsOnDefault()
+    } catch {
+      logger.error("loadFromUserDefaultsOnDefault() error: \(error)")
+      return nil
+    }
+  }
+
   /// 应用配置
   /// 注意：应用首次启动时需要先将配置从配置文件中加载到 UserDefault 中
+  private var configCache: HamsterConfiguration?
   public var configuration: HamsterConfiguration {
-    didSet {
+    get {
+      if let config = configCache {
+        return config
+      }
+      if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
+        configCache = config
+        return config
+      }
+      logger.warning("load HamsterConfiguration from UserDefaults error.")
+      return HamsterConfiguration()
+    }
+    set {
+      configCache = newValue
       Task {
         do {
-          try await HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
-          logger.debug("configuration save success")
+          try await HamsterConfigurationRepositories.shared.saveToUserDefaults(newValue)
         } catch {
           logger.error("configuration didSet error: \(error.localizedDescription)")
         }
@@ -42,45 +79,9 @@ open class HamsterAppDependencyContainer {
   }
 
   private init() {
-    func makeMainViewModel() -> MainViewModel {
-      MainViewModel()
-    }
-
-    func makeSettingsViewModel(
-      mainViewModel: MainViewModel,
-      rimeContext: RimeContext,
-      configuration: HamsterConfiguration
-    ) -> SettingsViewModel {
-      SettingsViewModel(
-        mainViewModel: mainViewModel,
-        rimeContext: rimeContext,
-        configuration: configuration
-      )
-    }
-
-    func makeInputSchemaViewModel(rimeContext: RimeContext) -> InputSchemaViewModel {
-      InputSchemaViewModel(rimeContext: rimeContext)
-    }
-
-    if UserDefaults.hamster.isFirstRunning {
-      self.configuration = HamsterConfiguration()
-    } else {
-      do {
-        self.configuration = try HamsterConfigurationRepositories.shared.loadFromUserDefaults()
-      } catch {
-        logger.error("loadFromUserDefaults error: \(error.localizedDescription)")
-        self.configuration = HamsterConfiguration()
-      }
-    }
-
+    // 创建 long-lived 属性
     self.rimeContext = RimeContext()
-    self.mainViewModel = makeMainViewModel()
-    self.settingsViewModel = makeSettingsViewModel(
-      mainViewModel: mainViewModel,
-      rimeContext: rimeContext,
-      configuration: configuration
-    )
-    self.inputSchemaViewModel = makeInputSchemaViewModel(rimeContext: rimeContext)
+    self.mainViewModel = MainViewModel()
   }
 }
 
@@ -111,6 +112,36 @@ extension HamsterAppDependencyContainer: BackupViewModelFactory {
 extension HamsterAppDependencyContainer: FinderViewModelFactory {
   func makeFinderViewModel() -> FinderViewModel {
     return FinderViewModel(configuration: configuration)
+  }
+}
+
+extension HamsterAppDependencyContainer: KeyboardSettingsSubViewControllerFactory {
+  func makeNumberNineGridSettingsViewController() -> NumberNineGridSettingsViewController {
+    NumberNineGridSettingsViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
+  }
+
+  func makeSymbolSettingsViewController() -> SymbolSettingsViewController {
+    SymbolSettingsViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
+  }
+
+  func makeSymbolKeyboardSettingsViewController() -> SymbolKeyboardSettingsViewController {
+    SymbolKeyboardSettingsViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
+  }
+
+  func makeToolbarSettingsViewController() -> ToolbarSettingsViewController {
+    ToolbarSettingsViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
+  }
+}
+
+extension HamsterAppDependencyContainer: KeyboardColorViewModelFactory {
+  func makeKeyboardColorViewModel() -> KeyboardColorViewModel {
+    KeyboardColorViewModel(settingsViewModel: settingsViewModel, configuration: configuration)
+  }
+}
+
+extension HamsterAppDependencyContainer: KeyboardFeedbackViewModelFactory {
+  func makeKeyboardFeedbackViewModel() -> KeyboardFeedbackViewModel {
+    KeyboardFeedbackViewModel(configuration: configuration)
   }
 }
 
@@ -158,16 +189,32 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
     return inputSchemaViewController
   }
 
-  func makeFinderViewController() -> FinderViewController {
-    let finderViewController = FinderViewController(finderViewModelFactory: self, fileBrowserViewModelFactory: self)
-    return finderViewController
-  }
-
   func makeUploadInputSchemaViewController() -> UploadInputSchemaViewController {
     let uploadInputSchemaViewController = UploadInputSchemaViewController(
       uploadInputSchemaViewModelFactory: self
     )
     return uploadInputSchemaViewController
+  }
+
+  func makeFinderViewController() -> FinderViewController {
+    let finderViewController = FinderViewController(finderViewModelFactory: self, fileBrowserViewModelFactory: self)
+    return finderViewController
+  }
+
+  func makeKeyboardSettingsViewController() -> KeyboardSettingsViewController {
+    let keyboardSettingsViewController = KeyboardSettingsViewController(
+      keyboardSettingsViewModel: keyboardSettingsViewModel,
+      keyboardSettingsSubViewControllerFactory: self
+    )
+    return keyboardSettingsViewController
+  }
+
+  func makeKeyboardColorViewController() -> KeyboardColorViewController {
+    KeyboardColorViewController(keyboardColorViewModelFactory: self)
+  }
+
+  func makeKeyboardFeedbackViewController() -> KeyboardFeedbackViewController {
+    KeyboardFeedbackViewController(keyboardFeedbackViewModelFactory: self)
   }
 
   func makeAppleCloudViewController() -> AppleCloudViewController {

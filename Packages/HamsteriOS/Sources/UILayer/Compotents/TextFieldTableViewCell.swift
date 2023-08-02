@@ -14,68 +14,66 @@ class CellTextField: UITextField {
     let originalRect = super.clearButtonRect(forBounds: bounds)
     return CGRectOffset(originalRect, -8, 0)
   }
+
+  override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+    let originalRect = super.rightViewRect(forBounds: bounds)
+    return CGRectOffset(originalRect, 8, 0)
+  }
 }
 
-private class TextFieldView: NibLessView, UITextFieldDelegate {
+class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
+  static let identifier = "TextFieldTableViewCell"
+
   // MARK: properties
 
-  private let settingItem: SettingItemModel
+  public var settingItem: SettingItemModel {
+    didSet {
+      if let iconImage = settingItem.icon {
+        let imageView = UIImageView(image: iconImage)
+        imageView.contentMode = .scaleAspectFit
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(textFieldFocus)))
+        textField.leftView = imageView
+      }
 
-  lazy var iconView: UIView? = {
-    guard let iconImage = settingItem.icon else { return nil }
+      textField.text = settingItem.textValue
+      textField.placeholder = settingItem.placeholder
+    }
+  }
 
-    let imageView = UIImageView(image: iconImage)
-    imageView.contentMode = .scaleAspectFit
-
-    return imageView
-  }()
-
-  lazy var textField: UITextField = {
+  let textField: UITextField = {
     let textField = CellTextField(frame: .zero)
-    textField.text = settingItem.text
     textField.leftViewMode = .always
     textField.rightViewMode = .always
     textField.clearButtonMode = .whileEditing
-    textField.placeholder = settingItem.placeholder
     return textField
   }()
 
   // MARK: methods
 
-  init(frame: CGRect = .zero, settingItem: SettingItemModel) {
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    self.settingItem = SettingItemModel()
+
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    setupTextFieldView()
+  }
+
+  init(settingItem: SettingItemModel) {
     self.settingItem = settingItem
-    super.init(frame: frame)
+
+    super.init(style: .default, reuseIdentifier: Self.identifier)
+
+    setupTextFieldView()
+  }
+
+  func setupTextFieldView() {
+    contentView.addSubview(textField)
+    textField.delegate = self
+    textField.fillSuperviewOnMarginsGuide()
   }
 
   @objc func textFieldFocus() {
     textField.becomeFirstResponder()
-  }
-
-  override func constructViewHierarchy() {
-    if let iconView = iconView {
-      iconView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(textFieldFocus)))
-      textField.leftView = iconView
-    }
-
-    addSubview(textField)
-    textField.delegate = self
-  }
-
-  override func activateViewConstraints() {
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      textField.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-      textField.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-      textField.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-      textField.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-    ])
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 
   // MARK: implementation UITextFieldDelegate
@@ -84,34 +82,9 @@ private class TextFieldView: NibLessView, UITextFieldDelegate {
     settingItem.textHandled?(textField.text ?? "")
   }
 
-  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    settingItem.shouldBeginEditing?(textField) ?? true
-  }
-}
-
-class TextFieldTableViewCell: NibLessTableViewCell {
-  static let identifier = "TextFieldTableViewCell"
-
-  // MARK: properties
-
-  public var settingItem: SettingItemModel
-
-  // MARK: methods
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.settingItem = SettingItemModel()
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-  }
-
-  init(settingItem: SettingItemModel) {
-    self.settingItem = settingItem
-    super.init(style: .default, reuseIdentifier: Self.identifier)
-  }
-
-  override func updateConfiguration(using state: UICellConfigurationState) {
-    super.updateConfiguration(using: state)
-
-    contentView.subviews.forEach { $0.removeFromSuperview() }
-    contentView.addSubview(TextFieldView(settingItem: settingItem))
+  // 当按下 "return" 键时调用。
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
   }
 }

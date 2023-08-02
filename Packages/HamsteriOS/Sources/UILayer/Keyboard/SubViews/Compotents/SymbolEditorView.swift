@@ -15,7 +15,6 @@ public class SymbolEditorView: NibLessView {
 
   private var subscriptions = Set<AnyCancellable>()
 
-//  private let keyboardSettingsViewModel: KeyboardSettingsViewModel
   private let headerTitle: String
   private var symbols: [String] {
     didSet {
@@ -27,27 +26,20 @@ public class SymbolEditorView: NibLessView {
   private var symbolTableIsEditingPublished: AnyPublisher<Bool, Never>
 
   lazy var headerView: UIView = {
-    let stackView = UIStackView(frame: .zero)
+    let titleLabel = UILabel(frame: .zero)
+    titleLabel.text = headerTitle
+    titleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+
+    let stackView = UIStackView(arrangedSubviews: [titleLabel])
     stackView.axis = .vertical
     stackView.alignment = .center
     stackView.distribution = .equalSpacing
     stackView.spacing = 8
 
-    let titleLabel = UILabel(frame: .zero)
-    titleLabel.text = headerTitle
-    titleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-    stackView.addArrangedSubview(titleLabel)
-
     let containerView = UIView()
     containerView.frame = CGRect(x: 0, y: 0, width: 300, height: 30)
-    stackView.translatesAutoresizingMaskIntoConstraints = false
     containerView.addSubview(stackView)
-    NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-      stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-    ])
+    stackView.fillSuperview()
 
     return containerView
   }()
@@ -55,8 +47,9 @@ public class SymbolEditorView: NibLessView {
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
-    tableView.allowsSelection = false
     tableView.tableHeaderView = headerView
+    tableView.rowHeight = UITableView.automaticDimension
+    tableView.allowsSelection = false
     return tableView
   }()
 
@@ -75,36 +68,28 @@ public class SymbolEditorView: NibLessView {
     self.symbolTableIsEditingPublished = symbolTableIsEditingPublished
 
     super.init(frame: frame)
-  }
 
-  override public func constructViewHierarchy() {
-    addSubview(tableView)
-    tableView.delegate = self
-    tableView.dataSource = self
-  }
-
-  override public func activateViewConstraints() {
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
-  }
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
+    setupTableView()
 
     symbolTableIsEditingPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         tableView.setEditing($0, animated: true)
+        if tableView.isEditing {
+          tableView.visibleCells.forEach { cell in
+            guard let cell = cell as? TextFieldTableViewCell else { return }
+            cell.textField.resignFirstResponder()
+          }
+        }
       }
       .store(in: &subscriptions)
+  }
+
+  func setupTableView() {
+    addSubview(tableView)
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.fillSuperview()
   }
 }
 
@@ -133,15 +118,13 @@ extension SymbolEditorView {
     tableView.insertRows(at: [indexPath], with: .automatic)
     if let cell = tableView.cellForRow(at: indexPath), let cell = cell as? TextFieldTableViewCell {
       cell.settingItem = SettingItemModel(
-        text: "",
+        textValue: "",
         textHandled: { [unowned self] in
           symbols[indexPath.row] = $0
-        },
-        shouldBeginEditing: {
-          $0.becomeFirstResponder()
         }
       )
       tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+      cell.textField.becomeFirstResponder()
     }
   }
 }
@@ -154,17 +137,13 @@ extension SymbolEditorView: UITableViewDataSource {
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
     let symbol = symbols[indexPath.row]
-    if let cell = cell as? TextFieldTableViewCell {
-      cell.settingItem = SettingItemModel(
-        text: symbol,
-        textHandled: { [unowned self] in
-          symbols[indexPath.row] = $0
-        },
-        shouldBeginEditing: {
-          $0.becomeFirstResponder()
-        }
-      )
-    }
+    guard let cell = cell as? TextFieldTableViewCell else { return cell }
+    cell.settingItem = SettingItemModel(
+      textValue: symbol,
+      textHandled: { [unowned self] in
+        symbols[indexPath.row] = $0
+      }
+    )
     return cell
   }
 

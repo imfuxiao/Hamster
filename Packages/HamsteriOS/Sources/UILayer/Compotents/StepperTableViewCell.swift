@@ -8,24 +8,33 @@
 import HamsterUIKit
 import UIKit
 
-class StepperView: NibLessView {
+class StepperTableViewCell: NibLessTableViewCell {
+  static let identifier = "StepperTableViewCell"
+
   // MARK: properties
 
-  private let stepperModel: StepperModel
+  public var stepperModel: StepperModel {
+    didSet {
+      label.text = stepperModel.text
+      valueLabel.text = String(Int(stepperModel.value))
+      stepper.minimumValue = stepperModel.minValue
+      stepper.maximumValue = stepperModel.maxValue
+      stepper.stepValue = stepperModel.stepValue
+      stepper.value = stepperModel.value
+    }
+  }
 
-  lazy var label: UILabel = {
+  let label: UILabel = {
     let label = UILabel(frame: .zero)
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultLow, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     return label
   }()
 
-  lazy var valueLabel: UILabel = {
+  let valueLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.font = UIFont.preferredFont(forTextStyle: .caption1)
     label.tintColor = UIColor.secondaryLabel
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -39,8 +48,8 @@ class StepperView: NibLessView {
     return stepper
   }()
 
-  private lazy var containerView: UIStackView = {
-    let stackView = UIStackView()
+  lazy var containerView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [label, valueLabel, stepper])
 
     stackView.axis = .horizontal
     stackView.alignment = .center
@@ -52,55 +61,21 @@ class StepperView: NibLessView {
 
   // MARK: methods
 
-  init(frame: CGRect = .zero, stepperModel: StepperModel) {
-    self.stepperModel = stepperModel
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    self.stepperModel = StepperModel()
 
-    super.init(frame: frame)
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    setupStepView()
   }
 
-  override func constructViewHierarchy() {
-    containerView.addArrangedSubview(label)
-    containerView.addArrangedSubview(valueLabel)
-    containerView.addArrangedSubview(stepper)
-  }
-
-  override func activateViewConstraints() {
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-      containerView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
-      containerView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-    ])
+  func setupStepView() {
+    contentView.addSubview(containerView)
+    containerView.fillSuperviewOnMarginsGuide()
   }
 
   @objc func changeValue(_ sender: UIStepper) {
     stepperModel.valueChangeHandled(sender.value)
     valueLabel.text = String(Int(stepper.value))
-  }
-}
-
-class StepperTableViewCell: NibLessTableViewCell {
-  static let identifier = "StepperTableViewCell"
-
-  public var stepperModel: StepperModel
-
-  init(stepperModel: StepperModel) {
-    self.stepperModel = stepperModel
-
-    super.init(style: .default, reuseIdentifier: Self.identifier)
-  }
-
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.stepperModel = StepperModel()
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-  }
-
-  override func updateConfiguration(using state: UICellConfigurationState) {
-    super.updateConfiguration(using: state)
-
-    contentView.subviews.forEach { $0.removeFromSuperview() }
-    let view = StepperView(stepperModel: stepperModel)
-    contentView.addSubview(view)
   }
 }

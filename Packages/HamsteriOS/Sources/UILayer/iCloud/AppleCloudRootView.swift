@@ -5,23 +5,24 @@
 //  Created by morse on 2023/7/6.
 //
 
+import HamsterKit
 import HamsterUIKit
-import os
 import ProgressHUD
 import UIKit
 
 class AppleCloudRootView: NibLessView {
   // MARK: properties
 
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsteriOS", category: "AppleCloudRootView")
   let viewModel: AppleCloudViewModel
 
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
+    tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
     tableView.allowsSelection = false
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
   }()
 
@@ -37,12 +38,7 @@ class AppleCloudRootView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: topAnchor),
-      tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    tableView.fillSuperview()
   }
 
   @objc func copyRegex() {
@@ -82,7 +78,7 @@ extension AppleCloudRootView: UITableViewDelegate {
 
 extension AppleCloudRootView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    3
+    viewModel.settings.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -90,45 +86,26 @@ extension AppleCloudRootView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    switch (indexPath.section, indexPath.row) {
-    case (0, 0):
-      return ToggleTableViewCell(settingItem: SettingItemModel(
-        text: "iCloud",
-        toggleValue: viewModel.settingsViewModel.enableAppleCloud,
-        toggleHandled: { [unowned self] in
-          self.viewModel.settingsViewModel.enableAppleCloud = $0
-        }
-      ))
-    case (1, 0):
-      return ButtonTableViewCell(settingItem: .init(
-        text: "拷贝应用文件至iCloud",
-        buttonAction: { [unowned self] in
-          Task {
-            ProgressHUD.show("拷贝本地文件至iCloud中……", interaction: false)
-            do {
-              let regexList = self.viewModel.regexOnCopyFile.split(separator: ",").map { String($0) }
-              try FileManager.copySandboxSharedSupportDirectoryToAppleCloud(regexList)
-              try FileManager.copySandboxUserDataDirectoryToAppleCloud(regexList)
-            } catch {
-              logger.error("copy app file to iCloud error: \(error.localizedDescription)")
-              ProgressHUD.showError("拷贝失败")
-            }
-            ProgressHUD.showSuccess("拷贝成功", delay: 1.5)
-          }
-        }
-      ))
-    case (2, 0):
-      return TextFieldTableViewCell(settingItem: .init(
-        icon: UIImage(systemName: "square.and.pencil"),
-        text: viewModel.regexOnCopyFile,
-        placeholder: "正则过滤",
-        textHandled: { [unowned self] in
-          self.viewModel.regexOnCopyFile = $0
-        }
-      ))
-    default:
-      return UITableViewCell(frame: .zero)
+    let settingItem = viewModel.settings[indexPath.section]
+
+    if settingItem.type == .button {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
     }
+
+    if settingItem.type == .toggle {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ToggleTableViewCell else { return cell }
+      cell.settingItem = settingItem
+      return cell
+    }
+
+    let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? TextFieldTableViewCell else { return cell }
+    cell.settingItem = settingItem
+    return cell
   }
 }
 

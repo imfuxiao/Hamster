@@ -8,14 +8,12 @@
 import Combine
 import HamsterKit
 import HamsterModel
-import os
 import ProgressHUD
 import RimeKit
 import UIKit
 
 public class SettingsViewModel: ObservableObject {
   private var cancelable = Set<AnyCancellable>()
-  private let logger = Logger(subsystem: "com.ihsiao.apps.hamster.HamsteriOS", category: "SettingsViewModel")
   private unowned let mainViewModel: MainViewModel
   private let rimeContext: RimeContext
   private var configuration: HamsterConfiguration
@@ -156,7 +154,7 @@ extension SettingsViewModel {
   /// 启动加载数据
   func loadAppData() async throws {
     // 判断应用是否首次运行
-    guard UserDefaults.standard.isFirstRunning else { return }
+    guard UserDefaults.hamster.isFirstRunning else { return }
     
     // 判断是否首次运行
     await ProgressHUD.show("初次启动，需要编译输入方案，请耐心等待……", interaction: false)
@@ -196,7 +194,7 @@ extension SettingsViewModel {
     try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
       
     // 修改应用首次运行标志
-    UserDefaults.standard.isFirstRunning = false
+    UserDefaults.hamster.isFirstRunning = false
       
     await ProgressHUD.showSucceed("部署完成", interaction: false, delay: 1.5)
   }

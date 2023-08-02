@@ -10,9 +10,9 @@ toolbar:
   heightOfToolbar: 60
   displayKeyboardDismissButton: true
   heightOfCodingArea: 10
-  codingAreaFontSize: 18
-  candidateWordFontSize: 22
-  candidateCommentFontSize: 18
+  codingAreaFontSize: 12
+  candidateWordFontSize: 20
+  candidateCommentFontSize: 12
   displayIndexOfCandidateWord: false
 
 # 键盘相关配置

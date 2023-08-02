@@ -24,7 +24,7 @@ extension SymbolKeyboardSettingsViewController {
   override func loadView() {
     super.loadView()
 
-    title = "符号键盘"
+    title = "符号键盘设置"
     view = SymbolKeyboardSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }
 }

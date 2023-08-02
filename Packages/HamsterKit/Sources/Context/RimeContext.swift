@@ -12,8 +12,6 @@ import RimeKit
 
 /// RIME 运行时上下文
 public actor RimeContext: ObservableObject {
-  private let logger = Logger(subsystem: "com.ihsiao.apps.Hamster.HamsterKit", category: "RimeContext")
-
   /// rime 输入方案列表
   @Published @MainActor
   public private(set) var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
@@ -110,7 +108,7 @@ public extension RimeContext {
         try FileManager.copyAppleCloudSharedSupportDirectoryToSandbox(regex)
         try FileManager.copyAppleCloudUserDataDirectoryToSandbox(regex)
       } catch {
-        self.logger.error("RIME deploy error \(error.localizedDescription)")
+        logger.error("RIME deploy error \(error.localizedDescription)")
         throw error
       }
     }
@@ -121,7 +119,7 @@ public extension RimeContext {
       do {
         try FileManager.copyAppGroupUserDict(regex)
       } catch {
-        self.logger.error("RIME deploy error \(error.localizedDescription)")
+        logger.error("RIME deploy error \(error.localizedDescription)")
         throw error
       }
     }
@@ -189,7 +187,7 @@ public extension RimeContext {
     ), maintenance: true, fullCheck: true)
 
     let handled = Rime.shared.API().syncUserData()
-    self.logger.info("RIME sync userData handled: \(handled)")
+    logger.info("RIME sync userData handled: \(handled)")
     Rime.shared.shutdown()
 
     // 键盘重新同步文件标志
@@ -207,7 +205,7 @@ public extension RimeContext {
       try FileManager.initSandboxSharedSupportDirectory(override: true)
       try FileManager.initSandboxUserDataDirectory(override: true)
     } catch {
-      self.logger.error("rime init file directory error: \(error.localizedDescription)")
+      logger.error("rime init file directory error: \(error.localizedDescription)")
       throw error
     }
 

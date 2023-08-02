@@ -8,7 +8,7 @@
 import HamsterUIKit
 import UIKit
 
-class ToolbarSettingsViewController: NibLessViewController {
+public class ToolbarSettingsViewController: NibLessViewController {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
@@ -17,7 +17,7 @@ class ToolbarSettingsViewController: NibLessViewController {
     super.init()
   }
 
-  override func loadView() {
+  override public func loadView() {
     super.loadView()
 
     title = "候选栏"
