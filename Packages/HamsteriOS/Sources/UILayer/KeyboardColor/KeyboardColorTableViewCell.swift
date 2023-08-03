@@ -23,10 +23,6 @@ class KeyboardColorTableViewCell: NibLessTableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     tintColor = UIColor.systemGreen
-  }
-  
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
     
     setupSubview()
   }
@@ -53,18 +49,8 @@ class KeyboardColorTableViewCell: NibLessTableViewCell {
     }
   }
   
-  override func prepareForReuse() {
-    isSelected = false
-    keyboardColorView.cleanPreviewColor()
+  override func updateConfiguration(using state: UICellConfigurationState) {
+    super.updateConfiguration(using: state)
+    updateCellState(state.isSelected)
   }
-  
-//  override func updateConfiguration(using state: UICellConfigurationState) {
-//    super.updateConfiguration(using: state)
-//    
-//    if state.isSelected || isSelected {
-//      print("true")
-//    }
-//    
-//    updateCellState(state.isSelected || isSelected)
-//  }
 }

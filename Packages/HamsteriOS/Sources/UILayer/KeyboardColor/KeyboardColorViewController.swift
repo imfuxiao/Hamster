@@ -14,9 +14,11 @@ protocol KeyboardColorViewModelFactory {
 
 class KeyboardColorViewController: NibLessViewController {
   private let keyboardColorViewModel: KeyboardColorViewModel
+  private let rootView: KeyboardColorRootView
 
   init(keyboardColorViewModelFactory: KeyboardColorViewModelFactory) {
     self.keyboardColorViewModel = keyboardColorViewModelFactory.makeKeyboardColorViewModel()
+    self.rootView = KeyboardColorRootView(keyboardColorViewModel: keyboardColorViewModel)
 
     super.init()
   }
@@ -29,6 +31,6 @@ extension KeyboardColorViewController {
     super.loadView()
 
     title = "键盘配色"
-    view = KeyboardColorRootView(keyboardColorViewModel: keyboardColorViewModel)
+    view = rootView
   }
 }

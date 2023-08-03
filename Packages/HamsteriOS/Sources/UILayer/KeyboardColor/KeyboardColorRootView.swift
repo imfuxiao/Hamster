@@ -15,6 +15,9 @@ class KeyboardColorRootView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
   private let keyboardColorViewModel: KeyboardColorViewModel
 
+  @Published
+  private var selectCell: UITableViewCell?
+
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.text = "启用配色"
@@ -51,7 +54,6 @@ class KeyboardColorRootView: NibLessView {
     tableView.sectionHeaderHeight = 8
     tableView.estimatedSectionFooterHeight = 8
     tableView.estimatedSectionHeaderHeight = 8
-    tableView.rowHeight = UITableView.automaticDimension
     return tableView
   }()
 
@@ -68,6 +70,16 @@ class KeyboardColorRootView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         tableView.isHidden = !$0
+        scrollToUseColorSchemaCell()
+      }
+      .store(in: &subscriptions)
+
+    $selectCell
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] selectCell in
+        if let cell = selectCell, let indexPath = tableView.indexPath(for: cell) {
+          tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        }
       }
       .store(in: &subscriptions)
   }
@@ -92,6 +104,30 @@ class KeyboardColorRootView: NibLessView {
       tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
   }
+
+  func scrollToUseColorSchemaCell() {
+    // 初始view时，滚动到目标cell
+    if keyboardColorViewModel.settingsViewModel.enableColorSchema {
+      let useColorSchema = keyboardColorViewModel.useColorSchema
+      let section = keyboardColorViewModel
+        .keyboardColorList
+        .firstIndex(where: { $0.schemaName == useColorSchema })
+      if let section = section {
+        let indexPath = IndexPath(row: 0, section: section)
+        // 注意：这里必须在主线程做滚动，否则不能滚动到目标cell
+        DispatchQueue.main.async { [unowned self] in
+          tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+          tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
+        }
+      }
+    }
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    scrollToUseColorSchemaCell()
+  }
 }
 
 extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
@@ -109,7 +145,6 @@ extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
     if let cell = cell as? KeyboardColorTableViewCell {
       cell.keyboardColor = keyboardColor
       cell.updatePreviewColor()
-      cell.updateCellState(keyboardColor.schemaName == keyboardColorViewModel.useColorSchema)
     }
     return cell
   }
@@ -117,10 +152,13 @@ extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
     keyboardColorViewModel.useColorSchema = keyboardColor.schemaName
-    let cell = tableView.dequeueReusableCell(withIdentifier: KeyboardColorTableViewCell.identifier, for: indexPath)
-    if let cell = cell as? KeyboardColorTableViewCell {
-      cell.updateCellState(true)
+    if let selectCell = selectCell {
+      if let selectIndexPath = tableView.indexPath(for: selectCell),
+         selectIndexPath != indexPath
+      {
+        selectCell.setSelected(false, animated: false)
+      }
     }
-    tableView.reloadData()
+    selectCell = tableView.cellForRow(at: indexPath)
   }
 }

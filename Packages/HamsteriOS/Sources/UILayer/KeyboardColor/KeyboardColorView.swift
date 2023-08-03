@@ -12,26 +12,24 @@ import UIKit
 class KeyboardColorView: NibLessView {
   // MARK: properties
 
-  private let candidateAreaMargin = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-
   var keyboardColor: KeyboardColor
 
   private let schemaNameView: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = ""
+    label.text = "方案名称："
     label.font = UIFont.preferredFont(forTextStyle: .headline)
     return label
   }()
 
-  private lazy var schemaAuthorView: UILabel = {
+  private let schemaAuthorView: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = ""
+    label.text = "作者："
     label.font = .preferredFont(forTextStyle: .subheadline)
     return label
   }()
 
   // 候选区域：组字子区域
-  private lazy var wordLabel: UILabel = {
+  private let wordLabel: UILabel = {
     let word = UILabel(frame: .zero)
     word.text = "方案"
     word.font = .preferredFont(forTextStyle: .body)
@@ -39,7 +37,7 @@ class KeyboardColorView: NibLessView {
     return word
   }()
 
-  private lazy var wordPinyinLabel: UILabel = {
+  private let wordPinyinLabel: UILabel = {
     let wordPinyin = UILabel(frame: .zero)
     wordPinyin.text = "pei se˰"
     wordPinyin.font = .preferredFont(forTextStyle: .body)
@@ -48,17 +46,14 @@ class KeyboardColorView: NibLessView {
 
   private lazy var codingAreaView: UIStackView = {
     let stack = UIStackView(arrangedSubviews: [wordLabel, wordPinyinLabel])
-    stack.layoutMargins = candidateAreaMargin
-    stack.isLayoutMarginsRelativeArrangement = true
     stack.axis = .horizontal
     stack.alignment = .leading
     stack.distribution = .fill
-    stack.spacing = 8
     return stack
   }()
 
   // 候选区域：候选文字子区域
-  private lazy var firstWordLabel: UILabel = {
+  private let firstWordLabel: UILabel = {
     let firstWord = UILabel(frame: .zero)
     firstWord.text = "1. 配色"
     firstWord.font = .preferredFont(forTextStyle: .body)
@@ -66,7 +61,7 @@ class KeyboardColorView: NibLessView {
     return firstWord
   }()
 
-  private lazy var firstWordPinyinLabel: UILabel = {
+  private let firstWordPinyinLabel: UILabel = {
     let firstWordPinyin = UILabel(frame: .zero)
     firstWordPinyin.text = "(pei se)"
     firstWordPinyin.font = .preferredFont(forTextStyle: .body)
@@ -74,7 +69,7 @@ class KeyboardColorView: NibLessView {
     return firstWordPinyin
   }()
 
-  private lazy var secondaryWordLabel: UILabel = {
+  private let secondaryWordLabel: UILabel = {
     let secondaryWord = UILabel(frame: .zero)
     secondaryWord.text = "2. 陪"
     secondaryWord.font = .preferredFont(forTextStyle: .body)
@@ -82,7 +77,7 @@ class KeyboardColorView: NibLessView {
     return secondaryWord
   }()
 
-  private lazy var secondaryWordPinyinLabel: UILabel = {
+  private let secondaryWordPinyinLabel: UILabel = {
     let secondaryWordPinyin = UILabel(frame: .zero)
     secondaryWordPinyin.text = "(pei)"
     secondaryWordPinyin.font = .preferredFont(forTextStyle: .body)
@@ -94,7 +89,6 @@ class KeyboardColorView: NibLessView {
     firstContainer.axis = .horizontal
     firstContainer.alignment = .leading
     firstContainer.distribution = .fill
-    firstContainer.spacing = 8
     firstContainer.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     return firstContainer
   }()
@@ -104,18 +98,14 @@ class KeyboardColorView: NibLessView {
     secondaryContainer.axis = .horizontal
     secondaryContainer.alignment = .leading
     secondaryContainer.distribution = .fill
-    secondaryContainer.spacing = 8
     return secondaryContainer
   }()
 
   private lazy var selectAreaView: UIView = {
     let stack = UIStackView(arrangedSubviews: [firstWordContainer, secondaryWordContainer])
-    stack.layoutMargins = candidateAreaMargin
-    stack.isLayoutMarginsRelativeArrangement = true
     stack.axis = .horizontal
     stack.alignment = .leading
     stack.distribution = .fill
-    stack.spacing = 8
     return stack
   }()
 
@@ -125,10 +115,10 @@ class KeyboardColorView: NibLessView {
     stack.axis = .vertical
     stack.alignment = .leading
     stack.distribution = .fill
-    stack.spacing = 0
-
     stack.layer.cornerRadius = 10
     stack.layer.masksToBounds = true
+    stack.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
+    stack.isLayoutMarginsRelativeArrangement = true
     return stack
   }()
 
@@ -138,9 +128,25 @@ class KeyboardColorView: NibLessView {
     stack.axis = .vertical
     stack.alignment = .leading
     stack.distribution = .fill
-    stack.spacing = 3
-    stack.layoutMargins = candidateAreaMargin
-    stack.isLayoutMarginsRelativeArrangement = true
+
+    schemaNameView.translatesAutoresizingMaskIntoConstraints = false
+    schemaAuthorView.translatesAutoresizingMaskIntoConstraints = false
+    candidateAreaView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      schemaNameView.topAnchor.constraint(equalTo: stack.topAnchor),
+      schemaNameView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+      schemaNameView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+
+      schemaAuthorView.topAnchor.constraint(equalTo: schemaNameView.bottomAnchor),
+      schemaAuthorView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+      schemaAuthorView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+
+      candidateAreaView.topAnchor.constraint(equalTo: schemaAuthorView.bottomAnchor),
+      candidateAreaView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
+      candidateAreaView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
+      candidateAreaView.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
+    ])
+
     return stack
   }()
 
@@ -159,7 +165,7 @@ class KeyboardColorView: NibLessView {
 
   func setupSubview() {
     addSubview(previewView)
-    previewView.fillSuperview()
+    previewView.fillSuperviewOnMarginsGuide()
   }
 
   func updatePreviewColor() {
@@ -181,8 +187,8 @@ class KeyboardColorView: NibLessView {
   }
 
   func cleanPreviewColor() {
-    schemaNameView.text = ""
-    schemaAuthorView.text = ""
+    schemaNameView.text = "方案名称: "
+    schemaAuthorView.text = "作者: "
 
     wordLabel.textColor = .clear
     wordPinyinLabel.textColor = .clear
