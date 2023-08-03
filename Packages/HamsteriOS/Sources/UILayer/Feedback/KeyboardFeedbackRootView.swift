@@ -30,28 +30,23 @@ class KeyboardFeedbackRootView: NibLessView {
     self.keyboardFeedbackViewModel = keyboardFeedbackViewModel
 
     super.init(frame: frame)
-  }
 
-  override func constructViewHierarchy() {
-    addSubview(tableView)
-  }
-
-  override func activateViewConstraints() {
-    tableView.fillSuperview()
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
+    setupTableView()
 
     keyboardFeedbackViewModel.$enableHapticFeedback
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
-        tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
+        let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+          self.tableView.reloadRows(at: [IndexPath(row: 0, section: 1)], with: .automatic)
+        }
+        animator.startAnimation()
       }
       .store(in: &subscriptions)
+  }
+
+  func setupTableView() {
+    addSubview(tableView)
+    tableView.fillSuperview()
   }
 }
 
@@ -77,9 +72,5 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
       return cell
     }
     return HapticFeedbackTableViewCell(keyboardFeedbackViewModel: keyboardFeedbackViewModel)
-  }
-
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UITableView.automaticDimension
   }
 }
