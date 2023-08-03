@@ -353,6 +353,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/InputSchemaBuild.sh",
 			);
 			name = "Make InputSchema";
 			outputFileListPaths = (
@@ -361,7 +362,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmake schema\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbash ./InputSchemaBuild.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

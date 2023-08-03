@@ -29,7 +29,7 @@ public class SettingsViewModel: ObservableObject {
   @Published
   public var enableColorSchema: Bool {
     didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = enableAppleCloud
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = enableColorSchema
     }
   }
   

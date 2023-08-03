@@ -16,6 +16,7 @@ public class SymbolEditorView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
 
   private let headerTitle: String
+  private let getSymbols: () -> [String]
   private var symbols: [String] {
     didSet {
       symbolsDidSet(symbols)
@@ -24,6 +25,7 @@ public class SymbolEditorView: NibLessView {
 
   private let symbolsDidSet: ([String]) -> Void
   private var symbolTableIsEditingPublished: AnyPublisher<Bool, Never>
+  private var reloadDataPublished: AnyPublisher<Bool, Never>
 
   lazy var headerView: UIView = {
     let titleLabel = UILabel(frame: .zero)
@@ -58,20 +60,23 @@ public class SymbolEditorView: NibLessView {
   init(
     frame: CGRect = .zero,
     headerTitle: String,
-    symbols: [String],
+    getSymbols: @escaping () -> [String],
     symbolsDidSet: @escaping ([String]) -> Void,
-    symbolTableIsEditingPublished: AnyPublisher<Bool, Never>
+    symbolTableIsEditingPublished: AnyPublisher<Bool, Never>,
+    reloadDataPublished: AnyPublisher<Bool, Never>
   ) {
     self.headerTitle = headerTitle
-    self.symbols = symbols
+    self.getSymbols = getSymbols
+    self.symbols = getSymbols()
     self.symbolsDidSet = symbolsDidSet
     self.symbolTableIsEditingPublished = symbolTableIsEditingPublished
+    self.reloadDataPublished = reloadDataPublished
 
     super.init(frame: frame)
 
     setupTableView()
 
-    symbolTableIsEditingPublished
+    self.symbolTableIsEditingPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         tableView.setEditing($0, animated: true)
@@ -81,6 +86,14 @@ public class SymbolEditorView: NibLessView {
             cell.textField.resignFirstResponder()
           }
         }
+      }
+      .store(in: &subscriptions)
+
+    self.reloadDataPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        self.symbols = getSymbols()
+        self.tableView.reloadData()
       }
       .store(in: &subscriptions)
   }

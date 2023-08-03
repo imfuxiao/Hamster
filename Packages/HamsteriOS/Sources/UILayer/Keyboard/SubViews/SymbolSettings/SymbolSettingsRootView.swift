@@ -38,29 +38,32 @@ class SymbolSettingsRootView: NibLessView {
 
   lazy var pairsOfSymbolsView: UIView = SymbolEditorView(
     headerTitle: "成对上屏符号列表",
-    symbols: keyboardSettingsViewModel.pairsOfSymbols,
+    getSymbols: { [unowned self] in keyboardSettingsViewModel.pairsOfSymbols },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.pairsOfSymbols = $0
     },
-    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher()
+    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
   )
 
   lazy var cursorBackOfSymbolsView: UIView = SymbolEditorView(
     headerTitle: "光标居中符号列表",
-    symbols: keyboardSettingsViewModel.symbolsOfCursorBack,
+    getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfCursorBack },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfCursorBack = $0
     },
-    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher()
+    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
   )
 
   lazy var symbolsOfReturnToMainKeyboardView: UIView = SymbolEditorView(
     headerTitle: "返回主键盘符号列表",
-    symbols: keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard,
+    getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard = $0
     },
-    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher()
+    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
   )
 
   // MARK: methods

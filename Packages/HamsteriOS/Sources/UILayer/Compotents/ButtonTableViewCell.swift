@@ -5,7 +5,9 @@
 //  Created by morse on 2023/6/14.
 //
 
+import HamsterKit
 import HamsterUIKit
+import ProgressHUD
 import UIKit
 
 public class ButtonTableViewCell: NibLessTableViewCell {
@@ -51,11 +53,11 @@ public class ButtonTableViewCell: NibLessTableViewCell {
   }
 
   @objc func buttonHandled() {
-    // TODO: 异常处理
     do {
       try settingItem.buttonAction?()
     } catch {
-      print(error)
+      logger.error("\(#file) error: \(error)")
+      ProgressHUD.showError("系统异常：\(error.localizedDescription)", delay: 1.5)
     }
   }
 }

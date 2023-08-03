@@ -12,32 +12,37 @@ import UIKit
 class KeyboardColorTableViewCell: NibLessTableViewCell {
   static let identifier = "KeyboardColorTableViewCell"
   
-  public var keyboardColor: KeyboardColor?
+  public var keyboardColor: KeyboardColor
 
+  private let keyboardColorView: KeyboardColorView
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    self.keyboardColor = .init(name: "", colorSchema: .init(name: ""))
+    self.keyboardColorView = .init()
+
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     tintColor = UIColor.systemGreen
   }
   
-  override func updateConfiguration(using state: UICellConfigurationState) {
-    guard let keyboardColor = keyboardColor else { return }
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
     
-    contentView.subviews.forEach { contentView.removeConstraints($0.constraints); $0.removeFromSuperview() }
-    
-    let view = KeyboardColorView(colorSchema: keyboardColor)
-   
-    contentView.addSubview(view)
-    NSLayoutConstraint.activate([
-      view.topAnchor.constraint(equalTo: contentView.topAnchor),
-      view.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      view.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      view.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
-    ])
-    
-    accessoryType = state.isSelected ? .checkmark : .none
-    
-    if state.isSelected {
+    setupSubview()
+  }
+  
+  func setupSubview() {
+    contentView.addSubview(keyboardColorView)
+    keyboardColorView.fillSuperview()
+  }
+  
+  func updatePreviewColor() {
+    keyboardColorView.keyboardColor = keyboardColor
+    keyboardColorView.updatePreviewColor()
+  }
+  
+  func updateCellState(_ selected: Bool) {
+    if selected {
       accessoryType = .checkmark
       layer.borderColor = UIColor.systemGreen.cgColor
       layer.borderWidth = 1.5
@@ -47,4 +52,19 @@ class KeyboardColorTableViewCell: NibLessTableViewCell {
       layer.borderWidth = 0
     }
   }
+  
+  override func prepareForReuse() {
+    isSelected = false
+    keyboardColorView.cleanPreviewColor()
+  }
+  
+//  override func updateConfiguration(using state: UICellConfigurationState) {
+//    super.updateConfiguration(using: state)
+//    
+//    if state.isSelected || isSelected {
+//      print("true")
+//    }
+//    
+//    updateCellState(state.isSelected || isSelected)
+//  }
 }

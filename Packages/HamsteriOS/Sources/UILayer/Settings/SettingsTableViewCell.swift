@@ -13,17 +13,15 @@ public class SettingTableViewCell: NibLessTableViewCell {
 
   override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    contentConfiguration = UIListContentConfiguration.valueCell()
   }
 
   var setting: SettingItemModel?
 
   override public func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
-
-    guard var config = contentConfiguration as? UIListContentConfiguration else { return }
     guard let setting = setting else { return }
 
+    var config = UIListContentConfiguration.valueCell()
     config.text = setting.text
     config.secondaryText = setting.navigationLinkLabel()
     config.image = setting.icon

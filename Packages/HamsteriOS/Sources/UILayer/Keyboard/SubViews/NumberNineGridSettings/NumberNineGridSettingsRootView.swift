@@ -20,11 +20,12 @@ class NumberNineGridSettingsRootView: NibLessView {
 
   lazy var symbolsView: UIView = SymbolEditorView(
     headerTitle: "自定义数字九宫格左侧滑动符号栏",
-    symbols: keyboardSettingsViewModel.symbolsOfGridOfNumericKeyboard,
+    getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfGridOfNumericKeyboard },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfGridOfNumericKeyboard = $0
     },
-    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher()
+    symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
   )
 
   // MARK: methods

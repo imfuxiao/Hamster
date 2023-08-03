@@ -41,14 +41,14 @@ public struct KeyboardColor: Equatable {
     self.author = schema.author ?? ""
     self.backColor = schema.backColor?.bgrColor ?? .clear
     self.borderColor = schema.borderColor?.bgrColor ?? .clear
-    self.textColor = schema.textColor?.bgrColor ?? .clear
-    self.hilitedTextColor = schema.hilitedTextColor?.bgrColor ?? .clear
+    self.textColor = schema.textColor?.bgrColor ?? .label
+    self.hilitedTextColor = schema.hilitedTextColor?.bgrColor ?? .label
     self.hilitedBackColor = schema.hilitedBackColor?.bgrColor ?? .clear
-    self.hilitedCandidateTextColor = schema.hilitedCandidateTextColor?.bgrColor ?? .clear
+    self.hilitedCandidateTextColor = schema.hilitedCandidateTextColor?.bgrColor ?? .label
     self.hilitedCandidateBackColor = schema.hilitedCandidateBackColor?.bgrColor ?? .clear
-    self.hilitedCommentTextColor = schema.hilitedCommentTextColor?.bgrColor ?? .clear
-    self.candidateTextColor = schema.candidateTextColor?.bgrColor ?? .clear
-    self.commentTextColor = schema.commentTextColor?.bgrColor ?? .clear
+    self.hilitedCommentTextColor = schema.hilitedCommentTextColor?.bgrColor ?? .secondaryLabel
+    self.candidateTextColor = schema.candidateTextColor?.bgrColor ?? .label
+    self.commentTextColor = schema.commentTextColor?.bgrColor ?? .label
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {

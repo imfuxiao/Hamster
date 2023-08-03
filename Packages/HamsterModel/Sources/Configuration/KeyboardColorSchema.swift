@@ -55,7 +55,7 @@ public struct KeyboardColorSchema: Codable, Equatable, Hashable, Comparable {
   /// 次选提示文字颜色: comment_text_color
   public var commentTextColor: String?
 
-  init(name: String, author: String? = nil, backColor: String? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
+  public init(name: String, author: String? = nil, backColor: String? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
     self.name = name
     self.author = author
     self.backColor = backColor

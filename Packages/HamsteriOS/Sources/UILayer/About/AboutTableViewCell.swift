@@ -18,10 +18,6 @@ class AboutTableViewCell: NibLessTableViewCell {
 
     super.init(style: .default, reuseIdentifier: Self.identifier)
 
-    var config = UIListContentConfiguration.valueCell()
-    config.text = aboutInfo.text
-    config.secondaryText = aboutInfo.secondaryText
-    contentConfiguration = config
     if let type = aboutInfo.accessoryType {
       accessoryType = type
     }
@@ -29,18 +25,17 @@ class AboutTableViewCell: NibLessTableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.aboutInfo = .init(text: "")
-
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    contentConfiguration = UIListContentConfiguration.valueCell()
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
-    if var config = contentConfiguration as? UIListContentConfiguration {
-      config.text = aboutInfo.text
-      config.secondaryText = aboutInfo.secondaryText
-      contentConfiguration = config
-    }
+    super.updateConfiguration(using: state)
+
+    var config = UIListContentConfiguration.valueCell()
+    config.text = aboutInfo.text
+    config.secondaryText = aboutInfo.secondaryText
+    contentConfiguration = config
+
     if let type = aboutInfo.accessoryType {
       accessoryType = type
     }

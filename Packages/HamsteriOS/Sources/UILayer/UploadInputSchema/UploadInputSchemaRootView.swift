@@ -62,13 +62,8 @@ class UploadInputSchemaRootView: NibLessView {
 //      for: .touchUpInside)
 
     button.translatesAutoresizingMaskIntoConstraints = false
-    cell.addSubview(button)
-    NSLayoutConstraint.activate([
-      button.leadingAnchor.constraint(equalTo: cell.leadingAnchor),
-      button.trailingAnchor.constraint(equalTo: cell.trailingAnchor),
-      button.topAnchor.constraint(equalTo: cell.layoutMarginsGuide.topAnchor),
-      button.bottomAnchor.constraint(equalTo: cell.layoutMarginsGuide.bottomAnchor),
-    ])
+    cell.contentView.addSubview(button)
+    button.fillSuperviewOnMarginsGuide()
 
     return cell
   }

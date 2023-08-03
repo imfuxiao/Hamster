@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterModel
+import ProgressHUD
 import UIKit
 
 public enum KeyboardSettingsSubView {
@@ -187,6 +188,11 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  private var resetSignSubject = PassthroughSubject<Bool, Never>()
+  public var resetSignPublished: AnyPublisher<Bool, Never> {
+    resetSignSubject.eraseToAnyPublisher()
+  }
+
   /// 键盘设置选项
   lazy var keyboardSettingsItems: [SettingSectionModel] = [
     .init(
@@ -314,31 +320,45 @@ public class KeyboardSettingsViewModel: ObservableObject {
 
   /// 符号设置选项
   // TODO: 补充 button 逻辑
-  let buttonSettingItems: [SettingItemModel] = [
+  lazy var buttonSettingItems: [SettingItemModel] = [
     .init(
       text: "成对上屏符号 - 恢复默认值",
       textTintColor: .systemRed,
-      buttonAction: {
-//          appSettings.pairsOfSymbols = HamsterAppSettingKeys.defaultPairsOfSymbols
-//          parentController.pairsOfSymbolsTableView.reloadData()
-//          ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      buttonAction: { [unowned self] in
+        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+          throw "获取系统默认配置失败"
+        }
+        if let defaultPairsOfSymbols = defaultConfiguration.Keyboard?.pairsOfSymbols {
+          self.pairsOfSymbols = defaultPairsOfSymbols
+          resetSignSubject.send(true)
+          ProgressHUD.showSuccess()
+        }
       }),
     .init(
       text: "光标居中符号 - 恢复默认值",
       textTintColor: .systemRed,
-      buttonAction: {
-//        appSettings.cursorBackOfSymbols = HamsterAppSettingKeys.defaultCursorBackOfSymbols
-//        parentController.cursorBackOfSymbolsTableView.reloadData()
-//        ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      buttonAction: { [unowned self] in
+        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+          throw "获取系统默认配置失败"
+        }
+        if let defaultSymbolsOfCursorBack = defaultConfiguration.Keyboard?.symbolsOfCursorBack {
+          self.symbolsOfCursorBack = defaultSymbolsOfCursorBack
+          resetSignSubject.send(true)
+          ProgressHUD.showSuccess()
+        }
       }),
     .init(
       text: "返回主键盘符号 - 恢复默认值",
       textTintColor: .systemRed,
-      buttonAction: {
-//        appSettings.returnToPrimaryKeyboardOfSymbols =
-//          HamsterAppSettingKeys.defaultReturnToPrimaryKeyboardOfSymbols
-//        parentController.returnToPrimaryKeyboardOfSymbolsTableView.reloadData()
-//        ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      buttonAction: { [unowned self] in
+        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+          throw "获取系统默认配置失败"
+        }
+        if let defaultSymbolsOfReturnToMainKeyboard = defaultConfiguration.Keyboard?.symbolsOfReturnToMainKeyboard {
+          self.symbolsOfReturnToMainKeyboard = defaultSymbolsOfReturnToMainKeyboard
+          resetSignSubject.send(true)
+          ProgressHUD.showSuccess()
+        }
       })
   ]
 
@@ -441,10 +461,14 @@ public class KeyboardSettingsViewModel: ObservableObject {
       textTintColor: .systemRed,
       type: .button,
       buttonAction: { [unowned self] in
-        // TODO: 恢复默认值
-//            appSettings.numberNineGridSymbols = HamsterAppSettingKeys.defaultNumberNineGridSymbols
-//            parentController.symbolsTableView.reloadData()
-//            ProgressHUD.showSuccess("重置成功")
+        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+          throw "获取系统默认配置失败"
+        }
+        if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.Keyboard?.symbolsOfGridOfNumericKeyboard {
+          self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
+          resetSignSubject.send(true)
+          ProgressHUD.showSuccess()
+        }
       })
   ]
 
@@ -460,10 +484,11 @@ public class KeyboardSettingsViewModel: ObservableObject {
       text: "常用符号 - 恢复默认值",
       textTintColor: .systemRed,
       type: .button,
-      buttonAction: {
-        // TODO: 补充重置符号逻辑
-//        SymbolCategory.frequentSymbolProvider.rest()
-//        ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      buttonAction: { [unowned self] in
+        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+          throw "获取系统默认配置失败"
+        }
+        // TODO: 常用符号重置
       })
   ]
 

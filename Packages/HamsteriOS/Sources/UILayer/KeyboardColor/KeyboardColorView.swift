@@ -12,50 +12,44 @@ import UIKit
 class KeyboardColorView: NibLessView {
   // MARK: properties
 
-  private let keyboardColor: KeyboardColor
+  private let candidateAreaMargin = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
 
-  private lazy var candidateAreaView = {
-    let stack = UIStackView()
-    stack.axis = .vertical
-    stack.alignment = .leading
-    stack.distribution = .fill
-    stack.spacing = 0
+  var keyboardColor: KeyboardColor
 
-    stack.backgroundColor = keyboardColor.backColor
-    stack.layer.cornerRadius = 10
-    stack.layer.masksToBounds = true
-    return stack
-  }()
-
-  private lazy var schemaNameView: UILabel = {
+  private let schemaNameView: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "方案名称: \(keyboardColor.name)"
-    label.font = .preferredFont(forTextStyle: .headline)
+    label.text = ""
+    label.font = UIFont.preferredFont(forTextStyle: .headline)
     return label
   }()
 
   private lazy var schemaAuthorView: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "作者: \(keyboardColor.author)"
+    label.text = ""
     label.font = .preferredFont(forTextStyle: .subheadline)
     return label
   }()
 
-  // 组字区域
-  private lazy var codingAreaView: UIStackView = {
+  // 候选区域：组字子区域
+  private lazy var wordLabel: UILabel = {
     let word = UILabel(frame: .zero)
     word.text = "方案"
     word.font = .preferredFont(forTextStyle: .body)
-    word.textColor = keyboardColor.textColor
     word.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return word
+  }()
 
+  private lazy var wordPinyinLabel: UILabel = {
     let wordPinyin = UILabel(frame: .zero)
     wordPinyin.text = "pei se˰"
     wordPinyin.font = .preferredFont(forTextStyle: .body)
-    wordPinyin.textColor = keyboardColor.hilitedTextColor
+    return wordPinyin
+  }()
 
-    let stack = UIStackView(arrangedSubviews: [word, wordPinyin])
-    stack.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
+  private lazy var codingAreaView: UIStackView = {
+    let stack = UIStackView(arrangedSubviews: [wordLabel, wordPinyinLabel])
+    stack.layoutMargins = candidateAreaMargin
+    stack.isLayoutMarginsRelativeArrangement = true
     stack.axis = .horizontal
     stack.alignment = .leading
     stack.distribution = .fill
@@ -63,119 +57,144 @@ class KeyboardColorView: NibLessView {
     return stack
   }()
 
-  private lazy var selectAreaView: UIView = {
+  // 候选区域：候选文字子区域
+  private lazy var firstWordLabel: UILabel = {
     let firstWord = UILabel(frame: .zero)
     firstWord.text = "1. 配色"
     firstWord.font = .preferredFont(forTextStyle: .body)
-    firstWord.textColor = keyboardColor.hilitedCandidateTextColor
     firstWord.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return firstWord
+  }()
 
+  private lazy var firstWordPinyinLabel: UILabel = {
     let firstWordPinyin = UILabel(frame: .zero)
     firstWordPinyin.text = "(pei se)"
     firstWordPinyin.font = .preferredFont(forTextStyle: .body)
-    firstWordPinyin.textColor = keyboardColor.hilitedCommentTextColor
     firstWordPinyin.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return firstWordPinyin
+  }()
 
-    let firstContainer = UIStackView(arrangedSubviews: [firstWord, firstWordPinyin])
+  private lazy var secondaryWordLabel: UILabel = {
+    let secondaryWord = UILabel(frame: .zero)
+    secondaryWord.text = "2. 陪"
+    secondaryWord.font = .preferredFont(forTextStyle: .body)
+    secondaryWord.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return secondaryWord
+  }()
+
+  private lazy var secondaryWordPinyinLabel: UILabel = {
+    let secondaryWordPinyin = UILabel(frame: .zero)
+    secondaryWordPinyin.text = "(pei)"
+    secondaryWordPinyin.font = .preferredFont(forTextStyle: .body)
+    return secondaryWordPinyin
+  }()
+
+  private lazy var firstWordContainer: UIStackView = {
+    let firstContainer = UIStackView(arrangedSubviews: [firstWordLabel, firstWordPinyinLabel])
     firstContainer.axis = .horizontal
     firstContainer.alignment = .leading
     firstContainer.distribution = .fill
     firstContainer.spacing = 8
-    firstContainer.backgroundColor = keyboardColor.hilitedCandidateBackColor
     firstContainer.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return firstContainer
+  }()
 
-    let secondaryWord = UILabel(frame: .zero)
-    secondaryWord.text = "2. 陪"
-    secondaryWord.font = .preferredFont(forTextStyle: .body)
-    secondaryWord.textColor = keyboardColor.candidateTextColor
-    secondaryWord.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+  private lazy var secondaryWordContainer: UIStackView = {
+    let secondaryContainer = UIStackView(arrangedSubviews: [secondaryWordLabel, secondaryWordPinyinLabel])
+    secondaryContainer.axis = .horizontal
+    secondaryContainer.alignment = .leading
+    secondaryContainer.distribution = .fill
+    secondaryContainer.spacing = 8
+    return secondaryContainer
+  }()
 
-    let secondaryWordPinyin = UILabel(frame: .zero)
-    secondaryWordPinyin.text = "(pei)"
-    secondaryWordPinyin.font = .preferredFont(forTextStyle: .body)
-    secondaryWordPinyin.textColor = keyboardColor.commentTextColor
-
-    let secondaryStack = UIStackView(arrangedSubviews: [secondaryWord, secondaryWordPinyin])
-    secondaryStack.axis = .horizontal
-    secondaryStack.alignment = .leading
-    secondaryStack.distribution = .fill
-    secondaryStack.spacing = 8
-
-    let stack = UIStackView()
-    stack.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
+  private lazy var selectAreaView: UIView = {
+    let stack = UIStackView(arrangedSubviews: [firstWordContainer, secondaryWordContainer])
+    stack.layoutMargins = candidateAreaMargin
     stack.isLayoutMarginsRelativeArrangement = true
     stack.axis = .horizontal
     stack.alignment = .leading
     stack.distribution = .fill
     stack.spacing = 8
-
-    stack.addArrangedSubview(firstContainer)
-    stack.addArrangedSubview(secondaryStack)
     return stack
   }()
 
-  // 颜色预览区域
-  private lazy var colorSchemaPreviewView: UIStackView = {
-    let stack = UIStackView()
+  // 候选区域
+  private lazy var candidateAreaView = {
+    let stack = UIStackView(arrangedSubviews: [codingAreaView, selectAreaView])
+    stack.axis = .vertical
+    stack.alignment = .leading
+    stack.distribution = .fill
+    stack.spacing = 0
+
+    stack.layer.cornerRadius = 10
+    stack.layer.masksToBounds = true
+    return stack
+  }()
+
+  // 预览区域
+  private lazy var previewView: UIStackView = {
+    let stack = UIStackView(arrangedSubviews: [schemaNameView, schemaAuthorView, candidateAreaView])
     stack.axis = .vertical
     stack.alignment = .leading
     stack.distribution = .fill
     stack.spacing = 3
-
-    stack.layoutMargins = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    stack.layoutMargins = candidateAreaMargin
     stack.isLayoutMarginsRelativeArrangement = true
-
     return stack
   }()
 
   // MARK: methods
 
-  init(frame: CGRect = .zero, colorSchema: KeyboardColor) {
+  init(
+    frame: CGRect = .zero,
+    colorSchema: KeyboardColor = KeyboardColor(name: "", colorSchema: .init(name: "")))
+  {
     self.keyboardColor = colorSchema
 
     super.init(frame: frame)
+
+    setupSubview()
   }
 
-  override func constructViewHierarchy() {
-    candidateAreaView.addArrangedSubview(codingAreaView)
-    candidateAreaView.addArrangedSubview(selectAreaView)
-
-    colorSchemaPreviewView.addArrangedSubview(schemaNameView)
-    colorSchemaPreviewView.addArrangedSubview(schemaAuthorView)
-    colorSchemaPreviewView.addArrangedSubview(candidateAreaView)
-
-    addSubview(colorSchemaPreviewView)
+  func setupSubview() {
+    addSubview(previewView)
+    previewView.fillSuperview()
   }
 
-  override func activateViewConstraints() {
-    codingAreaView.translatesAutoresizingMaskIntoConstraints = false
-    selectAreaView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      codingAreaView.leadingAnchor.constraint(equalTo: candidateAreaView.leadingAnchor),
-      codingAreaView.trailingAnchor.constraint(equalTo: candidateAreaView.trailingAnchor),
-      selectAreaView.leadingAnchor.constraint(equalTo: candidateAreaView.leadingAnchor),
-      selectAreaView.trailingAnchor.constraint(equalTo: candidateAreaView.trailingAnchor),
-    ])
+  func updatePreviewColor() {
+    schemaNameView.text = "方案名称: \(keyboardColor.name)"
+    schemaAuthorView.text = "作者: \(keyboardColor.author)"
 
-    colorSchemaPreviewView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      candidateAreaView.leadingAnchor.constraint(equalToSystemSpacingAfter: colorSchemaPreviewView.leadingAnchor, multiplier: 1.0),
-      colorSchemaPreviewView.trailingAnchor.constraint(equalToSystemSpacingAfter: candidateAreaView.trailingAnchor, multiplier: 1.0),
-    ])
+    wordLabel.textColor = keyboardColor.textColor
+    wordPinyinLabel.textColor = keyboardColor.hilitedTextColor
+//    codingAreaView.backgroundColor = keyboardColor.hilitedBackColor
 
-    colorSchemaPreviewView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      colorSchemaPreviewView.topAnchor.constraint(equalTo: topAnchor),
-      colorSchemaPreviewView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      colorSchemaPreviewView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      colorSchemaPreviewView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    firstWordLabel.textColor = keyboardColor.hilitedCandidateTextColor
+    firstWordPinyinLabel.textColor = keyboardColor.hilitedCommentTextColor
+    firstWordContainer.backgroundColor = keyboardColor.hilitedCandidateBackColor
+
+    secondaryWordLabel.textColor = keyboardColor.candidateTextColor
+    secondaryWordPinyinLabel.textColor = keyboardColor.commentTextColor
+
+    candidateAreaView.backgroundColor = keyboardColor.backColor
   }
 
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
+  func cleanPreviewColor() {
+    schemaNameView.text = ""
+    schemaAuthorView.text = ""
 
-    constructViewHierarchy()
-    activateViewConstraints()
+    wordLabel.textColor = .clear
+    wordPinyinLabel.textColor = .clear
+    codingAreaView.backgroundColor = .clear
+
+    firstWordLabel.textColor = .clear
+    firstWordPinyinLabel.textColor = .clear
+    firstWordContainer.backgroundColor = .clear
+
+    secondaryWordLabel.textColor = .clear
+    secondaryWordPinyinLabel.textColor = .clear
+
+    candidateAreaView.backgroundColor = .black
   }
 }
