@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum HapticFeedback: String, CaseIterable, Codable, Equatable, Identifiable {
+public enum HapticFeedback: String, CaseIterable, Codable, Equatable, Identifiable {
   case
 
     /// Represents feedback for an error event.
@@ -39,7 +39,7 @@ enum HapticFeedback: String, CaseIterable, Codable, Equatable, Identifiable {
     none
 }
 
-extension HapticFeedback {
+public extension HapticFeedback {
   /**
    The unique feedback identifier.
    */

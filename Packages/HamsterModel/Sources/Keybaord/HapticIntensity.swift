@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 /// 震动反馈强度
 public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
@@ -19,7 +20,7 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
   case mediumImpact = 3
   case heavyImpact = 4
 
-  var text: String {
+  public var text: String {
     switch self {
     case .softImpact:
       return "超轻"
@@ -28,13 +29,13 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
     case .rigidImpact:
       return "默认"
     case .mediumImpact:
-      return "中"
+      return "较强"
     case .heavyImpact:
       return "强"
     }
   }
 
-  func hapticFeedback() -> HapticFeedback {
+  public func hapticFeedback() -> HapticFeedback {
     switch self {
     case .softImpact:
       return .softImpact
@@ -46,6 +47,21 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
       return .mediumImpact
     case .heavyImpact:
       return .heavyImpact
+    }
+  }
+
+  public func feedbackStyle() -> UIImpactFeedbackGenerator.FeedbackStyle {
+    switch self {
+    case .softImpact:
+      return .soft
+    case .lightImpact:
+      return .light
+    case .rigidImpact:
+      return .rigid
+    case .mediumImpact:
+      return .medium
+    case .heavyImpact:
+      return .heavy
     }
   }
 }

@@ -6,7 +6,9 @@
 //
 
 import Combine
+import HamsterKit
 import HamsterModel
+import HamsterUIKit
 import UIKit
 
 public class KeyboardFeedbackViewModel {
@@ -48,15 +50,11 @@ public class KeyboardFeedbackViewModel {
     self.hapticFeedbackIntensity = configuration.Keyboard?.hapticFeedbackIntensity ?? 2
   }
 
-  @objc func changeHaptic(_ sender: UISlider) {
-    // 取整
-    // TODO:
-//    sender.value.round()
-//    let senderValue = Int(sender.value)
-//    Logger.shared.log.debug("change haptic: \(senderValue)")
-//    let haptic = HapticIntensity(rawValue: senderValue) ?? .rigidImpact
-//    haptic.toHapticFeedback().trigger()
-//    appSettings.keyboardFeedbackHapticIntensity = haptic.rawValue
+  @objc func changeHaptic(_ control: UIControl) {
+    if let control = control as? StepSlider {
+      logger.debug("change haptic: \(control.index)")
+      hapticFeedbackIntensity = Int(control.index)
+    }
   }
 
   @objc func toggleAction(_ sender: UISwitch) {

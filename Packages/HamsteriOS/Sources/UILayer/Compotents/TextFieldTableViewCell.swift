@@ -19,6 +19,16 @@ class CellTextField: UITextField {
     let originalRect = super.rightViewRect(forBounds: bounds)
     return CGRectOffset(originalRect, 8, 0)
   }
+
+  override func textRect(forBounds bounds: CGRect) -> CGRect {
+    let originalRect = super.textRect(forBounds: bounds)
+    return CGRectOffset(originalRect, 8, 0)
+  }
+
+  override func editingRect(forBounds bounds: CGRect) -> CGRect {
+    let originalRect = super.editingRect(forBounds: bounds)
+    return CGRectOffset(originalRect, 8, 0)
+  }
 }
 
 class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {

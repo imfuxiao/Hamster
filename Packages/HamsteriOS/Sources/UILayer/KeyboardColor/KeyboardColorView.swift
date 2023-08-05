@@ -106,6 +106,7 @@ class KeyboardColorView: NibLessView {
     stack.axis = .horizontal
     stack.alignment = .leading
     stack.distribution = .fill
+    stack.spacing = 8
     return stack
   }()
 
@@ -119,34 +120,6 @@ class KeyboardColorView: NibLessView {
     stack.layer.masksToBounds = true
     stack.layoutMargins = .init(top: 8, left: 8, bottom: 8, right: 8)
     stack.isLayoutMarginsRelativeArrangement = true
-    return stack
-  }()
-
-  // 预览区域
-  private lazy var previewView: UIStackView = {
-    let stack = UIStackView(arrangedSubviews: [schemaNameView, schemaAuthorView, candidateAreaView])
-    stack.axis = .vertical
-    stack.alignment = .leading
-    stack.distribution = .fill
-
-    schemaNameView.translatesAutoresizingMaskIntoConstraints = false
-    schemaAuthorView.translatesAutoresizingMaskIntoConstraints = false
-    candidateAreaView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      schemaNameView.topAnchor.constraint(equalTo: stack.topAnchor),
-      schemaNameView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-      schemaNameView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-
-      schemaAuthorView.topAnchor.constraint(equalTo: schemaNameView.bottomAnchor),
-      schemaAuthorView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-      schemaAuthorView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-
-      candidateAreaView.topAnchor.constraint(equalTo: schemaAuthorView.bottomAnchor),
-      candidateAreaView.leadingAnchor.constraint(equalTo: stack.leadingAnchor),
-      candidateAreaView.trailingAnchor.constraint(equalTo: stack.trailingAnchor),
-      candidateAreaView.bottomAnchor.constraint(equalTo: stack.bottomAnchor),
-    ])
-
     return stack
   }()
 
@@ -164,8 +137,30 @@ class KeyboardColorView: NibLessView {
   }
 
   func setupSubview() {
-    addSubview(previewView)
-    previewView.fillSuperviewOnMarginsGuide()
+    addSubview(schemaNameView)
+    addSubview(schemaAuthorView)
+    addSubview(candidateAreaView)
+
+    schemaNameView.translatesAutoresizingMaskIntoConstraints = false
+    schemaAuthorView.translatesAutoresizingMaskIntoConstraints = false
+    candidateAreaView.translatesAutoresizingMaskIntoConstraints = false
+
+    let layoutGuide = layoutMarginsGuide
+
+    NSLayoutConstraint.activate([
+      schemaNameView.topAnchor.constraint(equalTo: layoutGuide.topAnchor),
+      schemaNameView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      schemaNameView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+
+      schemaAuthorView.topAnchor.constraint(equalToSystemSpacingBelow: schemaNameView.bottomAnchor, multiplier: 1.5),
+      schemaAuthorView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      schemaAuthorView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+
+      candidateAreaView.topAnchor.constraint(equalToSystemSpacingBelow: schemaAuthorView.bottomAnchor, multiplier: 1.5),
+      candidateAreaView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor),
+      candidateAreaView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor),
+      candidateAreaView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor),
+    ])
   }
 
   func updatePreviewColor() {

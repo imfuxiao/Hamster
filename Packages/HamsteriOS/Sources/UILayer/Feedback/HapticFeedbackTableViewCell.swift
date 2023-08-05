@@ -6,6 +6,7 @@
 //
 
 import Combine
+import HamsterModel
 import HamsterUIKit
 import UIKit
 
@@ -29,7 +30,7 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
   ]
 
   private lazy var dynamicSecondaryRowConstraints: [NSLayoutConstraint] = [
-    secondaryRowView.topAnchor.constraint(equalToSystemSpacingBelow: firstRowView.bottomAnchor, multiplier: 1.0),
+    secondaryRowView.topAnchor.constraint(equalToSystemSpacingBelow: firstRowView.bottomAnchor, multiplier: 1.5),
     secondaryRowView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
     secondaryRowView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
     secondaryRowView.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
@@ -65,37 +66,30 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
     return stackView
   }()
 
-  /// 反馈强度滑动
-  private lazy var hapticFeedbackIntensitySlideView: UISlider = {
-    let slider = UISlider(frame: .zero)
-    slider.minimumValue = Float(keyboardFeedbackViewModel.minimumHapticFeedbackIntensity)
-    slider.maximumValue = Float(keyboardFeedbackViewModel.maximumHapticFeedbackIntensity)
-    slider.isContinuous = false
-    slider.value = Float(keyboardFeedbackViewModel.hapticFeedbackIntensity)
-    slider.addTarget(
-      keyboardFeedbackViewModel,
-      action: #selector(keyboardFeedbackViewModel.changeHaptic(_:)),
-      for: .valueChanged
-    )
+  private lazy var secondaryRowView: StepSlider = {
+    let slider = StepSlider(frame: .zero)
+    slider.tintColor = .systemGreen
+    slider.maxCount = UInt(HapticIntensity.allCases.count)
+    slider.index = UInt(keyboardFeedbackViewModel.hapticFeedbackIntensity)
+    slider.trackHeight = 1
+    slider.trackCircleRadius = 5
+    slider.dotsInteractionEnable = true
+    slider.sliderCircleRadius = 12.5
+    // slider.sliderCircleImage = UIImage(systemName: "")
+    slider.trackColor = .systemFill
+    slider.labelColor = .label
+    slider.sliderCircleColor = .secondarySystemFill
+    slider.labelOffset = 20
+    slider.adjustLabel = true
+    slider.enableHapticFeedback = true
+    slider.labels = HapticIntensity.allCases.map { $0.text }
+    slider.feedbackGeneratorBuild = {
+      UIImpactFeedbackGenerator(style: HapticIntensity(rawValue: $0)!.feedbackStyle())
+    }
+
+    slider.addTarget(keyboardFeedbackViewModel, action: #selector(keyboardFeedbackViewModel.changeHaptic(_:)), for: .valueChanged)
+
     return slider
-  }()
-
-  private lazy var secondaryRowView: UIStackView = {
-    let stackView = UIStackView()
-
-    stackView.axis = .horizontal
-    stackView.alignment = .center
-    stackView.distribution = .fill
-    stackView.spacing = 8
-
-    let leftImage = image(name: "iphone.radiowaves.left.and.right")
-    leftImage.tintColor = .secondaryLabel
-
-    stackView.addArrangedSubview(leftImage)
-    stackView.addArrangedSubview(hapticFeedbackIntensitySlideView)
-    stackView.addArrangedSubview(image(name: "iphone.radiowaves.left.and.right"))
-
-    return stackView
   }()
 
   // MARK: methods
