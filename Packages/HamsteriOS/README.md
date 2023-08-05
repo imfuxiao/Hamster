@@ -1,3 +1,3 @@
-# HamsterApp
+# HamsteriOS
 
-Hamster 应用
+Hamster 输入法设置主App
