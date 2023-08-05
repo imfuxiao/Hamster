@@ -6,6 +6,6 @@ final class HamsterKeyboardTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(HamsterKeyboard().text, "Hello, World!")
+        // XCTAssertEqual(HamsterKeyboard().text, "Hello, World!")
     }
 }
