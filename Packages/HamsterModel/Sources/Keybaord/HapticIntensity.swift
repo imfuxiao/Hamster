@@ -35,21 +35,6 @@ public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
     }
   }
 
-  public func hapticFeedback() -> HapticFeedback {
-    switch self {
-    case .softImpact:
-      return .softImpact
-    case .lightImpact:
-      return .lightImpact
-    case .rigidImpact:
-      return .rigidImpact
-    case .mediumImpact:
-      return .mediumImpact
-    case .heavyImpact:
-      return .heavyImpact
-    }
-  }
-
   public func feedbackStyle() -> UIImpactFeedbackGenerator.FeedbackStyle {
     switch self {
     case .softImpact:

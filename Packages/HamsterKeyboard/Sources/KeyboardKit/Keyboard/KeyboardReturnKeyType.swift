@@ -6,7 +6,7 @@
 //  Copyright © 2023 Daniel Saidi. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /**
  This enum defines various keyboard return button types that
@@ -130,20 +130,21 @@ public extension KeyboardReturnKeyType {
 
    某个区域的标准 Image 按钮。
    */
-//  func standardButtonImage(for locale: Locale) -> Image? {
-//    switch self {
-//    case .newLine: return .keyboardNewline(for: locale)
-//    default: return nil
-//    }
-//  }
+  func standardButtonImage(for locale: Locale) -> UIImage? {
+    switch self {
+    case .newLine: return .keyboardNewline(for: locale)
+    default: return nil
+    }
+  }
 
   /**
    The standard button to text for a certain locale.
 
    某个区域的标准文本按钮。
    */
-//  func standardButtonText(for locale: Locale) -> String? {
-//    switch self {
+  func standardButtonText(for locale: Locale) -> String? {
+    switch self {
+    // TODO: 补充
 //    case .custom(let title): return title
 //    case .done: return KKL10n.done.text(for: locale)
 //    case .go: return KKL10n.go.text(for: locale)
@@ -154,6 +155,8 @@ public extension KeyboardReturnKeyType {
 //    case .ok: return KKL10n.ok.text(for: locale)
 //    case .search: return KKL10n.search.text(for: locale)
 //    case .send: return KKL10n.send.text(for: locale)
-//    }
-//  }
+    default:
+      return ""
+    }
+  }
 }

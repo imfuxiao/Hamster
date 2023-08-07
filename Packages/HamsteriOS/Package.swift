@@ -21,6 +21,7 @@ let package = Package(
     .package(path: "../HamsterUIKit"),
     .package(path: "../HamsterKit"),
     .package(path: "../RimeKit"),
+    .package(path: "../HamsterKeyboard"),
   ],
   targets: [
     .target(
@@ -37,6 +38,7 @@ let package = Package(
         "ProgressHUD",
         "HamsterUIKit",
         "HamsterKit",
+        "HamsterKeyboard",
         "RimeKit",
       ],
       path: "Sources"),

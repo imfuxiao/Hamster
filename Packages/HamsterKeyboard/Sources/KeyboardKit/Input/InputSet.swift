@@ -24,8 +24,45 @@ public protocol InputSet: Equatable {
   var rows: InputSetRows { get }
 }
 
-public protocol AlphabeticInputSet: InputSet {}
+/**
+ This input set can be used in alphabetic keyboards.
 
-public protocol NumericInputSet: InputSet {}
+ 该输入集可用于字母键盘。
+ */
+public struct AlphabeticInputSet: InputSet {
+  /**
+   The rows in the input set.
+   */
+  public var rows: InputSetRows
 
-public protocol SymbolicInputSet: InputSet {}
+  /**
+   Create an alphabetic input set.
+   */
+  public init(rows: InputSetRows) {
+    self.rows = rows
+  }
+}
+
+/**
+ This input set can used in numeric keyboards.
+
+ 该输入集可用于数字键盘。
+ */
+public struct NumericInputSet: InputSet {
+  public var rows: InputSetRows
+  public init(rows: InputSetRows) {
+    self.rows = rows
+  }
+}
+
+/**
+ This input set can be used in symbolic keyboards.
+
+ 该输入集可用于符号键盘。
+ */
+public struct SymbolicInputSet: InputSet {
+  public var rows: InputSetRows
+  public init(rows: InputSetRows) {
+    self.rows = rows
+  }
+}

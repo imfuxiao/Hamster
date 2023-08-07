@@ -37,19 +37,19 @@ public protocol InputSetProvider: AnyObject {
 
    用于字母键盘的 InputSet。
    */
-  var alphabeticInputSet: any AlphabeticInputSet { get }
+  var alphabeticInputSet: AlphabeticInputSet { get }
 
   /**
    The input set to use for numeric keyboards.
 
    数字键盘使用的 InputSet。
    */
-  var numericInputSet: any NumericInputSet { get }
+  var numericInputSet: NumericInputSet { get }
 
   /**
    The input set to use for symbolic keyboards.
 
    符号键盘使用的 InputSet。
    */
-  var symbolicInputSet: any SymbolicInputSet { get }
+  var symbolicInputSet: SymbolicInputSet { get }
 }

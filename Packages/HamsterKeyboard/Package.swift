@@ -20,7 +20,8 @@ let package = Package(
     .target(
       name: "HamsterKeyboard",
       dependencies: [],
-      path: "Sources"),
+      path: "Sources",
+      resources: [.process("Resources")]),
     .testTarget(
       name: "HamsterKeyboardTests",
       dependencies: ["HamsterKeyboard"],
