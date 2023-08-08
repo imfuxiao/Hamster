@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HamsterKeyboard
+import HamsterKeyboardKit
 import HamsterModel
 
 public extension HapticIntensity {
