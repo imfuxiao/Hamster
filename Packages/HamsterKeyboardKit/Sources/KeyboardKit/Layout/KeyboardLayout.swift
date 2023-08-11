@@ -29,28 +29,7 @@ import UIKit
  生成键盘布局最灵活的方法是使用``KeyboardLayoutProvider``。
  */
 public class KeyboardLayout {
-  /**
-    Create a new layout with the provided `rows`.
-
-    使用提供的 `rows` 创建新布局。
-
-    - Parameters:
-      - itemRows: The layout item rows to show in the keyboard.
-                  键盘中要显示的布局项行。
-      - idealItemHeight: An optional, ideal item height, otherwise picked from the first item.
-                         可选的，理想的 item 高度，否则从第一个 item 中挑选。
-      - idealItemInsets: An optional, ideal item inset value, otherwise picked from the first item.
-                         可选的， 理想的 item 嵌入值，否则从第一个 item 中挑选。
-   */
-  public init(
-    itemRows rows: KeyboardLayoutItemRows,
-    idealItemHeight height: Double? = nil,
-    idealItemInsets insets: UIEdgeInsets? = nil
-  ) {
-    self.itemRows = rows
-    self.idealItemHeight = height ?? Self.resolveIdealItemHeight(for: rows)
-    self.idealItemInsets = insets ?? Self.resolveIdealItemInsets(for: rows)
-  }
+  // MARK: - Properties
 
   /**
    The layout item rows to show in the keyboard.
@@ -87,9 +66,34 @@ public class KeyboardLayout {
    This cache is used to avoid having to recalculate width
    information over and over.
 
-   该缓存用于避免重复计算宽度信息。
+   Input 按键宽度缓存, 避免重复计算按键宽度
    */
   var widthCache = [TotalWidth: CGFloat]()
+
+  // MARK: - Initializations
+
+  /**
+    Create a new layout with the provided `rows`.
+
+    使用提供的 `rows` 创建新布局。
+
+    - Parameters:
+      - itemRows: The layout item rows to show in the keyboard.
+                  键盘中要显示的布局项行。
+      - idealItemHeight: An optional, ideal item height, otherwise picked from the first item.
+                         可选的，理想的 item 高度，否则从第一个 item 中挑选。
+      - idealItemInsets: An optional, ideal item inset value, otherwise picked from the first item.
+                         可选的， 理想的 item 嵌入值，否则从第一个 item 中挑选。
+   */
+  public init(
+    itemRows rows: KeyboardLayoutItemRows,
+    idealItemHeight height: Double? = nil,
+    idealItemInsets insets: UIEdgeInsets? = nil
+  ) {
+    self.itemRows = rows
+    self.idealItemHeight = height ?? Self.resolveIdealItemHeight(for: rows)
+    self.idealItemInsets = insets ?? Self.resolveIdealItemInsets(for: rows)
+  }
 }
 
 public extension KeyboardLayout {

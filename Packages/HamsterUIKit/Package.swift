@@ -14,12 +14,11 @@ let package = Package(
       targets: ["HamsterUIKit"]),
   ],
   dependencies: [
-    .package(path: "../HamsterKit"),
   ],
   targets: [
     .target(
       name: "HamsterUIKit",
-      dependencies: ["HamsterKit"],
+      dependencies: [],
       path: "Sources"),
     .testTarget(
       name: "HamsterUIKitTests",

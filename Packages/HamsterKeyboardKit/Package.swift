@@ -15,12 +15,12 @@ let package = Package(
       targets: ["HamsterKeyboardKit"]),
   ],
   dependencies: [
-    // .package(url: "https://github.com/KeyboardKit/KeyboardKit.git", exact: "7.8.0"),
   ],
   targets: [
     .target(
       name: "HamsterKeyboardKit",
-      dependencies: [],
+      dependencies: [
+      ],
       path: "Sources",
       resources: [.process("Resources")]),
     .testTarget(

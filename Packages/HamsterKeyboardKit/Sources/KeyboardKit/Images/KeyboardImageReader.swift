@@ -51,9 +51,6 @@ public extension KeyboardImageReader {
   static var keyboardUndo: UIImage { .init(systemName: "arrow.uturn.left")! }
   static var keyboardZeroWidthSpace: UIImage { .init(systemName: "circle.dotted")! }
 
-  static func keyboardBackspace(for locale: Locale) -> UIImage {
-    locale.isLeftToRight ? .keyboardBackspace : .keyboardBackspaceRtl
-  }
 
   static func keyboardNewline(for locale: Locale) -> UIImage {
     locale.isLeftToRight ? .keyboardNewline : .keyboardNewlineRtl

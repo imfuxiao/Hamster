@@ -104,10 +104,10 @@ public protocol KeyboardAppearance: AnyObject {
 
   /**
    The style to use for ``InputCallout`` views.
+
+   用于 ``InputCallout`` 视图的样式。
    */
   var inputCalloutStyle: KeyboardInputCalloutStyle { get }
-
-  // MARK: - Callouts
 
   /**
    The style to use for ``AutocompleteToolbar`` views.

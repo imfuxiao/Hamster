@@ -63,25 +63,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     super.traitCollectionDidChange(previousTraitCollection)
   }
 
-  // MARK: - Keyboard View Controller Lifecycle 键盘 ViewController 生命周期
-
-  /**
-   This function is called to handle any dictation results
-   when returning from the main app.
-
-   从主应用程序返回时，会调用此函数来处理任何听写结果。
-   */
-//  open func viewWillHandleDictationResult() {
-//    Task {
-//      do {
-//        try await dictationService.handleDictationResultInKeyboard()
-//      } catch {
-//        await MainActor.run {
-//          dictationContext.lastError = error
-//        }
-//      }
-//    }
-//  }
+  // MARK: - Keyboard View Controller Lifecycle
 
   /**
    This function is called whenever the keyboard view must
@@ -95,8 +77,20 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    默认情况下，这将设置一个 "SystemKeyboard"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
    */
   open func viewWillSetupKeyboard() {
-    // TODO:
-//    setup { SystemKeyboard(controller: $0) }
+    let layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
+
+    let keyboard = Keyboard(
+      layout: layout,
+      appearance: keyboardAppearance,
+      actionHandler: keyboardActionHandler,
+      autocompleteContext: autocompleteContext,
+      autocompleteToolbar: .automatic,
+      autocompleteToolbarAction: { _ in },
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      width: view.frame.width
+    )
+    setup(keyboard)
   }
 
   /**
@@ -120,82 +114,23 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   // MARK: - Setup
 
   /**
-   Setup KeyboardKit with a SwiftUI view.
-
-   使用 SwiftUI 视图设置 KeyboardKit。
-
-   Only use this setup function when the view doesn't need
-   to refer to this controller, otherwise make sure to use
-   the controller-based setup function instead.
-
-   只有当视图不需要引用该 controller 时才使用此函数，
-   否则请确保使用基于 controller 的设置函数。
-   */
-  open func setup<Content: UIView>(
-    with view: @autoclosure @escaping () -> Content
-  ) {
-    // TODO:
-//    setup(withRootView: KeyboardRootView(view))
-  }
-
-  /**
-   Setup KeyboardKit with a SwiftUI view.
-
-   使用 SwiftUI 视图设置 KeyboardKit。
-
-   Only use this setup function when the view doesn't need
-   to refer to this controller, otherwise make sure to use
-   the controller-based setup function instead.
-
-   只有当视图不需要引用该 controller 时才使用此设置函数，
-   否则请确保使用基于 controller 的设置函数。
-   */
-  open func setup<Content: UIView>(
-    with view: @escaping () -> Content
-  ) {
-    // TODO:
-//    setup(withRootView: KeyboardRootView(view))
-  }
-
-  /**
-   Setup KeyboardKit with a SwiftUI view.
-
-   使用 SwiftUI 视图设置 KeyboardKit。
-
-   Use this setup function when the view needs to refer to
-   this controller, otherwise it's easy to create a memory
-   leak when injecting the controller into the view.
-
-   当视图需要引用该 controller 时，请使用此设置函数，否则在将 controller 注入视图时很容易造成内存泄漏。
-   */
-  open func setup<Content: UIView>(
-    with view: @escaping (_ controller: KeyboardInputViewController) -> Content
-  ) {
-    // TODO:
-//    setup(withRootView: KeyboardRootView { [unowned self] in
-//      view(self)
-//    })
-  }
-
-  /**
    This function is shared by all setup functions.
 
    该功能函数由所有设置函数共享。
    */
-  func setup<Content: UIView>(withRootView view: Content) {
+  func setup(_ view: UIView) {
     children.forEach { $0.removeFromParent() }
 
     self.view.subviews.forEach { $0.removeFromSuperview() }
-    // TODO: 设置键盘的View
-//    let view = view
-//      .environmentObject(autocompleteContext)
-//      .environmentObject(calloutContext)
-//      .environmentObject(dictationContext)
-//      .environmentObject(keyboardContext)
-//      .environmentObject(keyboardFeedbackSettings)
-//      .environmentObject(keyboardTextContext)
-//    let host = KeyboardHostingController(rootView: view)
-//    host.add(to: self)
+    // 设置键盘的View
+    self.view.addSubview(view)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      view.topAnchor.constraint(equalTo: self.view.topAnchor),
+      view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+      view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+      view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+    ])
   }
 
   // MARK: - Combine

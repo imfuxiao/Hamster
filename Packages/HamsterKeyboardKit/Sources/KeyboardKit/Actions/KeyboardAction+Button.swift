@@ -19,7 +19,7 @@ public extension KeyboardAction {
     if let image = standardButtonTextImageReplacement(for: context) { return image }
 
     switch self {
-    case .backspace: return .keyboardBackspace(for: context.locale)
+    case .backspace: return .keyboardBackspace
     case .command: return .keyboardCommand
     case .control: return .keyboardControl
     case .dictation: return .keyboardDictation

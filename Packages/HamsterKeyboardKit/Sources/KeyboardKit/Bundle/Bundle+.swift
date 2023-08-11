@@ -24,7 +24,7 @@ extension Bundle {
    Bundle(for: BundleFinder.self).resourceURL?.deletingLastPathComponent().deletingLastPathComponent()
    ```
    */
-  static let HamsterKeyboardBundleName = "HamsterKeyboard_HamsterKeyboard"
+  static let HamsterKeyboardBundleName = "HamsterKeyboardKit_HamsterKeyboardKit"
 
   /**
    This bundle lets us use resources from HamsterKeyboard.
