@@ -6,7 +6,6 @@
 //  Copyright © 2020-2023 Daniel Saidi. All rights reserved.
 //
 
-import CoreGraphics
 import UIKit
 
 /**
@@ -132,7 +131,7 @@ public extension KeyboardLayout {
   /**
    Calculate the width of an input key given a `totalWidth`.
 
-   在给定`totalWidth`的情况下计算输入键的宽度。
+   在给定`totalWidth`的情况下计算 .input 类型按键的最小宽度。
 
    This will find the smallest required input width in all
    rows, which can then be applied to all input keys. This
@@ -146,7 +145,10 @@ public extension KeyboardLayout {
     for totalWidth: TotalWidth
   ) -> CGFloat {
     if let result = widthCache[totalWidth] { return result }
-    let result = itemRows.compactMap { $0.inputWidth(for: totalWidth) }.min() ?? 0
+    let result = itemRows
+      .compactMap { $0.inputWidth(for: totalWidth) }
+      .min() ?? 0
+    print("totalWidth: \(totalWidth), result: \(result)")
     widthCache[totalWidth] = result
     return result
   }
@@ -206,8 +208,14 @@ private extension KeyboardLayoutItemRow {
     // 获取类型 .input 和 .inputPercentage 的总百分比
     // 其中 .input 类型为 1， .inputPercentage 类型为实际百分比
     let totalRefPercentage = reduce(0) { $0 + $1.inputPercentageFactor }
+
     // 为 .input 类型计算宽度
-    return remaining / totalRefPercentage
+    // 分子分母都* 10 用于小数点精确1位
+    return CGFloat.rounded(remaining / totalRefPercentage)
+  }
+
+  private func rounded(_ measurement: CGFloat) -> CGFloat {
+    return (measurement * UIScreen.main.scale) / UIScreen.main.scale
   }
 }
 
@@ -232,5 +240,11 @@ private extension KeyboardLayoutItem {
     case .percentage: return 0
     case .points: return 0
     }
+  }
+}
+
+public extension CGFloat {
+  static func rounded(_ measurement: CGFloat) -> CGFloat {
+    return (measurement * UIScreen.main.scale) / UIScreen.main.scale
   }
 }

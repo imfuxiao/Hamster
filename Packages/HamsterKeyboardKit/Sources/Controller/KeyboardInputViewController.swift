@@ -77,20 +77,29 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    默认情况下，这将设置一个 "SystemKeyboard"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
    */
   open func viewWillSetupKeyboard() {
-    let layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
+    children.forEach { $0.removeFromParent() }
 
-    let keyboard = Keyboard(
-      layout: layout,
+    view.subviews.forEach { $0.removeFromSuperview() }
+
+    // 设置键盘的View
+    let keyboardRootView = KeyboardRootView(
+      keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: keyboardAppearance,
       actionHandler: keyboardActionHandler,
       autocompleteContext: autocompleteContext,
-      autocompleteToolbar: .automatic,
-      autocompleteToolbarAction: { _ in },
       keyboardContext: keyboardContext,
-      calloutContext: calloutContext,
-      width: view.frame.width
+      calloutContext: calloutContext
     )
-    setup(keyboard)
+
+    view.addSubview(keyboardRootView)
+    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
+    let insets = keyboardAppearance.keyboardEdgeInsets
+    NSLayoutConstraint.activate([
+      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top),
+      keyboardRootView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom),
+      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left),
+      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -insets.right),
+    ])
   }
 
   /**
@@ -109,28 +118,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   open func viewWillSyncWithContext() {
     keyboardContext.sync(with: self)
     keyboardTextContext.sync(with: self)
-  }
-
-  // MARK: - Setup
-
-  /**
-   This function is shared by all setup functions.
-
-   该功能函数由所有设置函数共享。
-   */
-  func setup(_ view: UIView) {
-    children.forEach { $0.removeFromParent() }
-
-    self.view.subviews.forEach { $0.removeFromSuperview() }
-    // 设置键盘的View
-    self.view.addSubview(view)
-    view.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      view.topAnchor.constraint(equalTo: self.view.topAnchor),
-      view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-      view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-      view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-    ])
   }
 
   // MARK: - Combine
@@ -290,20 +277,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   ) {
     didSet { refreshProperties() }
   }
-
-  /**
-   The dictation service that is used to perform dictation
-   operation between the keyboard and the main app.
-
-   用于在键盘和主应用程序之间执行听写操作的听写服务。
-
-   You can replace this with a custom implementation.
-
-   您可以用自定义实现来替代它。
-   */
-//  public lazy var dictationService: KeyboardDictationService = DisabledKeyboardDictationService(
-//    context: dictationContext
-//  )
 
   /**
    The input set provider that is used to define the input

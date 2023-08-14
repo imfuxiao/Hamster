@@ -20,7 +20,7 @@ open class KeyboardButtonContentView: UIView {
   private var contentView: UIView!
 
   var spaceText: String {
-    appearance.buttonText(for: action) ?? ""
+    appearance.buttonText(for: action) ?? " "
   }
 
   init(action: KeyboardAction, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext) {
@@ -55,10 +55,11 @@ open class KeyboardButtonContentView: UIView {
     contentView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(contentView)
     NSLayoutConstraint.activate([
-      contentView.topAnchor.constraint(equalTo: topAnchor),
-      contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      contentView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
+      contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3),
+      contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 3),
+      contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -3),
     ])
   }
 }

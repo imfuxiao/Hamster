@@ -8,7 +8,7 @@
 
 import Combine
 import Foundation
-import SwiftUI
+import UIKit
 
 /**
  This class provides keyboard extensions with contextual and
@@ -123,6 +123,10 @@ public class KeyboardContext: ObservableObject {
    */
   @Published
   public var keyboardType = KeyboardType.alphabetic(.lowercased)
+
+  /// 键盘宽度
+  @Published
+  public var keyboardWidth: CGFloat = .zero
 
   /**
    The locale that is currently being used.
@@ -454,6 +458,7 @@ extension KeyboardContext {
     if screenSize != controller.screenSize {
       screenSize = controller.screenSize
     }
+
     if mainTextDocumentProxy === controller.mainTextDocumentProxy {} else {
       mainTextDocumentProxy = controller.mainTextDocumentProxy
     }

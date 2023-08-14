@@ -9,8 +9,12 @@ import Combine
 import UIKit
 
 class KeyboardButtonRowItem: UIView {
+  public let row: Int
+  public let column: Int
+  public let isSpacer: Bool
+  public let item: KeyboardLayoutItem
+
   private let content: KeyboardButton
-  private let item: KeyboardLayoutItem
   private let actionHandler: KeyboardActionHandler
   private let calloutContext: KeyboardCalloutContext?
   private let keyboardWidth: CGFloat
@@ -21,14 +25,20 @@ class KeyboardButtonRowItem: UIView {
   @Published
   private var isPressed = false
 
-  init(item: KeyboardLayoutItem,
-       keyboardContext: KeyboardContext,
-       actionHandler: KeyboardActionHandler,
-       calloutContext: KeyboardCalloutContext?,
-       keyboardWidth: CGFloat,
-       inputWidth: CGFloat,
-       appearance: KeyboardAppearance)
+  init(
+    row: Int,
+    column: Int,
+    item: KeyboardLayoutItem,
+    keyboardContext: KeyboardContext,
+    actionHandler: KeyboardActionHandler,
+    calloutContext: KeyboardCalloutContext?,
+    keyboardWidth: CGFloat,
+    inputWidth: CGFloat,
+    appearance: KeyboardAppearance)
   {
+    self.row = row
+    self.column = column
+    self.isSpacer = item.action.isSpacer
     self.content = KeyboardButton(
       action: item.action,
       actionHandler: actionHandler,
@@ -54,14 +64,17 @@ class KeyboardButtonRowItem: UIView {
   }
 
   func setupContent() {
+    /// spacer 类型不可见
+    alpha = isSpacer ? 0 : 1
     addSubview(content)
-    let insets = item.insets
     content.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
+    let insets = item.insets
+    let constraints = [
       content.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
-      content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: insets.bottom),
+      content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
       content.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-      content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: insets.right),
-    ])
+      content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
+    ]
+    NSLayoutConstraint.activate(constraints)
   }
 }
