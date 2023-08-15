@@ -124,10 +124,6 @@ public class KeyboardContext: ObservableObject {
   @Published
   public var keyboardType = KeyboardType.alphabetic(.lowercased)
 
-  /// 键盘宽度
-  @Published
-  public var keyboardWidth: CGFloat = .zero
-
   /**
    The locale that is currently being used.
 

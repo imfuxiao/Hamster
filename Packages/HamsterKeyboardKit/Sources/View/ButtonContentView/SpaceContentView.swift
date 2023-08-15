@@ -24,6 +24,7 @@ class SpaceContentView: UIView {
       isInputAction: KeyboardAction.space.isInputAction
     )
     self.loadingLabel = UILabel(frame: .zero)
+    self.loadingLabel.textAlignment = .center
     
     super.init(frame: .zero)
     

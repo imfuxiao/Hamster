@@ -78,7 +78,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    */
   open func viewWillSetupKeyboard() {
     children.forEach { $0.removeFromParent() }
-
     view.subviews.forEach { $0.removeFromSuperview() }
 
     // 设置键盘的View
@@ -91,15 +90,17 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       calloutContext: calloutContext
     )
 
-    view.addSubview(keyboardRootView)
-    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
-    let insets = keyboardAppearance.keyboardEdgeInsets
-    NSLayoutConstraint.activate([
-      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor, constant: insets.top),
-      keyboardRootView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -insets.bottom),
-      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: insets.left),
-      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -insets.right),
-    ])
+    let viewController = KeyboardViewController(view: keyboardRootView)
+    viewController.add(to: self)
+
+//    view.addSubview(keyboardRootView)
+//    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
+//    NSLayoutConstraint.activate([
+//      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
+//      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
+//      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//    ])
   }
 
   /**

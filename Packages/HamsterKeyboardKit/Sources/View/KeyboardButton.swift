@@ -11,11 +11,6 @@ import UIKit
 public class KeyboardButton: UIControl {
   // MARK: - Properties
   
-  /**
-   此类型别名代表一种操作，可用于自定义（或替换）标准按钮内容视图。
-   */
-  public typealias ContentConfig = (KeyboardButtonContentView) -> UIView
-  
   /// 按键对应的操作
   private let action: KeyboardAction
   
@@ -31,8 +26,6 @@ public class KeyboardButton: UIControl {
   /// 按键内容视图
   private var buttonContentView: KeyboardButtonContentView!
   
-  private var contentConfig: ContentConfig
-  
   private var buttonStyle: KeyboardButtonStyle {
     appearance.buttonStyle(for: action, isPressed: isSelected)
   }
@@ -43,14 +36,12 @@ public class KeyboardButton: UIControl {
     action: KeyboardAction,
     actionHandler: KeyboardActionHandler,
     keyboardContext: KeyboardContext,
-    appearance: KeyboardAppearance,
-    contentConfig: @escaping ContentConfig
+    appearance: KeyboardAppearance
   ) {
     self.action = action
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.appearance = appearance
-    self.contentConfig = contentConfig
     
     super.init(frame: .zero)
     
@@ -62,21 +53,6 @@ public class KeyboardButton: UIControl {
     )
     
     setupButtonContentView()
-  }
-  
-  convenience init(
-    action: KeyboardAction,
-    actionHandler: KeyboardActionHandler,
-    keyboardContext: KeyboardContext,
-    appearance: KeyboardAppearance
-  ) {
-    self.init(
-      action: action,
-      actionHandler: actionHandler,
-      keyboardContext: keyboardContext,
-      appearance: appearance,
-      contentConfig: { $0 }
-    )
   }
   
   @available(*, unavailable)
@@ -93,14 +69,13 @@ public class KeyboardButton: UIControl {
   }
 
   func setupButtonContentView() {
-    let view = contentConfig(buttonContentView)
-    addSubview(view)
-    view.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(buttonContentView)
+    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      view.topAnchor.constraint(equalTo: topAnchor),
-      view.bottomAnchor.constraint(equalTo: bottomAnchor),
-      view.leadingAnchor.constraint(equalTo: leadingAnchor),
-      view.trailingAnchor.constraint(equalTo: trailingAnchor),
+      buttonContentView.topAnchor.constraint(equalTo: topAnchor),
+      buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
     
     updateButtonStyle()
@@ -132,10 +107,7 @@ struct KeyboardButtonView_Previews: PreviewProvider {
         actionHandler: .preview,
         keyboardContext: .preview,
         appearance: .preview
-      ) {
-        $0.frame = .init(x: 0, y: 0, width: 80, height: 80)
-        return $0
-      }
+      )
       
       button.frame = .init(x: 0, y: 0, width: 80, height: 80)
       return button

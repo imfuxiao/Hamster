@@ -17,13 +17,20 @@ class KeyboardButtonRowItem: UIView {
   private let content: KeyboardButton
   private let actionHandler: KeyboardActionHandler
   private let calloutContext: KeyboardCalloutContext?
-  private let keyboardWidth: CGFloat
-  private let inputWidth: CGFloat
   private let appearance: KeyboardAppearance
   private var keyboardContext: KeyboardContext
+  private var interfaceOrientation: InterfaceOrientation
 
   @Published
   private var isPressed = false
+  public var topConstraint: NSLayoutConstraint?
+  public var bottomConstraint: NSLayoutConstraint?
+  public var leadingConstraint: NSLayoutConstraint?
+  public var trailingConstraint: NSLayoutConstraint?
+
+  private var layoutConfig: KeyboardLayoutConfiguration {
+    .standard(for: keyboardContext)
+  }
 
   init(
     row: Int,
@@ -32,8 +39,6 @@ class KeyboardButtonRowItem: UIView {
     keyboardContext: KeyboardContext,
     actionHandler: KeyboardActionHandler,
     calloutContext: KeyboardCalloutContext?,
-    keyboardWidth: CGFloat,
-    inputWidth: CGFloat,
     appearance: KeyboardAppearance)
   {
     self.row = row
@@ -49,9 +54,8 @@ class KeyboardButtonRowItem: UIView {
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     self.calloutContext = calloutContext
-    self.keyboardWidth = keyboardWidth
-    self.inputWidth = inputWidth
     self.appearance = appearance
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
 
     super.init(frame: .zero)
 
@@ -68,13 +72,42 @@ class KeyboardButtonRowItem: UIView {
     alpha = isSpacer ? 0 : 1
     addSubview(content)
     content.translatesAutoresizingMaskIntoConstraints = false
-    let insets = item.insets
-    let constraints = [
-      content.topAnchor.constraint(equalTo: topAnchor, constant: insets.top),
-      content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
-      content.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left),
-      content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right),
-    ]
-    NSLayoutConstraint.activate(constraints)
+    let insets = layoutConfig.buttonInsets
+    topConstraint = content.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
+    bottomConstraint = content.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
+    leadingConstraint = content.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left)
+    trailingConstraint = content.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+    NSLayoutConstraint.activate([topConstraint!, bottomConstraint!, leadingConstraint!, trailingConstraint!])
   }
+
+//  override func updateConstraints() {
+//    super.updateConstraints()
+//
+//    print("KeyboardButtonRowItem updateConstraints()")
+//
+//    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+//
+//    interfaceOrientation = keyboardContext.interfaceOrientation
+//
+//    let layoutConfig = layoutConfig
+//    let insets = layoutConfig.buttonInsets
+//
+//    print("KeyboardButtonRowItem updateConstraints  rowHeight: \(layoutConfig.rowHeight), buttonInsets: \(insets)")
+//
+//    if let topConstraint = topConstraint {
+//      topConstraint.constant = insets.top
+//    }
+//
+//    if let bottomConstraint = bottomConstraint {
+//      bottomConstraint.constant = -insets.bottom
+//    }
+//
+//    if let leadingConstraint = leadingConstraint {
+//      leadingConstraint.constant = insets.left
+//    }
+//
+//    if let trailingConstraint = trailingConstraint {
+//      trailingConstraint.constant = -insets.right
+//    }
+//  }
 }

@@ -30,11 +30,11 @@ class KeyboardRootView: UIView {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: KeyboardLayoutProvider
+  private let layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
   private let autocompleteToolbarAction: AutocompleteToolbarAction = { _ in }
-
   private let layoutConfig: KeyboardLayoutConfiguration
 
   private var actionCalloutStyle: KeyboardActionCalloutStyle {
@@ -58,14 +58,6 @@ class KeyboardRootView: UIView {
   private var keyboardContext: KeyboardContext
 
   // MARK: 计算属性
-
-  private var layout: KeyboardLayout {
-    keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
-  }
-
-  private var keyboardWidth: CGFloat {
-    keyboardContext.keyboardWidth
-  }
 
   // MARK: subview
 
@@ -144,6 +136,7 @@ class KeyboardRootView: UIView {
     calloutContext: KeyboardCalloutContext?
   ) {
     self.keyboardLayoutProvider = keyboardLayoutProvider
+    self.layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
     self.layoutConfig = .standard(for: keyboardContext)
     self.actionHandler = actionHandler
     self.appearance = appearance
@@ -155,6 +148,8 @@ class KeyboardRootView: UIView {
     self.inputCalloutContext = calloutContext?.input ?? .disabled
 
     super.init(frame: .zero)
+
+    setupView()
   }
 
   @available(*, unavailable)
@@ -176,25 +171,12 @@ class KeyboardRootView: UIView {
 
     addSubview(subview)
     subview.translatesAutoresizingMaskIntoConstraints = false
+
     NSLayoutConstraint.activate([
       subview.topAnchor.constraint(equalTo: topAnchor),
-      subview.bottomAnchor.constraint(equalTo: bottomAnchor),
+      subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
       subview.leadingAnchor.constraint(equalTo: leadingAnchor),
       subview.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    if let superview = superview {
-      print("layoutMarginsGuide superview frame width: \(superview.layoutMarginsGuide.layoutFrame.width)")
-      print("keyboardLayoutGuide superview frame width: \(superview.keyboardLayoutGuide.layoutFrame.width)")
-      if keyboardContext.keyboardWidth != superview.layoutMarginsGuide.layoutFrame.width {
-        keyboardContext.keyboardWidth = superview.layoutMarginsGuide.layoutFrame.width
-      }
-    }
-
-    setupView()
   }
 }

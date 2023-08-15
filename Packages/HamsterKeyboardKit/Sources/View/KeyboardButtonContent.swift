@@ -37,7 +37,7 @@ open class KeyboardButtonContentView: UIView {
     } else if let image = appearance.buttonImage(for: action) {
       contentView = ImageContentView(image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
     } else {
-      let text = appearance.buttonText(for: action) ?? ""
+      let text = appearance.buttonText(for: action) ?? " "
       contentView = TextContentView(style: style, text: text, isInputAction: action.isInputAction)
     }
 
@@ -55,11 +55,10 @@ open class KeyboardButtonContentView: UIView {
     contentView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(contentView)
     NSLayoutConstraint.activate([
-      contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      contentView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
-      contentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -3),
-      contentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 3),
-      contentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -3),
+      contentView.topAnchor.constraint(equalTo: topAnchor),
+      contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
   }
 }

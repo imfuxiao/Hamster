@@ -33,6 +33,7 @@ public class TextContentView: UIView {
     self.text = text
     self.isInputAction = isInputAction
     self.label = UILabel(frame: .zero)
+    label.textAlignment = .center
 
     super.init(frame: .zero)
 
@@ -52,7 +53,7 @@ public class TextContentView: UIView {
     addSubview(label)
 
     label.translatesAutoresizingMaskIntoConstraints = false
-    
+
     NSLayoutConstraint.activate([
       label.centerXAnchor.constraint(equalTo: centerXAnchor),
       centerYAnchor.constraint(

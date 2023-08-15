@@ -29,11 +29,39 @@ public class StanderAlphabeticKeyboard: UIView {
 
   // MARK: - Properties
 
+  private var layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
   private let autocompleteToolbarAction: AutocompleteToolbarAction
-  private let layout: KeyboardLayout
+
+  private var actionCalloutContext: ActionCalloutContext
+  private var autocompleteContext: AutocompleteContext
+  private var calloutContext: KeyboardCalloutContext
+  private var inputCalloutContext: InputCalloutContext
+  private var keyboardContext: KeyboardContext
+
+  /// 行中按键宽度类型为 input 的最大数量
+  /// 注意：按行统计
+  private var maxInputButtonCount = 0
+
+  /// 缓存所有按键视图
+  private var keyboardRows: [[KeyboardButtonRowItem]] = []
+  /// 静态视图约束，视图创建完毕后不在发生变化
+  private var staticConstraints: [NSLayoutConstraint] = []
+  /// 动态视图约束，在键盘方向发生变化后需要更新约束
+  private var dynamicConstraints: [NSLayoutConstraint] = []
+
+  // 屏幕方向
+  private var interfaceOrientation: InterfaceOrientation
+
+  private var subscriptions = Set<AnyCancellable>()
+
+  // MARK: - 计算属性
+
+  private var layoutConfig: KeyboardLayoutConfiguration {
+    .standard(for: keyboardContext)
+  }
 
   private var actionCalloutStyle: KeyboardActionCalloutStyle {
     var style = appearance.actionCalloutStyle
@@ -47,30 +75,6 @@ public class StanderAlphabeticKeyboard: UIView {
     let insets = layoutConfig.buttonInsets
     style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
     return style
-  }
-
-  private var actionCalloutContext: ActionCalloutContext
-  private var autocompleteContext: AutocompleteContext
-  private var calloutContext: KeyboardCalloutContext
-  private var inputCalloutContext: InputCalloutContext
-  private var keyboardContext: KeyboardContext
-
-  /// 键盘宽度
-  private var keyboardWidth: CGFloat
-
-  /// input 类型按键的最小宽度
-  /// 注意：每次 view 发生变化时需要重新计算此宽度
-  private var inputWidth: CGFloat
-
-  /// 缓存所有按键视图
-  private var keyboardRows: [[KeyboardButtonRowItem]] = []
-  /// 缓存所有视图约束
-  private var buttonConstraints: [NSLayoutConstraint] = []
-
-  // MARK: - 计算属性
-
-  private var layoutConfig: KeyboardLayoutConfiguration {
-    .standard(for: keyboardContext)
   }
 
   // MARK: - Initializations
@@ -103,7 +107,6 @@ public class StanderAlphabeticKeyboard: UIView {
     calloutContext: KeyboardCalloutContext?
   ) {
     self.layout = layout
-//    self.layoutConfig = .standard(for: keyboardContext)
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.autocompleteToolbarMode = autocompleteToolbar
@@ -113,8 +116,7 @@ public class StanderAlphabeticKeyboard: UIView {
     self.calloutContext = calloutContext ?? .disabled
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
-    self.keyboardWidth = keyboardContext.keyboardWidth
-    self.inputWidth = layout.inputWidth(for: keyboardWidth)
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
 
     super.init(frame: .zero)
 
@@ -133,6 +135,7 @@ public class StanderAlphabeticKeyboard: UIView {
     // 添加按键至 View
     for (rowIndex, row) in layout.itemRows.enumerated() {
       var tempRow = [KeyboardButtonRowItem]()
+      var inputCount = 0
       for (itemIndex, item) in row.enumerated() {
         let buttonItem = KeyboardButtonRowItem(
           row: rowIndex,
@@ -141,92 +144,123 @@ public class StanderAlphabeticKeyboard: UIView {
           keyboardContext: keyboardContext,
           actionHandler: actionHandler,
           calloutContext: calloutContext,
-          keyboardWidth: keyboardWidth,
-          inputWidth: inputWidth,
           appearance: appearance
         )
         buttonItem.translatesAutoresizingMaskIntoConstraints = false
         addSubview(buttonItem)
         tempRow.append(buttonItem)
+
+        if item.size.width == .input {
+          inputCount += 1
+        }
       }
+
+      maxInputButtonCount = max(maxInputButtonCount, inputCount)
       keyboardRows.append(tempRow)
     }
   }
 
   /// 激活视图约束
   open func activateViewConstraints() {
-    // 行中 input 类型按键总宽度
-    var inputItemsTotalWidth = CGFloat.zero
     // 行中 available 类型按键集合
     var availableItems = [KeyboardButtonRowItem]()
     // 前一个按键，用于按键之间间隙约束
     var prevItem: KeyboardButtonRowItem?
-    // 总行的高度，用于键盘视图的高度约束
-    // 注意，这个值也用于按键 y 轴偏移量
-    var keyboardHeight = CGFloat.zero
+    // 上一行的按键，用于 y 轴约束
+    var prevRowItem: KeyboardButtonRowItem?
 
+    // 根据 keyboardContext 获取当前布局配置
+    // 注意：临时变量缓存计算属性的值，避免重复计算
     let layoutConfig = layoutConfig
+
+    // input 宽度类型的宽度约束乘法系数
+    let inputMultiplier = CGFloat.rounded(1 / CGFloat(maxInputButtonCount))
+
+    // 为不同类型的宽度处理宽度约束
+    // 注意:
+    // 1. 当行中 .available 类型按键数量等于 1 时，不需要添加宽度约束
+    // 2. 当行中 .available 类型按键数量大于 1 的情况下，需要在行遍历结束后添加等宽约束。
+    //    即当前行的所有 .available 类型按钮的宽度相同
+    let inputWidthOfConstraint: (KeyboardButtonRowItem) -> NSLayoutConstraint? = { [unowned self] in
+      switch $0.item.size.width {
+      case .available: return nil
+      case .input:
+        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: inputMultiplier)
+      case .inputPercentage(let percent):
+        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: inputMultiplier * percent)
+      case .percentage(let percent):
+        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: percent)
+      case .points(let points):
+        return $0.widthAnchor.constraint(equalToConstant: points)
+      }
+    }
 
     for row in keyboardRows {
       for button in row {
-        /// 按键高度约束(insets在案件内部处理)
-        buttonConstraints.append(button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight))
+        // 按键高度约束，包含 insets 部分
+        let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
+        buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
+        // 注意：必须设置高优先级的约束，否则系统会有约束错误log
+        buttonHeightConstraint.priority = .defaultHigh
+        dynamicConstraints.append(buttonHeightConstraint)
 
-        if !button.isSpacer, let width = rowItemWidthValue(for: button.item, totalWidth: keyboardWidth, referenceWidth: inputWidth) {
-          /// 按键宽度约束(insets在按键内部处理)
-          let gConstraint = button.widthAnchor.constraint(greaterThanOrEqualToConstant: width)
-          let lConstraint = button.widthAnchor.constraint(lessThanOrEqualToConstant: width)
-          lConstraint.priority = .defaultLow
-          buttonConstraints.append(gConstraint)
-          buttonConstraints.append(lConstraint)
-          inputItemsTotalWidth += width
+        // 按键宽度约束
+        // 注意：.available 类型宽度在行遍历结束后添加
+        if !button.isSpacer, let constraint = inputWidthOfConstraint(button) {
+          staticConstraints.append(constraint)
         } else {
-          // 注意：available 类型按键宽度在 input 类型宽度布局结束后，根据剩余宽度在平均分配
+          // 注意：available 类型按键宽度在 input 类型宽度约束在行遍历后添加
           availableItems.append(button)
         }
 
-        if button.column == 0 {
-          // 行中第一个按键添加相对行的 leading 约束
-          buttonConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
+        if button.row == 0 {
+          // 首行添加按键相对视图的 top 约束
+          staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
+        } else {
+          if let prevRowItem = prevRowItem {
+            // 其他行添加按键相对上一行按键的 top 约束
+            staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
+          }
 
-          // 修改上一个按键的引用，用于其他按键添加 leading 约束
-          prevItem = button
-        } else if button.column + 1 == row.endIndex { // 行中最后一个按键
-          if let prevItem = prevItem {
-            // 根据上一个按键的 trailing，添加按键 leading 约束
-            buttonConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
+          // 最后一行添加按键相对视图的 bottom 约束
+          if button.row + 1 == keyboardRows.endIndex {
+            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
           }
-          // 行中最后一个按键添加相对行的 trailing 约束
-          buttonConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
-          prevItem = nil // 换行前修改上一个按键的引用值
-        } else { // 行中其他按键添加 leading 约束
-          if let prevItem = prevItem {
-            buttonConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
-          }
-          prevItem = button // 修改上一个按键引用值
         }
 
-        // 添加按键 y 轴约束
-        // 注意：约束商量使用了键盘总高度的值，这个值在每次遍例行中第一个按键时会累加一次行高，刚好可以作为相对 y 轴的偏移量
-        buttonConstraints.append(button.topAnchor.constraint(equalTo: topAnchor, constant: keyboardHeight))
+        if button.column == 0 {
+          // 首列按键添加相对行的 leading 约束
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
+        } else {
+          // 其他列按键添加相对与前一个按键的 leading 约束
+          if let prevItem = prevItem {
+            staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
+          }
+
+          if button.column + 1 == row.endIndex {
+            // 最后一列按键添加相对行的 trailing 约束
+            staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
+
+            // 修改上一行 prevRowItem 变量引用
+            prevRowItem = button
+          }
+        }
+
+        // 修改上一个按键的引用，用于其他按键添加 leading 约束
+        prevItem = button
       }
 
-      // 为宽度类型为 .available 的按键添加宽度约束
-      // 计算逻辑：根据行中剩余的宽度，取平均值
-      if !availableItems.isEmpty {
-        let itemWidth = CGFloat.rounded((keyboardWidth - inputItemsTotalWidth) / CGFloat(availableItems.count)).rounded(.down)
-        availableItems.forEach {
-          buttonConstraints.append($0.widthAnchor.constraint(greaterThanOrEqualToConstant: itemWidth))
+      // 当行中 .available 类型按键数量大于 1 的情况下，添加等宽约束
+      if availableItems.count > 1 {
+        let firstItem = availableItems.first!
+        for item in availableItems.dropFirst() {
+          staticConstraints.append(item.widthAnchor.constraint(equalTo: firstItem.widthAnchor))
         }
         availableItems.removeAll()
       }
-
-      inputItemsTotalWidth = .zero // 每一行遍历结束后，重置该值
-      keyboardHeight += layoutConfig.rowHeight // 每一行遍历结束后，累加总行高度
     }
-    // 添加视图的高度约束
-    buttonConstraints.append(heightAnchor.constraint(greaterThanOrEqualToConstant: keyboardHeight))
-    NSLayoutConstraint.activate(buttonConstraints)
+
+    NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
   func setupKeyboardView() {
@@ -234,29 +268,54 @@ public class StanderAlphabeticKeyboard: UIView {
 
     constructViewHierarchy()
     activateViewConstraints()
+
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        if $0 != self.interfaceOrientation {
+          print("keyboardContext.$interfaceOrientation is change")
+          setNeedsUpdateConstraints()
+        }
+      }
+      .store(in: &subscriptions)
   }
 
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-    guard keyboardWidth != keyboardContext.keyboardWidth else { return }
+  override public func setNeedsUpdateConstraints() {
+    super.setNeedsUpdateConstraints()
 
-    keyboardWidth = keyboardContext.keyboardWidth
-    inputWidth = layout.inputWidth(for: keyboardWidth)
+    print("StanderAlphabeticKeyboard updateConstraints()")
 
-    NSLayoutConstraint.deactivate(buttonConstraints)
-    buttonConstraints.removeAll()
-    activateViewConstraints()
-  }
-}
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    interfaceOrientation = keyboardContext.interfaceOrientation
 
-private extension UIView {
-  func rowItemWidthValue(for item: KeyboardLayoutItem, totalWidth: Double, referenceWidth: Double) -> Double? {
-    switch item.size.width {
-    case .available: return nil
-    case .input: return referenceWidth
-    case .inputPercentage(let percent): return percent * referenceWidth
-    case .percentage(let percent): return percent * totalWidth
-    case .points(let points): return points
+    let layoutConfig = layoutConfig
+    let insets = layoutConfig.buttonInsets
+    let rowHeight = layoutConfig.rowHeight
+
+    print("StanderAlphabeticKeyboard updateConstraints buttonInsets rowHeight: \(rowHeight), \(insets)")
+
+    subviews.forEach {
+      guard let button = $0 as? KeyboardButtonRowItem else { return }
+
+      if let topConstraint = button.topConstraint {
+        topConstraint.constant = insets.top
+      }
+
+      if let bottomConstraint = button.bottomConstraint {
+        bottomConstraint.constant = -insets.bottom
+      }
+
+      if let leadingConstraint = button.leadingConstraint {
+        leadingConstraint.constant = insets.left
+      }
+
+      if let trailingConstraint = button.trailingConstraint {
+        trailingConstraint.constant = -insets.right
+      }
+    }
+
+    dynamicConstraints.forEach {
+      $0.constant = rowHeight
     }
   }
 }
