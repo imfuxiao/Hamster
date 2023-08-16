@@ -7,6 +7,7 @@
 import Combine
 import HamsterKit
 import HamsterUIKit
+import OSLog
 import ProgressHUD
 import RimeKit
 import UIKit
@@ -64,7 +65,7 @@ extension InputSchemaViewModel {
 
   /// 导入zip文件
   public func importZipFile(fileURL: URL) async {
-    logger.debug("file.fileName: \(fileURL.path)")
+    Logger.statistics.debug("file.fileName: \(fileURL.path)")
 
     await ProgressHUD.show("方案导入中……", interaction: false)
     do {
@@ -89,7 +90,7 @@ extension InputSchemaViewModel {
       await ProgressHUD.showSuccess("导入成功", interaction: false, delay: 1.5)
     } catch {
       await ProgressHUD.dismiss()
-      logger.debug("zip \(error)")
+      Logger.statistics.debug("zip \(error)")
       errorMessageSubject.send(ErrorMessage(title: "导入Zip文件", message: "导入失败, \(error.localizedDescription)"))
     }
   }

@@ -7,6 +7,7 @@
 
 import Foundation
 import HamsterKit
+import OSLog
 import ProgressHUD
 import ZIPFoundation
 
@@ -56,7 +57,7 @@ class BackupViewModel {
       try await makeBackup()
       await loadBackupFiles()
     } catch {
-      logger.error("App backup error: \(error.localizedDescription)")
+      Logger.statistics.error("App backup error: \(error.localizedDescription)")
       throw error
     }
     await ProgressHUD.showSuccess("备份成功", interaction: false, delay: 1.5)
@@ -82,7 +83,7 @@ class BackupViewModel {
       let configuration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.tempAppConfigurationYaml)
       HamsterAppDependencyContainer.shared.configuration = configuration
     } catch {
-      logger.error("App restore error: \(error.localizedDescription)")
+      Logger.statistics.error("App restore error: \(error.localizedDescription)")
       throw error
     }
     await ProgressHUD.showSuccess("恢复成功", delay: 1.5)

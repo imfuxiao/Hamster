@@ -14,10 +14,6 @@ import Yams
 @testable import HamsterModel
 
 final class HamsterConfigurationRepositoriesTest: XCTestCase {
-  let logger = Logger(
-    subsystem: "com.ihsiao.apps.hamster.hamsterData",
-    category: "HamsterConfigurationRepositoriesTest"
-  )
 
   func testTransform() throws {
     let str = "\\u4f60\\u597d"
@@ -29,7 +25,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
   /// 测试 yaml 文件到导入和导入
   func testLoadAndSaveYaml() async throws {
     let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
-    logger.debug("tempYamlPath: \(tempYamlPath.path)")
+    Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
     let config = HamsterConfiguration.preview
     let configRepositories = HamsterConfigurationRepositories.shared
     try await configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
@@ -39,7 +35,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
 
   func testLoadPatchYaml() async throws {
     let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.custom.yaml")
-    logger.debug("tempYamlPath: \(tempYamlPath.path)")
+    Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
 
     // 生成配置文件
     try HamsterConfigurationRepositories.transform(
@@ -50,12 +46,12 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     // 读取配置文件
     let configRepositories = HamsterConfigurationRepositories.shared
     let patchConfig = try await configRepositories.loadPatchFromYAML(yamlPath: tempYamlPath)
-    logger.debug("patchConfig: \(patchConfig)")
+    Logger.statistics.debug("patchConfig: \(patchConfig)")
 
     guard let patch = patchConfig.patch else { throw "patch can not found." }
 
     let mergeConfiguration = try HamsterConfiguration.preview.merge(with: patch, uniquingKeysWith: { $1 })
-    logger.debug("merge: \(mergeConfiguration)")
+    Logger.statistics.debug("merge: \(mergeConfiguration)")
   }
 
   /// 测试保存至 UserDefaults

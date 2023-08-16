@@ -9,6 +9,7 @@ import Combine
 import HamsterKit
 import HamsterModel
 import HamsterUIKit
+import OSLog
 import UIKit
 
 public class KeyboardFeedbackViewModel {
@@ -52,7 +53,7 @@ public class KeyboardFeedbackViewModel {
 
   @objc func changeHaptic(_ control: UIControl) {
     if let control = control as? StepSlider {
-      logger.debug("change haptic: \(control.index)")
+      Logger.statistics.debug("change haptic: \(control.index)")
       hapticFeedbackIntensity = Int(control.index)
     }
   }

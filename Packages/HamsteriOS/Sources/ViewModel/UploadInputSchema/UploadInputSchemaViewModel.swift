@@ -9,6 +9,7 @@ import Foundation
 import HamsterKit
 import iFilemanager
 import Network
+import OSLog
 import UIKit
 
 class UploadInputSchemaViewModel {
@@ -33,7 +34,7 @@ extension UploadInputSchemaViewModel {
   }
 
   @objc func startFileServer() {
-    logger.debug("start file server")
+    Logger.statistics.debug("start file server")
     let fileServer = FileServer(
       port: 80,
       publicDirectory: FileManager.sandboxDirectory
@@ -44,7 +45,7 @@ extension UploadInputSchemaViewModel {
   }
 
   @objc func stopFileServer() {
-    logger.debug("stop file server")
+    Logger.statistics.debug("stop file server")
     self.fileServer?.shutdown()
     self.fileServerRunning = false
   }

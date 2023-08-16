@@ -144,19 +144,16 @@ public extension KeyboardReturnKeyType {
    */
   func standardButtonText(for locale: Locale) -> String? {
     switch self {
-    // TODO: 补充
-//    case .custom(let title): return title
-//    case .done: return KKL10n.done.text(for: locale)
-//    case .go: return KKL10n.go.text(for: locale)
-//    case .join: return KKL10n.join.text(for: locale)
-//    case .newLine: return nil
-//    case .next: return KKL10n.next.text(for: locale)
-//    case .return: return KKL10n.return.text(for: locale)
-//    case .ok: return KKL10n.ok.text(for: locale)
-//    case .search: return KKL10n.search.text(for: locale)
-//    case .send: return KKL10n.send.text(for: locale)
-    default:
-      return ""
+    case .custom(let title): return title
+    case .done: return KKL10n.done.text(for: locale)
+    case .go: return KKL10n.go.text(for: locale)
+    case .join: return KKL10n.join.text(for: locale)
+    case .newLine: return nil
+    case .next: return KKL10n.next.text(for: locale)
+    case .return: return KKL10n.return.text(for: locale)
+    case .ok: return KKL10n.ok.text(for: locale)
+    case .search: return KKL10n.search.text(for: locale)
+    case .send: return KKL10n.send.text(for: locale)
     }
   }
 }

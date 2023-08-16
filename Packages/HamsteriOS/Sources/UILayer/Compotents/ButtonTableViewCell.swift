@@ -7,6 +7,7 @@
 
 import HamsterKit
 import HamsterUIKit
+import OSLog
 import ProgressHUD
 import UIKit
 
@@ -56,7 +57,7 @@ public class ButtonTableViewCell: NibLessTableViewCell {
     do {
       try settingItem.buttonAction?()
     } catch {
-      logger.error("\(#file) error: \(error)")
+      Logger.statistics.error("\(#file) error: \(error)")
       ProgressHUD.showError("系统异常：\(error.localizedDescription)", delay: 1.5)
     }
   }

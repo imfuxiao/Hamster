@@ -16,9 +16,10 @@ struct RimeDeployIntent: AppIntent {
 
   @MainActor
   func perform() async throws -> some IntentResult {
+    // TODO:
 //    try RimeContext.shared.redeployment(HamsterAppSettings.shared)
 //    let resetHandled = HamsterAppSettings.shared.resetRimeParameter()
-//    Logger.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
+//    Logger.statistics.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
     return .result(dialog: .init("重新部署完成"))
   }
 }

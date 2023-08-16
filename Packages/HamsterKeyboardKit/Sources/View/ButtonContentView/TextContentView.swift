@@ -33,7 +33,6 @@ public class TextContentView: UIView {
     self.text = text
     self.isInputAction = isInputAction
     self.label = UILabel(frame: .zero)
-    label.textAlignment = .center
 
     super.init(frame: .zero)
 
@@ -46,22 +45,40 @@ public class TextContentView: UIView {
   }
 
   func setupTextView() {
-    label.text = text
-    label.adjustsFontSizeToFitWidth = true
+    label.textAlignment = .center
+//    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
+//    label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
+    label.numberOfLines = 1
     label.font = style.font?.font
-    addSubview(label)
+    label.textColor = style.foregroundColor
+    label.text = text
+//    addSubview(label)
 
     label.translatesAutoresizingMaskIntoConstraints = false
 
+    let stackView = UIStackView(arrangedSubviews: [label])
+    stackView.axis = .vertical
+    stackView.alignment = .center
+    stackView.distribution = .fillEqually
+
+    addSubview(stackView)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: centerXAnchor),
-      centerYAnchor.constraint(
-        equalTo: label.centerYAnchor,
-        constant: useOffset ? 2 : 0),
+      stackView.topAnchor.constraint(equalTo: topAnchor),
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ])
+
+//    NSLayoutConstraint.activate([
+//      label.centerXAnchor.constraint(equalTo: centerXAnchor),
+//      centerYAnchor.constraint(
+//        equalTo: label.centerYAnchor,
+//        constant: useOffset ? 2 : 0),
 //      label.leadingAnchor.constraint(equalTo: leadingAnchor),
 //      label.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+//    ])
   }
 }
 

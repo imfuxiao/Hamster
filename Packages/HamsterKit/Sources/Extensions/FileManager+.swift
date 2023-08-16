@@ -13,10 +13,6 @@ import ZIPFoundation
 
 /// FileManager 扩展
 public extension FileManager {
-  private static let logger = os.Logger(
-    subsystem: "com.ihsiao.apps.hamster.hamsterKit",
-    category: "FileManager"
-  )
 
   /// 创建文件夹
   /// override: 当目标文件夹存在时，是否覆盖
@@ -82,17 +78,17 @@ public extension FileManager {
 
       // 匹配且需要跳过匹配项, 这是过滤的默认行为
       if match, filterMatchBreak {
-        Self.logger.debug("filter filterRegex: \(filterRegex), filterMatchBreak: \(filterMatchBreak), file: \(file.path)")
+        Logger.statistics.debug("filter filterRegex: \(filterRegex), filterMatchBreak: \(filterMatchBreak), file: \(file.path)")
         continue
       }
 
       // 不匹配且设置了不跳过匹配项，这是反向过滤行为，即只copy匹配过滤项文件
       if !filterRegex.isEmpty, !match, !filterMatchBreak {
-        Self.logger.debug("filter filterRegex: \(filterRegex), match: \(match), filterMatchBreak: \(filterMatchBreak), file: \(file.path)")
+        Logger.statistics.debug("filter filterRegex: \(filterRegex), match: \(match), filterMatchBreak: \(filterMatchBreak), file: \(file.path)")
         continue
       }
 
-      Self.logger.debug("incrementalCopy src: \(src.path) dst: \(dst.path), file: \(file.path)")
+      Logger.statistics.debug("incrementalCopy src: \(src.path) dst: \(dst.path), file: \(file.path)")
 
       let isDirectory = (try? file.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
       let relativePath = file.path.hasPrefix(srcPrefix) ? file.path.replacingOccurrences(of: srcPrefix, with: "") : file.path.replacingOccurrences(of: "/private" + srcPrefix, with: "")
@@ -123,7 +119,7 @@ public extension FileManager {
         continue
       }
 
-      Self.logger.debug("incrementalCopy copy file: \(file.path) dst: \(dstFile.path)")
+      Logger.statistics.debug("incrementalCopy copy file: \(file.path) dst: \(dstFile.path)")
       try fm.copyItem(at: file, to: dstFile)
     }
   }
@@ -356,7 +352,7 @@ public extension FileManager {
 
     let src = appSharedSupportDirectory.appendingPathComponent(HamsterConstants.inputSchemaZipFile)
 
-    logger.debug("unzip src: \(src), dst: \(dst)")
+    Logger.statistics.debug("unzip src: \(src), dst: \(dst)")
 
     // 解压缩输入方案zip文件
     // 因为zip文件中已经包含了SharedSupport目录, 所以需要解压到appSharedSupportDirectory的上层目录
@@ -386,97 +382,97 @@ public extension FileManager {
 
   // 同步 AppGroup 共享目录下SharedSupport目录至沙盒目录
   static func syncAppGroupSharedSupportDirectoryToSandbox(override: Bool = false) throws {
-    Self.logger.info("rime syncAppGroupSharedSupportDirectory: override \(override)")
+    Logger.statistics.info("rime syncAppGroupSharedSupportDirectory: override \(override)")
     try FileManager.copyDirectory(override: override, src: appGroupSharedSupportDirectoryURL, dst: sandboxSharedSupportDirectory)
   }
 
   // 同步 AppGroup 共享目录下 UserData 目录至沙盒目录
   static func syncAppGroupUserDataDirectoryToSandbox(override: Bool = false) throws {
-    Self.logger.info("rime syncAppGroupUserDataDirectory: override \(override)")
+    Logger.statistics.info("rime syncAppGroupUserDataDirectory: override \(override)")
     try FileManager.copyDirectory(override: override, src: appGroupUserDataDirectoryURL, dst: sandboxUserDataDirectory)
   }
 
   // 同步 Sandbox 目录下 SharedSupport 目录至 AppGroup 目录
   static func syncSandboxSharedSupportDirectoryToAppGroup(override: Bool = false) throws {
-    Self.logger.info("rime syncSandboxSharedSupportDirectoryToApGroup: override \(override)")
+    Logger.statistics.info("rime syncSandboxSharedSupportDirectoryToApGroup: override \(override)")
     try FileManager.copyDirectory(override: override, src: sandboxSharedSupportDirectory, dst: appGroupSharedSupportDirectoryURL)
   }
 
   // 同步 Sandbox 目录下 UserData 目录至 AppGroup 目录
   static func syncSandboxUserDataDirectoryToAppGroup(override: Bool = false) throws {
-    Self.logger.info("rime syncSandboxUserDataDirectoryToApGroup: override \(override)")
+    Logger.statistics.info("rime syncSandboxUserDataDirectoryToApGroup: override \(override)")
     try FileManager.copyDirectory(override: override, src: sandboxUserDataDirectory, dst: appGroupUserDataDirectoryURL)
   }
 
   /// 拷贝 Sandbox 下 SharedSupport 目录至 AppGroup 下 SharedSupport 目录
   static func copySandboxSharedSupportDirectoryToAppGroup(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copySandboxSharedSupportDirectoryToAppGroupSharedSupportDirectory: fileRegex \(filterRegex)")
+    Logger.statistics.info("rime copySandboxSharedSupportDirectoryToAppGroupSharedSupportDirectory: fileRegex \(filterRegex)")
     try FileManager.incrementalCopy(src: sandboxSharedSupportDirectory, dst: appGroupSharedSupportDirectoryURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 Sandbox 下 UserData 目录至 AppGroup 下 UserData 目录
   static func copySandboxUserDataDirectoryToAppGroup(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copySandboxUserDataDirectoryToAppGroupUserDirectory: filterRegex \(filterRegex)")
+    Logger.statistics.info("rime copySandboxUserDataDirectoryToAppGroupUserDirectory: filterRegex \(filterRegex)")
     try FileManager.incrementalCopy(src: sandboxUserDataDirectory, dst: appGroupUserDataDirectoryURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 Sandbox 下 SharedSupport 目录至 AppGroup 下 SharedSupport 目录
   static func copySandboxSharedSupportDirectoryToAppleCloud(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copySandboxSharedSupportDirectoryToAppleCloud: fileRegex \(filterRegex)")
+    Logger.statistics.info("rime copySandboxSharedSupportDirectoryToAppleCloud: fileRegex \(filterRegex)")
     try FileManager.incrementalCopy(src: sandboxSharedSupportDirectory, dst: URL.iCloudSharedSupportURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 Sandbox 下 UserData 目录至 AppGroup 下 UserData 目录
   static func copySandboxUserDataDirectoryToAppleCloud(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copySandboxUserDataDirectoryToAppleCloud: filterRegex \(filterRegex)")
+    Logger.statistics.info("rime copySandboxUserDataDirectoryToAppleCloud: filterRegex \(filterRegex)")
     try FileManager.incrementalCopy(src: sandboxUserDataDirectory, dst: URL.iCloudUserDataURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 iCloud 下 SharedSupport 目录至 Sandbox 下 SharedSupport 目录
   static func copyAppleCloudSharedSupportDirectoryToSandbox(_ filterRegex: [String] = []) throws {
-    Self.logger.info("rime copyAppleCloudSharedSupportDirectoryToSandboxSharedSupportDirectory")
+    Logger.statistics.info("rime copyAppleCloudSharedSupportDirectoryToSandboxSharedSupportDirectory")
     try FileManager.incrementalCopy(src: URL.iCloudSharedSupportURL, dst: sandboxSharedSupportDirectory, filterRegex: filterRegex)
   }
 
   /// 拷贝 iCloud 下 UserData 目录至 Sandbox 下 UserData 目录
   static func copyAppleCloudUserDataDirectoryToSandbox(_ filterRegex: [String] = []) throws {
-    Self.logger.info("rime copyAppleCloudUserDataDirectoryToSandboxUserDirectory:")
+    Logger.statistics.info("rime copyAppleCloudUserDataDirectoryToSandboxUserDirectory:")
     try FileManager.incrementalCopy(src: URL.iCloudUserDataURL, dst: sandboxUserDataDirectory, filterRegex: filterRegex)
   }
 
   /// 拷贝 iCloud 下 SharedSupport 目录至 AppGroup 下 SharedSupport 目录
   static func copyAppleCloudSharedSupportDirectoryToAppGroup(_ filterRegex: [String] = []) throws {
-    Self.logger.info("rime copyAppleCloudSharedSupportDirectoryToAppGroupSharedSupportDirectory")
+    Logger.statistics.info("rime copyAppleCloudSharedSupportDirectoryToAppGroupSharedSupportDirectory")
     try FileManager.incrementalCopy(src: URL.iCloudSharedSupportURL, dst: appGroupSharedSupportDirectoryURL, filterRegex: filterRegex)
   }
 
   /// 拷贝 iCloud 下 UserData 目录至 AppGroup 下 UserData 目录
   static func copyAppleCloudUserDataDirectoryToAppGroup(_ filterRegex: [String] = []) throws {
-    Self.logger.info("rime copyAppleCloudUserDataDirectoryToAppGroupUserDirectory:")
+    Logger.statistics.info("rime copyAppleCloudUserDataDirectoryToAppGroupUserDirectory:")
     try FileManager.incrementalCopy(src: URL.iCloudUserDataURL, dst: appGroupUserDataDirectoryURL, filterRegex: filterRegex)
   }
 
   /// 拷贝 AppGroup 下 SharedSupport 目录至 iCloud 下 SharedSupport 目录
   static func copyAppGroupSharedSupportDirectoryToAppleCloud(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copyAppGroupSharedSupportDirectoryToAppleCloudSharedSupportDirectory")
+    Logger.statistics.info("rime copyAppGroupSharedSupportDirectoryToAppleCloudSharedSupportDirectory")
     try FileManager.incrementalCopy(src: appGroupSharedSupportDirectoryURL, dst: URL.iCloudSharedSupportURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 AppGroup 下 UserData 目录至 iCloud 下 UserData 目录
   static func copyAppGroupUserDirectoryToAppleCloud(_ filterRegex: [String] = [], filterMatchBreak: Bool = true) throws {
-    Self.logger.info("rime copyAppGroupUserDirectoryToAppleCloudUserDataDirectory:")
+    Logger.statistics.info("rime copyAppGroupUserDirectoryToAppleCloudUserDataDirectory:")
     try FileManager.incrementalCopy(src: appGroupUserDataDirectoryURL, dst: URL.iCloudUserDataURL, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak)
   }
 
   /// 拷贝 AppGroup 下 SharedSupport 目录至 sandbox 下 SharedSupport 目录
   static func copyAppGroupSharedSupportDirectoryToSandbox(_ filterRegex: [String] = [], filterMatchBreak: Bool = true, override: Bool = true) throws {
-    Self.logger.info("rime copyAppGroupSharedSupportDirectoryToAppleCloudSharedSupportDirectory")
+    Logger.statistics.info("rime copyAppGroupSharedSupportDirectoryToAppleCloudSharedSupportDirectory")
     try FileManager.incrementalCopy(src: appGroupSharedSupportDirectoryURL, dst: sandboxSharedSupportDirectory, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak, override: override)
   }
 
   /// 拷贝 AppGroup 下 UserData 目录至 sandbox 下 UserData 目录
   static func copyAppGroupUserDirectoryToSandbox(_ filterRegex: [String] = [], filterMatchBreak: Bool = true, override: Bool = true) throws {
-    Self.logger.info("rime copyAppGroupUserDirectoryToAppleCloudUserDataDirectory:")
+    Logger.statistics.info("rime copyAppGroupUserDirectoryToAppleCloudUserDataDirectory:")
     try FileManager.incrementalCopy(src: appGroupUserDataDirectoryURL, dst: sandboxUserDataDirectory, filterRegex: filterRegex, filterMatchBreak: filterMatchBreak, override: override)
   }
 

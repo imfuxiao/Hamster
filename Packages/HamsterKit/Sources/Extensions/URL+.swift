@@ -10,11 +10,6 @@ import os
 import Yams
 
 public extension URL {
-  private static let logger = os.Logger(
-    subsystem: "com.ihsiao.apps.hamster.hamsterKit",
-    category: "URL"
-  )
-
   /// 获取制定URL下文件或目录URL
   func getFilesAndDirectories() -> [URL] {
     do {
@@ -24,7 +19,7 @@ public extension URL {
         options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
       )
     } catch {
-      Self.logger.error("Error getting files and directories - \(error.localizedDescription)")
+      Logger.statistics.error("Error getting files and directories - \(error.localizedDescription)")
       return []
     }
   }
@@ -51,7 +46,7 @@ public extension URL {
         return yamlFileContent["sync_dir"] as? String
       }
     } catch {
-      Self.logger.error("yaml load error \(error.localizedDescription), url:\(self.path)")
+      Logger.statistics.error("yaml load error \(error.localizedDescription), url:\(self.path)")
     }
     return nil
   }

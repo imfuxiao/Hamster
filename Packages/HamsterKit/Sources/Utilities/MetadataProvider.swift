@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import OSLog
 
 class MetadataProvider {
   private let metadataQuery = NSMetadataQuery()
@@ -28,7 +29,7 @@ class MetadataProvider {
         let items = self.metadataItemList()
         for item in items {
           try? FileManager.default.startDownloadingUbiquitousItem(at: item.url)
-          logger.debug("downloading \(item.url)")
+          Logger.statistics.debug("downloading \(item.url)")
         }
       }
     
@@ -40,13 +41,13 @@ class MetadataProvider {
     metadataQuery.predicate = NSPredicate(value: true)
     metadataQuery.sortDescriptors = [NSSortDescriptor(key: NSMetadataItemFSNameKey, ascending: true)]
     metadataQuery.start()
-    logger.debug("metadataQuery start")
+    Logger.statistics.debug("metadataQuery start")
   }
     
   deinit {
     guard metadataQuery.isStarted else { return }
     metadataQuery.stop()
-    logger.debug("metadataQuery stop")
+    Logger.statistics.debug("metadataQuery stop")
   }
 }
 

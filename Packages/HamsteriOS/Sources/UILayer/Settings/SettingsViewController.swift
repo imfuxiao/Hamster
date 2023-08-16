@@ -6,6 +6,7 @@
 
 import HamsterKit
 import HamsterUIKit
+import OSLog
 import ProgressHUD
 import UIKit
 
@@ -39,7 +40,7 @@ public extension SettingsViewController {
         try await self.settingsViewModel.loadAppData()
       } catch {
         ProgressHUD.showError("导入数据异常", interaction: false, delay: 2)
-        logger.error("load app data error: \(error)")
+        Logger.statistics.error("load app data error: \(error)")
       }
     }
   }

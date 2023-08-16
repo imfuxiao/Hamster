@@ -8,6 +8,7 @@
 import Combine
 import HamsterKit
 import HamsterModel
+import OSLog
 import ProgressHUD
 import UIKit
 
@@ -83,7 +84,7 @@ public class FileBrowserViewModel {
       }
       return pathStack.isEmpty ? filesInfo : [FileInfo(url: URL(string: "..")!, fileResourceType: .directory, fileModifiedDate: nil)] + filesInfo
     } catch {
-      logger.error("FinderView currentURL get error: \(error.localizedDescription)")
+      Logger.statistics.error("FinderView currentURL get error: \(error.localizedDescription)")
       return []
     }
   }

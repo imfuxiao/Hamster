@@ -53,8 +53,7 @@ public extension KeyboardAction {
     case .keyboardType(let type): return type.standardButtonText(for: context)
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.standardButtonText(for: context.locale)
-    // TODO: 补充
-//    case .space: return KKL10n.space.text(for: context)
+    case .space: return KKL10n.space.text(for: context)
     default: return nil
     }
   }

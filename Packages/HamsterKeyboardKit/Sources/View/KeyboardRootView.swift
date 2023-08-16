@@ -5,6 +5,8 @@
 //  Created by morse on 2023/8/14.
 //
 
+import HamsterKit
+import OSLog
 import UIKit
 
 /**
@@ -178,5 +180,29 @@ class KeyboardRootView: UIView {
       subview.leadingAnchor.constraint(equalTo: leadingAnchor),
       subview.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
+  }
+}
+
+// MARK: - touch
+
+extension KeyboardRootView {
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    bounds.contains(point) ? self : nil
+  }
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    Logger.statistics.debug("touchesBegan")
+  }
+
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    Logger.statistics.debug("touchesMoved")
+  }
+
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    Logger.statistics.debug("touchesEnded")
+  }
+
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    Logger.statistics.debug("touchesCancelled")
   }
 }

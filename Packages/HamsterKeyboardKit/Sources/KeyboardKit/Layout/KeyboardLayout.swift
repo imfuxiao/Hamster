@@ -148,7 +148,6 @@ public extension KeyboardLayout {
     let result = itemRows
       .compactMap { $0.inputWidth(for: totalWidth) }
       .min() ?? 0
-    print("totalWidth: \(totalWidth), result: \(result)")
     widthCache[totalWidth] = result
     return result
   }

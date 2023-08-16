@@ -7,6 +7,7 @@
 
 import HamsterKit
 import HamsterUIKit
+import OSLog
 import ProgressHUD
 import Runestone
 import TreeSitterLua
@@ -88,14 +89,14 @@ extension TextEditorViewController {
 
 extension TextEditorViewController {
   @objc func saveFileContent() {
-    logger.debug("TextEditViewController textViewDidEndEditing")
+    Logger.statistics.debug("TextEditViewController textViewDidEndEditing")
     let fileContent = textView.text
     do {
       try fileContent.write(toFile: fileURL.path, atomically: true, encoding: .utf8)
       ProgressHUD.showSuccess("保存成功")
       navigationController?.popViewController(animated: true)
     } catch {
-      logger.debug("TextEditorView save error: \(error.localizedDescription)")
+      Logger.statistics.debug("TextEditorView save error: \(error.localizedDescription)")
       ProgressHUD.showError("保存失败", delay: 1.5)
     }
   }

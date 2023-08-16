@@ -8,6 +8,7 @@
 import Combine
 import HamsterKit
 import HamsterModel
+import OSLog
 import ProgressHUD
 import RimeKit
 import UIKit
@@ -165,7 +166,7 @@ extension SettingsViewModel {
       try FileManager.initSandboxUserDataDirectory(override: true)
       try FileManager.initSandboxBackupDirectory(override: true)
     } catch {
-      logger.error("rime init file directory error: \(error.localizedDescription)")
+      Logger.statistics.error("rime init file directory error: \(error.localizedDescription)")
       throw error
     }
         

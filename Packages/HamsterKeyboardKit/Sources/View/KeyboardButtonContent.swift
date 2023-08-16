@@ -19,7 +19,7 @@ open class KeyboardButtonContentView: UIView {
   private let keyboardContext: KeyboardContext
   private var contentView: UIView!
 
-  var spaceText: String {
+  var buttonText: String {
     appearance.buttonText(for: action) ?? " "
   }
 
@@ -33,12 +33,11 @@ open class KeyboardButtonContentView: UIView {
 
     if action == .space {
       // TODO: 补充空格自定义加载文本
-      contentView = SpaceContentView(style: style, loadingText: "空格（测试）", spaceText: spaceText)
+      contentView = SpaceContentView(style: style, loadingText: "空格（测试）", spaceText: buttonText)
     } else if let image = appearance.buttonImage(for: action) {
-      contentView = ImageContentView(image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
+      contentView = ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
     } else {
-      let text = appearance.buttonText(for: action) ?? " "
-      contentView = TextContentView(style: style, text: text, isInputAction: action.isInputAction)
+      contentView = TextContentView(style: style, text: buttonText, isInputAction: action.isInputAction)
     }
 
     setupContentView()

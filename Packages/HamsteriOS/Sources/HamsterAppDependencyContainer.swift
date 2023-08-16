@@ -8,6 +8,7 @@
 import Foundation
 import HamsterKit
 import HamsterModel
+import OSLog
 import UIKit
 
 /// Hamster 应用依赖容器
@@ -46,7 +47,7 @@ open class HamsterAppDependencyContainer {
     do {
       return try HamsterConfigurationRepositories.shared.loadFromUserDefaultsOnDefault()
     } catch {
-      logger.error("loadFromUserDefaultsOnDefault() error: \(error)")
+      Logger.statistics.error("loadFromUserDefaultsOnDefault() error: \(error)")
       return nil
     }
   }
@@ -63,7 +64,7 @@ open class HamsterAppDependencyContainer {
         configCache = config
         return config
       }
-      logger.warning("load HamsterConfiguration from UserDefaults error.")
+      Logger.statistics.warning("load HamsterConfiguration from UserDefaults error.")
       return HamsterConfiguration()
     }
     set {
@@ -72,7 +73,7 @@ open class HamsterAppDependencyContainer {
         do {
           try await HamsterConfigurationRepositories.shared.saveToUserDefaults(newValue)
         } catch {
-          logger.error("configuration didSet error: \(error.localizedDescription)")
+          Logger.statistics.error("configuration didSet error: \(error.localizedDescription)")
         }
       }
     }

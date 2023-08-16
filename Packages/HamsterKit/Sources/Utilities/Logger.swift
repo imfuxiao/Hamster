@@ -5,8 +5,10 @@
 //  Created by morse on 2/8/2023.
 //
 
-import Foundation
 import OSLog
 
-// 全局变量
-public let logger = Logger(subsystem: "com.ihsiao.apps.hamster", category: "hamster")
+public extension Logger {
+  private static var subsystem = Bundle.main.bundleIdentifier!
+
+  static let statistics = Logger(subsystem: subsystem, category: "statistics")
+}

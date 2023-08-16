@@ -10,15 +10,21 @@ import UIKit
 class ImageContentView: UIView {
   private let imageView: UIImageView
   private let scaleFactor: CGFloat
+  private let style: KeyboardButtonStyle
 
-  init(image: UIImage?, scaleFactor: CGFloat = .zero, tintColor: UIColor? = nil) {
+  init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
+    self.style = style
     self.imageView = UIImageView(image: image)
     self.scaleFactor = scaleFactor
     imageView.contentMode = .center
 
-    if let tintColor = tintColor {
-      imageView.tintColor = tintColor
+    if let color = style.foregroundColor {
+      imageView.tintColor = color
+    } else {
+      imageView.tintColor = UIColor.label
     }
+
+    imageView.backgroundColor = style.backgroundColor
 
     super.init(frame: .zero)
 
@@ -37,10 +43,10 @@ class ImageContentView: UIView {
     imageView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      imageView.topAnchor.constraint(equalTo: topAnchor),
-      imageView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      imageView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
+      bottomAnchor.constraint(equalToSystemSpacingBelow: imageView.bottomAnchor, multiplier: 1.0),
+      imageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
+      trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.trailingAnchor, multiplier: 1.0),
     ])
   }
 }
@@ -49,13 +55,13 @@ class ImageContentView: UIView {
 import SwiftUI
 
 struct ImageContentView_Previews: PreviewProvider {
-  static func imageContent(action: KeyboardAction, scaleFactor: CGFloat = 1, tintColor: UIColor? = nil) -> some View {
+  static func imageContent(action: KeyboardAction, scaleFactor: CGFloat = 1) -> some View {
     let appearance: KeyboardAppearance = .preview
     return UIViewPreview {
       let view = ImageContentView(
+        style: .preview1,
         image: appearance.buttonImage(for: action),
-        scaleFactor: scaleFactor,
-        tintColor: tintColor
+        scaleFactor: scaleFactor
       )
 //      view.frame = .init(origin: .zero, size: .init(width: 40, height: 40))
       return view
@@ -64,8 +70,8 @@ struct ImageContentView_Previews: PreviewProvider {
 
   static var previews: some View {
     HStack {
-      imageContent(action: .backspace, scaleFactor: 2, tintColor: .gray)
-      imageContent(action: .nextKeyboard, tintColor: .blue)
+      imageContent(action: .backspace, scaleFactor: 2)
+      imageContent(action: .nextKeyboard)
       imageContent(action: .keyboardType(.emojis))
     }
   }

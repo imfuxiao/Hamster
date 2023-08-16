@@ -515,7 +515,7 @@ extension StepSlider {
 
 public extension StepSlider {
   override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    print("gestureRecognizerShouldBegin")
+//    print("gestureRecognizerShouldBegin")
     
     guard gestureRecognizer.isKind(of: UIPanGestureRecognizer.self) else { return false }
     
@@ -592,7 +592,7 @@ public extension StepSlider {
   }
   
   private func endTouches() {
-    print("endTouches")
+//    print("endTouches")
     let newIndex = lroundf(Float(indexCalculate()))
     
     if newIndex != index {

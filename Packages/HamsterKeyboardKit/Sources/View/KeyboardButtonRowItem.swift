@@ -6,6 +6,8 @@
 //
 
 import Combine
+import HamsterKit
+import OSLog
 import UIKit
 
 class KeyboardButtonRowItem: UIView {
@@ -44,6 +46,7 @@ class KeyboardButtonRowItem: UIView {
     self.row = row
     self.column = column
     self.isSpacer = item.action.isSpacer
+
     self.content = KeyboardButton(
       action: item.action,
       actionHandler: actionHandler,
@@ -80,34 +83,32 @@ class KeyboardButtonRowItem: UIView {
     NSLayoutConstraint.activate([topConstraint!, bottomConstraint!, leadingConstraint!, trailingConstraint!])
   }
 
-//  override func updateConstraints() {
-//    super.updateConstraints()
-//
-//    print("KeyboardButtonRowItem updateConstraints()")
-//
-//    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
-//
-//    interfaceOrientation = keyboardContext.interfaceOrientation
-//
-//    let layoutConfig = layoutConfig
-//    let insets = layoutConfig.buttonInsets
-//
-//    print("KeyboardButtonRowItem updateConstraints  rowHeight: \(layoutConfig.rowHeight), buttonInsets: \(insets)")
-//
-//    if let topConstraint = topConstraint {
-//      topConstraint.constant = insets.top
-//    }
-//
-//    if let bottomConstraint = bottomConstraint {
-//      bottomConstraint.constant = -insets.bottom
-//    }
-//
-//    if let leadingConstraint = leadingConstraint {
-//      leadingConstraint.constant = insets.left
-//    }
-//
-//    if let trailingConstraint = trailingConstraint {
-//      trailingConstraint.constant = -insets.right
-//    }
-//  }
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+
+    interfaceOrientation = keyboardContext.interfaceOrientation
+
+    let layoutConfig = layoutConfig
+    let insets = layoutConfig.buttonInsets
+
+    // Logger.statistics.debug("KeyboardButtonRowItem layoutSubviews() rowHeight: \(layoutConfig.rowHeight), buttonInsets [left: \(insets.left), top: \(insets.top), right: \(insets.right), bottom: \(insets.bottom)]")
+
+    if let topConstraint = topConstraint {
+      topConstraint.constant = insets.top
+    }
+
+    if let bottomConstraint = bottomConstraint {
+      bottomConstraint.constant = -insets.bottom
+    }
+
+    if let leadingConstraint = leadingConstraint {
+      leadingConstraint.constant = insets.left
+    }
+
+    if let trailingConstraint = trailingConstraint {
+      trailingConstraint.constant = -insets.right
+    }
+  }
 }

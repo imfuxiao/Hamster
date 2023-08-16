@@ -7,6 +7,7 @@
 
 import Foundation
 import HamsterModel
+import OSLog
 import RimeKit
 import Yams
 
@@ -25,7 +26,7 @@ public extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Self.isFirstRunningOfKey)
-      logger.debug("save isFirstRunning: \(newValue)")
+      Logger.statistics.debug("save isFirstRunning: \(newValue)")
     }
   }
 
@@ -39,7 +40,7 @@ public extension UserDefaults {
     }
     set {
       setValue(newValue, forKey: Self.overrideRimeDirectoryOfKey)
-      logger.debug("save overrideRimeDirectory: \(newValue)")
+      Logger.statistics.debug("save overrideRimeDirectory: \(newValue)")
     }
   }
 
@@ -57,7 +58,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.schemasForKey)
-        logger.debug("save schemas: \(newValue)")
+        Logger.statistics.debug("save schemas: \(newValue)")
       }
     }
   }
@@ -76,7 +77,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.selectSchemasForKey)
-        logger.debug("save selectSchemas: \(newValue)")
+        Logger.statistics.debug("save selectSchemas: \(newValue)")
       }
     }
   }
@@ -94,7 +95,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.currentSchemaForKey)
-        logger.debug("save currentSchema: \(data)")
+        Logger.statistics.debug("save currentSchema: \(data)")
       }
     }
   }
@@ -112,7 +113,7 @@ public extension UserDefaults {
     set {
       if let data = try? PropertyListEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.latestSchemaForKey)
-        logger.debug("save latestSchema: \(data)")
+        Logger.statistics.debug("save latestSchema: \(data)")
       }
     }
   }

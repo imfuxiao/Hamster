@@ -71,13 +71,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
    每当必须创建或更新键盘视图时，都会调用该函数。
 
-   This will by default set up a ``SystemKeyboard`` as the
+   This will by default set up a ``KeyboardRootView`` as the
    main view, but you can override it to use a custom view.
 
-   默认情况下，这将设置一个 "SystemKeyboard"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
+   默认情况下，这将设置一个 "KeyboardRootView"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
    */
   open func viewWillSetupKeyboard() {
-    children.forEach { $0.removeFromParent() }
     view.subviews.forEach { $0.removeFromSuperview() }
 
     // 设置键盘的View
@@ -90,17 +89,14 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       calloutContext: calloutContext
     )
 
-    let viewController = KeyboardViewController(view: keyboardRootView)
-    viewController.add(to: self)
-
-//    view.addSubview(keyboardRootView)
-//    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
-//    NSLayoutConstraint.activate([
-//      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
-//      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
-//      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//    ])
+    view.addSubview(keyboardRootView)
+    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
+      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
+      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
   }
 
   /**

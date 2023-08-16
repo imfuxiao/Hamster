@@ -108,7 +108,7 @@ public extension RimeContext {
         try FileManager.copyAppleCloudSharedSupportDirectoryToSandbox(regex)
         try FileManager.copyAppleCloudUserDataDirectoryToSandbox(regex)
       } catch {
-        logger.error("RIME deploy error \(error.localizedDescription)")
+        Logger.statistics.error("RIME deploy error \(error.localizedDescription)")
         throw error
       }
     }
@@ -119,7 +119,7 @@ public extension RimeContext {
       do {
         try FileManager.copyAppGroupUserDict(regex)
       } catch {
-        logger.error("RIME deploy error \(error.localizedDescription)")
+        Logger.statistics.error("RIME deploy error \(error.localizedDescription)")
         throw error
       }
     }
@@ -187,7 +187,7 @@ public extension RimeContext {
     ), maintenance: true, fullCheck: true)
 
     let handled = Rime.shared.API().syncUserData()
-    logger.info("RIME sync userData handled: \(handled)")
+    Logger.statistics.info("RIME sync userData handled: \(handled)")
     Rime.shared.shutdown()
 
     // 键盘重新同步文件标志
@@ -205,7 +205,7 @@ public extension RimeContext {
       try FileManager.initSandboxSharedSupportDirectory(override: true)
       try FileManager.initSandboxUserDataDirectory(override: true)
     } catch {
-      logger.error("rime init file directory error: \(error.localizedDescription)")
+      Logger.statistics.error("rime init file directory error: \(error.localizedDescription)")
       throw error
     }
 

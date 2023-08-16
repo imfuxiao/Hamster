@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
   name: "HamsterKeyboardKit",
-  defaultLocalization: "en",
+  defaultLocalization: "zh-Hans",
   platforms: [
     .iOS(.v15),
   ],
@@ -15,11 +15,13 @@ let package = Package(
       targets: ["HamsterKeyboardKit"]),
   ],
   dependencies: [
+    .package(path: "../HamsterKit"),
   ],
   targets: [
     .target(
       name: "HamsterKeyboardKit",
       dependencies: [
+        "HamsterKit",
       ],
       path: "Sources",
       resources: [.process("Resources")]),

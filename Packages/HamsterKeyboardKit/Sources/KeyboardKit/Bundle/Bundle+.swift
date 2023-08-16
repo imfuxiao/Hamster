@@ -80,7 +80,11 @@ extension Bundle {
   }
 
   func bundlePath(for locale: Locale) -> String? {
-    bundlePath(named: locale.identifier) ?? bundlePath(named: locale.languageCode)
+    // locale.identifier 的格式可能为 language_region，这里只截取前面的 language 部分
+    // 如果本地化不支持的语言，则默认为英文
+    bundlePath(named: String(locale.identifier.split(separator: "_")[0]))
+      ?? bundlePath(named: locale.languageCode)
+      ?? bundlePath(named: "en")
   }
 
   func bundlePath(named name: String?) -> String? {

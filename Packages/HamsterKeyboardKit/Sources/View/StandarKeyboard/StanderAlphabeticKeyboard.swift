@@ -6,6 +6,8 @@
 //
 
 import Combine
+import HamsterKit
+import OSLog
 import UIKit
 
 /**
@@ -162,11 +164,11 @@ public class StanderAlphabeticKeyboard: UIView {
 
   /// 激活视图约束
   open func activateViewConstraints() {
-    // 行中 available 类型按键集合
+    // 暂存行中 available 类型按键集合
     var availableItems = [KeyboardButtonRowItem]()
-    // 前一个按键，用于按键之间间隙约束
+    // 暂存前一个按键，用于按键之间间隙约束
     var prevItem: KeyboardButtonRowItem?
-    // 上一行的按键，用于 y 轴约束
+    // 暂存上一行的按键，用于按键 y 轴约束
     var prevRowItem: KeyboardButtonRowItem?
 
     // 根据 keyboardContext 获取当前布局配置
@@ -176,11 +178,10 @@ public class StanderAlphabeticKeyboard: UIView {
     // input 宽度类型的宽度约束乘法系数
     let inputMultiplier = CGFloat.rounded(1 / CGFloat(maxInputButtonCount))
 
-    // 为不同类型的宽度处理宽度约束
+    // 为按键不同宽度类型生成约束
     // 注意:
     // 1. 当行中 .available 类型按键数量等于 1 时，不需要添加宽度约束
-    // 2. 当行中 .available 类型按键数量大于 1 的情况下，需要在行遍历结束后添加等宽约束。
-    //    即当前行的所有 .available 类型按钮的宽度相同
+    // 2. 当行中 .available 类型按键数量大于 1 的情况下，需要在行遍历结束后添加等宽约束。即同一行中的所有 .available 类型的宽度相同
     let inputWidthOfConstraint: (KeyboardButtonRowItem) -> NSLayoutConstraint? = { [unowned self] in
       switch $0.item.size.width {
       case .available: return nil
@@ -197,10 +198,10 @@ public class StanderAlphabeticKeyboard: UIView {
 
     for row in keyboardRows {
       for button in row {
-        // 按键高度约束，包含 insets 部分
+        // 按键高度约束（高度包含 insets 部分）
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
-        // 注意：必须设置高优先级的约束，否则系统会有约束错误log
+        // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
         buttonHeightConstraint.priority = .defaultHigh
         dynamicConstraints.append(buttonHeightConstraint)
 
@@ -273,47 +274,22 @@ public class StanderAlphabeticKeyboard: UIView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         if $0 != self.interfaceOrientation {
-          print("keyboardContext.$interfaceOrientation is change")
-          setNeedsUpdateConstraints()
+          Logger.statistics.debug("keyboardContext.$interfaceOrientation is change")
+          setNeedsLayout()
         }
       }
       .store(in: &subscriptions)
   }
 
-  override public func setNeedsUpdateConstraints() {
-    super.setNeedsUpdateConstraints()
-
-    print("StanderAlphabeticKeyboard updateConstraints()")
+  override public func layoutSubviews() {
+    super.layoutSubviews()
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
 
-    let layoutConfig = layoutConfig
-    let insets = layoutConfig.buttonInsets
     let rowHeight = layoutConfig.rowHeight
 
-    print("StanderAlphabeticKeyboard updateConstraints buttonInsets rowHeight: \(rowHeight), \(insets)")
-
-    subviews.forEach {
-      guard let button = $0 as? KeyboardButtonRowItem else { return }
-
-      if let topConstraint = button.topConstraint {
-        topConstraint.constant = insets.top
-      }
-
-      if let bottomConstraint = button.bottomConstraint {
-        bottomConstraint.constant = -insets.bottom
-      }
-
-      if let leadingConstraint = button.leadingConstraint {
-        leadingConstraint.constant = insets.left
-      }
-
-      if let trailingConstraint = button.trailingConstraint {
-        trailingConstraint.constant = -insets.right
-      }
-    }
-
+    Logger.statistics.debug("StanderAlphabeticKeyboard layoutSubviews() buttonInsets rowHeight: \(rowHeight)")
     dynamicConstraints.forEach {
       $0.constant = rowHeight
     }
