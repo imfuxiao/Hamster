@@ -13,6 +13,20 @@ public class KeyboardButton: UIControl {
   
   // MARK: - Properties
   
+  /// 布局中所处行，从 0 开始
+  public let row: Int
+  
+  /// 布局中所处列，从 0 开始
+  public let column: Int
+  
+  /// 是否用来填充空白
+  /// 如: 标准键盘第二行 A 键的右边, L 键的左边等
+  public let isSpacer: Bool
+  
+  /// 对应布局的 item，存储按键的 action 信息
+  /// 注意：item中尺寸信息在自动布局中不在使用了，这些信息在 SwiftUI 布局中使用
+  public let item: KeyboardLayoutItem
+  
   /// 按键对应的操作
   private let action: KeyboardAction
   
@@ -25,8 +39,20 @@ public class KeyboardButton: UIControl {
   /// 键盘外观
   private let appearance: KeyboardAppearance
   
+  /// 呼出的上下文
+  private let calloutContext: KeyboardCalloutContext?
+  
+  @Published
+  private var isPressed = false
+  
+  /// 需要动态调整大小的约束
+  public var topConstraints = [NSLayoutConstraint]()
+  public var bottomConstraints = [NSLayoutConstraint]()
+  public var leadingConstraints = [NSLayoutConstraint]()
+  public var trailingConstraints = [NSLayoutConstraint]()
+  
   /// 设备方向
-  private let interfaceOrientation: InterfaceOrientation
+  private var interfaceOrientation: InterfaceOrientation
   
   /// 按键内容视图
   private var buttonContentView: KeyboardButtonContentView!
@@ -48,21 +74,36 @@ public class KeyboardButton: UIControl {
 
   // MARK: - 计算属性
   
+  /// 按钮样式
+  /// 注意：action 与 是否按下的状态 isPressed 决定按钮样式
   private var buttonStyle: KeyboardButtonStyle {
-    appearance.buttonStyle(for: action, isPressed: isSelected)
+    appearance.buttonStyle(for: item.action, isPressed: isSelected)
+  }
+  
+  /// 布局配置
+  private var layoutConfig: KeyboardLayoutConfiguration {
+    .standard(for: keyboardContext)
   }
   
   // MARK: - Initializations
   
   init(
-    action: KeyboardAction,
+    row: Int,
+    column: Int,
+    item: KeyboardLayoutItem,
     actionHandler: KeyboardActionHandler,
     keyboardContext: KeyboardContext,
+    calloutContext: KeyboardCalloutContext?,
     appearance: KeyboardAppearance)
   {
-    self.action = action
+    self.row = row
+    self.column = column
+    self.item = item
+    self.action = item.action
+    self.isSpacer = item.action.isSpacer
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
+    self.calloutContext = calloutContext
     self.appearance = appearance
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     
@@ -74,7 +115,7 @@ public class KeyboardButton: UIControl {
       appearance: appearance,
       keyboardContext: keyboardContext)
     
-    setupView()
+    setupSubview()
   }
   
   @available(*, unavailable)
@@ -88,43 +129,71 @@ public class KeyboardButton: UIControl {
     didSet {
       print("button isSelected")
       buttonContentView.style = buttonStyle
-      updateButtonStyle()
+      updateButtonStyle(layoutConfig)
     }
   }
 
-  func setupView() {
-    addSubview(buttonContentView)
-    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      buttonContentView.topAnchor.constraint(equalTo: topAnchor),
-      buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
-
-    insertSubview(backgroundView, belowSubview: buttonContentView)
-    backgroundView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      backgroundView.topAnchor.constraint(equalTo: topAnchor),
-      backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+  func setupSubview() {
+    /// spacer 类型不可见
+    alpha = isSpacer ? 0 : 1
     
+    let layoutConfig = layoutConfig
+    setupContentView(layoutConfig)
+    setupBackgroundView(layoutConfig)
+    
+    NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
+  }
+
+  /// 设置按钮内容视图
+  func setupContentView(_ layoutConfig: KeyboardLayoutConfiguration) {
     // 不变的样式
     buttonContentView.layer.cornerRadius = cornerRadius
-    backgroundView.shapeLayer.lineWidth = 1
-    backgroundView.shapeLayer.fillColor = UIColor.clear.cgColor
-    backgroundView.layer.shadowOpacity = Float(0.2)
-    backgroundView.layer.masksToBounds = false
+    
+    addSubview(buttonContentView)
+    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
+    let insets = layoutConfig.buttonInsets
+    topConstraints.append(buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
+    bottomConstraints.append(buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
+    leadingConstraints.append(buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
+    trailingConstraints.append(buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
   }
   
-  func updateButtonStyle() {
+  func setupBackgroundView(_ layoutConfig: KeyboardLayoutConfiguration) {
+    // 不变的样式
+    backgroundView.shapeLayer.lineWidth = 1
+    backgroundView.shapeLayer.fillColor = UIColor.clear.cgColor
+    backgroundView.shapeLayer.shadowOpacity = Float(0.2)
+    backgroundView.shapeLayer.masksToBounds = false
+    
+    insertSubview(backgroundView, belowSubview: buttonContentView)
+    backgroundView.translatesAutoresizingMaskIntoConstraints = false
+    let insets = layoutConfig.buttonInsets
+    topConstraints.append(backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
+    bottomConstraints.append(backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
+    leadingConstraints.append(backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
+    trailingConstraints.append(backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+  }
+  
+  func updateConstraints(_ layoutConfig: KeyboardLayoutConfiguration) {
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+
+    interfaceOrientation = keyboardContext.interfaceOrientation
+
+    let insets = layoutConfig.buttonInsets
+
+    // Logger.statistics.debug("KeyboardButtonRowItem layoutSubviews() rowHeight: \(layoutConfig.rowHeight), buttonInsets [left: \(insets.left), top: \(insets.top), right: \(insets.right), bottom: \(insets.bottom)]")
+
+    topConstraints.forEach { $0.constant = insets.top }
+    bottomConstraints.forEach { $0.constant = -insets.bottom }
+    leadingConstraints.forEach { $0.constant = insets.left }
+    trailingConstraints.forEach { $0.constant = -insets.right }
+  }
+  
+  func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration) {
     let style = buttonStyle
     let isPressed = isSelected
     
     // 按钮样式
-    buttonContentView.layer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
     if isPressed {
       buttonContentView.backgroundColor = style.pressedOverlayColor ?? .clear
     } else {
@@ -132,6 +201,8 @@ public class KeyboardButton: UIControl {
     }
     
     // 按键底部深色样式
+    backgroundView.layer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
+    
     backgroundView.shapeLayer.path = underPath.cgPath
     backgroundView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
     
@@ -143,7 +214,9 @@ public class KeyboardButton: UIControl {
   override public func layoutSubviews() {
     super.layoutSubviews()
     
-    updateButtonStyle()
+    let layoutConfig = layoutConfig
+    updateConstraints(layoutConfig)
+    updateButtonStyle(layoutConfig)
   }
 }
 
@@ -162,7 +235,14 @@ extension KeyboardButton {
 //      return path
 //    }
     let shadowSize = buttonStyle.shadow?.size ?? 1
-    let path = UIBezierPath(roundedRect: .init(x: 0, y: bounds.height, width: bounds.width, height: shadowSize), cornerRadius: shadowSize)
+    let rect = CGRect(
+      x: 0,
+      y: backgroundView.bounds.height,
+      width: backgroundView.bounds.width,
+      height: shadowSize)
+    let path = UIBezierPath(
+      roundedRect: rect,
+      cornerRadius: shadowSize)
 //    shadowPathCache[buttonWidth] = path
     return path
   }
@@ -174,11 +254,10 @@ extension KeyboardButton {
 //    if let path = underPathCache[buttonWidth] {
 //      return path
 //    }
-    
     let cornerRadius = cornerRadius
     let delta: CGFloat = 0.5 // 线宽的一半，backgroundView.shapeLayer.lineWidth = 1
-    let maxX = bounds.width - delta
-    let maxY = bounds.height + delta
+    let maxX = backgroundView.frame.width - delta
+    let maxY = backgroundView.frame.height + delta
     
     // 按钮底部边框
     let underPath: UIBezierPath = {
@@ -210,19 +289,19 @@ extension KeyboardButton {
 }
 
 /// layer 层为 CAShapeLayer 的 UIView
-class ShapeView: UIView {
-  var shapeLayer: CAShapeLayer!
-  
-  override class var layerClass: AnyClass {
+public class ShapeView: UIView {
+  public var shapeLayer: CAShapeLayer!
+
+  override public class var layerClass: AnyClass {
     return CAShapeLayer.self
   }
-  
-  override init(frame: CGRect = .zero) {
+
+  override public init(frame: CGRect = .zero) {
     super.init(frame: frame)
-    
+
     self.shapeLayer = layer as? CAShapeLayer
   }
-  
+
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
@@ -236,9 +315,12 @@ struct KeyboardButtonView_Previews: PreviewProvider {
   static func button(for action: KeyboardAction) -> some View {
     return UIViewPreview {
       let button = KeyboardButton(
-        action: action,
+        row: 0,
+        column: 0,
+        item: .init(action: action, size: .init(width: .input, height: 54), insets: .zero),
         actionHandler: .preview,
         keyboardContext: .preview,
+        calloutContext: .disabled,
         appearance: .preview)
       
       button.frame = .init(x: 0, y: 0, width: 80, height: 80)

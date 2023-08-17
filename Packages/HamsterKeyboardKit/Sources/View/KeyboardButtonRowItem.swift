@@ -48,9 +48,12 @@ class KeyboardButtonRowItem: UIView {
     self.isSpacer = item.action.isSpacer
 
     self.content = KeyboardButton(
-      action: item.action,
+      row: row,
+      column: column,
+      item: item,
       actionHandler: actionHandler,
       keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
       appearance: appearance)
 
     self.item = item

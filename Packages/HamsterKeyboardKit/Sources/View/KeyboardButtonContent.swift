@@ -9,11 +9,13 @@ import UIKit
 
 /// 标准按键内容视图
 /// 可以继承此类实现不同的按键样式
-open class KeyboardButtonContentView: UIView {
+public class KeyboardButtonContentView: UIView {
   private let action: KeyboardAction
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
-    didSet {}
+    didSet {
+      // TODO: 样式变更
+    }
   }
 
   private let keyboardContext: KeyboardContext

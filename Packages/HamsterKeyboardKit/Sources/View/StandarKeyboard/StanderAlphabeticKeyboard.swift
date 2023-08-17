@@ -31,6 +31,8 @@ public class StanderAlphabeticKeyboard: UIView {
 
   // MARK: - Properties
 
+  private var touchView = TouchView()
+
   private var layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
@@ -48,7 +50,7 @@ public class StanderAlphabeticKeyboard: UIView {
   private var maxInputButtonCount = 0
 
   /// 缓存所有按键视图
-  private var keyboardRows: [[KeyboardButtonRowItem]] = []
+  private var keyboardRows: [[KeyboardButton]] = []
   /// 静态视图约束，视图创建完毕后不在发生变化
   private var staticConstraints: [NSLayoutConstraint] = []
   /// 动态视图约束，在键盘方向发生变化后需要更新约束
@@ -134,22 +136,25 @@ public class StanderAlphabeticKeyboard: UIView {
 
   /// 构建视图层次
   open func constructViewHierarchy() {
+    addSubview(touchView)
+
     // 添加按键至 View
     for (rowIndex, row) in layout.itemRows.enumerated() {
-      var tempRow = [KeyboardButtonRowItem]()
+      var tempRow = [KeyboardButton]()
       var inputCount = 0
       for (itemIndex, item) in row.enumerated() {
-        let buttonItem = KeyboardButtonRowItem(
+        let buttonItem = KeyboardButton(
           row: rowIndex,
           column: itemIndex,
           item: item,
-          keyboardContext: keyboardContext,
           actionHandler: actionHandler,
+          keyboardContext: keyboardContext,
           calloutContext: calloutContext,
           appearance: appearance
         )
         buttonItem.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(buttonItem)
+        // 需要将按键添加至 touchView, 统一处理
+        touchView.addSubview(buttonItem)
         tempRow.append(buttonItem)
 
         if item.size.width == .input {
@@ -164,12 +169,20 @@ public class StanderAlphabeticKeyboard: UIView {
 
   /// 激活视图约束
   open func activateViewConstraints() {
+    touchView.translatesAutoresizingMaskIntoConstraints = false
+    staticConstraints.append(contentsOf: [
+      touchView.topAnchor.constraint(equalTo: topAnchor),
+      touchView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      touchView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      touchView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ])
+
     // 暂存行中 available 类型按键集合
-    var availableItems = [KeyboardButtonRowItem]()
+    var availableItems = [KeyboardButton]()
     // 暂存前一个按键，用于按键之间间隙约束
-    var prevItem: KeyboardButtonRowItem?
+    var prevItem: KeyboardButton?
     // 暂存上一行的按键，用于按键 y 轴约束
-    var prevRowItem: KeyboardButtonRowItem?
+    var prevRowItem: KeyboardButton?
 
     // 根据 keyboardContext 获取当前布局配置
     // 注意：临时变量缓存计算属性的值，避免重复计算
@@ -182,15 +195,15 @@ public class StanderAlphabeticKeyboard: UIView {
     // 注意:
     // 1. 当行中 .available 类型按键数量等于 1 时，不需要添加宽度约束
     // 2. 当行中 .available 类型按键数量大于 1 的情况下，需要在行遍历结束后添加等宽约束。即同一行中的所有 .available 类型的宽度相同
-    let inputWidthOfConstraint: (KeyboardButtonRowItem) -> NSLayoutConstraint? = { [unowned self] in
+    let inputWidthOfConstraint: (KeyboardButton) -> NSLayoutConstraint? = { [unowned self] in
       switch $0.item.size.width {
       case .available: return nil
       case .input:
-        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: inputMultiplier)
+        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: inputMultiplier)
       case .inputPercentage(let percent):
-        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: inputMultiplier * percent)
+        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: inputMultiplier * percent)
       case .percentage(let percent):
-        return $0.widthAnchor.constraint(equalTo: widthAnchor, multiplier: percent)
+        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: percent)
       case .points(let points):
         return $0.widthAnchor.constraint(equalToConstant: points)
       }
@@ -216,7 +229,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
         if button.row == 0 {
           // 首行添加按键相对视图的 top 约束
-          staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
+          staticConstraints.append(button.topAnchor.constraint(equalTo: touchView.topAnchor))
         } else {
           if let prevRowItem = prevRowItem {
             // 其他行添加按键相对上一行按键的 top 约束
@@ -225,13 +238,13 @@ public class StanderAlphabeticKeyboard: UIView {
 
           // 最后一行添加按键相对视图的 bottom 约束
           if button.row + 1 == keyboardRows.endIndex {
-            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
+            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: touchView.bottomAnchor))
           }
         }
 
         if button.column == 0 {
           // 首列按键添加相对行的 leading 约束
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: touchView.leadingAnchor))
         } else {
           // 其他列按键添加相对与前一个按键的 leading 约束
           if let prevItem = prevItem {
@@ -240,7 +253,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
           if button.column + 1 == row.endIndex {
             // 最后一列按键添加相对行的 trailing 约束
-            staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
+            staticConstraints.append(button.trailingAnchor.constraint(equalTo: touchView.trailingAnchor))
 
             // 修改上一行 prevRowItem 变量引用
             prevRowItem = button
