@@ -54,9 +54,9 @@ public struct KeyboardCalloutStyle: Equatable {
    has an intrinsic padding, which cause the buttons to be
    larger than the visual area.
    
-   此功能必须在 "系统键盘 "中使用，因为按钮有固有的填充，会导致按钮大于可视区域。
+   此功能必须在 "系统键盘" 中使用，因为按钮有固有的填充，会导致按钮大于可视区域。
    */
-  public var buttonInset: CGSize
+  public var buttonInset: UIEdgeInsets
     
   /**
    The corner radius of the callout edges.
@@ -125,7 +125,7 @@ public struct KeyboardCalloutStyle: Equatable {
     backgroundColor: UIColor = .standardButtonBackground,
     borderColor: UIColor = UIColor.black.withAlphaComponent(0.5),
     buttonCornerRadius: CGFloat = 5,
-    buttonInset: CGSize = CGSize.zero,
+    buttonInset: UIEdgeInsets = .zero,
     cornerRadius: CGFloat = 10,
     curveSize: CGSize = CGSize(width: 8, height: 15),
     shadowColor: UIColor = UIColor.black.withAlphaComponent(0.1),

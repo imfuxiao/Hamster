@@ -62,4 +62,16 @@ public class KeyboardButtonContentView: UIView {
       contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
   }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    if let contentView = contentView as? SpaceContentView {
+      contentView.style = style
+    } else if let contentView = contentView as? ImageContentView {
+      contentView.style = style
+    } else if let contentView = contentView as? TextContentView {
+      contentView.style = style
+    }
+  }
 }

@@ -53,6 +53,8 @@ public extension KeyboardAction {
     case .press: return standardPressAction
     case .release: return standardReleaseAction
     case .repeatPress: return standardRepeatAction
+    default:
+      return standerSwipeAction
     }
   }
     
@@ -134,5 +136,11 @@ public extension KeyboardAction {
     case .backspace: return standardPressAction
     default: return nil
     }
+  }
+  
+  /// 默认情况下，上下左右滑动触发的操作
+  var standerSwipeAction: GestureAction? {
+    // TODO: 补充滑动触发的逻辑
+    return nil
   }
 }

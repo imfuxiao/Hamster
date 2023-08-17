@@ -5,6 +5,9 @@
 //  Created by morse on 2023/8/6.
 //
 
+import Combine
+import HamsterKit
+import OSLog
 import UIKit
 
 /// 键盘键盘
@@ -40,7 +43,7 @@ public class KeyboardButton: UIControl {
   private let appearance: KeyboardAppearance
   
   /// 呼出的上下文
-  private let calloutContext: KeyboardCalloutContext?
+  private let calloutContext: KeyboardCalloutContext
   
   @Published
   private var isPressed = false
@@ -63,7 +66,11 @@ public class KeyboardButton: UIControl {
   /// 按键 underPath 缓存
   private var underPathCache = [ButtonWidth: UIBezierPath]()
   
-  /// 按钮背景图
+  private var subscriptions = Set<AnyCancellable>()
+  
+  // MARK: - subview
+  
+  // 按钮背景图
   private lazy var backgroundView: ShapeView = {
     let view = ShapeView()
     view.isOpaque = false
@@ -71,18 +78,98 @@ public class KeyboardButton: UIControl {
     view.layer.rasterizationScale = UIScreen.main.scale
     return view
   }()
+  
+  private lazy var inputCalloutView: InputCalloutView = {
+    let view = InputCalloutView(
+      calloutContext: calloutContext.input,
+      keyboardContext: keyboardContext,
+      style: inputCalloutStyle)
+    view.isOpaque = false
+    view.layer.shouldRasterize = true
+    view.layer.rasterizationScale = UIScreen.main.scale
+    return view
+  }()
+  
+  // MARK: - touch gesture
+  
+  private lazy var tapGesture: UITapGestureRecognizer = {
+    let gesture = UITapGestureRecognizer()
+    gesture.numberOfTapsRequired = 1
+    gesture.numberOfTouchesRequired = 1
+    gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var doubleTapGesture: UITapGestureRecognizer = {
+    let gesture = UITapGestureRecognizer()
+    gesture.numberOfTapsRequired = 2
+    gesture.numberOfTouchesRequired = 1
+    gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var longPressGesture: UILongPressGestureRecognizer = {
+    let gesture = UILongPressGestureRecognizer()
+    gesture.minimumPressDuration = 0.5
+    gesture.addTarget(self, action: #selector(longPressGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var swipeUpGesture: UISwipeGestureRecognizer = {
+    let gesture = UISwipeGestureRecognizer()
+    gesture.direction = .up
+    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var swipeDownGesture: UISwipeGestureRecognizer = {
+    let gesture = UISwipeGestureRecognizer()
+    gesture.direction = .down
+    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var swipeLeftGesture: UISwipeGestureRecognizer = {
+    let gesture = UISwipeGestureRecognizer()
+    gesture.direction = .left
+    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
+    return gesture
+  }()
+  
+  private lazy var swipeRightGesture: UISwipeGestureRecognizer = {
+    let gesture = UISwipeGestureRecognizer()
+    gesture.direction = .right
+    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
+    return gesture
+  }()
 
   // MARK: - 计算属性
   
   /// 按钮样式
   /// 注意：action 与 是否按下的状态 isPressed 决定按钮样式
   private var buttonStyle: KeyboardButtonStyle {
-    appearance.buttonStyle(for: item.action, isPressed: isSelected)
+    appearance.buttonStyle(for: item.action, isPressed: isPressed)
   }
   
   /// 布局配置
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
+  }
+  
+  /// 输入呼出按键样式
+  private var inputCalloutStyle: KeyboardInputCalloutStyle {
+    var style = appearance.inputCalloutStyle
+    let insets = layoutConfig.buttonInsets
+    style.callout.buttonInset = insets
+    return style
+  }
+  
+  /// 长按呼出样式
+  private var actionCalloutStyle: KeyboardActionCalloutStyle {
+    var style = appearance.actionCalloutStyle
+    let insets = layoutConfig.buttonInsets
+    style.callout.buttonInset = insets
+    return style
   }
   
   // MARK: - Initializations
@@ -93,7 +180,7 @@ public class KeyboardButton: UIControl {
     item: KeyboardLayoutItem,
     actionHandler: KeyboardActionHandler,
     keyboardContext: KeyboardContext,
-    calloutContext: KeyboardCalloutContext?,
+    calloutContext: KeyboardCalloutContext,
     appearance: KeyboardAppearance)
   {
     self.row = row
@@ -116,6 +203,30 @@ public class KeyboardButton: UIControl {
       keyboardContext: keyboardContext)
     
     setupSubview()
+    
+    addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
+    
+    addGestureRecognizer(tapGesture)
+    addGestureRecognizer(doubleTapGesture)
+    addGestureRecognizer(longPressGesture)
+    addGestureRecognizer(swipeUpGesture)
+    addGestureRecognizer(swipeDownGesture)
+    addGestureRecognizer(swipeLeftGesture)
+    addGestureRecognizer(swipeRightGesture)
+    
+    $isPressed
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        let layoutConfig = layoutConfig
+        updateButtonStyle(layoutConfig)
+        
+        if $0 {
+          showInputCallout()
+        } else {
+          hideInputCallout()
+        }
+      }
+      .store(in: &subscriptions)
   }
   
   @available(*, unavailable)
@@ -125,14 +236,6 @@ public class KeyboardButton: UIControl {
   
   // MARK: - Layout Functions
   
-  override public var isSelected: Bool {
-    didSet {
-      print("button isSelected")
-      buttonContentView.style = buttonStyle
-      updateButtonStyle(layoutConfig)
-    }
-  }
-
   func setupSubview() {
     /// spacer 类型不可见
     alpha = isSpacer ? 0 : 1
@@ -191,7 +294,8 @@ public class KeyboardButton: UIControl {
   
   func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration) {
     let style = buttonStyle
-    let isPressed = isSelected
+    
+    buttonContentView.style = style
     
     // 按钮样式
     if isPressed {
@@ -217,6 +321,103 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     updateConstraints(layoutConfig)
     updateButtonStyle(layoutConfig)
+  }
+}
+
+// MARK: - Input Callout
+
+extension KeyboardButton {
+  func showInputCallout() {
+    guard let superview = superview else {
+      let row = row
+      let column = column
+      Logger.statistics.error("\(row, privacy: .public)-\(column, privacy: .public)-button, superview is nil")
+      return
+    }
+    let inputCalloutView = inputCalloutView
+    if inputCalloutView.superview != nil {
+      inputCalloutView.alpha = 1
+      return
+    }
+    inputCalloutView.label.text = "测试"
+    inputCalloutView.frame = frame
+    inputCalloutView.backgroundColor = .red
+    superview.addSubview(inputCalloutView)
+  }
+  
+  func hideInputCallout() {
+    let inputCalloutView = inputCalloutView
+    inputCalloutView.alpha = 0
+  }
+  
+  /// input callout 路径
+  var inputCalloutPath: UIBezierPath {
+    let path = UIBezierPath()
+    
+    
+    
+    return path
+  }
+}
+
+// MARK: - Event Handled
+
+extension KeyboardButton {
+  @objc func buttonTouchDown() {
+    print("\(row)-\(column) buttonTouchDown")
+  }
+  
+  @objc func tapGestureHandle(_ gestureRecognizer: UITapGestureRecognizer) {
+    guard gestureRecognizer.view != nil else { return }
+    print("\(row)-\(column) tapGestureHandle: \(gestureRecognizer.numberOfTapsRequired), \(gestureRecognizer.state)")
+    
+    isPressed = true
+    if gestureRecognizer.numberOfTapsRequired == 1 {
+      actionHandler.handle(.press, on: action)
+    } else {
+      actionHandler.handle(.doubleTap, on: action)
+    }
+    if gestureRecognizer.state == .ended {
+      isPressed = false
+      actionHandler.handle(.release, on: action)
+    }
+  }
+  
+  @objc func longPressGestureHandle(_ gestureRecognizer: UILongPressGestureRecognizer) {
+    if gestureRecognizer.state == .began {
+      print("\(row)-\(column) longPressGestureHandle begin")
+      isPressed = true
+      actionHandler.handle(.longPress, on: action)
+    } else if gestureRecognizer.state == .changed {
+      print("\(row)-\(column) longPressGestureHandle changed")
+      actionHandler.handle(.repeatPress, on: action)
+    } else if gestureRecognizer.state == .ended {
+      print("\(row)-\(column) longPressGestureHandle end")
+      isPressed = false
+      actionHandler.handle(.release, on: action)
+    }
+  }
+  
+  @objc func swipeGestureHandle(_ gestureRecognizer: UISwipeGestureRecognizer) {
+    print("\(row)-\(column) swipeGestureHandle: \(gestureRecognizer.state), \(gestureRecognizer.direction)")
+    guard gestureRecognizer.state == .ended else { return }
+    
+    switch gestureRecognizer.direction {
+    case .up:
+      print("swipe up")
+      actionHandler.handle(.swipeUp, on: action)
+    case .down:
+      print("swipe down")
+      actionHandler.handle(.swipeDown, on: action)
+    case .left:
+      print("swipe left")
+      actionHandler.handle(.swipeLeft, on: action)
+    case .right:
+      print("swipe right")
+      actionHandler.handle(.swipeRight, on: action)
+    default:
+      return
+    }
   }
 }
 
@@ -285,26 +486,6 @@ extension KeyboardButton {
 //    underPathCache[buttonWidth] = underPath
     
     return underPath
-  }
-}
-
-/// layer 层为 CAShapeLayer 的 UIView
-public class ShapeView: UIView {
-  public var shapeLayer: CAShapeLayer!
-
-  override public class var layerClass: AnyClass {
-    return CAShapeLayer.self
-  }
-
-  override public init(frame: CGRect = .zero) {
-    super.init(frame: frame)
-
-    self.shapeLayer = layer as? CAShapeLayer
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 }
 

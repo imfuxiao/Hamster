@@ -31,7 +31,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
   // MARK: - Properties
 
-  private var touchView = TouchView()
+  private var touchView = KeyboardTouchView()
 
   private var layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
@@ -67,19 +67,19 @@ public class StanderAlphabeticKeyboard: UIView {
     .standard(for: keyboardContext)
   }
 
-  private var actionCalloutStyle: KeyboardActionCalloutStyle {
-    var style = appearance.actionCalloutStyle
-    let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
-    return style
-  }
-
-  private var inputCalloutStyle: KeyboardInputCalloutStyle {
-    var style = appearance.inputCalloutStyle
-    let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
-    return style
-  }
+//  private var actionCalloutStyle: KeyboardActionCalloutStyle {
+//    var style = appearance.actionCalloutStyle
+//    let insets = layoutConfig.buttonInsets
+//    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
+//    return style
+//  }
+//
+//  private var inputCalloutStyle: KeyboardInputCalloutStyle {
+//    var style = appearance.inputCalloutStyle
+//    let insets = layoutConfig.buttonInsets
+//    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
+//    return style
+//  }
 
   // MARK: - Initializations
 

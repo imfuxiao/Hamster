@@ -18,7 +18,7 @@ class KeyboardButtonRowItem: UIView {
 
   private let content: KeyboardButton
   private let actionHandler: KeyboardActionHandler
-  private let calloutContext: KeyboardCalloutContext?
+  private let calloutContext: KeyboardCalloutContext
   private let appearance: KeyboardAppearance
   private var keyboardContext: KeyboardContext
   private var interfaceOrientation: InterfaceOrientation
@@ -40,7 +40,7 @@ class KeyboardButtonRowItem: UIView {
     item: KeyboardLayoutItem,
     keyboardContext: KeyboardContext,
     actionHandler: KeyboardActionHandler,
-    calloutContext: KeyboardCalloutContext?,
+    calloutContext: KeyboardCalloutContext,
     appearance: KeyboardAppearance)
   {
     self.row = row

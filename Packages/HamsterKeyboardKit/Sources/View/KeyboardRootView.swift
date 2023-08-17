@@ -42,14 +42,14 @@ class KeyboardRootView: UIView {
   private var actionCalloutStyle: KeyboardActionCalloutStyle {
     var style = appearance.actionCalloutStyle
     let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
+    style.callout.buttonInset = insets
     return style
   }
 
   private var inputCalloutStyle: KeyboardInputCalloutStyle {
     var style = appearance.inputCalloutStyle
     let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = CGSize(width: insets.left, height: insets.top)
+    style.callout.buttonInset = insets
     return style
   }
 

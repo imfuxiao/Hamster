@@ -9,14 +9,14 @@ import Combine
 import UIKit
 
 class SpaceContentView: UIView {
-  private let buttonStyle: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle
   private let loadingText: String
   
   private let loadingLabel: UILabel
-  private let spaceView: UIView
+  private let spaceView: TextContentView
   
   init(style: KeyboardButtonStyle, loadingText: String, spaceText: String) {
-    self.buttonStyle = style
+    self.style = style
     self.loadingText = loadingText
     self.spaceView = TextContentView(
       style: style,
@@ -24,18 +24,7 @@ class SpaceContentView: UIView {
       isInputAction: KeyboardAction.space.isInputAction
     )
     self.loadingLabel = UILabel(frame: .zero)
-    self.loadingLabel.textAlignment = .center
-    
-    super.init(frame: .zero)
-    
-    setupSpaceView()
-  }
-  
-  init(style: KeyboardButtonStyle, loadingText: String, spaceView: UIView) {
-    self.buttonStyle = style
-    self.loadingText = loadingText
-    self.spaceView = spaceView
-    self.loadingLabel = UILabel(frame: .zero)
+    loadingLabel.textAlignment = .center
     
     super.init(frame: .zero)
     
@@ -49,7 +38,7 @@ class SpaceContentView: UIView {
   
   func setupSpaceView() {
     loadingLabel.text = loadingText
-    loadingLabel.font = buttonStyle.font?.font
+    loadingLabel.font = style.font?.font
     addSubview(loadingLabel)
     loadingLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -77,6 +66,12 @@ class SpaceContentView: UIView {
       }
     }
   }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    spaceView.style = style
+  }
 }
 
 #if canImport(SwiftUI) && DEBUG
@@ -85,7 +80,7 @@ import SwiftUI
 struct SpaceContentView_Previews: PreviewProvider {
   static func spaceContent(loadingText: String, spaceView: UIView) -> some View {
     return UIViewPreview {
-      let view = SpaceContentView(style: .preview1, loadingText: loadingText, spaceView: spaceView)
+      let view = SpaceContentView(style: .preview1, loadingText: loadingText, spaceText: "空格")
       view.frame = .init(x: 0, y: 0, width: 80, height: 80)
       return view
     }

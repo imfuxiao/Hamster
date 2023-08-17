@@ -1,5 +1,5 @@
 //
-//  TouchView.swift
+//  KeyboardTouchView.swift
 //
 //
 //  Created by morse on 2023/8/17.
@@ -10,9 +10,13 @@ import OSLog
 import UIKit
 
 /**
- 键盘按键触控处理
+ 按键触控处理
+
+ 注意：需要将所有按键添加至此 view 中，作为此 view 的 subview
  */
-class TouchView: UIView {
+class KeyboardTouchView: UIView {
+  // MARK: - Initializations
+
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
   }
@@ -27,31 +31,44 @@ class TouchView: UIView {
   /**
    返回视图层次结构（包括其自身）中包含指定 point 的接收者的最远后代。
    */
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    bounds.contains(point) ? self : nil
-  }
+//  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+//    bounds.contains(point) ? self : nil
+//  }
+//
+//  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//    for touch in touches {
+//      // 返回 touch 在给定视图坐标系中的当前位置。
+//      let position = touch.location(in: self)
+//      guard let subview = findNearestView(position) else { continue }
+//      Logger.statistics.debug("touch view \(subview.debugDescription)")
+//      self.handleControl(subview, controlEvent: .touchDown)
+//    }
+//  }
+//
+//  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+//    Logger.statistics.debug("touchesMoved")
+//  }
+//
+//  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//    Logger.statistics.debug("touchesEnded")
+//  }
+//
+//  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+//    Logger.statistics.debug("touchesCancelled")
+//  }
 
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    Logger.statistics.debug("touchesBegan")
-    for touch in touches {
-      // 返回 touch 在给定视图坐标系中的当前位置。
-      let position = touch.location(in: self)
-      let view = findNearestView(position)
-
-      Logger.statistics.debug("touch view \(view.debugDescription)")
+  func handleControl(_ view: UIView, controlEvent: UIControl.Event) {
+    guard let controlView = view as? UIControl else { return }
+    let targets = controlView.allTargets
+    for target in targets {
+      if let actions = controlView.actions(forTarget: target, forControlEvent: controlEvent) {
+        for action in actions {
+          let selectorString = action
+          let selector = Selector(selectorString)
+          controlView.sendAction(selector, to: target, for: nil)
+        }
+      }
     }
-  }
-
-  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    Logger.statistics.debug("touchesMoved")
-  }
-
-  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    Logger.statistics.debug("touchesEnded")
-  }
-
-  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    Logger.statistics.debug("touchesCancelled")
   }
 
   /// 查找 position 最近的子视图

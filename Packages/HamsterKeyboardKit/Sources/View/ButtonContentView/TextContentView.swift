@@ -14,7 +14,7 @@ import UIKit
  */
 public class TextContentView: UIView {
   /// 按钮样式
-  private let style: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle
   /// 文本内容
   private let text: String
   /// 是否为输入类型操作
@@ -46,12 +46,11 @@ public class TextContentView: UIView {
 
   func setupTextView() {
     label.textAlignment = .center
-//    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
+    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
 //    label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
-    label.font = style.font?.font
-    label.textColor = style.foregroundColor
+
     label.text = text
 //    addSubview(label)
 
@@ -79,6 +78,13 @@ public class TextContentView: UIView {
 //      label.leadingAnchor.constraint(equalTo: leadingAnchor),
 //      label.trailingAnchor.constraint(equalTo: trailingAnchor),
 //    ])
+  }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    label.font = style.font?.font
+    label.textColor = style.foregroundColor
   }
 }
 

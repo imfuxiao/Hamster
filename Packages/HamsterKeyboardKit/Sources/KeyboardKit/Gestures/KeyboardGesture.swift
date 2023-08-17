@@ -39,6 +39,18 @@ public enum KeyboardGesture: String, CaseIterable, Codable, Equatable, Identifia
   ///
   /// 按住按钮时重复触发。
   case repeatPress
+
+  /// 上滑
+  case swipeUp
+
+  /// 下滑
+  case swipeDown
+
+  /// 左滑
+  case swipeLeft
+
+  /// 右滑
+  case swipeRight
 }
 
 public extension KeyboardGesture {

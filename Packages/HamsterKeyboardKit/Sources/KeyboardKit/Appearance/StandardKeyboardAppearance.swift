@@ -185,9 +185,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 根据给定 `isPressed` 状态， 用于特定操作的背景颜色。
   open func buttonBackgroundColor(for action: KeyboardAction, isPressed: Bool) -> UIColor {
-    let fullOpacity = keyboardContext.hasDarkColorScheme || isPressed
     return action.buttonBackgroundColor(for: keyboardContext, isPressed: isPressed)
-      .withAlphaComponent(fullOpacity ? 1 : 0.95)
   }
 
   /// The border style to use for a certain action.
