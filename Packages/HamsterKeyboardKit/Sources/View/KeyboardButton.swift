@@ -90,6 +90,7 @@ public class KeyboardButton: UIControl {
     let gesture = UITapGestureRecognizer()
     gesture.numberOfTapsRequired = 1
     gesture.numberOfTouchesRequired = 1
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
     return gesture
   }()
@@ -98,6 +99,7 @@ public class KeyboardButton: UIControl {
     let gesture = UITapGestureRecognizer()
     gesture.numberOfTapsRequired = 2
     gesture.numberOfTouchesRequired = 1
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
     return gesture
   }()
@@ -105,6 +107,7 @@ public class KeyboardButton: UIControl {
   private lazy var longPressGesture: UILongPressGestureRecognizer = {
     let gesture = UILongPressGestureRecognizer()
     gesture.minimumPressDuration = 0.5
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(longPressGestureHandle(_:)))
     return gesture
   }()
@@ -112,6 +115,7 @@ public class KeyboardButton: UIControl {
   private lazy var swipeUpGesture: UISwipeGestureRecognizer = {
     let gesture = UISwipeGestureRecognizer()
     gesture.direction = .up
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
     return gesture
   }()
@@ -119,6 +123,7 @@ public class KeyboardButton: UIControl {
   private lazy var swipeDownGesture: UISwipeGestureRecognizer = {
     let gesture = UISwipeGestureRecognizer()
     gesture.direction = .down
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
     return gesture
   }()
@@ -126,6 +131,7 @@ public class KeyboardButton: UIControl {
   private lazy var swipeLeftGesture: UISwipeGestureRecognizer = {
     let gesture = UISwipeGestureRecognizer()
     gesture.direction = .left
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
     return gesture
   }()
@@ -133,6 +139,7 @@ public class KeyboardButton: UIControl {
   private lazy var swipeRightGesture: UISwipeGestureRecognizer = {
     let gesture = UISwipeGestureRecognizer()
     gesture.direction = .right
+    gesture.delegate = self
     gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
     return gesture
   }()
@@ -150,7 +157,7 @@ public class KeyboardButton: UIControl {
     .standard(for: keyboardContext)
   }
   
-  /// 输入呼出按键样式
+  /// input呼出样式
   private var inputCalloutStyle: KeyboardInputCalloutStyle {
     var style = appearance.inputCalloutStyle
     let insets = layoutConfig.buttonInsets
@@ -198,27 +205,13 @@ public class KeyboardButton: UIControl {
     
     setupSubview()
     
-    addTarget(self, action: #selector(buttonTouchDown), for: .touchDown)
-    
-    addGestureRecognizer(tapGesture)
-    addGestureRecognizer(doubleTapGesture)
-    addGestureRecognizer(longPressGesture)
-    addGestureRecognizer(swipeUpGesture)
-    addGestureRecognizer(swipeDownGesture)
-    addGestureRecognizer(swipeLeftGesture)
-    addGestureRecognizer(swipeRightGesture)
+    setupGestureRecognizer()
     
     $isPressed
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
+      .sink { [unowned self] _ in
         let layoutConfig = layoutConfig
         updateButtonStyle(layoutConfig)
-        
-        if $0 {
-          showInputCallout()
-        } else {
-          hideInputCallout()
-        }
       }
       .store(in: &subscriptions)
   }
@@ -315,22 +308,25 @@ public class KeyboardButton: UIControl {
     
     buttonContentView.style = style
     
-    // 按钮样式
-    if isPressed {
-      buttonContentView.backgroundColor = style.pressedOverlayColor ?? .clear
-    } else {
-      buttonContentView.backgroundColor = style.backgroundColor ?? .clear
-    }
-    
     // 按键底部深色样式
-    backgroundView.layer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
-    
-    backgroundView.shapeLayer.path = underPath.cgPath
+    backgroundView.shapeLayer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
     backgroundView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
     
     // 按键阴影样式
     backgroundView.layer.shadowPath = shadowPath.cgPath
     backgroundView.layer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
+    
+    // 按钮样式
+    if isPressed {
+      buttonContentView.backgroundColor = style.pressedOverlayColor ?? .clear
+      backgroundView.shapeLayer.opacity = 0
+      showInputCallout()
+    } else {
+      buttonContentView.backgroundColor = style.backgroundColor ?? .clear
+      backgroundView.shapeLayer.path = underPath.cgPath
+      backgroundView.shapeLayer.opacity = 1
+      hideInputCallout()
+    }
   }
   
   override public func layoutSubviews() {
@@ -358,16 +354,48 @@ extension KeyboardButton {
 
 // MARK: - Event Handled
 
-extension KeyboardButton {
-  @objc func buttonTouchDown() {
-    print("\(row)-\(column) buttonTouchDown")
+extension KeyboardButton: UIGestureRecognizerDelegate {
+  func setupGestureRecognizer() {
+    addGestureRecognizer(tapGesture)
+    addGestureRecognizer(doubleTapGesture)
+    addGestureRecognizer(longPressGesture)
+    addGestureRecognizer(swipeUpGesture)
+    addGestureRecognizer(swipeDownGesture)
+    addGestureRecognizer(swipeLeftGesture)
+    addGestureRecognizer(swipeRightGesture)
+  }
+  
+  // TODO: 如果开启滑动输入则统一在 TouchView 处理手势
+  override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    print("\(row)-\(column) hitTest")
+
+    guard bounds.contains(point) else { return nil }
+    isPressed = true
+    return self
+  }
+  
+  override public func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+    return true
+  }
+  
+  override public func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
+    super.continueTracking(touch, with: event)
+  }
+  
+  override public func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+    super.endTracking(touch, with: event)
+    isPressed = false
+  }
+  
+  override public func cancelTracking(with event: UIEvent?) {
+    super.cancelTracking(with: event)
+    isPressed = false
   }
   
   @objc func tapGestureHandle(_ gestureRecognizer: UITapGestureRecognizer) {
+    print("\(row)-\(column) tapGestureHandle ")
     guard gestureRecognizer.view != nil else { return }
-    print("\(row)-\(column) tapGestureHandle: \(gestureRecognizer.numberOfTapsRequired), \(gestureRecognizer.state)")
     
-    isPressed = true
     if gestureRecognizer.numberOfTapsRequired == 1 {
       actionHandler.handle(.press, on: action)
     } else {
@@ -414,6 +442,8 @@ extension KeyboardButton {
     default:
       return
     }
+    
+    isPressed = false
   }
 }
 

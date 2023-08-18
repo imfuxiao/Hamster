@@ -32,14 +32,17 @@ class KeyboardTouchView: UIView {
    返回视图层次结构（包括其自身）中包含指定 point 的接收者的最远后代。
    */
 //  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//    bounds.contains(point) ? self : nil
+//    print("\n Keyboard Touch view hitTest \n")
+//    return bounds.contains(point) ? self : nil
 //  }
+
 //
 //  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //    for touch in touches {
 //      // 返回 touch 在给定视图坐标系中的当前位置。
-//      let position = touch.location(in: self)
-//      guard let subview = findNearestView(position) else { continue }
+//      Logger.statistics.debug("touch began \(touch.view?.debugDescription)")
+//      let point = touch.location(in: self)
+//      guard let subview = findNearestView(point) else { continue }
 //      Logger.statistics.debug("touch view \(subview.debugDescription)")
 //      self.handleControl(subview, controlEvent: .touchDown)
 //    }
@@ -56,24 +59,25 @@ class KeyboardTouchView: UIView {
 //  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 //    Logger.statistics.debug("touchesCancelled")
 //  }
-
-  func handleControl(_ view: UIView, controlEvent: UIControl.Event) {
-    guard let controlView = view as? UIControl else { return }
-    let targets = controlView.allTargets
-    for target in targets {
-      if let actions = controlView.actions(forTarget: target, forControlEvent: controlEvent) {
-        for action in actions {
-          let selectorString = action
-          let selector = Selector(selectorString)
-          controlView.sendAction(selector, to: target, for: nil)
-        }
-      }
-    }
-  }
+//
+//  // 手势控制处理
+//  func handleControl(_ view: UIView, controlEvent: UIControl.Event) {
+//    guard let controlView = view as? UIControl else { return }
+//    let targets = controlView.allTargets
+//    for target in targets {
+//      if let actions = controlView.actions(forTarget: target, forControlEvent: controlEvent) {
+//        for action in actions {
+//          let selectorString = action
+//          let selector = Selector(selectorString)
+//          controlView.sendAction(selector, to: target, for: nil)
+//        }
+//      }
+//    }
+//  }
 
   /// 查找 position 最近的子视图
-  func findNearestView(_ position: CGPoint) -> UIView? {
-    guard bounds.contains(position) else { return nil }
+  func findNearestView(_ point: CGPoint) -> UIView? {
+    guard bounds.contains(point) else { return nil }
 
     var closest: (UIView, CGFloat)?
 
@@ -85,7 +89,7 @@ class KeyboardTouchView: UIView {
 
 //      view.alpha = 1
 
-      let distance = view.frame.distance(position)
+      let distance = view.frame.distance(point)
 
       if closest != nil {
         if distance < closest!.1 {
