@@ -73,9 +73,6 @@ public class KeyboardButton: UIControl {
   // 按钮背景图
   private lazy var backgroundView: ShapeView = {
     let view = ShapeView()
-    view.isOpaque = false
-    view.layer.shouldRasterize = true
-    view.layer.rasterizationScale = UIScreen.main.scale
     return view
   }()
   
@@ -84,9 +81,6 @@ public class KeyboardButton: UIControl {
       calloutContext: calloutContext.input,
       keyboardContext: keyboardContext,
       style: inputCalloutStyle)
-    view.isOpaque = false
-    view.layer.shouldRasterize = true
-    view.layer.rasterizationScale = UIScreen.main.scale
     return view
   }()
   
@@ -243,6 +237,7 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
     setupBackgroundView(layoutConfig)
+    setupInputCallout()
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
@@ -261,6 +256,7 @@ public class KeyboardButton: UIControl {
     trailingConstraints.append(buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
   }
   
+  /// 设置按钮背景视图，如底部阴影及暗线
   func setupBackgroundView(_ layoutConfig: KeyboardLayoutConfiguration) {
     // 不变的样式
     backgroundView.shapeLayer.lineWidth = 1
@@ -275,6 +271,28 @@ public class KeyboardButton: UIControl {
     bottomConstraints.append(backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
     leadingConstraints.append(backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
     trailingConstraints.append(backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+  }
+  
+  /// 设置 inputCallout 样式
+  func setupInputCallout() {
+    if !action.isInputAction {
+      return
+    }
+    
+    if action == .space {
+      return
+    }
+    
+    inputCalloutView.alpha = 0
+    
+    inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(inputCalloutView)
+    NSLayoutConstraint.activate([
+      inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 1.5),
+      inputCalloutView.heightAnchor.constraint(equalTo: buttonContentView.heightAnchor, multiplier: 2),
+      inputCalloutView.centerXAnchor.constraint(equalTo: buttonContentView.centerXAnchor),
+      inputCalloutView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
+    ])
   }
   
   func updateConstraints(_ layoutConfig: KeyboardLayoutConfiguration) {
@@ -328,35 +346,13 @@ public class KeyboardButton: UIControl {
 
 extension KeyboardButton {
   func showInputCallout() {
-    guard let superview = superview else {
-      let row = row
-      let column = column
-      Logger.statistics.error("\(row, privacy: .public)-\(column, privacy: .public)-button, superview is nil")
-      return
-    }
-    let inputCalloutView = inputCalloutView
-    if inputCalloutView.superview != nil {
-      inputCalloutView.alpha = 1
-      return
-    }
-    inputCalloutView.label.text = "测试"
-    inputCalloutView.frame = frame
-    inputCalloutView.backgroundColor = .red
-    superview.addSubview(inputCalloutView)
+    inputCalloutView.alpha = 1
+    inputCalloutView.label.text = action.inputCalloutText
+    inputCalloutView.updateStyle()
   }
   
   func hideInputCallout() {
-    let inputCalloutView = inputCalloutView
     inputCalloutView.alpha = 0
-  }
-  
-  /// input callout 路径
-  var inputCalloutPath: UIBezierPath {
-    let path = UIBezierPath()
-    
-    
-    
-    return path
   }
 }
 

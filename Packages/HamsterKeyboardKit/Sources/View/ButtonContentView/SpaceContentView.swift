@@ -39,6 +39,7 @@ class SpaceContentView: UIView {
   func setupSpaceView() {
     loadingLabel.text = loadingText
     loadingLabel.font = style.font?.font
+    loadingLabel.alpha = 1
     addSubview(loadingLabel)
     loadingLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
@@ -47,22 +48,23 @@ class SpaceContentView: UIView {
       loadingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
       loadingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
+    
+    spaceView.alpha = 0
+    addSubview(spaceView)
+    spaceView.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      spaceView.topAnchor.constraint(equalTo: topAnchor),
+      spaceView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      spaceView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      spaceView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ])
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
       guard let self = self else { return }
       
-      UIView.animate(withDuration: 1.5) {
-        self.loadingLabel.removeFromSuperview()
-        self.addSubview(self.spaceView)
-        self.spaceView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-          self.spaceView.topAnchor.constraint(equalTo: self.topAnchor),
-          self.spaceView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-          self.spaceView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-          self.spaceView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
-        
-        self.setNeedsLayout()
+      UIView.animate(withDuration: 0.5) {
+        self.loadingLabel.alpha = 0
+        self.spaceView.alpha = 1
       }
     }
   }
