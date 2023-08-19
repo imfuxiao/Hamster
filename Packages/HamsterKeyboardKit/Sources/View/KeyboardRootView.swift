@@ -63,6 +63,11 @@ class KeyboardRootView: UIView {
 
   // MARK: subview
 
+  private lazy var toolbarView: KeyboardToolbarView = {
+    let view = KeyboardToolbarView(keyboardContext: keyboardContext)
+    return view
+  }()
+
   /// 字母键盘
   private lazy var alphabeticKeyboardView: UIView = {
     let view = StanderAlphabeticKeyboard(
@@ -171,11 +176,19 @@ class KeyboardRootView: UIView {
     // TODO: 根据当前键盘类型设置
     let subview = alphabeticKeyboardView
 
+    addSubview(toolbarView)
     addSubview(subview)
+    toolbarView.translatesAutoresizingMaskIntoConstraints = false
     subview.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      subview.topAnchor.constraint(equalTo: topAnchor),
+      // TODO: 动态调整工具栏高度
+      toolbarView.topAnchor.constraint(equalTo: topAnchor),
+      toolbarView.heightAnchor.constraint(equalToConstant: 60),
+      toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+
       subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
       subview.leadingAnchor.constraint(equalTo: leadingAnchor),
       subview.trailingAnchor.constraint(equalTo: trailingAnchor)
