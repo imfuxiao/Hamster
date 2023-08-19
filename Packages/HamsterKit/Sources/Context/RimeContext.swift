@@ -30,17 +30,17 @@ public actor RimeContext: ObservableObject {
 
   /// 当前输入方案
   @Published
-  public var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
+  public var currentSchema: RimeSchema? = UserDefaults.standard.currentSchema {
     didSet {
-      UserDefaults.hamster.currentSchema = self.currentSchema
+      UserDefaults.standard.currentSchema = self.currentSchema
     }
   }
 
   /// 上次使用输入方案
   @Published
-  public var latestSchema: RimeSchema? = UserDefaults.hamster.latestSchema {
+  public var latestSchema: RimeSchema? = UserDefaults.standard.latestSchema {
     didSet {
-      UserDefaults.hamster.latestSchema = self.latestSchema
+      UserDefaults.standard.latestSchema = self.latestSchema
     }
   }
 
@@ -57,7 +57,8 @@ public actor RimeContext: ObservableObject {
   var suggestions: [CandidateSuggestion] = []
 
   /// switcher hotkeys
-//  var hotKeys = ["f4"]
+  /// 默认值为 F4，但 RIME 启动时会根据当前配置加载此值
+  var hotKeys = ["f4"]
 
   public init() {}
 }
@@ -99,7 +100,62 @@ public extension RimeContext {
     }
   }
 
+  func setCurrentSchema(_ schema: RimeSchema?) async {
+    self.latestSchema = self.currentSchema
+    self.currentSchema = schema
+  }
+
+  func setAsciiMode(_ model: Bool) async {
+    self.asciiMode = model
+  }
+
+  /// RIME 启动
+  /// 注意：仅用于键盘扩展调用
+  func start(hasFullAccess: Bool) async {
+    Rime.shared.start(Rime.createTraits(
+      sharedSupportDir: FileManager.appGroupSharedSupportDirectoryURL.path,
+      userDataDir: hasFullAccess ? FileManager.appGroupUserDataDirectoryURL.path : FileManager.sandboxUserDataDirectory.path
+    ))
+
+    await setupRimeInputSchema()
+
+    // 中英状态同步
+    self.asciiMode = Rime.shared.isAsciiMode()
+
+    // 加载Switcher切换键
+    let hotKeys = Rime.shared.getHotkeys().split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+    if !hotKeys.isEmpty {
+      self.hotKeys = hotKeys
+    }
+    Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
+
+    // RIME 输入方案切换状态同步
+    Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
+      guard let self = self else { return }
+      Task {
+        let currentSchema = await self.currentSchema
+        let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
+        guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
+        guard let changeSchema = await self.selectSchemas.first(where: { $0.schemaId == schemaID }) else { return }
+        await self.setCurrentSchema(changeSchema)
+        Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
+      }
+    })
+
+    // RIME 中英文状态切换同步
+    Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
+      guard let self = self else { return }
+      guard mode.hasSuffix("ascii_mode") else { return }
+      Task {
+        let mode = !mode.hasPrefix("!")
+        await self.setAsciiMode(mode)
+        Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
+      }
+    })
+  }
+
   /// RIME 部署
+  /// 注意：仅可用于主 App 调用
   func deployment(configuration: HamsterConfiguration) async throws {
     // 如果开启 iCloud，则先将 iCloud 下文件增量复制到 Sandbox
     if let enableAppleCloud = configuration.general?.enableAppleCloud, enableAppleCloud == true {
@@ -179,6 +235,7 @@ public extension RimeContext {
   }
 
   /// RIME 同步
+  /// 注意：仅可用于主 App 调用
   func syncRime() throws {
     Rime.shared.shutdown()
     Rime.shared.start(Rime.createTraits(
@@ -199,6 +256,7 @@ public extension RimeContext {
   }
 
   /// RIME 重置
+  /// 注意：仅可用于主 App 调用
   func restRime() async throws {
     // 重置输入方案目录
     do {
@@ -261,6 +319,45 @@ public extension RimeContext {
     // 部署后将方案copy至AppGroup下供keyboard使用
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
+  }
+}
+
+// MARK: - RIME 引擎相关操作
+
+public extension RimeContext {
+  /// 设置用户输入方案
+  func setupRimeInputSchema() async {
+    let schema: RimeSchema
+    if let currentSchema = currentSchema {
+      schema = currentSchema
+    } else {
+      let selectSchemas = await selectSchemas
+      guard !selectSchemas.isEmpty else {
+        Logger.statistics.error("rime select schemas is empty.")
+        return
+      }
+      schema = selectSchemas.sorted().first!
+      currentSchema = schema
+    }
+    let handle = Rime.shared.setSchema(schema.schemaId)
+    Logger.statistics.info("self.rimeEngine set schema: \(schema.schemaName), handle = \(handle)")
+  }
+
+  // 同步中文简繁状态
+  func syncTraditionalSimplifiedChineseMode(simplifiedModeKey: String) async {
+    // 获取运行时状态
+    let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
+
+    // 获取文件中保存状态
+    let value = Rime.shared.API().getCustomize("patch/\(simplifiedModeKey)") ?? ""
+    if !value.isEmpty {
+      let handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: (value as NSString).boolValue)
+      Logger.statistics.info("syncTraditionalSimplifiedChineseMode() set runtime state. key: \(simplifiedModeKey), value: \(value), handled: \(handled)")
+    } else {
+      // 首次加载保存简繁状态
+      let handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(simplifiedModeValue))
+      Logger.statistics.info("syncTraditionalSimplifiedChineseMode() first save. key: \(simplifiedModeKey), value: \(simplifiedModeValue), handled: \(handled)")
+    }
   }
 }
 

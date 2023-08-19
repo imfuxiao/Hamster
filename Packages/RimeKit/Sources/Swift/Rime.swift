@@ -243,21 +243,21 @@ public class Rime: IRimeNotificationDelegate {
   }
 
   // 注意：用户目录必须存在 "default.coustom.yaml" 文件，调用才有效
-  func getAvailableRimeSchemas() -> [RimeSchema] {
+  public func getAvailableRimeSchemas() -> [RimeSchema] {
     rimeAPI.getAvailableRimeSchemaList()
       .map { RimeSchema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
-  func getSelectedRimeSchema() -> [RimeSchema] {
+  public func getSelectedRimeSchema() -> [RimeSchema] {
     rimeAPI.getSelectedRimeSchemaList()
       .map { RimeSchema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
-  func getHotkeys() -> String {
+  public func getHotkeys() -> String {
     rimeAPI.getHotkeys()
   }
 
-  func getConfigFileValue(configFileName: String, key: String) -> String? {
+  public func getConfigFileValue(configFileName: String, key: String) -> String? {
     guard let config = rimeAPI.openUserConfig(configFileName) else { return nil }
     let value = config.getString(key)
     config.close()
@@ -266,23 +266,23 @@ public class Rime: IRimeNotificationDelegate {
 
   // MARK: 通知回调函数
 
-  func setDeployStartCallback(callback: @escaping () -> Void) {
+  public func setDeployStartCallback(callback: @escaping () -> Void) {
     deployStartCallback = callback
   }
 
-  func setDeploySuccessCallback(callback: @escaping () -> Void) {
+  public func setDeploySuccessCallback(callback: @escaping () -> Void) {
     deploySuccessCallback = callback
   }
 
-  func setDeployFailureCallback(callback: @escaping () -> Void) {
+  public func setDeployFailureCallback(callback: @escaping () -> Void) {
     deployFailureCallback = callback
   }
 
-  func setChangeModeCallback(callback: @escaping (String) -> Void) {
+  public func setChangeModeCallback(callback: @escaping (String) -> Void) {
     changeModeCallback = callback
   }
 
-  func setLoadingSchemaCallback(callback: @escaping (String) -> Void) {
+  public func setLoadingSchemaCallback(callback: @escaping (String) -> Void) {
     loadingSchemaCallback = callback
   }
 }

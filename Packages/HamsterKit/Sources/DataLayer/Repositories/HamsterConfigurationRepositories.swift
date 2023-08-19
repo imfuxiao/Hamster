@@ -59,14 +59,14 @@ public class HamsterConfigurationRepositories {
   /// 注意：这里的配置项是应用当前最新的配置选项，可能会在用户变更某些配置时被修改
   /// 如果需要使用配置项的默认值，需要调用 loadFromUserDefaultsOnDefault() 方法
   public func loadFromUserDefaults() throws -> HamsterConfiguration {
-    guard let data = UserDefaults.hamster.data(forKey: Self.hamsterConfigurationKey) else { throw "" }
+    guard let data = UserDefaults.hamster.data(forKey: Self.hamsterConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
     return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 从 UserDefaults 中获取应用默认配置
   /// 注意：这里是配置文件的原始值，用于还原某些已经被修改的配置项
   public func loadFromUserDefaultsOnDefault() throws -> HamsterConfiguration {
-    guard let data = UserDefaults.hamster.data(forKey: Self.defaultHamsterConfigurationKey) else { throw "" }
+    guard let data = UserDefaults.hamster.data(forKey: Self.defaultHamsterConfigurationKey) else { throw "load default HamsterConfiguration from UserDefault is empty." }
     return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
   }
 

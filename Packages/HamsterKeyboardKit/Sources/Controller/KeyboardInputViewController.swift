@@ -7,6 +7,9 @@
 //
 
 import Combine
+import HamsterKit
+import HamsterModel
+import OSLog
 import UIKit
 
 /**
@@ -40,6 +43,8 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     setupLocaleObservation()
     setupNextKeyboardBehavior()
     KeyboardUrlOpener.shared.controller = self
+
+    setupRIME()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -356,6 +361,27 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     inputSetProvider: inputSetProvider
   )
 
+  /**
+   RIME 引擎上下文
+   */
+  public lazy var rimeContext = RimeContext()
+
+  /**
+   Hamster 应用配置
+   */
+  private var configCache: HamsterConfiguration?
+  public var configuration: HamsterConfiguration {
+    if let config = configCache {
+      return config
+    }
+    if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
+      configCache = config
+      return config
+    }
+    Logger.statistics.error("load HamsterConfiguration from UserDefaults error.")
+    return HamsterConfiguration()
+  }
+
   // MARK: - Text And Selection, Implementations UITextInputDelegate
 
   /// 当文档中的选择即将发生变化时，通知输入委托。
@@ -634,6 +660,40 @@ private extension KeyboardInputViewController {
    */
   func setupNextKeyboardBehavior() {
     NextKeyboardController.shared = self
+  }
+
+  /**
+   RIME 引擎设置
+   */
+  func setupRIME() {
+    // 检测是否需要覆盖 RIME 目录
+    let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
+
+    // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
+    if !hasFullAccess {
+      do {
+        try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
+
+        // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
+        UserDefaults.hamster.overrideRimeDirectory = false
+      } catch {
+        Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
+      }
+
+      // Sandbox 补充 default.custom.yaml 文件
+      let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+      if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+        let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+        Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+      }
+    }
+
+    // 异步 RIME 引擎启动
+    Task {
+      await rimeContext.start(hasFullAccess: hasFullAccess)
+      let simplifiedModeKey = configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+      await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+    }
   }
 
   /// 在 ``textDocumentProxy`` 的文本发生变化后，尝试更改为首选键盘类型

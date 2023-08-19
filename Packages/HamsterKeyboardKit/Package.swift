@@ -16,12 +16,14 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../HamsterKit"),
+    .package(path: "../RimeKit"),
   ],
   targets: [
     .target(
       name: "HamsterKeyboardKit",
       dependencies: [
         "HamsterKit",
+        "RimeKit",
       ],
       path: "Sources",
       resources: [.process("Resources")]),
