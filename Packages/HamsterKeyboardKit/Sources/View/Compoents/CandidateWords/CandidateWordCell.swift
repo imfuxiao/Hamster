@@ -18,10 +18,10 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
 //    label.numberOfLines = 1
-    
+
 //    label.textAlignment = .center
 //    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
-////    label.adjustsFontSizeToFitWidth = true
+    ////    label.adjustsFontSizeToFitWidth = true
 //    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     return label
@@ -29,6 +29,7 @@ class CandidateWordCell: UICollectionViewCell {
 
   public lazy var secondaryLabel: UILabel = {
     let label = UILabel()
+    label.baselineAdjustment = UIBaselineAdjustment.alignBaselines
     label.textAlignment = .center
     label.numberOfLines = 1
     return label
@@ -42,14 +43,13 @@ class CandidateWordCell: UICollectionViewCell {
     textLabel.translatesAutoresizingMaskIntoConstraints = false
     secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      textLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-      textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 3),
-
+      textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+      textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+      textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+      
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
-      secondaryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -3),
+      secondaryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
+      secondaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
     ])
   }
 
@@ -73,12 +73,16 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
+    // TODO: 字体大小可配置
     textLabel.text = state.candidateSuggestion?.title
+    textLabel.font = KeyboardFont.title3.font
+
     secondaryLabel.text = state.candidateSuggestion?.subtitle
+    secondaryLabel.font = KeyboardFont.caption2.font
 
     if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected {
       contentView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.systemGroupedBackground
-      contentView.layer.cornerRadius = 8
+      contentView.layer.cornerRadius = 5
     } else {
       contentView.backgroundColor = .clear
     }

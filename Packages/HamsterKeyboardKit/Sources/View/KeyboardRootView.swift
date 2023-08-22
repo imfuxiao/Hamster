@@ -188,7 +188,7 @@ class KeyboardRootView: UIView {
       toolbarView.topAnchor.constraint(equalTo: topAnchor),
 
       // TODO: 动态调整工具栏高度
-      toolbarView.heightAnchor.constraint(equalToConstant: 60),
+      toolbarView.heightAnchor.constraint(equalToConstant: 55),
       toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
       toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
       subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),

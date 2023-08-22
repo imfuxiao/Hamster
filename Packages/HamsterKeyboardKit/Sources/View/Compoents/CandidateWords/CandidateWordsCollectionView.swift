@@ -36,15 +36,18 @@ public class CandidateWordsCollectionView: UICollectionView {
       let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
       let item = NSCollectionLayoutItem(layoutSize: itemSize)
       let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
-//      if #available(iOS 16.0, *) {
-//        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
-//      } else {
-      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//      }
+      let group: NSCollectionLayoutGroup
+      if #available(iOS 16.0, *) {
+        group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
+      } else {
+        group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+      }
       let section = NSCollectionLayoutSection(group: group)
+      // 控制水平方向 item 之间间距
       section.interGroupSpacing = 5
       section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-      section.contentInsets = .init(top: 3, leading: 3, bottom: 3, trailing: 3)
+      // 控制垂直方向距拼写区的间距
+      section.contentInsets = .init(top: 5, leading: 0, bottom: 0, trailing: 0)
       return UICollectionViewCompositionalLayout(section: section)
     }()
 

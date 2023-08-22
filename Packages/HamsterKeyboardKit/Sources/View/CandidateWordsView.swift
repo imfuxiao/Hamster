@@ -73,7 +73,7 @@ class CandidateWordsView: UIView {
       phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
       phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
 
-      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor, constant: 3),
+      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
       candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
       candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
       candidatesArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
