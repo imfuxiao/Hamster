@@ -5,6 +5,7 @@
 //  Created by morse on 2023/8/19.
 //
 
+import HamsterKit
 import UIKit
 
 /**
@@ -16,6 +17,7 @@ import UIKit
  */
 class KeyboardToolbarView: UIView {
   private var keyboardContext: KeyboardContext
+  private var rimeContext: RimeContext
 
   /// 常用功能栏
   lazy var commonFunctionBar: UIView = {
@@ -25,12 +27,16 @@ class KeyboardToolbarView: UIView {
 
   // TODO: 候选文字视图
   lazy var candidateWordView: UIView = {
-    let view = CandidateWordsView(keyboardContext: keyboardContext)
+    let view = CandidateWordsView(
+      keyboardContext: keyboardContext,
+      rimeContext: rimeContext
+    )
     return view
   }()
 
-  init(keyboardContext: KeyboardContext) {
+  init(keyboardContext: KeyboardContext, rimeContext: RimeContext) {
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
 
     super.init(frame: .zero)
   }

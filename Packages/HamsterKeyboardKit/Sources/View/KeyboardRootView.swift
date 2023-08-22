@@ -58,13 +58,14 @@ class KeyboardRootView: UIView {
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
+  private var rimeContext: RimeContext
 
   // MARK: 计算属性
 
   // MARK: subview
 
   private lazy var toolbarView: KeyboardToolbarView = {
-    let view = KeyboardToolbarView(keyboardContext: keyboardContext)
+    let view = KeyboardToolbarView(keyboardContext: keyboardContext, rimeContext: rimeContext)
     return view
   }()
 
@@ -140,7 +141,8 @@ class KeyboardRootView: UIView {
     actionHandler: KeyboardActionHandler,
     autocompleteContext: AutocompleteContext,
     keyboardContext: KeyboardContext,
-    calloutContext: KeyboardCalloutContext?
+    calloutContext: KeyboardCalloutContext?,
+    rimeContext: RimeContext
   ) {
     self.keyboardLayoutProvider = keyboardLayoutProvider
     self.layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
@@ -153,6 +155,7 @@ class KeyboardRootView: UIView {
     self.calloutContext = calloutContext ?? .disabled
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
+    self.rimeContext = rimeContext
 
     super.init(frame: .zero)
 
@@ -182,8 +185,9 @@ class KeyboardRootView: UIView {
     subview.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
-      // TODO: 动态调整工具栏高度
       toolbarView.topAnchor.constraint(equalTo: topAnchor),
+
+      // TODO: 动态调整工具栏高度
       toolbarView.heightAnchor.constraint(equalToConstant: 60),
       toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
       toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),

@@ -91,7 +91,8 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       actionHandler: keyboardActionHandler,
       autocompleteContext: autocompleteContext,
       keyboardContext: keyboardContext,
-      calloutContext: calloutContext
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
     )
 
     view.addSubview(keyboardRootView)
@@ -422,7 +423,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func deleteBackward() {
-    textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+    if rimeContext.userInputKey.isEmpty {
+      textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+    } else {
+      Task {
+        await rimeContext.deleteBackward()
+      }
+    }
   }
 
   open func deleteBackward(times: Int) {
@@ -430,7 +437,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertText(_ text: String) {
-    textDocumentProxy.insertText(text)
+    if rimeContext.asciiMode {
+      textDocumentProxy.insertText(text)
+    } else {
+      Task {
+        await rimeContext.insertText(text)
+      }
+    }
   }
 
   open func selectNextKeyboard() {

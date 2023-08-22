@@ -367,9 +367,8 @@ extension KeyboardButton: UIGestureRecognizerDelegate {
   
   // TODO: 如果开启滑动输入则统一在 TouchView 处理手势
   override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    print("\(row)-\(column) hitTest")
-
     guard bounds.contains(point) else { return nil }
+    print("\(row)-\(column) hitTest")
     isPressed = true
     return self
   }

@@ -45,20 +45,20 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 用户输入键值
-  @Published
-  var userInputKey: String = ""
+  @Published @MainActor
+  public var userInputKey: String = ""
 
   /// 字母模式
-  @Published
-  var asciiMode: Bool = false
+  @Published @MainActor
+  public var asciiMode: Bool = false
 
   /// 候选字
-  @Published
-  var suggestions: [CandidateSuggestion] = []
+  @Published @MainActor
+  public var suggestions: [CandidateSuggestion] = []
 
   /// switcher hotkeys
   /// 默认值为 F4，但 RIME 启动时会根据当前配置加载此值
-  var hotKeys = ["f4"]
+  public var hotKeys = ["f4"]
 
   public init() {}
 }
@@ -67,6 +67,7 @@ public actor RimeContext: ObservableObject {
 
 public extension RimeContext {
   /// RIME Context 状态重置
+  @MainActor
   func reset() {
     self.userInputKey = ""
     self.suggestions = []
@@ -105,6 +106,7 @@ public extension RimeContext {
     self.currentSchema = schema
   }
 
+  @MainActor
   func setAsciiMode(_ model: Bool) async {
     self.asciiMode = model
   }
@@ -119,8 +121,8 @@ public extension RimeContext {
 
     await setupRimeInputSchema()
 
-    // 中英状态同步
-    self.asciiMode = Rime.shared.isAsciiMode()
+    // TODO: 中英状态同步
+    // self.asciiMode = Rime.shared.isAsciiMode()
 
     // 加载Switcher切换键
     let hotKeys = Rime.shared.getHotkeys().split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
@@ -361,7 +363,93 @@ public extension RimeContext {
   }
 }
 
-// MARK: static properties
+// MARK: - 文字处理
+
+public extension RimeContext {
+  @MainActor
+  func insertText(_ text: String) async {
+    // TODO: 测试转为小写
+    let text = text.lowercased()
+    // 功能指令处理
+//    if self.functionalInstructionsHandled(text) {
+//      return
+//    }
+
+    // 调用输入法引擎
+    // 由rime处理全部符号
+    var handled = false
+    let textUTF8 = text.utf8
+    if textUTF8.count == 1, let first = textUTF8.first {
+      handled = Rime.shared.inputKeyCode(Int32(first))
+    }
+
+    if !handled {
+      // TODO: 特殊按键处理
+
+      // TODO: 符号顶码上屏
+//      _ = self.candidateTextOnScreen()
+//      DispatchQueue.main.async {
+//        self.inputTextPatch(key, false)
+//      }
+    }
+
+    // TODO: 唯一码直接上屏
+    let commitText = Rime.shared.getCommitText()
+    if !commitText.isEmpty {
+//      self.inputTextPatch(commitText)
+    }
+
+//    // 查看输入法状态
+//    let status = Rime.shared.status()
+//
+//    // 如不存在候选字,则重置输入法
+//    if !status.isComposing {
+//      await MainActor.run {
+//        self.reset()
+//      }
+//    }
+
+    await self.syncContext()
+  }
+
+  // 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
+  @MainActor
+  func syncContext() async {
+    let context = Rime.shared.context()
+
+    if context.composition != nil {
+      self.userInputKey = context.composition.preedit ?? ""
+    }
+
+    // 获取候选字
+    self.suggestions = self.candidateListLimit()
+  }
+
+  @MainActor
+  func candidateListLimit() -> [CandidateSuggestion] {
+    // TODO: 最大候选文字数量
+    let candidates = Rime.shared.getCandidate(index: 0, count: 500)
+    var result: [CandidateSuggestion] = []
+    for (index, candidate) in candidates.enumerated() {
+      var suggestion = CandidateSuggestion(
+        text: candidate.text
+      )
+      suggestion.index = index
+      suggestion.comment = candidate.comment
+      suggestion.isAutocomplete = index == 0
+      result.append(suggestion)
+    }
+    return result
+  }
+
+  @MainActor
+  func deleteBackward() async {
+    _ = Rime.shared.inputKeyCode(XK_BackSpace)
+    await self.syncContext()
+  }
+}
+
+// MARK: - static properties
 
 public extension RimeContext {
   /// switcher hotkeys 键值映射

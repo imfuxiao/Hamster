@@ -5,6 +5,8 @@
 //  Created by morse on 2023/8/19.
 //
 
+import Combine
+import HamsterKit
 import UIKit
 
 /**
@@ -12,19 +14,23 @@ import UIKit
  */
 class CandidateWordsView: UIView {
   private var keyboardContext: KeyboardContext
+  private var rimeContext: RimeContext
 
+  private var subscription = Set<AnyCancellable>()
   /// 拼音区域
-  lazy var phoneticArea: UIView = {
-    let view = UIView(frame: .zero)
-
-    view.backgroundColor = .blue
-    return view
+  lazy var phoneticArea: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textAlignment = .left
+    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
+    label.numberOfLines = 1
+    return label
   }()
 
   /// 候选文字区域
-  lazy var candidatesArea: UIView = {
-    let view = UIView(frame: .zero)
-    view.backgroundColor = .yellow
+  lazy var candidatesArea: CandidateWordsCollectionView = {
+    let view = CandidateWordsCollectionView(rimeContext: rimeContext, direction: .horizontal)
     return view
   }()
 
@@ -33,12 +39,14 @@ class CandidateWordsView: UIView {
     .standard(for: keyboardContext)
   }
 
-  init(keyboardContext: KeyboardContext) {
+  init(keyboardContext: KeyboardContext, rimeContext: RimeContext) {
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
 
     super.init(frame: .zero)
 
     setupContentView()
+    combine()
   }
 
   @available(*, unavailable)
@@ -61,13 +69,12 @@ class CandidateWordsView: UIView {
     // TODO: 高度可按配置调整
     NSLayoutConstraint.activate([
       phoneticArea.heightAnchor.constraint(equalToConstant: 15),
-      phoneticArea.topAnchor.constraint(equalTo: topAnchor, constant: buttonInsets.top),
+      phoneticArea.topAnchor.constraint(equalTo: topAnchor),
       phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
       phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
 
-      candidatesArea.heightAnchor.constraint(equalToConstant: 45),
-      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor, constant: buttonInsets.top),
-      candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -buttonInsets.bottom),
+      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor, constant: 3),
+      candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
       candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
       candidatesArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
     ])
@@ -76,6 +83,18 @@ class CandidateWordsView: UIView {
   func setupContentView() {
     constructViewHierarchy()
     activateViewConstraints()
+  }
+
+  func combine() {
+    Task {
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] inputKeys in
+          guard let self = self else { return }
+          self.phoneticArea.text = inputKeys
+        }
+        .store(in: &subscription)
+    }
   }
 
   override func layoutSubviews() {

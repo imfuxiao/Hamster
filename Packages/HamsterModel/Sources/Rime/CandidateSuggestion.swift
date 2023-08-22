@@ -8,7 +8,7 @@
 import Foundation
 
 /// 键盘UI候选栏显示文字
-public struct CandidateSuggestion: Identifiable, Equatable {
+public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
   public var id = UUID()
 
   /// 应该发送至 documentProxy 的文本。
@@ -77,5 +77,9 @@ public extension CandidateSuggestion {
 public extension CandidateSuggestion {
   static func == (lhs: CandidateSuggestion, rhs: CandidateSuggestion) -> Bool {
     lhs.id == rhs.id
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
   }
 }
