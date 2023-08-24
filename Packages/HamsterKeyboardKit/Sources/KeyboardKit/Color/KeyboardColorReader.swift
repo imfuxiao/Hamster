@@ -58,7 +58,7 @@ public extension KeyboardColorReader {
    这将被逐步淘汰。取而代之的是在使用触摸的按钮和视图中使用内容形状。
    */
   static var clearInteractable: UIColor {
-    UIColor.white.withAlphaComponent(0.001)
+    UIColor.white.withAlphaComponent(0.01)
   }
 
   /**

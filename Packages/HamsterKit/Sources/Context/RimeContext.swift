@@ -363,7 +363,7 @@ public extension RimeContext {
   }
 }
 
-// MARK: - 文字处理
+// MARK: - 文字输入处理
 
 public extension RimeContext {
   @MainActor

@@ -34,9 +34,12 @@ public class InputCalloutView: ShapeView {
     boardLayer.fillColor = UIColor.clear.cgColor
     boardLayer.strokeColor = style.callout.borderColor.cgColor
     boardLayer.borderWidth = 1
-    boardLayer.opacity = 0.2
-    boardLayer.shadowRadius = style.callout.shadowRadius
-    boardLayer.shadowColor = style.callout.shadowColor.cgColor
+    boardLayer.zPosition = 1000
+//    boardLayer.opacity = 0.5
+//    boardLayer.shadowRadius = style.callout.shadowRadius
+//    boardLayer.shadowColor = style.callout.shadowColor.cgColor
+//    boardLayer.shadowColor = UIColor.red.cgColor
+//    boardLayer.shadowOffset = CGSize(width: 0, height: -1)
     return boardLayer
   }()
 
@@ -47,7 +50,7 @@ public class InputCalloutView: ShapeView {
 
     let calloutStyle = style.callout
 
-    let width = frame.width / 3 / 2
+    let width = frame.width / 4
 
     let buttonCornerRadius = calloutStyle.buttonCornerRadius
     let rightMaxX: CGFloat = frame.width

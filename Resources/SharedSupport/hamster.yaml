@@ -4,15 +4,24 @@ general:
   regexOnCopyFile:
     - "^.text|.yaml$"
 
-# 候选工具栏
+# 工具栏
 toolbar:
+  # 是否开启工具栏
   enableToolbar: true
-  heightOfToolbar: 60
+  # 显示键盘 dissmiss 按钮
   displayKeyboardDismissButton: true
-  heightOfCodingArea: 10
+  # 工具栏总高度
+  heightOfToolbar: 55
+  # 拼写区高度(剩余高度由候选文字占用)
+  heightOfCodingArea: 15
+  # 拼写区字体大小
   codingAreaFontSize: 12
+  # 候选文字字体大小
   candidateWordFontSize: 20
+  # 候选文字备注信息字体大小。
+  # 对应 rime 候选字的 comment 信息
   candidateCommentFontSize: 12
+  # 是否显示候选文字索引
   displayIndexOfCandidateWord: false
 
 # 键盘相关配置

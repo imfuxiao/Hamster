@@ -371,7 +371,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    Hamster 应用配置
    */
   private var configCache: HamsterConfiguration?
-  public var configuration: HamsterConfiguration {
+  public var hamsterConfiguration: HamsterConfiguration? {
     if let config = configCache {
       return config
     }
@@ -380,7 +380,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       return config
     }
     Logger.statistics.error("load HamsterConfiguration from UserDefaults error.")
-    return HamsterConfiguration()
+    return nil
   }
 
   // MARK: - Text And Selection, Implementations UITextInputDelegate
@@ -704,7 +704,7 @@ private extension KeyboardInputViewController {
     // 异步 RIME 引擎启动
     Task {
       await rimeContext.start(hasFullAccess: hasFullAccess)
-      let simplifiedModeKey = configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+      let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
     }
   }

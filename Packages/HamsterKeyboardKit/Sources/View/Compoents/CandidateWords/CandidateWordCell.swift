@@ -17,19 +17,12 @@ class CandidateWordCell: UICollectionViewCell {
   public lazy var textLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-//    label.numberOfLines = 1
-
-//    label.textAlignment = .center
-//    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
-    ////    label.adjustsFontSizeToFitWidth = true
-//    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     return label
   }()
 
   public lazy var secondaryLabel: UILabel = {
     let label = UILabel()
-    label.baselineAdjustment = UIBaselineAdjustment.alignBaselines
     label.textAlignment = .center
     label.numberOfLines = 1
     return label
@@ -46,7 +39,7 @@ class CandidateWordCell: UICollectionViewCell {
       textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
       textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
       textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-      
+
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
       secondaryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
       secondaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),

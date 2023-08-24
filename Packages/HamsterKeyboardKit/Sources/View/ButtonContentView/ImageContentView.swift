@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageContentView: UIView {
-  private let imageView: UIImageView
+  public let imageView: UIImageView
   private let scaleFactor: CGFloat
   public var style: KeyboardButtonStyle
 

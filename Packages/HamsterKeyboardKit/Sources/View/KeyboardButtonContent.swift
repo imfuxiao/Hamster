@@ -14,7 +14,7 @@ public class KeyboardButtonContentView: UIView {
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
     didSet {
-      // TODO: 样式变更
+      setNeedsLayout()
     }
   }
 
@@ -70,6 +70,9 @@ public class KeyboardButtonContentView: UIView {
       contentView.style = style
     } else if let contentView = contentView as? ImageContentView {
       contentView.style = style
+      if let image = appearance.buttonImage(for: action) {
+        contentView.imageView.image = image
+      }
     } else if let contentView = contentView as? TextContentView {
       contentView.style = style
     }

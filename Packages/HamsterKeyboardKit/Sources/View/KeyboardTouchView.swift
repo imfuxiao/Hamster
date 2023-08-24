@@ -17,8 +17,19 @@ import UIKit
 class KeyboardTouchView: UIView {
   // MARK: - Initializations
 
+  /// UITouch 所属的 UIView
+  private var touchOnView: [UITouch: UIView] = [:]
+  /// UIView 所触发的 UITouch
+  private var viewOnTouch: [UIView: UITouch] = [:]
+
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
+
+    // 注意：如果不设置背景色，会导致透明区域的触摸无法响应
+    self.backgroundColor = .clearInteractable
+    self.contentMode = .redraw
+    self.isMultipleTouchEnabled = true
+    self.isUserInteractionEnabled = true
   }
 
   @available(*, unavailable)
@@ -31,19 +42,24 @@ class KeyboardTouchView: UIView {
   /**
    返回视图层次结构（包括其自身）中包含指定 point 的接收者的最远后代。
    */
-//  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-//    print("\n Keyboard Touch view hitTest \n")
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    if self.isHidden || self.alpha < 0.01 || !self.isUserInteractionEnabled {
+      return nil
+    }
+    guard bounds.contains(point) else { return nil}
+    return findNearestView(point)
+//    Logger.statistics.debug("hitTest point: \(point.debugDescription), bounds: \(self.bounds.debugDescription)")
 //    return bounds.contains(point) ? self : nil
-//  }
+  }
 
 //
 //  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //    for touch in touches {
 //      // 返回 touch 在给定视图坐标系中的当前位置。
-//      Logger.statistics.debug("touch began \(touch.view?.debugDescription)")
 //      let point = touch.location(in: self)
 //      guard let subview = findNearestView(point) else { continue }
-//      Logger.statistics.debug("touch view \(subview.debugDescription)")
+//
+//      Logger.statistics.debug("touch view \(subview.debugDescription), touch \(touch.debugDescription)")
 //      self.handleControl(subview, controlEvent: .touchDown)
 //    }
 //  }
@@ -59,21 +75,31 @@ class KeyboardTouchView: UIView {
 //  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
 //    Logger.statistics.debug("touchesCancelled")
 //  }
+
+  /// 检测 touch 是否属于
+//  func touchOwnership(_ touch: UITouch, view: UIView) -> Bool {
+//    if let t = viewOnTouch[view], t == touch {
 //
-//  // 手势控制处理
-//  func handleControl(_ view: UIView, controlEvent: UIControl.Event) {
-//    guard let controlView = view as? UIControl else { return }
-//    let targets = controlView.allTargets
-//    for target in targets {
-//      if let actions = controlView.actions(forTarget: target, forControlEvent: controlEvent) {
-//        for action in actions {
-//          let selectorString = action
-//          let selector = Selector(selectorString)
-//          controlView.sendAction(selector, to: target, for: nil)
-//        }
-//      }
+//    }
+//    if let v = touchOnView[touch], v == view {
+//      return false
 //    }
 //  }
+
+  // 手势控制处理
+  func handleControl(_ view: UIView, controlEvent: UIControl.Event) {
+    guard let controlView = view as? UIControl else { return }
+    let targets = controlView.allTargets
+    for target in targets {
+      if let actions = controlView.actions(forTarget: target, forControlEvent: controlEvent) {
+        for action in actions {
+          let selectorString = action
+          let selector = Selector(selectorString)
+          controlView.sendAction(selector, to: target, for: nil)
+        }
+      }
+    }
+  }
 
   /// 查找 position 最近的子视图
   func findNearestView(_ point: CGPoint) -> UIView? {
@@ -86,8 +112,6 @@ class KeyboardTouchView: UIView {
       if view.isHidden {
         continue
       }
-
-//      view.alpha = 1
 
       let distance = view.frame.distance(point)
 

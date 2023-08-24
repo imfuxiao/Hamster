@@ -45,9 +45,6 @@ public class KeyboardButton: UIControl {
   /// 呼出的上下文
   private let calloutContext: KeyboardCalloutContext
   
-  @Published
-  private var isPressed = false
-  
   /// 需要动态调整大小的约束
   public var topConstraints = [NSLayoutConstraint]()
   public var bottomConstraints = [NSLayoutConstraint]()
@@ -68,6 +65,38 @@ public class KeyboardButton: UIControl {
   
   private var subscriptions = Set<AnyCancellable>()
   
+  // MARK: - touch state
+  
+  // 按钮按下状态
+  @Published
+  private var isPressed = false
+  
+  /// 按钮长按开始时间
+  private var longPressDate: Date? = nil
+  
+  /// 按钮重复开始时间
+  private var repeatDate: Date? = nil
+  
+  /// 拖动开始位置
+  private var dragStartLocation: CGPoint? = nil
+  
+  /// 最后一次拖拽的位置
+  private var lastDragValue: CGPoint? = nil
+  
+  /// 是否应用 .release 操作
+  /// 注意：在 calloutContext 呼出开始显示的时候是不会应用 release 的
+  private var shouldApplyReleaseAction = true
+  
+  /// 在按钮 bounds 外，仍然可以触发 .release 的区域大小的百分比
+  /// 默认为 `0.75`，即把按钮 bounds 的 size 在扩大 这个值
+  /// 注意：这个值需要与滑动的阈值相配合
+  private let releaseOutsideTolerance: Double = 0.75
+  
+  private let repeatTimer: RepeatGestureTimer = .shared
+  private let longPressDelay: TimeInterval = GestureButtonDefaults.longPressDelay
+  private let doubleTapTimeout: TimeInterval = GestureButtonDefaults.doubleTapTimeout
+  private let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
+  
   // MARK: - subview
   
   // 按钮背景图
@@ -84,66 +113,6 @@ public class KeyboardButton: UIControl {
     return view
   }()
   
-  // MARK: - touch gesture
-  
-  private lazy var tapGesture: UITapGestureRecognizer = {
-    let gesture = UITapGestureRecognizer()
-    gesture.numberOfTapsRequired = 1
-    gesture.numberOfTouchesRequired = 1
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var doubleTapGesture: UITapGestureRecognizer = {
-    let gesture = UITapGestureRecognizer()
-    gesture.numberOfTapsRequired = 2
-    gesture.numberOfTouchesRequired = 1
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(tapGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var longPressGesture: UILongPressGestureRecognizer = {
-    let gesture = UILongPressGestureRecognizer()
-    gesture.minimumPressDuration = 0.5
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(longPressGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var swipeUpGesture: UISwipeGestureRecognizer = {
-    let gesture = UISwipeGestureRecognizer()
-    gesture.direction = .up
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var swipeDownGesture: UISwipeGestureRecognizer = {
-    let gesture = UISwipeGestureRecognizer()
-    gesture.direction = .down
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var swipeLeftGesture: UISwipeGestureRecognizer = {
-    let gesture = UISwipeGestureRecognizer()
-    gesture.direction = .left
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
-    return gesture
-  }()
-  
-  private lazy var swipeRightGesture: UISwipeGestureRecognizer = {
-    let gesture = UISwipeGestureRecognizer()
-    gesture.direction = .right
-    gesture.delegate = self
-    gesture.addTarget(self, action: #selector(swipeGestureHandle(_:)))
-    return gesture
-  }()
-
   // MARK: - 计算属性
   
   /// 按钮样式
@@ -205,8 +174,6 @@ public class KeyboardButton: UIControl {
     
     setupSubview()
     
-    setupGestureRecognizer()
-    
     $isPressed
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
@@ -230,7 +197,6 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
     setupBackgroundView(layoutConfig)
-    setupInputCallout()
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
@@ -268,24 +234,17 @@ public class KeyboardButton: UIControl {
   
   /// 设置 inputCallout 样式
   func setupInputCallout() {
-    if !action.isInputAction {
-      return
-    }
-    
-    if action == .space {
-      return
-    }
-    
-    inputCalloutView.alpha = 0
-    
+    guard let superview = superview else { return }
     inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(inputCalloutView)
+    superview.addSubview(inputCalloutView)
+//    insertSubview(inputCalloutView, aboveSubview: buttonContentView)
     NSLayoutConstraint.activate([
-      inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 1.5),
+      inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 2),
       inputCalloutView.heightAnchor.constraint(equalTo: buttonContentView.heightAnchor, multiplier: 2),
       inputCalloutView.centerXAnchor.constraint(equalTo: buttonContentView.centerXAnchor),
       inputCalloutView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
     ])
+    setNeedsDisplay()
   }
   
   func updateConstraints(_ layoutConfig: KeyboardLayoutConfiguration) {
@@ -318,14 +277,15 @@ public class KeyboardButton: UIControl {
     
     // 按钮样式
     if isPressed {
-      buttonContentView.backgroundColor = style.pressedOverlayColor ?? .clear
+      buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       backgroundView.shapeLayer.opacity = 0
-      showInputCallout()
+      // TODO: 按键气泡重新调整
+      // showInputCallout()
     } else {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       backgroundView.shapeLayer.path = underPath.cgPath
       backgroundView.shapeLayer.opacity = 1
-      hideInputCallout()
+      // hideInputCallout()
     }
   }
   
@@ -336,113 +296,201 @@ public class KeyboardButton: UIControl {
     updateConstraints(layoutConfig)
     updateButtonStyle(layoutConfig)
   }
+  
+  // MARK: debuger
+  
+  override public var debugDescription: String {
+    let description = super.debugDescription
+    return "\(row)-\(column) button: \(description)"
+  }
 }
 
 // MARK: - Input Callout
 
 extension KeyboardButton {
   func showInputCallout() {
+    if !action.isInputAction {
+      return
+    }
+    
+    if action == .space {
+      return
+    }
+
     inputCalloutView.alpha = 1
+    inputCalloutView.shapeLayer.zPosition = 1000
     inputCalloutView.label.text = action.inputCalloutText
     inputCalloutView.updateStyle()
+    setupInputCallout()
   }
   
   func hideInputCallout() {
     inputCalloutView.alpha = 0
+    inputCalloutView.removeFromSuperview()
   }
 }
 
 // MARK: - Event Handled
 
-extension KeyboardButton: UIGestureRecognizerDelegate {
-  func setupGestureRecognizer() {
-    addGestureRecognizer(tapGesture)
-    addGestureRecognizer(doubleTapGesture)
-    addGestureRecognizer(longPressGesture)
-    addGestureRecognizer(swipeUpGesture)
-    addGestureRecognizer(swipeDownGesture)
-    addGestureRecognizer(swipeLeftGesture)
-    addGestureRecognizer(swipeRightGesture)
-  }
-  
+public extension KeyboardButton {
   // TODO: 如果开启滑动输入则统一在 TouchView 处理手势
-  override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     guard bounds.contains(point) else { return nil }
-    print("\(row)-\(column) hitTest")
-    isPressed = true
+    Logger.statistics.debug("\(self.row)-\(self.column) button hitTest")
     return self
   }
   
-  override public func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-    return true
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+      Logger.statistics.debug("\(self.row)-\(self.column) button touchesBegan")
+      tryHandlePress(touch)
+    }
   }
   
-  override public func continueTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
-    super.continueTracking(touch, with: event)
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+      let currentPoint = touch.location(in: self)
+      Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
+      tryHandleDrag(touch)
+    }
   }
   
-  override public func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-    super.endTracking(touch, with: event)
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+      Logger.statistics.debug("\(self.row)-\(self.column) button touchesEnded")
+      tryHandleRelease(touch)
+    }
+  }
+  
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    for touch in touches {
+      Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
+      tryHandleRelease(touch)
+    }
+  }
+  
+  func tryHandlePress(_ touch: UITouch) {
+    guard !isPressed else { return }
+    isPressed = true
+    pressAction()
+    if touch.tapCount > 1 {
+      doubleTapAction()
+    }
+    dragStartLocation = touch.location(in: self)
+    tryTriggerLongPressAfterDelay()
+    tryTriggerRepeatAfterDelay()
+  }
+  
+  func tryHandleRelease(_ touch: UITouch) {
+    guard isPressed else { return }
     isPressed = false
-  }
-  
-  override public func cancelTracking(with event: UIEvent?) {
-    super.cancelTracking(with: event)
-    isPressed = false
-  }
-  
-  @objc func tapGestureHandle(_ gestureRecognizer: UITapGestureRecognizer) {
-    print("\(row)-\(column) tapGestureHandle ")
-    guard gestureRecognizer.view != nil else { return }
+    dragStartLocation = nil
+    longPressDate = nil
+    repeatDate = nil
+    repeatTimer.stop()
     
-    if gestureRecognizer.numberOfTapsRequired == 1 {
-      actionHandler.handle(.press, on: action)
+    // 判断手势区域是否超出当前 bounds
+    let currentPoint = touch.location(in: self)
+    if bounds.contains(currentPoint) {
+      handleReleaseInside()
     } else {
-      actionHandler.handle(.doubleTap, on: action)
+      handleReleaseOutside(currentPoint)
     }
-    if gestureRecognizer.state == .ended {
-      isPressed = false
-      actionHandler.handle(.release, on: action)
+    
+    endAction()
+  }
+  
+  func tryTriggerLongPressAfterDelay() {
+    let date = Date.now
+    longPressDate = date
+    DispatchQueue.main.asyncAfter(deadline: .now() + longPressDelay) {
+      guard self.longPressDate == date else { return }
+      self.longPressAction()
     }
   }
   
-  @objc func longPressGestureHandle(_ gestureRecognizer: UILongPressGestureRecognizer) {
-    if gestureRecognizer.state == .began {
-      print("\(row)-\(column) longPressGestureHandle begin")
-      isPressed = true
-      actionHandler.handle(.longPress, on: action)
-    } else if gestureRecognizer.state == .changed {
-      print("\(row)-\(column) longPressGestureHandle changed")
-      actionHandler.handle(.repeatPress, on: action)
-    } else if gestureRecognizer.state == .ended {
-      print("\(row)-\(column) longPressGestureHandle end")
-      isPressed = false
-      actionHandler.handle(.release, on: action)
+  func tryTriggerRepeatAfterDelay() {
+    let date = Date.now
+    repeatDate = date
+    DispatchQueue.main.asyncAfter(deadline: .now() + repeatDelay) {
+      guard self.repeatDate == date else { return }
+      self.repeatTimer.start(action: self.repeatAction)
     }
   }
   
-  @objc func swipeGestureHandle(_ gestureRecognizer: UISwipeGestureRecognizer) {
-    print("\(row)-\(column) swipeGestureHandle: \(gestureRecognizer.state), \(gestureRecognizer.direction)")
-    guard gestureRecognizer.state == .ended else { return }
-    
-    switch gestureRecognizer.direction {
-    case .up:
-      print("swipe up")
-      actionHandler.handle(.swipeUp, on: action)
-    case .down:
-      print("swipe down")
-      actionHandler.handle(.swipeDown, on: action)
-    case .left:
-      print("swipe left")
-      actionHandler.handle(.swipeLeft, on: action)
-    case .right:
-      print("swipe right")
-      actionHandler.handle(.swipeRight, on: action)
-    default:
-      return
-    }
-    
-    isPressed = false
+  func tryHandleDrag(_ touch: UITouch) {
+    guard let startLocation = dragStartLocation else { return }
+    let currentPoint = touch.location(in: self)
+    lastDragValue = currentPoint
+    // TODO: 更新呼出选择位置
+    dragAction(start: startLocation, current: currentPoint)
+  }
+  
+  func handleReleaseInside() {
+    updateShouldApplyReleaseAction()
+    guard shouldApplyReleaseAction else { return }
+    Logger.statistics.debug("inside release")
+    releaseAction()
+  }
+  
+  func handleReleaseOutside(_ currentPoint: CGPoint) {
+    guard shouldApplyReleaseOutsize(for: currentPoint) else { return }
+    handleReleaseInside()
+  }
+  
+  // TODO: 手势结束处理
+  func endAction() {
+    calloutContext.action.endDragGesture()
+    calloutContext.input.resetWithDelay()
+    calloutContext.action.reset()
+    resetGestureState()
+  }
+  
+  func shouldApplyReleaseOutsize(for currentPoint: CGPoint) -> Bool {
+    guard let _ = lastDragValue else { return false }
+    let rect = CGRect.releaseOutsideToleranceArea(for: bounds.size, tolerance: releaseOutsideTolerance)
+    let isInsideRect = rect.contains(currentPoint)
+    return isInsideRect
+  }
+  
+  func updateShouldApplyReleaseAction() {
+    let context = calloutContext.action
+    shouldApplyReleaseAction = shouldApplyReleaseAction && !context.hasSelectedAction
+  }
+  
+  func resetGestureState() {
+    lastDragValue = nil
+    shouldApplyReleaseAction = true
+  }
+  
+  func pressAction() {
+    Logger.statistics.debug("pressAction()")
+    actionHandler.handle(.press, on: action)
+  }
+  
+  func doubleTapAction() {
+    Logger.statistics.debug("doubleTapAction()")
+    actionHandler.handle(.doubleTap, on: action)
+  }
+  
+  func longPressAction() {
+    guard shouldApplyReleaseAction, action != .space else { return }
+    Logger.statistics.debug("longPressAction()")
+    actionHandler.handle(.longPress, on: action)
+  }
+  
+  func releaseAction() {
+    Logger.statistics.debug("releaseAction()")
+    actionHandler.handle(.release, on: action)
+  }
+  
+  func repeatAction() {
+    Logger.statistics.debug("repeatAction()")
+    actionHandler.handle(.repeatPress, on: action)
+  }
+  
+  func dragAction(start: CGPoint, current: CGPoint) {
+    actionHandler.handleDrag(on: action, from: start, to: current)
   }
 }
 
@@ -511,6 +559,18 @@ extension KeyboardButton {
 //    underPathCache[buttonWidth] = underPath
     
     return underPath
+  }
+}
+
+private extension CGRect {
+  /// 此函数返回一个带填充的矩形，在该矩形中应应用外部释放。
+  static func releaseOutsideToleranceArea(
+    for size: CGSize,
+    tolerance: Double) -> CGRect
+  {
+    let rect = CGRect(origin: .zero, size: size)
+      .insetBy(dx: -size.width * tolerance, dy: -size.height * tolerance)
+    return rect
   }
 }
 
