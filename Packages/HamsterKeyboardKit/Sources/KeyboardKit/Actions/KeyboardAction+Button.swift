@@ -47,13 +47,20 @@ public extension KeyboardAction {
    */
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
-    case .character(let char): return standardButtonText(for: char)
+    case .character(let char):
+      // TODO: 中文输入法状态使用大写
+      if context.isChineseInput {
+        return char.uppercased()
+      }
+      return char
     case .emoji(let emoji): return emoji.char
     case .emojiCategory(let cat): return cat.fallbackDisplayEmoji.char
     case .keyboardType(let type): return type.standardButtonText(for: context)
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.standardButtonText(for: context.locale)
-    case .space: return KKL10n.space.text(for: context)
+    case .space:
+      // TODO: 空格文本个性化
+      return KKL10n.space.text(for: context)
     default: return nil
     }
   }
@@ -68,15 +75,6 @@ public extension KeyboardAction {
     switch standardButtonText(for: context) {
     case "↵", "↳": return .keyboardNewline(for: context.locale)
     default: return nil
-    }
-  }
-}
-
-private extension KeyboardAction {
-  func standardButtonText(for char: String) -> String {
-    switch char {
-    case .zeroWidthSpace: return "⁞"
-    default: return char
     }
   }
 }

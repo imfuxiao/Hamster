@@ -349,7 +349,6 @@ public extension KeyboardButton {
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     for touch in touches {
-      let currentPoint = touch.location(in: self)
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
       tryHandleDrag(touch)
     }

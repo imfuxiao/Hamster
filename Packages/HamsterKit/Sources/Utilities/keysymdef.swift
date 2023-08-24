@@ -10,7 +10,7 @@
 ///
 
 /// Void symbol
-let XK_VoidSymbol: Int32 = 0xffffff
+public let XK_VoidSymbol: Int32 = 0xffffff
 
 // MARK: Modifiers
 
@@ -46,19 +46,19 @@ let XK_Hyper_R: Int32 = 0xffee
 // MARK: special
 
 /// Back space, back char
-let XK_BackSpace: Int32 = 0xff08
+public let XK_BackSpace: Int32 = 0xff08
 /// Enter
 let XK_KP_Enter: Int32 = 0xff8d
 let XK_Escape: Int32 = 0xff1b
 /// Delete, rubout
 let XK_Delete: Int32 = 0xffff
 /// Return, enter
-let XK_Return: Int32 = 0xff0d
+public let XK_Return: Int32 = 0xff0d
 /// U+0020 SPACE
-let XK_space: Int32 = 0x0020
-let XK_Tab: Int32 = 0xff09
+public let XK_space: Int32 = 0x0020
+public let XK_Tab: Int32 = 0xff09
 
-// Mark: function
+// MARK: function
 
 let XK_F1: Int32 = 0xffbe
 let XK_F2: Int32 = 0xffbf
@@ -80,7 +80,7 @@ let XK_F17: Int32 = 0xffce
 let XK_F18: Int32 = 0xffcf
 let XK_F19: Int32 = 0xffd0
 
-// Mark: Cursor control & motion
+// MARK: Cursor control & motion
 
 let XK_Home: Int32 = 0xff50
 /// Move left, left arrow
@@ -102,7 +102,8 @@ let XK_End: Int32 = 0xff57
 /// BOL
 let XK_Begin: Int32 = 0xff58
 
-// Mark: keypad
+// MARK: keypad
+
 let XK_KP_0: Int32 = 0xffb0
 let XK_KP_1: Int32 = 0xffb1
 let XK_KP_2: Int32 = 0xffb2
@@ -128,7 +129,7 @@ let XK_KP_Add: Int32 = 0xffab
 /// '/'
 let XK_KP_Divide: Int32 = 0xffaf
 
-// Mark: pc keyboard
+// MARK: pc keyboard
 
 let XK_Menu: Int32 = 0xff67
 /// Insert, insert here

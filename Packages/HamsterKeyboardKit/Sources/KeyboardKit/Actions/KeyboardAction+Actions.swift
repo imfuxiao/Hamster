@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HamsterKit
 
 /**
  This extension defines standard gesture actions for various
@@ -103,23 +104,22 @@ public extension KeyboardAction {
     switch self {
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
-//    case .dictation: return { $0?.performDictation() }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return { $0?.insertText(emoji.char) }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
     case .moveCursorForward: return { $0?.adjustTextPosition(byCharacterOffset: 1) }
     case .nextLocale: return { $0?.selectNextLocale() }
     case .nextKeyboard: return { $0?.selectNextKeyboard() }
-    case .primary: return { $0?.insertText(.newline) }
+    case .primary: return { $0?.insertRimeKeyCode(XK_Return) }
     case .shift(let currentState): return {
         switch currentState {
         case .lowercased: $0?.setKeyboardType(.alphabetic(.uppercased))
         case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
         }
       }
-    case .space: return { $0?.insertText(.space) }
+    case .space: return { $0?.insertRimeKeyCode(XK_space) }
     case .systemSettings: return { $0?.openUrl(.keyboardSettings) }
-    case .tab: return { $0?.insertText(.tab) }
+    case .tab: return { $0?.insertRimeKeyCode(XK_Tab) }
     case .url(let url, _): return { $0?.openUrl(url) }
     default: return nil
     }

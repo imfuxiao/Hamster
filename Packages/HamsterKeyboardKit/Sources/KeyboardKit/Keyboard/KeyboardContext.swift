@@ -237,6 +237,14 @@ public class KeyboardContext: ObservableObject {
   public var traitCollection = UITraitCollection()
 
   /**
+   是否中文输入法状态
+
+   注意：此状态值与 rimeContext.asciiMode 关联且值相反，方便在只有 KeyboardContext 参数下判断当前输入状态
+   */
+  @Published
+  public var isChineseInput = true
+
+  /**
    Create a context instance.
 
    创建 context 实例

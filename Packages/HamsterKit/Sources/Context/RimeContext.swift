@@ -74,31 +74,14 @@ public extension RimeContext {
     Rime.shared.cleanComposition()
   }
 
-  func candidateList(count: Int) -> [CandidateSuggestion] {
-    let candidates = Rime.shared.getCandidate(index: 0, count: count)
-    var result: [CandidateSuggestion] = []
-    for (index, candidate) in candidates.enumerated() {
-      var suggestion = CandidateSuggestion(
-        text: candidate.text
-      )
-      suggestion.index = index
-      suggestion.comment = candidate.comment
-      suggestion.isAutocomplete = index == 0
-      result.append(suggestion)
-    }
-    return result
-  }
-
+  @MainActor
   func appendSelectSchema(_ schema: RimeSchema) async {
-    await MainActor.run {
-      self.selectSchemas.append(schema)
-    }
+    self.selectSchemas.append(schema)
   }
 
+  @MainActor
   func removeSelectSchema(_ schema: RimeSchema) async {
-    await MainActor.run {
-      self.selectSchemas.removeAll(where: { $0 == schema })
-    }
+    self.selectSchemas.removeAll(where: { $0 == schema })
   }
 
   func setCurrentSchema(_ schema: RimeSchema?) async {
@@ -121,11 +104,13 @@ public extension RimeContext {
 
     await setupRimeInputSchema()
 
-    // TODO: 中英状态同步
-    // self.asciiMode = Rime.shared.isAsciiMode()
+    // 中英状态同步
+    await setAsciiMode(Rime.shared.isAsciiMode())
 
     // 加载Switcher切换键
-    let hotKeys = Rime.shared.getHotkeys().split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+    let hotKeys = Rime.shared.getHotkeys()
+      .split(separator: ",")
+      .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
     if !hotKeys.isEmpty {
       self.hotKeys = hotKeys
     }
@@ -345,6 +330,38 @@ public extension RimeContext {
     Logger.statistics.info("self.rimeEngine set schema: \(schema.schemaName), handle = \(handle)")
   }
 
+  /// 切换最近一次输入方案
+  func switchLatestInputSchema() async {
+    let latestSchema: RimeSchema
+    if let schema = self.latestSchema {
+      latestSchema = schema
+    } else {
+      let selectSchemas = await selectSchemas
+      guard selectSchemas.count > 1 else {
+        Logger.statistics.error("rime select schemas count less than 1.")
+        return
+      }
+      latestSchema = selectSchemas.sorted()[1]
+    }
+    let handle = Rime.shared.setSchema(latestSchema.schemaId)
+    Logger.statistics.info("self.rimeEngine set latest schema: \(latestSchema.schemaName), handle = \(handle)")
+    if handle {
+      self.latestSchema = self.currentSchema
+      self.currentSchema = latestSchema
+    }
+    await self.reset()
+  }
+
+  func switcher() async {
+    guard !hotKeys.isEmpty else { return }
+    let hotkey = hotKeys[0] // 取第一个
+    let hotKeyCode = RimeContext.hotKeyCodeMapping[hotkey, default: XK_F4]
+    let hotKeyModifier = RimeContext.hotKeyCodeModifiersMapping[hotkey, default: Int32(0)]
+    Logger.statistics.info("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
+    let handled = Rime.shared.inputKeyCode(hotKeyCode, modifier: hotKeyModifier)
+    _ = await updateRimeEngine(handled)
+  }
+
   // 同步中文简繁状态
   func syncTraditionalSimplifiedChineseMode(simplifiedModeKey: String) async {
     // 获取运行时状态
@@ -366,53 +383,58 @@ public extension RimeContext {
 // MARK: - 文字输入处理
 
 public extension RimeContext {
+  /**
+   RIME引擎尝试处理输入文字
+   */
   @MainActor
-  func insertText(_ text: String) async {
-    // TODO: 测试转为小写
-    let text = text.lowercased()
-    // 功能指令处理
-//    if self.functionalInstructionsHandled(text) {
-//      return
-//    }
-
-    // 调用输入法引擎
+  func tryHandleInputText(_ text: String) async -> String? {
     // 由rime处理全部符号
-    var handled = false
-    let textUTF8 = text.utf8
-    if textUTF8.count == 1, let first = textUTF8.first {
-      handled = Rime.shared.inputKeyCode(Int32(first))
-    }
+    let handled = Rime.shared.inputKey(text)
+    // 处理失败则返回 inputText
+    guard handled else { return text }
 
-    if !handled {
-      // TODO: 特殊按键处理
-
-      // TODO: 符号顶码上屏
-//      _ = self.candidateTextOnScreen()
-//      DispatchQueue.main.async {
-//        self.inputTextPatch(key, false)
-//      }
-    }
-
-    // TODO: 唯一码直接上屏
+    // 唯一码直接上屏
     let commitText = Rime.shared.getCommitText()
-    if !commitText.isEmpty {
-//      self.inputTextPatch(commitText)
+    guard commitText.isEmpty else {
+      self.reset()
+      return commitText
     }
 
-//    // 查看输入法状态
-//    let status = Rime.shared.status()
-//
-//    // 如不存在候选字,则重置输入法
-//    if !status.isComposing {
-//      await MainActor.run {
-//        self.reset()
-//      }
-//    }
-
+    // 查看输入法状态
+    let status = Rime.shared.status()
+    // 如不存在候选字,则重置输入法
+    if !status.isComposing {
+      self.reset()
+    }
     await self.syncContext()
+    return nil
   }
 
-  // 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
+  @MainActor
+  func tryHandleInputCode(_ code: Int32) async throws -> String? {
+    // 由rime处理全部符号
+    let handled = Rime.shared.inputKeyCode(code)
+    // 处理失败则返回 inputText
+    guard handled else { throw "code = \(code), rimeEngine handle failed." }
+
+    // 唯一码直接上屏
+    let commitText = Rime.shared.getCommitText()
+    guard commitText.isEmpty else {
+      self.reset()
+      return commitText
+    }
+
+    // 查看输入法状态
+    let status = Rime.shared.status()
+    // 如不存在候选字,则重置输入法
+    if !status.isComposing {
+      self.reset()
+    }
+    await self.syncContext()
+    return nil
+  }
+
+  /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
   @MainActor
   func syncContext() async {
     let context = Rime.shared.context()
@@ -446,6 +468,31 @@ public extension RimeContext {
   func deleteBackward() async {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
     await self.syncContext()
+  }
+
+  /// 更新 RIME 引擎
+  func updateRimeEngine(_ handled: Bool) async -> String? {
+    // 唯一码直接上屏
+    let commitText = Rime.shared.getCommitText()
+    if !commitText.isEmpty {
+      return commitText
+    }
+
+    // 查看输入法状态
+    let status = Rime.shared.status()
+
+    // 如不存在候选字,则重置输入法
+    if !status.isComposing {
+      await self.reset()
+      return nil
+    }
+
+    if handled {
+      await self.syncContext()
+      return nil
+    }
+
+    return nil
   }
 }
 

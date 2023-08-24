@@ -18,6 +18,10 @@ public extension KeyboardContext {
    */
   var preferredKeyboardType: KeyboardType {
     if keyboardType.isAlphabetic(.capsLocked) { return keyboardType }
+
+    // 中文输入不考虑切换
+    guard !isChineseInput else { return keyboardType }
+
     if let type = preferredAutocapitalizedKeyboardType { return type }
     if let type = preferredKeyboardTypeAfterAlphaTyping { return type }
     if let type = preferredKeyboardTypeAfterNonAlphaSpace { return type }
