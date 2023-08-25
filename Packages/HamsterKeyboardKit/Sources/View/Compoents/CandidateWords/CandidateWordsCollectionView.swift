@@ -17,6 +17,10 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// RIME 上下文
   let rimeContext: RimeContext
 
+  let keyboardContext: KeyboardContext
+
+  let actionHandler: KeyboardActionHandler
+
   /// 滚动方向
   let direction: UICollectionView.ScrollDirection
 
@@ -28,7 +32,14 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, CandidateSuggestion>! = nil
 
-  init(rimeContext: RimeContext, direction: UICollectionView.ScrollDirection = .horizontal) {
+  init(
+    keyboardContext: KeyboardContext,
+    actionHandler: KeyboardActionHandler,
+    rimeContext: RimeContext,
+    direction: UICollectionView.ScrollDirection = .horizontal
+  ) {
+    self.keyboardContext = keyboardContext
+    self.actionHandler = actionHandler
     self.rimeContext = rimeContext
     self.direction = direction
 
@@ -44,10 +55,12 @@ public class CandidateWordsCollectionView: UICollectionView {
       }
       let section = NSCollectionLayoutSection(group: group)
       // 控制水平方向 item 之间间距
-      section.interGroupSpacing = 5
+      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
+      // section.interGroupSpacing = 0
       section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
       // 控制垂直方向距拼写区的间距
-      section.contentInsets = .init(top: 5, leading: 0, bottom: 0, trailing: 0)
+      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
+      // section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
       return UICollectionViewCompositionalLayout(section: section)
     }()
 
@@ -67,6 +80,7 @@ public class CandidateWordsCollectionView: UICollectionView {
 
     if direction == .horizontal {
       self.alwaysBounceHorizontal = true
+      self.alwaysBounceVertical = false
     }
 
     combine()
@@ -114,5 +128,27 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 }
 
-/// MAKE: - UICollectionViewDelegateFlowLayout
-extension CandidateWordsCollectionView: UICollectionViewDelegate {}
+// MAKE: - UICollectionViewDelegateFlowLayout
+
+extension CandidateWordsCollectionView: UICollectionViewDelegate {
+  public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    Task {
+      // 用于触发反馈
+      actionHandler.handle(.press, on: .none)
+      if let text = await self.rimeContext.selectCandidate(index: indexPath.item) {
+        keyboardContext.textDocumentProxy.insertText(text)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+          self.rimeContext.reset()
+        }
+      } else {
+        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
+      }
+    }
+  }
+
+  public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+    if let cell = collectionView.cellForItem(at: indexPath) {
+      cell.isHighlighted = true
+    }
+  }
+}

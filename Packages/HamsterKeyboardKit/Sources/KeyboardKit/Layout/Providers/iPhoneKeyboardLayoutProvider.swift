@@ -177,9 +177,8 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     let needsDictation = context.needsInputModeSwitchKey
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
     if needsInputSwitch { result.append(.nextKeyboard) }
-    if !needsInputSwitch { result.append(.keyboardType(.emojis)) }
-    let dictationReplacement = context.keyboardDictationReplacement
-    if isPortrait(context), needsDictation, let action = dictationReplacement { result.append(action) }
+
+    result.append(.keyboardType(.symbolic))
     result.append(.space)
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))
@@ -189,7 +188,6 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       result.append(.character("."))
     }
     result.append(keyboardReturnAction(for: context))
-    if !isPortrait(context), needsDictation, let action = dictationReplacement { result.append(action) }
     return result
   }
 

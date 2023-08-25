@@ -16,7 +16,8 @@ import UIKit
  2. 常用功能视图
  */
 class KeyboardToolbarView: UIView {
-  private var keyboardContext: KeyboardContext
+  private let actionHandler: KeyboardActionHandler
+  private let keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
 
   /// 常用功能栏
@@ -28,13 +29,15 @@ class KeyboardToolbarView: UIView {
   // TODO: 候选文字视图
   lazy var candidateWordView: UIView = {
     let view = CandidateWordsView(
+      actionHandler: actionHandler,
       keyboardContext: keyboardContext,
       rimeContext: rimeContext
     )
     return view
   }()
 
-  init(keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+  init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+    self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
 

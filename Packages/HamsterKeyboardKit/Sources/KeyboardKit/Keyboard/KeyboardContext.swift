@@ -245,6 +245,11 @@ public class KeyboardContext: ObservableObject {
   public var isChineseInput = true
 
   /**
+   仓输入法配置
+   */
+  public var hamsterConfig: HamsterConfiguration? = nil
+
+  /**
    Create a context instance.
 
    创建 context 实例
@@ -267,6 +272,7 @@ public class KeyboardContext: ObservableObject {
   ) {
     self.init()
     guard let controller = controller else { return }
+    self.hamsterConfig = controller.hamsterConfiguration
     sync(with: controller)
   }
 }

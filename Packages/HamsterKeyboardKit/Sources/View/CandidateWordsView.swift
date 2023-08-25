@@ -13,6 +13,7 @@ import UIKit
  候选文字视图
  */
 class CandidateWordsView: UIView {
+  private var actionHandler: KeyboardActionHandler
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
 
@@ -30,7 +31,11 @@ class CandidateWordsView: UIView {
 
   /// 候选文字区域
   lazy var candidatesArea: CandidateWordsCollectionView = {
-    let view = CandidateWordsCollectionView(rimeContext: rimeContext, direction: .horizontal)
+    let view = CandidateWordsCollectionView(
+      keyboardContext: keyboardContext,
+      actionHandler: actionHandler,
+      rimeContext: rimeContext,
+      direction: .horizontal)
     return view
   }()
 
@@ -39,7 +44,8 @@ class CandidateWordsView: UIView {
     .standard(for: keyboardContext)
   }
 
-  init(keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+  init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+    self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
 

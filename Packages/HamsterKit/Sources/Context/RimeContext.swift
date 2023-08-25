@@ -352,6 +352,7 @@ public extension RimeContext {
     await self.reset()
   }
 
+  /// 触发 RIME 的 switcher
   func switcher() async {
     guard !hotKeys.isEmpty else { return }
     let hotkey = hotKeys[0] // 取第一个
@@ -360,6 +361,15 @@ public extension RimeContext {
     Logger.statistics.info("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
     let handled = Rime.shared.inputKeyCode(hotKeyCode, modifier: hotKeyModifier)
     _ = await updateRimeEngine(handled)
+  }
+
+  /// 根据索引选择候选字
+  func selectCandidate(index: Int) async -> String? {
+    let handled = Rime.shared.selectCandidate(index: index)
+    if let commitText = await updateRimeEngine(handled) {
+      return commitText
+    }
+    return nil
   }
 
   // 同步中文简繁状态
@@ -377,6 +387,28 @@ public extension RimeContext {
       let handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(simplifiedModeValue))
       Logger.statistics.info("syncTraditionalSimplifiedChineseMode() first save. key: \(simplifiedModeKey), value: \(simplifiedModeValue), handled: \(handled)")
     }
+  }
+
+  /// rime 中文简繁状态切换
+  func switchTraditionalSimplifiedChinese(_ simplifiedModeKey: String) {
+    let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
+
+    // 设置运行时状态
+    var handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: !simplifiedModeValue)
+    Logger.statistics.info("switchTraditionalSimplifiedChinese key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
+
+    // 保存运行时状态
+    handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(!simplifiedModeValue))
+    Logger.statistics.info("switchTraditionalSimplifiedChinese save file state. key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
+  }
+
+  /// 中英切换
+  @MainActor
+  func switchEnglishChinese() async {
+    self.reset()
+    self.asciiMode.toggle()
+    let handled = Rime.shared.asciiMode(self.asciiMode)
+    Logger.statistics.info("rime set ascii_mode handled \(handled)")
   }
 }
 

@@ -32,7 +32,7 @@ class KeyboardRootView: UIView {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: KeyboardLayoutProvider
-  private let layout: KeyboardLayout
+
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
@@ -65,14 +65,14 @@ class KeyboardRootView: UIView {
   // MARK: subview
 
   private lazy var toolbarView: KeyboardToolbarView = {
-    let view = KeyboardToolbarView(keyboardContext: keyboardContext, rimeContext: rimeContext)
+    let view = KeyboardToolbarView(actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
     return view
   }()
 
   /// 字母键盘
   private lazy var alphabeticKeyboardView: UIView = {
     let view = StanderAlphabeticKeyboard(
-      layout: layout,
+      keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: appearance,
       actionHandler: actionHandler,
       autocompleteContext: autocompleteContext,
@@ -145,7 +145,7 @@ class KeyboardRootView: UIView {
     rimeContext: RimeContext
   ) {
     self.keyboardLayoutProvider = keyboardLayoutProvider
-    self.layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
+
     self.layoutConfig = .standard(for: keyboardContext)
     self.actionHandler = actionHandler
     self.appearance = appearance

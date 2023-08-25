@@ -237,7 +237,22 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
    该属性用作键盘反馈（如音频和触觉反馈）的全局配置。
    */
-  public lazy var keyboardFeedbackSettings = KeyboardFeedbackSettings()
+  public lazy var keyboardFeedbackSettings: KeyboardFeedbackSettings = {
+    let enableAudio = hamsterConfiguration?.Keyboard?.enableKeySounds ?? false
+    let enableHaptic = hamsterConfiguration?.Keyboard?.enableHapticFeedback ?? false
+    let hapticFeedbackIntensity = hamsterConfiguration?.Keyboard?.hapticFeedbackIntensity ?? 2
+    let hapticFeedback = HapticIntensity(rawValue: hapticFeedbackIntensity)?.hapticFeedback() ?? .mediumImpact
+    return KeyboardFeedbackSettings(
+      audioConfiguration: enableAudio ? .enabled : .noFeedback,
+      hapticConfiguration: enableHaptic ? .init(
+        tap: hapticFeedback,
+        doubleTap: hapticFeedback,
+        longPress: hapticFeedback,
+        longPressOnSpace: hapticFeedback,
+        repeat: .selectionChanged
+      ) : .noFeedback
+    )
+  }()
 
   /**
    The default, observable keyboard text context.

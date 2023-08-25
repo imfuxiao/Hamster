@@ -71,6 +71,8 @@ public class KeyboardButtonContentView: UIView {
     } else if let contentView = contentView as? ImageContentView {
       contentView.style = style
       if let image = appearance.buttonImage(for: action) {
+        print("keyboard \(keyboardContext.keyboardType)")
+        print("action \(action)")
         contentView.imageView.image = image
       }
     } else if let contentView = contentView as? TextContentView {

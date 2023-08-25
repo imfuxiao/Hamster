@@ -164,10 +164,9 @@ open class iPadKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
    */
   open func bottomActions(for context: KeyboardContext) -> KeyboardActions {
     var result = KeyboardActions()
-    let needsDictation = context.needsInputModeSwitchKey
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
     result.append(.nextKeyboard)
-    if needsDictation, let action = context.keyboardDictationReplacement { result.append(action) }
+    result.append(.keyboardType(.symbolic))
     result.append(.space)
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
     result.append(.dismissKeyboard)

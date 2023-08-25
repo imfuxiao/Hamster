@@ -103,7 +103,7 @@ open class StandardKeyboardFeedbackHandler: KeyboardFeedbackHandler {
     if let custom = custom { return custom.feedback.trigger() }
     if action == .space && gesture == .longPress { return }
     if action == .backspace { return audioConfig.delete.trigger() }
-    if action.isInputAction { return audioConfig.input.trigger() }
+    if action.isInputAction || action == .none { return audioConfig.input.trigger() }
     if action.isSystemAction { return audioConfig.system.trigger() }
   }
     

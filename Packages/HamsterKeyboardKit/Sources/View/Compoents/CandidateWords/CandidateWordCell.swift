@@ -28,21 +28,34 @@ class CandidateWordCell: UICollectionViewCell {
     return label
   }()
 
+  private lazy var containerView: UIView = {
+    let view = UIView(frame: .zero)
+    return view
+  }()
+
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    contentView.addSubview(textLabel)
-    contentView.addSubview(secondaryLabel)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
     textLabel.translatesAutoresizingMaskIntoConstraints = false
     secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
+
+    contentView.addSubview(containerView)
+    containerView.addSubview(textLabel)
+    containerView.addSubview(secondaryLabel)
     NSLayoutConstraint.activate([
-      textLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-      textLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-      textLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
+      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -3),
+      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+
+      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
 
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
-      secondaryLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
+      secondaryLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
     ])
   }
 
@@ -73,11 +86,11 @@ class CandidateWordCell: UICollectionViewCell {
     secondaryLabel.text = state.candidateSuggestion?.subtitle
     secondaryLabel.font = KeyboardFont.caption2.font
 
-    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected {
-      contentView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.systemGroupedBackground
-      contentView.layer.cornerRadius = 5
+    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted {
+      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.systemGroupedBackground
+      containerView.layer.cornerRadius = 5
     } else {
-      contentView.backgroundColor = .clear
+      containerView.backgroundColor = .clear
     }
   }
 

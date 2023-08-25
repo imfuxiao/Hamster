@@ -8,7 +8,6 @@
 import HamsterKit
 import HamsterModel
 import OSLog
-import RimeKit
 
 // MARK: - 快捷指令处理
 
@@ -24,9 +23,9 @@ public extension KeyboardInputViewController {
     case .switchChineseOrEnglish:
       self.switchEnglishChinese()
     case .selectSecondary:
-      _ = self.selectSecondaryCandidate()
+      self.selectSecondaryCandidate()
     case .selectTertiary:
-      _ = self.selectTertiaryCandidate()
+      self.selectTertiaryCandidate()
     case .beginOfSentence:
       self.moveBeginOfSentence()
     case .endOfSentence:
@@ -68,25 +67,17 @@ public extension KeyboardInputViewController {
     return true
   }
 
-  /// rime 中文简繁状态切换
   func switchTraditionalSimplifiedChinese() {
     guard let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional else {
       Logger.statistics.warning("cannot get keyValueOfSwitchSimplifiedAndTraditional")
       return
     }
 
-    let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
-
-    // 设置运行时状态
-    var handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: !simplifiedModeValue)
-    Logger.statistics.info("switchTraditionalSimplifiedChinese key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
-
-    // 保存运行时状态
-    handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(!simplifiedModeValue))
-    Logger.statistics.info("switchTraditionalSimplifiedChinese save file state. key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
+    Task {
+      await rimeContext.switchTraditionalSimplifiedChinese(simplifiedModeKey)
+    }
   }
 
-  /// 中英切换
   func switchEnglishChinese() {
     //    中文模式下, 在已经有候选字的情况下, 切换英文模式.
     //
@@ -99,38 +90,39 @@ public extension KeyboardInputViewController {
       userInputKey.removeAll(where: { $0 == " " })
       self.textDocumentProxy.insertText(userInputKey)
     }
-    self.rimeContext.reset()
     //    情况3. 首选候选字上屏, 并开启英文输入
     //    _ = self.candidateTextOnScreen()
-    self.rimeContext.asciiMode.toggle()
-    let handled = Rime.shared.asciiMode(self.rimeContext.asciiMode)
-    Logger.statistics.info("rime set ascii_mode handled \(handled)")
+
+    Task {
+      await rimeContext.switchEnglishChinese()
+    }
   }
 
   /// 首选候选字上屏
-  func selectPrimaryCandidate() -> Bool {
-    return self.selectCandidate(index: 0)
+  func selectPrimaryCandidate() {
+    Task {
+      if let text = await rimeContext.selectCandidate(index: 0) {
+        textDocumentProxy.insertText(text)
+      }
+    }
   }
 
   /// 第二位候选字上屏
-  func selectSecondaryCandidate() -> Bool {
-    return self.selectCandidate(index: 1)
+  func selectSecondaryCandidate() {
+    Task {
+      if let text = await rimeContext.selectCandidate(index: 1) {
+        textDocumentProxy.insertText(text)
+      }
+    }
   }
 
   /// 第三位候选字上屏
-  func selectTertiaryCandidate() -> Bool {
-    return self.selectCandidate(index: 2)
-  }
-
-  /// 根据索引选择候选字
-  func selectCandidate(index: Int) -> Bool {
-    let handled = Rime.shared.selectCandidate(index: index)
+  func selectTertiaryCandidate() {
     Task {
-      if let commitText = await rimeContext.updateRimeEngine(handled) {
-        textDocumentProxy.insertText(commitText)
+      if let text = await rimeContext.selectCandidate(index: 2) {
+        textDocumentProxy.insertText(text)
       }
     }
-    return handled
   }
 
   /// 光标移动句首

@@ -33,7 +33,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
   private var touchView = KeyboardTouchView()
 
-  private var layout: KeyboardLayout
+  private let keyboardLayoutProvider: KeyboardLayoutProvider
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
@@ -44,6 +44,7 @@ public class StanderAlphabeticKeyboard: UIView {
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
+  private var currentKeyboardType: KeyboardType
 
   /// 行中按键宽度类型为 input 的最大数量
   /// 注意：按行统计
@@ -62,6 +63,10 @@ public class StanderAlphabeticKeyboard: UIView {
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - 计算属性
+
+  private var layout: KeyboardLayout {
+    keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
+  }
 
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
@@ -90,7 +95,7 @@ public class StanderAlphabeticKeyboard: UIView {
    the full button view for every layout item.
 
    - Parameters:
-     - layout: The keyboard layout to use.
+     - keyboardLayoutProvider: The keyboard layout provider.
      - appearance: The keyboard appearance to use.
      - actionHandler: The action handler to use.
      - autocompleteContext: The autocomplete context to use.
@@ -98,10 +103,9 @@ public class StanderAlphabeticKeyboard: UIView {
      - autocompleteToolbarAction: The action to trigger when tapping an autocomplete suggestion.
      - keyboardContext: The keyboard context to use.
      - calloutContext: The callout context to use.
-     - width: The keyboard width.
    */
   public init(
-    layout: KeyboardLayout,
+    keyboardLayoutProvider: KeyboardLayoutProvider,
     appearance: KeyboardAppearance,
     actionHandler: KeyboardActionHandler,
     autocompleteContext: AutocompleteContext,
@@ -110,7 +114,7 @@ public class StanderAlphabeticKeyboard: UIView {
     keyboardContext: KeyboardContext,
     calloutContext: KeyboardCalloutContext?
   ) {
-    self.layout = layout
+    self.keyboardLayoutProvider = keyboardLayoutProvider
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.autocompleteToolbarMode = autocompleteToolbar
@@ -121,6 +125,7 @@ public class StanderAlphabeticKeyboard: UIView {
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.currentKeyboardType = keyboardContext.keyboardType
 
     super.init(frame: .zero)
 
@@ -287,7 +292,17 @@ public class StanderAlphabeticKeyboard: UIView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         if $0 != self.interfaceOrientation {
-          Logger.statistics.debug("keyboardContext.$interfaceOrientation is change")
+          Logger.statistics.debug("keyboardContext.interfaceOrientation is change")
+          setNeedsLayout()
+        }
+      }
+      .store(in: &subscriptions)
+
+    keyboardContext.$keyboardType
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        if $0 != self.currentKeyboardType {
+          Logger.statistics.debug("keyboardContext.keyboardType is change")
           setNeedsLayout()
         }
       }
@@ -296,6 +311,20 @@ public class StanderAlphabeticKeyboard: UIView {
 
   override public func layoutSubviews() {
     super.layoutSubviews()
+
+    if currentKeyboardType != keyboardContext.keyboardType {
+      currentKeyboardType = keyboardContext.keyboardType
+
+      touchView.subviews.forEach { $0.removeFromSuperview() }
+      self.maxInputButtonCount = 0
+      self.keyboardRows.removeAll(keepingCapacity: true)
+      self.staticConstraints.removeAll(keepingCapacity: true)
+      self.dynamicConstraints.removeAll(keepingCapacity: true)
+
+      constructViewHierarchy()
+      activateViewConstraints()
+      return
+    }
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation

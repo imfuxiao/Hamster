@@ -32,7 +32,8 @@ public extension KeyboardAction {
     case .option: return .keyboardOption
     case .primary(let type): return type.standardButtonImage(for: context.locale)
     case .settings: return .keyboardSettings
-    case .shift(let currentCasing): return currentCasing.standardButtonImage
+    case .shift(let currentCasing):
+      return currentCasing.standardButtonImage
     case .systemImage(_, let imageName, _): return UIImage(systemName: imageName)
     case .systemSettings: return .keyboardSettings
     case .tab: return .keyboardTab
