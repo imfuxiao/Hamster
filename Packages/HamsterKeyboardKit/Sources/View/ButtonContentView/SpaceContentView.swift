@@ -11,7 +11,6 @@ import UIKit
 class SpaceContentView: UIView {
   public var style: KeyboardButtonStyle
   private let loadingText: String
-  
   private let loadingLabel: UILabel
   private let spaceView: TextContentView
   

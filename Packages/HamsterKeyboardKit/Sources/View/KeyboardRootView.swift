@@ -79,6 +79,7 @@ class KeyboardRootView: UIView {
       autocompleteToolbar: .automatic,
       autocompleteToolbarAction: { _ in },
       keyboardContext: keyboardContext,
+      rimeContext: rimeContext,
       calloutContext: calloutContext
     )
     return view
@@ -170,7 +171,12 @@ class KeyboardRootView: UIView {
   // MARK: - Layout
 
   func setupView() {
-    backgroundColor = .clear
+    // 开启键盘配色
+    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+      backgroundColor = keyboardColor.backColor
+    } else {
+      backgroundColor = .clear
+    }
 
     subviews.forEach { $0.removeFromSuperview() }
 
@@ -184,18 +190,30 @@ class KeyboardRootView: UIView {
     toolbarView.translatesAutoresizingMaskIntoConstraints = false
     subview.translatesAutoresizingMaskIntoConstraints = false
 
-    NSLayoutConstraint.activate([
-      toolbarView.topAnchor.constraint(equalTo: topAnchor),
+    let enableToolbar = keyboardContext.hamsterConfig?.toolbar?.enableToolbar ?? true
+    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
 
-      // TODO: 动态调整工具栏高度
-      toolbarView.heightAnchor.constraint(equalToConstant: 55),
-      toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+    if enableToolbar {
+      NSLayoutConstraint.activate([
+        toolbarView.topAnchor.constraint(equalTo: topAnchor),
 
-      subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-      subview.leadingAnchor.constraint(equalTo: leadingAnchor),
-      subview.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
+        // TODO: 动态调整工具栏高度
+        toolbarView.heightAnchor.constraint(equalToConstant: heightOfToolbar),
+        toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+
+        subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+        subview.leadingAnchor.constraint(equalTo: leadingAnchor),
+        subview.trailingAnchor.constraint(equalTo: trailingAnchor)
+      ])
+    } else {
+      NSLayoutConstraint.activate([
+        subview.topAnchor.constraint(equalTo: topAnchor),
+        subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+        subview.leadingAnchor.constraint(equalTo: leadingAnchor),
+        subview.trailingAnchor.constraint(equalTo: trailingAnchor)
+      ])
+    }
   }
 }

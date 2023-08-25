@@ -63,7 +63,12 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType: return bottomSystemButtonWidth(for: context)
+    case .keyboardType:
+      let needsInputModeSwitchKey = context.needsInputModeSwitchKey
+      if !needsInputModeSwitchKey && index == 0 && row == 3 {
+        return .percentage(isPortrait(context) ? 0.25 : 0.195)
+      }
+      return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary: return .percentage(isPortrait(context) ? 0.25 : 0.195)
     case .shift: return lowerSystemButtonWidth(for: context)
@@ -173,12 +178,11 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     for context: KeyboardContext
   ) -> KeyboardActions {
     var result = KeyboardActions()
-    let needsInputSwitch = context.needsInputModeSwitchKey
-    let needsDictation = context.needsInputModeSwitchKey
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
+
+    let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
 
-    result.append(.keyboardType(.symbolic))
     result.append(.space)
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))

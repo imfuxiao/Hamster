@@ -58,7 +58,7 @@ public class ButtonTableViewCell: NibLessTableViewCell {
       try settingItem.buttonAction?()
     } catch {
       Logger.statistics.error("\(#file) error: \(error)")
-      ProgressHUD.showError("系统异常：\(error.localizedDescription)", delay: 1.5)
+      ProgressHUD.showError("操作异常：\(error.localizedDescription)", delay: 1.5)
     }
   }
 }

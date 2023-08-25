@@ -249,6 +249,9 @@ public class KeyboardContext: ObservableObject {
    */
   public var hamsterConfig: HamsterConfiguration? = nil
 
+  // 输入法配色方案缓存
+  private var cacheHamsterKeyboardColor: HamsterModel.KeyboardColor?
+
   /**
    Create a context instance.
 
@@ -499,6 +502,23 @@ extension KeyboardContext {
     let isFloating = controller.view.frame.width < screenSize.width / 2
     if isKeyboardFloating == isFloating { return }
     isKeyboardFloating = isFloating
+  }
+}
+
+// MARK: - Hamster Configuration
+
+public extension KeyboardContext {
+  var hamsterKeyboardColor: HamsterModel.KeyboardColor? {
+    if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor {
+      return cacheHamsterKeyboardColor
+    }
+
+    guard hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
+    guard let schemaName = hamsterConfig?.Keyboard?.useColorSchema else { return nil }
+    guard let schema = hamsterConfig?.Keyboard?.colorSchemas?[schemaName] else { return nil }
+
+    self.cacheHamsterKeyboardColor = HamsterModel.KeyboardColor(name: schemaName, colorSchema: schema)
+    return cacheHamsterKeyboardColor
   }
 }
 

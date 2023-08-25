@@ -18,12 +18,7 @@ class BackupViewModel {
     text: "软件备份",
     buttonAction: { [unowned self] in
       Task {
-        do {
-          try await backup()
-        } catch {
-          // TODO: 异常处理
-          //            backupViewModel.error = error
-        }
+        try await backup()
       }
     },
     favoriteButton: .appBackup

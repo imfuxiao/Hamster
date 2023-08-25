@@ -319,7 +319,6 @@ public class KeyboardSettingsViewModel: ObservableObject {
   ]
 
   /// 符号设置选项
-  // TODO: 补充 button 逻辑
   lazy var buttonSettingItems: [SettingItemModel] = [
     .init(
       text: "成对上屏符号 - 恢复默认值",

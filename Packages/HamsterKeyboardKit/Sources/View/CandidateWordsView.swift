@@ -22,10 +22,17 @@ class CandidateWordsView: UIView {
   lazy var phoneticArea: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .left
-    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
+    if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
+      label.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+    }
+
+    // 开启键盘配色
+    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+      label.textColor = keyboardColor.textColor
+    }
+
     return label
   }()
 
@@ -72,9 +79,10 @@ class CandidateWordsView: UIView {
     candidatesArea.translatesAutoresizingMaskIntoConstraints = false
 
     let buttonInsets = layoutConfig.buttonInsets
-    // TODO: 高度可按配置调整
+    let codingAreaHeight = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
+
     NSLayoutConstraint.activate([
-      phoneticArea.heightAnchor.constraint(equalToConstant: 15),
+      phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
       phoneticArea.topAnchor.constraint(equalTo: topAnchor),
       phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
       phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),

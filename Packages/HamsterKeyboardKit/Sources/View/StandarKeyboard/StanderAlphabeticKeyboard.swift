@@ -44,6 +44,7 @@ public class StanderAlphabeticKeyboard: UIView {
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
+  private var rimeContext: RimeContext
   private var currentKeyboardType: KeyboardType
 
   /// 行中按键宽度类型为 input 的最大数量
@@ -112,6 +113,7 @@ public class StanderAlphabeticKeyboard: UIView {
     autocompleteToolbar: AutocompleteToolbarMode,
     autocompleteToolbarAction: @escaping AutocompleteToolbarAction,
     keyboardContext: KeyboardContext,
+    rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext?
   ) {
     self.keyboardLayoutProvider = keyboardLayoutProvider
@@ -121,6 +123,7 @@ public class StanderAlphabeticKeyboard: UIView {
     self.autocompleteToolbarAction = autocompleteToolbarAction
     self.autocompleteContext = autocompleteContext
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
     self.calloutContext = calloutContext ?? .disabled
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
@@ -154,6 +157,7 @@ public class StanderAlphabeticKeyboard: UIView {
           item: item,
           actionHandler: actionHandler,
           keyboardContext: keyboardContext,
+          rimeContext: rimeContext,
           calloutContext: calloutContext,
           appearance: appearance
         )

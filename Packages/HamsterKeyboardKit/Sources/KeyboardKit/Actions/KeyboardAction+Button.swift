@@ -60,7 +60,6 @@ public extension KeyboardAction {
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.standardButtonText(for: context.locale)
     case .space:
-      // TODO: 空格文本个性化
       return KKL10n.space.text(for: context)
     default: return nil
     }

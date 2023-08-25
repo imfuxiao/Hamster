@@ -5,6 +5,7 @@
 //  Created by morse on 2023/8/10.
 //
 
+import HamsterKit
 import UIKit
 
 /// 标准按键内容视图
@@ -19,23 +20,25 @@ public class KeyboardButtonContentView: UIView {
   }
 
   private let keyboardContext: KeyboardContext
+  private let rimeContext: RimeContext
   private var contentView: UIView!
 
   var buttonText: String {
     appearance.buttonText(for: action) ?? " "
   }
 
-  init(action: KeyboardAction, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext) {
+  init(action: KeyboardAction, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
     self.action = action
     self.style = style
     self.appearance = appearance
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
 
     super.init(frame: .zero)
 
     if action == .space {
       // TODO: 补充空格自定义加载文本
-      contentView = SpaceContentView(style: style, loadingText: "空格（测试）", spaceText: buttonText)
+      contentView = SpaceContentView(style: style, loadingText: .space, spaceText: buttonText)
     } else if let image = appearance.buttonImage(for: action) {
       contentView = ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
     } else {

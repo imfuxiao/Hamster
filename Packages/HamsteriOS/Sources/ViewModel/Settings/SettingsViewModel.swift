@@ -71,7 +71,6 @@ public class SettingsViewModel: ObservableObject {
         ),
       ]),
       SettingSectionModel(title: "键盘相关", items: [
-        // TODO: 键盘界面设置包含颜色方案设置
         .init(
           icon: UIImage(systemName: "keyboard")!,
           text: "键盘设置",
@@ -107,7 +106,6 @@ public class SettingsViewModel: ObservableObject {
         ),
       ]),
       SettingSectionModel(title: "同步与备份", items: [
-        // TODO: 键盘界面设置包含颜色方案
         .init(
           icon: UIImage(systemName: "externaldrive.badge.icloud")!,
           text: "iCloud同步",

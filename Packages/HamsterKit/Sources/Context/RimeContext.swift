@@ -29,7 +29,7 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 当前输入方案
-  @Published
+  @Published @MainActor
   public var currentSchema: RimeSchema? = UserDefaults.standard.currentSchema {
     didSet {
       UserDefaults.standard.currentSchema = self.currentSchema
@@ -37,7 +37,7 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 上次使用输入方案
-  @Published
+  @Published @MainActor
   public var latestSchema: RimeSchema? = UserDefaults.standard.latestSchema {
     didSet {
       UserDefaults.standard.latestSchema = self.latestSchema
@@ -84,6 +84,7 @@ public extension RimeContext {
     self.selectSchemas.removeAll(where: { $0 == schema })
   }
 
+  @MainActor
   func setCurrentSchema(_ schema: RimeSchema?) async {
     self.latestSchema = self.currentSchema
     self.currentSchema = schema
@@ -199,18 +200,18 @@ public extension RimeContext {
     await MainActor.run { [selectSchemas] in
       self.schemas = schemas
       self.selectSchemas = selectSchemas
-    }
 
-    // 默认当前方案为输入方案中的第一个输入方案
-    let firstInputSchema = schemas.first { self.currentSchema == $0 }
-    if firstInputSchema == nil, schemas.isEmpty {
-      self.currentSchema = schemas[0]
-    }
+      // 默认当前方案为输入方案中的第一个输入方案
+      let firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
+      if firstInputSchema == nil, selectSchemas.isEmpty {
+        self.currentSchema = selectSchemas[0]
+      }
 
-    // 默认最近一个输入方案为方案输入列表中的第二位
-    self.latestSchema = schemas.first { self.latestSchema == $0 }
-    if self.latestSchema == nil, schemas.count > 1 {
-      self.latestSchema = schemas[1]
+      // 默认最近一个输入方案为方案输入列表中的第二位
+      self.latestSchema = selectSchemas.first { self.latestSchema == $0 }
+      if self.latestSchema == nil, selectSchemas.count > 1 {
+        self.latestSchema = selectSchemas[1]
+      }
     }
 
     // 键盘重新同步文件标志
@@ -223,7 +224,7 @@ public extension RimeContext {
 
   /// RIME 同步
   /// 注意：仅可用于主 App 调用
-  func syncRime() throws {
+  func syncRime() async throws {
     Rime.shared.shutdown()
     Rime.shared.start(Rime.createTraits(
       sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
@@ -286,18 +287,18 @@ public extension RimeContext {
     await MainActor.run { [selectSchemas] in
       self.schemas = schemas
       self.selectSchemas = selectSchemas
-    }
 
-    // 默认当前方案为输入方案中的第一个输入方案
-    let firstInputSchema = schemas.first { self.currentSchema == $0 }
-    if firstInputSchema == nil, schemas.isEmpty {
-      self.currentSchema = schemas[0]
-    }
+      // 默认当前方案为输入方案中的第一个输入方案
+      let firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
+      if firstInputSchema == nil, selectSchemas.isEmpty {
+        self.currentSchema = selectSchemas[0]
+      }
 
-    // 默认最近一个输入方案为方案输入列表中的第二位
-    self.latestSchema = schemas.first { self.latestSchema == $0 }
-    if self.latestSchema == nil, schemas.count > 1 {
-      self.latestSchema = schemas[1]
+      // 默认最近一个输入方案为方案输入列表中的第二位
+      self.latestSchema = selectSchemas.first { self.latestSchema == $0 }
+      if self.latestSchema == nil, selectSchemas.count > 1 {
+        self.latestSchema = selectSchemas[1]
+      }
     }
 
     // 键盘重新同步文件标志
@@ -313,12 +314,13 @@ public extension RimeContext {
 
 public extension RimeContext {
   /// 设置用户输入方案
+  @MainActor
   func setupRimeInputSchema() async {
     let schema: RimeSchema
     if let currentSchema = currentSchema {
       schema = currentSchema
     } else {
-      let selectSchemas = await selectSchemas
+      let selectSchemas = selectSchemas
       guard !selectSchemas.isEmpty else {
         Logger.statistics.error("rime select schemas is empty.")
         return
@@ -331,12 +333,13 @@ public extension RimeContext {
   }
 
   /// 切换最近一次输入方案
+  @MainActor
   func switchLatestInputSchema() async {
     let latestSchema: RimeSchema
     if let schema = self.latestSchema {
       latestSchema = schema
     } else {
-      let selectSchemas = await selectSchemas
+      let selectSchemas = selectSchemas
       guard selectSchemas.count > 1 else {
         Logger.statistics.error("rime select schemas count less than 1.")
         return
@@ -349,7 +352,7 @@ public extension RimeContext {
       self.latestSchema = self.currentSchema
       self.currentSchema = latestSchema
     }
-    await self.reset()
+    self.reset()
   }
 
   /// 触发 RIME 的 switcher
@@ -480,9 +483,9 @@ public extension RimeContext {
   }
 
   @MainActor
-  func candidateListLimit() -> [CandidateSuggestion] {
+  func candidateListLimit(_ count: Int = 500) -> [CandidateSuggestion] {
     // TODO: 最大候选文字数量
-    let candidates = Rime.shared.getCandidate(index: 0, count: 500)
+    let candidates = Rime.shared.getCandidate(index: 0, count: count)
     var result: [CandidateSuggestion] = []
     for (index, candidate) in candidates.enumerated() {
       var suggestion = CandidateSuggestion(

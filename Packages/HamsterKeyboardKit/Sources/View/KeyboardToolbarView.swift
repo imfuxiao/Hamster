@@ -26,7 +26,7 @@ class KeyboardToolbarView: UIView {
     return view
   }()
 
-  // TODO: 候选文字视图
+  /// 候选文字视图
   lazy var candidateWordView: UIView = {
     let view = CandidateWordsView(
       actionHandler: actionHandler,

@@ -39,6 +39,8 @@ public class KeyboardButton: UIControl {
   /// 键盘上下文
   private let keyboardContext: KeyboardContext
   
+  private let rimeContext: RimeContext
+  
   /// 键盘外观
   private let appearance: KeyboardAppearance
   
@@ -150,6 +152,7 @@ public class KeyboardButton: UIControl {
     item: KeyboardLayoutItem,
     actionHandler: KeyboardActionHandler,
     keyboardContext: KeyboardContext,
+    rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext,
     appearance: KeyboardAppearance)
   {
@@ -160,6 +163,7 @@ public class KeyboardButton: UIControl {
     self.isSpacer = item.action.isSpacer
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
     self.calloutContext = calloutContext
     self.appearance = appearance
     self.interfaceOrientation = keyboardContext.interfaceOrientation
@@ -170,7 +174,8 @@ public class KeyboardButton: UIControl {
       action: action,
       style: buttonStyle,
       appearance: appearance,
-      keyboardContext: keyboardContext)
+      keyboardContext: keyboardContext,
+      rimeContext: rimeContext)
     
     setupSubview()
     
@@ -186,6 +191,11 @@ public class KeyboardButton: UIControl {
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    print("KeyboardButton deinit()")
+    repeatTimer.stop()
   }
   
   // MARK: - Layout Functions
@@ -402,7 +412,8 @@ public extension KeyboardButton {
   func tryTriggerLongPressAfterDelay() {
     let date = Date.now
     longPressDate = date
-    DispatchQueue.main.asyncAfter(deadline: .now() + longPressDelay) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + longPressDelay) { [weak self] in
+      guard let self = self else { return }
       guard self.longPressDate == date else { return }
       self.longPressAction()
     }
@@ -411,7 +422,8 @@ public extension KeyboardButton {
   func tryTriggerRepeatAfterDelay() {
     let date = Date.now
     repeatDate = date
-    DispatchQueue.main.asyncAfter(deadline: .now() + repeatDelay) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + repeatDelay) { [weak self] in
+      guard let self = self else { return }
       guard self.repeatDate == date else { return }
       self.repeatTimer.start(action: self.repeatAction)
     }
@@ -585,6 +597,7 @@ struct KeyboardButtonView_Previews: PreviewProvider {
         item: .init(action: action, size: .init(width: .input, height: 54), insets: .zero),
         actionHandler: .preview,
         keyboardContext: .preview,
+        rimeContext: RimeContext(),
         calloutContext: .disabled,
         appearance: .preview)
       

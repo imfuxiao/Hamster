@@ -18,6 +18,7 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
 
@@ -25,6 +26,7 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
     return label
   }()
 
@@ -66,13 +68,31 @@ class CandidateWordCell: UICollectionViewCell {
 
   private var candidateSuggestion: CandidateSuggestion? = nil
   private var keyboardColor: HamsterModel.KeyboardColor? = nil
+  private var showIndex: Bool = false
+  private var titleFont: UIFont = KeyboardFont.title3.font
+  private var subtitleFont: UIFont = KeyboardFont.caption2.font
 
   /// 当每次 CandidateSuggestion 发生变化时调用此方法，来更新 UI
-  func updateWithCandidateSuggestion(_ suggestion: CandidateSuggestion, color: HamsterModel.KeyboardColor? = nil) {
-    keyboardColor = color
+  func updateWithCandidateSuggestion(
+    _ suggestion: CandidateSuggestion,
+    color: HamsterModel.KeyboardColor? = nil,
+    showIndex: Bool? = nil,
+    titleFont: UIFont? = nil,
+    subtitleFont: UIFont? = nil
+  ) {
+    self.keyboardColor = color
+    if let showIndex = showIndex {
+      self.showIndex = showIndex
+    }
+    if let titleFont = titleFont {
+      self.titleFont = titleFont
+    }
+    if let subtitleFont = subtitleFont {
+      self.subtitleFont = subtitleFont
+    }
+
     guard candidateSuggestion != suggestion else { return }
     candidateSuggestion = suggestion
-    keyboardColor = color
 
     // 调用此方法后，下面重载的属性 configurationState 就会包含新的 candidateSuggestion
     setNeedsUpdateConfiguration()
@@ -80,14 +100,31 @@ class CandidateWordCell: UICollectionViewCell {
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     // TODO: 字体大小可配置
-    textLabel.text = state.candidateSuggestion?.title
-    textLabel.font = KeyboardFont.title3.font
-
+    let index = state.candidateSuggestion?.index
+    let title = state.candidateSuggestion?.title
+    if showIndex {
+      textLabel.text = index == nil ? title : "\(index!). \(title ?? "")"
+    } else {
+      textLabel.text = title
+    }
     secondaryLabel.text = state.candidateSuggestion?.subtitle
-    secondaryLabel.font = KeyboardFont.caption2.font
 
-    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted {
-      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.systemGroupedBackground
+    textLabel.font = titleFont
+    secondaryLabel.font = subtitleFont
+
+    if let keyboardColor = keyboardColor {
+      if state.candidateSuggestion?.isAutocomplete ?? false {
+        self.textLabel.textColor = keyboardColor.hilitedCandidateTextColor
+        self.secondaryLabel.textColor = keyboardColor.hilitedCommentTextColor
+      } else {
+        self.textLabel.textColor = keyboardColor.candidateTextColor
+        self.secondaryLabel.textColor = keyboardColor.commentTextColor
+      }
+    }
+
+    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted
+    {
+      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.secondarySystemBackground
       containerView.layer.cornerRadius = 5
     } else {
       containerView.backgroundColor = .clear
@@ -109,7 +146,7 @@ class CandidateWordCell: UICollectionViewCell {
 
 /// 扩展 UIConfigurationStateCustomKey，用来表示 state 中自定义的数据
 private extension UIConfigurationStateCustomKey {
-  static let candidateSuggestionItem = UIConfigurationStateCustomKey("com.ihsiao.apps.hamster.keyboard.CandidateSuggestionCell")
+  static let candidateSuggestionItem = UIConfigurationStateCustomKey("com.ihsiao.apps.hamster.keyboard.CandidateSuggestionCell.item")
 }
 
 /// 扩展 UICellConfigurationState，添加自定义数据属性

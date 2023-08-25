@@ -110,7 +110,18 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 在给定的 `isPressed` 状态下，用于特定 `action` 的按键样式。
   open func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
-    KeyboardButtonStyle(
+    // 开启键盘配色
+    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+      return KeyboardButtonStyle(
+        backgroundColor: isPressed ? buttonBackgroundColor(for: action, isPressed: isPressed) : keyboardColor.backColor,
+        foregroundColor: isPressed ? buttonForegroundColor(for: action, isPressed: isPressed) : keyboardColor.candidateTextColor,
+        font: buttonFont(for: action),
+        cornerRadius: buttonCornerRadius(for: action),
+        border: buttonBorderStyle(for: action),
+        shadow: buttonShadowStyle(for: action))
+    }
+
+    return KeyboardButtonStyle(
       backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed),
       foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed),
       font: buttonFont(for: action),
@@ -194,7 +205,12 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   open func buttonBorderStyle(for action: KeyboardAction) -> KeyboardButtonBorderStyle {
     switch action {
     case .emoji, .emojiCategory, .none: return .noBorder
-    default: return .standard
+    default:
+      // 开启键盘配色
+      if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+        return KeyboardButtonBorderStyle(color: keyboardColor.borderColor, size: 1)
+      }
+      return .standard
     }
   }
 
@@ -319,7 +335,7 @@ extension KeyboardAction {
   func buttonBackgroundColorForIdleState(for context: KeyboardContext) -> UIColor {
     if isUppercasedShiftAction { return buttonBackgroundColorForPressedState(for: context) }
     if isSystemAction { return .standardDarkButtonBackground(for: context) }
-    if isPrimaryAction { return .blue }
+    if isPrimaryAction { return UIColor.systemBlue }
     if isUppercasedShiftAction { return .standardButtonBackground(for: context) }
     return .standardButtonBackground(for: context)
   }

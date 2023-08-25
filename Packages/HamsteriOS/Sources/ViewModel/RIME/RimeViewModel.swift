@@ -127,7 +127,6 @@ extension RimeViewModel {
   func rimeRest() async throws {
     await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
     // TODO: 每次重新部署重新读取yaml中的文件，并与目前配置取差集
-
     try await rimeContext.restRime()
     await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
   }

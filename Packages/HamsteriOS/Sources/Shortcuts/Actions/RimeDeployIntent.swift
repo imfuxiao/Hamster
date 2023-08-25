@@ -6,6 +6,8 @@
 //
 
 import AppIntents
+import HamsterKit
+import OSLog
 
 @available(iOS 16.0, *)
 struct RimeDeployIntent: AppIntent {
@@ -14,12 +16,17 @@ struct RimeDeployIntent: AppIntent {
   static var description =
     IntentDescription("仓输入法 RIME 重新部署")
 
+  let rimeContext = RimeContext()
+
   @MainActor
   func perform() async throws -> some IntentResult {
-    // TODO:
-//    try RimeContext.shared.redeployment(HamsterAppSettings.shared)
-//    let resetHandled = HamsterAppSettings.shared.resetRimeParameter()
-//    Logger.statistics.shared.log.debug("rimeEngine resetRimeParameter \(resetHandled)")
-    return .result(dialog: .init("重新部署完成"))
+    let configuration = HamsterAppDependencyContainer.shared.configuration
+    do {
+      try await rimeContext.deployment(configuration: configuration)
+      return .result(dialog: .init("重新部署完成"))
+    } catch {
+      Logger.statistics.error("RimeDeployIntent failed: \(error)")
+      return .result(dialog: .init("重新部署失败"))
+    }
   }
 }

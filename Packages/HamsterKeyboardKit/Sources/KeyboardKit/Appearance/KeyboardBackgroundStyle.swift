@@ -113,33 +113,6 @@ public extension KeyboardBackgroundStyle {
   static func verticalGradient(_ colors: [UIColor]) -> KeyboardBackgroundStyle {
     .init(backgroundGradient: colors)
   }
-
-  /**
-   Create a background view that uses all style properties.
-
-   创建一个使用所有样式属性的背景视图。
-   // TODO: 背景View
-   */
-//  @ViewBuilder
-//  var backgroundView: some View {
-//    if legacyBackgroundType != .none {
-//      legacyBackgroundType.internalView
-//    } else {
-//      ZStack {
-//        backgroundColor
-//        if let backgroundGradient {
-//          LinearGradient(colors: backgroundGradient, startPoint: .top, endPoint: .bottom)
-//        }
-//        image(from: imageData)?
-//          .resizable()
-//          .aspectRatio(contentMode: .fill)
-//        if let overlayGradient {
-//          LinearGradient(colors: overlayGradient, startPoint: .top, endPoint: .bottom)
-//        }
-//        overlayColor
-//      }
-//    }
-//  }
 }
 
 private extension KeyboardBackgroundStyle {
