@@ -71,11 +71,6 @@ public protocol KeyboardController: AnyObject {
   func insertText(_ text: String)
 
   /**
-   插入 RIME 引擎可识别的编码
-   */
-  func insertRimeKeyCode(_ keyCode: Int32)
-
-  /**
    Perform an autocomplete operation.
 
    执行自动完成操作。
@@ -130,4 +125,17 @@ public protocol KeyboardController: AnyObject {
    打开某个 URL
    */
   func openUrl(_ url: URL?)
+
+  /// 重置输入法引擎
+  func resetInputEngine()
+
+  /**
+   插入 RIME 引擎可识别的编码
+   */
+  func insertRimeKeyCode(_ keyCode: Int32)
+
+  /**
+   次选候选字
+   */
+  func selectSecondaryCandidate()
 }

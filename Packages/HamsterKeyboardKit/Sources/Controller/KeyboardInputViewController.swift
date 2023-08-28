@@ -469,19 +469,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     }
   }
 
-  open func insertRimeKeyCode(_ keyCode: Int32) {
-    Task {
-      do {
-        guard let text = try await rimeContext.tryHandleInputCode(keyCode) else { return }
-        textDocumentProxy.insertText(text)
-      } catch {
-        let errorMessage = error.localizedDescription
-        Logger.statistics.info("insertRimeKeyCode(): \(errorMessage)")
-        tryHandleSpecificCode(keyCode)
-      }
-    }
-  }
-
   open func selectNextKeyboard() {
     keyboardContext.selectNextLocale()
   }
@@ -501,6 +488,23 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       responder = r.next
     }
     _ = responder?.perform(selector, with: url)
+  }
+
+  open func resetInputEngine() {
+    rimeContext.reset()
+  }
+
+  open func insertRimeKeyCode(_ keyCode: Int32) {
+    Task {
+      do {
+        guard let text = try await rimeContext.tryHandleInputCode(keyCode) else { return }
+        textDocumentProxy.insertText(text)
+      } catch {
+        let errorMessage = error.localizedDescription
+        Logger.statistics.info("insertRimeKeyCode(): \(errorMessage)")
+        tryHandleSpecificCode(keyCode)
+      }
+    }
   }
 
   // MARK: - Syncing

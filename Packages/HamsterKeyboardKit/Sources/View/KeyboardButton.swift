@@ -79,14 +79,22 @@ public class KeyboardButton: UIControl {
   /// 按钮重复开始时间
   private var repeatDate: Date? = nil
   
+  /// 手势开始时间戳
+  private var touchBeginTimestamp: TimeInterval? = nil
+  
+  /// 轻扫手势处理
+  private var swipeGestureHandle: (() -> Void)?
+  
   /// 拖动开始位置
   private var dragStartLocation: CGPoint? = nil
   
   /// 最后一次拖拽的位置
-  private var lastDragValue: CGPoint? = nil
+  private var lastDragLocation: CGPoint? = nil
   
   /// 是否应用 .release 操作
-  /// 注意：在 calloutContext 呼出开始显示的时候是不会应用 release 的
+  /// 注意：
+  /// 1. 长按空格状态下不应该触发 release
+  /// 2. 在 calloutContext 呼出开始显示的时候，不应触发 release
   private var shouldApplyReleaseAction = true
   
   /// 在按钮 bounds 外，仍然可以触发 .release 的区域大小的百分比
@@ -96,7 +104,6 @@ public class KeyboardButton: UIControl {
   
   private let repeatTimer: RepeatGestureTimer = .shared
   private let longPressDelay: TimeInterval = GestureButtonDefaults.longPressDelay
-  private let doubleTapTimeout: TimeInterval = GestureButtonDefaults.doubleTapTimeout
   private let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
   
   // MARK: - subview
@@ -373,7 +380,7 @@ public extension KeyboardButton {
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
     for touch in touches {
-      Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
+      Logger.statistics.debug("\(self.row)-\(self.column) button touchesCancelled")
       tryHandleRelease(touch)
     }
   }
@@ -385,6 +392,7 @@ public extension KeyboardButton {
     if touch.tapCount > 1 {
       doubleTapAction()
     }
+    touchBeginTimestamp = touch.timestamp
     dragStartLocation = touch.location(in: self)
     tryTriggerLongPressAfterDelay()
     tryTriggerRepeatAfterDelay()
@@ -393,17 +401,27 @@ public extension KeyboardButton {
   func tryHandleRelease(_ touch: UITouch) {
     guard isPressed else { return }
     isPressed = false
+    touchBeginTimestamp = nil
     dragStartLocation = nil
     longPressDate = nil
     repeatDate = nil
     repeatTimer.stop()
     
-    // 判断手势区域是否超出当前 bounds
-    let currentPoint = touch.location(in: self)
-    if bounds.contains(currentPoint) {
-      handleReleaseInside()
-    } else {
-      handleReleaseOutside(currentPoint)
+    // 取消状态不触发 .release
+    if touch.phase != .cancelled {
+      // 轻扫手势不触发 release
+      if let swipeGestureHandle = swipeGestureHandle {
+        swipeGestureHandle()
+        self.swipeGestureHandle = nil
+      } else {
+        // 判断手势区域是否超出当前 bounds
+        let currentPoint = touch.location(in: self)
+        if bounds.contains(currentPoint) {
+          handleReleaseInside()
+        } else {
+          handleReleaseOutside(currentPoint)
+        }
+      }
     }
     
     endAction()
@@ -430,9 +448,75 @@ public extension KeyboardButton {
   }
   
   func tryHandleDrag(_ touch: UITouch) {
+    // dragStartLocation 在 touchesBegan 阶段设置值，在 touchesEnd/touchesCancel 阶段取消值
     guard let startLocation = dragStartLocation else { return }
     let currentPoint = touch.location(in: self)
-    lastDragValue = currentPoint
+    lastDragLocation = currentPoint
+    
+    // 识别 swipe
+    if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
+      let tanThreshold = 0.58 // tan(30º)) = 0.58
+      let distanceThreshold: CGFloat = 10 // 滑动的阈值
+
+      let distanceY = currentPoint.y - startLocation.y
+      let distanceX = currentPoint.x - startLocation.x
+      
+      // 两点距离
+      let distance = sqrt(pow(distanceY, 2) + pow(distanceX, 2))
+      
+      // 轻扫的距离必须符合阈值要求
+      guard distance >= distanceThreshold else { return }
+      Logger.statistics.debug("current point: \(currentPoint.debugDescription)")
+      Logger.statistics.debug("start point: \(startLocation.debugDescription)")
+
+      // 水平方向夹角 tan 值
+      let tanHorizontalCorner = distanceX == .zero ? .zero : abs(distanceY) / abs(distanceX)
+      // 垂直方向夹角 tan 值
+      let tanVerticalCorner = distanceY == .zero ? .zero : abs(distanceX) / abs(distanceY)
+      
+      Logger.statistics.debug("tanHorizontalCorner: \(tanHorizontalCorner)")
+      Logger.statistics.debug("tanVerticalCorner: \(tanVerticalCorner)")
+      
+      // distanceX > 0 && distanceY < 0 表示 右上角
+      // distanceX > 0 && distanceY > 0 表示 右下角
+      // distanceX < 0 && distanceY < 0 表示 左上角
+      // distanceX > 0 && distanceY > 0 表示 左下角
+      var direction: SwipeDirection?
+      if tanHorizontalCorner <= tanThreshold, tanVerticalCorner != 0 { // 水平夹角
+        // 右上角或右下角
+        if (distanceX > 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) {
+          direction = .right
+        } else if (distanceX < 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) { // 左上角或左下角
+          direction = .left
+        }
+      } else if tanVerticalCorner <= tanThreshold, tanHorizontalCorner != 0 { // 垂直夹角
+        // 右上角或左上角
+        if (distanceX > 0 && distanceY < 0) || (distanceX < 0 && distanceY < 0) {
+          direction = .up
+        } else if (distanceX > 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) { // 右下角或左下角
+          direction = .down
+        }
+      } else if tanHorizontalCorner == 0, tanVerticalCorner == 0 {
+        if distanceX == 0, distanceY > 0 {
+          direction = .down
+        } else if distanceX == 0, distanceY < 0 {
+          direction = .up
+        } else if distanceX > 0, distanceY == 0 {
+          direction = .right
+        } else if distanceX < 0, distanceY == 0 {
+          direction = .left
+        }
+      }
+      
+      if let direction = direction {
+        swipeGestureHandle = { [unowned self] in
+          swipeAction(direction: direction)
+        }
+      }
+    } else {
+      swipeGestureHandle = nil
+    }
+    
     // TODO: 更新呼出选择位置
     dragAction(start: startLocation, current: currentPoint)
   }
@@ -458,7 +542,7 @@ public extension KeyboardButton {
   }
   
   func shouldApplyReleaseOutsize(for currentPoint: CGPoint) -> Bool {
-    guard let _ = lastDragValue else { return false }
+    guard let _ = lastDragLocation else { return false }
     let rect = CGRect.releaseOutsideToleranceArea(for: bounds.size, tolerance: releaseOutsideTolerance)
     let isInsideRect = rect.contains(currentPoint)
     return isInsideRect
@@ -470,7 +554,7 @@ public extension KeyboardButton {
   }
   
   func resetGestureState() {
-    lastDragValue = nil
+    lastDragLocation = nil
     shouldApplyReleaseAction = true
   }
   
@@ -485,7 +569,8 @@ public extension KeyboardButton {
   }
   
   func longPressAction() {
-    guard shouldApplyReleaseAction, action != .space else { return }
+    // 空格长按不需要应用 release
+    shouldApplyReleaseAction = shouldApplyReleaseAction && action != .space
     Logger.statistics.debug("longPressAction()")
     actionHandler.handle(.longPress, on: action)
   }
@@ -501,7 +586,42 @@ public extension KeyboardButton {
   }
   
   func dragAction(start: CGPoint, current: CGPoint) {
+    Logger.statistics.debug("dragAction()")
     actionHandler.handleDrag(on: action, from: start, to: current)
+  }
+  
+  func swipeAction(direction: SwipeDirection) {
+    Logger.statistics.debug("swipeAction(), direction: \(direction.debugDescription)")
+    switch direction {
+    case .up:
+      actionHandler.handle(.swipeUp, on: action)
+    case .down:
+      actionHandler.handle(.swipeDown, on: action)
+    case .left:
+      actionHandler.handle(.swipeLeft, on: action)
+    case .right:
+      actionHandler.handle(.swipeRight, on: action)
+    }
+  }
+  
+  enum SwipeDirection: CustomDebugStringConvertible {
+    case up
+    case down
+    case left
+    case right
+    
+    public var debugDescription: String {
+      switch self {
+      case .up:
+        return "up"
+      case .down:
+        return "down"
+      case .left:
+        return "left"
+      case .right:
+        return "right"
+      }
+    }
   }
 }
 

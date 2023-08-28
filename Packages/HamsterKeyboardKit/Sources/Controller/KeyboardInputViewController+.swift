@@ -103,6 +103,7 @@ public extension KeyboardInputViewController {
     Task {
       if let text = await rimeContext.selectCandidate(index: 0) {
         textDocumentProxy.insertText(text)
+        rimeContext.reset()
       }
     }
   }
@@ -112,6 +113,7 @@ public extension KeyboardInputViewController {
     Task {
       if let text = await rimeContext.selectCandidate(index: 1) {
         textDocumentProxy.insertText(text)
+        rimeContext.reset()
       }
     }
   }
@@ -121,6 +123,7 @@ public extension KeyboardInputViewController {
     Task {
       if let text = await rimeContext.selectCandidate(index: 2) {
         textDocumentProxy.insertText(text)
+        rimeContext.reset()
       }
     }
   }

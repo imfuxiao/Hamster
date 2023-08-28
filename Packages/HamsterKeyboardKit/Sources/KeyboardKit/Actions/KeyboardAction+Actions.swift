@@ -54,8 +54,12 @@ public extension KeyboardAction {
     case .press: return standardPressAction
     case .release: return standardReleaseAction
     case .repeatPress: return standardRepeatAction
+    case .swipeUp: return standerSwipeUpAction
+    case .swipeDown: return standerSwipeUpAction
+    case .swipeLeft: return standerSwipeUpAction
+    case .swipeRight: return standerSwipeUpAction
     default:
-      return standerSwipeAction
+      return nil
     }
   }
     
@@ -138,8 +142,35 @@ public extension KeyboardAction {
     }
   }
   
-  /// 默认情况下，上下左右滑动触发的操作
-  var standerSwipeAction: GestureAction? {
+  /// 默认情况下，上滑触发的操作
+  var standerSwipeUpAction: GestureAction? {
+    // TODO: 补充滑动触发的逻辑
+    switch self {
+    case .backspace: return { $0?.resetInputEngine() }
+    case .space: return { $0?.selectSecondaryCandidate() }
+    default:
+      return nil
+    }
+  }
+  
+  /// 默认情况下，下滑触发的操作
+  var standerSwipeDownAction: GestureAction? {
+    // TODO: 补充滑动触发的逻辑
+    return nil
+  }
+  
+  /// 默认情况下，左滑触发的操作
+  var standerSwipeLeftAction: GestureAction? {
+    // TODO: 补充滑动触发的逻辑
+    switch self {
+    case .backspace: return { $0?.resetInputEngine() }
+    default:
+      return nil
+    }
+  }
+  
+  /// 默认情况下，右滑触发的操作
+  var standerSwipeRightAction: GestureAction? {
     // TODO: 补充滑动触发的逻辑
     return nil
   }
