@@ -51,6 +51,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     super.viewWillAppear(animated)
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
+
+    // fix: 屏幕边缘按键触摸延迟
+    // https://stackoverflow.com/questions/39813245/touchesbeganwithevent-is-delayed-at-left-edge-of-screen
+    // 注意：添加代码日志中会有警告
+    // [Warning] Trying to set delaysTouchesBegan to NO on a system gate gesture recognizer - this is unsupported and will have undesired side effects
+    // 如果后续有更好的解决方案，可以替换此方案
+    let window = view.window!
+    window.gestureRecognizers?.forEach {
+      $0.delaysTouchesBegan = false
+    }
   }
 
   override open func viewDidAppear(_ animated: Bool) {

@@ -36,18 +36,15 @@ public class InputCalloutView: ShapeView {
     boardLayer.strokeColor = style.callout.borderColor.cgColor
     boardLayer.borderWidth = 1
     boardLayer.opacity = 0.5
-//    boardLayer.shadowRadius = style.callout.shadowRadius
-//    boardLayer.shadowColor = style.callout.shadowColor.cgColor
-//    boardLayer.shadowColor = UIColor.red.cgColor
-//    boardLayer.shadowOffset = CGSize(width: 0, height: -1)
+    //    boardLayer.shadowRadius = style.callout.shadowRadius
+    //    boardLayer.shadowColor = style.callout.shadowColor.cgColor
+    //    boardLayer.shadowColor = UIColor.red.cgColor
+    //    boardLayer.shadowOffset = CGSize(width: 0, height: -1)
     return boardLayer
   }()
 
   public var calloutPath: UIBezierPath {
     let path = UIBezierPath()
-
-    print("width: \(frame.width), height: \(frame.height)")
-
     let calloutStyle = style.callout
 
     let width = frame.width / 4
@@ -58,7 +55,7 @@ public class InputCalloutView: ShapeView {
     let leftMinX: CGFloat = 0
     let leftMaxX: CGFloat = width
 
-    let minY = keyboardContext.interfaceOrientation.isPortrait ? frame.height / 2 : frame.height / 3
+    let minY = frame.height / 2
     let maxY = frame.height
 
     // 从按钮右下圆角启始点开始

@@ -65,8 +65,6 @@ public class KeyboardButton: UIControl {
   /// 按键 underPath 缓存
   private var underPathCache = [ButtonWidth: UIBezierPath]()
   
-  private var subscriptions = Set<AnyCancellable>()
-  
   // MARK: - touch state
   
   // 按钮按下状态
@@ -152,6 +150,12 @@ public class KeyboardButton: UIControl {
     return style
   }
   
+  override public var isHighlighted: Bool {
+    didSet {
+      updateButtonStyle(layoutConfig, isPressed: isHighlighted)
+    }
+  }
+  
   // MARK: - Initializations
   
   init(
@@ -186,14 +190,6 @@ public class KeyboardButton: UIControl {
       rimeContext: rimeContext)
     
     setupSubview()
-    
-    $isPressed
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] isPressed in
-        let layoutConfig = layoutConfig
-        updateButtonStyle(layoutConfig, isPressed: isPressed)
-      }
-      .store(in: &subscriptions)
   }
   
   @available(*, unavailable)
@@ -214,6 +210,7 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
     setupBackgroundView(layoutConfig)
+    updateButtonStyle(layoutConfig, isPressed: false)
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
@@ -279,7 +276,7 @@ public class KeyboardButton: UIControl {
   }
   
   func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration, isPressed: Bool) {
-    Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted), isSelected: \(self.isSelected)")
+    // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
     let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
     buttonContentView.style = style
       
@@ -312,7 +309,7 @@ public class KeyboardButton: UIControl {
     
     let layoutConfig = layoutConfig
     updateConstraints(layoutConfig)
-    updateButtonStyle(layoutConfig, isPressed: isPressed)
+    updateButtonStyle(layoutConfig, isPressed: isHighlighted)
     
     let displayButtonBubbles = keyboardContext.hamsterConfig?.Keyboard?.displayButtonBubbles ?? false
     if displayButtonBubbles {
@@ -332,6 +329,8 @@ public class KeyboardButton: UIControl {
 
 extension KeyboardButton {
   func showInputCallout() {
+    // 屏幕横向无按键气泡
+    guard keyboardContext.interfaceOrientation.isPortrait else { return }
     guard action.isInputAction, action != .space else { return }
     inputCalloutView.isHidden = false
     inputCalloutView.shapeLayer.zPosition = 9999
@@ -340,6 +339,8 @@ extension KeyboardButton {
   }
   
   func hideInputCallout() {
+    // 屏幕横向无按键气泡
+    guard keyboardContext.interfaceOrientation.isPortrait else { return }
     inputCalloutView.isHidden = true
   }
 }
@@ -356,6 +357,7 @@ public extension KeyboardButton {
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    isHighlighted = true
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesBegan")
       tryHandlePress(touch)
@@ -363,6 +365,7 @@ public extension KeyboardButton {
   }
   
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    isHighlighted = true
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
       tryHandleDrag(touch)
@@ -374,6 +377,7 @@ public extension KeyboardButton {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesEnded")
       tryHandleRelease(touch)
     }
+    isHighlighted = false
   }
   
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -381,6 +385,7 @@ public extension KeyboardButton {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesCancelled")
       tryHandleRelease(touch)
     }
+    isHighlighted = false
   }
   
   func tryHandlePress(_ touch: UITouch) {
