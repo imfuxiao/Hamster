@@ -8,6 +8,7 @@
 import Combine
 import HamsterKit
 import HamsterModel
+import OSLog
 import UIKit
 
 /**
@@ -131,7 +132,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         .sink { [weak self] candidates in
           guard let self = self else { return }
 
-          print("self.rimeContext.$suggestions: \(candidates.count)")
+          Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
 
           var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
           snapshot.appendSections([0])

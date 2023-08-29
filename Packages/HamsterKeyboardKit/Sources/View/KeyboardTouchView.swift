@@ -42,15 +42,15 @@ class KeyboardTouchView: UIView {
   /**
    返回视图层次结构（包括其自身）中包含指定 point 的接收者的最远后代。
    */
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    if self.isHidden || self.alpha < 0.01 || !self.isUserInteractionEnabled {
-      return nil
-    }
-    guard bounds.contains(point) else { return nil}
-    return findNearestView(point)
-//    Logger.statistics.debug("hitTest point: \(point.debugDescription), bounds: \(self.bounds.debugDescription)")
-//    return bounds.contains(point) ? self : nil
-  }
+//  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+//    if self.isHidden || self.alpha < 0.01 || !self.isUserInteractionEnabled {
+//      return nil
+//    }
+//    guard bounds.contains(point) else { return nil}
+//    return findNearestView(point)
+////    Logger.statistics.debug("hitTest point: \(point.debugDescription), bounds: \(self.bounds.debugDescription)")
+////    return bounds.contains(point) ? self : nil
+//  }
 
 //
 //  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

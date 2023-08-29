@@ -91,14 +91,14 @@ public class KeyboardButton: UIControl {
   /// 最后一次拖拽的位置
   private var lastDragLocation: CGPoint? = nil
   
-  /// 是否应用 .release 操作
+  /// 是否触发 .release 操作
   /// 注意：
   /// 1. 长按空格状态下不应该触发 release
   /// 2. 在 calloutContext 呼出开始显示的时候，不应触发 release
   private var shouldApplyReleaseAction = true
   
-  /// 在按钮 bounds 外，仍然可以触发 .release 的区域大小的百分比
-  /// 默认为 `0.75`，即把按钮 bounds 的 size 在扩大 这个值
+  /// 在按钮 bounds 外，仍然可以触发 .release 操作的区域大小的百分比
+  /// 默认为 `0.75`，即把按钮 bounds 的 size 在扩大这个值
   /// 注意：这个值需要与滑动的阈值相配合
   private let releaseOutsideTolerance: Double = 0.75
   
@@ -108,7 +108,7 @@ public class KeyboardButton: UIControl {
   
   // MARK: - subview
   
-  // 按钮背景图
+  // 按钮背景
   private lazy var backgroundView: ShapeView = {
     let view = ShapeView()
     return view
@@ -119,6 +119,7 @@ public class KeyboardButton: UIControl {
       calloutContext: calloutContext.input,
       keyboardContext: keyboardContext,
       style: inputCalloutStyle)
+    view.isHidden = true
     return view
   }()
   
@@ -188,9 +189,9 @@ public class KeyboardButton: UIControl {
     
     $isPressed
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [unowned self] isPressed in
         let layoutConfig = layoutConfig
-        updateButtonStyle(layoutConfig)
+        updateButtonStyle(layoutConfig, isPressed: isPressed)
       }
       .store(in: &subscriptions)
   }
@@ -201,7 +202,6 @@ public class KeyboardButton: UIControl {
   }
   
   deinit {
-    print("KeyboardButton deinit()")
     repeatTimer.stop()
   }
   
@@ -251,17 +251,16 @@ public class KeyboardButton: UIControl {
   
   /// 设置 inputCallout 样式
   func setupInputCallout() {
-    guard let superview = superview else { return }
     inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
+    guard inputCalloutView.superview == nil else { return }
+    guard let superview = superview else { return }
     superview.addSubview(inputCalloutView)
-//    insertSubview(inputCalloutView, aboveSubview: buttonContentView)
     NSLayoutConstraint.activate([
       inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 2),
       inputCalloutView.heightAnchor.constraint(equalTo: buttonContentView.heightAnchor, multiplier: 2),
       inputCalloutView.centerXAnchor.constraint(equalTo: buttonContentView.centerXAnchor),
       inputCalloutView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
     ])
-    setNeedsDisplay()
   }
   
   func updateConstraints(_ layoutConfig: KeyboardLayoutConfiguration) {
@@ -279,39 +278,46 @@ public class KeyboardButton: UIControl {
     trailingConstraints.forEach { $0.constant = -insets.right }
   }
   
-  func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration) {
-    let style = buttonStyle
-    
+  func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration, isPressed: Bool) {
+    Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted), isSelected: \(self.isSelected)")
+    let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
     buttonContentView.style = style
-    
+      
     // 按键底部深色样式
     backgroundView.shapeLayer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
     backgroundView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
-    
+      
     // 按键阴影样式
     backgroundView.layer.shadowPath = shadowPath.cgPath
     backgroundView.layer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
-    
+      
     // 按钮样式
     if isPressed {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       backgroundView.shapeLayer.opacity = 0
       // TODO: 按键气泡重新调整
-      // showInputCallout()
+      showInputCallout()
     } else {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       backgroundView.shapeLayer.path = underPath.cgPath
       backgroundView.shapeLayer.opacity = 1
-      // hideInputCallout()
+      hideInputCallout()
     }
   }
   
   override public func layoutSubviews() {
     super.layoutSubviews()
     
+    Logger.statistics.debug("\(self.row)-\(self.column) layoutSubviews()")
+    
     let layoutConfig = layoutConfig
     updateConstraints(layoutConfig)
-    updateButtonStyle(layoutConfig)
+    updateButtonStyle(layoutConfig, isPressed: isPressed)
+    
+    let displayButtonBubbles = keyboardContext.hamsterConfig?.Keyboard?.displayButtonBubbles ?? false
+    if displayButtonBubbles {
+      setupInputCallout()
+    }
   }
   
   // MARK: debuger
@@ -326,24 +332,15 @@ public class KeyboardButton: UIControl {
 
 extension KeyboardButton {
   func showInputCallout() {
-    if !action.isInputAction {
-      return
-    }
-    
-    if action == .space {
-      return
-    }
-
-    inputCalloutView.alpha = 1
-    inputCalloutView.shapeLayer.zPosition = 1000
-    inputCalloutView.label.text = action.inputCalloutText
+    guard action.isInputAction, action != .space else { return }
+    inputCalloutView.isHidden = false
+    inputCalloutView.shapeLayer.zPosition = 9999
+    inputCalloutView.label.text = action.inputCalloutText?.uppercased()
     inputCalloutView.updateStyle()
-    setupInputCallout()
   }
   
   func hideInputCallout() {
-    inputCalloutView.alpha = 0
-    inputCalloutView.removeFromSuperview()
+    inputCalloutView.isHidden = true
   }
 }
 
@@ -351,12 +348,13 @@ extension KeyboardButton {
 
 public extension KeyboardButton {
   // TODO: 如果开启滑动输入则统一在 TouchView 处理手势
+  // 注意： inputMargin 不可见的按钮也需要触发，所以必须重载 hitTest 方法
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     guard bounds.contains(point) else { return nil }
-    Logger.statistics.debug("\(self.row)-\(self.column) button hitTest")
+    Logger.statistics.debug("\(self.row)-\(self.column) button hitTest, bounds: \(self.bounds.debugDescription), point: \(point.debugDescription)")
     return self
   }
-  
+
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesBegan")

@@ -11,6 +11,7 @@ public class InputCalloutView: ShapeView {
   private var calloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
   private let style: KeyboardInputCalloutStyle
+  private var oldBounds: CGRect?
 
   public let label: UILabel = {
     let label = UILabel()
@@ -34,8 +35,7 @@ public class InputCalloutView: ShapeView {
     boardLayer.fillColor = UIColor.clear.cgColor
     boardLayer.strokeColor = style.callout.borderColor.cgColor
     boardLayer.borderWidth = 1
-    boardLayer.zPosition = 1000
-//    boardLayer.opacity = 0.5
+    boardLayer.opacity = 0.5
 //    boardLayer.shadowRadius = style.callout.shadowRadius
 //    boardLayer.shadowColor = style.callout.shadowColor.cgColor
 //    boardLayer.shadowColor = UIColor.red.cgColor
@@ -58,7 +58,7 @@ public class InputCalloutView: ShapeView {
     let leftMinX: CGFloat = 0
     let leftMaxX: CGFloat = width
 
-    let minY = frame.height / 2
+    let minY = keyboardContext.interfaceOrientation.isPortrait ? frame.height / 2 : frame.height / 3
     let maxY = frame.height
 
     // 从按钮右下圆角启始点开始
@@ -74,7 +74,7 @@ public class InputCalloutView: ShapeView {
       endAngle: CGFloat.pi / 2,
       clockwise: true)
 
-    // 底部线
+    // 底部横线
     point = CGPoint(x: leftMaxX + buttonCornerRadius, y: maxY)
     path.addLine(to: point)
 
@@ -87,26 +87,25 @@ public class InputCalloutView: ShapeView {
       endAngle: CGFloat.pi,
       clockwise: true)
 
-    // 右下竖线
+    // 左下竖线
     point = CGPoint(x: leftMaxX, y: maxY - minY / 2)
     path.addLine(to: point)
 
-    // 右侧呼出按键曲线
-    point = CGPoint(x: leftMinX, y: minY)
+    // 左侧呼出曲线
     path.addCurve(
-      to: point,
+      to: CGPoint(x: leftMinX, y: minY),
       controlPoint1: CGPoint(
-        x: leftMinX + (leftMaxX - leftMinX) / 2,
+        x: point.x,
         y: minY + minY / 6),
       controlPoint2: CGPoint(
-        x: leftMinX + (leftMaxX - leftMinX) / 3,
+        x: leftMinX,
         y: minY + minY / 3))
 
-    // 右上竖线
+    // 左上竖线
     point = CGPoint(x: leftMinX, y: buttonCornerRadius)
     path.addLine(to: point)
 
-    // 右上圆角
+    // 左上圆角
     path.addArc(
       withCenter: CGPoint(x: leftMinX + buttonCornerRadius, y: buttonCornerRadius),
       radius: buttonCornerRadius,
@@ -118,7 +117,7 @@ public class InputCalloutView: ShapeView {
     point = CGPoint(x: rightMaxX - buttonCornerRadius, y: 0)
     path.addLine(to: point)
 
-    // 左上圆角
+    // 右上圆角
     point = CGPoint(x: rightMaxX - buttonCornerRadius, y: 0 + buttonCornerRadius)
     path.addArc(
       withCenter: point,
@@ -127,19 +126,18 @@ public class InputCalloutView: ShapeView {
       endAngle: 0,
       clockwise: true)
 
-    // 左上竖线
+    // 右上竖线
     point = CGPoint(x: rightMaxX, y: minY)
     path.addLine(to: point)
 
-    // 左侧曲线，与右侧曲线为对称
-    point = CGPoint(x: rightMinX, y: maxY - minY / 2)
+    // 右侧曲线，与左侧曲线为对称
     path.addCurve(
-      to: point,
+      to: CGPoint(x: rightMinX, y: maxY - minY / 2),
       controlPoint1: CGPoint(
-        x: rightMinX + (leftMaxX - leftMinX) / 3 * 2,
+        x: point.x,
         y: minY + minY / 3),
       controlPoint2: CGPoint(
-        x: rightMinX + (leftMaxX - leftMinX) / 2,
+        x: rightMinX,
         y: minY + minY / 6))
 
     path.close()
@@ -175,6 +173,8 @@ public class InputCalloutView: ShapeView {
   }
 
   func updateStyle() {
+    guard oldBounds != self.bounds else { return }
+    oldBounds = self.bounds
     // callout 按钮 mask
     let calloutPath = calloutPath.cgPath
     maskShapeLayer.path = calloutPath
