@@ -12,7 +12,7 @@ import UIKit
 
 /// 键盘键盘
 public class KeyboardButton: UIControl {
-  typealias ButtonWidth = CGFloat
+  typealias ButtonBounds = CGRect
   
   // MARK: - Properties
   
@@ -60,15 +60,14 @@ public class KeyboardButton: UIControl {
   private var buttonContentView: KeyboardButtonContentView!
   
   /// 按键阴影路径缓存
-  private var shadowPathCache = [ButtonWidth: UIBezierPath]()
+  private var shadowPathCache = [ButtonBounds: UIBezierPath]()
   
   /// 按键 underPath 缓存
-  private var underPathCache = [ButtonWidth: UIBezierPath]()
+  private var underPathCache = [ButtonBounds: UIBezierPath]()
   
   // MARK: - touch state
   
   // 按钮按下状态
-  @Published
   private var isPressed = false
   
   /// 按钮长按开始时间
@@ -106,9 +105,10 @@ public class KeyboardButton: UIControl {
   
   // MARK: - subview
   
-  // 按钮背景
-  private lazy var backgroundView: ShapeView = {
+  // 按钮底部立体阴影视图
+  private lazy var underShadowView: ShapeView = {
     let view = ShapeView()
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
   
@@ -118,6 +118,7 @@ public class KeyboardButton: UIControl {
       keyboardContext: keyboardContext,
       style: inputCalloutStyle)
     view.isHidden = true
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
   
@@ -126,12 +127,12 @@ public class KeyboardButton: UIControl {
   /// 按钮样式
   /// 注意：action 与 是否按下的状态 isPressed 决定按钮样式
   private var buttonStyle: KeyboardButtonStyle {
-    appearance.buttonStyle(for: item.action, isPressed: isPressed)
+    appearance.buttonStyle(for: item.action, isPressed: isHighlighted)
   }
   
   /// 布局配置
   private var layoutConfig: KeyboardLayoutConfiguration {
-    .standard(for: keyboardContext)
+    return .standard(for: keyboardContext)
   }
   
   /// input呼出样式
@@ -209,7 +210,7 @@ public class KeyboardButton: UIControl {
     
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
-    setupBackgroundView(layoutConfig)
+    setupUnderShadowView(layoutConfig)
     updateButtonStyle(layoutConfig, isPressed: false)
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
@@ -229,26 +230,24 @@ public class KeyboardButton: UIControl {
     trailingConstraints.append(buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
   }
   
-  /// 设置按钮背景视图，如底部阴影及暗线
-  func setupBackgroundView(_ layoutConfig: KeyboardLayoutConfiguration) {
+  /// 设置按钮底部阴影及暗线
+  func setupUnderShadowView(_ layoutConfig: KeyboardLayoutConfiguration) {
     // 不变的样式
-    backgroundView.shapeLayer.lineWidth = 1
-    backgroundView.shapeLayer.fillColor = UIColor.clear.cgColor
-    backgroundView.shapeLayer.shadowOpacity = Float(0.2)
-    backgroundView.shapeLayer.masksToBounds = false
+    underShadowView.shapeLayer.lineWidth = 1
+    underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
+    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
+    underShadowView.shapeLayer.masksToBounds = false
     
-    insertSubview(backgroundView, belowSubview: buttonContentView)
-    backgroundView.translatesAutoresizingMaskIntoConstraints = false
+    insertSubview(underShadowView, belowSubview: buttonContentView)
     let insets = layoutConfig.buttonInsets
-    topConstraints.append(backgroundView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
-    bottomConstraints.append(backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
-    leadingConstraints.append(backgroundView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
-    trailingConstraints.append(backgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+    topConstraints.append(underShadowView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
+    bottomConstraints.append(underShadowView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
+    leadingConstraints.append(underShadowView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
+    trailingConstraints.append(underShadowView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
   }
   
   /// 设置 inputCallout 样式
   func setupInputCallout() {
-    inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
     guard inputCalloutView.superview == nil else { return }
     guard let superview = superview else { return }
     superview.addSubview(inputCalloutView)
@@ -281,23 +280,24 @@ public class KeyboardButton: UIControl {
     buttonContentView.style = style
       
     // 按键底部深色样式
-    backgroundView.shapeLayer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
-    backgroundView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
+    // underShadowView.shapeLayer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
+    underShadowView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按键阴影样式
-    backgroundView.layer.shadowPath = shadowPath.cgPath
-    backgroundView.layer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
+    underShadowView.shapeLayer.shadowPath = shadowPath.cgPath
+    underShadowView.shapeLayer.shadowOffset = .init(width: 0, height: 1)
+    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按钮样式
     if isPressed {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
-      backgroundView.shapeLayer.opacity = 0
+      underShadowView.shapeLayer.opacity = 0
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
-      backgroundView.shapeLayer.path = underPath.cgPath
-      backgroundView.shapeLayer.opacity = 1
+      underShadowView.shapeLayer.path = underPath.cgPath
+      underShadowView.shapeLayer.opacity = 0.4
       hideInputCallout()
     }
   }
@@ -637,35 +637,33 @@ extension KeyboardButton {
   
   /// 按钮阴影路径
   var shadowPath: UIBezierPath {
-//    let buttonWidth: ButtonWidth = bounds.width
-    // TODO: 缓存存在问题, UI显示的路径不正确
-//    if let path = shadowPathCache[buttonWidth] {
-//      return path
-//    }
+    // 缓存 Path
+    if let path = shadowPathCache[frame] {
+      return path
+    }
     let shadowSize = buttonStyle.shadow?.size ?? 1
     let rect = CGRect(
       x: 0,
-      y: backgroundView.bounds.height,
-      width: backgroundView.bounds.width,
+      y: underShadowView.bounds.height,
+      width: underShadowView.bounds.width,
       height: shadowSize)
     let path = UIBezierPath(
       roundedRect: rect,
       cornerRadius: shadowSize)
-//    shadowPathCache[buttonWidth] = path
+    shadowPathCache[frame] = path
     return path
   }
 
   /// 按钮底部深色样式路径
   var underPath: UIBezierPath {
-//    let buttonWidth: ButtonWidth = bounds.width
-    // TODO: 缓存存在问题, UI显示的路径不正确
-//    if let path = underPathCache[buttonWidth] {
-//      return path
-//    }
+    // 缓存 PATH
+    if let path = underPathCache[frame] {
+      return path
+    }
     let cornerRadius = cornerRadius
     let delta: CGFloat = 0.5 // 线宽的一半，backgroundView.shapeLayer.lineWidth = 1
-    let maxX = backgroundView.frame.width - delta
-    let maxY = backgroundView.frame.height + delta
+    let maxX = underShadowView.frame.width - delta
+    let maxY = underShadowView.frame.height + delta
     
     // 按钮底部边框
     let underPath: UIBezierPath = {
@@ -689,10 +687,17 @@ extension KeyboardButton {
         clockwise: true)
       return path
     }()
-    
-//    underPathCache[buttonWidth] = underPath
-    
+    underPathCache[frame] = underPath
     return underPath
+  }
+}
+
+extension CGRect: Hashable {
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(origin.x)
+    hasher.combine(origin.y)
+    hasher.combine(size.width)
+    hasher.combine(size.height)
   }
 }
 
