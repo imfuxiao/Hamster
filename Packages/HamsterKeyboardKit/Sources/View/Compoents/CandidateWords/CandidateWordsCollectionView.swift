@@ -171,11 +171,13 @@ public class CandidateWordsCollectionView: UICollectionView {
         self.alwaysBounceHorizontal = true
         self.alwaysBounceVertical = false
       }
+      self.reloadData()
     } else {
       self.setCollectionViewLayout(verticalLayout, animated: false) { _ in
         self.alwaysBounceHorizontal = false
         self.alwaysBounceVertical = true
       }
+      self.reloadData()
     }
   }
 }
