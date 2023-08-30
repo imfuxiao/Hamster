@@ -171,7 +171,7 @@ class KeyboardRootView: UIView {
   // MARK: - Layout
 
   func setupView() {
-    // 开启键盘配色
+//    // 开启键盘配色
     if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
       backgroundColor = keyboardColor.backColor
     } else {
