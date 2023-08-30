@@ -5,6 +5,7 @@
 //  Created by morse on 2023/8/14.
 //
 
+import Combine
 import HamsterKit
 import OSLog
 import UIKit
@@ -60,12 +61,27 @@ class KeyboardRootView: UIView {
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
 
+  private var subscriptions = Set<AnyCancellable>()
+
+  /// 工具栏收起时约束
+  private var toolbarCollapseConstraints = [NSLayoutConstraint]()
+
+  /// 工具栏展开时约束
+  private var toolbarExpandConstraints = [NSLayoutConstraint]()
+
+  /// 工具栏高度约束
+  private var toolbarHeightConstraint: NSLayoutConstraint?
+
+  /// 候选文字视图状态
+  private var candidateViewState: CandidateWordsView.State
+
   // MARK: 计算属性
 
   // MARK: subview
 
   private lazy var toolbarView: KeyboardToolbarView = {
     let view = KeyboardToolbarView(actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -82,6 +98,7 @@ class KeyboardRootView: UIView {
       rimeContext: rimeContext,
       calloutContext: calloutContext
     )
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -157,10 +174,13 @@ class KeyboardRootView: UIView {
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.rimeContext = rimeContext
+    self.candidateViewState = keyboardContext.candidatesViewState
 
     super.init(frame: .zero)
 
     setupView()
+
+    combine()
   }
 
   @available(*, unavailable)
@@ -171,42 +191,60 @@ class KeyboardRootView: UIView {
   // MARK: - Layout
 
   func setupView() {
-//    // 开启键盘配色
+    // 开启键盘配色
     if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
       backgroundColor = keyboardColor.backColor
     } else {
       backgroundColor = .clear
     }
 
-    subviews.forEach { $0.removeFromSuperview() }
+    constructViewHierarchy()
+    activateViewConstraints()
+  }
 
-    // TODO: 添加工具栏
+  /// 构建视图层次
+  func constructViewHierarchy() {
+    let enableToolbar = keyboardContext.hamsterConfig?.toolbar?.enableToolbar ?? true
+    // TODO: 根据当前键盘类型设置
+    let subview = alphabeticKeyboardView
+    if enableToolbar {
+      addSubview(toolbarView)
+      addSubview(subview)
+    } else {
+      addSubview(subview)
+    }
+  }
 
+  /// 激活约束
+  func activateViewConstraints() {
     // TODO: 根据当前键盘类型设置
     let subview = alphabeticKeyboardView
 
-    addSubview(toolbarView)
-    addSubview(subview)
-    toolbarView.translatesAutoresizingMaskIntoConstraints = false
-    subview.translatesAutoresizingMaskIntoConstraints = false
-
     let enableToolbar = keyboardContext.hamsterConfig?.toolbar?.enableToolbar ?? true
-    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
-
     if enableToolbar {
-      NSLayoutConstraint.activate([
-        toolbarView.topAnchor.constraint(equalTo: topAnchor),
+      let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
+      toolbarHeightConstraint = toolbarView.heightAnchor.constraint(equalToConstant: heightOfToolbar)
 
-        // TODO: 动态调整工具栏高度
-        toolbarView.heightAnchor.constraint(equalToConstant: heightOfToolbar),
+      toolbarCollapseConstraints = [
+        toolbarView.topAnchor.constraint(equalTo: topAnchor),
         toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
         toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
 
+        subview.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
         subview.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
         subview.leadingAnchor.constraint(equalTo: leadingAnchor),
         subview.trailingAnchor.constraint(equalTo: trailingAnchor)
-      ])
+      ]
+
+      toolbarExpandConstraints = [
+        toolbarView.topAnchor.constraint(equalTo: topAnchor),
+        toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
+        toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        toolbarView.bottomAnchor.constraint(equalTo: bottomAnchor)
+      ]
+
+      toolbarHeightConstraint?.isActive = true
+      NSLayoutConstraint.activate(keyboardContext.candidatesViewState.isCollapse() ? toolbarCollapseConstraints : toolbarExpandConstraints)
     } else {
       NSLayoutConstraint.activate([
         subview.topAnchor.constraint(equalTo: topAnchor),
@@ -214,6 +252,49 @@ class KeyboardRootView: UIView {
         subview.leadingAnchor.constraint(equalTo: leadingAnchor),
         subview.trailingAnchor.constraint(equalTo: trailingAnchor)
       ])
+    }
+  }
+
+  func combine() {
+    // 调节候选栏区域
+    if keyboardContext.hamsterConfig?.toolbar?.enableToolbar ?? true {
+      keyboardContext.candidatesViewStatePublished
+        .receive(on: DispatchQueue.main)
+        .sink { [unowned self] _ in
+          setNeedsLayout()
+          layoutIfNeeded()
+        }
+        .store(in: &subscriptions)
+    }
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    let enableToolbar = keyboardContext.hamsterConfig?.toolbar?.enableToolbar ?? true
+    guard enableToolbar else { return }
+
+    // 候选文字视图状态如果改变，则需要重新调整布局
+    guard candidateViewState != keyboardContext.candidatesViewState else { return }
+    Logger.statistics.debug("KeyboardRootView layoutSubviews()")
+
+    candidateViewState = keyboardContext.candidatesViewState
+
+    // TODO: 根据当前键盘类型设置
+    let subview = alphabeticKeyboardView
+    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
+    let subviewHeight = subview.bounds.height
+
+    if candidateViewState.isCollapse() {
+      addSubview(subview)
+      toolbarHeightConstraint?.constant = heightOfToolbar
+      NSLayoutConstraint.deactivate(toolbarExpandConstraints)
+      NSLayoutConstraint.activate(toolbarCollapseConstraints)
+    } else {
+      subview.removeFromSuperview()
+      NSLayoutConstraint.deactivate(toolbarCollapseConstraints)
+      NSLayoutConstraint.activate(toolbarExpandConstraints)
+      toolbarHeightConstraint?.constant = subviewHeight + heightOfToolbar
     }
   }
 }

@@ -28,6 +28,9 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// 水平滚动方向布局
   let horizontalLayout: UICollectionViewLayout
 
+  /// 垂直滚动方向布局
+  let verticalLayout: UICollectionViewLayout
+
   /// Combine
   var subscriptions = Set<AnyCancellable>()
 
@@ -36,24 +39,18 @@ public class CandidateWordsCollectionView: UICollectionView {
   init(
     keyboardContext: KeyboardContext,
     actionHandler: KeyboardActionHandler,
-    rimeContext: RimeContext,
-    direction: UICollectionView.ScrollDirection = .horizontal
+    rimeContext: RimeContext
   ) {
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     self.rimeContext = rimeContext
-    self.direction = direction
+    self.direction = .horizontal
 
     self.horizontalLayout = {
       let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
       let item = NSCollectionLayoutItem(layoutSize: itemSize)
       let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
-      let group: NSCollectionLayoutGroup
-      if #available(iOS 16.0, *) {
-        group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 1)
-      } else {
-        group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-      }
+      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
       let section = NSCollectionLayoutSection(group: group)
       // 控制水平方向 item 之间间距
       // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
@@ -62,6 +59,20 @@ public class CandidateWordsCollectionView: UICollectionView {
       // 控制垂直方向距拼写区的间距
       // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
       // section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+      return UICollectionViewCompositionalLayout(section: section)
+    }()
+
+    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
+    let heightOfCodingArea = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
+
+    self.verticalLayout = {
+      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
+      let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+      let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(heightOfToolbar - heightOfCodingArea))
+      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+      let section = NSCollectionLayoutSection(group: group)
       return UICollectionViewCompositionalLayout(section: section)
     }()
 
@@ -143,7 +154,28 @@ public class CandidateWordsCollectionView: UICollectionView {
             self.collectionViewLayout.invalidateLayout(with: invalidateContext)
           }
         }
-        .store(in: &self.subscriptions)
+        .store(in: &subscriptions)
+    }
+
+    keyboardContext.$candidatesViewState
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] state in
+        changeLayout(state)
+      }
+      .store(in: &subscriptions)
+  }
+
+  func changeLayout(_ state: CandidateWordsView.State) {
+    if state.isCollapse() {
+      self.setCollectionViewLayout(horizontalLayout, animated: false) { _ in
+        self.alwaysBounceHorizontal = true
+        self.alwaysBounceVertical = false
+      }
+    } else {
+      self.setCollectionViewLayout(verticalLayout, animated: false) { _ in
+        self.alwaysBounceHorizontal = false
+        self.alwaysBounceVertical = true
+      }
     }
   }
 }
@@ -157,11 +189,11 @@ extension CandidateWordsCollectionView: UICollectionViewDelegate {
       actionHandler.handle(.press, on: .none)
       if let text = await self.rimeContext.selectCandidate(index: indexPath.item) {
         keyboardContext.textDocumentProxy.insertText(text)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-          self.rimeContext.reset()
-        }
+        self.rimeContext.reset()
+        keyboardContext.candidatesViewState = .collapse
       } else {
-        collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
+        collectionView.contentOffset.x = .zero
+        collectionView.contentOffset.y = .zero
       }
     }
   }

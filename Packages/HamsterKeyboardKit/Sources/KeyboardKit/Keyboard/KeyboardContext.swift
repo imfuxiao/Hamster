@@ -247,10 +247,22 @@ public class KeyboardContext: ObservableObject {
   /**
    仓输入法配置
    */
-  public var hamsterConfig: HamsterConfiguration? = nil
+  public var hamsterConfig: HamsterConfiguration? = nil {
+    didSet {
+      cacheHamsterKeyboardColor = nil
+    }
+  }
 
-  // 输入法配色方案缓存
+  /// 输入法配色方案缓存
+  /// 为计算属性 `hamsterKeyboardColor` 提供缓存
   private var cacheHamsterKeyboardColor: HamsterModel.KeyboardColor?
+
+  /// 候选区域状态
+  @Published
+  public var candidatesViewState: CandidateWordsView.State = .collapse
+  public var candidatesViewStatePublished: AnyPublisher<CandidateWordsView.State, Never> {
+    $candidatesViewState.eraseToAnyPublisher()
+  }
 
   /**
    Create a context instance.

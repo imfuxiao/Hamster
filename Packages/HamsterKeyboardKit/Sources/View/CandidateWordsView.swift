@@ -12,13 +12,17 @@ import UIKit
 /**
  候选文字视图
  */
-class CandidateWordsView: UIView {
+public class CandidateWordsView: UIView {
   /// 候选区状态
-  enum State {
+  public enum State {
     /// 展开
     case expand
     /// 收起
     case collapse
+
+    func isCollapse() -> Bool {
+      return self == .collapse
+    }
   }
 
   private var actionHandler: KeyboardActionHandler
@@ -27,11 +31,7 @@ class CandidateWordsView: UIView {
 
   private var subscription = Set<AnyCancellable>()
 
-  private var state: State = .collapse {
-    didSet {
-      stateImageView.image = stateImage
-    }
-  }
+  private var dynamicControlStateHeightConstraint: NSLayoutConstraint?
 
   /// 拼音区域
   lazy var phoneticArea: UILabel = {
@@ -56,8 +56,7 @@ class CandidateWordsView: UIView {
     let view = CandidateWordsCollectionView(
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
-      rimeContext: rimeContext,
-      direction: .horizontal)
+      rimeContext: rimeContext)
     return view
   }()
 
@@ -97,7 +96,7 @@ class CandidateWordsView: UIView {
     let view = UIImageView(frame: .zero)
     view.contentMode = .center
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.image = stateImage
+    view.image = stateImage(.collapse)
 
     if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
       view.tintColor = keyboardColor.candidateTextColor
@@ -108,17 +107,15 @@ class CandidateWordsView: UIView {
     return view
   }()
 
-  // 状态图片
-  var stateImage: UIImage? {
-    let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
-    return state == .collapse
-      ? UIImage(systemName: "chevron.down", withConfiguration: config)
-      : UIImage(systemName: "chevron.up", withConfiguration: config)
-  }
-
   /// 布局配置
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
+  }
+
+  private var controlStateHeightConstraint: NSLayoutConstraint {
+    keyboardContext.candidatesViewState.isCollapse()
+      ? controlStateView.heightAnchor.constraint(equalTo: candidatesArea.heightAnchor)
+      : controlStateView.heightAnchor.constraint(equalToConstant: 50)
   }
 
   init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
@@ -155,36 +152,25 @@ class CandidateWordsView: UIView {
     let buttonInsets = layoutConfig.buttonInsets
     let codingAreaHeight = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
 
-    if keyboardContext.hamsterConfig?.toolbar?.displayKeyboardDismissButton ?? true {
-      NSLayoutConstraint.activate([
-        phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
-        phoneticArea.topAnchor.constraint(equalTo: topAnchor),
-        phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
+    let controlStateHeightConstraint = controlStateHeightConstraint
+    dynamicControlStateHeightConstraint = controlStateHeightConstraint
 
-        candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
-        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
+    NSLayoutConstraint.activate([
+      phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
+      phoneticArea.topAnchor.constraint(equalTo: topAnchor),
+      phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+      phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
 
-        controlStateView.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
-        controlStateView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
-        controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      ])
-    } else {
-      NSLayoutConstraint.activate([
-        phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
-        phoneticArea.topAnchor.constraint(equalTo: topAnchor),
-        phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
+      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
+      candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
+      candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+      candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
 
-        candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
-        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        candidatesArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
-      ])
-    }
+      controlStateView.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
+      controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      controlStateHeightConstraint,
+      controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
+    ])
   }
 
   func setupContentView() {
@@ -202,15 +188,29 @@ class CandidateWordsView: UIView {
         }
         .store(in: &subscription)
     }
+
+    keyboardContext.$candidatesViewState
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] state in
+        stateImageView.image = stateImage(state)
+        controlStateView.layer.shadowOpacity = state.isCollapse() ? 0.3 : 0
+        if let dynamicControlStateHeightConstraint = dynamicControlStateHeightConstraint {
+          NSLayoutConstraint.deactivate([dynamicControlStateHeightConstraint])
+          self.dynamicControlStateHeightConstraint = controlStateHeightConstraint
+          NSLayoutConstraint.activate([self.dynamicControlStateHeightConstraint!])
+        }
+      }.store(in: &subscription)
   }
 
   @objc func changeState() {
-    state = state == .collapse ? .expand : .collapse
+    keyboardContext.candidatesViewState = keyboardContext.candidatesViewState.isCollapse() ? .expand : .collapse
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    activateViewConstraints()
+  // 状态图片
+  func stateImage(_ state: State) -> UIImage? {
+    let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
+    return state == .collapse
+      ? UIImage(systemName: "chevron.down", withConfiguration: config)
+      : UIImage(systemName: "chevron.up", withConfiguration: config)
   }
 }
