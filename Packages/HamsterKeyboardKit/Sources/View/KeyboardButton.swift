@@ -239,11 +239,12 @@ public class KeyboardButton: UIControl {
     underShadowView.shapeLayer.masksToBounds = false
     
     insertSubview(underShadowView, belowSubview: buttonContentView)
-    let insets = layoutConfig.buttonInsets
-    topConstraints.append(underShadowView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
-    bottomConstraints.append(underShadowView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
-    leadingConstraints.append(underShadowView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
-    trailingConstraints.append(underShadowView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+    NSLayoutConstraint.activate([
+      underShadowView.topAnchor.constraint(equalTo: buttonContentView.topAnchor),
+      underShadowView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
+      underShadowView.leadingAnchor.constraint(equalTo: buttonContentView.leadingAnchor),
+      underShadowView.trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor),
+    ])
   }
   
   /// 设置 inputCallout 样式
@@ -284,9 +285,9 @@ public class KeyboardButton: UIControl {
     underShadowView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按键阴影样式
-    underShadowView.shapeLayer.shadowPath = shadowPath.cgPath
-    underShadowView.shapeLayer.shadowOffset = .init(width: 0, height: 1)
-    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
+//    underShadowView.shapeLayer.shadowPath = shadowPath.cgPath
+//    underShadowView.shapeLayer.shadowOffset = .init(width: 0, height: 1)
+//    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按钮样式
     if isPressed {
@@ -657,9 +658,9 @@ extension KeyboardButton {
   /// 按钮底部深色样式路径
   var underPath: UIBezierPath {
     // 缓存 PATH
-    if let path = underPathCache[frame] {
-      return path
-    }
+//    if let path = underPathCache[frame] {
+//      return path
+//    }
     let cornerRadius = cornerRadius
     let delta: CGFloat = 0.5 // 线宽的一半，backgroundView.shapeLayer.lineWidth = 1
     let maxX = underShadowView.frame.width - delta
@@ -687,7 +688,7 @@ extension KeyboardButton {
         clockwise: true)
       return path
     }()
-    underPathCache[frame] = underPath
+//    underPathCache[frame] = underPath
     return underPath
   }
 }

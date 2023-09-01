@@ -485,7 +485,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func selectNextKeyboard() {
-    keyboardContext.selectNextLocale()
+    advanceToNextInputMode()
   }
 
   open func selectNextLocale() {

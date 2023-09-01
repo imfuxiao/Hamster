@@ -5,8 +5,9 @@
 # 必须值
 # backspace: 删除键
 # character(value): 文本字符按键, value 是对应的输入文本
-# characterMargin(value): 空白占位字符，不显示(所以会忽略 label)，但点击会输出里面定义的 value, 如 A键 L键两侧.
+# characterMargin(value): 空白占位字符，不显示(所以会忽略 label)，但点击会输出里面定义的 value, 如 iPhone 键盘 A 键 与 L 键两侧的占位.
 #                         注意： characterMargin 类型的宽度固定为 available
+# none: 占位字符， 不显示，且点击无反映，只是单纯做为占位使用
 # keyboardType(KeyboardType): 键盘切换键，里面的 KeyboardType 包含 alphabetic/numeric/symbolic/chinese(name) 三种类型
 # return: 回车键
 # shift：shift键, 默认为小写

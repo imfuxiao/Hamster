@@ -209,12 +209,8 @@ private extension KeyboardLayoutItemRow {
     let totalRefPercentage = reduce(0) { $0 + $1.inputPercentageFactor }
 
     // 为 .input 类型计算宽度
-    // 分子分母都* 10 用于小数点精确1位
+    // 分子分母都 * UIScreen.main.scale 用于精确小数点位数
     return CGFloat.rounded(remaining / totalRefPercentage)
-  }
-
-  private func rounded(_ measurement: CGFloat) -> CGFloat {
-    return (measurement * UIScreen.main.scale) / UIScreen.main.scale
   }
 }
 

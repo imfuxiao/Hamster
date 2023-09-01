@@ -33,7 +33,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
   private var touchView = KeyboardTouchView()
 
-  private let keyboardLayoutProvider: KeyboardLayoutProvider
+  private var layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
@@ -45,7 +45,7 @@ public class StanderAlphabeticKeyboard: UIView {
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
-  private var currentKeyboardType: KeyboardType
+  private var currentKeyboardType: KeyboardType?
 
   /// 行中按键宽度类型为 input 的最大数量
   /// 注意：按行统计
@@ -64,10 +64,6 @@ public class StanderAlphabeticKeyboard: UIView {
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - 计算属性
-
-  private var layout: KeyboardLayout {
-    keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
-  }
 
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
@@ -96,7 +92,7 @@ public class StanderAlphabeticKeyboard: UIView {
    the full button view for every layout item.
 
    - Parameters:
-     - keyboardLayoutProvider: The keyboard layout provider.
+     - KeyboardLayout: The keyboard layout.
      - appearance: The keyboard appearance to use.
      - actionHandler: The action handler to use.
      - autocompleteContext: The autocomplete context to use.
@@ -106,7 +102,7 @@ public class StanderAlphabeticKeyboard: UIView {
      - calloutContext: The callout context to use.
    */
   public init(
-    keyboardLayoutProvider: KeyboardLayoutProvider,
+    layout: KeyboardLayout,
     appearance: KeyboardAppearance,
     actionHandler: KeyboardActionHandler,
     autocompleteContext: AutocompleteContext,
@@ -116,7 +112,7 @@ public class StanderAlphabeticKeyboard: UIView {
     rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext?
   ) {
-    self.keyboardLayoutProvider = keyboardLayoutProvider
+    self.layout = layout
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.autocompleteToolbarMode = autocompleteToolbar
@@ -128,7 +124,7 @@ public class StanderAlphabeticKeyboard: UIView {
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.interfaceOrientation = keyboardContext.interfaceOrientation
-    self.currentKeyboardType = keyboardContext.keyboardType
+//    self.currentKeyboardType = keyboardContext.keyboardType
 
     super.init(frame: .zero)
 
@@ -198,28 +194,40 @@ public class StanderAlphabeticKeyboard: UIView {
     let layoutConfig = layoutConfig
 
     // input 宽度类型的宽度约束乘法系数
-    let inputMultiplier = CGFloat.rounded(1 / CGFloat(maxInputButtonCount))
+    // let inputMultiplier = CGFloat.rounded(1 / CGFloat(maxInputButtonCount))
+//    let inputWidth = layout.inputWidth(for: bounds.width)
+    var firstInputButton: KeyboardButton? = nil
 
     // 为按键不同宽度类型生成约束
     // 注意:
     // 1. 当行中 .available 类型按键数量等于 1 时，不需要添加宽度约束
     // 2. 当行中 .available 类型按键数量大于 1 的情况下，需要在行遍历结束后添加等宽约束。即同一行中的所有 .available 类型的宽度相同
-    let inputWidthOfConstraint: (KeyboardButton) -> NSLayoutConstraint? = { [unowned self] in
-      switch $0.item.size.width {
-      case .available: return nil
+    let inputWidthOfConstraint = { [unowned self] (_ button: KeyboardButton) -> NSLayoutConstraint? in
+      var constraint: NSLayoutConstraint? = nil
+      switch button.item.size.width {
       case .input:
-        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: inputMultiplier)
+        if let firstInputButton = firstInputButton, firstInputButton != button {
+          constraint = button.widthAnchor.constraint(equalTo: firstInputButton.widthAnchor)
+        }
       case .inputPercentage(let percent):
-        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: inputMultiplier * percent)
+        if let firstInputButton = firstInputButton {
+          constraint = button.widthAnchor.constraint(equalTo: firstInputButton.widthAnchor, multiplier: percent)
+        }
       case .percentage(let percent):
-        return $0.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: percent)
+        constraint = button.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: percent)
       case .points(let points):
-        return $0.widthAnchor.constraint(equalToConstant: points)
+        constraint = button.widthAnchor.constraint(equalToConstant: points)
+      default:
+        break
       }
+      return constraint
     }
 
     for row in keyboardRows {
       for button in row {
+        if firstInputButton == nil && button.item.size.width == .input {
+          firstInputButton = button
+        }
         // 按键高度约束（高度包含 insets 部分）
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
@@ -229,7 +237,7 @@ public class StanderAlphabeticKeyboard: UIView {
 
         // 按键宽度约束
         // 注意：.available 类型宽度在行遍历结束后添加
-        if !button.isSpacer, let constraint = inputWidthOfConstraint(button) {
+        if let constraint = inputWidthOfConstraint(button) {
           staticConstraints.append(constraint)
         } else {
           // 注意：available 类型按键宽度在 input 类型宽度约束在行遍历后添加
@@ -263,6 +271,7 @@ public class StanderAlphabeticKeyboard: UIView {
           if button.column + 1 == row.endIndex {
             // 最后一列按键添加相对行的 trailing 约束
             staticConstraints.append(button.trailingAnchor.constraint(equalTo: touchView.trailingAnchor))
+//            staticConstraints.append(button.trailingAnchor.constraint(lessThanOrEqualTo: touchView.trailingAnchor))
 
             // 修改上一行 prevRowItem 变量引用
             prevRowItem = button
@@ -279,8 +288,8 @@ public class StanderAlphabeticKeyboard: UIView {
         for item in availableItems.dropFirst() {
           staticConstraints.append(item.widthAnchor.constraint(equalTo: firstItem.widthAnchor))
         }
-        availableItems.removeAll()
       }
+      availableItems.removeAll()
     }
 
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
@@ -289,8 +298,7 @@ public class StanderAlphabeticKeyboard: UIView {
   func setupKeyboardView() {
     backgroundColor = .clear
 
-    constructViewHierarchy()
-    activateViewConstraints()
+//    constructViewHierarchy()
 
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
