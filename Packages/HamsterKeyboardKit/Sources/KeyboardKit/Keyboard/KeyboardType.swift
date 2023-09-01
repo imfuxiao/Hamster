@@ -104,6 +104,16 @@ public enum KeyboardType: Codable, Equatable, Identifiable {
    `.custom` 可用来表示键盘应使用完全自定义的类型。
    */
   case custom(named: String)
+
+  /**
+   中文键盘类型
+   */
+  case chinese(named: String)
+
+  /**
+   分类符号键盘
+   */
+  case classifySymbolic
 }
 
 public extension KeyboardType {
@@ -121,6 +131,8 @@ public extension KeyboardType {
     case .emojis: return "emojis"
     case .images: return "images"
     case .custom(let name): return name
+    case .chinese(let name): return "chinese_\(name)"
+    case .classifySymbolic: return "classifySymbolic"
     }
   }
 
@@ -133,6 +145,15 @@ public extension KeyboardType {
     switch self {
     case .alphabetic: return true
     default: return false
+    }
+  }
+
+  /// 是否中文键盘
+  var isChinese: Bool {
+    switch self {
+    case .chinese: return true
+    default:
+      return false
     }
   }
 

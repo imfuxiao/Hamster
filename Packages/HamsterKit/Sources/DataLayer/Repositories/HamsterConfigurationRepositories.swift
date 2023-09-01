@@ -23,14 +23,18 @@ public class HamsterConfigurationRepositories {
 
   /// 加载 hamster.yaml 配置文件
   public func loadFromYAML(yamlPath path: URL) async throws -> HamsterConfiguration {
-    let str = try String(contentsOf: path, encoding: .utf8)
-    return try YAMLDecoder().decode(HamsterConfiguration.self, from: Data(str.utf8))
+//    let str = try String(contentsOf: path, encoding: .utf8)
+//    return try YAMLDecoder().decode(HamsterConfiguration.self, from: Data(str.utf8))
+    let data = try Data(contentsOf: path)
+    return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 加载 hamster.custom.yaml 文件
   public func loadPatchFromYAML(yamlPath path: URL) async throws -> HamsterPatchConfiguration {
-    let str = try String(contentsOf: path, encoding: .utf8)
-    return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: Data(str.utf8))
+//    let str = try String(contentsOf: path, encoding: .utf8)
+//    return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: Data(str.utf8))
+    let data = try Data(contentsOf: path)
+    return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: data)
   }
 
   /// 保存配置至 yaml 文件中

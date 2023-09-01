@@ -204,6 +204,16 @@ public extension KeyboardAction {
     default: return false
     }
   }
+  
+  /**
+   显示按键气泡
+   */
+  var showKeyBubble: Bool {
+    switch self {
+    case .character: return true
+    default: return false
+    }
+  }
     
   /**
    Whether or not the action is a primary action.

@@ -45,6 +45,8 @@ public extension KeyboardType {
     case .emojis: return false
     case .images: return false
     case .custom: return true
+    case .chinese: return true
+    case .classifySymbolic: return true
     }
   }
 }

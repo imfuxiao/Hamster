@@ -331,7 +331,7 @@ extension KeyboardButton {
   func showInputCallout() {
     // 屏幕横向无按键气泡
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
-    guard action.isInputAction, action != .space else { return }
+    guard action.showKeyBubble else { return }
     inputCalloutView.isHidden = false
     inputCalloutView.shapeLayer.zPosition = 9999
     inputCalloutView.label.text = action.inputCalloutText?.uppercased()

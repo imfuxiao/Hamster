@@ -14,7 +14,7 @@ import CoreGraphics
  
  该枚举描述了在键盘布局调整 item 的大小的各种方式。
  */
-public indirect enum KeyboardLayoutItemWidth: Equatable {
+public indirect enum KeyboardLayoutItemWidth: Equatable, Codable {
   /**
    Share the remaining width with other `.available` width
    items on the same row.
