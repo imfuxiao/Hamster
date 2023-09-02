@@ -15,7 +15,7 @@ import Foundation
 
  该 provider 通过本地化提供程序集合进行初始化，并将使用与所提供的 ``KeyboardContext`` 具有相同本地化设置的 provider。
  */
-open class StandardInputSetProvider: InputSetProvider {
+open class StandardInputSetProvider: InputSetProviderProxy {
   /**
    The keyboard context to use.
 
@@ -23,12 +23,8 @@ open class StandardInputSetProvider: InputSetProvider {
    */
   public let keyboardContext: KeyboardContext
 
-  /**
-   ``InputSetProvider`` instances.
-
-   ``InputSetProvider`` 实例。
-   */
-  public let provider: InputSetProvider
+  public let englishProvider = EnglishInputSetProvider()
+  public let chineseProvider = ChineseInputSetProvider()
 
   /**
    Create a standard provider.
@@ -38,11 +34,9 @@ open class StandardInputSetProvider: InputSetProvider {
       - provider: ``InputSetProvider`` instances, by default only `English`.
    */
   public init(
-    keyboardContext: KeyboardContext,
-    provider: InputSetProvider = EnglishInputSetProvider()
+    keyboardContext: KeyboardContext
   ) {
     self.keyboardContext = keyboardContext
-    self.provider = provider
   }
 
   /**
@@ -51,7 +45,7 @@ open class StandardInputSetProvider: InputSetProvider {
    用于特定键盘上下文的 provider。
    */
   open func provider(for context: KeyboardContext) -> InputSetProvider {
-    provider
+    context.keyboardType.isChinese ? chineseProvider : englishProvider
   }
 
   /**

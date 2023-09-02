@@ -104,7 +104,7 @@ extension CustomizeKeyboardTest {
     # display: BOOL 是否显示, 默认值为 true。
 
     keyboards:
-      - type: chinese(26)
+      - type: custom(26)
         name: "中文26键"
         rows:
           - keys:

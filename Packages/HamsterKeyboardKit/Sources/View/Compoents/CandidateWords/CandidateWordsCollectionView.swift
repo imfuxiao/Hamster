@@ -105,18 +105,11 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   /// 构建数据源
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, CandidateSuggestion> {
-    var keyboardColor: HamsterModel.KeyboardColor? = nil
+    let keyboardColor: HamsterModel.KeyboardColor? = keyboardContext.keyboardColor
     let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
     let titleFontSize = toolbarConfig?.candidateWordFontSize
     let subtileFontSize = toolbarConfig?.candidateCommentFontSize
-
-    // 开启键盘配色
-    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false,
-       let color = keyboardContext.hamsterKeyboardColor
-    {
-      keyboardColor = color
-    }
 
     let candidateWordCellRegistration = UICollectionView.CellRegistration<CandidateWordCell, CandidateSuggestion>
     { cell, _, candidateSuggestion in

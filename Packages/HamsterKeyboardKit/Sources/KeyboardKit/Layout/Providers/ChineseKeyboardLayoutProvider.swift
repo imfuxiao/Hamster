@@ -1,31 +1,27 @@
 //
-//  EnglishKeyboardLayoutProvider.swift
-//  KeyboardKit
+//  File.swift
 //
-//  Created by Daniel Saidi on 2022-12-29.
-//  Copyright © 2022-2023 Daniel Saidi. All rights reserved.
+//
+//  Created by morse on 2023/9/2.
 //
 
 import Foundation
 
 /**
- This keyboard layout provider implementation can be used to
- create standard English keyboard layouts.
-
- 此键盘布局提供程序可用于创建标准的英文键盘布局。
+ 此键盘布局 Provider 可用于创建标准的中文键盘布局。
  */
-open class EnglishKeyboardLayoutProvider: SystemKeyboardLayoutProvider, KeyboardLayoutProviderProxy {
+open class ChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider, KeyboardLayoutProviderProxy {
   /**
    The layout provider to use for iPad devices.
    */
-  public lazy var iPadProvider = iPadKeyboardLayoutProvider(
+  public lazy var iPadProvider = iPadChineseKeyboardLayoutProvider(
     inputSetProvider: inputSetProvider
   )
 
   /**
    The layout provider to use for iPhone devices.
    */
-  public lazy var iPhoneProvider = iPhoneKeyboardLayoutProvider(
+  public lazy var iPhoneProvider = iPhoneChineseKeyboardLayoutProvider(
     inputSetProvider: inputSetProvider
   )
 
@@ -35,9 +31,7 @@ open class EnglishKeyboardLayoutProvider: SystemKeyboardLayoutProvider, Keyboard
    - Parameters:
      - inputSetProvider: The input set provider to use, by default ``EnglishInputSetProvider``.
    */
-  override public init(
-    inputSetProvider: InputSetProvider = EnglishInputSetProvider()
-  ) {
+  override public init(inputSetProvider: InputSetProvider = ChineseInputSetProvider()) {
     super.init(inputSetProvider: inputSetProvider)
   }
 
@@ -45,8 +39,7 @@ open class EnglishKeyboardLayoutProvider: SystemKeyboardLayoutProvider, Keyboard
    The layout keyboard to use for a given keyboard context.
    */
   override open func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
-    keyboardLayoutProvider(for: context)
-      .keyboardLayout(for: context)
+    keyboardLayoutProvider(for: context).keyboardLayout(for: context)
   }
 
   /**

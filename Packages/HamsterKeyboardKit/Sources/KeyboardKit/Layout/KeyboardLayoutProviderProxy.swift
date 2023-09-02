@@ -24,6 +24,8 @@ import Foundation
 public protocol KeyboardLayoutProviderProxy: KeyboardLayoutProvider {
   /**
    The keyboard layout provider to use for a given context.
+
+   在给定上下文中使用的键盘布局提供程序。
    */
   func keyboardLayoutProvider(for context: KeyboardContext) -> KeyboardLayoutProvider
 }

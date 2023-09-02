@@ -106,9 +106,25 @@ public enum KeyboardType: Codable, Equatable, Identifiable {
   case custom(named: String)
 
   /**
-   中文键盘类型
+   中文全键盘
    */
-  case chinese(named: String)
+  case chinese(KeyboardCase)
+
+  /// 中文数字全键
+  case chineseNumeric
+
+  /// 中文符号全键
+  case chineseSymbolic
+
+  /**
+   中文九宫格
+   */
+  case chineseNineGrid
+
+  /**
+   数字九宫格
+   */
+  case numericNineGrid
 
   /**
    分类符号键盘
@@ -131,8 +147,12 @@ public extension KeyboardType {
     case .emojis: return "emojis"
     case .images: return "images"
     case .custom(let name): return name
-    case .chinese(let name): return "chinese_\(name)"
+    case .chinese: return "chinese"
+    case .chineseNineGrid: return "chineseNineGrid"
+    case .numericNineGrid: return "numericNineGrid"
     case .classifySymbolic: return "classifySymbolic"
+    case .chineseNumeric: return "chineseNumeric"
+    case .chineseSymbolic: return "chineseSymbolic"
     }
   }
 
@@ -150,6 +170,18 @@ public extension KeyboardType {
 
   /// 是否中文键盘
   var isChinese: Bool {
+    switch self {
+    case .chinese: return true
+    case .chineseNineGrid: return true
+    case .chineseNumeric: return true
+    case .chineseSymbolic: return true
+    default:
+      return false
+    }
+  }
+
+  /// 是否是中文主键盘（即输入中文的键盘，不包含数字及符号）
+  var isChinesePrimaryKeyboard: Bool {
     switch self {
     case .chinese: return true
     default:

@@ -155,14 +155,14 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     triggerFeedback(for: gesture, on: action)
     tryUpdateSpaceDragState(for: gesture, on: action)
     guard let gestureAction = self.action(for: gesture, on: action) else { return }
-    tryRemoveAutocompleteInsertedSpace(before: gesture, on: action)
-    tryApplyAutocompleteSuggestion(before: gesture, on: action)
+    // tryRemoveAutocompleteInsertedSpace(before: gesture, on: action)
+    // tryApplyAutocompleteSuggestion(before: gesture, on: action)
     gestureAction(keyboardController)
-    tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
-    tryEndSentence(after: gesture, on: action)
+    // tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
+    // tryEndSentence(after: gesture, on: action)
     tryChangeKeyboardType(after: gesture, on: action)
     tryRegisterEmoji(after: gesture, on: action)
-    keyboardController?.performAutocomplete()
+    // keyboardController?.performAutocomplete()
     keyboardController?.performTextContextSync()
   }
 

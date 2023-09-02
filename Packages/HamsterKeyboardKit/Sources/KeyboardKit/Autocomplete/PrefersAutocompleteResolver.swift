@@ -46,7 +46,11 @@ public extension KeyboardType {
     case .images: return false
     case .custom: return true
     case .chinese: return true
+    case .chineseNineGrid: return true
     case .classifySymbolic: return true
+    case .numericNineGrid: return true
+    case .chineseNumeric: return true
+    case .chineseSymbolic: return true
     }
   }
 }

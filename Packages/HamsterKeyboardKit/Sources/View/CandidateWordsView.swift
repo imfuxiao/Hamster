@@ -42,12 +42,7 @@ public class CandidateWordsView: UIView {
     if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
       label.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
     }
-
-    // 开启键盘配色
-    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
-      label.textColor = keyboardColor.textColor
-    }
-
+    label.textColor = keyboardContext.phoneticTextColor
     return label
   }()
 
@@ -97,13 +92,7 @@ public class CandidateWordsView: UIView {
     view.contentMode = .center
     view.translatesAutoresizingMaskIntoConstraints = false
     view.image = stateImage(.collapse)
-
-    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
-      view.tintColor = keyboardColor.candidateTextColor
-    } else {
-      view.tintColor = .label
-    }
-
+    view.tintColor = keyboardContext.candidateTextColor
     return view
   }()
 

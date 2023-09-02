@@ -37,9 +37,9 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
-  public var autoLowerCaseOfKeyboard: Bool {
+  public var lockShiftState: Bool {
     didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.autoLowerCaseOfKeyboard = autoLowerCaseOfKeyboard
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState = lockShiftState
     }
   }
 
@@ -213,11 +213,11 @@ public class KeyboardSettingsViewModel: ObservableObject {
             enableEmbeddedInputMode = $0
           }),
         .init(
-          text: "Shift自动转小写",
+          text: "Shift状态锁定",
           type: .toggle,
-          toggleValue: autoLowerCaseOfKeyboard,
+          toggleValue: lockShiftState,
           toggleHandled: { [unowned self] in
-            autoLowerCaseOfKeyboard = $0
+            lockShiftState = $0
           })
       ]),
     .init(
@@ -517,7 +517,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
   public init(configuration: HamsterConfiguration) {
     self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
     self.displayKeyboardDismissButton = configuration.toolbar?.displayKeyboardDismissButton ?? true
-    self.autoLowerCaseOfKeyboard = configuration.Keyboard?.autoLowerCaseOfKeyboard ?? false
+    self.lockShiftState = configuration.Keyboard?.lockShiftState ?? true
     self.displaySpaceLeftButton = configuration.Keyboard?.displaySpaceLeftButton ?? true
     self.keyValueOfSpaceLeftButton = configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ","
     self.displaySpaceRightButton = configuration.Keyboard?.displaySpaceRightButton ?? false

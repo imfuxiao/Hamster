@@ -30,10 +30,19 @@ public extension KeyboardType {
    */
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
-    case .alphabetic: return KKL10n.keyboardTypeAlphabetic.text(for: context)
-    case .numeric: return KKL10n.keyboardTypeNumeric.text(for: context)
-    case .symbolic: return KKL10n.keyboardTypeSymbolic.text(for: context)
+    case .chinese: return "中"
+    case .chineseNineGrid: return "中"
+    case .classifySymbolic: return "符"
+    case .alphabetic: return "英"
+    case .numeric: return "123"
+    case .numericNineGrid: return "123"
+    case .chineseNumeric: return "123"
+    case .symbolic: return "#+="
+    case .chineseSymbolic: return "#+="
     default: return nil
+//    case .alphabetic: return KKL10n.keyboardTypeAlphabetic.text(for: context)
+//    case .numeric: return KKL10n.keyboardTypeNumeric.text(for: context)
+//    case .symbolic: return KKL10n.keyboardTypeSymbolic.text(for: context)
     }
   }
 }

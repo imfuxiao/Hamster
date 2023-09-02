@@ -300,11 +300,16 @@ extension String {
     case "classifySymbolic":
       return .classifySymbolic
     case "chinese":
-      guard !name.isEmpty else {
-        Logger.statistics.error("\(self) keyboardType type: \(type), name is empty")
-        return nil
+      return .chinese(.lowercased)
+    case "chineseNineGrid":
+      return .chineseNineGrid
+    case "numericNineGrid":
+      return .numericNineGrid
+    case "custom":
+      if !name.isEmpty {
+        return .custom(named: name)
       }
-      return .chinese(named: name)
+      return nil
     case "emojis":
       return .emojis
     default:
@@ -387,12 +392,18 @@ public extension KeyboardType {
       return "numeric"
     case .symbolic:
       return "symbolic"
+    case .chinese:
+      return "chinese"
+    case .chineseNineGrid:
+      return "chineseNineGrid"
+    case .numericNineGrid:
+      return "numericNineGrid"
     case .classifySymbolic:
       return "classifySymbolic"
-    case .chinese(let name):
-      return "chinese(\(name))"
     case .emojis:
       return "emojis"
+    case .custom(let name):
+      return "custom(\(name))"
     default:
       return ""
     }
@@ -435,8 +446,6 @@ public extension KeyboardLayoutItemWidth {
       return "percentage(\(percent))"
     case .points(let value):
       return "points(\(value))"
-    default:
-      return ""
     }
   }
 }

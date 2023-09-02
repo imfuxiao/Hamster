@@ -1,6 +1,8 @@
 # 键盘布局
 # 注意：文件编码格式必须为 UTF-8
 #
+# type: 键盘类型
+#
 # action 按键操作：
 # 必须值
 # backspace: 删除键
@@ -32,8 +34,8 @@
 # display: BOOL 是否显示, 默认值为 true。
 
 keyboards:
-  - type: chinese(26)
-    name: "中文26键"
+  - type: custom(26)
+    name: "自定义中文26键"
     rows:
       - keys:
           - action: character(q)

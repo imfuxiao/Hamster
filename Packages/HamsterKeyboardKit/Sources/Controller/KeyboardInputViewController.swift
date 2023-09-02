@@ -467,6 +467,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertText(_ text: String) {
+    if !keyboardContext.keyboardType.isChinese {
+      textDocumentProxy.insertText(text)
+      return
+    }
+
     guard !tryHandleShortCommand(text) else { return }
     // 字母输入模式，不经过 rime 引擎
     if rimeContext.asciiMode {
@@ -476,9 +481,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
     // rime 引擎处理
     Task {
-      if let inputText = await rimeContext.tryHandleInputText(
-        keyboardContext.keyboardType.isAlphabeticUppercased ? text : text.lowercased()
-      ) {
+      if let inputText = await rimeContext.tryHandleInputText(text) {
         textDocumentProxy.insertText(inputText)
       }
     }
@@ -494,6 +497,14 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   open func setKeyboardType(_ type: KeyboardType) {
     keyboardContext.keyboardType = type
+  }
+
+  open func setKeyboardCase(_ casing: KeyboardCase) {
+    if keyboardContext.keyboardType.isChinese {
+      keyboardContext.keyboardType = .chinese(casing)
+      return
+    }
+    keyboardContext.keyboardType = .alphabetic(casing)
   }
 
   open func openUrl(_ url: URL?) {
@@ -761,14 +772,6 @@ private extension KeyboardInputViewController {
       await rimeContext.start(hasFullAccess: hasFullAccess)
       let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
-
-      // 中英状态同步 keyboardContext
-      await rimeContext.$asciiMode
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
-          keyboardContext.isChineseInput = !$0
-        }
-        .store(in: &cancellables)
     }
   }
 

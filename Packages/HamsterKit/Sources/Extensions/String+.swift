@@ -15,7 +15,7 @@ extension String: LocalizedError {
 }
 
 extension String {
-  func isMatch(regex: String) -> Bool {
+  public func isMatch(regex: String) -> Bool {
     if #available(iOS 16, *) {
       guard let r = try? Regex(regex) else { return false }
       return self.contains(r)
@@ -26,4 +26,21 @@ extension String {
       return regex.firstMatch(in: self, range: range) != nil
     }
   }
+  
+  /// 是否包含中文及全角符号
+  public var isMatchChineseParagraph: Bool {
+    isMatch(regex: Self.ChineseParagraph)
+  }
+  
+  public var isPairSymbolsBegin: Bool {
+    Self.ChinesePairSymbols.contains(self)
+  }
+}
+
+extension String {
+  
+  /// 中文及全角标点符号(字符)
+  public static let ChineseParagraph: String = "[\\u3000-\\u301e\\ufe10-\\ufe19\\ufe30-\\ufe44\\ufe50-\\ufe6b\\uff01-\\uffee]"
+  public static let ChinesePairSymbols: String = "（【｛《“"
+
 }

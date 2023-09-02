@@ -125,7 +125,7 @@ public class KeyboardContext: ObservableObject {
    当前使用的键盘类型。
    */
   @Published
-  public var keyboardType = KeyboardType.alphabetic(.lowercased)
+  public var keyboardType = KeyboardType.chinese(.lowercased)
 
   /**
    The locale that is currently being used.
@@ -235,14 +235,6 @@ public class KeyboardContext: ObservableObject {
    */
   @Published
   public var traitCollection = UITraitCollection()
-
-  /**
-   是否中文输入法状态
-
-   注意：此状态值与 rimeContext.asciiMode 关联且值相反，方便在只有 KeyboardContext 参数下判断当前输入状态
-   */
-  @Published
-  public var isChineseInput = true
 
   /**
    仓输入法配置
@@ -541,5 +533,46 @@ private extension UIInputViewController {
 
   var screenSize: CGSize {
     view.window?.screen.bounds.size ?? .zero
+  }
+}
+
+public extension KeyboardContext {
+  /// Hamster 键盘配色
+  var keyboardColor: HamsterModel.KeyboardColor? {
+    if hamsterConfig?.Keyboard?.enableColorSchema ?? false, let color = hamsterKeyboardColor {
+      return color
+    }
+    return nil
+  }
+
+  /// 背景色
+  var backgroundColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.backColor
+    }
+    return .clear
+  }
+
+  /// 编码区拼音颜色
+  var phoneticTextColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.textColor
+    }
+    return .label
+  }
+
+  /// 候选字颜色
+  var candidateTextColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.candidateTextColor
+    }
+    return .label
+  }
+
+  var secondaryLabelColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.candidateTextColor
+    }
+    return .secondaryLabel
   }
 }

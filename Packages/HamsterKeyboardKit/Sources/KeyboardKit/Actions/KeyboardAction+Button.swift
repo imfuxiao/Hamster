@@ -49,8 +49,8 @@ public extension KeyboardAction {
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
     case .character(let char):
-      // TODO: 中文输入法状态使用大写
-      if context.isChineseInput {
+      // 中文输入法显示大写
+      if context.keyboardType.isChinese {
         return char.uppercased()
       }
       return char

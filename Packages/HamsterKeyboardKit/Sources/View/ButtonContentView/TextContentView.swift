@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import HamsterKit
 
 /**
  该视图渲染系统键盘按钮的文本。
@@ -20,19 +21,47 @@ public class TextContentView: UIView {
   /// 是否为输入类型操作
   private let isInputAction: Bool
 
-  private let label: UILabel
+  private lazy var  label: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    // label.adjustsFontSizeToFitWidth = true
+    label.textAlignment = .center
+    label.minimumScaleFactor = 0.5
+    label.numberOfLines = 1
+    label.text = text
+    return label
+  }()
+  
+  private lazy var containerView: UIView = {
+    let containerView = UIView(frame: .zero)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.addSubview(label)
+    
+    NSLayoutConstraint.activate([
+      label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: offsetRight ? 5 : 0),
+      label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: useOffset ? -2 : 0),
+//      label.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor),
+//      label.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor),
+    ])
+    
+    return containerView
+  }()
 
   /// 是否使用偏移
   /// 即在Y轴向上偏移
   var useOffset: Bool {
     isInputAction && text.isLowercased
   }
+  
+  /// 是否向右偏移
+  var offsetRight: Bool {
+    text.isMatchChineseParagraph && !text.isPairSymbolsBegin
+  }
 
   init(style: KeyboardButtonStyle, text: String, isInputAction: Bool) {
     self.style = style
     self.text = text
     self.isInputAction = isInputAction
-    self.label = UILabel(frame: .zero)
 
     super.init(frame: .zero)
 
@@ -45,39 +74,15 @@ public class TextContentView: UIView {
   }
 
   func setupTextView() {
-    label.textAlignment = .center
-    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
-//    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    label.numberOfLines = 1
-
-    label.text = text
-//    addSubview(label)
-
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    let stackView = UIStackView(arrangedSubviews: [label])
-    stackView.axis = .vertical
-    stackView.alignment = .center
-    stackView.distribution = .fillEqually
-
-    addSubview(stackView)
-    stackView.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(containerView)
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      containerView.topAnchor.constraint(equalTo: topAnchor),
+      containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
 
-//    NSLayoutConstraint.activate([
-//      label.centerXAnchor.constraint(equalTo: centerXAnchor),
-//      centerYAnchor.constraint(
-//        equalTo: label.centerYAnchor,
-//        constant: useOffset ? 2 : 0),
-//      label.leadingAnchor.constraint(equalTo: leadingAnchor),
-//      label.trailingAnchor.constraint(equalTo: trailingAnchor),
-//    ])
+
   }
 
   override public func layoutSubviews() {

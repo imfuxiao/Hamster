@@ -1,25 +1,21 @@
 //
-//  iPhoneKeyboardLayoutProvider.swift
+//  iPhoneChineseKeyboardLayoutProvider.swift
 //  KeyboardKit
-//
-//  Created by Daniel Saidi on 2021-02-02.
-//  Copyright © 2021-2023 Daniel Saidi. All rights reserved.
-//
 
 import UIKit
 
 /**
  This class provides a keyboard layout that corresponds to a
- standard English layout for an iPhone device.
+ standard Chinese layout for an iPhone device.
 
- 该类提供的键盘布局与 iPhone 设备的标准英文布局一致。
+ 该类提供的键盘布局与 iPhone 设备的标准中文布局一致。
 
  You can inherit this class and override any open properties
  and functions to customize the standard behavior.
 
  您可以继承该类，并覆盖任何 open 的属性和函数，以自定义标准行为。
  */
-open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
+open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   // MARK: - Overrides
 
   /**
@@ -63,9 +59,18 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType: return bottomSystemButtonWidth(for: context)
+    case .keyboardType: 
+      /// 中文主键盘的最后一行第一个键
+      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
+        return smallBottomWidth(for: context)
+      }
+      return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .primary: return smallBottomWidth(for: context)
+    case .primary:
+      if context.keyboardType.isChinesePrimaryKeyboard {
+        return smallBottomWidth(for: context)
+      }
+      return largeBottomWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     default: return .available
     }
@@ -179,8 +184,9 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if needsInputSwitch { result.append(.nextKeyboard) }
 
     result.append(.space)
-    /// 根据用户配置添加是否切换到中文九宫格布局
-    result.append(.keyboardType(.chinese(.lowercased)))
+
+    if let action = needsChineseEnglishSwitchAction(for: context) { result.append(action) }
+
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))
       result.append(.character("."))
@@ -195,7 +201,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   /**
    The width of bottom-right system buttons.
 
-   最后面一行（空格所在行）右下角系统按钮(如 `Return` 键)的宽度。
+   最后面一行（空格所在行）右下角系统类型按键的宽度。
    */
   open func bottomSystemButtonWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
     .percentage(isPortrait(context) ? 0.123 : 0.095)
@@ -221,7 +227,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   }
 }
 
-private extension iPhoneKeyboardLayoutProvider {
+private extension iPhoneChineseKeyboardLayoutProvider {
   /// 操作行的行数是否符合预期
   func isExpectedActionSet(_ actions: KeyboardActionRows) -> Bool {
     actions.count == 3
@@ -233,7 +239,7 @@ private extension iPhoneKeyboardLayoutProvider {
    最后一个 数字/符号 行输入按键的宽度。
    */
   func lastSymbolicInputWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
-    .percentage(0.14)
+    .percentage(0.115)
   }
 
   /**
@@ -243,8 +249,8 @@ private extension iPhoneKeyboardLayoutProvider {
    判断某行是否为 数字/符号键盘 的最后输入行。
    */
   func isLastNumericInputRow(_ row: Int, for context: KeyboardContext) -> Bool {
-    let isNumeric = context.keyboardType == .numeric
-    let isSymbolic = context.keyboardType == .symbolic
+    let isNumeric = context.keyboardType == .chineseNumeric
+    let isSymbolic = context.keyboardType == .chineseSymbolic
     guard isNumeric || isSymbolic else { return false }
     return row == 2 // Index 2 is the "wide keys" row. index == 2 的行按键会宽一些
   }

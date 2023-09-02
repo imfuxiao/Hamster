@@ -1,5 +1,5 @@
 //
-//  StanderAlphabeticKeyboard.swift
+//  StanderSystemKeyboard.swift
 //
 //
 //  Created by morse on 2023/8/10.
@@ -11,9 +11,9 @@ import OSLog
 import UIKit
 
 /**
- 标准字母键盘
+ 标准系统键盘
  */
-public class StanderAlphabeticKeyboard: UIView {
+public class StanderSystemKeyboard: UIView {
   public enum AutocompleteToolbarMode {
     /// Show the autocomplete toolbar if the keyboard context prefers it.
     ///
@@ -31,13 +31,12 @@ public class StanderAlphabeticKeyboard: UIView {
 
   // MARK: - Properties
 
-  private var touchView = KeyboardTouchView()
-
-  private var layout: KeyboardLayout
+  private let keyboardLayoutProvider: KeyboardLayoutProvider
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
   private let autocompleteToolbarAction: AutocompleteToolbarAction
+  private let touchView = KeyboardTouchView()
 
   private var actionCalloutContext: ActionCalloutContext
   private var autocompleteContext: AutocompleteContext
@@ -64,6 +63,10 @@ public class StanderAlphabeticKeyboard: UIView {
   private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - 计算属性
+
+  private var layout: KeyboardLayout {
+    keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
+  }
 
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
@@ -92,7 +95,7 @@ public class StanderAlphabeticKeyboard: UIView {
    the full button view for every layout item.
 
    - Parameters:
-     - KeyboardLayout: The keyboard layout.
+     - KeyboardLayoutProvider: The keyboard layout provider.
      - appearance: The keyboard appearance to use.
      - actionHandler: The action handler to use.
      - autocompleteContext: The autocomplete context to use.
@@ -102,7 +105,7 @@ public class StanderAlphabeticKeyboard: UIView {
      - calloutContext: The callout context to use.
    */
   public init(
-    layout: KeyboardLayout,
+    keyboardLayoutProvider: KeyboardLayoutProvider,
     appearance: KeyboardAppearance,
     actionHandler: KeyboardActionHandler,
     autocompleteContext: AutocompleteContext,
@@ -112,7 +115,7 @@ public class StanderAlphabeticKeyboard: UIView {
     rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext?
   ) {
-    self.layout = layout
+    self.keyboardLayoutProvider = keyboardLayoutProvider
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.autocompleteToolbarMode = autocompleteToolbar

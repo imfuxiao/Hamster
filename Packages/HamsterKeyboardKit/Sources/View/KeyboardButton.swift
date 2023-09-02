@@ -235,8 +235,8 @@ public class KeyboardButton: UIControl {
     // 不变的样式
     underShadowView.shapeLayer.lineWidth = 1
     underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
-    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
     underShadowView.shapeLayer.masksToBounds = false
+//    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
     
     insertSubview(underShadowView, belowSubview: buttonContentView)
     NSLayoutConstraint.activate([
@@ -298,7 +298,7 @@ public class KeyboardButton: UIControl {
     } else {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       underShadowView.shapeLayer.path = underPath.cgPath
-      underShadowView.shapeLayer.opacity = 0.4
+      underShadowView.shapeLayer.opacity = 0.6
       hideInputCallout()
     }
   }

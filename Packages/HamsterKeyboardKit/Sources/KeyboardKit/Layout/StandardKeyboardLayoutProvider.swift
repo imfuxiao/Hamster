@@ -39,48 +39,17 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
   // MARK: - Properties
 
   /**
-   The input set provider to use.
-
-   使用的 InputSetProvider。
-
-   > Important: This is deprecated and will be removed in KeyboardKit 7.0
-   > 此功能已过时，将在 KeyboardKit 7.0 中移除。
-   */
-  public var inputSetProvider: InputSetProvider {
-    didSet {
-      iPadProvider.register(inputSetProvider: inputSetProvider)
-      iPhoneProvider.register(inputSetProvider: inputSetProvider)
-    }
-  }
-
-  /**
    The keyboard context to use.
 
    使用的键盘上下文。
    */
   public let keyboardContext: KeyboardContext
 
-  /**
-   The keyboard layout provider to use for iPad devices.
+  /// 英文键盘布局
+  private let englishKeyboardLayoutProvider: EnglishKeyboardLayoutProvider
 
-   用于 iPad 设备的键盘布局 provider。
-
-   > Important: This is deprecated and will be removed in KeyboardKit 7.0
-   > 此功能已过时，将在 KeyboardKit 7.0 中移除。
-   */
-  open lazy var iPadProvider = iPadKeyboardLayoutProvider(
-    inputSetProvider: inputSetProvider)
-
-  /**
-   The keyboard layout provider to use for iPhone devices.
-
-   供 iPhone 设备使用的键盘布局 provider。
-
-   > Important: This is deprecated and will be removed in KeyboardKit 7.0
-   > 此功能已过时，将在 KeyboardKit 7.0 中移除。
-   */
-  open lazy var iPhoneProvider = iPhoneKeyboardLayoutProvider(
-    inputSetProvider: inputSetProvider)
+  /// 中文键盘布局
+  private let chineseKeyboardLayoutProvider: ChineseKeyboardLayoutProvider
 
   // MARK: - Initializations
 
@@ -93,7 +62,8 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   public init(keyboardContext: KeyboardContext, inputSetProvider: InputSetProvider) {
     self.keyboardContext = keyboardContext
-    self.inputSetProvider = inputSetProvider
+    self.englishKeyboardLayoutProvider = EnglishKeyboardLayoutProvider(inputSetProvider: inputSetProvider)
+    self.chineseKeyboardLayoutProvider = ChineseKeyboardLayoutProvider(inputSetProvider: inputSetProvider)
   }
 
   // MARK: - Functions
@@ -113,7 +83,10 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
    在给定的上下文中使用的键盘布局 provider。
    */
   open func keyboardLayoutProvider(for context: KeyboardContext) -> KeyboardLayoutProvider {
-    return context.deviceType == .pad ? iPadProvider : iPhoneProvider
+    if context.deviceType == .pad {
+      return context.keyboardType.isChinese ? chineseKeyboardLayoutProvider.iPadProvider : englishKeyboardLayoutProvider.iPadProvider
+    }
+    return context.keyboardType.isChinese ? chineseKeyboardLayoutProvider.iPhoneProvider : englishKeyboardLayoutProvider.iPhoneProvider
   }
 
   /**
@@ -122,6 +95,10 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
    注册新的输入集 provider。
    */
   open func register(inputSetProvider: InputSetProvider) {
-    self.inputSetProvider = inputSetProvider
+    if keyboardContext.keyboardType.isAlphabetic {
+      self.englishKeyboardLayoutProvider.register(inputSetProvider: inputSetProvider)
+      return
+    }
+    self.chineseKeyboardLayoutProvider.register(inputSetProvider: inputSetProvider)
   }
 }

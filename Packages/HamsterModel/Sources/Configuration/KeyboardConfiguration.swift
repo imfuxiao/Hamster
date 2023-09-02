@@ -56,8 +56,8 @@ public struct KeyboardConfiguration: Codable, Equatable, Hashable {
   /// 九宫格数字键盘: 符号列表
   public var symbolsOfGridOfNumericKeyboard: [String]?
   
-  /// 自动转小写
-  public var autoLowerCaseOfKeyboard: Bool?
+  /// Shift状态锁定
+  public var lockShiftState: Bool?
   
   /// 启用嵌入式输入模式
   public var enableEmbeddedInputMode: Bool?

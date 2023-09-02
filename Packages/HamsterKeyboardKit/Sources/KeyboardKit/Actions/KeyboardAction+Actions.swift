@@ -58,8 +58,6 @@ public extension KeyboardAction {
     case .swipeDown: return standerSwipeUpAction
     case .swipeLeft: return standerSwipeUpAction
     case .swipeRight: return standerSwipeUpAction
-    default:
-      return nil
     }
   }
     
@@ -117,8 +115,8 @@ public extension KeyboardAction {
     case .primary: return { $0?.insertRimeKeyCode(XK_Return) }
     case .shift(let currentState): return {
         switch currentState {
-        case .lowercased: $0?.setKeyboardType(.alphabetic(.uppercased))
-        case .auto, .capsLocked, .uppercased: $0?.setKeyboardType(.alphabetic(.lowercased))
+        case .lowercased: $0?.setKeyboardCase(.uppercased)
+        case .auto, .capsLocked, .uppercased: $0?.setKeyboardCase(.lowercased)
         }
       }
     case .space: return { $0?.insertRimeKeyCode(XK_space) }

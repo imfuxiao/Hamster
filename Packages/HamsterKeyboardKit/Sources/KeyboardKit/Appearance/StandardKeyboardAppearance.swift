@@ -111,7 +111,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 在给定的 `isPressed` 状态下，用于特定 `action` 的按键样式。
   open func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
     // 开启键盘配色
-    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+    if let keyboardColor = keyboardContext.keyboardColor {
       return KeyboardButtonStyle(
         backgroundColor: isPressed ? buttonBackgroundColor(for: action, isPressed: isPressed) : keyboardColor.backColor,
         foregroundColor: isPressed ? buttonForegroundColor(for: action, isPressed: isPressed) : keyboardColor.candidateTextColor,
@@ -206,8 +206,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     switch action {
     case .emoji, .emojiCategory, .none: return .noBorder
     default:
-      // 开启键盘配色
-      if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
+      if let keyboardColor = keyboardContext.keyboardColor {
         return KeyboardButtonBorderStyle(color: keyboardColor.borderColor, size: 1)
       }
       return .standard

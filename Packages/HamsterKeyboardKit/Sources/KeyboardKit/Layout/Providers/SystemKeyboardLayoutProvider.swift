@@ -100,8 +100,11 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func actionCharacters(for rows: InputSetRows, context: KeyboardContext) -> [[String]] {
     switch context.keyboardType {
     case .alphabetic(let casing): return rows.characters(for: casing)
+    case .chinese(let casing): return rows.characters(for: casing)
     case .numeric: return rows.characters()
+    case .chineseNumeric: return rows.characters()
     case .symbolic: return rows.characters()
+    case .chineseSymbolic: return rows.characters()
     default: return []
     }
   }
@@ -113,6 +116,9 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func inputRows(for context: KeyboardContext) -> InputSetRows {
     switch context.keyboardType {
+    case .chinese: return inputSetProvider.alphabeticInputSet.rows
+    case .chineseNumeric: return inputSetProvider.numericInputSet.rows
+    case .chineseSymbolic: return inputSetProvider.symbolicInputSet.rows
     case .alphabetic: return inputSetProvider.alphabeticInputSet.rows
     case .numeric: return inputSetProvider.numericInputSet.rows
     case .symbolic: return inputSetProvider.symbolicInputSet.rows
@@ -189,7 +195,24 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
     default: return .available
     }
   }
+  
+  /// 最后面一行（空格所在行）大的按钮(如 `Return` 键)的宽度。
+  /// 当系统只有三个按钮时
+  open func largeBottomWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
+    .percentage(isPortrait(context) ? 0.25 : 0.195)
+  }
+
+  /// 最后面一行（空格所在行）小的按钮(如 `Return` 键)的宽度。
+  /// 注意：当系统为最后一行添加了更多的按键，则会使用此宽度
+  open func smallBottomWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
+    .percentage(isPortrait(context) ? 0.19 : 0.135)
+  }
     
+  /// 屏幕是否为纵向
+  open func isPortrait(_ context: KeyboardContext) -> Bool {
+    context.interfaceOrientation.isPortrait
+  }
+  
   /**
    The return action to use for the provided `context`.
    
@@ -211,9 +234,12 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func keyboardSwitchActionForBottomInputRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
+    case .chinese(let casing): return .shift(currentCasing: casing)
     case .alphabetic(let casing): return .shift(currentCasing: casing)
     case .numeric: return .keyboardType(.symbolic)
+    case .chineseNumeric: return .keyboardType(.chineseSymbolic)
     case .symbolic: return .keyboardType(.numeric)
+    case .chineseSymbolic: return .keyboardType(.chineseNumeric)
     default: return nil
     }
   }
@@ -227,9 +253,24 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
+    case .chinese: return .keyboardType(.chineseNumeric)
     case .alphabetic: return .keyboardType(.numeric)
     case .numeric: return .keyboardType(.alphabetic(.auto))
+    case .chineseNumeric: return .keyboardType(.chinese(.auto))
     case .symbolic: return .keyboardType(.alphabetic(.auto))
+    case .chineseSymbolic: return .keyboardType(.chinese(.auto))
+    default: return nil
+    }
+  }
+  
+  /**
+   是否需要中英切换按键
+   */
+  open func needsChineseEnglishSwitchAction(for context: KeyboardContext) -> KeyboardAction? {
+    // TODO: 添加根据用户配置
+    switch context.keyboardType {
+    case .chinese: return .keyboardType(.alphabetic(.auto))
+    case .alphabetic: return .keyboardType(.chinese(.auto))
     default: return nil
     }
   }

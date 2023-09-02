@@ -44,7 +44,7 @@ Keyboard:
     - "-"
     - "*"
     - /
-  autoLowerCaseOfKeyboard: false
+  lockShiftState: true
   enableEmbeddedInputMode: false
   widthOfOneHandedKeyboard: 80
   symbolsOfCursorBack:

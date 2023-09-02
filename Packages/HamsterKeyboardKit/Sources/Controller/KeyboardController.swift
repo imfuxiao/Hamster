@@ -120,6 +120,11 @@ public protocol KeyboardController: AnyObject {
   func setKeyboardType(_ type: KeyboardType)
 
   /**
+   设置键盘大小写
+   */
+  func setKeyboardCase(_ casing: KeyboardCase)
+
+  /**
    Open a certain URL
 
    打开某个 URL

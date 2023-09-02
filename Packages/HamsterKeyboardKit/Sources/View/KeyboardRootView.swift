@@ -33,7 +33,6 @@ class KeyboardRootView: UIView {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: KeyboardLayoutProvider
-  private let layout: KeyboardLayout
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let autocompleteToolbarMode: AutocompleteToolbarMode
@@ -87,8 +86,8 @@ class KeyboardRootView: UIView {
 
   /// 字母键盘
   private lazy var alphabeticKeyboardView: UIView = {
-    let view = StanderAlphabeticKeyboard(
-      layout: layout,
+    let view = StanderSystemKeyboard(
+      keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: appearance,
       actionHandler: actionHandler,
       autocompleteContext: autocompleteContext,
@@ -163,7 +162,6 @@ class KeyboardRootView: UIView {
     rimeContext: RimeContext
   ) {
     self.keyboardLayoutProvider = keyboardLayoutProvider
-    self.layout = keyboardLayoutProvider.keyboardLayout(for: keyboardContext)
     self.layoutConfig = .standard(for: keyboardContext)
     self.actionHandler = actionHandler
     self.appearance = appearance
@@ -192,12 +190,7 @@ class KeyboardRootView: UIView {
 
   func setupView() {
     // 开启键盘配色
-    if keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false, let keyboardColor = keyboardContext.hamsterKeyboardColor {
-      backgroundColor = keyboardColor.backColor
-    } else {
-      backgroundColor = .clear
-    }
-
+    backgroundColor = keyboardContext.backgroundColor
     constructViewHierarchy()
     activateViewConstraints()
   }
