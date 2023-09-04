@@ -20,7 +20,6 @@ protocol SubViewControllerFactory {
   func makeAppleCloudViewController() -> AppleCloudViewController
   func makeBackupViewController() -> BackupViewController
   func makeAboutViewController() -> AboutViewController
-  func makeOpenSourceProjectViewController() -> OpenSourceViewController
   func makeRimeViewController() -> RimeViewController
 }
 
@@ -58,14 +57,6 @@ open class MainViewController: UISplitViewController {
 
   private lazy var aboutViewController: AboutViewController
     = subViewControllerFactory.makeAboutViewController()
-
-  private lazy var openSourceProjectViewController: OpenSourceViewController
-    = subViewControllerFactory.makeOpenSourceProjectViewController()
-
-  private lazy var emptyViewController: UIViewController = {
-    let vc = NibLessViewController()
-    return vc
-  }()
 
   private lazy var primaryNavigationViewController: UINavigationController = {
     let vc = UINavigationController(rootViewController: settingsViewController)
@@ -152,79 +143,68 @@ extension MainViewController {
       presentAppleCloudViewController()
     case .about:
       presentAboutViewController()
-    case .openSource:
-      presentOpenSourceViewController()
-    case .none:
-      return
-//      popToRootViewController(animated: false)
     default:
       return
     }
   }
 
   func presentInputSchemaViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [inputSchemaViewController]
     setViewController(inputSchemaViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentFinderViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [finderViewController]
     setViewController(finderViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentUploadInputSchemaViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [uploadInputSchemaViewController]
     setViewController(uploadInputSchemaViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentKeyboardSettingsViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [keyboardSettingsViewController]
     setViewController(keyboardSettingsViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentKeyboardColorViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [keyboardColorViewController]
     setViewController(keyboardColorViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentKeyboardFeedbackViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [keyboardFeedbackViewController]
     setViewController(keyboardFeedbackViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentRimeViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [rimeViewController]
     setViewController(rimeViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentBackupViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [backupViewController]
     setViewController(backupViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentAppleCloudViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [iCloudViewController]
     setViewController(iCloudViewController, for: .secondary)
     show(.secondary)
   }
 
   func presentAboutViewController() {
-    secondaryNavigationViewController.viewControllers = []
+    secondaryNavigationViewController.viewControllers = [aboutViewController]
     setViewController(aboutViewController, for: .secondary)
-    show(.secondary)
-  }
-
-  func presentOpenSourceViewController() {
-    secondaryNavigationViewController.viewControllers = []
-    setViewController(openSourceProjectViewController, for: .secondary)
     show(.secondary)
   }
 }

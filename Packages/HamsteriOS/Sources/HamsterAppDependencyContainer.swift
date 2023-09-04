@@ -161,7 +161,13 @@ extension HamsterAppDependencyContainer: AppleCloudViewModelFactory {
 
 extension HamsterAppDependencyContainer: AboutViewModelFactory {
   func makeAboutViewModel() -> AboutViewModel {
-    return AboutViewModel(mainViewModel: mainViewModel)
+    return AboutViewModel()
+  }
+}
+
+extension HamsterAppDependencyContainer: OpenSourceViewControllerFactory {
+  func makeOpenSourceViewController() -> OpenSourceViewController {
+    return OpenSourceViewController(openSourceViewModelFactory: self)
   }
 }
 
@@ -234,11 +240,10 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
   }
 
   func makeAboutViewController() -> AboutViewController {
-    let aboutViewController = AboutViewController(aboutViewModelFactory: self)
+    let aboutViewController = AboutViewController(
+      aboutViewModelFactory: self,
+      openSourceViewControllerFactory: self
+    )
     return aboutViewController
-  }
-
-  func makeOpenSourceProjectViewController() -> OpenSourceViewController {
-    return OpenSourceViewController(openSourceViewModelFactory: self)
   }
 }

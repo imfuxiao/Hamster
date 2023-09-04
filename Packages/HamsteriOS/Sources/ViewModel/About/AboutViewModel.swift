@@ -11,11 +11,10 @@ import ProgressHUD
 import UIKit
 
 public class AboutViewModel: ObservableObject {
-  private unowned var mainViewModel: MainViewModel
+  init() {}
 
-  init(mainViewModel: MainViewModel) {
-    self.mainViewModel = mainViewModel
-  }
+  @Published
+  public var displayOpenSourceView = false
 
   lazy var cellInfos: [AboutCellInfo] = {
     [
@@ -23,7 +22,7 @@ public class AboutViewModel: ObservableObject {
       .init(text: "许可证", secondaryText: "GPLv3", type: .link, typeValue: "https://www.gnu.org/licenses/gpl-3.0.html"),
       .init(text: "联系邮箱", secondaryText: "morse.hsiao@gmail.com", type: .mail, typeValue: "morse.hsiao@gmail.com"),
       .init(text: "开源地址", secondaryText: "https://github.com/imfuxiao/Hamster", type: .link, typeValue: "https://github.com/imfuxiao/Hamster"),
-      .init(text: "使用开源库列表", type: .navigation, accessoryType: .disclosureIndicator, navigationAction: { [unowned self] in mainViewModel.subView = .openSource }),
+      .init(text: "使用开源库列表", type: .navigation, accessoryType: .disclosureIndicator, navigationAction: { [unowned self] in displayOpenSourceView = true }),
     ]
   }()
 

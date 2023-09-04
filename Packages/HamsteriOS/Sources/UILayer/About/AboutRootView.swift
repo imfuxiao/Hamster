@@ -5,6 +5,7 @@
 //  Created by morse on 2023/7/7.
 //
 
+import Combine
 import HamsterKit
 import HamsterUIKit
 import ProgressHUD
@@ -12,11 +13,6 @@ import UIKit
 
 class AboutRootView: NibLessView {
   private let aboutViewModel: AboutViewModel
-
-  init(frame: CGRect = .zero, aboutViewModel: AboutViewModel) {
-    self.aboutViewModel = aboutViewModel
-    super.init(frame: frame)
-  }
 
   lazy var logoImageView: UIImageView = {
     let logoDarkImage = UIImage(named: "Hamster")!
@@ -83,6 +79,11 @@ class AboutRootView: NibLessView {
     tableView.register(AboutTableViewCell.self, forCellReuseIdentifier: AboutTableViewCell.identifier)
     return tableView
   }()
+
+  init(frame: CGRect = .zero, aboutViewModel: AboutViewModel) {
+    self.aboutViewModel = aboutViewModel
+    super.init(frame: frame)
+  }
 
   override func constructViewHierarchy() {
     tableView.delegate = self

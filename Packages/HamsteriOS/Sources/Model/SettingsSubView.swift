@@ -9,9 +9,6 @@ import Foundation
 
 /// 主页设置子页面
 public enum SettingsSubView {
-  /// 设置主页面
-  case root
-  
   /// 输入方案页面
   case inputSchema
   
@@ -45,9 +42,6 @@ public enum SettingsSubView {
   /// 关于页面
   case about
   
-  /// 使用的开源列表
-  case openSource
-  
-  /// 表示返回根页面
+  /// 空页面
   case none
 }

@@ -9,11 +9,10 @@ import Foundation
 
 public class MainViewModel: ObservableObject {
   @Published
-  public var subView: SettingsSubView = .root
+  public var subView: SettingsSubView = .none
 
   /// 导航到输入方案页面
   public func navigationToInputSchema() {
-    subView = .none
     subView = .inputSchema
   }
 }
