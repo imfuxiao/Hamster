@@ -147,7 +147,7 @@ public extension KeyboardType {
     case .emojis: return "emojis"
     case .images: return "images"
     case .custom(let name): return name
-    case .chinese: return "chinese"
+    case .chinese(let casing): return "chinese_\(casing.id)"
     case .chineseNineGrid: return "chineseNineGrid"
     case .numericNineGrid: return "numericNineGrid"
     case .classifySymbolic: return "classifySymbolic"
@@ -184,6 +184,15 @@ public extension KeyboardType {
   var isChinesePrimaryKeyboard: Bool {
     switch self {
     case .chinese: return true
+    default:
+      return false
+    }
+  }
+
+  /// 是否自定义键盘
+  var isCustom: Bool {
+    switch self {
+    case .custom: return true
     default:
       return false
     }

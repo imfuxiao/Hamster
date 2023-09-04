@@ -460,7 +460,7 @@ public extension KeyboardButton {
     // 识别 swipe
     if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
       let tanThreshold = 0.58 // tan(30º)) = 0.58
-      let distanceThreshold: CGFloat = 10 // 滑动的阈值
+      let distanceThreshold: CGFloat = 20 // TODO: 滑动距离的阈值
 
       let distanceY = currentPoint.y - startLocation.y
       let distanceX = currentPoint.x - startLocation.x
@@ -598,13 +598,21 @@ public extension KeyboardButton {
     Logger.statistics.debug("swipeAction(), direction: \(direction.debugDescription)")
     switch direction {
     case .up:
-      actionHandler.handle(.swipeUp, on: action)
+      if let swipe = item.swipes.first(where: { $0.direction == .up }) {
+        actionHandler.handle(.swipeUp, on: swipe.action)
+      }
     case .down:
-      actionHandler.handle(.swipeDown, on: action)
+      if let swipe = item.swipes.first(where: { $0.direction == .down }) {
+        actionHandler.handle(.swipeDown, on: swipe.action)
+      }
     case .left:
-      actionHandler.handle(.swipeLeft, on: action)
+      if let swipe = item.swipes.first(where: { $0.direction == .left }) {
+        actionHandler.handle(.swipeLeft, on: swipe.action)
+      }
     case .right:
-      actionHandler.handle(.swipeRight, on: action)
+      if let swipe = item.swipes.first(where: { $0.direction == .right }) {
+        actionHandler.handle(.swipeRight, on: swipe.action)
+      }
     }
   }
   
@@ -723,7 +731,7 @@ struct KeyboardButtonView_Previews: PreviewProvider {
       let button = KeyboardButton(
         row: 0,
         column: 0,
-        item: .init(action: action, size: .init(width: .input, height: 54), insets: .zero),
+        item: .init(action: action, size: .init(width: .input, height: 54), insets: .zero, swipes: []),
         actionHandler: .preview,
         keyboardContext: .preview,
         rimeContext: RimeContext(),

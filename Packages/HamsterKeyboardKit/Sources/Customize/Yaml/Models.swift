@@ -15,32 +15,25 @@ public struct Keyboards: Codable, Equatable {
 
 /// 键盘
 public struct Keyboard: Codable, Equatable {
-  public var type: KeyboardType
   public var name: String
-  var rows: [Row]
+  // 注意：自定义键盘类型统一为 .custom() 类型
+  public var type: KeyboardType
+  public var rows: [Row]
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-
-    if let type = try? container.decode(String.self, forKey: .type), let keyboardType = type.keyboardType {
-      self.type = keyboardType
-    } else {
-      throw "keyboard type is empty"
-    }
-
     self.name = try container.decode(String.self, forKey: .name)
+    self.type = .custom(named: self.name)
     self.rows = try container.decode([Row].self, forKey: .rows)
   }
 
   public enum CodingKeys: CodingKey {
-    case type
     case name
     case rows
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.type.string, forKey: .type)
     try container.encode(self.name, forKey: .name)
     try container.encode(self.rows, forKey: .rows)
   }
@@ -48,30 +41,30 @@ public struct Keyboard: Codable, Equatable {
 
 /// 键盘的行
 public struct Row: Codable, Equatable {
-  var keys: [Key]
+  public var keys: [Key]
 }
 
 /// 键盘按键
 public struct Key: Codable, Equatable {
   /// 按键对应操作
   /// 必须
-  var action: KeyboardAction
+  public var action: KeyboardAction
 
   /// 按键宽度
   /// 可选。默认为 input
-  var width: KeyWidth
+  public var width: KeyWidth
 
   /// 按键显示文本
   /// 可选，如果不设置此值，则使用 action 对应的文本显示
-  var label: KeyLabel
+  public var label: KeyLabel
 
   /// 是否经过 RIME 引擎处理
   /// 可选，默认值为 true
-  var processByRIME: Bool
+  public var processByRIME: Bool
 
   /// 按键滑动配置
   /// 可选
-  var swipe: [KeySwipe]
+  public var swipe: [KeySwipe]
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -137,9 +130,17 @@ public struct Key: Codable, Equatable {
 
 /// 按键滑动
 public struct KeySwipe: Codable, Equatable {
+  /// 按键滑动方向
+  public enum Direction: String, Equatable, Codable {
+    case up
+    case down
+    case left
+    case right
+  }
+
   /// 滑动方向, up / down 两个方向
   /// 必须
-  var direction: String
+  var direction: Direction
 
   /// 操作
   /// 必须，同 key 的 action 配置
@@ -160,7 +161,11 @@ public struct KeySwipe: Codable, Equatable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.direction = try container.decode(String.self, forKey: .direction)
+    if let direction = try? container.decode(Direction.self, forKey: .direction) {
+      self.direction = direction
+    } else {
+      throw "KeySwipe direction is error"
+    }
 
     if let action = try? container.decode(String.self, forKey: .action), let keyboardAction = action.keyboardAction {
       self.action = keyboardAction

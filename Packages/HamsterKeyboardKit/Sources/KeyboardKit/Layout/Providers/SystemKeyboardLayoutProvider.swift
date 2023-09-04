@@ -67,6 +67,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
     let inputs = inputRows(for: context)
     let actions = self.actions(for: inputs, context: context)
+    // TODO: 这里添加 swipe 属性
     let items = self.items(for: actions, context: context)
     return KeyboardLayout(itemRows: items)
   }
@@ -134,6 +135,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func items(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardLayoutItemRows {
     actions.enumerated().map { row in
       row.element.enumerated().map { action in
+        // TODO: 这里添加 swipe 属性
         item(for: action.element, row: row.offset, index: action.offset, context: context)
       }
     }
@@ -147,9 +149,21 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func item(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItem {
     let size = itemSize(for: action, row: row, index: index, context: context)
     let insets = itemInsets(for: action, row: row, index: index, context: context)
-    return KeyboardLayoutItem(action: action, size: size, insets: insets)
+    let swipes = itemSwipes(for: action, row: row, index: index, context: context)
+    return KeyboardLayoutItem(action: action, size: size, insets: insets, swipes: swipes)
   }
-    
+
+  /**
+   Get a layout item size for the provided parameters.
+   
+   根据提供的布局参数获取布局项的 KeyboardLayoutItemSize。
+   */
+  open func itemSize(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemSize {
+    let width = itemSizeWidth(for: action, row: row, index: index, context: context)
+    let height = itemSizeHeight(for: action, row: row, index: index, context: context)
+    return KeyboardLayoutItemSize(width: width, height: height)
+  }
+
   /**
    Get layout item insets for the provided parameters.
    
@@ -162,18 +176,15 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
     default: return config.buttonInsets
     }
   }
-    
+  
   /**
-   Get a layout item size for the provided parameters.
-   
-   根据提供的布局参数获取布局项的 KeyboardLayoutItemSize。
+   根据提供的布局参数获取布局 item 的滑动配置。
    */
-  open func itemSize(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemSize {
-    let width = itemSizeWidth(for: action, row: row, index: index, context: context)
-    let height = itemSizeHeight(for: action, row: row, index: index, context: context)
-    return KeyboardLayoutItemSize(width: width, height: height)
+  open func itemSwipes(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> [KeySwipe] {
+    // TODO:
+    return []
   }
-    
+  
   /**
    Get a layout item height for the provided parameters.
    

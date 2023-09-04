@@ -151,6 +151,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
    */
   open func handle(_ gesture: KeyboardGesture, on action: KeyboardAction, replaced: Bool) {
     // 不能被取代 && 尝试处理取代Action
+    // 注意：是 if 不是 guard
     if !replaced && tryHandleReplacementAction(before: gesture, on: action) { return }
     triggerFeedback(for: gesture, on: action)
     tryUpdateSpaceDragState(for: gesture, on: action)

@@ -496,6 +496,10 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func setKeyboardType(_ type: KeyboardType) {
+    if !rimeContext.userInputKey.isEmpty {
+      textDocumentProxy.insertText(rimeContext.userInputKey)
+      rimeContext.reset()
+    }
     keyboardContext.keyboardType = type
   }
 

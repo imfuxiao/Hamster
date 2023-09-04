@@ -1,7 +1,10 @@
 # 键盘布局
 # 注意：文件编码格式必须为 UTF-8
 #
-# type: 键盘类型
+# keyboards: 自定义键盘，可以定义多个键盘，注意，如果按键中 action 切换到系统键盘，需要设置返回键，返回到自定义键盘。否则切换后无法返回到自定义键盘。
+#
+# name: 键盘名称，注意：名称必须唯一，否则已相同名称的最后一个键盘为准
+# rows: 键盘对应的全部行。
 #
 # action 按键操作：
 # 必须值
@@ -34,8 +37,7 @@
 # display: BOOL 是否显示, 默认值为 true。
 
 keyboards:
-  - type: custom(26)
-    name: "自定义中文26键"
+  - name: "自定义中文26键"
     rows:
       - keys:
           - action: character(q)

@@ -172,7 +172,8 @@ public extension KeyboardLayout {
     return KeyboardLayoutItem(
       action: action,
       size: template.size,
-      insets: template.insets
+      insets: template.insets,
+      swipes: []
     )
   }
 }

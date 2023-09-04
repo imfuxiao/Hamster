@@ -20,8 +20,10 @@ public extension KeyboardContext {
     if keyboardType.isAlphabetic(.capsLocked) { return keyboardType }
 
     // 中文输入不考虑切换
-    // TODO: 默认锁定 Shift 状态，如果取消锁定 Shift 状态，则需要切换键盘大小写
     if keyboardType.isChinese { return keyboardType }
+
+    // 默认锁定 Shift 状态，如果取消锁定 Shift 状态，则需要切换键盘大小写
+    if hamsterConfig?.Keyboard?.lockShiftState ?? true { return keyboardType }
 
     if let type = preferredAutocapitalizedKeyboardType { return type }
     if let type = preferredKeyboardTypeAfterAlphaTyping { return type }

@@ -23,24 +23,6 @@ import UIKit
  */
 public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
   /**
-   Create a new layout item.
-
-   - Parameters:
-     - action: The keyboard action that should be used for the item.
-     - size: The layout size that should be used for the item.
-     - insets: The item insets that should be used for the item.
-   */
-  public init(
-    action: KeyboardAction,
-    size: KeyboardLayoutItemSize,
-    insets: UIEdgeInsets
-  ) {
-    self.action = action
-    self.size = size
-    self.insets = insets
-  }
-
-  /**
    The keyboard action that should be used for the item.
 
    应用于该 item 的键盘操作。
@@ -61,6 +43,9 @@ public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
    */
   public var insets: UIEdgeInsets
 
+  /// 该 item 的滑动配置
+  public var swipes: [KeySwipe]
+
   /**
    The row ID the is used to identify the item in a row.
 
@@ -68,6 +53,27 @@ public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
    注意：不是同行中的唯一值，可能重复
    */
   public var rowId: KeyboardAction { action }
+
+  /**
+   Create a new layout item.
+
+   - Parameters:
+     - action: The keyboard action that should be used for the item.
+     - size: The layout size that should be used for the item.
+     - insets: The item insets that should be used for the item.
+   */
+  // TODO: 这里添加 swipe 属性
+  public init(
+    action: KeyboardAction,
+    size: KeyboardLayoutItemSize,
+    insets: UIEdgeInsets,
+    swipes: [KeySwipe]
+  ) {
+    self.action = action
+    self.size = size
+    self.insets = insets
+    self.swipes = swipes
+  }
 }
 
 /**
