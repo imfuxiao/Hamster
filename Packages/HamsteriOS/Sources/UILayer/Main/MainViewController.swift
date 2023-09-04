@@ -24,7 +24,7 @@ protocol SubViewControllerFactory {
   func makeRimeViewController() -> RimeViewController
 }
 
-open class MainViewController: NibLessNavigationController {
+open class MainViewController: UISplitViewController {
   private let mainViewModel: MainViewModel
   private let subViewControllerFactory: SubViewControllerFactory
   private let settingsViewController: SettingsViewController
@@ -62,6 +62,21 @@ open class MainViewController: NibLessNavigationController {
   private lazy var openSourceProjectViewController: OpenSourceViewController
     = subViewControllerFactory.makeOpenSourceProjectViewController()
 
+  private lazy var emptyViewController: UIViewController = {
+    let vc = NibLessViewController()
+    return vc
+  }()
+
+  private lazy var primaryNavigationViewController: UINavigationController = {
+    let vc = UINavigationController(rootViewController: settingsViewController)
+    return vc
+  }()
+
+  private lazy var secondaryNavigationViewController: UINavigationController = {
+    let vc = UINavigationController(rootViewController: aboutViewController)
+    return vc
+  }()
+
   private var subscriptions = Set<AnyCancellable>()
 
   init(mainViewModel: MainViewModel, subViewControllerFactory: SubViewControllerFactory) {
@@ -69,13 +84,25 @@ open class MainViewController: NibLessNavigationController {
     self.subViewControllerFactory = subViewControllerFactory
     self.settingsViewController = subViewControllerFactory.makeSettingsViewController()
 
-    super.init(rootViewController: settingsViewController)
-
+    super.init(style: .doubleColumn)
     self.delegate = self
+    // primary 视图始终可见
+    self.presentsWithGesture = false
+    self.preferredDisplayMode = .twoBesideSecondary
+    self.preferredSplitBehavior = .tile
+    self.displayModeButtonVisibility = .never
+    self.showsSecondaryOnlyButton = false
+    self.setViewController(primaryNavigationViewController, for: .primary)
+    self.setViewController(secondaryNavigationViewController, for: .secondary)
+  }
+
+  @available(*, unavailable)
+  public required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 }
 
-// MARK: override UIViewController
+// MARK: - override UIViewController
 
 extension MainViewController {
   override open func viewDidLoad() {
@@ -91,7 +118,16 @@ extension MainViewController {
   }
 }
 
-// MARK: custom method
+// MARK: - implementation UISplitViewControllerDelegate
+
+extension MainViewController: UISplitViewControllerDelegate {
+  public func splitViewController(_ svc: UISplitViewController, topColumnForCollapsingToProposedTopColumn proposedTopColumn: UISplitViewController.Column) -> UISplitViewController.Column {
+    /// 首选显示 primary 列
+    return .primary
+  }
+}
+
+// MARK: - custom method
 
 extension MainViewController {
   func navigationResponse(to subView: SettingsSubView) {
@@ -119,57 +155,76 @@ extension MainViewController {
     case .openSource:
       presentOpenSourceViewController()
     case .none:
-      popToRootViewController(animated: false)
+      return
+//      popToRootViewController(animated: false)
     default:
       return
     }
   }
 
   func presentInputSchemaViewController() {
-    pushViewController(inputSchemaViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(inputSchemaViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentFinderViewController() {
-    pushViewController(finderViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(finderViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentUploadInputSchemaViewController() {
-    pushViewController(uploadInputSchemaViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(uploadInputSchemaViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentKeyboardSettingsViewController() {
-    pushViewController(keyboardSettingsViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(keyboardSettingsViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentKeyboardColorViewController() {
-    pushViewController(keyboardColorViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(keyboardColorViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentKeyboardFeedbackViewController() {
-    pushViewController(keyboardFeedbackViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(keyboardFeedbackViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentRimeViewController() {
-    pushViewController(rimeViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(rimeViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentBackupViewController() {
-    pushViewController(backupViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(backupViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentAppleCloudViewController() {
-    pushViewController(iCloudViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(iCloudViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentAboutViewController() {
-    pushViewController(aboutViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(aboutViewController, for: .secondary)
+    show(.secondary)
   }
 
   func presentOpenSourceViewController() {
-    pushViewController(openSourceProjectViewController, animated: true)
+    secondaryNavigationViewController.viewControllers = []
+    setViewController(openSourceProjectViewController, for: .secondary)
+    show(.secondary)
   }
 }
-
-// MARK: implementation UINavigationControllerDelegate
-
-extension MainViewController: UINavigationControllerDelegate {}
