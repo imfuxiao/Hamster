@@ -504,6 +504,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       textDocumentProxy.insertText(rimeContext.userInputKey)
       rimeContext.reset()
     }
+    keyboardContext.lastKeyboardTypeStack.append(keyboardContext.keyboardType)
     keyboardContext.keyboardType = type
   }
 
@@ -538,6 +539,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
         Logger.statistics.info("insertRimeKeyCode(): \(errorMessage)")
         tryHandleSpecificCode(keyCode)
       }
+    }
+  }
+
+  open func returnLastKeyboard() {
+    if let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() {
+      keyboardContext.keyboardType = keyboard
     }
   }
 

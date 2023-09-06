@@ -46,10 +46,6 @@ public class StanderSystemKeyboard: UIView {
   private var rimeContext: RimeContext
   private var currentKeyboardType: KeyboardType?
 
-  /// 行中按键宽度类型为 input 的最大数量
-  /// 注意：按行统计
-  private var maxInputButtonCount = 0
-
   /// 缓存所有按键视图
   private var keyboardRows: [[KeyboardButton]] = []
   /// 静态视图约束，视图创建完毕后不在发生变化
@@ -148,7 +144,6 @@ public class StanderSystemKeyboard: UIView {
     // 添加按键至 View
     for (rowIndex, row) in layout.itemRows.enumerated() {
       var tempRow = [KeyboardButton]()
-      var inputCount = 0
       for (itemIndex, item) in row.enumerated() {
         let buttonItem = KeyboardButton(
           row: rowIndex,
@@ -164,13 +159,8 @@ public class StanderSystemKeyboard: UIView {
         // 需要将按键添加至 touchView, 统一处理
         touchView.addSubview(buttonItem)
         tempRow.append(buttonItem)
-
-        if item.size.width == .input {
-          inputCount += 1
-        }
       }
 
-      maxInputButtonCount = max(maxInputButtonCount, inputCount)
       keyboardRows.append(tempRow)
     }
   }
@@ -343,7 +333,6 @@ public class StanderSystemKeyboard: UIView {
       touchView.subviews.forEach { $0.removeFromSuperview() }
       touchView.removeFromSuperview()
 
-      self.maxInputButtonCount = 0
       self.keyboardRows.removeAll(keepingCapacity: true)
       self.staticConstraints.removeAll(keepingCapacity: true)
       self.dynamicConstraints.removeAll(keepingCapacity: true)

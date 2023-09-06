@@ -125,11 +125,14 @@ class KeyboardRootView: UIView {
 
   /// 数字九宫格键盘
   private lazy var numericNineGridKeyboardView: UIView = {
-    let view = UIView()
+    let view = NumericNineGridKeyboard(
+      actionHandler: actionHandler,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
 
-    // TODO:
-
-    view.backgroundColor = .yellow
     view.isHidden = true
     view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -270,7 +273,7 @@ class KeyboardRootView: UIView {
   /// 激活约束
   func activateViewConstraints() {
     NSLayoutConstraint.activate([
-      numericNineGridKeyboardView.topAnchor.constraint(equalTo: topAnchor),
+      numericNineGridKeyboardView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
       numericNineGridKeyboardView.bottomAnchor.constraint(equalTo: bottomAnchor),
       numericNineGridKeyboardView.leadingAnchor.constraint(equalTo: leadingAnchor),
       numericNineGridKeyboardView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -341,20 +344,28 @@ class KeyboardRootView: UIView {
           classifySymbolicKeyboardView.isHidden = false
           classifySymbolicKeyboardView.alpha = 1
           numericNineGridKeyboardView.isHidden = true
+          numericNineGridKeyboardView.alpha = 0
           emojisKeyboardView.isHidden = true
+          emojisKeyboardView.alpha = 0
         case .numericNineGrid:
           classifySymbolicKeyboardView.isHidden = true
+          classifySymbolicKeyboardView.alpha = 0
           numericNineGridKeyboardView.isHidden = false
+          numericNineGridKeyboardView.alpha = 1
           emojisKeyboardView.isHidden = true
+          emojisKeyboardView.alpha = 0
         case .emojis:
           classifySymbolicKeyboardView.isHidden = true
           numericNineGridKeyboardView.isHidden = true
           emojisKeyboardView.isHidden = false
+          emojisKeyboardView.alpha = 1
         default:
           classifySymbolicKeyboardView.isHidden = true
           classifySymbolicKeyboardView.alpha = 0
           numericNineGridKeyboardView.isHidden = true
+          numericNineGridKeyboardView.alpha = 0
           emojisKeyboardView.isHidden = true
+          emojisKeyboardView.alpha = 0
         }
       }
       .store(in: &subscriptions)

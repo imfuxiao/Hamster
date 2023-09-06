@@ -53,7 +53,7 @@ class ClassifySymbolicKeyboard: UIView {
   }()
 
   private lazy var symbolsView: SymbolsView = {
-    let view = SymbolsView(actionHandler: actionHandler, viewModel: viewModel)
+    let view = SymbolsView(keyboardContext: keyboardContext, actionHandler: actionHandler, viewModel: viewModel)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()

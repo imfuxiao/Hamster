@@ -138,7 +138,8 @@ public class KeyboardButton: UIControl {
   /// input呼出样式
   private var inputCalloutStyle: KeyboardInputCalloutStyle {
     var style = appearance.inputCalloutStyle
-    let insets = layoutConfig.buttonInsets
+//    let insets = layoutConfig.buttonInsets
+    let insets = item.insets
     style.callout.buttonInset = insets
     return style
   }
@@ -146,7 +147,8 @@ public class KeyboardButton: UIControl {
   /// 长按呼出样式
   private var actionCalloutStyle: KeyboardActionCalloutStyle {
     var style = appearance.actionCalloutStyle
-    let insets = layoutConfig.buttonInsets
+//    let insets = layoutConfig.buttonInsets
+    let insets = item.insets
     style.callout.buttonInset = insets
     return style
   }
@@ -223,7 +225,8 @@ public class KeyboardButton: UIControl {
     
     addSubview(buttonContentView)
     buttonContentView.translatesAutoresizingMaskIntoConstraints = false
-    let insets = layoutConfig.buttonInsets
+//    let insets = layoutConfig.buttonInsets
+    let insets = item.insets
     topConstraints.append(buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
     bottomConstraints.append(buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
     leadingConstraints.append(buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
@@ -265,7 +268,8 @@ public class KeyboardButton: UIControl {
 
     interfaceOrientation = keyboardContext.interfaceOrientation
 
-    let insets = layoutConfig.buttonInsets
+//    let insets = layoutConfig.buttonInsets
+    let insets = item.insets
 
     // Logger.statistics.debug("KeyboardButtonRowItem layoutSubviews() rowHeight: \(layoutConfig.rowHeight), buttonInsets [left: \(insets.left), top: \(insets.top), right: \(insets.right), bottom: \(insets.bottom)]")
 
@@ -298,7 +302,7 @@ public class KeyboardButton: UIControl {
     } else {
       buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       underShadowView.shapeLayer.path = underPath.cgPath
-      underShadowView.shapeLayer.opacity = 0.6
+      underShadowView.shapeLayer.opacity = 1
       hideInputCallout()
     }
   }
@@ -312,8 +316,7 @@ public class KeyboardButton: UIControl {
     updateConstraints(layoutConfig)
     updateButtonStyle(layoutConfig, isPressed: isHighlighted)
     
-    let displayButtonBubbles = keyboardContext.hamsterConfig?.Keyboard?.displayButtonBubbles ?? false
-    if displayButtonBubbles {
+    if keyboardContext.displayButtonBubbles {
       setupInputCallout()
     }
   }
@@ -330,6 +333,7 @@ public class KeyboardButton: UIControl {
 
 extension KeyboardButton {
   func showInputCallout() {
+    guard keyboardContext.displayButtonBubbles else { return }
     // 屏幕横向无按键气泡
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
     guard action.showKeyBubble else { return }
@@ -340,6 +344,7 @@ extension KeyboardButton {
   }
   
   func hideInputCallout() {
+    guard keyboardContext.displayButtonBubbles else { return }
     // 屏幕横向无按键气泡
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
     inputCalloutView.isHidden = true

@@ -146,4 +146,7 @@ public protocol KeyboardController: AnyObject {
    次选候选字
    */
   func selectSecondaryCandidate()
+
+  /// 返回上一次的键盘
+  func returnLastKeyboard()
 }

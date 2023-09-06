@@ -125,14 +125,10 @@ public class KeyboardContext: ObservableObject {
    当前使用的键盘类型。
    */
   @Published
-  public var keyboardType = KeyboardType.chinese(.lowercased) {
-    willSet {
-      lastKeyboardType = keyboardType
-    }
-  }
+  public var keyboardType = KeyboardType.chinese(.lowercased)
 
   /// 记录上一次的键盘类型, 用于返回
-  public var lastKeyboardType: KeyboardType?
+  public var lastKeyboardTypeStack: [KeyboardType] = []
 
   /**
    The locale that is currently being used.
@@ -547,6 +543,11 @@ public extension KeyboardContext {
   /// 是否开启工具栏
   var enableToolbar: Bool {
     hamsterConfig?.toolbar?.enableToolbar ?? true
+  }
+
+  /// 是否开启按键气泡
+  var displayButtonBubbles: Bool {
+    (hamsterConfig?.Keyboard?.displayButtonBubbles ?? false) && keyboardType.displayButtonBubbles
   }
 
   /// 工具栏高度

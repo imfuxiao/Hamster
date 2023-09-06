@@ -38,7 +38,8 @@ class BottomRowView: UIView {
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("返回", for: .normal)
-    button.addTarget(self, action: #selector(returnHandled), for: .touchUpInside)
+    button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
+    button.addTarget(self, action: #selector(returnKeyboardHandled(_:)), for: .touchUpInside)
     button.backgroundColor = .systemBlue
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
@@ -95,8 +96,11 @@ class BottomRowView: UIView {
 }
 
 extension BottomRowView {
-  @objc func returnHandled() {
-    // TODO: 返回之前键盘
-    actionHandler.handle(.press, on: .keyboardType(.chinese(.auto)))
+  @objc func returnKeyboardPressHandled(_ button: UIButton) {
+    actionHandler.handle(.press, on: .returnLastKeyboard)
+  }
+
+  @objc func returnKeyboardHandled(_ button: UIButton) {
+    actionHandler.handle(.release, on: .returnLastKeyboard)
   }
 }

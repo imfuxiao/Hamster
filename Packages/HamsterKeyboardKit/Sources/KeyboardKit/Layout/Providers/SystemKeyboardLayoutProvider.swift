@@ -264,7 +264,8 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
-    case .chinese: return .keyboardType(.chineseNumeric)
+//    case .chinese: return .keyboardType(.chineseNumeric)
+    case .chinese: return .keyboardType(.numericNineGrid)
     case .alphabetic: return .keyboardType(.numeric)
     case .numeric: return .keyboardType(.alphabetic(.auto))
     case .chineseNumeric: return .keyboardType(.chinese(.auto))

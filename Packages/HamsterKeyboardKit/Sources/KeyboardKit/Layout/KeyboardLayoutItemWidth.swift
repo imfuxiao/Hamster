@@ -53,3 +53,15 @@ public indirect enum KeyboardLayoutItemWidth: Equatable, Codable {
    */
   case points(_ points: CGFloat)
 }
+
+extension KeyboardLayoutItemWidth {
+  /// 获取百分比类型的值
+  var percentageValue: CGFloat? {
+    switch self {
+    case .percentage(let percent):
+      return percent
+    default:
+      return nil
+    }
+  }
+}

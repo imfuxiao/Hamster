@@ -237,6 +237,9 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     if let override = buttonFontSizePadOverride(for: action) { return override }
     if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
+    if action == .returnLastKeyboard {
+      return 16
+    }
     let text = buttonText(for: action) ?? ""
     if action.isInputAction && text.isLowercased { return 26 }
     if action.isSystemAction || action.isPrimaryAction { return 16 }

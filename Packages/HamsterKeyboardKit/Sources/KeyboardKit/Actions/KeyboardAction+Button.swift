@@ -61,6 +61,7 @@ public extension KeyboardAction {
     case .primary(let type): return type.standardButtonText(for: context.locale)
     case .space:
       return KKL10n.space.text(for: context)
+    case .returnLastKeyboard: return "返回"
     default: return nil
     }
   }

@@ -124,6 +124,7 @@ public extension KeyboardAction {
     case .systemSettings: return { $0?.openUrl(.keyboardSettings) }
     case .tab: return { $0?.insertRimeKeyCode(XK_Tab) }
     case .url(let url, _): return { $0?.openUrl(url) }
+    case .returnLastKeyboard: return { $0?.returnLastKeyboard() }
     default: return nil
     }
   }

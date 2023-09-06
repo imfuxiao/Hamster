@@ -189,6 +189,17 @@ public extension KeyboardType {
     }
   }
 
+  var displayButtonBubbles: Bool {
+    switch self {
+    case .chinese: return true
+    case .alphabetic: return true
+    case .custom: return true
+    default:
+      return false
+    }
+  }
+
+  /// 是否需要重新布局
   var needLayoutSubviews: Bool {
     switch self {
     case .chinese: return true

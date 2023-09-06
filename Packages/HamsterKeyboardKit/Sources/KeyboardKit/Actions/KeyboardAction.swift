@@ -145,6 +145,9 @@ public enum KeyboardAction: Codable, Equatable {
   
   /// 插入一个符号
   case symbol(Symbol)
+  
+  /// 返回上一个键盘
+  case returnLastKeyboard
 }
 
 // MARK: - Public Extensions
@@ -204,6 +207,8 @@ public extension KeyboardAction {
     case .image: return true
     case .space: return true
     case .systemImage: return true
+    case .returnLastKeyboard: return true
+    case .symbol: return true
     default: return false
     }
   }
