@@ -466,6 +466,10 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     textDocumentProxy.deleteBackward(times: times)
   }
 
+  open func insertSymbol(_ symbol: Symbol) {
+    textDocumentProxy.insertText(symbol.char)
+  }
+
   open func insertText(_ text: String) {
     if !keyboardContext.keyboardType.isChinese {
       textDocumentProxy.insertText(text)

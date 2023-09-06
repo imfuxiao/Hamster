@@ -246,4 +246,14 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
     )
     return aboutViewController
   }
+
+  func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController {
+    let keyboardLayoutViewController = KeyboardLayoutViewController()
+    return keyboardLayoutViewController
+  }
+
+  func makeKeySwipeSettingsViewController() -> KeySwipeSettingsViewController {
+    let keySwipeSettingsViewController = KeySwipeSettingsViewController()
+    return keySwipeSettingsViewController
+  }
 }

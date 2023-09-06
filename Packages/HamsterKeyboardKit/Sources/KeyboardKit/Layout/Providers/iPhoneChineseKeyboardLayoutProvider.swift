@@ -59,7 +59,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType: 
+    case .keyboardType:
       /// 中文主键盘的最后一行第一个键
       if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
         return smallBottomWidth(for: context)
@@ -183,6 +183,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
 
+    result.append(.keyboardType(.classifySymbolic))
     result.append(.space)
 
     if let action = needsChineseEnglishSwitchAction(for: context) { result.append(action) }

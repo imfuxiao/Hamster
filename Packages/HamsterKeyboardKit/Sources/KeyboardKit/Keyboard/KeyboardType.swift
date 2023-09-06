@@ -189,6 +189,19 @@ public extension KeyboardType {
     }
   }
 
+  var needLayoutSubviews: Bool {
+    switch self {
+    case .chinese: return true
+    case .chineseNumeric: return true
+    case .chineseSymbolic: return true
+    case .alphabetic: return true
+    case .numeric: return true
+    case .symbolic: return true
+    default:
+      return false
+    }
+  }
+
   /// 是否自定义键盘
   var isCustom: Bool {
     switch self {

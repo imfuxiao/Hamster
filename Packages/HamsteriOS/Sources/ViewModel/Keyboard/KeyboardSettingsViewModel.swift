@@ -220,58 +220,58 @@ public class KeyboardSettingsViewModel: ObservableObject {
             lockShiftState = $0
           })
       ]),
-    .init(
-      items: [
-        .init(
-          text: "启用空格左侧按键",
-          type: .toggle,
-          toggleValue: displaySpaceLeftButton,
-          toggleHandled: { [unowned self] in
-            displaySpaceLeftButton = $0
-          }),
-        .init(
-          icon: UIImage(systemName: "square.and.pencil"),
-          placeholder: "左侧按键键值",
-          type: .textField,
-          textValue: keyValueOfSpaceLeftButton,
-          textHandled: { [unowned self] in
-            keyValueOfSpaceLeftButton = $0
-          }),
-        .init(
-          text: "启用空格右侧按键",
-          type: .toggle,
-          toggleValue: displaySpaceRightButton,
-          toggleHandled: { [unowned self] in
-            displaySpaceRightButton = $0
-          }),
-        .init(
-          icon: UIImage(systemName: "square.and.pencil"),
-          placeholder: "右侧按键键值",
-          type: .textField,
-          textValue: keyValueOfSpaceRightButton,
-          textHandled: { [unowned self] in
-            keyValueOfSpaceRightButton = $0
-          })
-      ]),
+//    .init(
+//      items: [
+//        .init(
+//          text: "启用空格左侧按键",
+//          type: .toggle,
+//          toggleValue: displaySpaceLeftButton,
+//          toggleHandled: { [unowned self] in
+//            displaySpaceLeftButton = $0
+//          }),
+//        .init(
+//          icon: UIImage(systemName: "square.and.pencil"),
+//          placeholder: "左侧按键键值",
+//          type: .textField,
+//          textValue: keyValueOfSpaceLeftButton,
+//          textHandled: { [unowned self] in
+//            keyValueOfSpaceLeftButton = $0
+//          }),
+//        .init(
+//          text: "启用空格右侧按键",
+//          type: .toggle,
+//          toggleValue: displaySpaceRightButton,
+//          toggleHandled: { [unowned self] in
+//            displaySpaceRightButton = $0
+//          }),
+//        .init(
+//          icon: UIImage(systemName: "square.and.pencil"),
+//          placeholder: "右侧按键键值",
+//          type: .textField,
+//          textValue: keyValueOfSpaceRightButton,
+//          textHandled: { [unowned self] in
+//            keyValueOfSpaceRightButton = $0
+//          })
+//      ]),
 
-    .init(
-      footer: "选项“按键位于空格左侧”：关闭状态则位于空格右侧，开启则位于空格左侧",
-      items: [
-        .init(
-          text: "启用中英切换按键",
-          type: .toggle,
-          toggleValue: displayChineseEnglishSwitchButton,
-          toggleHandled: { [unowned self] in
-            displayChineseEnglishSwitchButton = $0
-          }),
-        .init(
-          text: "按键位于空格左侧",
-          type: .toggle,
-          toggleValue: chineseEnglishSwitchButtonIsOnLeftOfSpaceButton,
-          toggleHandled: { [unowned self] in
-            chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = $0
-          })
-      ]),
+//    .init(
+//      footer: "选项“按键位于空格左侧”：关闭状态则位于空格右侧，开启则位于空格左侧",
+//      items: [
+//        .init(
+//          text: "启用中英切换按键",
+//          type: .toggle,
+//          toggleValue: displayChineseEnglishSwitchButton,
+//          toggleHandled: { [unowned self] in
+//            displayChineseEnglishSwitchButton = $0
+//          }),
+//        .init(
+//          text: "按键位于空格左侧",
+//          type: .toggle,
+//          toggleValue: chineseEnglishSwitchButtonIsOnLeftOfSpaceButton,
+//          toggleHandled: { [unowned self] in
+//            chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = $0
+//          })
+//      ]),
     .init(
       items: [
         .init(
@@ -285,13 +285,13 @@ public class KeyboardSettingsViewModel: ObservableObject {
       ]),
     .init(
       items: [
-        .init(
-          text: "启用分号按键",
-          type: .toggle,
-          toggleValue: displaySemicolonButton,
-          toggleHandled: { [unowned self] in
-            displaySemicolonButton = $0
-          }),
+//        .init(
+//          text: "启用分号按键",
+//          type: .toggle,
+//          toggleValue: displaySemicolonButton,
+//          toggleHandled: { [unowned self] in
+//            displaySemicolonButton = $0
+//          }),
         .init(
           text: "数字九宫格",
           accessoryType: .disclosureIndicator,
@@ -563,5 +563,5 @@ public class KeyboardSettingsViewModel: ObservableObject {
 
 extension KeyboardSettingsViewModel {
   public static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
-  static let enableKeyboardAutomaticallyLowercaseRemark = "默认键盘大小写会保持自身状态. 开启此选项后, 当在大写状态在下输入一个字母后会自动转为小写状态. 注意: 双击Shift会保持锁定"
+  static let enableKeyboardAutomaticallyLowercaseRemark = "关闭后，Shift状态随当前输入状态变化。注意: 双击Shift会保持锁定"
 }

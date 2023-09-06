@@ -55,7 +55,7 @@ class KeyboardToolbarView: UIView {
     return view
   }()
 
-  /// 常用功能栏
+  // TODO: 常用功能栏
   lazy var commonFunctionBar: UIView = {
     let view = UIStackView(arrangedSubviews: [iconView, dismissKeyboardView])
     view.axis = .horizontal
@@ -63,6 +63,11 @@ class KeyboardToolbarView: UIView {
     view.distribution = .equalSpacing
     view.spacing = 0
     view.translatesAutoresizingMaskIntoConstraints = false
+
+    if !keyboardContext.enableHamsterKeyboardColor {
+      view.backgroundColor = .systemGroupedBackground
+    }
+
     return view
   }()
 
@@ -76,11 +81,6 @@ class KeyboardToolbarView: UIView {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
-
-  /// 布局配置
-  private var layoutConfig: KeyboardLayoutConfiguration {
-    .standard(for: keyboardContext)
-  }
 
   init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
     self.actionHandler = actionHandler
@@ -101,13 +101,11 @@ class KeyboardToolbarView: UIView {
     addSubview(commonFunctionBar)
     addSubview(candidateWordView)
 
-    let buttonInsets = layoutConfig.buttonInsets
-
     NSLayoutConstraint.activate([
       commonFunctionBar.topAnchor.constraint(equalTo: topAnchor),
       commonFunctionBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-      commonFunctionBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-      commonFunctionBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
+      commonFunctionBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+      commonFunctionBar.trailingAnchor.constraint(equalTo: trailingAnchor),
 
       candidateWordView.topAnchor.constraint(equalTo: topAnchor),
       candidateWordView.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -115,7 +113,8 @@ class KeyboardToolbarView: UIView {
       candidateWordView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
 
-    commonFunctionBar.isHidden = false
+//    commonFunctionBar.isHidden = false
+    commonFunctionBar.isHidden = true
     candidateWordView.isHidden = true
 
     Task {
@@ -123,7 +122,7 @@ class KeyboardToolbarView: UIView {
         .receive(on: DispatchQueue.main)
         .sink { [unowned self] in
           let isEmpty = $0.isEmpty
-          self.commonFunctionBar.isHidden = !isEmpty
+//          self.commonFunctionBar.isHidden = !isEmpty
           self.candidateWordView.isHidden = isEmpty
         }
         .store(in: &subscriptions)

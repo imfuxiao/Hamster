@@ -142,6 +142,9 @@ public enum KeyboardAction: Codable, Equatable {
   /// Open an url when released, using a custom id for identification.
   /// 释放时打开一个 url，使用自定义 ID 进行标识。
   case url(_ url: URL?, id: String? = nil)
+  
+  /// 插入一个符号
+  case symbol(Symbol)
 }
 
 // MARK: - Public Extensions

@@ -125,7 +125,14 @@ public class KeyboardContext: ObservableObject {
    当前使用的键盘类型。
    */
   @Published
-  public var keyboardType = KeyboardType.chinese(.lowercased)
+  public var keyboardType = KeyboardType.chinese(.lowercased) {
+    willSet {
+      lastKeyboardType = keyboardType
+    }
+  }
+
+  /// 记录上一次的键盘类型, 用于返回
+  public var lastKeyboardType: KeyboardType?
 
   /**
    The locale that is currently being used.
@@ -537,6 +544,26 @@ private extension UIInputViewController {
 }
 
 public extension KeyboardContext {
+  /// 是否开启工具栏
+  var enableToolbar: Bool {
+    hamsterConfig?.toolbar?.enableToolbar ?? true
+  }
+
+  /// 工具栏高度
+  var heightOfToolbar: CGFloat {
+    CGFloat(hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
+  }
+
+  /// 工具栏编码区高度
+  var heightOfCodingArea: CGFloat {
+    CGFloat(hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
+  }
+
+  /// 是否开启键盘配色
+  var enableHamsterKeyboardColor: Bool {
+    hamsterConfig?.Keyboard?.enableColorSchema ?? false
+  }
+
   /// Hamster 键盘配色
   var keyboardColor: HamsterModel.KeyboardColor? {
     if hamsterConfig?.Keyboard?.enableColorSchema ?? false, let color = hamsterKeyboardColor {

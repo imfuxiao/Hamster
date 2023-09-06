@@ -69,9 +69,9 @@ public class CandidateWordsView: UIView {
     ])
 
     // 添加阴影
-    let codingAreaHeight = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
-    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
-    let offsetY = (heightOfToolbar - codingAreaHeight - 30) / 2
+    let heightOfCodingArea = keyboardContext.heightOfCodingArea
+    let heightOfToolbar = keyboardContext.heightOfToolbar
+    let offsetY = (heightOfToolbar - heightOfCodingArea - 30) / 2
 
     view.layer.shadowColor = UIColor.black.cgColor
     view.layer.shadowOpacity = 0.3

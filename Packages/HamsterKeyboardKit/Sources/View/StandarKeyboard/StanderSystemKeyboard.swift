@@ -301,36 +301,48 @@ public class StanderSystemKeyboard: UIView {
   func setupKeyboardView() {
     backgroundColor = .clear
 
-//    constructViewHierarchy()
+    constructViewHierarchy()
+    activateViewConstraints()
 
+    // 屏幕方向改变调整行高
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        if $0 != self.interfaceOrientation {
-          Logger.statistics.debug("keyboardContext.interfaceOrientation is change")
-          setNeedsLayout()
-        }
+      .sink { [unowned self] _ in
+        setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
 
+    // 键盘类型发生变化重新加载键盘
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        if $0 != self.currentKeyboardType {
-          Logger.statistics.debug("keyboardContext.keyboardType is change")
-          setNeedsLayout()
-        }
+      .sink { [unowned self] _ in
+        Logger.statistics.debug("keyboardContext.keyboardType is change")
+        setNeedsLayout()
       }
       .store(in: &subscriptions)
+  }
+
+  override public func updateConstraints() {
+    super.updateConstraints()
+
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    interfaceOrientation = keyboardContext.interfaceOrientation
+    let rowHeight = layoutConfig.rowHeight
+    Logger.statistics.debug("StanderAlphabeticKeyboard layoutSubviews() buttonInsets rowHeight: \(rowHeight)")
+    dynamicConstraints.forEach {
+      $0.constant = rowHeight
+    }
   }
 
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    if currentKeyboardType != keyboardContext.keyboardType {
+    if currentKeyboardType != keyboardContext.keyboardType, keyboardContext.keyboardType.needLayoutSubviews {
       currentKeyboardType = keyboardContext.keyboardType
 
       touchView.subviews.forEach { $0.removeFromSuperview() }
+      touchView.removeFromSuperview()
+
       self.maxInputButtonCount = 0
       self.keyboardRows.removeAll(keepingCapacity: true)
       self.staticConstraints.removeAll(keepingCapacity: true)
@@ -339,16 +351,6 @@ public class StanderSystemKeyboard: UIView {
       constructViewHierarchy()
       activateViewConstraints()
       return
-    }
-
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
-    interfaceOrientation = keyboardContext.interfaceOrientation
-
-    let rowHeight = layoutConfig.rowHeight
-
-    Logger.statistics.debug("StanderAlphabeticKeyboard layoutSubviews() buttonInsets rowHeight: \(rowHeight)")
-    dynamicConstraints.forEach {
-      $0.constant = rowHeight
     }
   }
 }

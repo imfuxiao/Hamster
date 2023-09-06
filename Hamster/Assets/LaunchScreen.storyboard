@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_72" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22129"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -19,20 +19,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="POWERED BY 中州韻輸入法引擎" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Oi-V5-g2a" userLabel="FootLabel">
-                                <rect key="frame" x="0.0" y="827" width="430" height="21"/>
+                                <rect key="frame" x="0.0" y="877" width="430" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="仓输入法" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eD4-J0-MYb" userLabel="Name">
-                                <rect key="frame" x="0.0" y="586" width="430" height="26.333333333333371"/>
+                                <rect key="frame" x="170.33333333333334" y="549" width="89.333333333333343" height="26.333333333333371"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Hamster" highlightedImage="HamsterWhite" translatesAutoresizingMaskIntoConstraints="NO" id="qCd-kK-6Zx">
-                                <rect key="frame" x="107.66666666666669" y="321" width="215" height="215"/>
+                                <rect key="frame" x="140" y="391" width="150" height="150"/>
                                 <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="FsO-Qf-FrM"/>
                                     <constraint firstAttribute="width" secondItem="qCd-kK-6Zx" secondAttribute="height" multiplier="1:1" id="qQp-dB-C4I"/>
                                 </constraints>
                             </imageView>
@@ -40,33 +41,14 @@
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
                         <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerY" secondItem="qCd-kK-6Zx" secondAttribute="centerY" constant="50" id="1jE-Wh-ops"/>
-                            <constraint firstItem="9Oi-V5-g2a" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="Fem-xe-w2d"/>
-                            <constraint firstItem="qCd-kK-6Zx" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="SPo-bI-w1F"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="9Oi-V5-g2a" secondAttribute="bottom" constant="50" id="aTd-G9-7Yb"/>
-                            <constraint firstItem="eD4-J0-MYb" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="iH0-R1-5rM"/>
-                            <constraint firstItem="eD4-J0-MYb" firstAttribute="top" secondItem="qCd-kK-6Zx" secondAttribute="bottom" constant="50" id="jZM-aB-8a0"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="9Oi-V5-g2a" secondAttribute="trailing" id="nbE-zO-CQC"/>
-                            <constraint firstItem="qCd-kK-6Zx" firstAttribute="width" secondItem="Bcu-3y-fUS" secondAttribute="width" multiplier="0.5" id="vNR-dJ-LRC"/>
-                            <constraint firstItem="qCd-kK-6Zx" firstAttribute="width" secondItem="Bcu-3y-fUS" secondAttribute="height" multiplier="0.5" id="yFv-rX-QCu"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="eD4-J0-MYb" secondAttribute="trailing" id="zo7-Pj-13S"/>
+                            <constraint firstItem="9Oi-V5-g2a" firstAttribute="centerX" secondItem="qCd-kK-6Zx" secondAttribute="centerX" id="6Y7-nx-Kq0"/>
+                            <constraint firstItem="9Oi-V5-g2a" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="ENd-zv-cUe"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="9Oi-V5-g2a" secondAttribute="trailing" id="GNi-S3-UD8"/>
+                            <constraint firstItem="qCd-kK-6Zx" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="nzZ-hB-Av7"/>
+                            <constraint firstItem="eD4-J0-MYb" firstAttribute="centerX" secondItem="qCd-kK-6Zx" secondAttribute="centerX" id="pRM-H9-5h0"/>
+                            <constraint firstItem="eD4-J0-MYb" firstAttribute="top" secondItem="qCd-kK-6Zx" secondAttribute="bottom" constant="8" symbolic="YES" id="s9d-jq-aZ6"/>
+                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="9Oi-V5-g2a" secondAttribute="bottom" id="wjH-Tz-mpk"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="vNR-dJ-LRC"/>
-                                <exclude reference="yFv-rX-QCu"/>
-                            </mask>
-                        </variation>
-                        <variation key="widthClass=compact">
-                            <mask key="constraints">
-                                <include reference="vNR-dJ-LRC"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=compact-widthClass=regular">
-                            <mask key="constraints">
-                                <include reference="yFv-rX-QCu"/>
-                            </mask>
-                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>

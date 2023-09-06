@@ -62,8 +62,8 @@ public class CandidateWordsCollectionView: UICollectionView {
       return UICollectionViewCompositionalLayout(section: section)
     }()
 
-    let heightOfToolbar = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
-    let heightOfCodingArea = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
+    let heightOfToolbar = keyboardContext.heightOfToolbar
+    let heightOfCodingArea = keyboardContext.heightOfCodingArea
 
     self.verticalLayout = {
       let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))

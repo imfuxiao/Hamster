@@ -70,6 +70,9 @@ public protocol KeyboardController: AnyObject {
    */
   func insertText(_ text: String)
 
+  /// 插入符号
+  func insertSymbol(_ symbol: Symbol)
+
   /**
    Perform an autocomplete operation.
 
