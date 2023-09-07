@@ -62,6 +62,7 @@ public extension KeyboardAction {
     case .space:
       return KKL10n.space.text(for: context)
     case .returnLastKeyboard: return "返回"
+    case .symbol(let symbol): return symbol.char
     default: return nil
     }
   }

@@ -20,10 +20,26 @@ class NumericNineGridKeyboard: UIView {
   private var calloutContext: KeyboardCalloutContext
   private var rimeContext: RimeContext
 
-  private lazy var symbolsListView: SymbolsVerticalView = {
-    let view = SymbolsVerticalView()
+  /// 符号列表视图
+  private lazy var symbolsListView: UIView = {
+    let view = SymbolsVerticalView(keyboardContext: keyboardContext, actionHandler: actionHandler)
     view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+
+    // 九宫格自身的 insets
+    let insets = keyboardLayoutProvider.insets
+
+    let container = UIView(frame: .zero)
+    container.backgroundColor = .clear
+    container.translatesAutoresizingMaskIntoConstraints = false
+
+    container.addSubview(view)
+    NSLayoutConstraint.activate([
+      view.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
+      view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom),
+      view.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left),
+      view.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right),
+    ])
+    return container
   }()
 
   // combine

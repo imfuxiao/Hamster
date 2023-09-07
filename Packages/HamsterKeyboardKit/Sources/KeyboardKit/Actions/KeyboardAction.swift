@@ -297,6 +297,13 @@ public extension KeyboardAction {
     default: return false
     }
   }
+  
+  var isSymbolAction: Bool {
+    switch self {
+    case .symbol: return true
+    default: return false
+    }
+  }
     
   /**
    Whether or not the action is an uppercase shift action.

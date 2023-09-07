@@ -550,6 +550,11 @@ public extension KeyboardContext {
     (hamsterConfig?.Keyboard?.displayButtonBubbles ?? false) && keyboardType.displayButtonBubbles
   }
 
+  /// 数字九宫格符号列表
+  var symbolsOfNumericNineGridKeyboard: [String] {
+    hamsterConfig?.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
+  }
+
   /// 工具栏高度
   var heightOfToolbar: CGFloat {
     CGFloat(hamsterConfig?.toolbar?.heightOfToolbar ?? 55)
