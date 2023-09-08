@@ -69,6 +69,7 @@ class CandidateWordCell: UICollectionViewCell {
   private var candidateSuggestion: CandidateSuggestion? = nil
   private var keyboardColor: HamsterModel.KeyboardColor? = nil
   private var showIndex: Bool = false
+  private var showComment: Bool = false
   private var titleFont: UIFont = KeyboardFont.title3.font
   private var subtitleFont: UIFont = KeyboardFont.caption2.font
 
@@ -77,12 +78,16 @@ class CandidateWordCell: UICollectionViewCell {
     _ suggestion: CandidateSuggestion,
     color: HamsterModel.KeyboardColor? = nil,
     showIndex: Bool? = nil,
+    showComment: Bool? = nil,
     titleFont: UIFont? = nil,
     subtitleFont: UIFont? = nil
   ) {
     self.keyboardColor = color
     if let showIndex = showIndex {
       self.showIndex = showIndex
+    }
+    if let showComment = showComment {
+      self.showComment = showComment
     }
     if let titleFont = titleFont {
       self.titleFont = titleFont
@@ -107,7 +112,11 @@ class CandidateWordCell: UICollectionViewCell {
     } else {
       textLabel.text = title
     }
-    secondaryLabel.text = state.candidateSuggestion?.subtitle
+    if showComment {
+      secondaryLabel.text = state.candidateSuggestion?.subtitle
+    } else {
+      secondaryLabel.text = ""
+    }
 
     textLabel.font = titleFont
     secondaryLabel.font = subtitleFont

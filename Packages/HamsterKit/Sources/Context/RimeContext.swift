@@ -48,6 +48,15 @@ public actor RimeContext: ObservableObject {
   @Published @MainActor
   public var userInputKey: String = ""
 
+  /// T9输入拼音候选列表
+  @MainActor
+  public var t9PinyinCandidates: [String] {
+    guard !userInputKey.isEmpty else { return [] }
+    let userInputKeys = userInputKey.split(separator: " ")[0]
+
+    return userInputKeys
+  }
+
   /// 字母模式
   @Published @MainActor
   public var asciiMode: Bool = false
@@ -489,11 +498,12 @@ public extension RimeContext {
     var result: [CandidateSuggestion] = []
     for (index, candidate) in candidates.enumerated() {
       var suggestion = CandidateSuggestion(
-        text: candidate.text
+        text: candidate.text,
+        title: candidate.text,
+        isAutocomplete: index == 0,
+        subtitle: candidate.comment
       )
       suggestion.index = index
-      suggestion.comment = candidate.comment
-      suggestion.isAutocomplete = index == 0
       result.append(suggestion)
     }
     return result

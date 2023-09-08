@@ -23,6 +23,8 @@ toolbar:
   candidateCommentFontSize: 12
   # 是否显示候选文字索引
   displayIndexOfCandidateWord: false
+  # 是否显示候选文字 Comment 信息
+  displayCommentOfCandidateWord: false
 
 # 键盘相关配置
 Keyboard:
@@ -55,6 +57,15 @@ Keyboard:
     - ","
     - .
     - "!"
+  symbolsOfChineseNineGridKeyboard:
+    - "，"
+    - "。"
+    - "？"
+    - "！"
+    - "…"
+    - "~"
+    - "'"
+    - "、"
   pairsOfSymbols:
     - "[]"
     - ()

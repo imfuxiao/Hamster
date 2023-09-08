@@ -237,7 +237,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     if let override = buttonFontSizePadOverride(for: action) { return override }
     if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
-    if action == .returnLastKeyboard {
+    if action == .returnLastKeyboard || action == .cleanSpellingArea {
       return 16
     }
     let text = buttonText(for: action) ?? ""
@@ -336,7 +336,7 @@ extension KeyboardAction {
   /// 按键空闲状态的背景颜色
   func buttonBackgroundColorForIdleState(for context: KeyboardContext) -> UIColor {
     if isUppercasedShiftAction { return buttonBackgroundColorForPressedState(for: context) }
-    if isSystemAction || isSymbolAction { return .standardDarkButtonBackground(for: context) }
+    if isSystemAction || isSymbolAction || isCleanSpellingArea { return .standardDarkButtonBackground(for: context) }
     if isPrimaryAction { return UIColor.systemBlue }
     if isUppercasedShiftAction { return .standardButtonBackground(for: context) }
     return .standardButtonBackground(for: context)
@@ -344,7 +344,7 @@ extension KeyboardAction {
 
   /// 按键按下状态的背景颜色
   func buttonBackgroundColorForPressedState(for context: KeyboardContext) -> UIColor {
-    if isSystemAction || isSymbolAction { return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white }
+    if isSystemAction || isSymbolAction || isCleanSpellingArea { return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white }
     if isPrimaryAction { return context.hasDarkColorScheme ? .standardDarkButtonBackground(for: context) : .white }
     if isUppercasedShiftAction { return .standardDarkButtonBackground(for: context) }
     return .standardDarkButtonBackground(for: context)

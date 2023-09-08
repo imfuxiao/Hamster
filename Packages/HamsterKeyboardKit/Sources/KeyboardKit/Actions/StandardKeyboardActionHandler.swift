@@ -163,6 +163,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     // tryEndSentence(after: gesture, on: action)
     tryChangeKeyboardType(after: gesture, on: action)
     tryRegisterEmoji(after: gesture, on: action)
+    tryRegisterSymbol(after: gesture, on: action)
     // keyboardController?.performAutocomplete()
     keyboardController?.performTextContextSync()
   }
@@ -321,6 +322,14 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     guard gesture == .release else { return }
     switch action {
     case let .emoji(emoji): return EmojiCategory.frequentEmojiProvider.registerEmoji(emoji)
+    default: return
+    }
+  }
+
+  open func tryRegisterSymbol(after gesture: KeyboardGesture, on action: KeyboardAction) {
+    guard gesture == .release else { return }
+    switch action {
+    case let .symbol(symbol): return SymbolCategory.frequentSymbolProvider.registerSymbol(symbol)
     default: return
     }
   }

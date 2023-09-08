@@ -71,6 +71,9 @@ public struct KeyboardConfiguration: Codable, Equatable, Hashable {
   /// 符号上屏后，键盘返回主键盘
   public var symbolsOfReturnToMainKeyboard: [String]?
   
+  /// 中文九宫格符号列
+  public var symbolsOfChineseNineGridKeyboard: [String]?
+  
   /// 成对上屏的符号
   public var pairsOfSymbols: [String]?
   

@@ -49,7 +49,14 @@ class ClassifyView: UICollectionView {
     snapshot.appendSections([0])
     snapshot.appendItems(SymbolCategory.all, toSection: 0)
     diffableDataSource.apply(snapshot, animatingDifferences: false)
-    selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .top)
+    
+    if keyboardContext.keyboardType.isChinese {
+      viewModel.currentCategory = .cn
+      selectItem(at: IndexPath(item: 2, section: 0), animated: false, scrollPosition: .top)
+    } else {
+      viewModel.currentCategory = .ascii
+      selectItem(at: IndexPath(item: 1, section: 0), animated: false, scrollPosition: .top)
+    }
   }
   
   @available(*, unavailable)

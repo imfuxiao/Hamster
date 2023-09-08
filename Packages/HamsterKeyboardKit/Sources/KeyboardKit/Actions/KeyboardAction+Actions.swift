@@ -107,6 +107,7 @@ public extension KeyboardAction {
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
+    case .chineseNineGrid(let symbol): return { $0?.insertText(String(symbol.char.first!)) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return { $0?.insertText(emoji.char) }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
@@ -125,6 +126,7 @@ public extension KeyboardAction {
     case .tab: return { $0?.insertRimeKeyCode(XK_Tab) }
     case .url(let url, _): return { $0?.openUrl(url) }
     case .returnLastKeyboard: return { $0?.returnLastKeyboard() }
+    case .cleanSpellingArea: return { $0?.resetInputEngine() }
     default: return nil
     }
   }

@@ -108,6 +108,7 @@ public class CandidateWordsCollectionView: UICollectionView {
     let keyboardColor: HamsterModel.KeyboardColor? = keyboardContext.keyboardColor
     let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
+    let showComment = toolbarConfig?.displayCommentOfCandidateWord
     let titleFontSize = toolbarConfig?.candidateWordFontSize
     let subtileFontSize = toolbarConfig?.candidateCommentFontSize
 
@@ -117,6 +118,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         candidateSuggestion,
         color: keyboardColor,
         showIndex: showIndex,
+        showComment: showComment,
         titleFont: titleFontSize != nil ? UIFont.systemFont(ofSize: CGFloat(titleFontSize!)) : nil,
         subtitleFont: subtileFontSize != nil ? UIFont.systemFont(ofSize: CGFloat(subtileFontSize!)) : nil
       )

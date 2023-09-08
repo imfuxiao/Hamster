@@ -52,11 +52,13 @@ class SymbolsView: UICollectionView {
 
     // init data
     diffableDataSource.apply(makeSnapshot(symbols: viewModel.currentCategory.symbols), animatingDifferences: false)
+    scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
 
     viewModel.$currentCategory
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         diffableDataSource.apply(makeSnapshot(symbols: $0.symbols), animatingDifferences: false)
+        self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
       }
       .store(in: &subscriptions)
   }
@@ -97,5 +99,9 @@ extension SymbolsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     actionHandler.handle(.release, on: .symbol(item))
+    collectionView.deselectItem(at: indexPath, animated: true)
+    if !keyboardContext.classifySymbolKeyboardLockState {
+      actionHandler.handle(.release, on: .returnLastKeyboard)
+    }
   }
 }

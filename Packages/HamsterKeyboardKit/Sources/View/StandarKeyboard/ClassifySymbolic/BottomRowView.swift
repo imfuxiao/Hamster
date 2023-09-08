@@ -38,16 +38,20 @@ class BottomRowView: UIView {
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("返回", for: .normal)
-    button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
-    button.addTarget(self, action: #selector(returnKeyboardHandled(_:)), for: .touchUpInside)
     button.backgroundColor = .systemBlue
+    button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
+    button.addTarget(self, action: #selector(returnKeyboardReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
 
+  // 锁定状态
   lazy var lockStateButton: UIButton = {
     let button = UIButton(type: .custom)
-    button.setImage(UIImage(systemName: "lock"), for: .normal)
+    button.setImage(UIImage(systemName: keyboardContext.classifySymbolKeyboardLockState ? "lock" : "lock.open"), for: .normal)
+    button.tintColor = .label
+    button.addTarget(self, action: #selector(lockStatePressHandled(_:)), for: .touchDown)
+    button.addTarget(self, action: #selector(lockStateReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
     return button
   }()
@@ -56,6 +60,9 @@ class BottomRowView: UIView {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: "delete.left"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
+    button.tintColor = .label
+    button.addTarget(self, action: #selector(backspacePressHandled(_:)), for: .touchDown)
+    button.addTarget(self, action: #selector(backspaceReleaseHandled(_:)), for: .touchUpInside)
     return button
   }()
 
@@ -98,9 +105,31 @@ class BottomRowView: UIView {
 extension BottomRowView {
   @objc func returnKeyboardPressHandled(_ button: UIButton) {
     actionHandler.handle(.press, on: .returnLastKeyboard)
+    button.backgroundColor = .systemGray
   }
 
-  @objc func returnKeyboardHandled(_ button: UIButton) {
+  @objc func returnKeyboardReleaseHandled(_ button: UIButton) {
     actionHandler.handle(.release, on: .returnLastKeyboard)
+    button.backgroundColor = .systemBlue
+  }
+
+  @objc func lockStatePressHandled(_ button: UIButton) {
+    actionHandler.handle(.press, on: .none)
+  }
+
+  @objc func lockStateReleaseHandled(_ button: UIButton) {
+    let state = keyboardContext.classifySymbolKeyboardLockState
+    button.setImage(UIImage(systemName: state ? "lock.open" : "lock"), for: .normal)
+    keyboardContext.classifySymbolKeyboardLockState = !state
+  }
+
+  @objc func backspacePressHandled(_ button: UIButton) {
+    button.backgroundColor = .systemBackground
+    actionHandler.handle(.press, on: .backspace)
+  }
+
+  @objc func backspaceReleaseHandled(_ button: UIButton) {
+    button.backgroundColor = .clear
+    actionHandler.handle(.release, on: .backspace)
   }
 }

@@ -125,7 +125,8 @@ public class KeyboardContext: ObservableObject {
    当前使用的键盘类型。
    */
   @Published
-  public var keyboardType = KeyboardType.chinese(.lowercased)
+//  public var keyboardType = KeyboardType.chinese(.lowercased)
+  public var keyboardType = KeyboardType.chineseNineGrid
 
   /// 记录上一次的键盘类型, 用于返回
   public var lastKeyboardTypeStack: [KeyboardType] = []
@@ -602,10 +603,21 @@ public extension KeyboardContext {
     return .label
   }
 
+  /// secondaryLabel 颜色，如果开启仓配色，则取候选文字颜色
   var secondaryLabelColor: UIColor {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.candidateTextColor
     }
     return .secondaryLabel
+  }
+
+  /// 分类符号键盘状态
+  var classifySymbolKeyboardLockState: Bool {
+    get {
+      UserDefaults.standard.bool(forKey: "com.ihsiao.apps.hamster.keyboard.classifySymbolKeyboard.lockState")
+    }
+    set {
+      UserDefaults.standard.set(newValue, forKey: "com.ihsiao.apps.hamster.keyboard.classifySymbolKeyboard.lockState")
+    }
   }
 }

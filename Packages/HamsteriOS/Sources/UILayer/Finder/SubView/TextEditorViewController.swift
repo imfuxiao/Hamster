@@ -34,6 +34,7 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
 
   lazy var textView: TextView = {
     let textView = TextView()
+    textView.translatesAutoresizingMaskIntoConstraints = false
     textView.backgroundColor = .systemBackground
     textView.showLineNumbers = true
     // Highlight the selected line.
@@ -76,7 +77,12 @@ extension TextEditorViewController {
     }
 
     view.addSubview(textView)
-    textView.fillSuperview()
+    NSLayoutConstraint.activate([
+      textView.topAnchor.constraint(equalTo: view.topAnchor),
+      textView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
+      textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
 
     // navigation item
     // 添加导入按钮

@@ -60,18 +60,6 @@ public extension CandidateSuggestion {
       additionalInfo["index"] = newValue
     }
   }
-
-  var comment: String? {
-    get {
-      if let comment = additionalInfo["comment"] {
-        return comment as? String
-      }
-      return nil
-    }
-    set {
-      additionalInfo["comment"] = newValue
-    }
-  }
 }
 
 public extension CandidateSuggestion {

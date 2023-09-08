@@ -63,6 +63,8 @@ public extension KeyboardAction {
       return KKL10n.space.text(for: context)
     case .returnLastKeyboard: return "返回"
     case .symbol(let symbol): return symbol.char
+    case .chineseNineGrid(let symbol): return symbol.char
+    case .cleanSpellingArea: return "重输"
     default: return nil
     }
   }

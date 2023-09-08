@@ -112,14 +112,14 @@ class KeyboardRootView: UIView {
 
   /// 中文九宫格键盘
   private lazy var chineseNineGridKeyboardView: UIView = {
-    let view = UIView()
-    view.isHidden = true
+    let view = ChineseNineGridKeyboard(
+      actionHandler: actionHandler,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
     view.translatesAutoresizingMaskIntoConstraints = false
-
-    // TODO:
-
-    view.backgroundColor = .yellow
-
     return view
   }()
 
@@ -158,6 +158,20 @@ class KeyboardRootView: UIView {
 
     return view
   }()
+
+  var keyboardView: UIView {
+    switch keyboardContext.keyboardType {
+    case .alphabetic, .symbolic, .numeric, .chinese, .chineseNumeric, .chineseSymbolic:
+      return alphabeticKeyboardView
+    case .chineseNineGrid:
+      return chineseNineGridKeyboardView
+    case .custom:
+      // TODO: 补充自定义键盘视图
+      return UIView(frame: .zero)
+    default:
+      return UIView(frame: .zero)
+    }
+  }
 
   // MARK: - Initializations
 
@@ -212,14 +226,6 @@ class KeyboardRootView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  var keyboardView: UIView {
-    // TODO：添加
-    switch keyboardContext.keyboardType {
-    default:
-      return alphabeticKeyboardView
-    }
-  }
-
   // MARK: - Layout
 
   func setupView() {
@@ -233,19 +239,7 @@ class KeyboardRootView: UIView {
 
   /// 构建键盘容器内视图
   func keyboardViewHierarchy() {
-    let keyboardView: UIView
-    switch keyboardContext.keyboardType {
-    case .alphabetic, .symbolic, .numeric, .chinese, .chineseNumeric, .chineseSymbolic:
-      keyboardView = alphabeticKeyboardView
-    case .chineseNineGrid:
-      keyboardView = chineseNineGridKeyboardView
-    case .custom:
-      // TODO: 补充自定义键盘视图
-      return
-    default:
-      return
-    }
-
+    let keyboardView = keyboardView
     keyboardContainerView.addSubview(keyboardView)
     NSLayoutConstraint.activate([
       keyboardView.topAnchor.constraint(equalTo: keyboardContainerView.topAnchor),
@@ -359,6 +353,16 @@ class KeyboardRootView: UIView {
           numericNineGridKeyboardView.isHidden = true
           emojisKeyboardView.isHidden = false
           emojisKeyboardView.alpha = 1
+        case .alphabetic, .chinese:
+          keyboardContainerView.subviews.forEach { $0.removeFromSuperview() }
+          let keyboardView = keyboardView
+          keyboardContainerView.addSubview(keyboardView)
+          NSLayoutConstraint.activate([
+            keyboardView.topAnchor.constraint(equalTo: keyboardContainerView.topAnchor),
+            keyboardView.bottomAnchor.constraint(equalTo: keyboardContainerView.bottomAnchor),
+            keyboardView.leadingAnchor.constraint(equalTo: keyboardContainerView.leadingAnchor),
+            keyboardView.trailingAnchor.constraint(equalTo: keyboardContainerView.trailingAnchor)
+          ])
         default:
           classifySymbolicKeyboardView.isHidden = true
           classifySymbolicKeyboardView.alpha = 0

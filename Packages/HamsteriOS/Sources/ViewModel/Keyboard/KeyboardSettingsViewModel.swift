@@ -154,6 +154,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  public var displayCommentOfCandidateWord: Bool {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayCommentOfCandidateWord = displayCommentOfCandidateWord
+    }
+  }
+
   public var maximumNumberOfCandidateWords: Int {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords = maximumNumberOfCandidateWords
@@ -285,7 +291,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
       ]),
     .init(
       items: [
-//        .init(
+        //        .init(
 //          text: "启用分号按键",
 //          type: .toggle,
 //          toggleValue: displaySemicolonButton,
@@ -437,6 +443,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
       toggleValue: displayIndexOfCandidateWord,
       toggleHandled: { [unowned self] in
         displayIndexOfCandidateWord = $0
+      }),
+    .init(
+      text: "显示候选文字 Comment",
+      toggleValue: displayCommentOfCandidateWord,
+      toggleHandled: { [unowned self] in
+        displayCommentOfCandidateWord = $0
       })
   ]
 
@@ -541,6 +553,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.codingAreaFontSize = configuration.toolbar?.codingAreaFontSize ?? 12
     self.candidateCommentFontSize = configuration.toolbar?.candidateCommentFontSize ?? 12
     self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
+    self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
     self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
   }
 

@@ -35,4 +35,7 @@ public struct KeyboardToolbarConfiguration: Codable, Equatable, Hashable {
 
   /// 显示候选文字索引
   public var displayIndexOfCandidateWord: Bool?
+
+  /// 显示候选文字 Comment 信息
+  public var displayCommentOfCandidateWord: Bool?
 }

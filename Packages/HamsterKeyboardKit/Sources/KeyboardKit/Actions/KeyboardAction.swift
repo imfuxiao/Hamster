@@ -148,6 +148,12 @@ public enum KeyboardAction: Codable, Equatable {
   
   /// 返回上一个键盘
   case returnLastKeyboard
+  
+  /// 中文九宫格
+  case chineseNineGrid(Symbol)
+  
+  /// 清空拼写区域
+  case cleanSpellingArea
 }
 
 // MARK: - Public Extensions
@@ -209,6 +215,7 @@ public extension KeyboardAction {
     case .systemImage: return true
     case .returnLastKeyboard: return true
     case .symbol: return true
+    case .chineseNineGrid: return true
     default: return false
     }
   }
@@ -301,6 +308,13 @@ public extension KeyboardAction {
   var isSymbolAction: Bool {
     switch self {
     case .symbol: return true
+    default: return false
+    }
+  }
+  
+  var isCleanSpellingArea: Bool {
+    switch self {
+    case .cleanSpellingArea: return true
     default: return false
     }
   }
