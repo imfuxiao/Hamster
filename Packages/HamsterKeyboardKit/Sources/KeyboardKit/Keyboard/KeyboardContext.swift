@@ -556,6 +556,11 @@ public extension KeyboardContext {
     hamsterConfig?.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
   }
 
+  /// 中文九宫格符号
+  var symbolsOfChineseNineGridKeyboard: [String] {
+    hamsterConfig?.Keyboard?.symbolsOfChineseNineGridKeyboard ?? []
+  }
+
   /// 工具栏高度
   var heightOfToolbar: CGFloat {
     CGFloat(hamsterConfig?.toolbar?.heightOfToolbar ?? 55)

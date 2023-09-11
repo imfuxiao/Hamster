@@ -10,7 +10,7 @@ import HamsterKit
 import UIKit
 
 /// 中文九宫格键盘
-class ChineseNineGridKeyboard: UIView {
+public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: ChineseNineGridLayoutProvider
@@ -21,10 +21,25 @@ class ChineseNineGridKeyboard: UIView {
   private var rimeContext: RimeContext
 
   /// 符号列表视图
-  private lazy var symbolsListView: UIView = {
-    let view = SymbolsVerticalView(keyboardContext: keyboardContext, actionHandler: actionHandler)
-    view.translatesAutoresizingMaskIntoConstraints = false
 
+  private lazy var symbolsListView: SymbolsVerticalView = {
+    let view = SymbolsVerticalView(
+      keyboardContext: keyboardContext,
+      actionHandler: actionHandler,
+      initDataBuilder: {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
+        $0.apply(snapshot, animatingDifferences: false)
+      }
+    )
+    view.delegate = self
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  /// 符号列表容器视图，为了添加 insets
+  private lazy var symbolsListContainerView: UIView = {
     // 九宫格自身的 insets
     let insets = keyboardLayoutProvider.insets
 
@@ -32,12 +47,12 @@ class ChineseNineGridKeyboard: UIView {
     container.backgroundColor = .clear
     container.translatesAutoresizingMaskIntoConstraints = false
 
-    container.addSubview(view)
+    container.addSubview(symbolsListView)
     NSLayoutConstraint.activate([
-      view.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
-      view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom),
-      view.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left),
-      view.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right),
+      symbolsListView.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
+      symbolsListView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom),
+      symbolsListView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left),
+      symbolsListView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right),
     ])
     return container
   }()
@@ -83,6 +98,27 @@ class ChineseNineGridKeyboard: UIView {
     super.init(frame: .zero)
 
     setupKeyboardView()
+
+    Task {
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [unowned self] in
+          if $0.isEmpty {
+            var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+            snapshot.appendSections([0])
+            snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
+            symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+            return
+          }
+
+          let t9pinyin = rimeContext.t9PinyinCandidates
+          var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+          snapshot.appendSections([0])
+          snapshot.appendItems(t9pinyin, toSection: 0)
+          symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+        }
+        .store(in: &subscriptions)
+    }
   }
 
   @available(*, unavailable)
@@ -109,7 +145,7 @@ class ChineseNineGridKeyboard: UIView {
 
   open func constructViewHierarchy() {
     // 添加右侧符号滑动列表
-    addSubview(symbolsListView)
+    addSubview(symbolsListContainerView)
 
     // 添加按键
     for (rowIndex, row) in layout.itemRows.enumerated() {
@@ -154,9 +190,9 @@ class ChineseNineGridKeyboard: UIView {
     var returnButton: KeyboardButton?
 
     // 左侧符号栏约束
-    staticConstraints.append(symbolsListView.topAnchor.constraint(equalTo: topAnchor))
-    staticConstraints.append(symbolsListView.leadingAnchor.constraint(equalTo: leadingAnchor))
-    dynamicConstraints.append(symbolsListView.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight * 3))
+    staticConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
+    staticConstraints.append(symbolsListContainerView.leadingAnchor.constraint(equalTo: leadingAnchor))
+    dynamicConstraints.append(symbolsListContainerView.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight * 3))
 
     for row in keyboardRows {
       for button in row {
@@ -177,7 +213,7 @@ class ChineseNineGridKeyboard: UIView {
           dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
         } else if button.row + 1 == keyboardRows.endIndex { // 最后一行的按键宽度
           if button.column == 0 {
-            staticConstraints.append(symbolsListView.widthAnchor.constraint(equalTo: button.widthAnchor))
+            staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
             dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
           } else if button.column + 1 == row.endIndex || button.column == 1 {
             dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: lowerSystemButtonWidth.percentageValue!))
@@ -190,7 +226,7 @@ class ChineseNineGridKeyboard: UIView {
         if button.column == 0, button.row + 1 == keyboardRows.endIndex {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else if button.column == 0 {
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListView.trailingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
         } else if let prevItem = prevItem {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
         }
@@ -199,7 +235,7 @@ class ChineseNineGridKeyboard: UIView {
         if button.row == 0 {
           staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
         } else if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-          staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListView.bottomAnchor))
+          staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
         } else { // 其他行添加按键相对上一行按键的 top 约束
           let prevRowItem = keyboardRows[button.row - 1][0]
           staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
@@ -231,5 +267,41 @@ class ChineseNineGridKeyboard: UIView {
     }
 
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
+  }
+}
+
+public extension ChineseNineGridKeyboard {
+  func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    actionHandler.handle(.press, on: .symbol(.init(char: symbol)))
+    return true
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    if rimeContext.userInputKey.isEmpty {
+      actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
+      collectionView.deselectItem(at: indexPath, animated: true)
+      return
+    }
+    
+    // TODO: T9候选拼音替换
+    guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
+    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
+    guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
+
+    for _ in userInputKey[starIndex ..< userInputKey.endIndex] {
+      rimeContext.deleteBackwardNotSync()
+    }
+
+    let newUserInputKey = userInputKey.replacingOccurrences(of: t9Pinyin, with: symbol)
+    for text in newUserInputKey[starIndex ..< newUserInputKey.endIndex] {
+      let handled = rimeContext.inputKeyNotSync(String(text))
+      print(handled)
+    }
+
+    Task {
+      await rimeContext.syncContext()
+    }
   }
 }

@@ -72,6 +72,32 @@ final class T9Test: XCTestCase {
     print("]")
   }
 
+  func testPinyinToT9Mapping() {
+    let t9mapping = Self.allPinyin
+      .map { pinyin in
+        let t9 = pinyin
+          .map { Self.t9Map[String($0)] ?? "" }
+          .reduce("") { $0 + $1 }
+        return (pinyin, t9)
+      }
+      .reduce(into: [String: String]()) {
+        $0[$1.0] = $1.1
+      }
+
+    let keys = t9mapping.keys.sorted()
+    print("[")
+    for key in keys {
+      print("\"\(key)\": \"\(t9mapping[key]!)\",")
+    }
+    print("]")
+  }
+
+  func testGetMaxLength() throws {
+    if let maxString = Self.allPinyin.max(by: { $1.count > $0.count }) {
+      print("maxString: \(maxString)")
+    }
+  }
+
   func testT9Input() throws {
     var prefixKeys = t9PinyinTrie.collections(startingWith: "J")
     print(prefixKeys)

@@ -36,7 +36,7 @@ extension HamsterConfiguration {
       enableNineGridOfNumericKeyboard: true,
       enterDirectlyOnScreenByNineGridOfNumericKeyboard: true,
       symbolsOfGridOfNumericKeyboard: ["+", "-", "*", "/"],
-      autoLowerCaseOfKeyboard: true,
+      lockShiftState: true,
       enableEmbeddedInputMode: true,
       widthOfOneHandedKeyboard: 80,
       symbolsOfCursorBack: ["\"\"", "“”", "[]"],

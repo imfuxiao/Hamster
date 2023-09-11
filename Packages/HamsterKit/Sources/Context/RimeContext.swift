@@ -48,13 +48,70 @@ public actor RimeContext: ObservableObject {
   @Published @MainActor
   public var userInputKey: String = ""
 
+  /// T9拼音，将用户T9拼音输入还原为正常的拼音
+  @MainActor
+  public var t9UserInputKey: String {
+    guard !userInputKey.isEmpty else { return "" }
+    guard let firstCandidate = suggestions.first else { return userInputKey }
+    guard let comment = firstCandidate.subtitle else { return userInputKey }
+    let comments = comment.split(separator: " ")
+      .map {
+        let pinyin = String($0)
+        if let t9Pinyin = pinyinToT9Mapping[pinyin] {
+          return t9Pinyin
+        } else {
+          return pinyin
+        }
+      }
+      .joined(separator: " ")
+    if userInputKey.contains(comments) {
+      return userInputKey.replacingOccurrences(of: comments, with: "") + comment
+    }
+    return userInputKey
+  }
+
   /// T9输入拼音候选列表
   @MainActor
   public var t9PinyinCandidates: [String] {
     guard !userInputKey.isEmpty else { return [] }
-    let userInputKeys = userInputKey.split(separator: " ")[0]
+    let userInputKey = userInputKey.replacingOccurrences(of: " ", with: "")
+    guard let firstIndex = userInputKey.firstIndex(where: { $0.isASCII }) else { return [] }
 
-    return userInputKeys
+    var pinyinCandidates = [String]()
+
+    let newUserInputKey = String(userInputKey[firstIndex ..< userInputKey.endIndex])
+
+    for maxLength in 1 ... newUserInputKey.count {
+      // 1. 中文拼音最大长度为6，如：chuang，所以这里最大取用户输入的前6个字符
+      if maxLength > 6 {
+        break
+      }
+
+      let prefixString = String(newUserInputKey.prefix(maxLength))
+      if let t9Pinyins = t9PinyinMapping[prefixString] {
+        pinyinCandidates += t9Pinyins
+      }
+    }
+
+    return pinyinCandidates.sorted(by: {
+      if $0.count > $1.count {
+        return true
+      }
+
+      if $0.count == $1.count {
+        if let _ = Int($0) {
+          return false
+        }
+
+        if let _ = Int($1) {
+          return false
+        }
+
+        return $0 < $1
+      }
+
+      return false
+    })
   }
 
   /// 字母模式
@@ -492,7 +549,7 @@ public extension RimeContext {
   }
 
   @MainActor
-  func candidateListLimit(_ count: Int = 500) -> [CandidateSuggestion] {
+  func candidateListLimit(_ count: Int = 100) -> [CandidateSuggestion] {
     // TODO: 最大候选文字数量
     let candidates = Rime.shared.getCandidate(index: 0, count: count)
     var result: [CandidateSuggestion] = []
@@ -513,6 +570,16 @@ public extension RimeContext {
   func deleteBackward() async {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
     await self.syncContext()
+  }
+
+  @MainActor
+  func deleteBackwardNotSync() {
+    _ = Rime.shared.inputKeyCode(XK_BackSpace)
+  }
+
+  @MainActor
+  func inputKeyNotSync(_ text: String) -> Bool {
+    Rime.shared.inputKey(text)
   }
 
   /// 更新 RIME 引擎

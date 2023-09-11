@@ -9,12 +9,14 @@ import UIKit
 
 /// 垂直滑动符号列表
 class SymbolsVerticalView: UICollectionView {
+  typealias initDataBuilder = (UICollectionViewDiffableDataSource<Int, String>) -> Void
+
   // MARK: - Properties
 
   private let keyboardContext: KeyboardContext
   private let actionHandler: KeyboardActionHandler
 
-  private var diffalbeDataSource: UICollectionViewDiffableDataSource<Int, String>!
+  public var diffalbeDataSource: UICollectionViewDiffableDataSource<Int, String>!
 
   // MARK: - 计算属性
 
@@ -24,7 +26,7 @@ class SymbolsVerticalView: UICollectionView {
 
   // MARK: - Initialization
 
-  init(keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler) {
+  init(keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler, initDataBuilder: initDataBuilder) {
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
@@ -37,15 +39,12 @@ class SymbolsVerticalView: UICollectionView {
     super.init(frame: .zero, collectionViewLayout: layout)
 
     self.diffalbeDataSource = makeDataSource()
-    self.delegate = self
     self.showsVerticalScrollIndicator = false
 
     // init data
-    var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-    snapshot.appendSections([0])
-    snapshot.appendItems(keyboardContext.symbolsOfNumericNineGridKeyboard, toSection: 0)
-    diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+    initDataBuilder(self.diffalbeDataSource)
 
+    // 圆角样式
     self.layer.cornerRadius = layoutConfig.buttonCornerRadius
   }
 
@@ -58,10 +57,7 @@ class SymbolsVerticalView: UICollectionView {
 
   func symbolCellRegistration() -> UICollectionView.CellRegistration<SymbolCell, String> {
     UICollectionView.CellRegistration { cell, _, item in
-      var configuration = cell.defaultContentConfiguration()
-      configuration.text = item
-      configuration.textProperties.alignment = .center
-      cell.contentConfiguration = configuration
+      cell.textLabel.text = item
     }
   }
 
@@ -70,21 +66,5 @@ class SymbolsVerticalView: UICollectionView {
     return UICollectionViewDiffableDataSource(collectionView: self) { collectionView, indexPath, item in
       collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
     }
-  }
-}
-
-extension SymbolsVerticalView: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-    print("collectionView shouldSelectItemAt")
-    let symbol = diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    actionHandler.handle(.press, on: .symbol(.init(char: symbol)))
-    return true
-  }
-
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print("collectionView didSelectItemAt")
-    let symbol = diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
-    collectionView.deselectItem(at: indexPath, animated: true)
   }
 }

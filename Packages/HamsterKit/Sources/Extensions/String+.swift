@@ -14,8 +14,8 @@ extension String: LocalizedError {
   }
 }
 
-extension String {
-  public func isMatch(regex: String) -> Bool {
+public extension String {
+  func isMatch(regex: String) -> Bool {
     if #available(iOS 16, *) {
       guard let r = try? Regex(regex) else { return false }
       return self.contains(r)
@@ -26,21 +26,48 @@ extension String {
       return regex.firstMatch(in: self, range: range) != nil
     }
   }
-  
+
   /// 是否包含中文及全角符号
-  public var isMatchChineseParagraph: Bool {
+  var isMatchChineseParagraph: Bool {
     isMatch(regex: Self.ChineseParagraph)
   }
-  
-  public var isPairSymbolsBegin: Bool {
+
+  var isPairSymbolsBegin: Bool {
     Self.ChinesePairSymbols.contains(self)
   }
 }
 
-extension String {
-  
+public extension String {
   /// 中文及全角标点符号(字符)
-  public static let ChineseParagraph: String = "[\\u3000-\\u301e\\ufe10-\\ufe19\\ufe30-\\ufe44\\ufe50-\\ufe6b\\uff01-\\uffee]"
-  public static let ChinesePairSymbols: String = "（【｛《“"
+  static let ChineseParagraph: String = "[\\u3000-\\u301e\\ufe10-\\ufe19\\ufe30-\\ufe44\\ufe50-\\ufe6b\\uff01-\\uffee]"
+  static let ChinesePairSymbols: String = "（【｛《“"
+}
 
+public extension StringProtocol {
+  // 查找子串 index
+  func index<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> Index? {
+    range(of: string, options: options)?.lowerBound
+  }
+
+  func endIndex<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> Index? {
+    range(of: string, options: options)?.upperBound
+  }
+
+  func indices<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> [Index] {
+    ranges(of: string, options: options).map(\.lowerBound)
+  }
+
+  func ranges<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> [Range<Index>] {
+    var result: [Range<Index>] = []
+    var startIndex = self.startIndex
+    while startIndex < endIndex,
+          let range = self[startIndex...]
+          .range(of: string, options: options)
+    {
+      result.append(range)
+      startIndex = range.lowerBound < range.upperBound ? range.upperBound :
+        index(range.lowerBound, offsetBy: 1, limitedBy: endIndex) ?? endIndex
+    }
+    return result
+  }
 }

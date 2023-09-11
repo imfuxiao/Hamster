@@ -10,7 +10,7 @@ import HamsterKit
 import UIKit
 
 /// 数字九宫格键盘
-class NumericNineGridKeyboard: UIView {
+public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: NumericNineGridKeyboardLayoutProvider
@@ -21,10 +21,24 @@ class NumericNineGridKeyboard: UIView {
   private var rimeContext: RimeContext
 
   /// 符号列表视图
-  private lazy var symbolsListView: UIView = {
-    let view = SymbolsVerticalView(keyboardContext: keyboardContext, actionHandler: actionHandler)
+  private lazy var symbolsListView: SymbolsVerticalView = {
+    let view = SymbolsVerticalView(
+      keyboardContext: keyboardContext,
+      actionHandler: actionHandler,
+      initDataBuilder: {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(keyboardContext.symbolsOfNumericNineGridKeyboard, toSection: 0)
+        $0.apply(snapshot, animatingDifferences: false)
+      }
+    )
+    view.delegate = self
     view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
 
+  /// 符号列表容器视图
+  private lazy var symbolsListContainerView: UIView = {
     // 九宫格自身的 insets
     let insets = keyboardLayoutProvider.insets
 
@@ -32,12 +46,12 @@ class NumericNineGridKeyboard: UIView {
     container.backgroundColor = .clear
     container.translatesAutoresizingMaskIntoConstraints = false
 
-    container.addSubview(view)
+    container.addSubview(symbolsListView)
     NSLayoutConstraint.activate([
-      view.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
-      view.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom),
-      view.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left),
-      view.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right),
+      symbolsListView.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
+      symbolsListView.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -insets.bottom),
+      symbolsListView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: insets.left),
+      symbolsListView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -insets.right),
     ])
     return container
   }()
@@ -109,7 +123,7 @@ class NumericNineGridKeyboard: UIView {
 
   open func constructViewHierarchy() {
     // 添加右侧符号滑动列表
-    addSubview(symbolsListView)
+    addSubview(symbolsListContainerView)
 
     // 添加按键
     for (rowIndex, row) in layout.itemRows.enumerated() {
@@ -152,9 +166,9 @@ class NumericNineGridKeyboard: UIView {
     var prevRowItem: KeyboardButton?
 
     // 左侧符号栏约束
-    staticConstraints.append(symbolsListView.topAnchor.constraint(equalTo: topAnchor))
-    staticConstraints.append(symbolsListView.leadingAnchor.constraint(equalTo: leadingAnchor))
-    dynamicConstraints.append(symbolsListView.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight * 3))
+    staticConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
+    staticConstraints.append(symbolsListContainerView.leadingAnchor.constraint(equalTo: leadingAnchor))
+    dynamicConstraints.append(symbolsListContainerView.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight * 3))
 
     for row in keyboardRows {
       for button in row {
@@ -179,8 +193,8 @@ class NumericNineGridKeyboard: UIView {
         } else {
           // 最后一行的第一列添加相对滑动符号列的 top 约束
           if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-            staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListView.bottomAnchor))
-            staticConstraints.append(symbolsListView.widthAnchor.constraint(equalTo: button.widthAnchor))
+            staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
+            staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
           } else if let prevRowItem = prevRowItem { // 其他列添加相对上一行的符号约束
             // 其他行添加按键相对上一行按键的 top 约束
             staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
@@ -196,7 +210,7 @@ class NumericNineGridKeyboard: UIView {
         if button.column == 0, button.row + 1 == keyboardRows.endIndex {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else if button.column == 0 {
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListView.trailingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
         } else {
           // 其他列按键添加相对与前一个按键的 leading 约束
           if let prevItem = prevItem {
@@ -224,5 +238,19 @@ class NumericNineGridKeyboard: UIView {
     }
 
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
+  }
+}
+
+public extension NumericNineGridKeyboard {
+  func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    actionHandler.handle(.press, on: .symbol(.init(char: symbol)))
+    return true
+  }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
+    collectionView.deselectItem(at: indexPath, animated: true)
   }
 }

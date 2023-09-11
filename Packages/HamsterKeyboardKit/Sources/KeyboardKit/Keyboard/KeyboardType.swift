@@ -180,6 +180,15 @@ public extension KeyboardType {
     }
   }
 
+  /// 是否中文九宫格键盘
+  var isChineseNineGrid: Bool {
+    switch self {
+    case .chineseNineGrid: return true
+    default:
+      return false
+    }
+  }
+
   /// 是否是中文主键盘（即输入中文的键盘，不包含数字及符号）
   var isChinesePrimaryKeyboard: Bool {
     switch self {

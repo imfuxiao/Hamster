@@ -12,3 +12,5 @@ framework:
 
 schema:
 	bash ./InputSchemaBuild.sh
+cleanSchema:
+	rm -rf Resources/SharedSupport/SharedSupport.zip 
