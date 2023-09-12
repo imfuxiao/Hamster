@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterKit
+import OSLog
 import UIKit
 
 /// 中文九宫格键盘
@@ -111,7 +112,10 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
             return
           }
 
-          let t9pinyin = rimeContext.t9PinyinCandidates
+          var t9pinyin = rimeContext.pinyinCandidates
+          if t9pinyin.isEmpty {
+            t9pinyin = keyboardContext.symbolsOfChineseNineGridKeyboard
+          }
           var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
           snapshot.appendSections([0])
           snapshot.appendItems(t9pinyin, toSection: 0)
@@ -279,29 +283,48 @@ public extension ChineseNineGridKeyboard {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    if rimeContext.userInputKey.isEmpty {
+
+    // 1. input 为空
+    // 2. 符号为数字
+    // 以上情况直接上屏
+    if rimeContext.userInputKey.isEmpty, let _ = Int(symbol) {
       actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
       collectionView.deselectItem(at: indexPath, animated: true)
       return
     }
-    
-    // TODO: T9候选拼音替换
+
+    // 根据用户选择的候选拼音，反查得到对应的 T9 编码
     guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
-    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
+
+    // 替换 inputKey 中的空格
+    let userInputKey = rimeContext.userInputKey
+      .replacingOccurrences(of: " ", with: "")
+
+    // 获取 t9Pinyin 所处字符串的 index
     guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
 
+    // 删除 t9Pinyin 后的全部字符
     for _ in userInputKey[starIndex ..< userInputKey.endIndex] {
       rimeContext.deleteBackwardNotSync()
     }
 
-    let newUserInputKey = userInputKey.replacingOccurrences(of: t9Pinyin, with: symbol)
-    for text in newUserInputKey[starIndex ..< newUserInputKey.endIndex] {
-      let handled = rimeContext.inputKeyNotSync(String(text))
-      print(handled)
+    // 组合用户选择字符，并输入
+    let endIndex = userInputKey.index(starIndex, offsetBy: t9Pinyin.count)
+    let newInputKey: String
+    if endIndex >= userInputKey.endIndex {
+      newInputKey = symbol
+    } else {
+      newInputKey = symbol + String(userInputKey[endIndex ..< userInputKey.endIndex])
+    }
+    for text in newInputKey {
+      if !rimeContext.inputKeyNotSync(String(text)) {
+        Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
+      }
     }
 
     Task {
-      await rimeContext.syncContext()
+      rimeContext.selectPinyinList.append(symbol)
+      await rimeContext.syncContext(true)
     }
   }
 }

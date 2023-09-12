@@ -71,3 +71,32 @@ public extension StringProtocol {
     return result
   }
 }
+
+public extension StringProtocol {
+  func t9ToPinyin(comment: String) -> String {
+    let pinyinList = comment.split(separator: " ")
+    let t9pinyinList = pinyinList.map { pinyinToT9Mapping[String($0)] ?? String($0) }
+
+    // rime 返回格式可能缺失音节切分
+    var inputKey = replacingOccurrences(of: " ", with: "")
+
+    // 按T9拆分 inputKey
+    for (index, t9pinyin) in t9pinyinList.enumerated() {
+      if inputKey.contains(t9pinyin), let startIndex = inputKey.index(of: t9pinyin) {
+        let endIndex = inputKey.index(startIndex, offsetBy: t9pinyin.count)
+        inputKey.replaceSubrange(startIndex ..< endIndex, with: endIndex == inputKey.endIndex ? pinyinList[index] : pinyinList[index] + "'")
+      } else {
+        let startIndex: String.Index
+        if let firstIndex = inputKey.lastIndex(of: "'") {
+          startIndex = inputKey.index(firstIndex, offsetBy: 1)
+        } else {
+          startIndex = inputKey.startIndex
+        }
+        let range = startIndex ..< inputKey.endIndex
+        let pinyin = pinyinList[index].prefix(inputKey[range].count)
+        inputKey.replaceSubrange(range, with: pinyin)
+      }
+    }
+    return inputKey
+  }
+}

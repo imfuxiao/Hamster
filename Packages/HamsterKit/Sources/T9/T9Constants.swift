@@ -6,7 +6,7 @@
 //
 
 /// T9 到拼音的映射
-public let t9PinyinMapping = [
+public let t9ToPinyinMapping = [
   "A": ["a", "b", "c", "2"],
   "AA": ["ba", "ca"],
   "AAG": ["bai", "cai"],
@@ -240,7 +240,6 @@ public let pinyinToT9Mapping = [
   "a": "A",
   "b": "A",
   "c": "A",
-  "2": "2",
   "ai": "AG",
   "an": "AM",
   "ang": "AMG",
@@ -322,7 +321,6 @@ public let pinyinToT9Mapping = [
   "d": "D",
   "e": "D",
   "f": "D",
-  "3": "3",
   "ei": "DG",
   "en": "DM",
   "eng": "DMG",
@@ -339,7 +337,6 @@ public let pinyinToT9Mapping = [
   "g": "G",
   "h": "G",
   "i": "G",
-  "4": "4",
   "ga": "GA",
   "gai": "GAG",
   "gan": "GAM",
@@ -382,7 +379,6 @@ public let pinyinToT9Mapping = [
   "j": "J",
   "k": "J",
   "l": "J",
-  "5": "5",
   "ji": "JG",
   "jia": "JGA",
   "jian": "JGAM",
@@ -445,7 +441,6 @@ public let pinyinToT9Mapping = [
   "m": "M",
   "n": "M",
   "o": "M",
-  "6": "6",
   "ma": "MA",
   "mai": "MAG",
   "man": "MAM",
@@ -495,7 +490,6 @@ public let pinyinToT9Mapping = [
   "q": "P",
   "r": "P",
   "s": "P",
-  "7": "7",
   "pa": "PA",
   "pai": "PAG",
   "pan": "PAM",
@@ -579,7 +573,6 @@ public let pinyinToT9Mapping = [
   "t": "T",
   "u": "T",
   "v": "T",
-  "8": "8",
   "ta": "TA",
   "tai": "TAG",
   "tan": "TAM",
@@ -603,7 +596,6 @@ public let pinyinToT9Mapping = [
   "x": "W",
   "y": "W",
   "z": "W",
-  "9": "9",
   "wa": "WA",
   "wai": "WAG",
   "wan": "WAM",
@@ -685,7 +677,7 @@ public let pinyinToT9Mapping = [
 /// 用于匹配用户输入
 public let t9PinyinTrie: Trie<String> = {
   let trie = Trie<String>()
-  t9PinyinMapping.keys.forEach {
+  t9ToPinyinMapping.keys.forEach {
     trie.insert($0)
   }
   return trie

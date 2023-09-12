@@ -23,4 +23,14 @@ final class StringTest: XCTestCase {
     XCTAssertFalse(target2.isMatch(regex: fileName))
     XCTAssertFalse(target3.isMatch(regex: fileName))
   }
+
+  func testStringComponents() throws {
+    XCTAssertEqual("ni'h", "MGG".t9ToPinyin(comment: "ni hao"))
+    XCTAssertEqual("ni'h", "MG G".t9ToPinyin(comment: "ni hao"))
+    XCTAssertEqual("ni'hao", "MG GAM".t9ToPinyin(comment: "ni hao"))
+    XCTAssertEqual("ni", "MG".t9ToPinyin(comment: "ni"))
+    XCTAssertEqual("n", "M".t9ToPinyin(comment: "ni"))
+    XCTAssertEqual("jin't", "JGMT".t9ToPinyin(comment: "jin tian"))
+    XCTAssertEqual("ji'go", "JGMT".t9ToPinyin(comment: "ji gou"))
+  }
 }

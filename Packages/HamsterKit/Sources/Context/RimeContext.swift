@@ -54,65 +54,20 @@ public actor RimeContext: ObservableObject {
     guard !userInputKey.isEmpty else { return "" }
     guard let firstCandidate = suggestions.first else { return userInputKey }
     guard let comment = firstCandidate.subtitle else { return userInputKey }
-    let comments = comment.split(separator: " ")
-      .map {
-        let pinyin = String($0)
-        if let t9Pinyin = pinyinToT9Mapping[pinyin] {
-          return t9Pinyin
-        } else {
-          return pinyin
-        }
-      }
-      .joined(separator: " ")
-    if userInputKey.contains(comments) {
-      return userInputKey.replacingOccurrences(of: comments, with: "") + comment
-    }
-    return userInputKey
+
+    let chinesePrefix = String(userInputKey.filter { !$0.isASCII })
+    return chinesePrefix.isEmpty
+      ? userInputKey.t9ToPinyin(comment: comment)
+      : chinesePrefix + " " + userInputKey.replacingOccurrences(of: chinesePrefix, with: "").t9ToPinyin(comment: comment)
   }
 
-  /// T9输入拼音候选列表
+  /// 用户选择的候选拼音
   @MainActor
-  public var t9PinyinCandidates: [String] {
-    guard !userInputKey.isEmpty else { return [] }
-    let userInputKey = userInputKey.replacingOccurrences(of: " ", with: "")
-    guard let firstIndex = userInputKey.firstIndex(where: { $0.isASCII }) else { return [] }
+  public var selectPinyinList: [String] = []
 
-    var pinyinCandidates = [String]()
-
-    let newUserInputKey = String(userInputKey[firstIndex ..< userInputKey.endIndex])
-
-    for maxLength in 1 ... newUserInputKey.count {
-      // 1. 中文拼音最大长度为6，如：chuang，所以这里最大取用户输入的前6个字符
-      if maxLength > 6 {
-        break
-      }
-
-      let prefixString = String(newUserInputKey.prefix(maxLength))
-      if let t9Pinyins = t9PinyinMapping[prefixString] {
-        pinyinCandidates += t9Pinyins
-      }
-    }
-
-    return pinyinCandidates.sorted(by: {
-      if $0.count > $1.count {
-        return true
-      }
-
-      if $0.count == $1.count {
-        if let _ = Int($0) {
-          return false
-        }
-
-        if let _ = Int($1) {
-          return false
-        }
-
-        return $0 < $1
-      }
-
-      return false
-    })
-  }
+  /// 拼音候选列表
+  @MainActor
+  public var pinyinCandidates: [String] = []
 
   /// 字母模式
   @Published @MainActor
@@ -136,6 +91,7 @@ public extension RimeContext {
   @MainActor
   func reset() {
     self.userInputKey = ""
+    self.selectPinyinList = []
     self.suggestions = []
     Rime.shared.cleanComposition()
   }
@@ -537,11 +493,15 @@ public extension RimeContext {
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
   @MainActor
-  func syncContext() async {
+  func syncContext(_ t9Model: Bool = false) async {
     let context = Rime.shared.context()
 
     if context.composition != nil {
       self.userInputKey = context.composition.preedit ?? ""
+    }
+
+    if t9Model {
+      self.pinyinCandidates = getPinyinCandidates(userInputKey: self.userInputKey, selectPinyin: selectPinyinList)
     }
 
     // 获取候选字
@@ -623,4 +583,61 @@ public extension RimeContext {
     "control+grave": RimeModifier.kControlMask,
     "control+shift+grave": RimeModifier.kControlMask | RimeModifier.kShiftMask,
   ]
+}
+
+// MARK: - T9 拼音处理
+
+public extension RimeContext {
+  /// 获取拼音候选列表
+  @MainActor
+  func getPinyinCandidates(userInputKey: String, selectPinyin: [String]) -> [String] {
+    guard !userInputKey.isEmpty else { return [] }
+
+    // 删除中文前缀和空格
+    let chinesePrefix = String(userInputKey.filter { !$0.isASCII })
+    var userInputKey = userInputKey
+      .replacingOccurrences(of: chinesePrefix, with: "")
+      .replacingOccurrences(of: " ", with: "")
+
+    // 删除已选拼音
+    selectPinyin.forEach {
+      userInputKey = userInputKey.replacingOccurrences(of: $0, with: "")
+    }
+
+    guard !userInputKey.isEmpty else { return [] }
+    var pinyinCandidates = [String]()
+
+    // 因中文拼音最大长度为6，如：chuang，所以这里最大取用户输入的前6个字符
+    for maxLength in 1 ... userInputKey.count {
+      if maxLength > 6 {
+        break
+      }
+
+      let prefixString = String(userInputKey.prefix(maxLength))
+      if let t9Pinyins = t9ToPinyinMapping[prefixString] {
+        pinyinCandidates += t9Pinyins
+      }
+    }
+
+    // 按长度及字母排序
+    return pinyinCandidates.sorted(by: {
+      if $0.count > $1.count {
+        return true
+      }
+
+      if $0.count == $1.count {
+        if let _ = Int($0) {
+          return false
+        }
+
+        if let _ = Int($1) {
+          return false
+        }
+
+        return $0 < $1
+      }
+
+      return false
+    })
+  }
 }
