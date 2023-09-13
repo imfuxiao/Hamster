@@ -96,22 +96,6 @@ public class SettingsViewModel: ObservableObject {
             self.mainViewModel.subView = .feedback
           }
         ),
-        .init(
-          icon: UIImage(systemName: "keyboard.badge.ellipsis")!,
-          text: "键盘布局",
-          accessoryType: .disclosureIndicator,
-          navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .keyboardLayout
-          }
-        ),
-        .init(
-          icon: UIImage(systemName: "hand.draw")!,
-          text: "按键滑动设置",
-          accessoryType: .disclosureIndicator,
-          navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .keySwipeSettings
-          }
-        ),
       ]),
       SettingSectionModel(title: "同步与备份", items: [
         .init(

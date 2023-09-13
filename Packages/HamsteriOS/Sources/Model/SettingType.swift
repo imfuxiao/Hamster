@@ -8,7 +8,7 @@
 import UIKit
 
 /// 设置类型
-public enum SettingType {
+public enum SettingType: Hashable, Equatable {
   case navigation
   case toggle
   case textField

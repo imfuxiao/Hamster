@@ -9,6 +9,7 @@ import Combine
 import HamsterUIKit
 import UIKit
 
+/// 输入方案设置
 class InputSchemaViewController: NibLessViewController {
   private let inputSchemaViewModel: InputSchemaViewModel
   private let documentPickerViewController: UIDocumentPickerViewController
@@ -59,6 +60,12 @@ extension InputSchemaViewController {
     super.loadView()
     title = "输入方案设置"
     view = InputSchemaRootView(inputSchemaViewModel: inputSchemaViewModel)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    inputSchemaViewModel.reloadTableStateSubject.send(true)
   }
 }
 

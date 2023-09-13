@@ -8,7 +8,27 @@
 import Foundation
 import UIKit
 
-public struct SettingItemModel {
+public struct SettingItemModel: Hashable, Identifiable {
+  public var id = UUID()
+  public var icon: UIImage?
+  public var iconBackgroundColor: UIColor?
+  public var text: String
+  public var placeholder: String
+  public var textTintColor: UIColor?
+  public var secondaryText: String?
+  public var accessoryType: UITableViewCell.AccessoryType
+  public var type: SettingType
+  public var toggleValue: Bool
+  public var toggleHandled: ((Bool) -> Void)?
+  public var navigationAction: (() -> Void)?
+  public var navigationLinkLabel: () -> String
+  public var textValue: String?
+  public var textHandled: ((String) -> Void)?
+  public var shouldBeginEditing: ((UITextField) -> Bool)?
+  public var buttonAction: (() throws -> Void)?
+  public var favoriteButton: FavoriteButton?
+  public var favoriteButtonHandler: (() -> Void)?
+
   init(
     icon: UIImage? = nil,
     iconBackgroundColor: UIColor? = nil,
@@ -49,23 +69,14 @@ public struct SettingItemModel {
     self.favoriteButton = favoriteButton
     self.favoriteButtonHandler = favoriteButtonHandler
   }
+}
 
-  public var icon: UIImage?
-  public var iconBackgroundColor: UIColor?
-  public var text: String
-  public var placeholder: String
-  public var textTintColor: UIColor?
-  public var secondaryText: String?
-  public var accessoryType: UITableViewCell.AccessoryType
-  public var type: SettingType
-  public var toggleValue: Bool
-  public var toggleHandled: ((Bool) -> Void)?
-  public var navigationAction: (() -> Void)?
-  public var navigationLinkLabel: () -> String
-  public var textValue: String?
-  public var textHandled: ((String) -> Void)?
-  public var shouldBeginEditing: ((UITextField) -> Bool)?
-  public var buttonAction: (() throws -> Void)?
-  public var favoriteButton: FavoriteButton?
-  public var favoriteButtonHandler: (() -> Void)?
+public extension SettingItemModel {
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
+  static func == (lhs: SettingItemModel, rhs: SettingItemModel) -> Bool {
+    lhs.id == rhs.id
+  }
 }

@@ -42,6 +42,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     setupInitialWidth()
     setupLocaleObservation()
     setupNextKeyboardBehavior()
+    setupKeyboardType()
     KeyboardUrlOpener.shared.controller = self
 
     setupRIME()
@@ -754,6 +755,11 @@ private extension KeyboardInputViewController {
    */
   func setupNextKeyboardBehavior() {
     NextKeyboardController.shared = self
+  }
+
+  /// 设置键盘类型
+  func setupKeyboardType() {
+    keyboardContext.setKeyboardType(keyboardContext.selectKeyboard)
   }
 
   /**

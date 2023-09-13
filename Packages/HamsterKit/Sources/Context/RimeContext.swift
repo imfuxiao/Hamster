@@ -65,10 +65,6 @@ public actor RimeContext: ObservableObject {
   @MainActor
   public var selectPinyinList: [String] = []
 
-  /// 拼音候选列表
-  @MainActor
-  public var pinyinCandidates: [String] = []
-
   /// 字母模式
   @Published @MainActor
   public var asciiMode: Bool = false
@@ -493,15 +489,11 @@ public extension RimeContext {
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
   @MainActor
-  func syncContext(_ t9Model: Bool = false) async {
+  func syncContext() async {
     let context = Rime.shared.context()
 
     if context.composition != nil {
       self.userInputKey = context.composition.preedit ?? ""
-    }
-
-    if t9Model {
-      self.pinyinCandidates = getPinyinCandidates(userInputKey: self.userInputKey, selectPinyin: selectPinyinList)
     }
 
     // 获取候选字

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum FavoriteButton: String {
+public enum FavoriteButton: String, Hashable, Equatable {
   case rimeDeploy
   case rimeSync
   case rimeRest

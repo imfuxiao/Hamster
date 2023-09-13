@@ -27,12 +27,6 @@ public enum SettingsSubView {
   /// 反馈设置页面
   case feedback
   
-  /// 键盘布局
-  case keyboardLayout
-  
-  /// 滑动设置页面
-  case keySwipeSettings
-  
   /// iCloud页面
   case iCloud
   

@@ -17,11 +17,10 @@ public class InputSchemaViewModel {
 
   public let rimeContext: RimeContext
 
+  public var reloadTableStateSubject = PassthroughSubject<Bool, Never>()
   public var reloadTableStatePublisher: AnyPublisher<Bool, Never> {
     reloadTableStateSubject.eraseToAnyPublisher()
   }
-
-  private var reloadTableStateSubject = PassthroughSubject<Bool, Never>()
 
   public var presentDocumentPickerPublisher: AnyPublisher<Bool, Never> {
     presentDocumentPickerSubject.eraseToAnyPublisher()

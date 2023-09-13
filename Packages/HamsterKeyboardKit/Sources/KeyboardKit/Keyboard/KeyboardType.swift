@@ -17,7 +17,7 @@ import Foundation
  If you need a keyboard type that is not represented here or
  that is app-specific, you can use `.custom`.
  */
-public enum KeyboardType: Codable, Equatable, Identifiable {
+public enum KeyboardType: Codable, Equatable, Identifiable, Hashable {
   /**
    `.alphabetic` represents keyboards that have alphabetic
    input keys for the current locale.
@@ -180,6 +180,15 @@ public extension KeyboardType {
     }
   }
 
+  /// 是否自定义键盘
+  var isCustom: Bool {
+    switch self {
+    case .custom: return true
+    default:
+      return false
+    }
+  }
+
   /// 是否中文九宫格键盘
   var isChineseNineGrid: Bool {
     switch self {
@@ -217,15 +226,6 @@ public extension KeyboardType {
     case .alphabetic: return true
     case .numeric: return true
     case .symbolic: return true
-    default:
-      return false
-    }
-  }
-
-  /// 是否自定义键盘
-  var isCustom: Bool {
-    switch self {
-    case .custom: return true
     default:
       return false
     }

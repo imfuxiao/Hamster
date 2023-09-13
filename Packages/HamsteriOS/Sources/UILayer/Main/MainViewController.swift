@@ -21,8 +21,6 @@ protocol SubViewControllerFactory {
   func makeBackupViewController() -> BackupViewController
   func makeAboutViewController() -> AboutViewController
   func makeRimeViewController() -> RimeViewController
-  func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController
-  func makeKeySwipeSettingsViewController() -> KeySwipeSettingsViewController
 }
 
 open class MainViewController: UISplitViewController {
@@ -59,12 +57,6 @@ open class MainViewController: UISplitViewController {
 
   private lazy var aboutViewController: AboutViewController
     = subViewControllerFactory.makeAboutViewController()
-
-  private lazy var keyboardLayoutViewController: KeyboardLayoutViewController
-    = subViewControllerFactory.makeKeyboardLayoutViewController()
-
-  private lazy var keySwipeSettingsViewController: KeySwipeSettingsViewController
-    = subViewControllerFactory.makeKeySwipeSettingsViewController()
 
   private lazy var primaryNavigationViewController: UINavigationController = {
     let vc = UINavigationController(rootViewController: settingsViewController)
@@ -151,10 +143,6 @@ extension MainViewController {
       presentAppleCloudViewController()
     case .about:
       presentAboutViewController()
-    case .keyboardLayout:
-      presentKeyboardLayoutViewController()
-    case .keySwipeSettings:
-      presentKeySwipeSettingsViewController()
     default:
       return
     }
@@ -217,18 +205,6 @@ extension MainViewController {
   func presentAboutViewController() {
     secondaryNavigationViewController.viewControllers = [aboutViewController]
     setViewController(aboutViewController, for: .secondary)
-    show(.secondary)
-  }
-
-  func presentKeyboardLayoutViewController() {
-    secondaryNavigationViewController.viewControllers = [keyboardLayoutViewController]
-    setViewController(keyboardLayoutViewController, for: .secondary)
-    show(.secondary)
-  }
-
-  func presentKeySwipeSettingsViewController() {
-    secondaryNavigationViewController.viewControllers = [keySwipeSettingsViewController]
-    setViewController(keySwipeSettingsViewController, for: .secondary)
     show(.secondary)
   }
 }

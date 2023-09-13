@@ -132,6 +132,10 @@ extension HamsterAppDependencyContainer: KeyboardSettingsSubViewControllerFactor
   func makeToolbarSettingsViewController() -> ToolbarSettingsViewController {
     ToolbarSettingsViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }
+
+  func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController {
+    KeyboardLayoutViewController(keyboardSettingsViewModel: keyboardSettingsViewModel)
+  }
 }
 
 extension HamsterAppDependencyContainer: KeyboardColorViewModelFactory {
@@ -245,15 +249,5 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
       openSourceViewControllerFactory: self
     )
     return aboutViewController
-  }
-
-  func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController {
-    let keyboardLayoutViewController = KeyboardLayoutViewController()
-    return keyboardLayoutViewController
-  }
-
-  func makeKeySwipeSettingsViewController() -> KeySwipeSettingsViewController {
-    let keySwipeSettingsViewController = KeySwipeSettingsViewController()
-    return keySwipeSettingsViewController
   }
 }

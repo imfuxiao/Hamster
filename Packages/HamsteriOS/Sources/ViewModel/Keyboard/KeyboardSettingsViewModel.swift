@@ -6,6 +6,7 @@
 //
 
 import Combine
+import HamsterKeyboardKit
 import HamsterModel
 import ProgressHUD
 import UIKit
@@ -15,6 +16,7 @@ public enum KeyboardSettingsSubView {
   case numberNineGrid
   case symbols
   case symbolKeyboard
+  case keyboardLayout
 }
 
 public enum NumberNineGridTabView {
@@ -23,7 +25,7 @@ public enum NumberNineGridTabView {
 }
 
 public class KeyboardSettingsViewModel: ObservableObject {
-  // MARK: properties
+  // MARK: - properties
 
   public var displayButtonBubbles: Bool {
     didSet {
@@ -194,10 +196,49 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  @Published
+  public var symbolTableIsEditing: Bool = false
+
+  /// 选择键盘类型
+  public var useKeyboardType: KeyboardType {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.string
+    }
+  }
+
+  // MARK: - combine
+
+  /// 键盘类型
+  /// 注意：没有为属性 useKeyboardType 加 @Published 是因为不想进入键盘布局页面解决跳转
+  public var useKeyboardTypeSubject = PassthroughSubject<KeyboardType, Never>()
+  public var useKeyboardTypePublished: AnyPublisher<KeyboardType, Never> {
+    useKeyboardTypeSubject.eraseToAnyPublisher()
+  }
+
   private var resetSignSubject = PassthroughSubject<Bool, Never>()
   public var resetSignPublished: AnyPublisher<Bool, Never> {
     resetSignSubject.eraseToAnyPublisher()
   }
+
+  // navigation 转 subview
+  private let subViewSubject = PassthroughSubject<KeyboardSettingsSubView, Never>()
+  public var subViewPublished: AnyPublisher<KeyboardSettingsSubView, Never> {
+    subViewSubject.eraseToAnyPublisher()
+  }
+
+  // 数字九宫格页面切换
+  private let numberNineGridSubviewSwitchSubject = CurrentValueSubject<NumberNineGridTabView, Never>(.settings)
+  public var numberNineGridSubviewSwitchPublished: AnyPublisher<NumberNineGridTabView, Never> {
+    numberNineGridSubviewSwitchSubject.eraseToAnyPublisher()
+  }
+
+  // 符号设置页面切换
+  private let symbolSettingsSubviewSwitchSubject = CurrentValueSubject<Int, Never>(0)
+  public var symbolSettingsSubviewPublished: AnyPublisher<Int, Never> {
+    symbolSettingsSubviewSwitchSubject.eraseToAnyPublisher()
+  }
+
+  // MARK: - init data
 
   /// 键盘设置选项
   lazy var keyboardSettingsItems: [SettingSectionModel] = [
@@ -226,58 +267,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
             lockShiftState = $0
           })
       ]),
-//    .init(
-//      items: [
-//        .init(
-//          text: "启用空格左侧按键",
-//          type: .toggle,
-//          toggleValue: displaySpaceLeftButton,
-//          toggleHandled: { [unowned self] in
-//            displaySpaceLeftButton = $0
-//          }),
-//        .init(
-//          icon: UIImage(systemName: "square.and.pencil"),
-//          placeholder: "左侧按键键值",
-//          type: .textField,
-//          textValue: keyValueOfSpaceLeftButton,
-//          textHandled: { [unowned self] in
-//            keyValueOfSpaceLeftButton = $0
-//          }),
-//        .init(
-//          text: "启用空格右侧按键",
-//          type: .toggle,
-//          toggleValue: displaySpaceRightButton,
-//          toggleHandled: { [unowned self] in
-//            displaySpaceRightButton = $0
-//          }),
-//        .init(
-//          icon: UIImage(systemName: "square.and.pencil"),
-//          placeholder: "右侧按键键值",
-//          type: .textField,
-//          textValue: keyValueOfSpaceRightButton,
-//          textHandled: { [unowned self] in
-//            keyValueOfSpaceRightButton = $0
-//          })
-//      ]),
 
-//    .init(
-//      footer: "选项“按键位于空格左侧”：关闭状态则位于空格右侧，开启则位于空格左侧",
-//      items: [
-//        .init(
-//          text: "启用中英切换按键",
-//          type: .toggle,
-//          toggleValue: displayChineseEnglishSwitchButton,
-//          toggleHandled: { [unowned self] in
-//            displayChineseEnglishSwitchButton = $0
-//          }),
-//        .init(
-//          text: "按键位于空格左侧",
-//          type: .toggle,
-//          toggleValue: chineseEnglishSwitchButtonIsOnLeftOfSpaceButton,
-//          toggleHandled: { [unowned self] in
-//            chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = $0
-//          })
-//      ]),
+    .init(
+      items: [
+        .init(
+          text: "键盘布局",
+          accessoryType: .disclosureIndicator,
+          type: .navigation,
+          navigationAction: { [unowned self] in
+            self.subViewSubject.send(.keyboardLayout)
+          })
+      ]
+    ),
     .init(
       items: [
         .init(
@@ -288,16 +289,10 @@ public class KeyboardSettingsViewModel: ObservableObject {
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.toolbar)
           })
-      ]),
+      ]
+    ),
     .init(
       items: [
-        //        .init(
-//          text: "启用分号按键",
-//          type: .toggle,
-//          toggleValue: displaySemicolonButton,
-//          toggleHandled: { [unowned self] in
-//            displaySemicolonButton = $0
-//          }),
         .init(
           text: "数字九宫格",
           accessoryType: .disclosureIndicator,
@@ -320,6 +315,71 @@ public class KeyboardSettingsViewModel: ObservableObject {
           navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.symbolKeyboard)
+          })
+      ])
+  ]
+
+  lazy var chineseStanderSystemKeyboardSettingsItems: [SettingSectionModel] = [
+    .init(
+      items: [
+        .init(
+          text: "启用分号按键",
+          type: .toggle,
+          toggleValue: displaySemicolonButton,
+          toggleHandled: { [unowned self] in
+            displaySemicolonButton = $0
+          })
+      ]
+    ),
+    .init(
+      footer: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧",
+      items: [
+        .init(
+          text: "启用中英切换按键",
+          type: .toggle,
+          toggleValue: displayChineseEnglishSwitchButton,
+          toggleHandled: { [unowned self] in
+            displayChineseEnglishSwitchButton = $0
+          }),
+        .init(
+          text: "按键位于空格左侧",
+          type: .toggle,
+          toggleValue: chineseEnglishSwitchButtonIsOnLeftOfSpaceButton,
+          toggleHandled: { [unowned self] in
+            chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = $0
+          })
+      ]),
+    .init(
+      items: [
+        .init(
+          text: "启用空格左侧按键",
+          type: .toggle,
+          toggleValue: displaySpaceLeftButton,
+          toggleHandled: { [unowned self] in
+            displaySpaceLeftButton = $0
+          }),
+        .init(
+          icon: UIImage(systemName: "square.and.pencil"),
+          placeholder: "左侧按键键值",
+          type: .textField,
+          textValue: keyValueOfSpaceLeftButton,
+          textHandled: { [unowned self] in
+            keyValueOfSpaceLeftButton = $0
+          }),
+        .init(
+          text: "启用空格右侧按键",
+          type: .toggle,
+          toggleValue: displaySpaceRightButton,
+          toggleHandled: { [unowned self] in
+            displaySpaceRightButton = $0
+          }),
+        .init(
+          icon: UIImage(systemName: "square.and.pencil"),
+          placeholder: "右侧按键键值",
+          type: .textField,
+          textValue: keyValueOfSpaceRightButton,
+          textHandled: { [unowned self] in
+            keyValueOfSpaceRightButton = $0
           })
       ])
   ]
@@ -503,26 +563,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
       })
   ]
 
-  // navigation 转 subview
-  private let subViewSubject = PassthroughSubject<KeyboardSettingsSubView, Never>()
-  public var subViewPublished: AnyPublisher<KeyboardSettingsSubView, Never> {
-    subViewSubject.eraseToAnyPublisher()
-  }
-
-  // 数字九宫格页面切换
-  private let numberNineGridSubviewSwitchSubject = CurrentValueSubject<NumberNineGridTabView, Never>(.settings)
-  public var numberNineGridSubviewSwitchPublished: AnyPublisher<NumberNineGridTabView, Never> {
-    numberNineGridSubviewSwitchSubject.eraseToAnyPublisher()
-  }
-
-  // 符号设置页面切换
-  private let symbolSettingsSubviewSwitchSubject = CurrentValueSubject<Int, Never>(0)
-  public var symbolSettingsSubviewPublished: AnyPublisher<Int, Never> {
-    symbolSettingsSubviewSwitchSubject.eraseToAnyPublisher()
-  }
-
-  @Published
-  public var symbolTableIsEditing: Bool = false
+  /// 键盘类型
+  public var keyboardLayoutList: [KeyboardType] = [
+    .chinese(.lowercased),
+    .chineseNineGrid,
+    .custom(named: "")
+  ]
 
   // MARK: methods
 
@@ -545,6 +591,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.pairsOfSymbols = configuration.Keyboard?.pairsOfSymbols ?? []
     self.symbolsOfCursorBack = configuration.Keyboard?.symbolsOfCursorBack ?? []
     self.symbolsOfReturnToMainKeyboard = configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
+    self.useKeyboardType = (configuration.Keyboard?.useKeyboardType ?? "chinese").keyboardType ?? .chinese(.lowercased)
 
     self.enableEmbeddedInputMode = configuration.Keyboard?.enableEmbeddedInputMode ?? false
     self.candidateWordFontSize = configuration.toolbar?.candidateWordFontSize ?? 20
@@ -556,7 +603,11 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
     self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
   }
+}
 
+// MARK: - target-action
+
+extension KeyboardSettingsViewModel {
   @objc func numberNineGridSegmentedControlChange(_ sender: UISegmentedControl) {
     if sender.selectedSegmentIndex == 0 {
       numberNineGridSubviewSwitchSubject.send(.settings)
@@ -574,7 +625,55 @@ public class KeyboardSettingsViewModel: ObservableObject {
   }
 }
 
+// MARK: - KeyboardLayout
+
 extension KeyboardSettingsViewModel {
-  public static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
+  /// 键盘布局总列表
+  func initKeyboardLayoutDataSource() -> NSDiffableDataSourceSnapshot<Int, KeyboardType> {
+    var snapshot = NSDiffableDataSourceSnapshot<Int, KeyboardType>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(keyboardLayoutList, toSection: 0)
+    return snapshot
+  }
+
+  /// 中文键盘布局 DataSource
+  func initChineseStanderSystemKeyboardDataSource() -> NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel> {
+    var snapshot = NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel>()
+    snapshot.appendSections(chineseStanderSystemKeyboardSettingsItems)
+    chineseStanderSystemKeyboardSettingsItems.forEach { item in
+      snapshot.appendItems(item.items, toSection: item)
+    }
+    return snapshot
+  }
+}
+
+// MARK: - KeyboardSwipe
+
+extension KeyboardSettingsViewModel {}
+
+// MARK: - Constants
+
+public extension KeyboardSettingsViewModel {
+  static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
   static let enableKeyboardAutomaticallyLowercaseRemark = "关闭后，Shift状态随当前输入状态变化。注意: 双击Shift会保持锁定"
+}
+
+extension KeyboardType {
+  var label: String {
+    switch self {
+    case .chinese: return "中文26键"
+    case .chineseNineGrid: return "中文9键"
+    case .custom: return "自定义键盘"
+    default: return ""
+    }
+  }
+
+  var string: String {
+    switch self {
+    case .chinese: return "chinese"
+    case .chineseNineGrid: return "chineseNineGrid"
+    case .custom(let name): return "custom(\(name))"
+    default: return ""
+    }
+  }
 }

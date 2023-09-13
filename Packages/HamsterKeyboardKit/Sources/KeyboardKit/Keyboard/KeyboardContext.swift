@@ -122,11 +122,10 @@ public class KeyboardContext: ObservableObject {
   /**
    The keyboard type that is currently used.
 
-   当前使用的键盘类型。
+   当前使用的键盘类型。默认中文26键
    */
   @Published
-//  public var keyboardType = KeyboardType.chinese(.lowercased)
-  public var keyboardType = KeyboardType.chineseNineGrid
+  public var keyboardType = KeyboardType.chinese(.lowercased)
 
   /// 记录上一次的键盘类型, 用于返回
   public var lastKeyboardTypeStack: [KeyboardType] = []
@@ -541,6 +540,11 @@ private extension UIInputViewController {
 }
 
 public extension KeyboardContext {
+  /// 用户设置的键盘类型
+  var selectKeyboard: KeyboardType {
+    hamsterConfig?.Keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
+  }
+
   /// 是否开启工具栏
   var enableToolbar: Bool {
     hamsterConfig?.toolbar?.enableToolbar ?? true

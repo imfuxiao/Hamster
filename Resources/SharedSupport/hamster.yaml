@@ -28,6 +28,11 @@ toolbar:
 
 # 键盘相关配置
 Keyboard:
+  # 使用键盘类型:
+  # chinese: 中文26键
+  # chineseNineGrid: 中文九宫格
+  # custom(name): 自定义键盘，其中 name 对应自定义键盘配置文件中的 name。如: custom(26键)
+  useKeyboardType: chinese
   displayButtonBubbles: true
   enableKeySounds: true
   enableHapticFeedback: false

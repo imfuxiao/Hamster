@@ -15,7 +15,7 @@ public extension KeyboardAppearance where Self == PreviewKeyboardAppearance {
   static var preview: KeyboardAppearance { PreviewKeyboardAppearance() }
 }
 
-extension KeyboardAppearance where Self == PreviewKeyboardAppearance {
+public extension KeyboardAppearance where Self == PreviewKeyboardAppearance {
   /**
    This preview appearance can be used in SwiftUI previews.
    */
@@ -26,7 +26,7 @@ extension KeyboardAppearance where Self == PreviewKeyboardAppearance {
  This appearance can be used in SwiftUI previews.
  */
 public class PreviewKeyboardAppearance: StandardKeyboardAppearance {
-  init() {
+  public init() {
     super.init(keyboardContext: .preview)
   }
 
@@ -52,7 +52,7 @@ public class PreviewKeyboardAppearance: StandardKeyboardAppearance {
 /**
  This internal appearance can be used in SwiftUI previews.
  */
-class CrazyPreviewKeyboardAppearance: PreviewKeyboardAppearance {
+public class CrazyPreviewKeyboardAppearance: PreviewKeyboardAppearance {
   override public func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
     isPressed ? .preview2 : .preview1
   }

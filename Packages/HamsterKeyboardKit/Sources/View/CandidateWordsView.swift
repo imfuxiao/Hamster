@@ -186,11 +186,11 @@ public class CandidateWordsView: UIView {
         .receive(on: DispatchQueue.main)
         .sink { [weak self] inputKeys in
           guard let self = self else { return }
-          if self.keyboardContext.keyboardType.isChineseNineGrid {
-            self.phoneticArea.text = self.rimeContext.t9UserInputKey
-          } else {
+//          if self.keyboardContext.keyboardType.isChineseNineGrid {
+//            self.phoneticArea.text = self.rimeContext.t9UserInputKey
+//          } else {
             self.phoneticArea.text = inputKeys
-          }
+//          }
         }
         .store(in: &subscription)
     }

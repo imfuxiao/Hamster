@@ -14,6 +14,7 @@ protocol KeyboardSettingsSubViewControllerFactory {
   func makeSymbolSettingsViewController() -> SymbolSettingsViewController
   func makeSymbolKeyboardSettingsViewController() -> SymbolKeyboardSettingsViewController
   func makeToolbarSettingsViewController() -> ToolbarSettingsViewController
+  func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController
 }
 
 public class KeyboardSettingsViewController: NibLessViewController {
@@ -23,6 +24,7 @@ public class KeyboardSettingsViewController: NibLessViewController {
   private let toolbarSettingsViewController: ToolbarSettingsViewController
   private let symbolSettingsViewController: SymbolSettingsViewController
   private let symbolKeyboardSettingsViewController: SymbolKeyboardSettingsViewController
+  private let keyboardLayoutViewController: KeyboardLayoutViewController
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -34,6 +36,7 @@ public class KeyboardSettingsViewController: NibLessViewController {
     self.toolbarSettingsViewController = keyboardSettingsSubViewControllerFactory.makeToolbarSettingsViewController()
     self.symbolSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolSettingsViewController()
     self.symbolKeyboardSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolKeyboardSettingsViewController()
+    self.keyboardLayoutViewController = keyboardSettingsSubViewControllerFactory.makeKeyboardLayoutViewController()
 
     super.init()
 
@@ -55,6 +58,8 @@ public class KeyboardSettingsViewController: NibLessViewController {
       presentSymbolKeyboardSettings()
     case .toolbar:
       presentToolbar()
+    case .keyboardLayout:
+      presentKeyboardLayout()
     }
   }
 
@@ -72,6 +77,10 @@ public class KeyboardSettingsViewController: NibLessViewController {
 
   func presentToolbar() {
     navigationController?.pushViewController(toolbarSettingsViewController, animated: true)
+  }
+
+  func presentKeyboardLayout() {
+    navigationController?.pushViewController(keyboardLayoutViewController, animated: true)
   }
 }
 

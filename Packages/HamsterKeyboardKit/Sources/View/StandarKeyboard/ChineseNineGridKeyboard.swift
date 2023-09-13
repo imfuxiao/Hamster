@@ -82,7 +82,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
 
   // MARK: - Initialization
 
-  init(
+  public init(
     actionHandler: KeyboardActionHandler,
     appearance: KeyboardAppearance,
     keyboardContext: KeyboardContext,
@@ -112,7 +112,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
             return
           }
 
-          var t9pinyin = rimeContext.pinyinCandidates
+          var t9pinyin = rimeContext.getPinyinCandidates(userInputKey: $0, selectPinyin: rimeContext.selectPinyinList)
           if t9pinyin.isEmpty {
             t9pinyin = keyboardContext.symbolsOfChineseNineGridKeyboard
           }
@@ -297,8 +297,7 @@ public extension ChineseNineGridKeyboard {
     guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
 
     // 替换 inputKey 中的空格
-    let userInputKey = rimeContext.userInputKey
-      .replacingOccurrences(of: " ", with: "")
+    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
 
     // 获取 t9Pinyin 所处字符串的 index
     guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
@@ -324,7 +323,7 @@ public extension ChineseNineGridKeyboard {
 
     Task {
       rimeContext.selectPinyinList.append(symbol)
-      await rimeContext.syncContext(true)
+      await rimeContext.syncContext()
     }
   }
 }

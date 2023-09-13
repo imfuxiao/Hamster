@@ -9,6 +9,9 @@ import Foundation
 
 /// 键盘配置
 public struct KeyboardConfiguration: Codable, Equatable, Hashable {
+  /// 使用键盘类型
+  public var useKeyboardType: String?
+  
   /// 显示按键气泡
   /// true: 显示 false: 不显示
   public var displayButtonBubbles: Bool?

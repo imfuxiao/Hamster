@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct SettingSectionModel {
+public struct SettingSectionModel: Hashable {
   public var title: String
   public var footer: String?
   public var items: [SettingItemModel]

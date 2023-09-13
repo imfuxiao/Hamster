@@ -264,7 +264,7 @@ public struct KeyLabel: Codable, Equatable {
   public var text: String
 }
 
-extension String {
+public extension String {
   /**
    属性解析
 
