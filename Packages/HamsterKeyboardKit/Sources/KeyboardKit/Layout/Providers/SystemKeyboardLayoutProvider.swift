@@ -279,11 +279,14 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    是否需要中英切换按键
    */
   open func needsChineseEnglishSwitchAction(for context: KeyboardContext) -> KeyboardAction? {
-    // TODO: 添加根据用户配置
-    switch context.keyboardType {
-    case .chinese: return .keyboardType(.alphabetic(.auto))
-    case .alphabetic: return .keyboardType(.chinese(.auto))
-    default: return nil
+    if context.displayChineseEnglishSwitchButton {
+      return .keyboardType(.alphabetic(.lowercased))
     }
+    return nil
+  }
+  
+  /// 是否添加分号键
+  open func needsSemicolonButton(for context: KeyboardContext) -> KeyboardActions {
+    context.displaySemicolonButton ? [.character(";")] : []
   }
 }

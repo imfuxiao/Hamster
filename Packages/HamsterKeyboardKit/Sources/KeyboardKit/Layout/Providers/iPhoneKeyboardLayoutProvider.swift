@@ -178,9 +178,12 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
 
+    result.append(.keyboardType(.symbolic))
     result.append(.space)
-    /// 根据用户配置添加是否切换到中文九宫格布局
-    result.append(.keyboardType(.chinese(.lowercased)))
+
+    /// 切换用户设置键盘
+    result.append(.keyboardType(context.selectKeyboard))
+
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))
       result.append(.character("."))

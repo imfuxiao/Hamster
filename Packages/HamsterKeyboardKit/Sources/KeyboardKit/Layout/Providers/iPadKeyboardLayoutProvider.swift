@@ -70,8 +70,14 @@ open class iPadKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if isLowerTrailingSwitcher(action, row: row, index: index) { return .available }
     switch action {
     case context.keyboardDictationReplacement: return .input
-    case .none: return .inputPercentage(0.4)
-    case .primary: return .available
+    case .primary, .keyboardType:
+      if row == 1 {
+        return .available
+      }
+    case .shift:
+      if row == 2 {
+        return .available
+      }
     default: break
     }
     if action.isSystemAction { return systemButtonWidth(for: context) }
@@ -107,7 +113,7 @@ open class iPadKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
    应用于键盘顶行的附加 leading 操作。
    */
   open func topLeadingActions(for context: KeyboardContext) -> KeyboardActions {
-    return []
+    return [.tab]
   }
 
   /**
@@ -125,7 +131,7 @@ open class iPadKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
    应用于键盘中间行的附加 leading 操作。
    */
   open func middleLeadingActions(for context: KeyboardContext) -> KeyboardActions {
-    return [.none]
+    return [.keyboardType(context.selectKeyboard)]
   }
 
   /**

@@ -24,6 +24,11 @@ public enum NumberNineGridTabView {
   case symbols
 }
 
+public enum KeyboardLayoutSegmentAction {
+  case chineseLayoutSettings
+  case chineseLayoutSwipeSettings
+}
+
 public class KeyboardSettingsViewModel: ObservableObject {
   // MARK: - properties
 
@@ -91,6 +96,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
   public var displaySemicolonButton: Bool {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton = displaySemicolonButton
+    }
+  }
+
+  public var displayClassifySymbolButton: Bool {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton = displayClassifySymbolButton
     }
   }
 
@@ -238,6 +249,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
     symbolSettingsSubviewSwitchSubject.eraseToAnyPublisher()
   }
 
+  // 键盘布局 segment 切换
+  private var segmentActionSubject = PassthroughSubject<KeyboardLayoutSegmentAction, Never>()
+  public var segmentActionPublished: AnyPublisher<KeyboardLayoutSegmentAction, Never> {
+    segmentActionSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - init data
 
   /// 键盘设置选项
@@ -319,8 +336,10 @@ public class KeyboardSettingsViewModel: ObservableObject {
       ])
   ]
 
+  /// 中文键盘设置
   lazy var chineseStanderSystemKeyboardSettingsItems: [SettingSectionModel] = [
     .init(
+      footer: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧",
       items: [
         .init(
           text: "启用分号按键",
@@ -328,12 +347,14 @@ public class KeyboardSettingsViewModel: ObservableObject {
           toggleValue: displaySemicolonButton,
           toggleHandled: { [unowned self] in
             displaySemicolonButton = $0
-          })
-      ]
-    ),
-    .init(
-      footer: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧",
-      items: [
+          }),
+        .init(
+          text: "启用符号按键",
+          type: .toggle,
+          toggleValue: displayClassifySymbolButton,
+          toggleHandled: { [unowned self] in
+            displayClassifySymbolButton = $0
+          }),
         .init(
           text: "启用中英切换按键",
           type: .toggle,
@@ -584,6 +605,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
     self.enableToolbar = configuration.toolbar?.enableToolbar ?? true
     self.displaySemicolonButton = configuration.Keyboard?.displaySemicolonButton ?? false
+    self.displayClassifySymbolButton = configuration.Keyboard?.displayClassifySymbolButton ?? true
     self.enableNineGridOfNumericKeyboard = configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? false
     self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? false
     self.enableSymbolKeyboard = configuration.Keyboard?.enableSymbolKeyboard ?? false
@@ -622,6 +644,17 @@ extension KeyboardSettingsViewModel {
 
   @objc func symbolsSegmentedControlChange(_ sender: UISegmentedControl) {
     symbolSettingsSubviewSwitchSubject.send(sender.selectedSegmentIndex)
+  }
+
+  @objc func chineseLayoutSegmentChangeAction(_ sender: UISegmentedControl) {
+    switch sender.selectedSegmentIndex {
+    case 0:
+      segmentActionSubject.send(.chineseLayoutSettings)
+    case 1:
+      segmentActionSubject.send(.chineseLayoutSwipeSettings)
+    default:
+      return
+    }
   }
 }
 

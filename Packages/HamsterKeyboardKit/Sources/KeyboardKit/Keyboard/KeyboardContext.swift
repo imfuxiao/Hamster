@@ -545,6 +545,46 @@ public extension KeyboardContext {
     hamsterConfig?.Keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
   }
 
+  /// 是否启用分号键
+  var displaySemicolonButton: Bool {
+    hamsterConfig?.Keyboard?.displaySemicolonButton ?? false
+  }
+
+  /// 是否启用分类符号按键
+  var displayClassifySymbolButton: Bool {
+    hamsterConfig?.Keyboard?.displayClassifySymbolButton ?? true
+  }
+
+  /// 是否启用中英切换键
+  var displayChineseEnglishSwitchButton: Bool {
+    hamsterConfig?.Keyboard?.displayChineseEnglishSwitchButton ?? true
+  }
+
+  /// 空格左侧自定义按键
+  var displaySpaceLeftButton: Bool {
+    hamsterConfig?.Keyboard?.displaySpaceLeftButton ?? false
+  }
+
+  /// 空格左侧按键键值
+  var keyValueOfSpaceLeftButton: String {
+    hamsterConfig?.Keyboard?.keyValueOfSpaceLeftButton ?? ""
+  }
+
+  /// 空格右侧自定义按键
+  var displaySpaceRightButton: Bool {
+    hamsterConfig?.Keyboard?.displaySpaceRightButton ?? false
+  }
+
+  /// 空格右侧按键键值
+  var keyValueOfSpaceRightButton: String {
+    hamsterConfig?.Keyboard?.keyValueOfSpaceRightButton ?? ""
+  }
+
+  /// 中英切换键是否位于空格左侧
+  var chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool {
+    hamsterConfig?.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? true
+  }
+
   /// 是否开启工具栏
   var enableToolbar: Bool {
     hamsterConfig?.toolbar?.enableToolbar ?? true

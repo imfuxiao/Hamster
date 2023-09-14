@@ -153,9 +153,7 @@ class KeyboardRootView: UIView {
     let view = UIView()
     view.isHidden = true
     view.translatesAutoresizingMaskIntoConstraints = false
-
     view.backgroundColor = .red
-
     return view
   }()
 
@@ -335,25 +333,20 @@ class KeyboardRootView: UIView {
       .sink { [unowned self] in
         switch $0 {
         case .classifySymbolic:
+          // TODO: 动画代码重构
           classifySymbolicKeyboardView.isHidden = false
-          classifySymbolicKeyboardView.alpha = 1
-          numericNineGridKeyboardView.isHidden = true
-          numericNineGridKeyboardView.alpha = 0
-          emojisKeyboardView.isHidden = true
-          emojisKeyboardView.alpha = 0
+          classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: -frame.height)
+          UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut) { [unowned self] in
+            classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: frame.height)
+          }
         case .numericNineGrid:
-          classifySymbolicKeyboardView.isHidden = true
-          classifySymbolicKeyboardView.alpha = 0
           numericNineGridKeyboardView.isHidden = false
-          numericNineGridKeyboardView.alpha = 1
-          emojisKeyboardView.isHidden = true
-          emojisKeyboardView.alpha = 0
         case .emojis:
+          emojisKeyboardView.isHidden = false
+        case .alphabetic, .chinese, .chineseNineGrid, .custom:
           classifySymbolicKeyboardView.isHidden = true
           numericNineGridKeyboardView.isHidden = true
-          emojisKeyboardView.isHidden = false
-          emojisKeyboardView.alpha = 1
-        case .alphabetic, .chinese:
+          emojisKeyboardView.isHidden = true
           keyboardContainerView.subviews.forEach { $0.removeFromSuperview() }
           let keyboardView = keyboardView
           keyboardContainerView.addSubview(keyboardView)
@@ -364,12 +357,7 @@ class KeyboardRootView: UIView {
             keyboardView.trailingAnchor.constraint(equalTo: keyboardContainerView.trailingAnchor)
           ])
         default:
-          classifySymbolicKeyboardView.isHidden = true
-          classifySymbolicKeyboardView.alpha = 0
-          numericNineGridKeyboardView.isHidden = true
-          numericNineGridKeyboardView.alpha = 0
-          emojisKeyboardView.isHidden = true
-          emojisKeyboardView.alpha = 0
+          break
         }
       }
       .store(in: &subscriptions)

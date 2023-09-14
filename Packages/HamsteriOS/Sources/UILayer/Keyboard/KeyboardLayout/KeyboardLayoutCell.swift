@@ -57,8 +57,8 @@ class KeyboardLayoutCell: UICollectionViewListCell {
       checkbox.centerYAnchor.constraint(equalTo: label.centerYAnchor),
 
       label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
-      bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 1.0),
+      label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 2.0),
+      bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 2.0),
     ])
   }
 }

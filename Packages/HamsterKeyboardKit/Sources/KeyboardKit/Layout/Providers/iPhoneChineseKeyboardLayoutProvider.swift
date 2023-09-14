@@ -37,7 +37,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     guard isExpectedActionSet(actions) else { return actions }
     var result = KeyboardActionRows()
     result.append(topLeadingActions(for: actions, context: context) + actions[0] + topTrailingActions(for: actions, context: context))
-    result.append(middleLeadingActions(for: actions, context: context) + actions[1] + middleTrailingActions(for: actions, context: context))
+    result.append(middleLeadingActions(for: actions, context: context) + actions[1] + needsSemicolonButton(for: context) + middleTrailingActions(for: actions, context: context))
     result.append(lowerLeadingActions(for: actions, context: context) + actions[2] + lowerTrailingActions(for: actions, context: context))
     result.append(bottomActions(for: context))
     return result
@@ -183,10 +183,27 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
 
-    result.append(.keyboardType(.classifySymbolic))
+    if context.displayClassifySymbolButton {
+      result.append(.keyboardType(.classifySymbolic))
+    }
+
+    if context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
+      result.append(action)
+    }
+
+    if context.displaySpaceLeftButton {
+      result.append(.character(context.keyValueOfSpaceLeftButton))
+    }
+
     result.append(.space)
 
-    if let action = needsChineseEnglishSwitchAction(for: context) { result.append(action) }
+    if context.displaySpaceRightButton {
+      result.append(.character(context.keyValueOfSpaceRightButton))
+    }
+
+    if !context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
+      result.append(action)
+    }
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))

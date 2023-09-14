@@ -19,6 +19,16 @@ class LayoutSettingsViewController: NibLessViewController {
     return view
   }()
 
+  private lazy var chineseNineGridKeyboardSettingsView: ChineseNineGridKeyboardSettingsView = {
+    let view = ChineseNineGridKeyboardSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
+    return view
+  }()
+
+  private lazy var customKeyboardSettingsView: CustomKeyboardSettingsView = {
+    let view = CustomKeyboardSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
+    return view
+  }()
+
   init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
@@ -28,10 +38,18 @@ class LayoutSettingsViewController: NibLessViewController {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         self.title = $0.label
-        self.view = self.chineseStanderSystemKeyboardSettingsView
+        if $0.isChinesePrimaryKeyboard {
+          self.view = self.chineseStanderSystemKeyboardSettingsView
+        } else if $0.isChineseNineGrid {
+          self.view = self.chineseNineGridKeyboardSettingsView
+        } else {
+          self.view = self.customKeyboardSettingsView
+        }
         self.view.setNeedsLayout()
       }
       .store(in: &subscriptions)
+
+    additionalSafeAreaInsets = .zero
   }
 
   override func loadView() {

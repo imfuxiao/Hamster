@@ -31,10 +31,10 @@ class KeyboardSettingsRootView: NibLessView {
 
     super.init(frame: frame)
 
-    setupTablView()
+    setupView()
   }
 
-  func setupTablView() {
+  func setupView() {
     addSubview(tableView)
     tableView.dataSource = self
     tableView.delegate = self

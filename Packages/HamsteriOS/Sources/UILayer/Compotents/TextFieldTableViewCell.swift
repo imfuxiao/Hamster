@@ -79,7 +79,13 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   func setupTextFieldView() {
     contentView.addSubview(textField)
     textField.delegate = self
-    textField.fillSuperviewOnMarginsGuide()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      textField.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
+      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: textField.bottomAnchor, multiplier: 1),
+      textField.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
+      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 1),
+    ])
   }
 
   @objc func textFieldFocus() {

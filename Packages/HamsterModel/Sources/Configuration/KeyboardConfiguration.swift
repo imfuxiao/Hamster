@@ -31,6 +31,9 @@ public struct KeyboardConfiguration: Codable, Equatable, Hashable {
   /// 显示分号按键
   public var displaySemicolonButton: Bool?
   
+  /// 显示分类符号按键
+  public var displayClassifySymbolButton: Bool?
+  
   /// 显示空格左边按键
   public var displaySpaceLeftButton: Bool?
   

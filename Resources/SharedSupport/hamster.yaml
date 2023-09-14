@@ -38,6 +38,7 @@ Keyboard:
   enableHapticFeedback: false
   hapticFeedbackIntensity: 3
   displaySemicolonButton: false
+  displayClassifySymbolButton: true
   displaySpaceLeftButton: true
   keyValueOfSpaceLeftButton: ","
   displaySpaceRightButton: false
