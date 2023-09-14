@@ -11,6 +11,8 @@ import UIKit
 class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
   static let actionRows: KeyboardActionRows = [
     [.chineseNineGrid(Symbol(char: "@/.")), .chineseNineGrid(Symbol(char: "ABC")), .chineseNineGrid(Symbol(char: "DEF")), .backspace],
+    // TODO: 分词
+//    [.delimiter, .chineseNineGrid(Symbol(char: "ABC")), .chineseNineGrid(Symbol(char: "DEF")), .backspace],
     [.chineseNineGrid(Symbol(char: "GHI")), .chineseNineGrid(Symbol(char: "JKL")), .chineseNineGrid(Symbol(char: "MNO")), .cleanSpellingArea],
     [.chineseNineGrid(Symbol(char: "PQRS")), .chineseNineGrid(Symbol(char: "TUV")), .chineseNineGrid(Symbol(char: "WXYZ"))],
     [.keyboardType(.classifySymbolic), .keyboardType(.numericNineGrid), .space, .keyboardType(.alphabetic(.lowercased))],

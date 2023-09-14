@@ -72,31 +72,51 @@ public extension StringProtocol {
   }
 }
 
-public extension StringProtocol {
+public extension String {
   func t9ToPinyin(comment: String) -> String {
-    let pinyinList = comment.split(separator: " ")
-    let t9pinyinList = pinyinList.map { pinyinToT9Mapping[String($0)] ?? String($0) }
+    guard !comment.isEmpty else { return self.replacingOccurrences(of: " ", with: "'") }
+    // 没有大写的模糊音需要替换则返回
+    guard !self.filter({ $0.isUppercase }).isEmpty else { return self.replacingOccurrences(of: " ", with: "'") }
 
-    // rime 返回格式可能缺失音节切分
-    var inputKey = replacingOccurrences(of: " ", with: "")
+    /// 按空格拆分音节并反转，因为需要从后向前替换用户输入的 T9 编码
+    let pinyinList = comment.split(separator: " ").map { String($0) }.reversed().map { String($0).lowercased() }
+    let t9pinyinList = pinyinList.map { pinyinToT9Mapping[$0] ?? $0 }
 
-    // 按T9拆分 inputKey
+    /// 字符串反转后可以从0开始替换
+    var inputKey = String(self.replacingOccurrences(of: " ", with: "").reversed())
+    var replaceInputKey = ""
     for (index, t9pinyin) in t9pinyinList.enumerated() {
-      if inputKey.contains(t9pinyin), let startIndex = inputKey.index(of: t9pinyin) {
-        let endIndex = inputKey.index(startIndex, offsetBy: t9pinyin.count)
-        inputKey.replaceSubrange(startIndex ..< endIndex, with: endIndex == inputKey.endIndex ? pinyinList[index] : pinyinList[index] + "'")
-      } else {
-        let startIndex: String.Index
-        if let firstIndex = inputKey.lastIndex(of: "'") {
-          startIndex = inputKey.index(firstIndex, offsetBy: 1)
-        } else {
-          startIndex = inputKey.startIndex
+      inputKey = inputKey.trimmingCharacters(in: .whitespaces)
+
+      // 注意反转
+      var reversedT9pinyin = String(t9pinyin.reversed())
+      var reversedPinyin = String(pinyinList[index].reversed())
+
+      // 完全包含前缀字符，则 inputKey 删除前缀，并在 newInputKey 使用 pinyin 作为 t9 的替换
+      if inputKey.hasPrefix(reversedT9pinyin) {
+        inputKey.removeFirst(reversedPinyin.count)
+        replaceInputKey.append(reversedPinyin + " ")
+        continue
+      }
+
+      // 不完全包含，则需要循环删除T9字符，已部分匹配
+      while !reversedT9pinyin.isEmpty {
+        _ = reversedT9pinyin.removeFirst()
+        _ = reversedPinyin.removeFirst()
+
+        if inputKey.hasPrefix(reversedT9pinyin) {
+          inputKey.removeFirst(reversedPinyin.count)
+          replaceInputKey.append(reversedPinyin + " ")
+          break
         }
-        let range = startIndex ..< inputKey.endIndex
-        let pinyin = pinyinList[index].prefix(inputKey[range].count)
-        inputKey.replaceSubrange(range, with: pinyin)
       }
     }
-    return inputKey
+    if inputKey.isEmpty {
+      return String(replaceInputKey.trimmingCharacters(in: .whitespaces).reversed()).replacingOccurrences(of: " ", with: "'")
+    }
+    return String((replaceInputKey.trimmingCharacters(in: .whitespaces) + " " + inputKey.trimmingCharacters(in: .whitespaces))
+      .reversed())
+      .trimmingCharacters(in: .whitespaces)
+      .replacingOccurrences(of: " ", with: "'")
   }
 }

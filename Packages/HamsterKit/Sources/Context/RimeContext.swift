@@ -54,11 +54,7 @@ public actor RimeContext: ObservableObject {
     guard !userInputKey.isEmpty else { return "" }
     guard let firstCandidate = suggestions.first else { return userInputKey }
     guard let comment = firstCandidate.subtitle else { return userInputKey }
-
-    let chinesePrefix = String(userInputKey.filter { !$0.isASCII })
-    return chinesePrefix.isEmpty
-      ? userInputKey.t9ToPinyin(comment: comment)
-      : chinesePrefix + " " + userInputKey.replacingOccurrences(of: chinesePrefix, with: "").t9ToPinyin(comment: comment)
+    return userInputKey.t9ToPinyin(comment: comment)
   }
 
   /// 用户选择的候选拼音
@@ -87,8 +83,8 @@ public extension RimeContext {
   @MainActor
   func reset() {
     self.userInputKey = ""
-    self.selectPinyinList = []
-    self.suggestions = []
+    self.selectPinyinList.removeAll(keepingCapacity: false)
+    self.suggestions.removeAll(keepingCapacity: false)
     Rime.shared.cleanComposition()
   }
 

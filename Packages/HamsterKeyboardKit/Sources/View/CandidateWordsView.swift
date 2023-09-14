@@ -169,28 +169,17 @@ public class CandidateWordsView: UIView {
 
   func combine() {
     Task {
-//      if self.keyboardContext.keyboardType.isChineseNineGrid {
-//        await rimeContext.$suggestions
-//          .receive(on: DispatchQueue.main)
-//          .sink { [weak self] suggestions in
-//            guard let self = self else { return }
-//            if let first = suggestions.first {
-//              self.phoneticArea.text = first.subtitle
-//            }
-//          }
-//          .store(in: &subscription)
-//        return
-//      }
-
       await rimeContext.$userInputKey
         .receive(on: DispatchQueue.main)
         .sink { [weak self] inputKeys in
           guard let self = self else { return }
-//          if self.keyboardContext.keyboardType.isChineseNineGrid {
+          if self.keyboardContext.keyboardType.isChineseNineGrid {
+            // Debug
+            self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
 //            self.phoneticArea.text = self.rimeContext.t9UserInputKey
-//          } else {
+          } else {
             self.phoneticArea.text = inputKeys
-//          }
+          }
         }
         .store(in: &subscription)
     }

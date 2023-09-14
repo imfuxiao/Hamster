@@ -65,6 +65,7 @@ public extension KeyboardAction {
     case .symbol(let symbol): return symbol.char
     case .chineseNineGrid(let symbol): return symbol.char
     case .cleanSpellingArea: return "重输"
+    case .delimiter: return "分词"
     default: return nil
     }
   }

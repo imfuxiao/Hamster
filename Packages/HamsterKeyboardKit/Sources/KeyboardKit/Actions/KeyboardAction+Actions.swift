@@ -127,6 +127,7 @@ public extension KeyboardAction {
     case .url(let url, _): return { $0?.openUrl(url) }
     case .returnLastKeyboard: return { $0?.returnLastKeyboard() }
     case .cleanSpellingArea: return { $0?.resetInputEngine() }
+    case .delimiter: return { $0?.insertText("'") }
     default: return nil
     }
   }

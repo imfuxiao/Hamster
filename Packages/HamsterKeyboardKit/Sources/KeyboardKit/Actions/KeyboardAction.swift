@@ -154,6 +154,10 @@ public enum KeyboardAction: Codable, Equatable {
   
   /// 清空拼写区域
   case cleanSpellingArea
+  
+  /// 中文分词
+  /// 对应 rime 配置中：speller/delimiter 的配置
+  case delimiter
 }
 
 // MARK: - Public Extensions

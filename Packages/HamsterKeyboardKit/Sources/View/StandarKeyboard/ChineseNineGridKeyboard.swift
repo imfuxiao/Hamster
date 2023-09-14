@@ -283,12 +283,14 @@ public extension ChineseNineGridKeyboard {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-
-    // 1. input 为空
-    // 2. 符号为数字
-    // 以上情况直接上屏
-    if rimeContext.userInputKey.isEmpty, let _ = Int(symbol) {
-      actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
+    // 当 symbol 非字母数字，顶码上屏
+    if !symbol.isMatch(regex: "\\w.*") {
+      Task {
+        if let str = try? await rimeContext.tryHandleInputCode(XK_space) {
+          actionHandler.handle(.release, on: .symbol(.init(char: str)))
+        }
+        actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
+      }
       collectionView.deselectItem(at: indexPath, animated: true)
       return
     }
@@ -296,7 +298,7 @@ public extension ChineseNineGridKeyboard {
     // 根据用户选择的候选拼音，反查得到对应的 T9 编码
     guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
 
-    // 替换 inputKey 中的空格
+    // 替换 inputKey 中的空格分词
     let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
 
     // 获取 t9Pinyin 所处字符串的 index
@@ -324,6 +326,7 @@ public extension ChineseNineGridKeyboard {
     Task {
       rimeContext.selectPinyinList.append(symbol)
       await rimeContext.syncContext()
+      collectionView.deselectItem(at: indexPath, animated: true)
     }
   }
 }

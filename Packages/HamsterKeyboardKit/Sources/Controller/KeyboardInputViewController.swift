@@ -454,6 +454,44 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func deleteBackward() {
+    if keyboardContext.keyboardType.isChineseNineGrid {
+      if rimeContext.userInputKey.isEmpty {
+        textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+        return
+      }
+
+      // 判断代删除字符是否为用户选择精确拼音，如果是，则需要将精确拼音还原为模糊拼音
+      if let lastSelectPinyin = rimeContext.selectPinyinList.last, rimeContext.userInputKey.hasSuffix(lastSelectPinyin) {
+        // 根据用户选择的候选拼音，反查得到对应的 T9 编码
+        guard let t9Pinyin = pinyinToT9Mapping[lastSelectPinyin] else {
+          Logger.statistics.error("not found \(lastSelectPinyin) match t9pinyin")
+          return
+        }
+
+        // 删除 lastSelectPinyin
+        for _ in lastSelectPinyin {
+          rimeContext.deleteBackwardNotSync()
+        }
+
+        // 还原模糊拼音
+        for text in t9Pinyin {
+          if !rimeContext.inputKeyNotSync(String(text)) {
+            Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
+          }
+        }
+
+        Task {
+          _ = rimeContext.selectPinyinList.popLast()
+          await rimeContext.syncContext()
+        }
+      } else {
+        Task {
+          await rimeContext.deleteBackward()
+        }
+      }
+
+      return
+    }
     if rimeContext.userInputKey.isEmpty {
       textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
     } else {
