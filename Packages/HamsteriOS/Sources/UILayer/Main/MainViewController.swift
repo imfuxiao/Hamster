@@ -106,6 +106,22 @@ extension MainViewController {
         self.navigationResponse(to: $0)
       }
       .store(in: &subscriptions)
+
+    mainViewModel.$shortcutItemType
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] type in
+        Task {
+          switch type {
+          case .rimeDeploy:
+            try? await rimeViewController.rimeViewModel.rimeDeploy()
+          case .rimeSync:
+            try? await rimeViewController.rimeViewModel.rimeSync()
+          default:
+            break
+          }
+        }
+      }
+      .store(in: &subscriptions)
   }
 }
 

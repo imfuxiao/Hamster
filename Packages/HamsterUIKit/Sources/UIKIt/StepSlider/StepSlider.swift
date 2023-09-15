@@ -13,9 +13,9 @@ import UIKit
 public class StepSlider: UIControl {
   /// 文本标签位置
   public enum LabelOrientation {
-    // 在滑块下方设置文字标签
+    // 在划块下方设置文字标签
     case down
-    // 在滑块上方设置文本标签
+    // 在划块上方设置文本标签
     case up
   }
   
@@ -23,38 +23,38 @@ public class StepSlider: UIControl {
   
   private static let kTrackAnimation = "kTrackAnimation"
   
-  /// 滑块中的最大数。必须是 `2` 或更大。注意：如果 `labels` 数组不是空的，则将 `maxCount` 设置为标签计数。
+  /// 划块中的最大数。必须是 `2` 或更大。注意：如果 `labels` 数组不是空的，则将 `maxCount` 设置为标签计数。
   public var maxCount: UInt = .zero
   
-  /// 滑块上当前选定的索引。
+  /// 划块上当前选定的索引。
   public var index: UInt = .zero {
     didSet {
       generatorHapticFeedback()
     }
   }
   
-  /// 滑快轨道的高度
+  /// 划快轨道的高度
   public var trackHeight: CGFloat = .zero
   
   /// 轨道刻度圆的半径
   public var trackCircleRadius: CGFloat = .zero
   
-  /// 滑块圆的半径
+  /// 划块圆的半径
   public var sliderCircleRadius: CGFloat = .zero
   
-  /// 用于确定是否忽略用户与滑块上刻度点的交互。默认值为"true"。
+  /// 用于确定是否忽略用户与划块上刻度点的交互。默认值为"true"。
   public var dotsInteractionEnable: Bool = true
   
-  /// 滑块轨道的颜色
+  /// 划块轨道的颜色
   public var trackColor: UIColor = .clear
   
-  /// 滑块指针颜色
+  /// 划块指针颜色
   public var sliderCircleColor: UIColor = .clear
   
-  /// 滑块指针的图片
+  /// 划块指针的图片
   public var sliderCircleImage: UIImage? = nil
   
-  /// 用于在滑块刻度附近显示的标签文本。
+  /// 用于在划块刻度附近显示的标签文本。
   /// 注意：如果 `labels` 数组不是空的，那么 `maxCount` 将等于 `labels.count`。
   public var labels: [String] = []
   private var attributedLabels: [NSAttributedString] = []
@@ -71,7 +71,7 @@ public class StepSlider: UIControl {
   /// 标签位置
   public var labelOrientation: LabelOrientation = .down
   
-  /// 如果“true”，请将第一个和最后一个标签调整到步进滑块框架。并将对齐方式更改为左对齐和右对齐。否则，标签位置与轨道圆相同，并且对齐方式始终为中心。
+  /// 如果“true”，请将第一个和最后一个标签调整到步进划块框架。并将对齐方式更改为左对齐和右对齐。否则，标签位置与轨道圆相同，并且对齐方式始终为中心。
   public var adjustLabel: Bool = false
   
   /// 值更改时产生触觉反馈。如果开启了低功耗模式，则忽略。

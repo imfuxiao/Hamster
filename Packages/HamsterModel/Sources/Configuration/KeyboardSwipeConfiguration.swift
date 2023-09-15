@@ -7,14 +7,15 @@
 
 import Foundation
 
-/// 键盘滑动配置
+/// 键盘划动配置
 public struct KeyboardSwipeConfiguration: Codable, Equatable, Hashable {
-  /// x 轴滑动灵敏度
+  /// x 轴划动灵敏度
   public var xAxleSwipeSensitivity: Int?
 
-  /// y 轴滑动灵敏度
+  /// y 轴划动灵敏度
   public var yAxleSwipeSensitivity: Int?
 
-  /// 空格移动光标滑动灵敏度
+  /// 空格移动光标划动灵敏度
   public var spaceSwipeSensitivity: Int?
 }
+

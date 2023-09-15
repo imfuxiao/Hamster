@@ -54,7 +54,7 @@ extension BackupRootView {
 }
 
 extension BackupRootView: UITableViewDelegate {
-  /// 滑动处理
+  /// 划动处理
   func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
     guard indexPath.section == 1 else { return nil }
     let fileInfo = backupViewModel.backupFiles[indexPath.row]
@@ -117,7 +117,7 @@ extension BackupRootView: UITableViewDataSource {
 
 extension BackupRootView {
   static let backupRemark = """
-  1. 向左滑动操作文件；
+  1. 向左划动操作文件；
   2. 软件恢复后,请手动执行“重新部署”；
   """
 }

@@ -6,20 +6,19 @@
 //
 
 import AppIntents
+import HamsteriOS
 import HamsterKit
 import OSLog
 
 @available(iOS 16.0, *)
 struct RimeDeployIntent: AppIntent {
-  static var title: LocalizedStringResource = "重新部署"
+  static var title: LocalizedStringResource = "RIME 重新部署"
 
-  static var description =
-    IntentDescription("仓输入法 RIME 重新部署")
+  static var description = IntentDescription("仓输入法 - RIME 重新部署")
 
-  let rimeContext = RimeContext()
+  let rimeContext = HamsterAppDependencyContainer.shared.rimeContext
 
-  @MainActor
-  func perform() async throws -> some IntentResult {
+  func perform() async throws -> some ReturnsValue & ProvidesDialog {
     let configuration = HamsterAppDependencyContainer.shared.configuration
     do {
       try await rimeContext.deployment(configuration: configuration)

@@ -6,6 +6,7 @@
 //
 
 import HamsteriOS
+import HamsterKit
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
@@ -19,16 +20,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     window.makeKeyAndVisible()
 
     // 通过快捷方式打开
-//    if let shortItem = connectionOptions.shortcutItem, let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle) {
-//      switch shortItemType {
-//      case .rimeDeploy:
-//        settingsViewController.rimeViewModel.rimeDeploy()
-//      case .rimeSync:
-//        settingsViewController.rimeViewModel.rimeSync()
-//      case .rimeReset:
-//        settingsViewController.rimeViewModel.rimeRest()
-//      }
-//    }
+    if let shortItem = connectionOptions.shortcutItem,
+       let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle)
+    {
+      HamsterAppDependencyContainer.shared.mainViewModel.navigationToRIME()
+      HamsterAppDependencyContainer.shared.mainViewModel.execShortcutCommand(shortItemType)
+    }
   }
 
   // 通过URL打开App
@@ -51,27 +48,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
   }
 
   /// 程序已启动下，通过 quick action 打开
-//  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
-//    guard let window = window else { return }
-//    guard let rootController = window.rootViewController else { return }
-//    guard let navigationController = rootController as? HamsterNavigationViewController else { return }
-//
-//    navigationController.popToRootViewController(animated: false)
-//
-//    guard let settingsViewController = navigationController.topViewController as? SettingsViewController else { return }
-//
-//    // 通过快捷方式打开
-//    if let shortItemType = ShortcutItemType(rawValue: shortcutItem.localizedTitle) {
-//      switch shortItemType {
-//      case .rimeDeploy:
-//        settingsViewController.rimeViewModel.rimeDeploy()
-//      case .rimeSync:
-//        settingsViewController.rimeViewModel.rimeSync()
-//      case .rimeReset:
-//        settingsViewController.rimeViewModel.rimeRest()
-//      }
-//    }
-//  }
+  func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+    guard let window = window else { return }
+    guard let rootController = window.rootViewController else { return }
+    guard let mainViewController = rootController as? MainViewController else { return }
+
+    mainViewController.navigationController?.popViewController(animated: false)
+
+    // 通过快捷方式打开
+    if let shortItemType = ShortcutItemType(rawValue: shortcutItem.localizedTitle) {
+      HamsterAppDependencyContainer.shared.mainViewModel.navigationToRIME()
+      HamsterAppDependencyContainer.shared.mainViewModel.execShortcutCommand(shortItemType)
+    }
+  }
 
   func sceneDidDisconnect(_ scene: UIScene) {
     // Called as the scene is being released by the system.
@@ -103,10 +92,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     // Use this method to save data, release shared resources, and store enough scene-specific state information
     // to restore the scene back to its current state.
   }
-}
-
-enum ShortcutItemType: String {
-  case rimeDeploy = "RIME重新部署"
-  case rimeSync = "RIME同步"
-  case rimeReset = "RIME重置"
 }

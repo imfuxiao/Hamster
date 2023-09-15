@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HamsterModel
 
 /**
   This protocol is used to make using the keyboard input view
@@ -72,6 +73,9 @@ public protocol KeyboardController: AnyObject {
 
   /// 插入符号
   func insertSymbol(_ symbol: Symbol)
+
+  /// 快捷指令
+  func tryHandleShortcutCommand(_ command: ShortcutCommand)
 
   /**
    Perform an autocomplete operation.

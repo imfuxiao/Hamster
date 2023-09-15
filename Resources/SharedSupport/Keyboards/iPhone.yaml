@@ -17,6 +17,7 @@
 # return: 回车键
 # shift：shift键, 默认为小写
 # space: 空格键
+# tab: tab键
 #
 # width 宽度类型
 # 可选值，默认值为 input

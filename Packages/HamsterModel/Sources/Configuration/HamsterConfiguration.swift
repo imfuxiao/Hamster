@@ -22,7 +22,7 @@ public struct HamsterConfiguration: Codable, Hashable, Equatable, CustomStringCo
   /// RIME 配置
   public var rime: RimeConfiguration?
 
-  /// 滑动配置
+  /// 划动配置
   public var swipe: KeyboardSwipeConfiguration?
 
   public init(

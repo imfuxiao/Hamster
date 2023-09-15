@@ -515,7 +515,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       return
     }
 
-    guard !tryHandleShortCommand(text) else { return }
     // 字母输入模式，不经过 rime 引擎
     if rimeContext.asciiMode {
       textDocumentProxy.insertText(text)

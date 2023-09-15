@@ -8,7 +8,7 @@
 import Foundation
 
 /// 键盘快捷指令
-public enum ShortcutCommand: String, CaseIterable, Equatable, Identifiable {
+public enum ShortcutCommand: String, CaseIterable, Hashable, Identifiable, Codable {
   public var id: Self {
     self
   }

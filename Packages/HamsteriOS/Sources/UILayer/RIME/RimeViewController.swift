@@ -13,7 +13,7 @@ protocol RimeViewModelFactory {
 }
 
 public class RimeViewController: NibLessViewController {
-  private let rimeViewModel: RimeViewModel
+  public let rimeViewModel: RimeViewModel
   init(rimeViewModelFactory: RimeViewModelFactory) {
     self.rimeViewModel = rimeViewModelFactory.makeRimeViewModel()
     super.init()

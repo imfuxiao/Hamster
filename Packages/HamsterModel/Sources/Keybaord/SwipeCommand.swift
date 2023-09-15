@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// 滑动命令
+/// 划动命令
 public enum SwipeCommand: String, CaseIterable, Equatable, Identifiable {
   public var id: Self {
     self

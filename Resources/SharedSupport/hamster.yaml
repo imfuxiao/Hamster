@@ -373,7 +373,7 @@ rime:
     - "^.*[.]userdb.*$"
     - "^.*[.]txt$"
 
-# 滑动相关配置
+# 划动相关配置
 swipe:
   xAxleSwipeSensitivity: 20
   yAxleSwipeSensitivity: 30

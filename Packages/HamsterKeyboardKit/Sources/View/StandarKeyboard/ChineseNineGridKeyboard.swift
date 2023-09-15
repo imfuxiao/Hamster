@@ -148,7 +148,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
   }
 
   open func constructViewHierarchy() {
-    // 添加右侧符号滑动列表
+    // 添加右侧符号划动列表
     addSubview(symbolsListContainerView)
 
     // 添加按键

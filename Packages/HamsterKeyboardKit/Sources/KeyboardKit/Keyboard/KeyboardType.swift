@@ -17,7 +17,7 @@ import Foundation
  If you need a keyboard type that is not represented here or
  that is app-specific, you can use `.custom`.
  */
-public enum KeyboardType: Codable, Equatable, Identifiable, Hashable {
+public enum KeyboardType: Codable, Identifiable, Hashable {
   /**
    `.alphabetic` represents keyboards that have alphabetic
    input keys for the current locale.

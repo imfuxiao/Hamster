@@ -6,6 +6,7 @@
 //  Copyright © 2018-2023 Daniel Saidi. All rights reserved.
 //
 
+import HamsterModel
 import UIKit
 
 /**
@@ -30,7 +31,7 @@ import UIKit
  
  每种 Action 类型的文档都描述了该类型的标准行为（如果有的话）。没有标准行为的类型需要自定义 ``KeyboardActionHandler`` 。
  */
-public enum KeyboardAction: Codable, Equatable {
+public enum KeyboardAction: Codable, Hashable {
   /// Deletes backwards when pressed, and repeats until released.
   /// 按下时向后删除，重复按下直至松开。
   case backspace
@@ -158,6 +159,9 @@ public enum KeyboardAction: Codable, Equatable {
   /// 中文分词
   /// 对应 rime 配置中：speller/delimiter 的配置
   case delimiter
+  
+  /// 快捷指令
+  case shortCommand(ShortcutCommand)
 }
 
 // MARK: - Public Extensions

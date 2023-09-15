@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C00563BA2A86007A0040E711 /* HamsterKeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C00563B92A86007A0040E711 /* HamsterKeyboardKit */; };
+		C01396FC2AB499D80043674A /* RimeSyncIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01396F92AB499CA0043674A /* RimeSyncIntent.swift */; };
+		C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */; };
 		C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C02435B52A0490230080CFB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
 		C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */; };
@@ -62,6 +64,8 @@
 /* Begin PBXFileReference section */
 		C000CA9D296EA72600EC5323 /* HamsterKeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardInputViewController.swift; sourceTree = "<group>"; };
 		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C01396F92AB499CA0043674A /* RimeSyncIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeSyncIntent.swift; sourceTree = "<group>"; };
+		C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployIntent.swift; sourceTree = "<group>"; };
 		C02435932A0490220080CFB4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C02435952A0490220080CFB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C02435962A0490220080CFB4 /* Hamster.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Hamster.entitlements; sourceTree = "<group>"; };
@@ -115,9 +119,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C01396F62AB499CA0043674A /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				C01396F82AB499CA0043674A /* Actions */,
+			);
+			path = Shortcuts;
+			sourceTree = "<group>";
+		};
+		C01396F82AB499CA0043674A /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				C01396F92AB499CA0043674A /* RimeSyncIntent.swift */,
+				C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */,
+			);
+			path = Actions;
+			sourceTree = "<group>";
+		};
 		C02435722A0490220080CFB4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C01396F62AB499CA0043674A /* Shortcuts */,
 				C08387EE2A55467900EA8082 /* Assets */,
 				C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */,
 				C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */,
@@ -360,6 +382,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01396FC2AB499D80043674A /* RimeSyncIntent.swift in Sources */,
+				C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */,
 				C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */,
 				C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */,
 			);

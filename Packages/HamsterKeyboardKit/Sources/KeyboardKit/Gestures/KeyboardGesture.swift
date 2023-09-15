@@ -40,16 +40,16 @@ public enum KeyboardGesture: String, CaseIterable, Codable, Equatable, Identifia
   /// 按住按钮时重复触发。
   case repeatPress
 
-  /// 上滑
+  /// 上划
   case swipeUp
 
-  /// 下滑
+  /// 下划
   case swipeDown
 
-  /// 左滑
+  /// 左划
   case swipeLeft
 
-  /// 右滑
+  /// 右划
   case swipeRight
 }
 

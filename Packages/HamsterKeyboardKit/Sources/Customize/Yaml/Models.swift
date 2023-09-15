@@ -45,7 +45,7 @@ public struct Row: Codable, Equatable {
 }
 
 /// 键盘按键
-public struct Key: Codable, Equatable {
+public struct Key: Codable, Equatable, Hashable {
   /// 按键对应操作
   /// 必须
   public var action: KeyboardAction
@@ -62,9 +62,19 @@ public struct Key: Codable, Equatable {
   /// 可选，默认值为 true
   public var processByRIME: Bool
 
-  /// 按键滑动配置
+  /// 按键划动配置
   /// 可选
   public var swipe: [KeySwipe]
+
+  // MARK: - Initialization
+
+  public init(action: KeyboardAction, width: KeyWidth = .input, label: KeyLabel = .empty, processByRIME: Bool = true, swipe: [KeySwipe] = []) {
+    self.action = action
+    self.width = width
+    self.label = label
+    self.processByRIME = processByRIME
+    self.swipe = swipe
+  }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -128,35 +138,44 @@ public struct Key: Codable, Equatable {
   }
 }
 
-/// 按键滑动
-public struct KeySwipe: Codable, Equatable {
-  /// 按键滑动方向
-  public enum Direction: String, Equatable, Codable {
+/// 按键划动
+public struct KeySwipe: Codable, Hashable {
+  /// 按键划动方向
+  public enum Direction: String, Codable, Hashable {
     case up
     case down
-    case left
-    case right
+    // TODO: 暂不开启左右划动
+//    case left
+//    case right
   }
 
-  /// 滑动方向, up / down 两个方向
+  /// 划动方向, up / down 两个方向
   /// 必须
-  var direction: Direction
+  public var direction: Direction
 
   /// 操作
   /// 必须，同 key 的 action 配置
-  var action: KeyboardAction
+  public var action: KeyboardAction
 
   /// 是否由 RIME 处理
   /// 可选，默认值为 false
-  var processByRIME: Bool
+  public var processByRIME: Bool
 
   /// 是否在按键上显示
   /// 可选，默认值为 false
-  var display: Bool
+  public var display: Bool
 
   /// 显示文本
   /// 可选，如果为空，则使用 action 对应文本显示
-  var label: KeyLabel
+  public var label: KeyLabel
+
+  public init(direction: Direction, action: KeyboardAction, processByRIME: Bool = true, display: Bool = true, label: KeyLabel) {
+    self.direction = direction
+    self.action = action
+    self.processByRIME = processByRIME
+    self.display = display
+    self.label = label
+  }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -213,7 +232,7 @@ public struct KeySwipe: Codable, Equatable {
 }
 
 /// 按键宽度
-public struct KeyWidth: Codable, Equatable {
+public struct KeyWidth: Codable, Hashable {
   public static let input: KeyWidth = .init(portrait: .input, landscape: .input)
   public static let available: KeyWidth = .init(portrait: .available, landscape: .available)
 
@@ -223,7 +242,7 @@ public struct KeyWidth: Codable, Equatable {
   /// 屏幕横向
   public var landscape: KeyboardLayoutItemWidth
 
-  init(portrait: KeyboardLayoutItemWidth, landscape: KeyboardLayoutItemWidth) {
+  public init(portrait: KeyboardLayoutItemWidth, landscape: KeyboardLayoutItemWidth) {
     self.portrait = portrait
     self.landscape = landscape
   }
@@ -243,7 +262,7 @@ public struct KeyWidth: Codable, Equatable {
     }
   }
 
-  enum CodingKeys: CodingKey {
+  enum CodingKeys: CodingKey, Hashable {
     case portrait
     case landscape
   }
@@ -255,13 +274,35 @@ public struct KeyWidth: Codable, Equatable {
   }
 }
 
-public struct KeyLabel: Codable, Equatable {
+public struct KeyLabel: Codable, Equatable, Hashable {
   public static let empty: KeyLabel = .init(loadingText: "", text: "")
 
   /// 键盘加载时显示文本
   public var loadingText: String
   /// 加载完毕后显示文本
   public var text: String
+
+  public init(loadingText: String = "", text: String = "") {
+    self.loadingText = loadingText
+    self.text = text
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.loadingText = try container.decode(String.self, forKey: .loadingText)
+    self.text = try container.decode(String.self, forKey: .text)
+  }
+
+  enum CodingKeys: CodingKey, Hashable {
+    case loadingText
+    case text
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.loadingText, forKey: .loadingText)
+    try container.encode(self.text, forKey: .text)
+  }
 }
 
 public extension String {
@@ -331,6 +372,8 @@ public extension String {
       return .primary(.return)
     case "shift":
       return .shift(currentCasing: .lowercased)
+    case "tab":
+      return .tab
     case "space":
       return .space
     case "character":

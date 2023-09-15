@@ -43,7 +43,7 @@ public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
    */
   public var insets: UIEdgeInsets
 
-  /// 该 item 的滑动配置
+  /// 该 item 的划动配置
   public var swipes: [KeySwipe]
 
   /**

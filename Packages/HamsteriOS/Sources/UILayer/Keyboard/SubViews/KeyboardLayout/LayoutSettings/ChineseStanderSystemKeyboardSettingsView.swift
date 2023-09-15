@@ -15,7 +15,7 @@ class ChineseStanderSystemKeyboardSettingsView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
 
   lazy var segmentedControl: UISegmentedControl = {
-    let tags = ["设置", "滑动设置"]
+    let tags = ["设置", "划动设置"]
     let segmentedControl = UISegmentedControl(items: tags)
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     segmentedControl.selectedSegmentIndex = 0
@@ -48,8 +48,7 @@ class ChineseStanderSystemKeyboardSettingsView: NibLessView {
   }()
 
   lazy var swipeSettingView: UIView = {
-    let view = UIView(frame: .zero)
-    view.backgroundColor = .yellow
+    let view = ChineseStanderSystemKeyboardSwipeSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -68,8 +67,8 @@ class ChineseStanderSystemKeyboardSettingsView: NibLessView {
     addSubview(contentContainerView)
     NSLayoutConstraint.activate([
       segmentedControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-      segmentedControl.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
-      trailingAnchor.constraint(equalToSystemSpacingAfter: segmentedControl.trailingAnchor, multiplier: 1.0),
+      segmentedControl.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 2.0),
+      trailingAnchor.constraint(equalToSystemSpacingAfter: segmentedControl.trailingAnchor, multiplier: 2.0),
 
       contentContainerView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
       contentContainerView.bottomAnchor.constraint(equalTo: keyboardLayoutGuide.topAnchor),

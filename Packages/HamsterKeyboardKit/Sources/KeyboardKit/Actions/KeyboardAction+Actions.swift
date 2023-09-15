@@ -107,6 +107,7 @@ public extension KeyboardAction {
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
+    case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
     case .chineseNineGrid(let symbol): return { $0?.insertText(String(symbol.char.first!)) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return { $0?.insertText(emoji.char) }
@@ -145,9 +146,9 @@ public extension KeyboardAction {
     }
   }
   
-  /// 默认情况下，上滑触发的操作
+  /// 默认情况下，上划触发的操作
   var standerSwipeUpAction: GestureAction? {
-    // TODO: 补充滑动触发的逻辑
+    // TODO: 补充划动触发的逻辑
     switch self {
     case .backspace: return { $0?.resetInputEngine() }
     case .space: return { $0?.selectSecondaryCandidate() }
@@ -156,15 +157,15 @@ public extension KeyboardAction {
     }
   }
   
-  /// 默认情况下，下滑触发的操作
+  /// 默认情况下，下划触发的操作
   var standerSwipeDownAction: GestureAction? {
-    // TODO: 补充滑动触发的逻辑
+    // TODO: 补充划动触发的逻辑
     return nil
   }
   
-  /// 默认情况下，左滑触发的操作
+  /// 默认情况下，左划触发的操作
   var standerSwipeLeftAction: GestureAction? {
-    // TODO: 补充滑动触发的逻辑
+    // TODO: 补充划动触发的逻辑
     switch self {
     case .backspace: return { $0?.resetInputEngine() }
     default:
@@ -172,9 +173,9 @@ public extension KeyboardAction {
     }
   }
   
-  /// 默认情况下，右滑触发的操作
+  /// 默认情况下，右划触发的操作
   var standerSwipeRightAction: GestureAction? {
-    // TODO: 补充滑动触发的逻辑
+    // TODO: 补充划动触发的逻辑
     return nil
   }
 }

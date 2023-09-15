@@ -88,7 +88,9 @@ open class HamsterAppDependencyContainer {
 
 extension HamsterAppDependencyContainer {
   func makeZipDocumentPickerViewController() -> UIDocumentPickerViewController {
-    UIDocumentPickerViewController(forOpeningContentTypes: [.zip])
+    let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.zip])
+    vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    return vc
   }
 }
 

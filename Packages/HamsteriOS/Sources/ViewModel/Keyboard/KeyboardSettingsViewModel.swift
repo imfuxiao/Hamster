@@ -231,28 +231,34 @@ public class KeyboardSettingsViewModel: ObservableObject {
     resetSignSubject.eraseToAnyPublisher()
   }
 
-  // navigation 转 subview
+  /// navigation 转 subview
   private let subViewSubject = PassthroughSubject<KeyboardSettingsSubView, Never>()
   public var subViewPublished: AnyPublisher<KeyboardSettingsSubView, Never> {
     subViewSubject.eraseToAnyPublisher()
   }
 
-  // 数字九宫格页面切换
+  /// 数字九宫格页面切换
   private let numberNineGridSubviewSwitchSubject = CurrentValueSubject<NumberNineGridTabView, Never>(.settings)
   public var numberNineGridSubviewSwitchPublished: AnyPublisher<NumberNineGridTabView, Never> {
     numberNineGridSubviewSwitchSubject.eraseToAnyPublisher()
   }
 
-  // 符号设置页面切换
+  /// 符号设置页面切换
   private let symbolSettingsSubviewSwitchSubject = CurrentValueSubject<Int, Never>(0)
   public var symbolSettingsSubviewPublished: AnyPublisher<Int, Never> {
     symbolSettingsSubviewSwitchSubject.eraseToAnyPublisher()
   }
 
-  // 键盘布局 segment 切换
+  /// 键盘布局 segment 切换
   private var segmentActionSubject = PassthroughSubject<KeyboardLayoutSegmentAction, Never>()
   public var segmentActionPublished: AnyPublisher<KeyboardLayoutSegmentAction, Never> {
     segmentActionSubject.eraseToAnyPublisher()
+  }
+
+  /// 按键划动设置页面
+  public var keySwipeSettingsActionSubject = PassthroughSubject<Key?, Never>()
+  public var keySwipeSettingsActionPublished: AnyPublisher<Key?, Never> {
+    keySwipeSettingsActionSubject.eraseToAnyPublisher()
   }
 
   // MARK: - init data
@@ -591,7 +597,20 @@ public class KeyboardSettingsViewModel: ObservableObject {
     .custom(named: "")
   ]
 
-  // MARK: methods
+  /// 中文标准键盘默认划动选项
+  public var chineseStanderSystemKeyboardSwipeList: [Key] = [
+    Key(action: .character("a"), swipe: [
+      KeySwipe(direction: .up, action: .character("1"), label: KeyLabel(text: "1"))
+    ]),
+    Key(action: .keyboardType(.numericNineGrid), swipe: [
+      KeySwipe(direction: .up, action: .custom(named: "#"), label: KeyLabel(text: "1"))
+    ]),
+    Key(action: .character("b"), swipe: [
+      KeySwipe(direction: .up, action: .character("2"), label: KeyLabel(text: "2"))
+    ])
+  ]
+
+  // MARK: - Initialization
 
   public init(configuration: HamsterConfiguration) {
     self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
@@ -658,10 +677,10 @@ extension KeyboardSettingsViewModel {
   }
 }
 
-// MARK: - KeyboardLayout
+// MARK: - KeyboardLayout 键盘布局相关
 
 extension KeyboardSettingsViewModel {
-  /// 键盘布局总列表
+  /// 键盘布局总列表 DataSource
   func initKeyboardLayoutDataSource() -> NSDiffableDataSourceSnapshot<Int, KeyboardType> {
     var snapshot = NSDiffableDataSourceSnapshot<Int, KeyboardType>()
     snapshot.appendSections([0])
@@ -669,7 +688,7 @@ extension KeyboardSettingsViewModel {
     return snapshot
   }
 
-  /// 中文键盘布局 DataSource
+  /// 中文26键盘布局 DataSource
   func initChineseStanderSystemKeyboardDataSource() -> NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel> {
     var snapshot = NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel>()
     snapshot.appendSections(chineseStanderSystemKeyboardSettingsItems)
@@ -678,11 +697,15 @@ extension KeyboardSettingsViewModel {
     }
     return snapshot
   }
+
+  /// 中文26键盘划动 DataSource
+  func initChineseStanderSystemKeyboardSwipeDataSource() -> NSDiffableDataSourceSnapshot<Int, Key> {
+    var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(chineseStanderSystemKeyboardSwipeList, toSection: 0)
+    return snapshot
+  }
 }
-
-// MARK: - KeyboardSwipe
-
-extension KeyboardSettingsViewModel {}
 
 // MARK: - Constants
 
@@ -697,6 +720,7 @@ extension KeyboardType {
     case .chinese: return "中文26键"
     case .chineseNineGrid: return "中文9键"
     case .custom: return "自定义键盘"
+    case .numericNineGrid: return "数字九宫格"
     default: return ""
     }
   }

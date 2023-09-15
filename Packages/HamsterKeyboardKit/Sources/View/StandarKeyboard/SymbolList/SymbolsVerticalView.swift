@@ -7,7 +7,7 @@
 
 import UIKit
 
-/// 垂直滑动符号列表
+/// 垂直划动符号列表
 class SymbolsVerticalView: UICollectionView {
   typealias initDataBuilder = (UICollectionViewDiffableDataSource<Int, String>) -> Void
 

@@ -26,7 +26,7 @@ import Foundation
  由于 "frequent(常用)" 类别应列出最常用的表情符号，因此您现在可以注册一个 static 的 "recentEmojiProvider"。
  默认情况下，将使用`MostRecentEmojiProvider`。
  */
-public enum EmojiCategory: String, CaseIterable, Codable, EmojiProvider, Identifiable, Equatable {
+public enum EmojiCategory: String, CaseIterable, Codable, EmojiProvider, Identifiable, Hashable {
   case
     frequent,
     smileys,

@@ -15,7 +15,7 @@ import UIKit
 
  该 struct 只是对单个字符的封装。它可以用来获得一点类型安全，并使表情符号的工作更有条理。
  */
-public struct Emoji: Equatable, Codable, Identifiable {
+public struct Emoji: Hashable, Codable, Identifiable {
   /**
    Create an emoji instance, using a certain emoji `char`.
 

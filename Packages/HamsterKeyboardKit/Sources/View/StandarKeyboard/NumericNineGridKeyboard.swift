@@ -122,7 +122,7 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
   }
 
   open func constructViewHierarchy() {
-    // 添加右侧符号滑动列表
+    // 添加右侧符号划动列表
     addSubview(symbolsListContainerView)
 
     // 添加按键
@@ -191,7 +191,7 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
           // 首行添加按键相对视图的 top 约束
           staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
         } else {
-          // 最后一行的第一列添加相对滑动符号列的 top 约束
+          // 最后一行的第一列添加相对划动符号列的 top 约束
           if button.column == 0, button.row + 1 == keyboardRows.endIndex {
             staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
             staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
@@ -206,7 +206,7 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
           }
         }
 
-        // 首列按键添加相对滑动符号视图的 leading 约束
+        // 首列按键添加相对划动符号视图的 leading 约束
         if button.column == 0, button.row + 1 == keyboardRows.endIndex {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else if button.column == 0 {

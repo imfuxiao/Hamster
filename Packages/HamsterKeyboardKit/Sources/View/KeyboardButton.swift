@@ -96,7 +96,7 @@ public class KeyboardButton: UIControl {
   
   /// 在按钮 bounds 外，仍然可以触发 .release 操作的区域大小的百分比
   /// 默认为 `0.75`，即把按钮 bounds 的 size 在扩大这个值
-  /// 注意：这个值需要与滑动的阈值相配合
+  /// 注意：这个值需要与划动的阈值相配合
   private let releaseOutsideTolerance: Double = 0.75
   
   private let repeatTimer: RepeatGestureTimer = .shared
@@ -354,7 +354,7 @@ extension KeyboardButton {
 // MARK: - Event Handled
 
 public extension KeyboardButton {
-  // TODO: 如果开启滑动输入则统一在 TouchView 处理手势
+  // TODO: 如果开启划动输入则统一在 TouchView 处理手势
   // 注意： inputMargin 不可见的按钮也需要触发，所以必须重载 hitTest 方法
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     guard bounds.contains(point) else { return nil }
@@ -462,10 +462,11 @@ public extension KeyboardButton {
     let currentPoint = touch.location(in: self)
     lastDragLocation = currentPoint
     
+    // TODO: 划动改写
     // 识别 swipe
     if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
       let tanThreshold = 0.58 // tan(30º)) = 0.58
-      let distanceThreshold: CGFloat = 20 // TODO: 滑动距离的阈值
+      let distanceThreshold: CGFloat = 20 // TODO: 划动距离的阈值
 
       let distanceY = currentPoint.y - startLocation.y
       let distanceX = currentPoint.x - startLocation.x
@@ -491,31 +492,32 @@ public extension KeyboardButton {
       // distanceX < 0 && distanceY < 0 表示 左上角
       // distanceX > 0 && distanceY > 0 表示 左下角
       var direction: SwipeDirection?
-      if tanHorizontalCorner <= tanThreshold, tanVerticalCorner != 0 { // 水平夹角
-        // 右上角或右下角
-        if (distanceX > 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) {
-          direction = .right
-        } else if (distanceX < 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) { // 左上角或左下角
-          direction = .left
-        }
-      } else if tanVerticalCorner <= tanThreshold, tanHorizontalCorner != 0 { // 垂直夹角
-        // 右上角或左上角
-        if (distanceX > 0 && distanceY < 0) || (distanceX < 0 && distanceY < 0) {
-          direction = .up
-        } else if (distanceX > 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) { // 右下角或左下角
-          direction = .down
-        }
-      } else if tanHorizontalCorner == 0, tanVerticalCorner == 0 {
-        if distanceX == 0, distanceY > 0 {
-          direction = .down
-        } else if distanceX == 0, distanceY < 0 {
-          direction = .up
-        } else if distanceX > 0, distanceY == 0 {
-          direction = .right
-        } else if distanceX < 0, distanceY == 0 {
-          direction = .left
-        }
-      }
+      // TODO: 暂不支持左右划动
+//      if tanHorizontalCorner <= tanThreshold, tanVerticalCorner != 0 { // 水平夹角
+//        // 右上角或右下角
+//        if (distanceX > 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) {
+//          direction = .right
+//        } else if (distanceX < 0 && distanceY < 0) || (distanceX > 0 && distanceY > 0) { // 左上角或左下角
+//          direction = .left
+//        }
+//      } else if tanVerticalCorner <= tanThreshold, tanHorizontalCorner != 0 { // 垂直夹角
+//        // 右上角或左上角
+//        if (distanceX > 0 && distanceY < 0) || (distanceX < 0 && distanceY < 0) {
+//          direction = .up
+//        } else if (distanceX > 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) { // 右下角或左下角
+//          direction = .down
+//        }
+//      } else if tanHorizontalCorner == 0, tanVerticalCorner == 0 {
+//        if distanceX == 0, distanceY > 0 {
+//          direction = .down
+//        } else if distanceX == 0, distanceY < 0 {
+//          direction = .up
+//        } else if distanceX > 0, distanceY == 0 {
+//          direction = .right
+//        } else if distanceX < 0, distanceY == 0 {
+//          direction = .left
+//        }
+//      }
       
       if let direction = direction {
         swipeGestureHandle = { [unowned self] in
@@ -610,22 +612,23 @@ public extension KeyboardButton {
       if let swipe = item.swipes.first(where: { $0.direction == .down }) {
         actionHandler.handle(.swipeDown, on: swipe.action)
       }
-    case .left:
-      if let swipe = item.swipes.first(where: { $0.direction == .left }) {
-        actionHandler.handle(.swipeLeft, on: swipe.action)
-      }
-    case .right:
-      if let swipe = item.swipes.first(where: { $0.direction == .right }) {
-        actionHandler.handle(.swipeRight, on: swipe.action)
-      }
+//    case .left:
+//      if let swipe = item.swipes.first(where: { $0.direction == .left }) {
+//        actionHandler.handle(.swipeLeft, on: swipe.action)
+//      }
+//    case .right:
+//      if let swipe = item.swipes.first(where: { $0.direction == .right }) {
+//        actionHandler.handle(.swipeRight, on: swipe.action)
+//      }
     }
   }
   
   enum SwipeDirection: CustomDebugStringConvertible {
     case up
     case down
-    case left
-    case right
+    // TODO: 暂不支持左右划动
+//    case left
+//    case right
     
     public var debugDescription: String {
       switch self {
@@ -633,10 +636,10 @@ public extension KeyboardButton {
         return "up"
       case .down:
         return "down"
-      case .left:
-        return "left"
-      case .right:
-        return "right"
+//      case .left:
+//        return "left"
+//      case .right:
+//        return "right"
       }
     }
   }

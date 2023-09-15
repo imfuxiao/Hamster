@@ -13,7 +13,7 @@ import Foundation
  
  该 enum 列出了键盘可使用的各种 shift 状态。
  */
-public enum KeyboardCase: String, Codable, Identifiable {
+public enum KeyboardCase: String, Codable, Identifiable, Hashable {
   /**
    `.auto` is a transient state, that should automatically
    be replaced by another more apropriate case when typing.

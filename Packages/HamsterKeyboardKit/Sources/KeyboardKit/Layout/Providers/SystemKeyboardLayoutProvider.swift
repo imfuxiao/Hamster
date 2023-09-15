@@ -178,7 +178,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   }
   
   /**
-   根据提供的布局参数获取布局 item 的滑动配置。
+   根据提供的布局参数获取布局 item 的划动配置。
    */
   open func itemSwipes(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> [KeySwipe] {
     // TODO:

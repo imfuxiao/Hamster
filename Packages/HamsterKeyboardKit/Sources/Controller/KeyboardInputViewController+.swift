@@ -13,10 +13,7 @@ import OSLog
 
 public extension KeyboardInputViewController {
   /// 尝试处理键入的快捷指令
-  func tryHandleShortCommand(_ inputText: String) -> Bool {
-    guard inputText.hasPrefix("#") else { return false }
-    guard let command = ShortcutCommand(rawValue: inputText) else { return false }
-
+  func tryHandleShortcutCommand(_ command: ShortcutCommand) {
     switch command {
     case .simplifiedTraditionalSwitch:
       self.switchTraditionalSimplifiedChinese()
@@ -61,10 +58,8 @@ public extension KeyboardInputViewController {
       // TODO: 切换数字键盘
       break
     default:
-      return false
+      break
     }
-
-    return true
   }
 
   func switchTraditionalSimplifiedChinese() {

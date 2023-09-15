@@ -90,7 +90,7 @@ public class RimeViewModel {
   }
 }
 
-extension RimeViewModel {
+public extension RimeViewModel {
   /// RIME 部署
   func rimeDeploy() async throws {
     await ProgressHUD.show("RIME部署中, 请稍候……", interaction: false)

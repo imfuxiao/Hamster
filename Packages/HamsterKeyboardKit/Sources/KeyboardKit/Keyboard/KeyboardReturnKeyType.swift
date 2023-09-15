@@ -26,7 +26,7 @@ import UIKit
 
  这是 `UIReturnKeyType` 的多平台版本，其中有用于映射的 `keyboardReturnKeyType` 的 extension。
  */
-public enum KeyboardReturnKeyType: CaseIterable, Codable, Equatable, Identifiable {
+public enum KeyboardReturnKeyType: CaseIterable, Codable, Hashable, Identifiable {
   /// A return key that uses a return text and not an ⏎ icon.
   ///
   /// "换行"键, 表示文本换行

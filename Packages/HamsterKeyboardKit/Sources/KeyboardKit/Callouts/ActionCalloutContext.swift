@@ -103,7 +103,7 @@ open class ActionCalloutContext: ObservableObject {
    The currently selected callout action, which updates as
    the user swipes left and right.
    
-   获取用户当前选择的呼出操作，此操作在用户左右滑动时会更新。
+   获取用户当前选择的呼出操作，此操作在用户左右划动时会更新。
    */
   public var selectedAction: KeyboardAction? {
     isIndexValid(selectedIndex) ? actions[selectedIndex] : nil
