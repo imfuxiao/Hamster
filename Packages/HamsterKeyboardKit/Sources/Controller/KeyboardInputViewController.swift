@@ -8,7 +8,6 @@
 
 import Combine
 import HamsterKit
-import HamsterModel
 import OSLog
 import UIKit
 

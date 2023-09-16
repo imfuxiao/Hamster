@@ -130,11 +130,17 @@ public struct Key: Codable, Equatable, Hashable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encode(self.action.string, forKey: .action)
+    try container.encode(self.action.yamlString, forKey: .action)
     try container.encode(self.width, forKey: .width)
     try container.encode(self.label, forKey: .label)
     try container.encode(self.processByRIME, forKey: .processByRIME)
     try container.encode(self.swipe, forKey: .swipe)
+  }
+
+  /// Key 显示的文本
+  public var labelText: String {
+    if !label.text.isEmpty { return label.text }
+    return action.labelText
   }
 }
 
@@ -147,6 +153,14 @@ public struct KeySwipe: Codable, Hashable {
     // TODO: 暂不开启左右划动
 //    case left
 //    case right
+
+    /// 用于显示的值
+//    var display: String {
+//      switch self {
+//      case .up: "上划"
+//      case .down: "下划"
+//      }
+//    }
   }
 
   /// 划动方向, up / down 两个方向
@@ -201,7 +215,7 @@ public struct KeySwipe: Codable, Hashable {
     if let display = try? container.decode(Bool.self, forKey: .display) {
       self.display = display
     } else {
-      self.display = false
+      self.display = true
     }
 
     if let label = try? container.decode(String.self, forKey: .label) {
@@ -224,10 +238,17 @@ public struct KeySwipe: Codable, Hashable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.direction, forKey: .direction)
-    try container.encode(self.action.string, forKey: .action)
+    try container.encode(self.action.yamlString, forKey: .action)
     try container.encode(self.processByRIME, forKey: .processByRIME)
     try container.encode(self.display, forKey: .display)
     try container.encode(self.label, forKey: .label)
+  }
+
+  /// UILabel 显示滑动的文本
+  public var labelText: String? {
+    guard display else { return nil }
+    if !label.text.isEmpty { return label.text }
+    return action.labelText
   }
 }
 
@@ -363,12 +384,15 @@ public extension String {
     }
   }
 
+  /// string 转 KeyboardAction
+  /// 注意：switch 中把 type 转小写了，是因为 yaml 中有用户可能全部使用小写，所以 case 中也需要将多个单词转小写
+  /// 与 KeyboardAction 的 yamlString 过程互逆
   var keyboardAction: KeyboardAction? {
     guard let (type, value) = self.attributeParse() else { return nil }
     switch type.lowercased() {
     case "backspace":
       return .backspace
-    case "return":
+    case "enter":
       return .primary(.return)
     case "shift":
       return .shift(currentCasing: .lowercased)
@@ -398,6 +422,24 @@ public extension String {
         return nil
       }
       return .keyboardType(keyboardType)
+    case "symbol":
+      guard !value.isEmpty else {
+        Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
+        return nil
+      }
+      return .symbol(Symbol(char: value))
+    case "shortCommand".lowercased():
+      guard !value.isEmpty, let command = ShortcutCommand(rawValue: value) else {
+        Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
+        return nil
+      }
+      return .shortCommand(command)
+    case "chineseNineGrid".lowercased():
+      guard !value.isEmpty else {
+        Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
+        return nil
+      }
+      return .symbol(Symbol(char: value))
     default:
       return nil
     }
@@ -432,10 +474,10 @@ public extension String {
 }
 
 public extension KeyboardType {
-  var string: String {
+  var yamlString: String {
     switch self {
-    case .alphabetic(let keyboardCase):
-      return "alphabetic(\(keyboardCase))"
+    case .alphabetic:
+      return "alphabetic"
     case .numeric:
       return "numeric"
     case .symbolic:
@@ -459,14 +501,37 @@ public extension KeyboardType {
 }
 
 public extension KeyboardAction {
-  var string: String {
+  var labelText: String {
+    switch self {
+    case .character(let char): return char.uppercased()
+    case .symbol(let symbol): return symbol.char
+    case .emoji(let emoji): return emoji.char
+    case .emojiCategory(let cat): return cat.fallbackDisplayEmoji.char
+    case .keyboardType(let type): return type.yamlString
+    case .primary: return "回车"
+    case .space: return "空格"
+    case .returnLastKeyboard: return "返回"
+    case .chineseNineGrid(let symbol): return symbol.char
+    case .cleanSpellingArea: return "重输"
+    case .delimiter: return "分词"
+    case .shortCommand(let command): return command.text
+    default: return ""
+    }
+  }
+
+  /// KeyboardAction 转 yaml 中对应配置
+  /// 与 var keyboardAction: KeyboardAction? 的过程互逆
+  /// 注意新增类型在这两处都要做改造
+  var yamlString: String {
     switch self {
     case .backspace:
       return "backspace"
     case .primary:
-      return "return"
+      return "enter"
     case .shift:
       return "shift"
+    case .tab:
+      return "tab"
     case .space:
       return "space"
     case .character(let char):
@@ -474,7 +539,13 @@ public extension KeyboardAction {
     case .characterMargin(let char):
       return "characterMargin(\(char))"
     case .keyboardType(let type):
-      return "keyboardType(\(type.string))"
+      return "keyboardType(\(type.yamlString))"
+    case .symbol(let symbol):
+      return "symbol(\(symbol.char))"
+    case .shortCommand(let command):
+      return "shortCommand(\(command.rawValue))"
+    case .chineseNineGrid(let symbol):
+      return "chineseNineGrid(\(symbol.char))"
     default:
       return ""
     }

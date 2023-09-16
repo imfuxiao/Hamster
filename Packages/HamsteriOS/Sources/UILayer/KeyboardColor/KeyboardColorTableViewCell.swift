@@ -5,21 +5,21 @@
 //  Created by morse on 2023/6/19.
 //
 
-import HamsterModel
+import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
 class KeyboardColorTableViewCell: NibLessTableViewCell {
   static let identifier = "KeyboardColorTableViewCell"
   
-  public var keyboardColor: KeyboardColor
+  public var keyboardColor: HamsterKeyboardColor? = nil
 
-  private let keyboardColorView: KeyboardColorView
+  private let keyboardColorView: KeyboardColorView = {
+    let view = KeyboardColorView(frame: .zero)
+    return view
+  }()
   
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.keyboardColor = .init(name: "", colorSchema: .init(name: ""))
-    self.keyboardColorView = .init()
-
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     tintColor = UIColor.systemGreen
@@ -32,8 +32,9 @@ class KeyboardColorTableViewCell: NibLessTableViewCell {
     keyboardColorView.fillSuperview()
   }
   
-  func updatePreviewColor() {
-    keyboardColorView.keyboardColor = keyboardColor
+  func updatePreviewColor(_ color: HamsterKeyboardColor) {
+    self.keyboardColor = color
+    keyboardColorView.keyboardColor = color
     keyboardColorView.updatePreviewColor()
   }
   

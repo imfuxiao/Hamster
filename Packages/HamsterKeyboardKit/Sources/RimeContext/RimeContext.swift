@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HamsterModel
+import HamsterKit
 import os
 import RimeKit
 

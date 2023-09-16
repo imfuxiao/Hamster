@@ -7,8 +7,8 @@
 
 import Combine
 import HamsterKit
-import HamsterModel
 import OSLog
+import RimeKit
 import UIKit
 
 /**
@@ -105,7 +105,7 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   /// 构建数据源
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, CandidateSuggestion> {
-    let keyboardColor: HamsterModel.KeyboardColor? = keyboardContext.keyboardColor
+    let keyboardColor: HamsterKeyboardColor? = keyboardContext.keyboardColor
     let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
     let showComment = toolbarConfig?.displayCommentOfCandidateWord

@@ -6,7 +6,6 @@
 //
 
 import HamsterKit
-import HamsterModel
 import OSLog
 
 // MARK: - 快捷指令处理

@@ -44,7 +44,7 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
         imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(textFieldFocus)))
         textField.leftView = imageView
       }
-
+      leftTextLabel.text = settingItem.text
       textField.text = settingItem.textValue
       textField.placeholder = settingItem.placeholder
     }
@@ -56,6 +56,13 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     textField.rightViewMode = .always
     textField.clearButtonMode = .whileEditing
     return textField
+  }()
+
+  private lazy var leftTextLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    return label
   }()
 
   // MARK: methods
@@ -77,13 +84,20 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   }
 
   func setupTextFieldView() {
+    contentView.addSubview(leftTextLabel)
     contentView.addSubview(textField)
     textField.delegate = self
     textField.translatesAutoresizingMaskIntoConstraints = false
+
     NSLayoutConstraint.activate([
+      leftTextLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
+      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: leftTextLabel.bottomAnchor, multiplier: 1),
+
+      leftTextLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
+
       textField.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
       contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: textField.bottomAnchor, multiplier: 1),
-      textField.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
+      textField.leadingAnchor.constraint(equalToSystemSpacingAfter: leftTextLabel.trailingAnchor, multiplier: 2),
       contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 1),
     ])
   }
@@ -93,6 +107,10 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   }
 
   // MARK: implementation UITextFieldDelegate
+
+  func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    settingItem.textFieldShouldBeginEditing
+  }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
     settingItem.textHandled?(textField.text ?? "")

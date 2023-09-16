@@ -54,10 +54,10 @@ public extension KeyboardAction {
     case .press: return standardPressAction
     case .release: return standardReleaseAction
     case .repeatPress: return standardRepeatAction
-    case .swipeUp: return standerSwipeUpAction
-    case .swipeDown: return standerSwipeUpAction
-    case .swipeLeft: return standerSwipeUpAction
-    case .swipeRight: return standerSwipeUpAction
+    case .swipeUp: return standardReleaseAction
+    case .swipeDown: return standardReleaseAction
+    case .swipeLeft: return standardReleaseAction
+    case .swipeRight: return standardReleaseAction
     }
   }
     

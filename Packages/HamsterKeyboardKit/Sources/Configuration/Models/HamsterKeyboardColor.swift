@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-public struct KeyboardColor: Equatable {
+public struct HamsterKeyboardColor: Equatable {
   // 配置使用的名称
   public var schemaName: String
 
@@ -35,9 +35,9 @@ public struct KeyboardColor: Equatable {
   public var commentTextColor: UIColor // 次选提示色: comment_text_color
   // label_color 次选序号颜色
 
-  public init(name: String, colorSchema schema: KeyboardColorSchema) {
-    self.schemaName = name
-    self.name = schema.name
+  public init(colorSchema schema: KeyboardColorSchema = KeyboardColorSchema()) {
+    self.schemaName = schema.schemaName ?? ""
+    self.name = schema.name ?? ""
     self.author = schema.author ?? ""
     self.backColor = schema.backColor?.bgrColor ?? .clear
     self.borderColor = schema.borderColor?.bgrColor ?? .clear

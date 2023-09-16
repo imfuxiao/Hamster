@@ -186,7 +186,7 @@ public class KeyboardButton: UIControl {
     super.init(frame: .zero)
     
     self.buttonContentView = KeyboardButtonContentView(
-      action: action,
+      item: item,
       style: buttonStyle,
       appearance: appearance,
       keyboardContext: keyboardContext,
@@ -465,7 +465,7 @@ public extension KeyboardButton {
     // TODO: 划动改写
     // 识别 swipe
     if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
-      let tanThreshold = 0.58 // tan(30º)) = 0.58
+      let tanThreshold: CGFloat = 1 // tan(30º)) = 0.58, tan(45º) = 1
       let distanceThreshold: CGFloat = 20 // TODO: 划动距离的阈值
 
       let distanceY = currentPoint.y - startLocation.y
@@ -492,6 +492,17 @@ public extension KeyboardButton {
       // distanceX < 0 && distanceY < 0 表示 左上角
       // distanceX > 0 && distanceY > 0 表示 左下角
       var direction: SwipeDirection?
+      
+      // 垂直方向夹角
+      if tanVerticalCorner <= tanThreshold {
+        // 右上角或左上角或垂直向上
+        if (distanceX > 0 && distanceY < 0) || (distanceX < 0 && distanceY < 0) || (distanceX == 0 && distanceY < 0) {
+          direction = .up
+        } else if (distanceX > 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) || distanceX == 0 && distanceY > 0 { // 右下角或左下角
+          direction = .down
+        }
+      }
+      
       // TODO: 暂不支持左右划动
 //      if tanHorizontalCorner <= tanThreshold, tanVerticalCorner != 0 { // 水平夹角
 //        // 右上角或右下角

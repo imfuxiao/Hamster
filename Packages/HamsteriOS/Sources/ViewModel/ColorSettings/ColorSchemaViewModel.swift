@@ -5,7 +5,7 @@
 //  Created by morse on 14/7/2023.
 //
 
-import HamsterModel
+import HamsterKeyboardKit
 import UIKit
 
 class KeyboardColorViewModel {
@@ -19,7 +19,7 @@ class KeyboardColorViewModel {
     }
   }
   
-  public var keyboardColorList: [KeyboardColor]
+  public var keyboardColorList: [HamsterKeyboardColor]
   
   init(settingsViewModel: SettingsViewModel, configuration: HamsterConfiguration) {
     self.settingsViewModel = settingsViewModel
@@ -27,11 +27,9 @@ class KeyboardColorViewModel {
     
     if let colorSchemas = configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
       self.keyboardColorList = colorSchemas
-        .keys
         .sorted()
         .compactMap {
-          guard let colorSchema = colorSchemas[$0] else { return nil }
-          return KeyboardColor(name: $0, colorSchema: colorSchema)
+          HamsterKeyboardColor(colorSchema: $0)
         }
     } else {
       self.keyboardColorList = []

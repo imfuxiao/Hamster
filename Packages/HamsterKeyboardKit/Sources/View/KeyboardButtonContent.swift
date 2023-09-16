@@ -11,6 +11,7 @@ import UIKit
 /// 标准按键内容视图
 /// 可以继承此类实现不同的按键样式
 public class KeyboardButtonContentView: UIView {
+  private let item: KeyboardLayoutItem
   private let action: KeyboardAction
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
@@ -27,8 +28,9 @@ public class KeyboardButtonContentView: UIView {
     appearance.buttonText(for: action) ?? " "
   }
 
-  init(action: KeyboardAction, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
-    self.action = action
+  init(item: KeyboardLayoutItem, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+    self.item = item
+    self.action = item.action
     self.style = style
     self.appearance = appearance
     self.keyboardContext = keyboardContext
@@ -38,11 +40,11 @@ public class KeyboardButtonContentView: UIView {
 
     if action == .space {
       // TODO: 补充空格自定义加载文本
-      contentView = SpaceContentView(style: style, loadingText: .space, spaceText: buttonText)
+      contentView = SpaceContentView(keyboardContext: keyboardContext, item: item, style: style, loadingText: .space, spaceText: buttonText)
     } else if let image = appearance.buttonImage(for: action) {
       contentView = ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
     } else {
-      contentView = TextContentView(style: style, text: buttonText, isInputAction: action.isInputAction)
+      contentView = TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
     }
 
     setupContentView()

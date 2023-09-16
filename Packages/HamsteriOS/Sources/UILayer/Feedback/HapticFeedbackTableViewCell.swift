@@ -6,7 +6,7 @@
 //
 
 import Combine
-import HamsterModel
+import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 

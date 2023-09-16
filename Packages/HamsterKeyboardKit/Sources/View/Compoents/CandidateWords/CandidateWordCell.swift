@@ -5,7 +5,7 @@
 //  Created by morse on 2023/8/19.
 //
 
-import HamsterModel
+import RimeKit
 import UIKit
 
 /**
@@ -67,7 +67,7 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   private var candidateSuggestion: CandidateSuggestion? = nil
-  private var keyboardColor: HamsterModel.KeyboardColor? = nil
+  private var keyboardColor: HamsterKeyboardColor? = nil
   private var showIndex: Bool = false
   private var showComment: Bool = false
   private var titleFont: UIFont = KeyboardFont.title3.font
@@ -76,7 +76,7 @@ class CandidateWordCell: UICollectionViewCell {
   /// 当每次 CandidateSuggestion 发生变化时调用此方法，来更新 UI
   func updateWithCandidateSuggestion(
     _ suggestion: CandidateSuggestion,
-    color: HamsterModel.KeyboardColor? = nil,
+    color: HamsterKeyboardColor? = nil,
     showIndex: Bool? = nil,
     showComment: Bool? = nil,
     titleFont: UIFont? = nil,

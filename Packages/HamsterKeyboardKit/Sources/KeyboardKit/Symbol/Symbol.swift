@@ -7,13 +7,14 @@
 
 import Foundation
 
-public struct Symbol: Equatable, Codable, Identifiable, Hashable {
-  public init(char: String) {
+public struct Symbol: Codable, Identifiable, Hashable {
+  public var id: UUID
+  public var char: String
+
+  public init(id: UUID = UUID(), char: String) {
+    self.id = id
     self.char = char
   }
-
-  public var id = UUID()
-  public var char: String
 }
 
 extension Symbol {

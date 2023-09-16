@@ -9,7 +9,7 @@ import Foundation
 
 /// Hamster 配置补丁
 /// Hamster.custom.yaml
-public struct HamsterPatchConfiguration: Codable, Equatable, CustomStringConvertible {
+public struct HamsterPatchConfiguration: Codable, Hashable, CustomStringConvertible {
   public var patch: HamsterConfiguration?
 }
 

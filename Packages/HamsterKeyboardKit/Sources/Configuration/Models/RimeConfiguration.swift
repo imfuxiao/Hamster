@@ -8,7 +8,7 @@
 import Foundation
 
 /// RIME 偏好设置
-public struct RimeConfiguration: Codable, Equatable, Hashable {
+public struct RimeConfiguration: Codable, Hashable {
   /// 最大候选字数量
   public var maximumNumberOfCandidateWords: Int?
 

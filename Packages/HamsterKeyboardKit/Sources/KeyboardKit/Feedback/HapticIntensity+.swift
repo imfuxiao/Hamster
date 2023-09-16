@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import HamsterModel
 
 public extension HapticIntensity {
   func hapticFeedback() -> HapticFeedback {

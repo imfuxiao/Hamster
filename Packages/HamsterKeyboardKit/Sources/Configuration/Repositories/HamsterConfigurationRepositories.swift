@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import HamsterModel
 import os
 import Yams
 
@@ -77,6 +76,12 @@ public class HamsterConfigurationRepositories {
   /// 从 UserDefaults 中删除应用配置
   public func removeFromUserDefaults() {
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
+  }
+
+  /// 清空应用配置
+  public func resetConfiguration() {
+    UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
+    UserDefaults.hamster.removeObject(forKey: Self.defaultHamsterConfigurationKey)
   }
 }
 

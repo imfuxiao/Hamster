@@ -28,6 +28,7 @@ class KeySwipeSettingsViewController: NibLessViewController {
   public func updateWithKey(_ key: Key?) {
     if let key = key {
       title = key.action.labelText
+      rootView.updateWithKey(key)
     }
   }
 }

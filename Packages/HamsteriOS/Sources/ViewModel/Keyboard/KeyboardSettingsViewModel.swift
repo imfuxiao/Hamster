@@ -7,7 +7,6 @@
 
 import Combine
 import HamsterKeyboardKit
-import HamsterModel
 import ProgressHUD
 import UIKit
 
@@ -35,6 +34,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
   public var displayButtonBubbles: Bool {
     didSet {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles = displayButtonBubbles
+    }
+  }
+
+  public var upSwipeOnLeft: Bool {
+    didSet {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft = upSwipeOnLeft
     }
   }
 
@@ -288,6 +293,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
           toggleValue: lockShiftState,
           toggleHandled: { [unowned self] in
             lockShiftState = $0
+          })
+      ]),
+
+    .init(
+      footer: "关闭后，上下滑动全部显示时，右侧为显示上划，左侧显示下划。",
+      items: [
+        .init(
+          text: "左侧显示上划",
+          type: .toggle,
+          toggleValue: upSwipeOnLeft,
+          toggleHandled: { [unowned self] in
+            upSwipeOnLeft = $0
           })
       ]),
 
@@ -598,22 +615,25 @@ public class KeyboardSettingsViewModel: ObservableObject {
   ]
 
   /// 中文标准键盘默认划动选项
-  public var chineseStanderSystemKeyboardSwipeList: [Key] = [
-    Key(action: .character("a"), swipe: [
-      KeySwipe(direction: .up, action: .character("1"), label: KeyLabel(text: "1"))
-    ]),
-    Key(action: .keyboardType(.numericNineGrid), swipe: [
-      KeySwipe(direction: .up, action: .custom(named: "#"), label: KeyLabel(text: "1"))
-    ]),
-    Key(action: .character("b"), swipe: [
-      KeySwipe(direction: .up, action: .character("2"), label: KeyLabel(text: "2"))
-    ])
-  ]
+  public var chineseStanderSystemKeyboardSwipeList: [Key] = []
+//  public var chineseStanderSystemKeyboardSwipeList: [Key] = [
+//    Key(action: .character("a"), swipe: [
+//      KeySwipe(direction: .up, action: .character("1"), label: KeyLabel(text: "1")),
+//      KeySwipe(direction: .down, action: .character("x"), processByRIME: false, display: false, label: KeyLabel(text: "x"))
+//    ]),
+//    Key(action: .keyboardType(.numericNineGrid), swipe: [
+//      KeySwipe(direction: .up, action: .custom(named: "#"), label: KeyLabel(text: "1"))
+//    ]),
+//    Key(action: .character("b"), swipe: [
+//      KeySwipe(direction: .up, action: .character("2"), label: KeyLabel(text: "2"))
+//    ])
+//  ]
 
   // MARK: - Initialization
 
   public init(configuration: HamsterConfiguration) {
     self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
+    self.upSwipeOnLeft = configuration.Keyboard?.upSwipeOnLeft ?? true
     self.displayKeyboardDismissButton = configuration.toolbar?.displayKeyboardDismissButton ?? true
     self.lockShiftState = configuration.Keyboard?.lockShiftState ?? true
     self.displaySpaceLeftButton = configuration.Keyboard?.displaySpaceLeftButton ?? true
@@ -643,6 +663,12 @@ public class KeyboardSettingsViewModel: ObservableObject {
     self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
     self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
     self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
+
+    for keyboardSwipe in configuration.swipe?.keyboardSwipe ?? [] {
+      if keyboardSwipe.keyboardType?.isChinesePrimaryKeyboard ?? false {
+        self.chineseStanderSystemKeyboardSwipeList = keyboardSwipe.keys ?? []
+      }
+    }
   }
 }
 

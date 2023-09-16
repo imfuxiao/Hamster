@@ -8,9 +8,12 @@
 import Foundation
 
 /// 键盘配置
-public struct KeyboardConfiguration: Codable, Equatable, Hashable {
+public struct KeyboardConfiguration: Codable, Hashable {
   /// 使用键盘类型
   public var useKeyboardType: String?
+  
+  /// 上划显示在左侧
+  public var upSwipeOnLeft: Bool?
   
   /// 显示按键气泡
   /// true: 显示 false: 不显示
@@ -96,8 +99,6 @@ public struct KeyboardConfiguration: Codable, Equatable, Hashable {
   /// 使用中颜色方案
   public var useColorSchema: String?
   
-  /// 键盘颜色方案
-  /// key: 方案名称
-  /// value: 方案具体信息
-  public var colorSchemas: [String: KeyboardColorSchema]?
+  /// 键盘颜色方案列表
+  public var colorSchemas: [KeyboardColorSchema]?
 }

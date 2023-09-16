@@ -23,6 +23,7 @@ public struct SettingItemModel: Hashable, Identifiable {
   public var navigationAction: (() -> Void)?
   public var navigationLinkLabel: () -> String
   public var textValue: String?
+  public var textFieldShouldBeginEditing: Bool
   public var textHandled: ((String) -> Void)?
   public var shouldBeginEditing: ((UITextField) -> Bool)?
   public var buttonAction: (() throws -> Void)?
@@ -43,6 +44,7 @@ public struct SettingItemModel: Hashable, Identifiable {
     navigationLinkLabel: @escaping (() -> String) = { "" },
     navigationAction: (() -> Void)? = nil,
     textValue: String? = nil,
+    textFieldShouldBeginEditing: Bool = true,
     textHandled: ((String) -> Void)? = nil,
     shouldBeginEditing: ((UITextField) -> Bool)? = nil,
     buttonAction: (() throws -> Void)? = nil,
@@ -63,6 +65,7 @@ public struct SettingItemModel: Hashable, Identifiable {
     self.navigationLinkLabel = navigationLinkLabel
     self.navigationAction = navigationAction
     self.textValue = textValue
+    self.textFieldShouldBeginEditing = textFieldShouldBeginEditing
     self.textHandled = textHandled
     self.shouldBeginEditing = shouldBeginEditing
     self.buttonAction = buttonAction

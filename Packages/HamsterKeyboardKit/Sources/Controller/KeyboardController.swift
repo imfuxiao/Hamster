@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import HamsterModel
 
 /**
   This protocol is used to make using the keyboard input view

@@ -7,7 +7,6 @@
 
 import Combine
 import HamsterKit
-import HamsterModel
 import OSLog
 import ProgressHUD
 import UIKit

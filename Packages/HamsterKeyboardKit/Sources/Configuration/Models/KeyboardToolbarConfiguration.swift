@@ -9,7 +9,7 @@ import Foundation
 
 /// 键盘工具栏偏好
 /// 工具栏包含候选栏，如果关闭工具栏，则候选文字不会显示
-public struct KeyboardToolbarConfiguration: Codable, Equatable, Hashable {
+public struct KeyboardToolbarConfiguration: Codable, Hashable {
   /// 工具栏
   public var enableToolbar: Bool?
 

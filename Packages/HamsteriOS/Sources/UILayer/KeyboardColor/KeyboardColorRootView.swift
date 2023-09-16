@@ -143,8 +143,7 @@ extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
     let cell = tableView.dequeueReusableCell(withIdentifier: KeyboardColorTableViewCell.identifier, for: indexPath)
     let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
     if let cell = cell as? KeyboardColorTableViewCell {
-      cell.keyboardColor = keyboardColor
-      cell.updatePreviewColor()
+      cell.updatePreviewColor(keyboardColor)
     }
     return cell
   }

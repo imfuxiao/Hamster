@@ -8,7 +8,7 @@
 import Foundation
 
 /// 应用通用配置
-public struct GeneralConfiguration: Codable, Equatable, Hashable {
+public struct GeneralConfiguration: Codable, Hashable {
   /// 启用iCloud
   public var enableAppleCloud: Bool?
 

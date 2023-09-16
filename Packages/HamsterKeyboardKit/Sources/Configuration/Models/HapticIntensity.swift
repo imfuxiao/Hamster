@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// 震动反馈强度
-public enum HapticIntensity: Int, CaseIterable, Equatable, Identifiable {
+public enum HapticIntensity: Int, CaseIterable, Hashable, Identifiable {
   public var id: Int {
     return rawValue
   }

@@ -6,7 +6,6 @@
 //  Copyright © 2018-2023 Daniel Saidi. All rights reserved.
 //
 
-import HamsterModel
 import UIKit
 
 /**

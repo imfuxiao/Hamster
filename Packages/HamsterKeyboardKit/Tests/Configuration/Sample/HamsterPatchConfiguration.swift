@@ -6,9 +6,10 @@
 //
 
 import Foundation
-@testable import HamsterModel
 
-extension HamsterPatchConfiguration {
+@testable import HamsterKeyboardKit
+
+public extension HamsterPatchConfiguration {
   static let preview = HamsterPatchConfiguration(
     patch: HamsterConfiguration(
       general: GeneralConfiguration(

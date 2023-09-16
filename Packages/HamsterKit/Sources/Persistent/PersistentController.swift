@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import HamsterModel
 
 struct PersistentController {
   static let shared = PersistentController()

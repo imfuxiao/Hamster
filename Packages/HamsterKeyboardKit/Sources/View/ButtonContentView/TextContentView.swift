@@ -5,8 +5,8 @@
 //  Created by morse on 2023/8/10.
 //
 
-import UIKit
 import HamsterKit
+import UIKit
 
 /**
  该视图渲染系统键盘按钮的文本。
@@ -14,6 +14,8 @@ import HamsterKit
  注意：文本行数限制为 1 行，如果按钮操作是 input 类型且文本为小写，则会有垂直方向的偏移。
  */
 public class TextContentView: UIView {
+  private let keyboardContext: KeyboardContext
+  private let item: KeyboardLayoutItem
   /// 按钮样式
   public var style: KeyboardButtonStyle
   /// 文本内容
@@ -21,29 +23,79 @@ public class TextContentView: UIView {
   /// 是否为输入类型操作
   private let isInputAction: Bool
 
-  private lazy var  label: UILabel = {
+  private lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
-    // label.adjustsFontSizeToFitWidth = true
     label.textAlignment = .center
     label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     label.text = text
+    label.sizeToFit()
     return label
   }()
-  
+
+  private lazy var leftSwipeLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .center
+    label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    label.minimumScaleFactor = 0.5
+    label.numberOfLines = 1
+    label.textColor = .secondaryLabel
+    return label
+  }()
+
+  private lazy var rightSwipeLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    label.textAlignment = .center
+    label.minimumScaleFactor = 0.5
+    label.numberOfLines = 1
+    label.textColor = .secondaryLabel
+    return label
+  }()
+
   private lazy var containerView: UIView = {
     let containerView = UIView(frame: .zero)
     containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.addSubview(label)
-    
+    containerView.addSubview(leftSwipeLabel)
+    containerView.addSubview(rightSwipeLabel)
+
+    for swipe in item.swipes {
+      if swipe.direction == .up {
+        if keyboardContext.upSwipeOnLeft {
+          leftSwipeLabel.text = swipe.labelText
+          leftSwipeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        } else {
+          rightSwipeLabel.text = swipe.labelText
+          leftSwipeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        }
+      }
+
+      if swipe.direction == .down {
+        if keyboardContext.upSwipeOnLeft {
+          rightSwipeLabel.text = swipe.labelText
+        } else {
+          leftSwipeLabel.text = swipe.labelText
+        }
+      }
+    }
+
     NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor, constant: offsetRight ? 5 : 0),
-      label.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: useOffset ? -2 : 0),
-//      label.leadingAnchor.constraint(greaterThanOrEqualTo: containerView.leadingAnchor),
-//      label.trailingAnchor.constraint(lessThanOrEqualTo: containerView.trailingAnchor),
+      leftSwipeLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
+      rightSwipeLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
+      rightSwipeLabel.heightAnchor.constraint(equalTo: leftSwipeLabel.heightAnchor),
+      leftSwipeLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+      rightSwipeLabel.leadingAnchor.constraint(equalTo: leftSwipeLabel.trailingAnchor),
+      rightSwipeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+
+      label.topAnchor.constraint(equalTo: leftSwipeLabel.bottomAnchor, constant: useOffset ? -2 : 0),
+      label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+      label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
     ])
-    
+
     return containerView
   }()
 
@@ -52,13 +104,15 @@ public class TextContentView: UIView {
   var useOffset: Bool {
     isInputAction && text.isLowercased
   }
-  
+
   /// 是否向右偏移
   var offsetRight: Bool {
     text.isMatchChineseParagraph && !text.isPairSymbolsBegin
   }
 
-  init(style: KeyboardButtonStyle, text: String, isInputAction: Bool) {
+  init(keyboardContext: KeyboardContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, text: String, isInputAction: Bool) {
+    self.keyboardContext = keyboardContext
+    self.item = item
     self.style = style
     self.text = text
     self.isInputAction = isInputAction
@@ -81,8 +135,6 @@ public class TextContentView: UIView {
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-
-
   }
 
   override public func layoutSubviews() {
@@ -100,6 +152,8 @@ struct TextContentView_Previews: PreviewProvider {
   static func textContent(text: String, action: KeyboardAction) -> some View {
     return UIViewPreview {
       let view = TextContentView(
+        keyboardContext: KeyboardContext.preview,
+        item: KeyboardLayoutItem(action: .character("a"), size: .init(width: .available, height: 24), insets: .zero, swipes: []),
         style: .preview1,
         text: text,
         isInputAction: action.isInputAction)

@@ -7,8 +7,8 @@
 
 import Combine
 import Foundation
+import HamsterKeyboardKit
 import HamsterKit
-import HamsterModel
 import HamsterUIKit
 import ProgressHUD
 import UIKit

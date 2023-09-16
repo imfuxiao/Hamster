@@ -9,15 +9,21 @@ import Combine
 import UIKit
 
 class SpaceContentView: UIView {
+  private let keyboardContext: KeyboardContext
+  private let item: KeyboardLayoutItem
   public var style: KeyboardButtonStyle
   private let loadingText: String
   private let loadingLabel: UILabel
   private let spaceView: TextContentView
   
-  init(style: KeyboardButtonStyle, loadingText: String, spaceText: String) {
+  init(keyboardContext: KeyboardContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, loadingText: String, spaceText: String) {
+    self.keyboardContext = keyboardContext
+    self.item = item
     self.style = style
     self.loadingText = loadingText
     self.spaceView = TextContentView(
+      keyboardContext: keyboardContext,
+      item: item,
       style: style,
       text: spaceText,
       isInputAction: KeyboardAction.space.isInputAction
@@ -81,7 +87,11 @@ import SwiftUI
 struct SpaceContentView_Previews: PreviewProvider {
   static func spaceContent(loadingText: String, spaceView: UIView) -> some View {
     return UIViewPreview {
-      let view = SpaceContentView(style: .preview1, loadingText: loadingText, spaceText: "空格")
+      let view = SpaceContentView(
+        keyboardContext: KeyboardContext.preview,
+        item: KeyboardLayoutItem(action: .character("a"), size: .init(width: .available, height: 24), insets: .zero, swipes: []),
+        style: .preview1, loadingText: loadingText, spaceText: "空格"
+      )
       view.frame = .init(x: 0, y: 0, width: 80, height: 80)
       return view
     }
@@ -89,7 +99,11 @@ struct SpaceContentView_Previews: PreviewProvider {
   
   static func spaceContent(loadingText: String, spaceText: String) -> some View {
     return UIViewPreview {
-      let view = SpaceContentView(style: .preview1, loadingText: loadingText, spaceText: spaceText)
+      let view = SpaceContentView(
+        keyboardContext: KeyboardContext.preview,
+        item: KeyboardLayoutItem(action: .character("a"), size: .init(width: .available, height: 24), insets: .zero, swipes: []),
+        style: .preview1, loadingText: loadingText, spaceText: spaceText
+      )
       view.frame = .init(x: 0, y: 0, width: 80, height: 80)
       return view
     }

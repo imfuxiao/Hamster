@@ -9,9 +9,12 @@ import Foundation
 
 /// 键盘配色方案
 /// 注意: 修改字段需要修改与字段匹配的 CodingKeys
-public struct KeyboardColorSchema: Codable, Equatable, Hashable, Comparable {
+public struct KeyboardColorSchema: Codable, Hashable, Comparable {
+  /// 方案名称，应用配置具体使用的名称
+  public var schemaName: String?
+
   /// 人类可读名称
-  public var name: String
+  public var name: String?
 
   /// 作者
   public var author: String?
@@ -55,7 +58,8 @@ public struct KeyboardColorSchema: Codable, Equatable, Hashable, Comparable {
   /// 次选提示文字颜色: comment_text_color
   public var commentTextColor: String?
 
-  public init(name: String, author: String? = nil, backColor: String? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
+  public init(schemaName: String? = nil, name: String? = nil, author: String? = nil, backColor: String? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
+    self.schemaName = schemaName
     self.name = name
     self.author = author
     self.backColor = backColor
@@ -88,6 +92,6 @@ extension KeyboardColorSchema {
   }
 
   public static func < (lhs: KeyboardColorSchema, rhs: KeyboardColorSchema) -> Bool {
-    lhs.name < rhs.name
+    (lhs.schemaName ?? "") < (rhs.schemaName ?? "")
   }
 }

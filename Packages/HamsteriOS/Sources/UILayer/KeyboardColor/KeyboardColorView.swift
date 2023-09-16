@@ -5,14 +5,14 @@
 //  Created by morse on 2023/6/19.
 //
 
-import HamsterModel
+import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
 class KeyboardColorView: NibLessView {
   // MARK: properties
 
-  var keyboardColor: KeyboardColor
+  var keyboardColor: HamsterKeyboardColor
 
   private let schemaNameView: UILabel = {
     let label = UILabel(frame: .zero)
@@ -127,7 +127,7 @@ class KeyboardColorView: NibLessView {
 
   init(
     frame: CGRect = .zero,
-    colorSchema: KeyboardColor = KeyboardColor(name: "", colorSchema: .init(name: "")))
+    colorSchema: HamsterKeyboardColor = HamsterKeyboardColor())
   {
     self.keyboardColor = colorSchema
 

@@ -6,8 +6,8 @@
 //
 
 import Foundation
+import HamsterKeyboardKit
 import HamsterKit
-import HamsterModel
 import OSLog
 import UIKit
 
@@ -83,6 +83,12 @@ open class HamsterAppDependencyContainer {
     // 创建 long-lived 属性
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
+  }
+
+  /// 重置应用配置
+  public func resetHamsterConfiguration() {
+    configCache = nil
+    HamsterConfigurationRepositories.shared.resetConfiguration()
   }
 }
 

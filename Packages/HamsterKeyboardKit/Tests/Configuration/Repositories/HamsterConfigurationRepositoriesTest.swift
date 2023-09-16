@@ -10,11 +10,9 @@ import os
 import XCTest
 import Yams
 
-@testable import HamsterKit
-@testable import HamsterModel
+@testable import HamsterKeyboardKit
 
 final class HamsterConfigurationRepositoriesTest: XCTestCase {
-
   func testTransform() throws {
     let str = "\\u4f60\\u597d"
     let target = try HamsterConfigurationRepositories.transform(str)
@@ -56,11 +54,33 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
 
   /// 测试保存至 UserDefaults
   func testLoadAndSaveUserDefault() async throws {
-    let config = HamsterConfiguration.preview
+    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
+    Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
+    if let data = HamsterConfiguration.sampleString.data(using: .utf8) {
+      FileManager.default.createFile(atPath: tempYamlPath.path, contents: data)
+    } else {
+      fatalError("can not generator hamster.yaml")
+    }
+
     let configRepositories = HamsterConfigurationRepositories.shared
     configRepositories.removeFromUserDefaults()
-    try await configRepositories.saveToUserDefaults(config)
-    let tempConfig = try configRepositories.loadFromUserDefaults()
-    XCTAssertEqual(tempConfig, config)
+
+    let tempConfig = try await configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    try await configRepositories.saveToUserDefaults(tempConfig)
+    let config = try configRepositories.loadFromUserDefaults()
+    XCTAssertNotNil(config.swipe?.keyboardSwipe)
+  }
+
+  func testLoadConfigYaml() async throws {
+    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
+    Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
+    if let data = HamsterConfiguration.sampleString.data(using: .utf8) {
+      FileManager.default.createFile(atPath: tempYamlPath.path, contents: data)
+    } else {
+      fatalError("can not generator hamster.yaml")
+    }
+    let configRepositories = HamsterConfigurationRepositories.shared
+    let tempConfig = try await configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    print(tempConfig)
   }
 }

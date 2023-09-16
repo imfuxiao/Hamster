@@ -33,6 +33,8 @@ Keyboard:
   # chineseNineGrid: 中文九宫格
   # custom(name): 自定义键盘，其中 name 对应自定义键盘配置文件中的 name。如: custom(26键)
   useKeyboardType: chinese
+  # 上划显示到左侧
+  upSwipeOnLeft: true
   displayButtonBubbles: true
   enableKeySounds: true
   enableHapticFeedback: false
@@ -85,7 +87,7 @@ Keyboard:
   # 配色方案
   # 来源: https://github.com/rime/squirrel/blob/master/data/squirrel.yaml
   colorSchemas:
-    aqua:
+    - schemaName: aqua
       name: 碧水／Aqua
       author: 佛振 <chen.sst@gmail.com>
       text_color: 0x606060
@@ -96,8 +98,7 @@ Keyboard:
       hilited_candidate_back_color: 0xeefa3a0a
       comment_text_color: 0x5a5a5a
       hilited_comment_text_color: 0xfcac9d
-
-    azure:
+    - schemaName: azure
       name: 青天／Azure
       author: 佛振 <chen.sst@gmail.com>
       text_color: 0xcfa677
@@ -107,8 +108,7 @@ Keyboard:
       hilited_candidate_text_color: 0x7ffeff
       hilited_candidate_back_color: 0x00000000
       comment_text_color: 0xc69664
-
-    luna:
+    - schemaName: luna
       name: 明月／Luna
       author: 佛振 <chen.sst@gmail.com>
       text_color: 0xa5a5a5
@@ -119,8 +119,7 @@ Keyboard:
       hilited_candidate_back_color: 0x40000000
       comment_text_color: 0xa5a5a5
       hilited_comment_text_color: 0x449c9d
-
-    ink:
+    - schemaName: ink
       name: 墨池／Ink
       author: 佛振 <chen.sst@gmail.com>
       text_color: 0x5a5a5a
@@ -132,8 +131,7 @@ Keyboard:
       hilited_candidate_back_color: 0xcc000000
       comment_text_color: 0x5a5a5a
       hilited_comment_text_color: 0x808080
-
-    lost_temple:
+    - schemaName: lost_temple
       name: 孤寺／Lost Temple
       author: 佛振 <chen.sst@gmail.com>, based on ir_black
       text_color: 0xe8f3f6
@@ -143,8 +141,7 @@ Keyboard:
       hilited_candidate_back_color: 0x82e6ca
       comment_text_color: 0xbb82e6ca
       hilited_comment_text_color: 0xbb203d34
-
-    dark_temple:
+    - schemaName: dark_temple
       name: 暗堂／Dark Temple
       author: 佛振 <chen.sst@gmail.com>, based on ir_black
       text_color: 0x92f6da
@@ -155,8 +152,7 @@ Keyboard:
       hilited_candidate_text_color: 0x92f6da
       hilited_candidate_back_color: 0x10000000 # 0x333333
       comment_text_color: 0x606cff
-
-    psionics:
+    - schemaName: psionics
       name: 幽能／Psionics
       author: 雨過之後、佛振
       text_color: 0xc2c2c2
@@ -169,8 +165,7 @@ Keyboard:
       hilited_candidate_back_color: 0xd4bc00
       comment_text_color: 0x808080
       hilited_comment_text_color: 0x444444
-
-    purity_of_form:
+    - schemaName: purity_of_form
       name: 純粹的形式／Purity of Form
       author: 雨過之後、佛振
       text_color: 0xc2c2c2
@@ -181,8 +176,7 @@ Keyboard:
       hilited_candidate_text_color: 0x000000
       hilited_candidate_back_color: 0xfafafa
       comment_text_color: 0x808080
-
-    purity_of_essence:
+    - schemaName: purity_of_essence
       name: 純粹的本質／Purity of Essence
       author: 佛振
       text_color: 0x2c2ccc
@@ -193,8 +187,7 @@ Keyboard:
       hilited_candidate_text_color: 0xeeeeee
       hilited_candidate_back_color: 0x444444
       comment_text_color: 0x808080
-
-    starcraft:
+    - schemaName: starcraft
       name: 星際我爭霸／StarCraft
       author: Contralisk <contralisk@gmail.com>, original artwork by Blizzard Entertainment
       text_color: 0xccaa88
@@ -207,8 +200,7 @@ Keyboard:
       hilited_candidate_back_color: 0x00000000
       comment_text_color: 0x1010d0
       hilited_comment_text_color: 0x1010f0
-
-    google:
+    - schemaName: google
       name: 谷歌／Google
       author: skoj <skoj@qq.com>
       text_color: 0x666666 #拼音串
@@ -221,8 +213,7 @@ Keyboard:
       hilited_candidate_back_color: 0xCE7539 #第一候选项背景
       comment_text_color: 0x6D6D6D #注解文字
       hilited_comment_text_color: 0xEBC6B0 #注解文字高亮
-
-    solarized_rock:
+    - schemaName: solarized_rock
       name: 曬經石／Solarized Rock
       author: "Aben <tntaben@gmail.com>, based on Ethan Schoonover's Solarized color scheme"
       back_color: 0x362b00
@@ -234,8 +225,7 @@ Keyboard:
       hilited_candidate_text_color: 0xffffff
       hilited_candidate_back_color: 0x8236d3
       hilited_comment_text_color: 0x362b00
-
-    clean_white:
+    - schemaName: clean_white
       name: 简约白／Clean White
       author: Chongyu Zhu <lembacon@gmail.com>, based on 搜狗「简约白」
       horizontal: true
@@ -254,8 +244,7 @@ Keyboard:
       hilited_candidate_label_color: 0xa0c98915
       hilited_candidate_text_color: 0xc98915
       hilited_candidate_back_color: 0xeeeeee
-
-    apathy:
+    - schemaName: apathy
       name: 冷漠／Apathy
       author: LIANG Hai
       horizontal: true # 水平排列
@@ -273,8 +262,7 @@ Keyboard:
       hilited_candidate_text_color: 0xEE6E00 #候选文字颜色
       hilited_candidate_back_color: 0xFFF0E4 #候选文字背景色
       comment_text_color: 0x999999 #拼音等提示文字颜色
-
-    dust:
+    - schemaName: dust
       name: 浮尘／Dust
       author: Superoutman <asticosmo@gmail.com>
       horizontal: true # 水平排列
@@ -298,8 +286,7 @@ Keyboard:
       hilited_candidate_back_color: 0xfff0e4 # 第一候选项背景背景色
       hilited_candidate_label_color: 0x555555 # 第一候选项编号颜色
       hilited_comment_text_color: 0x9e9e9e # 注解文字高亮
-
-    mojave_dark:
+    - schemaName: mojave_dark
       name: 沙漠夜／Mojave Dark
       author: xiehuc <xiehuc@gmail.com>
       horizontal: true # 水平排列
@@ -312,7 +299,6 @@ Keyboard:
       font_face: "PingFangSC" # 候选词字体
       font_point: 16 # 候选字词大小
       label_font_point: 14 # 候选编号大小
-
       text_color: 0xdedddd # 拼音行文字颜色，24位色值，16进制，BGR顺序
       back_color: 0x252320 # 候选条背景色
       label_color: 0x888785 # 预选栏编号颜色
@@ -325,8 +311,7 @@ Keyboard:
       hilited_candidate_label_color: 0xffffff # 第一候选项编号颜色
       comment_text_color: 0xdedddd # 拼音等提示文字颜色
       #hilited_comment_text_color: 0xdedddd    # 注解文字高亮
-
-    solarized_light:
+    - schemaName: solarized_light
       name: 曬經・日／Solarized Light
       author: 雪齋 <lyc20041@gmail.com>
       color_space: display_p3 # Only available on macOS 10.12+
@@ -343,8 +328,7 @@ Keyboard:
       hilited_candidate_label_color: 0x2566C6 #Lab 55 , 45, 65
       hilited_comment_text_color: 0x8144C2 #Lab 50 , 65,-5
       hilited_text_color: 0x2C8BAE #Lab 60 , 10, 65
-
-    solarized_dark:
+    - schemaName: solarized_dark
       name: 曬經・月／Solarized Dark
       author: 雪齋 <lyc20041@gmail.com>
       back_color: 0xF0352A0A #Lab 15 ,-12,-12
@@ -378,3 +362,253 @@ swipe:
   xAxleSwipeSensitivity: 20
   yAxleSwipeSensitivity: 30
   spaceSwipeSensitivity: 50
+  keyboardSwipe:
+    # 中文 26 键滑动设置
+    - keyboardType: chinese
+      keys:
+        - action: character(a)
+          swipe:
+            - direction: up
+              action: character(`)
+              processByRIME: true
+            - direction: down
+              action: character(~)
+              display: false
+        - action: character(b)
+          swipe:
+            - direction: up
+              action: symbol(《》)
+            - direction: down
+              action: character(。)
+              display: false
+        - action: character(c)
+          swipe:
+            - direction: up
+              action: character(.)
+            - direction: down
+              action: character(>)
+              display: false
+        - action: character(d)
+          swipe:
+            - direction: up
+              action: character(=)
+            - direction: down
+              action: character(+)
+              display: false
+        - action: character(e)
+          swipe:
+            - direction: up
+              action: character(3)
+            - direction: down
+              action: character(#)
+              display: false
+        - action: character(f)
+          swipe:
+            - direction: up
+              action: character([)
+            - direction: down
+              action: character({)
+              display: false
+        - action: character(g)
+          swipe:
+            - direction: up
+              action: character(])
+            - direction: down
+              action: character(})
+              display: false
+        - action: character(h)
+          swipe:
+            - direction: up
+              action: character(\)
+            - direction: down
+              action: character(|)
+              display: false
+        - action: character(i)
+          swipe:
+            - direction: up
+              action: character(8)
+            - direction: down
+              action: character(*)
+              display: false
+        - action: character(j)
+          swipe:
+            - direction: up
+              action: character(/)
+            - direction: down
+              action: character(?)
+              display: false
+        - action: character(k)
+          swipe:
+            - direction: up
+              action: character(;)
+            - direction: down
+              action: character(:)
+              display: false
+        - action: character(l)
+          swipe:
+            - direction: up
+              action: character(')
+            - direction: down
+              action: character(")
+              display: false
+        - action: character(m)
+          swipe:
+            - direction: up
+              action: shortCommand(#行尾)
+            - direction: down
+              action: character(、)
+              display: false
+        - action: character(n)
+          swipe:
+            - direction: up
+              action: symbol(『』)
+            - direction: down
+              action: character(、)
+              display: false
+        - action: character(o)
+          swipe:
+            - direction: up
+              action: character(9)
+            - direction: down
+              action: character(()
+              display: false
+        - action: character(p)
+          swipe:
+            - direction: up
+              action: character(0)
+            - direction: down
+              action: character())
+              display: false
+        - action: character(q)
+          swipe:
+            - direction: up
+              action: character(1)
+            - direction: down
+              action: character(!)
+              display: false
+        - action: character(r)
+          swipe:
+            - direction: up
+              action: character(4)
+            - direction: down
+              action: character($)
+              display: false
+        - action: character(s)
+          swipe:
+            - direction: up
+              action: character(-)
+            - direction: down
+              action: character(_)
+              display: false
+        - action: character(t)
+          swipe:
+            - direction: up
+              action: character(5)
+            - direction: down
+              action: character(%)
+              display: false
+        - action: character(u)
+          swipe:
+            - direction: up
+              action: character(7)
+            - direction: down
+              action: character(&)
+              display: false
+        - action: character(v)
+          swipe:
+            - direction: up
+              action: symbol(“”)
+            - direction: down
+              action: character(，)
+              display: false
+        - action: character(w)
+          swipe:
+            - direction: up
+              action: character(2)
+            - direction: down
+              action: character(@)
+              display: false
+        - action: character(x)
+          swipe:
+            - direction: up
+              action: character(,)
+            - direction: down
+              action: character(<)
+              display: false
+        - action: character(y)
+          swipe:
+            - direction: up
+              action: character(6)
+            - direction: down
+              action: character(^)
+              display: false
+        - action: character(z)
+          swipe:
+            - direction: up
+              action: shortCommand(#行首)
+            - direction: down
+              action: symbol(‘’)
+              display: false
+        - action: space
+          swipe:
+            - direction: up
+              action: shortCommand(#次选上屏)
+              display: false
+        - action: enter
+          swipe:
+            - direction: up
+              action: shortCommand(#换行)
+              display: false
+        - action: backspace
+          swipe:
+            - direction: up
+              action: shortCommand(#重输)
+              display: false
+        - action: keyboardType(numericNineGrid)
+          swipe:
+            - direction: up
+              action: shortCommand(#上个输入方案)
+              display: false
+    # 中文九宫格滑动设置
+    - keyboardType: chineseNineGrid
+      keys:
+        - action: chineseNineGrid(@/.)
+          swipe:
+            - direction: up
+              action: character(1)
+              display: true
+        - action: chineseNineGrid(ABC)
+          swipe:
+            - direction: up
+              action: character(2)
+              display: true
+        - action: chineseNineGrid(DEF)
+          swipe:
+            - direction: up
+              action: character(3)
+              display: true
+        - action: chineseNineGrid(JKL)
+          swipe:
+            - direction: up
+              action: character(5)
+              display: true
+        - action: chineseNineGrid(MNO)
+          swipe:
+            - direction: up
+              action: character(6)
+              display: true
+        - action: chineseNineGrid(PQRS)
+          swipe:
+            - direction: up
+              action: character(7)
+              display: true
+        - action: chineseNineGrid(TUV)
+          swipe:
+            - direction: up
+              action: character(8)
+              display: true
+        - action: chineseNineGrid(WXYZ)
+          swipe:
+            - direction: up
+              action: character(9)
+              display: true

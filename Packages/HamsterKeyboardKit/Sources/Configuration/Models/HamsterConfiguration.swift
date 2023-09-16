@@ -9,7 +9,7 @@ import Foundation
 
 /// Hamster应用全部配置项
 /// Hamster.yaml
-public struct HamsterConfiguration: Codable, Hashable, Equatable, CustomStringConvertible {
+public struct HamsterConfiguration: Codable, Hashable, CustomStringConvertible {
   /// 通用配置
   public var general: GeneralConfiguration?
 

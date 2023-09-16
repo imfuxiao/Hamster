@@ -5,7 +5,7 @@
 //  Created by morse on 2023/6/13.
 //
 import Combine
-import HamsterKit
+import HamsterKeyboardKit
 import HamsterUIKit
 import OSLog
 import ProgressHUD

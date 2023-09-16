@@ -8,7 +8,7 @@
 import Foundation
 
 /// 符号分类
-enum SymbolCategory: String, CaseIterable, Codable, SymbolProvider, Identifiable, Equatable {
+enum SymbolCategory: String, CaseIterable, Codable, SymbolProvider, Identifiable, Hashable {
   // 常用符号
   case frequent
   

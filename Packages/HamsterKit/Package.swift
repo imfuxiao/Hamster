@@ -16,7 +16,6 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.16"),
     .package(url: "https://github.com/jpsim/Yams.git", exact: "5.0.6"),
-    .package(path: "../HamsterModel"),
     .package(path: "../RimeKit"),
   ],
   targets: [
@@ -25,7 +24,6 @@ let package = Package(
       dependencies: [
         "ZIPFoundation",
         "Yams",
-        "HamsterModel",
         "RimeKit",
       ],
       path: "Sources"),

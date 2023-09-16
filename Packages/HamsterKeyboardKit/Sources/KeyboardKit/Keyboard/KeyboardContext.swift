@@ -9,7 +9,6 @@
 import Combine
 import Foundation
 import HamsterKit
-import HamsterModel
 import OSLog
 import UIKit
 
@@ -250,7 +249,7 @@ public class KeyboardContext: ObservableObject {
 
   /// 输入法配色方案缓存
   /// 为计算属性 `hamsterKeyboardColor` 提供缓存
-  private var cacheHamsterKeyboardColor: HamsterModel.KeyboardColor?
+  private var cacheHamsterKeyboardColor: HamsterKeyboardColor?
 
   /// 候选区域状态
   @Published
@@ -512,23 +511,6 @@ extension KeyboardContext {
   }
 }
 
-// MARK: - Hamster Configuration
-
-public extension KeyboardContext {
-  var hamsterKeyboardColor: HamsterModel.KeyboardColor? {
-    if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor {
-      return cacheHamsterKeyboardColor
-    }
-
-    guard hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
-    guard let schemaName = hamsterConfig?.Keyboard?.useColorSchema else { return nil }
-    guard let schema = hamsterConfig?.Keyboard?.colorSchemas?[schemaName] else { return nil }
-
-    self.cacheHamsterKeyboardColor = HamsterModel.KeyboardColor(name: schemaName, colorSchema: schema)
-    return cacheHamsterKeyboardColor
-  }
-}
-
 private extension UIInputViewController {
   var orientation: InterfaceOrientation {
     view.window?.screen.interfaceOrientation ?? .portrait
@@ -539,7 +521,23 @@ private extension UIInputViewController {
   }
 }
 
+// MARK: - Hamster Configuration
+
 public extension KeyboardContext {
+  /// hamster 键盘配色
+  var hamsterKeyboardColor: HamsterKeyboardColor? {
+    if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor {
+      return cacheHamsterKeyboardColor
+    }
+
+    guard hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
+    guard let schemaName = hamsterConfig?.Keyboard?.useColorSchema else { return nil }
+    guard let schema = hamsterConfig?.Keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
+
+    self.cacheHamsterKeyboardColor = HamsterKeyboardColor(colorSchema: schema)
+    return cacheHamsterKeyboardColor
+  }
+
   /// 用户设置的键盘类型
   var selectKeyboard: KeyboardType {
     hamsterConfig?.Keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
@@ -621,7 +619,7 @@ public extension KeyboardContext {
   }
 
   /// Hamster 键盘配色
-  var keyboardColor: HamsterModel.KeyboardColor? {
+  var keyboardColor: HamsterKeyboardColor? {
     if hamsterConfig?.Keyboard?.enableColorSchema ?? false, let color = hamsterKeyboardColor {
       return color
     }
@@ -668,5 +666,15 @@ public extension KeyboardContext {
     set {
       UserDefaults.standard.set(newValue, forKey: "com.ihsiao.apps.hamster.keyboard.classifySymbolKeyboard.lockState")
     }
+  }
+
+  /// 内置键盘划动配置
+  var keyboardSwipe: [KeyboardSwipe] {
+    hamsterConfig?.swipe?.keyboardSwipe ?? []
+  }
+
+  /// 上划显示在左侧
+  var upSwipeOnLeft: Bool {
+    hamsterConfig?.Keyboard?.upSwipeOnLeft ?? true
   }
 }

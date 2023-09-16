@@ -240,38 +240,38 @@ let OSX_VK_UK_SECTION: Int32 = 0xa
 // int osx_modifiers_to_rime_modifiers(unsigned long modifiers);
 // int osx_keycode_to_rime_keycode(int keycode, int keychar, int shift, int caps);
 
-enum RimeModifier {
-  static let kShiftMask: Int32 = 1 << 0
-  static let kLockMask: Int32 = 1 << 1
-  static let kControlMask: Int32 = 1 << 2
-  static let kMod1Mask: Int32 = 1 << 3
-  static let kAltMask: Int32 = kMod1Mask
-  static let kMod2Mask: Int32 = 1 << 4
-  static let kMod3Mask: Int32 = 1 << 5
-  static let kMod4Mask: Int32 = 1 << 6
-  static let kMod5Mask: Int32 = 1 << 7
-  static let kButton1Mask: Int32 = 1 << 8
-  static let kButton2Mask: Int32 = 1 << 9
-  static let kButton3Mask: Int32 = 1 << 10
-  static let kButton4Mask: Int32 = 1 << 11
-  static let kButton5Mask: Int32 = 1 << 12
+public enum RimeModifier {
+  public static let kShiftMask: Int32 = 1 << 0
+  public static let kLockMask: Int32 = 1 << 1
+  public static let kControlMask: Int32 = 1 << 2
+  public static let kMod1Mask: Int32 = 1 << 3
+  public static let kAltMask: Int32 = kMod1Mask
+  public static let kMod2Mask: Int32 = 1 << 4
+  public static let kMod3Mask: Int32 = 1 << 5
+  public static let kMod4Mask: Int32 = 1 << 6
+  public static let kMod5Mask: Int32 = 1 << 7
+  public static let kButton1Mask: Int32 = 1 << 8
+  public static let kButton2Mask: Int32 = 1 << 9
+  public static let kButton3Mask: Int32 = 1 << 10
+  public static let kButton4Mask: Int32 = 1 << 11
+  public static let kButton5Mask: Int32 = 1 << 12
 
   /* The next few modifiers are used by XKB, so we skip to the end.
    * Bits 15 - 23 are currently unused. Bit 29 is used internally.
    */
 
   /* ibus :) mask */
-  static let kHandledMask: Int32 = 1 << 24
-  static let kForwardMask: Int32 = 1 << 25
-  static let kIgnoredMask: Int32 = kForwardMask
+  public static let kHandledMask: Int32 = 1 << 24
+  public static let kForwardMask: Int32 = 1 << 25
+  public static let kIgnoredMask: Int32 = kForwardMask
 
-  static let kSuperMask: Int32 = 1 << 26
-  static let kHyperMask: Int32 = 1 << 27
-  static let kMetaMask: Int32 = 1 << 28
+  public static let kSuperMask: Int32 = 1 << 26
+  public static let kHyperMask: Int32 = 1 << 27
+  public static let kMetaMask: Int32 = 1 << 28
 
-  static let kReleaseMask: Int32 = 1 << 30
+  public static let kReleaseMask: Int32 = 1 << 30
 
-  static let kModifierMask: Int32 = 0x5f00_1fff
+  public static let kModifierMask: Int32 = 0x5f00_1fff
 }
 
 struct KeyCodeMapping {
@@ -280,7 +280,7 @@ struct KeyCodeMapping {
 }
 
 let keyCodeMappings: [KeyCodeMapping] = [
-  // Mark: modifiers
+  // MARK: modifiers
 
   .init(osxKeyCode: OSX_VK_CAPSLOCK, rimeKeyCode: XK_Caps_Lock),
   .init(osxKeyCode: OSX_VK_COMMAND_L, rimeKeyCode: XK_Super_L),
@@ -293,7 +293,8 @@ let keyCodeMappings: [KeyCodeMapping] = [
   .init(osxKeyCode: OSX_VK_SHIFT_L, rimeKeyCode: XK_Shift_L),
   .init(osxKeyCode: OSX_VK_SHIFT_R, rimeKeyCode: XK_Shift_R),
 
-  // Mark: special
+  // MARK: special
+
   .init(osxKeyCode: OSX_VK_DELETE, rimeKeyCode: XK_BackSpace),
   .init(osxKeyCode: OSX_VK_ENTER, rimeKeyCode: XK_KP_Enter),
   .init(osxKeyCode: OSX_VK_ESCAPE, rimeKeyCode: XK_Escape),
@@ -302,7 +303,8 @@ let keyCodeMappings: [KeyCodeMapping] = [
   .init(osxKeyCode: OSX_VK_SPACE, rimeKeyCode: XK_space),
   .init(osxKeyCode: OSX_VK_TAB, rimeKeyCode: XK_Tab),
 
-  // Mark: function
+  // MARK: function
+
   .init(osxKeyCode: OSX_VK_F1, rimeKeyCode: XK_F1),
   .init(osxKeyCode: OSX_VK_F2, rimeKeyCode: XK_F2),
   .init(osxKeyCode: OSX_VK_F3, rimeKeyCode: XK_F3),
@@ -323,7 +325,8 @@ let keyCodeMappings: [KeyCodeMapping] = [
   .init(osxKeyCode: OSX_VK_F18, rimeKeyCode: XK_F18),
   .init(osxKeyCode: OSX_VK_F19, rimeKeyCode: XK_F19),
 
-  // Mark: cursor
+  // MARK: cursor
+
   .init(osxKeyCode: OSX_VK_CURSOR_UP, rimeKeyCode: XK_Up),
   .init(osxKeyCode: OSX_VK_CURSOR_DOWN, rimeKeyCode: XK_Down),
   .init(osxKeyCode: OSX_VK_CURSOR_LEFT, rimeKeyCode: XK_Left),
@@ -333,7 +336,8 @@ let keyCodeMappings: [KeyCodeMapping] = [
   .init(osxKeyCode: OSX_VK_HOME, rimeKeyCode: XK_Home),
   .init(osxKeyCode: OSX_VK_END, rimeKeyCode: XK_End),
 
-  // Mark: keypad
+  // MARK: keypad
+
   .init(osxKeyCode: OSX_VK_KEYPAD_0, rimeKeyCode: XK_KP_0),
   .init(osxKeyCode: OSX_VK_KEYPAD_1, rimeKeyCode: XK_KP_1),
   .init(osxKeyCode: OSX_VK_KEYPAD_2, rimeKeyCode: XK_KP_2),
@@ -352,7 +356,8 @@ let keyCodeMappings: [KeyCodeMapping] = [
   .init(osxKeyCode: OSX_VK_KEYPAD_PLUS, rimeKeyCode: XK_KP_Add),
   .init(osxKeyCode: OSX_VK_KEYPAD_SLASH, rimeKeyCode: XK_KP_Divide),
 
-  // Mark: pc keyboard
+  // MARK: pc keyboard
+
   .init(osxKeyCode: OSX_VK_PC_APPLICATION, rimeKeyCode: XK_Menu),
   .init(osxKeyCode: OSX_VK_PC_INSERT, rimeKeyCode: XK_Insert),
   .init(osxKeyCode: OSX_VK_PC_KEYPAD_NUMLOCK, rimeKeyCode: XK_Num_Lock),
@@ -384,38 +389,39 @@ func osxModifiersToRimeModifiers(modifiers: Int32) -> Int32 {
   return ret
 }
 
-let lowercaseA: Int32 = Int32(("a" as Character).asciiValue!)
-let uppercaseA: Int32 = Int32(("A" as Character).asciiValue!)
-let lowercaseZ: Int32 = Int32(("z" as Character).asciiValue!)
+let lowercaseA: Int32 = .init(("a" as Character).asciiValue!)
+let uppercaseA: Int32 = .init(("A" as Character).asciiValue!)
+let lowercaseZ: Int32 = .init(("z" as Character).asciiValue!)
 
 func osxKeycodeToRimeKeycode(keycode: Int32, keychar: Int32, shift: Int32, caps: Int32) -> Int32 {
   for mapping in keyCodeMappings {
     if keycode == mapping.osxKeyCode {
       return mapping.rimeKeyCode
     }
-  } 
+  }
 
   // NOTE: IBus/Rime use different keycodes for uppercase/lowercase letters.
   // 注意：IBus/Rime 对大写/小写字母使用不同的键码。
-  if keychar >= lowercaseA && keychar <= lowercaseZ && ((shift>0) != (caps>0)) {
+  if keychar >= lowercaseA && keychar <= lowercaseZ && ((shift > 0) != (caps > 0)) {
     // lowercase to uppercase
     return keychar - lowercaseA + uppercaseA
   }
 
   if keychar >= 0x20 && keychar <= 0x7e {
     return keychar
-  } else if keychar == 0x1b {  // ^[
+  }
+  else if keychar == 0x1b { // ^[
     return XK_bracketleft
   }
-  else if keychar == 0x1c {  // ^\
+  else if keychar == 0x1c { // ^\
     return XK_backslash
   }
-  else if (keychar == 0x1d) {  // ^]
+  else if keychar == 0x1d { // ^]
     return XK_bracketright
   }
-  else if (keychar == 0x1f) {  // ^_
+  else if keychar == 0x1f { // ^_
     return XK_minus
   }
 
-  return XK_VoidSymbol;
+  return XK_VoidSymbol
 }

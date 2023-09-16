@@ -7,7 +7,6 @@
 
 import CommonCrypto
 import Foundation
-import HamsterModel
 import os
 import ZIPFoundation
 

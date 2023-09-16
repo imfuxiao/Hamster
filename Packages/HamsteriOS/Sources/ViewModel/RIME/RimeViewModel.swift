@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HamsterKit
+import HamsterKeyboardKit
 import ProgressHUD
 import UIKit
 
@@ -37,9 +37,9 @@ public class RimeViewModel {
   lazy var settings: [SettingItemModel] = [
     .init(
       icon: UIImage(systemName: "square.and.pencil"),
-      text: keyValueOfSwitchSimplifiedAndTraditional,
       placeholder: "简繁切换键值",
       type: .textField,
+      textValue: keyValueOfSwitchSimplifiedAndTraditional,
       textHandled: { [unowned self] in
         keyValueOfSwitchSimplifiedAndTraditional = $0
       }
@@ -126,8 +126,19 @@ public extension RimeViewModel {
   /// Rime重置
   func rimeRest() async throws {
     await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
-    // TODO: 每次重新部署重新读取yaml中的文件，并与目前配置取差集
+
     try await rimeContext.restRime()
+
+    // 重置应用配置
+    HamsterAppDependencyContainer.shared.resetHamsterConfiguration()
+    
+    // 重新读取 Hamster.yaml 生成 configuration
+    let hamsterConfiguration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
+    HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
+    
+    /// 在另存一份用于应用配置还原
+    try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
+
     await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
   }
 }

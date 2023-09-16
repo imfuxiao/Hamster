@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import HamsterModel
 import OSLog
 import RimeKit
 import Yams

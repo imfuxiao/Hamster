@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HamsterKit
+import HamsterKeyboardKit
 import OSLog
 import ProgressHUD
 import ZIPFoundation

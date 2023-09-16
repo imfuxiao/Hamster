@@ -74,6 +74,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
   }
 
+  /// 应用注册 quick action
   func sceneWillResignActive(_ scene: UIScene) {
     let application = UIApplication.shared
     let rimeDeploy = UIApplicationShortcutItem(type: "RIME", localizedTitle: ShortcutItemType.rimeDeploy.rawValue)

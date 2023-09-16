@@ -181,7 +181,9 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    根据提供的布局参数获取布局 item 的划动配置。
    */
   open func itemSwipes(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> [KeySwipe] {
-    // TODO:
+    if let keyboardSwipe = context.keyboardSwipe.first(where: { $0.keyboardType == context.keyboardType }) {
+      return keyboardSwipe.keys?.first(where: { $0.action == action })?.swipe ?? []
+    }
     return []
   }
   
