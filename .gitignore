@@ -9,6 +9,7 @@
 .HamsterInputSchemas
 Resources/SharedSupport/*.zip
 *.zip
+*.tgz
 
 
 # xcode gitignore

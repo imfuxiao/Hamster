@@ -110,14 +110,15 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       keyboardContext.traitCollection = keyboardRootView.traitCollection
     }
 
-    view.addSubview(keyboardRootView)
-    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
-      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
-      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    ])
+    view = keyboardRootView
+//    view.addSubview(keyboardRootView)
+//    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
+//    NSLayoutConstraint.activate([
+//      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
+//      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
+//      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//    ])
   }
 
   /**

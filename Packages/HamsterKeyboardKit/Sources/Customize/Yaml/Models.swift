@@ -5,19 +5,31 @@
 //  Created by morse on 2023/9/1.
 //
 
-import Foundation
 import HamsterKit
 import OSLog
+import UIKit
 
-public struct Keyboards: Codable, Equatable {
+public struct Keyboards: Codable, Hashable {
   public var keyboards: [Keyboard]
 }
 
-/// 键盘
-public struct Keyboard: Codable, Equatable {
+/// 自定义键盘类型
+public struct Keyboard: Codable, Hashable {
   public var name: String
-  // 注意：自定义键盘类型统一为 .custom() 类型
+
+  /// 键盘类型
+  /// 注意：此属性不包含在 yaml 配置中，因为 Keyboard 本身就是自定义键盘模型
+  /// 所以自定义键盘类型统一为 .custom(name) 类型，name 对应属性 name 的值
   public var type: KeyboardType
+
+  /// 键盘行高度
+  /// 如果为 nil, 则使用系统标准键盘行高度
+  public var rowHeight: CGFloat? = nil
+
+  /// 按钮 insets
+  /// 如果为 nil, 则使用系统标准按钮 insets
+  public var buttonInsets: UIEdgeInsets? = nil
+
   public var rows: [Row]
 
   public init(from decoder: Decoder) throws {
@@ -25,27 +37,62 @@ public struct Keyboard: Codable, Equatable {
     self.name = try container.decode(String.self, forKey: .name)
     self.type = .custom(named: self.name)
     self.rows = try container.decode([Row].self, forKey: .rows)
+    self.rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight)
+    if let buttonInsets = try? container.decode(String.self, forKey: .buttonInsets), let insets = UIEdgeInsets.parser(buttonInsets) {
+      self.buttonInsets = insets
+    }
   }
 
   public enum CodingKeys: CodingKey {
     case name
     case rows
+    case rowHeight
+    case buttonInsets
   }
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.name, forKey: .name)
     try container.encode(self.rows, forKey: .rows)
+    if let rowHeight = self.rowHeight {
+      try container.encode(String(Double(rowHeight)), forKey: .rowHeight)
+    }
+    if let buttonInsets = self.buttonInsets {
+      try container.encode(buttonInsets.yamlString, forKey: .buttonInsets)
+    }
   }
 }
 
 /// 键盘的行
-public struct Row: Codable, Equatable {
+public struct Row: Codable, Hashable {
+  /// 键盘行高度
+  /// 如果为 nil, 则使用系统标准键盘行高度
+  public var rowHeight: CGFloat?
+
   public var keys: [Key]
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight)
+    self.keys = try container.decode([Key].self, forKey: .keys)
+  }
+
+  enum CodingKeys: CodingKey {
+    case rowHeight
+    case keys
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    if let rowHeight = self.rowHeight {
+      try container.encodeIfPresent(rowHeight, forKey: .rowHeight)
+    }
+    try container.encode(self.keys, forKey: .keys)
+  }
 }
 
 /// 键盘按键
-public struct Key: Codable, Equatable, Hashable {
+public struct Key: Codable, Hashable {
   /// 按键对应操作
   /// 必须
   public var action: KeyboardAction
@@ -288,7 +335,7 @@ public struct KeyWidth: Codable, Hashable {
   }
 }
 
-public struct KeyLabel: Codable, Equatable, Hashable {
+public struct KeyLabel: Codable, Hashable {
   public static let empty: KeyLabel = .init(loadingText: "", text: "")
 
   /// 键盘加载时显示文本
@@ -559,5 +606,51 @@ public extension KeyboardLayoutItemWidth {
     case .points(let value):
       return "points(\(value))"
     }
+  }
+}
+
+extension UIEdgeInsets: Hashable {
+  /// 为 UIEdgeInsets 类型添加 Hashable 协议支持
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(self.top)
+    hasher.combine(self.left)
+    hasher.combine(self.bottom)
+    hasher.combine(self.right)
+  }
+
+  /// 将字符串转为 UIEdgeInsets
+  /// 字符串支持两种格式
+  /// 格式1: 纯数字
+  /// 格式2: left(1),right(3),top(4),bottom(6)
+  /// 格式 2 可以选择只配置单个方向，其余方向如果没有值则为0，方向顺序不限制，但表达式必须是：方向(值)
+  static func parser(_ str: String) -> UIEdgeInsets? {
+    if let value = Double(str) {
+      return UIEdgeInsets.all(CGFloat(value))
+    }
+
+    let attributes = str
+      .split(separator: ",")
+      .compactMap { String($0).attributeParse() }
+
+    guard !attributes.isEmpty else { return nil }
+
+    var insets = UIEdgeInsets.zero
+    for (edge, value) in attributes {
+      guard let value = Double(value) else { continue }
+      let v = CGFloat(value)
+      switch edge {
+      case "left": insets.left = v
+      case "right": insets.right = v
+      case "top": insets.top = v
+      case "bottom": insets.bottom = v
+      default: continue
+      }
+    }
+    return insets
+  }
+
+  /// 输出 yaml 中配置格式
+  var yamlString: String {
+    return "left(\(self.left)),right(\(self.right)),top(\(self.top)),bottom(\(self.bottom))"
   }
 }

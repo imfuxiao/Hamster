@@ -7,6 +7,8 @@
 
 import Foundation
 import HamsterKeyboardKit
+import HamsterKit
+import OSLog
 import ProgressHUD
 import UIKit
 
@@ -127,18 +129,23 @@ public extension RimeViewModel {
   func rimeRest() async throws {
     await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
 
-    try await rimeContext.restRime()
+    do {
+      try await rimeContext.restRime()
 
-    // 重置应用配置
-    HamsterAppDependencyContainer.shared.resetHamsterConfiguration()
-    
-    // 重新读取 Hamster.yaml 生成 configuration
-    let hamsterConfiguration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
-    HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
-    
-    /// 在另存一份用于应用配置还原
-    try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
+      // 重置应用配置
+      HamsterAppDependencyContainer.shared.resetHamsterConfiguration()
 
-    await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      // 重新读取 Hamster.yaml 生成 configuration
+      let hamsterConfiguration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
+      HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
+
+      /// 在另存一份用于应用配置还原
+      try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
+
+      await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+    } catch {
+      Logger.statistics.error("rimeRest() error: \(error)")
+      await ProgressHUD.showError("重置失败", interaction: false, delay: 1.5)
+    }
   }
 }

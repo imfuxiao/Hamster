@@ -31,7 +31,7 @@ Keyboard:
   # 使用键盘类型:
   # chinese: 中文26键
   # chineseNineGrid: 中文九宫格
-  # custom(name): 自定义键盘，其中 name 对应自定义键盘配置文件中的 name。如: custom(26键)
+  # custom(name): 自定义键盘，其中 name 对应自定义键盘配置(customizeKeyboards)中的 name。如: custom(中文26键)
   useKeyboardType: chinese
   # 上划显示到左侧
   upSwipeOnLeft: true
@@ -612,3 +612,294 @@ swipe:
             - direction: up
               action: character(9)
               display: true
+# 自定义键盘
+customizeKeyboards:
+  - name: "仓颉"
+    rows:
+      - keys:
+          - action: character(手)
+            swipe:
+              - direction: up
+                action: character(1)
+                display: true
+          - action: character(田)
+            swipe:
+              - direction: up
+                action: character(2)
+                display: true
+          - action: character(水)
+            swipe:
+              - direction: up
+                action: character(3)
+                display: true
+          - action: character(口)
+            swipe:
+              - direction: up
+                action: character(4)
+                display: true
+          - action: character(廿)
+            swipe:
+              - direction: up
+                action: character(5)
+                display: true
+          - action: character(卜)
+            swipe:
+              - direction: up
+                action: character(6)
+                display: true
+          - action: character(山)
+            swipe:
+              - direction: up
+                action: character(7)
+                display: true
+          - action: character(戈)
+            swipe:
+              - direction: up
+                action: character(8)
+                display: true
+          - action: character(人)
+            swipe:
+              - direction: up
+                action: character(9)
+                display: true
+          - action: character(心)
+            swipe:
+              - direction: up
+                action: character(0)
+                display: true
+      - keys:
+          - action: characterMargin(日)
+            width: available
+          - action: character(日)
+            swipe:
+              - direction: up
+                action: character(!)
+                display: true
+          - action: character(尸)
+            swipe:
+              - direction: up
+                action: character(@)
+                display: true
+          - action: character(木)
+            swipe:
+              - direction: up
+                action: character(#)
+                display: true
+          - action: character(火)
+            swipe:
+              - direction: up
+                action: character($)
+                display: true
+          - action: character(土)
+            swipe:
+              - direction: up
+                action: character(%)
+                display: true
+          - action: character(竹)
+            swipe:
+              - direction: up
+                action: character(&)
+                display: true
+          - action: character(十)
+            swipe:
+              - direction: up
+                action: character(*)
+                display: true
+          - action: character(大)
+            swipe:
+              - direction: up
+                action: character(()
+                display: true
+          - action: character(中)
+            swipe:
+              - direction: up
+                action: character())
+                display: true
+          - action: characterMargin(中)
+            width: available
+      - keys:
+          - action: keyboardType(classifySymbolic)
+            width: percentage(0.13)
+          - action: characterMargin(重)
+            width: available
+          - action: character(重)
+            swipe:
+              - direction: up
+                action: character(~)
+                display: true
+          - action: character(難)
+            swipe:
+              - direction: up
+                action: character(:)
+                display: true
+          - action: character(金)
+            swipe:
+              - direction: up
+                action: character(')
+                display: true
+          - action: character(女)
+            swipe:
+              - direction: up
+                action: character(_)
+                display: true
+          - action: character(月)
+            swipe:
+              - direction: up
+                action: character(,)
+                label: "，"
+                display: true
+          - action: character(弓)
+            swipe:
+              - direction: up
+                action: character(.)
+                label: "。"
+                display: true
+          - action: character(一)
+            swipe:
+              - direction: up
+                action: character(?)
+                label: "？"
+                display: true
+          - action: characterMargin(一)
+            width: available
+          - action: backspace
+            width: percentage(0.13)
+      - keys:
+          - action: keyboardType(alphabetic)
+            width: percentage(0.13)
+          - action: keyboardType(numeric)
+            width: percentage(0.13)
+          - action: space
+            width: available
+            label:
+              loadingText: "仓输入法"
+              text: "空格"
+          - action: character(,)
+            label: "，"
+          - action: enter
+            width:
+              portrait: percentage(0.25)
+              landscape: percentage(0.195)
+  - name: "大千注音"
+    buttonInsets: left(2),right(2),top(4),bottom(4)
+    rows:
+      - rowHeight: 43.2
+        keys:
+          - action: character(ㄅ)
+            swipe:
+              - direction: up
+                action: character(1)
+                display: true
+          - action: character(ㄉ)
+            swipe:
+              - direction: up
+                action: character(2)
+                display: true
+          - action: character(ˇ)
+            swipe:
+              - direction: up
+                action: character(3)
+                display: true
+          - action: character(ˋ)
+            swipe:
+              - direction: up
+                action: character(4)
+                display: true
+          - action: character(ㄓ)
+            swipe:
+              - direction: up
+                action: character(5)
+                display: true
+          - action: character(ˊ)
+            swipe:
+              - direction: up
+                action: character(6)
+                display: true
+          - action: character(˙)
+            swipe:
+              - direction: up
+                action: character(7)
+                display: true
+          - action: character(ㄚ)
+            swipe:
+              - direction: up
+                action: character(8)
+                display: true
+          - action: character(ㄞ)
+            swipe:
+              - direction: up
+                action: character(9)
+                display: true
+          - action: character(ㄢ)
+            swipe:
+              - direction: up
+                action: character(0)
+                display: true
+          - action: character(ㄦ)
+            swipe:
+              - direction: up
+                action: character(-)
+                display: true
+      - rowHeight: 43.2
+        keys:
+          - action: characterMargin(ㄆ)
+            width: available
+          - action: character(ㄆ)
+          - action: character(ㄊ)
+          - action: character(ㄍ)
+          - action: character(ㄐ)
+          - action: character(ㄔ)
+          - action: character(ㄗ)
+          - action: character(ㄧ)
+          - action: character(ㄛ)
+          - action: character(ㄟ)
+          - action: character(ㄣ)
+          - action: characterMargin(ㄣ)
+            width: available
+      - rowHeight: 43.2
+        keys:
+          - action: characterMargin(ㄇ)
+            width: available
+          - action: character(ㄇ)
+          - action: character(ㄋ)
+          - action: character(ㄎ)
+          - action: character(ㄑ)
+          - action: character(ㄕ)
+          - action: character(ㄘ)
+          - action: character(ㄨ)
+          - action: character(ㄜ)
+          - action: character(ㄠ)
+          - action: character(ㄤ)
+          - action: characterMargin(ㄤ)
+            width: available
+      - rowHeight: 43.2
+        keys:
+          - action: character(ㄈ)
+          - action: character(ㄌ)
+          - action: character(ㄏ)
+          - action: character(ㄒ)
+          - action: character(ㄖ)
+          - action: character(ㄙ)
+          - action: character(ㄩ)
+          - action: character(ㄝ)
+          - action: character(ㄡ)
+          - action: character(ㄥ)
+          - action: backspace
+      - keys:
+          - action: keyboardType(alphabetic)
+            width: percentage(0.13)
+          - action: keyboardType(numericNineGrid)
+            width: percentage(0.13)
+          - action: keyboardType(classifySymbolic)
+            width: percentage(0.13)
+          - action: space
+            width: available
+            label:
+              loadingText: "仓输入法"
+              text: "空格"
+          - action: character(,)
+            label: "，"
+          - action: enter
+            width:
+              portrait: percentage(0.25)
+              landscape: percentage(0.195)

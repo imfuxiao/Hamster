@@ -138,7 +138,6 @@ public class KeyboardButton: UIControl {
   /// input呼出样式
   private var inputCalloutStyle: KeyboardInputCalloutStyle {
     var style = appearance.inputCalloutStyle
-//    let insets = layoutConfig.buttonInsets
     let insets = item.insets
     style.callout.buttonInset = insets
     return style
@@ -147,7 +146,6 @@ public class KeyboardButton: UIControl {
   /// 长按呼出样式
   private var actionCalloutStyle: KeyboardActionCalloutStyle {
     var style = appearance.actionCalloutStyle
-//    let insets = layoutConfig.buttonInsets
     let insets = item.insets
     style.callout.buttonInset = insets
     return style
@@ -225,7 +223,6 @@ public class KeyboardButton: UIControl {
     
     addSubview(buttonContentView)
     buttonContentView.translatesAutoresizingMaskIntoConstraints = false
-//    let insets = layoutConfig.buttonInsets
     let insets = item.insets
     topConstraints.append(buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
     bottomConstraints.append(buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
@@ -268,7 +265,6 @@ public class KeyboardButton: UIControl {
 
     interfaceOrientation = keyboardContext.interfaceOrientation
 
-//    let insets = layoutConfig.buttonInsets
     let insets = item.insets
 
     // Logger.statistics.debug("KeyboardButtonRowItem layoutSubviews() rowHeight: \(layoutConfig.rowHeight), buttonInsets [left: \(insets.left), top: \(insets.top), right: \(insets.right), bottom: \(insets.bottom)]")

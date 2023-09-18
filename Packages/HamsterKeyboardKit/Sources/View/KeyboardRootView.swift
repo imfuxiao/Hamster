@@ -139,6 +139,20 @@ class KeyboardRootView: UIView {
     return view
   }()
 
+  /// 自定义键盘
+  private lazy var customizeKeyboardView: UIView = {
+    let view = CustomizeKeyboard(
+      keyboardLayoutProvider: keyboardLayoutProvider,
+      actionHandler: actionHandler,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
   /// 符号分类键盘
   private lazy var classifySymbolicKeyboardView: ClassifySymbolicKeyboard = {
     let view = ClassifySymbolicKeyboard(actionHandler: actionHandler, layoutProvider: keyboardLayoutProvider, keyboardContext: keyboardContext)
@@ -164,8 +178,7 @@ class KeyboardRootView: UIView {
     case .chineseNineGrid:
       return chineseNineGridKeyboardView
     case .custom:
-      // TODO: 补充自定义键盘视图
-      return UIView(frame: .zero)
+      return customizeKeyboardView
     default:
       return UIView(frame: .zero)
     }
@@ -309,7 +322,7 @@ class KeyboardRootView: UIView {
     } else {
       NSLayoutConstraint.activate([
         keyboardContainerView.topAnchor.constraint(equalTo: topAnchor),
-        keyboardContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
+        keyboardContainerView.bottomAnchor.constraint(equalTo: bottomAnchor),
         keyboardContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
         keyboardContainerView.trailingAnchor.constraint(equalTo: trailingAnchor)
       ])

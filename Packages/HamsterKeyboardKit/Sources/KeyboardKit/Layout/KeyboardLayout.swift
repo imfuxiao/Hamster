@@ -30,6 +30,9 @@ import UIKit
 public class KeyboardLayout {
   // MARK: - Properties
 
+  /// 自定义键盘对象
+  public var customKeyboard: Keyboard?
+
   /**
    The layout item rows to show in the keyboard.
 
@@ -83,15 +86,18 @@ public class KeyboardLayout {
                          可选的，理想的 item 高度，否则从第一个 item 中挑选。
       - idealItemInsets: An optional, ideal item inset value, otherwise picked from the first item.
                          可选的， 理想的 item 嵌入值，否则从第一个 item 中挑选。
+      - customKeyboard: 可选项，自定义键盘对象
    */
   public init(
     itemRows rows: KeyboardLayoutItemRows,
     idealItemHeight height: Double? = nil,
-    idealItemInsets insets: UIEdgeInsets? = nil
+    idealItemInsets insets: UIEdgeInsets? = nil,
+    customKeyboard: Keyboard? = nil
   ) {
     self.itemRows = rows
     self.idealItemHeight = height ?? Self.resolveIdealItemHeight(for: rows)
     self.idealItemInsets = insets ?? Self.resolveIdealItemInsets(for: rows)
+    self.customKeyboard = customKeyboard
   }
 }
 

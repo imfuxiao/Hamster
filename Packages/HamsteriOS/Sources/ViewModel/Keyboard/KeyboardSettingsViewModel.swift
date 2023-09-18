@@ -218,7 +218,13 @@ public class KeyboardSettingsViewModel: ObservableObject {
   /// 选择键盘类型
   public var useKeyboardType: KeyboardType {
     didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.string
+      if case .custom(let named) = useKeyboardType {
+        if !named.isEmpty {
+          HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.yamlString
+        }
+      } else {
+        HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.yamlString
+      }
     }
   }
 
@@ -610,8 +616,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
   /// 键盘类型
   public var keyboardLayoutList: [KeyboardType] = [
     .chinese(.lowercased),
-    .chineseNineGrid,
-    .custom(named: "")
+    .chineseNineGrid
   ]
 
   /// 中文标准键盘默认划动选项
@@ -669,6 +674,8 @@ public class KeyboardSettingsViewModel: ObservableObject {
         self.chineseStanderSystemKeyboardSwipeList = keyboardSwipe.keys ?? []
       }
     }
+
+    self.keyboardLayoutList = keyboardLayoutList + configuration.customizeKeyboards.map { $0.type }
   }
 }
 
@@ -714,6 +721,14 @@ extension KeyboardSettingsViewModel {
     return snapshot
   }
 
+  /// 自定义键盘列表 DataSource
+//  func initCustomizerKeyboardLayoutDataSource() -> NSDiffableDataSourceSnapshot<Int, KeyboardType> {
+//    var snapshot = NSDiffableDataSourceSnapshot<Int, KeyboardType>()
+//    snapshot.appendSections([0])
+//    snapshot.appendItems(customizeKeyboardLayoutList, toSection: 0)
+//    return snapshot
+//  }
+
   /// 中文26键盘布局 DataSource
   func initChineseStanderSystemKeyboardDataSource() -> NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel> {
     var snapshot = NSDiffableDataSourceSnapshot<SettingSectionModel, SettingItemModel>()
@@ -745,13 +760,13 @@ extension KeyboardType {
     switch self {
     case .chinese: return "中文26键"
     case .chineseNineGrid: return "中文9键"
-    case .custom: return "自定义键盘"
+    case .custom(let name): return name.isEmpty ? "自定义键盘" : "自定义-\(name)"
     case .numericNineGrid: return "数字九宫格"
     default: return ""
     }
   }
 
-  var string: String {
+  var yamlString: String {
     switch self {
     case .chinese: return "chinese"
     case .chineseNineGrid: return "chineseNineGrid"

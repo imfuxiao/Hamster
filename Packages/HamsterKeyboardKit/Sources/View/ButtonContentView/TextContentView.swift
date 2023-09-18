@@ -28,6 +28,8 @@ public class TextContentView: UIView {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     label.text = text
     return label
   }()

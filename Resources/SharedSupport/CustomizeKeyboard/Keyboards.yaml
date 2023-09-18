@@ -43,87 +43,29 @@ keyboards:
       - keys:
           - action: character(q)
             label: "Q"
-            swipe:
-              - direction: up
-                action: character(1)
-                display: true
-              - direction: down
-                action: character(~)
-                processByRIME: true
           - action: character(w)
             label: "W"
-            swipe:
-              - direction: up
-                action: character(2)
-              - direction: down
-                action: character(@)
           - action: character(e)
             label: "E"
-            swipe:
-              - direction: up
-                action: character(3)
-              - direction: down
-                action: character(#)
           - action: character(r)
-            width: input
             label: "R"
-            swipe:
-              - direction: up
-                action: character(4)
-              - direction: down
-                action: character($)
           - action: character(t)
             label: "T"
-            swipe:
-              - direction: up
-                action: character(5)
-              - direction: down
-                action: character(%)
           - action: character(y)
-            width: input
             label: "Y"
-            swipe:
-              - direction: up
-                action: character(6)
-              - direction: down
-                action: character(^)
           - action: character(u)
             label: "U"
-            swipe:
-              - direction: up
-                action: character(7)
-              - direction: down
-                action: character(&)
           - action: character(i)
             label: "I"
-            swipe:
-              - direction: up
-                action: character(8)
-              - direction: down
-                action: character(*)
           - action: character(o)
             label: "O"
-            swipe:
-              - direction: up
-                action: character(9)
-              - direction: down
-                action: character(()
           - action: character(p)
             label: "P"
-            swipe:
-              - direction: up
-                action: character(0)
-              - direction: down
-                action: character())
       - keys:
           - action: characterMargin(a)
+            width: available
           - action: character(a)
             label: "A"
-            swipe:
-              - direction: up
-                action: character(1)
-              - direction: down
-                action: character(~)
           - action: character(s)
             label: "S"
           - action: character(d)
@@ -141,10 +83,12 @@ keyboards:
           - action: character(l)
             label: "L"
           - action: characterMargin(l)
+            width: available
       - keys:
           - action: shift
             width: percentage(0.13)
           - action: characterMargin(z)
+            width: available
           - action: character(z)
             label: "Z"
           - action: character(x)
@@ -160,6 +104,7 @@ keyboards:
           - action: character(m)
             label: "M"
           - action: characterMargin(m)
+            width: available
           - action: backspace
             width: percentage(0.13)
       - keys:
@@ -169,10 +114,10 @@ keyboards:
               portrait: percentage(0.25)
               landscape: percentage(0.195)
           - action: space
+            width: available
             label:
               loadingText: "仓输入法"
               text: "空格"
-            width: available
           - action: keyboardType(alphabetic)
             width: input
             label: "英"

@@ -221,6 +221,7 @@ public class StanderSystemKeyboard: UIView {
         if firstInputButton == nil && button.item.size.width == .input {
           firstInputButton = button
         }
+
         // 按键高度约束（高度包含 insets 部分）
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
@@ -234,7 +235,9 @@ public class StanderSystemKeyboard: UIView {
           staticConstraints.append(constraint)
         } else {
           // 注意：available 类型按键宽度在 input 类型宽度约束在行遍历后添加
-          availableItems.append(button)
+          if button.item.size.width == .available {
+            availableItems.append(button)
+          }
         }
 
         if button.row == 0 {
@@ -264,7 +267,6 @@ public class StanderSystemKeyboard: UIView {
           if button.column + 1 == row.endIndex {
             // 最后一列按键添加相对行的 trailing 约束
             staticConstraints.append(button.trailingAnchor.constraint(equalTo: touchView.trailingAnchor))
-//            staticConstraints.append(button.trailingAnchor.constraint(lessThanOrEqualTo: touchView.trailingAnchor))
 
             // 修改上一行 prevRowItem 变量引用
             prevRowItem = button
@@ -276,13 +278,12 @@ public class StanderSystemKeyboard: UIView {
       }
 
       // 当行中 .available 类型按键数量大于 1 的情况下，添加等宽约束
-      if availableItems.count > 1 {
-        let firstItem = availableItems.first!
+      if let firstItem = availableItems.first {
         for item in availableItems.dropFirst() {
           staticConstraints.append(item.widthAnchor.constraint(equalTo: firstItem.widthAnchor))
         }
+        availableItems.removeAll()
       }
-      availableItems.removeAll()
     }
 
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)

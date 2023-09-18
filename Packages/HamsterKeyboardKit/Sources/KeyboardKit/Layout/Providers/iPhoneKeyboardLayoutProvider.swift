@@ -182,7 +182,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     result.append(.space)
 
     /// 切换用户设置键盘
-    result.append(.keyboardType(context.selectKeyboard))
+    result.append(.returnLastKeyboard)
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))

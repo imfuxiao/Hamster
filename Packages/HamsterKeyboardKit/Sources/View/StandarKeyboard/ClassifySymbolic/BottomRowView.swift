@@ -75,6 +75,7 @@ class BottomRowView: UIView {
 
   /// 激活视图约束
   func activateViewConstraints() {
+    // TODO: 这里获取不到值
     var buttonWidthPercent: CGFloat = 0.25
     if let layoutProvider = layoutProvider as? SystemKeyboardLayoutProvider, case .percentage(let percent) = layoutProvider.largeBottomWidth(for: keyboardContext) {
       buttonWidthPercent = percent

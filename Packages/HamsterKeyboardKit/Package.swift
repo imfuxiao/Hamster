@@ -16,6 +16,7 @@ let package = Package(
   ],
   dependencies: [
     .package(path: "../HamsterKit"),
+    .package(path: "../HamsterUIKit"),
     .package(path: "../RimeKit"),
   ],
   targets: [
@@ -23,6 +24,7 @@ let package = Package(
       name: "HamsterKeyboardKit",
       dependencies: [
         "HamsterKit",
+        "HamsterUIKit",
         "RimeKit",
       ],
       path: "Sources",

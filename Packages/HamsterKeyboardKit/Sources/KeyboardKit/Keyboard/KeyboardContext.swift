@@ -677,4 +677,9 @@ public extension KeyboardContext {
   var upSwipeOnLeft: Bool {
     hamsterConfig?.Keyboard?.upSwipeOnLeft ?? true
   }
+
+  /// 自定义键盘
+  var customizeKeyboards: [Keyboard] {
+    hamsterConfig?.customizeKeyboards ?? []
+  }
 }

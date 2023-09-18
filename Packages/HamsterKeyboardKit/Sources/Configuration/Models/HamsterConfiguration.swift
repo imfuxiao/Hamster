@@ -25,18 +25,23 @@ public struct HamsterConfiguration: Codable, Hashable, CustomStringConvertible {
   /// 划动配置
   public var swipe: KeyboardSwipeConfiguration?
 
+  /// 自定义键盘
+  public var customizeKeyboards: [Keyboard]
+
   public init(
     general: GeneralConfiguration? = nil,
     toolbar: KeyboardToolbarConfiguration? = nil,
     Keyboard: KeyboardConfiguration? = nil,
     rime: RimeConfiguration? = nil,
-    swipe: KeyboardSwipeConfiguration? = nil)
-  {
+    swipe: KeyboardSwipeConfiguration? = nil,
+    customizeKeyboards: [Keyboard] = []
+  ) {
     self.general = general
     self.toolbar = toolbar
     self.Keyboard = Keyboard
     self.rime = rime
     self.swipe = swipe
+    self.customizeKeyboards = customizeKeyboards
   }
 }
 
@@ -61,6 +66,6 @@ public extension HamsterConfiguration {
 
 public extension HamsterConfiguration {
   var description: String {
-    "{ general: \(general as Optional),\n toolbar: \(toolbar as Optional), \n keyboard: \(Keyboard as Optional), \n rime: \(rime as Optional) }"
+    "{ general: \(general as Optional),\n toolbar: \(toolbar as Optional), \n keyboard: \(Keyboard as Optional), \n rime: \(rime as Optional), customizeKeyboards: \(customizeKeyboards as Optional) }"
   }
 }

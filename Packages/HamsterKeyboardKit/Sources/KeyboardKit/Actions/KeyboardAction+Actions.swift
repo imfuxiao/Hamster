@@ -93,7 +93,6 @@ public extension KeyboardAction {
   var standardPressAction: GestureAction? {
     switch self {
     case .backspace: return { $0?.deleteBackward() }
-    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     default: return nil
     }
   }
@@ -106,6 +105,7 @@ public extension KeyboardAction {
    */
   var standardReleaseAction: GestureAction? {
     switch self {
+    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
