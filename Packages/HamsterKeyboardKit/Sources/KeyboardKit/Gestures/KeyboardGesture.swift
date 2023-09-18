@@ -14,7 +14,7 @@ import Foundation
 
  该枚举定义了用户使用 KeyboardKit 内置交互与键盘操作进行交互的各种方式。
  */
-public enum KeyboardGesture: String, CaseIterable, Codable, Equatable, Identifiable {
+public enum KeyboardGesture: Codable, Equatable, Identifiable {
   /// Triggers when a button is double tapped.
   ///
   /// 双击按键时触发。
@@ -41,16 +41,16 @@ public enum KeyboardGesture: String, CaseIterable, Codable, Equatable, Identifia
   case repeatPress
 
   /// 上划
-  case swipeUp
+  case swipeUp(KeySwipe)
 
   /// 下划
-  case swipeDown
+  case swipeDown(KeySwipe)
 
-  /// 左划
-  case swipeLeft
-
-  /// 右划
-  case swipeRight
+//  /// 左划
+//  case swipeLeft
+//
+//  /// 右划
+//  case swipeRight
 }
 
 public extension KeyboardGesture {
@@ -59,5 +59,15 @@ public extension KeyboardGesture {
 
    KeyboardGesture 的唯一标识符。
    */
-  var id: String { rawValue }
+  var id: String {
+    switch self {
+    case .doubleTap: return "doubleTap"
+    case .press: return "press"
+    case .release: return "release"
+    case .longPress: return "longPress"
+    case .repeatPress: return "repeatPress"
+    case .swipeUp(let keySwipe): return "swipeUp(\(keySwipe.hashValue))"
+    case .swipeDown(let keySwipe): return "SwipeDown(\(keySwipe.hashValue))"
+    }
+  }
 }

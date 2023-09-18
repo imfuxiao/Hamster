@@ -54,10 +54,12 @@ public extension KeyboardAction {
     case .press: return standardPressAction
     case .release: return standardReleaseAction
     case .repeatPress: return standardRepeatAction
-    case .swipeUp: return standardReleaseAction
-    case .swipeDown: return standardReleaseAction
-    case .swipeLeft: return standardReleaseAction
-    case .swipeRight: return standardReleaseAction
+    case .swipeUp(let swipe):
+      if swipe.processByRIME { return standardReleaseAction }
+      return standerSwipeAction
+    case .swipeDown(let swipe):
+      if swipe.processByRIME { return standardReleaseAction }
+      return standerSwipeAction
     }
   }
     
@@ -146,36 +148,36 @@ public extension KeyboardAction {
     }
   }
   
-  /// 默认情况下，上划触发的操作
-  var standerSwipeUpAction: GestureAction? {
-    // TODO: 补充划动触发的逻辑
+  /// 默认情况下，触发的操作
+  /// 注意默认滑动操作不经过 RIME 引擎，如果需要经过 RIME 引擎处理，直接调用 standardReleaseAction
+  var standerSwipeAction: GestureAction? {
     switch self {
-    case .backspace: return { $0?.resetInputEngine() }
-    case .space: return { $0?.selectSecondaryCandidate() }
-    default:
-      return nil
+    case .character(let char): return { $0?.insertSymbol(Symbol(char: char)) }
+    case .characterMargin(let char): return { $0?.insertSymbol(Symbol(char: char)) }
+    case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
+    case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
+    case .chineseNineGrid(let symbol): return { $0?.insertSymbol(symbol) }
+    case .dismissKeyboard: return { $0?.dismissKeyboard() }
+    case .emoji(let emoji): return { $0?.insertSymbol(Symbol(char: emoji.char)) }
+    case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
+    case .moveCursorForward: return { $0?.adjustTextPosition(byCharacterOffset: 1) }
+    case .nextLocale: return { $0?.selectNextLocale() }
+    case .nextKeyboard: return { $0?.selectNextKeyboard() }
+    case .primary: return { $0?.insertSymbol(Symbol(char: .newline)) }
+    case .shift(let currentState): return {
+        switch currentState {
+        case .lowercased: $0?.setKeyboardCase(.uppercased)
+        case .auto, .capsLocked, .uppercased: $0?.setKeyboardCase(.lowercased)
+        }
+      }
+    case .space: return { $0?.insertSymbol(Symbol(char: .space)) }
+    case .systemSettings: return { $0?.openUrl(.keyboardSettings) }
+    case .tab: return { $0?.insertSymbol(Symbol(char: .tab)) }
+    case .url(let url, _): return { $0?.openUrl(url) }
+    case .returnLastKeyboard: return { $0?.returnLastKeyboard() }
+    case .cleanSpellingArea: return { $0?.resetInputEngine() }
+    case .delimiter: return { $0?.insertText("'") }
+    default: return nil
     }
-  }
-  
-  /// 默认情况下，下划触发的操作
-  var standerSwipeDownAction: GestureAction? {
-    // TODO: 补充划动触发的逻辑
-    return nil
-  }
-  
-  /// 默认情况下，左划触发的操作
-  var standerSwipeLeftAction: GestureAction? {
-    // TODO: 补充划动触发的逻辑
-    switch self {
-    case .backspace: return { $0?.resetInputEngine() }
-    default:
-      return nil
-    }
-  }
-  
-  /// 默认情况下，右划触发的操作
-  var standerSwipeRightAction: GestureAction? {
-    // TODO: 补充划动触发的逻辑
-    return nil
   }
 }

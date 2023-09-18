@@ -27,18 +27,16 @@ public class TextContentView: UIView {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
-    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     label.text = text
-    label.sizeToFit()
     return label
   }()
 
   private lazy var leftSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     label.textColor = .secondaryLabel
@@ -47,54 +45,71 @@ public class TextContentView: UIView {
 
   private lazy var rightSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     label.textAlignment = .center
+    label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     label.textColor = .secondaryLabel
     return label
   }()
 
-  private lazy var containerView: UIView = {
-    let containerView = UIView(frame: .zero)
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    containerView.addSubview(label)
-    containerView.addSubview(leftSwipeLabel)
-    containerView.addSubview(rightSwipeLabel)
+  private lazy var swipeLabelContainer: UIStackView = {
+    let view = UIStackView(frame: .zero)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.axis = .horizontal
+    view.alignment = .center
+    view.distribution = .equalSpacing
 
     for swipe in item.swipes {
-      if swipe.direction == .up {
+      if swipe.display, swipe.direction == .up {
         if keyboardContext.upSwipeOnLeft {
           leftSwipeLabel.text = swipe.labelText
-          leftSwipeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+          view.addArrangedSubview(leftSwipeLabel)
         } else {
           rightSwipeLabel.text = swipe.labelText
-          leftSwipeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+          view.addArrangedSubview(rightSwipeLabel)
         }
       }
 
-      if swipe.direction == .down {
+      if swipe.display, swipe.direction == .down {
         if keyboardContext.upSwipeOnLeft {
           rightSwipeLabel.text = swipe.labelText
+          view.addArrangedSubview(rightSwipeLabel)
         } else {
           leftSwipeLabel.text = swipe.labelText
+          view.addArrangedSubview(leftSwipeLabel)
         }
       }
     }
 
-    NSLayoutConstraint.activate([
-      leftSwipeLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
-      rightSwipeLabel.topAnchor.constraint(equalTo: containerView.topAnchor),
-      rightSwipeLabel.heightAnchor.constraint(equalTo: leftSwipeLabel.heightAnchor),
-      leftSwipeLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-      rightSwipeLabel.leadingAnchor.constraint(equalTo: leftSwipeLabel.trailingAnchor),
-      rightSwipeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+    return view
+  }()
 
-      label.topAnchor.constraint(equalTo: leftSwipeLabel.bottomAnchor, constant: useOffset ? -2 : 0),
-      label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-      label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-    ])
+  private lazy var containerView: UIView = {
+    let containerView = UIView(frame: .zero)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    containerView.addSubview(label)
+    containerView.addSubview(swipeLabelContainer)
+
+    if swipeLabelContainer.arrangedSubviews.isEmpty {
+      NSLayoutConstraint.activate([
+        label.topAnchor.constraint(equalTo: containerView.topAnchor, constant: useOffset ? -2 : 0),
+        label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+        label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      ])
+    } else {
+      NSLayoutConstraint.activate([
+        swipeLabelContainer.topAnchor.constraint(equalTo: containerView.topAnchor),
+        swipeLabelContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 3),
+        swipeLabelContainer.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -3),
+        swipeLabelContainer.heightAnchor.constraint(equalToConstant: 12),
+
+        label.topAnchor.constraint(equalTo: swipeLabelContainer.bottomAnchor, constant: useOffset ? -2 : 0),
+        label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+        label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      ])
+    }
 
     return containerView
   }()

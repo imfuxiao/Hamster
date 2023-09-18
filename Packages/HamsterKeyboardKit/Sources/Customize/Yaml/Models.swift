@@ -151,16 +151,8 @@ public struct KeySwipe: Codable, Hashable {
     case up
     case down
     // TODO: 暂不开启左右划动
-//    case left
-//    case right
-
-    /// 用于显示的值
-//    var display: String {
-//      switch self {
-//      case .up: "上划"
-//      case .down: "下划"
-//      }
-//    }
+    // case left
+    // case right
   }
 
   /// 划动方向, up / down 两个方向
@@ -245,8 +237,9 @@ public struct KeySwipe: Codable, Hashable {
   }
 
   /// UILabel 显示滑动的文本
-  public var labelText: String? {
-    guard display else { return nil }
+  public var labelText: String {
+    // 不在添加 display 判断，请在显示前自行判断
+    // guard display else { return nil }
     if !label.text.isEmpty { return label.text }
     return action.labelText
   }

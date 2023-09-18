@@ -386,6 +386,7 @@ static RimeLeversApi *get_levers() {
 }
 
 - (RimeSessionId)createSession {
+  // TODO: 这里在启动时容易发生 crash
   return RimeCreateSession();
 }
 

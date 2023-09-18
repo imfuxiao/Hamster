@@ -617,11 +617,11 @@ public extension KeyboardButton {
     switch direction {
     case .up:
       if let swipe = item.swipes.first(where: { $0.direction == .up }) {
-        actionHandler.handle(.swipeUp, on: swipe.action)
+        actionHandler.handle(.swipeUp(swipe), on: swipe.action)
       }
     case .down:
       if let swipe = item.swipes.first(where: { $0.direction == .down }) {
-        actionHandler.handle(.swipeDown, on: swipe.action)
+        actionHandler.handle(.swipeDown(swipe), on: swipe.action)
       }
 //    case .left:
 //      if let swipe = item.swipes.first(where: { $0.direction == .left }) {
