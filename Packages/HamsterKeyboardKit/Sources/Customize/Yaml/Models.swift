@@ -538,16 +538,35 @@ public extension KeyboardType {
       return ""
     }
   }
+
+  var labelText: String {
+    switch self {
+    case .alphabetic:
+      return "ABC"
+    case .numeric, .chineseNumeric, .numericNineGrid:
+      return "123"
+    case .symbolic, .chineseSymbolic:
+      return "#+="
+    case .classifySymbolic:
+      return "符"
+    case .chinese, .chineseNineGrid, .custom:
+      return "中"
+    case .emojis:
+      return "􀎸"
+    default:
+      return ""
+    }
+  }
 }
 
 public extension KeyboardAction {
   var labelText: String {
     switch self {
-    case .character(let char): return char.uppercased()
+    case .character(let char): return char
     case .symbol(let symbol): return symbol.char
     case .emoji(let emoji): return emoji.char
     case .emojiCategory(let cat): return cat.fallbackDisplayEmoji.char
-    case .keyboardType(let type): return type.yamlString
+    case .keyboardType(let type): return type.labelText
     case .primary: return "回车"
     case .space: return "空格"
     case .returnLastKeyboard: return "返回"

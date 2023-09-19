@@ -675,7 +675,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
       }
     }
 
-    self.keyboardLayoutList = keyboardLayoutList + configuration.customizeKeyboards.map { $0.type }
+    self.keyboardLayoutList = keyboardLayoutList + (configuration.customizeKeyboards ?? []).map { $0.type }
   }
 }
 

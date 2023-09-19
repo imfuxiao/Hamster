@@ -510,7 +510,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertText(_ text: String) {
-    if !keyboardContext.keyboardType.isChinese {
+    if keyboardContext.keyboardType.isAlphabetic {
       textDocumentProxy.insertText(text)
       return
     }

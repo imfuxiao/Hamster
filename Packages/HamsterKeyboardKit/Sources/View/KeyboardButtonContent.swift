@@ -25,7 +25,10 @@ public class KeyboardButtonContentView: UIView {
   private var contentView: UIView!
 
   var buttonText: String {
-    appearance.buttonText(for: action) ?? " "
+    if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.labelText {
+      return buttonText
+    }
+    return appearance.buttonText(for: action) ?? ""
   }
 
   init(item: KeyboardLayoutItem, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {

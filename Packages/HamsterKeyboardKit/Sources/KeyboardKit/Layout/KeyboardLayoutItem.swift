@@ -46,6 +46,9 @@ public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
   /// 该 item 的划动配置
   public var swipes: [KeySwipe]
 
+  /// 自定义键盘对应 Key
+  public var key: Key? = nil
+
   /**
    The row ID the is used to identify the item in a row.
 
@@ -67,12 +70,14 @@ public struct KeyboardLayoutItem: Equatable, KeyboardRowItem {
     action: KeyboardAction,
     size: KeyboardLayoutItemSize,
     insets: UIEdgeInsets,
-    swipes: [KeySwipe]
+    swipes: [KeySwipe] = [],
+    key: Key? = nil
   ) {
     self.action = action
     self.size = size
     self.insets = insets
     self.swipes = swipes
+    self.key = key
   }
 }
 

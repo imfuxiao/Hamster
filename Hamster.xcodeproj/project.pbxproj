@@ -15,7 +15,6 @@
 		C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */; };
 		C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */; };
 		C03319E22A2E1BEA00CE4950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */; };
-		C037B60C29CBD2C600B1BBDC /* DefaultAction.plist in Resources */ = {isa = PBXBuildFile; fileRef = C04FA93F299A674E00F8CC32 /* DefaultAction.plist */; };
 		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C053ADC32A5D503200EA7EEE /* HamsteriOS in Frameworks */ = {isa = PBXBuildFile; productRef = C053ADC22A5D503200EA7EEE /* HamsteriOS */; };
 		C09F6AF72A07FB3900F2EF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
@@ -76,7 +75,6 @@
 		C03E8025296D4F4C0083E53A /* Hamster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hamster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E803C296D53650083E53A /* HamsterKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HamsterKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8040296D53650083E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C04FA93F299A674E00F8CC32 /* DefaultAction.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DefaultAction.plist; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C08387F12A55897700EA8082 /* RimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RimeKit; path = Packages/RimeKit; sourceTree = "<group>"; };
 		C08387F32A5589A400EA8082 /* HamsterUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterUIKit; path = Packages/HamsterUIKit; sourceTree = "<group>"; };
@@ -185,19 +183,10 @@
 			path = HamsterKeyboard;
 			sourceTree = "<group>";
 		};
-		C04FA93E299A674E00F8CC32 /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				C04FA93F299A674E00F8CC32 /* DefaultAction.plist */,
-			);
-			path = Config;
-			sourceTree = "<group>";
-		};
 		C071BECC2970108000E21FBC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				C0D671B029F16D76002D0439 /* SharedSupport */,
-				C04FA93E299A674E00F8CC32 /* Config */,
 				C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */,
 			);
 			path = Resources;
@@ -342,7 +331,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C037B60C29CBD2C600B1BBDC /* DefaultAction.plist in Resources */,
 				C02435B52A0490230080CFB4 /* Preview Assets.xcassets in Resources */,
 				C03319E22A2E1BEA00CE4950 /* LaunchScreen.storyboard in Resources */,
 				C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */,

@@ -26,7 +26,7 @@ public struct HamsterConfiguration: Codable, Hashable, CustomStringConvertible {
   public var swipe: KeyboardSwipeConfiguration?
 
   /// 自定义键盘
-  public var customizeKeyboards: [Keyboard]
+  public var customizeKeyboards: [Keyboard]?
 
   public init(
     general: GeneralConfiguration? = nil,
@@ -34,7 +34,7 @@ public struct HamsterConfiguration: Codable, Hashable, CustomStringConvertible {
     Keyboard: KeyboardConfiguration? = nil,
     rime: RimeConfiguration? = nil,
     swipe: KeyboardSwipeConfiguration? = nil,
-    customizeKeyboards: [Keyboard] = []
+    customizeKeyboards: [Keyboard]? = nil
   ) {
     self.general = general
     self.toolbar = toolbar
