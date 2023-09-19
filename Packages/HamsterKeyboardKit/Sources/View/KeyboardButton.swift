@@ -153,7 +153,7 @@ public class KeyboardButton: UIControl {
   
   override public var isHighlighted: Bool {
     didSet {
-      updateButtonStyle(layoutConfig, isPressed: isHighlighted)
+      updateButtonStyle(isPressed: isHighlighted)
     }
   }
   
@@ -211,7 +211,7 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
     setupUnderShadowView(layoutConfig)
-    updateButtonStyle(layoutConfig, isPressed: false)
+    updateButtonStyle(isPressed: false)
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
@@ -249,6 +249,7 @@ public class KeyboardButton: UIControl {
   
   /// 设置 inputCallout 样式
   func setupInputCallout() {
+    guard keyboardContext.displayButtonBubbles else { return }
     guard inputCalloutView.superview == nil else { return }
     guard let superview = superview else { return }
     superview.addSubview(inputCalloutView)
@@ -260,9 +261,8 @@ public class KeyboardButton: UIControl {
     ])
   }
   
-  func updateConstraints(_ layoutConfig: KeyboardLayoutConfiguration) {
+  func updateSubviewConstraints() {
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
-
     interfaceOrientation = keyboardContext.interfaceOrientation
 
     let insets = item.insets
@@ -275,7 +275,7 @@ public class KeyboardButton: UIControl {
     trailingConstraints.forEach { $0.constant = -insets.right }
   }
   
-  func updateButtonStyle(_ layoutConfig: KeyboardLayoutConfiguration, isPressed: Bool) {
+  func updateButtonStyle(isPressed: Bool) {
     // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
     let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
     buttonContentView.style = style
@@ -308,13 +308,9 @@ public class KeyboardButton: UIControl {
     
     Logger.statistics.debug("\(self.row)-\(self.column) layoutSubviews()")
     
-    let layoutConfig = layoutConfig
-    updateConstraints(layoutConfig)
-    updateButtonStyle(layoutConfig, isPressed: isHighlighted)
-    
-    if keyboardContext.displayButtonBubbles {
-      setupInputCallout()
-    }
+    setupInputCallout()
+    updateSubviewConstraints()
+    updateButtonStyle(isPressed: isHighlighted)
   }
   
   // MARK: debuger

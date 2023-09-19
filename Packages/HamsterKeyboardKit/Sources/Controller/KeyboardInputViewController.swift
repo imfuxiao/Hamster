@@ -57,8 +57,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // 注意：添加代码日志中会有警告
     // [Warning] Trying to set delaysTouchesBegan to NO on a system gate gesture recognizer - this is unsupported and will have undesired side effects
     // 如果后续有更好的解决方案，可以替换此方案
-    guard let window = view.window else { return }
-    window.gestureRecognizers?.forEach {
+    view.window?.gestureRecognizers?.forEach {
       $0.delaysTouchesBegan = false
     }
   }
@@ -110,15 +109,14 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       keyboardContext.traitCollection = keyboardRootView.traitCollection
     }
 
-    view = keyboardRootView
-//    view.addSubview(keyboardRootView)
-//    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
-//    NSLayoutConstraint.activate([
-//      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
-//      keyboardRootView.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor),
-//      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//    ])
+    view.addSubview(keyboardRootView)
+    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
+    view.addConstraints([
+      view.topAnchor.constraint(equalTo: keyboardRootView.topAnchor),
+      view.bottomAnchor.constraint(equalTo: keyboardRootView.bottomAnchor),
+      view.leadingAnchor.constraint(equalTo: keyboardRootView.leadingAnchor),
+      view.trailingAnchor.constraint(equalTo: keyboardRootView.trailingAnchor),
+    ])
   }
 
   /**
@@ -803,30 +801,30 @@ private extension KeyboardInputViewController {
    RIME 引擎设置
    */
   func setupRIME() {
-    // 检测是否需要覆盖 RIME 目录
-    let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
-
-    // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
-    if !hasFullAccess {
-      do {
-        try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
-
-        // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
-        UserDefaults.hamster.overrideRimeDirectory = false
-      } catch {
-        Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
-      }
-
-      // Sandbox 补充 default.custom.yaml 文件
-      let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
-      if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
-        let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
-        Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
-      }
-    }
-
     // 异步 RIME 引擎启动
     Task {
+      // 检测是否需要覆盖 RIME 目录
+      let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
+
+      // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
+      if !hasFullAccess {
+        do {
+          try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
+
+          // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
+          UserDefaults.hamster.overrideRimeDirectory = false
+        } catch {
+          Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
+        }
+
+        // Sandbox 补充 default.custom.yaml 文件
+        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+        }
+      }
+
       await rimeContext.start(hasFullAccess: hasFullAccess)
       let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)

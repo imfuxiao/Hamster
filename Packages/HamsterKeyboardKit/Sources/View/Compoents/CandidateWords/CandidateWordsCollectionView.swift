@@ -34,6 +34,9 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// Combine
   var subscriptions = Set<AnyCancellable>()
 
+  /// 候选栏状态
+  var candidatesViewState: CandidateWordsView.State
+
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, CandidateSuggestion>! = nil
 
   init(
@@ -45,6 +48,7 @@ public class CandidateWordsCollectionView: UICollectionView {
     self.actionHandler = actionHandler
     self.rimeContext = rimeContext
     self.direction = .horizontal
+    self.candidatesViewState = keyboardContext.candidatesViewState
 
     self.horizontalLayout = {
       let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
@@ -155,6 +159,8 @@ public class CandidateWordsCollectionView: UICollectionView {
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] state in
+        guard self.candidatesViewState != state else { return }
+        self.candidatesViewState = state
         changeLayout(state)
       }
       .store(in: &subscriptions)

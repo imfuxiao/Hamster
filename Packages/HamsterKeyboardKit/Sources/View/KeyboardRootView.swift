@@ -7,13 +7,14 @@
 
 import Combine
 import HamsterKit
+import HamsterUIKit
 import OSLog
 import UIKit
 
 /**
  键盘根视图
  */
-class KeyboardRootView: UIView {
+class KeyboardRootView: NibLessView {
   public enum AutocompleteToolbarMode {
     /// Show the autocomplete toolbar if the keyboard context prefers it.
     ///
@@ -85,13 +86,13 @@ class KeyboardRootView: UIView {
     return view
   }()
 
-  /// 键盘容器视图
-  private lazy var keyboardContainerView: UIView = {
-    let view = UIView(frame: .zero)
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = .clear
-    return view
-  }()
+//  /// 键盘容器视图
+//  private lazy var keyboardContainerView: UIView = {
+//    let view = UIView(frame: .zero)
+//    view.translatesAutoresizingMaskIntoConstraints = false
+//    view.backgroundColor = .clear
+//    return view
+//  }()
 
   /// 26键键盘，包含默认中文26键及英文26键
   private lazy var alphabeticKeyboardView: UIView = {
@@ -100,8 +101,6 @@ class KeyboardRootView: UIView {
       appearance: appearance,
       actionHandler: actionHandler,
       autocompleteContext: autocompleteContext,
-      autocompleteToolbar: .automatic,
-      autocompleteToolbarAction: { _ in },
       keyboardContext: keyboardContext,
       rimeContext: rimeContext,
       calloutContext: calloutContext
@@ -113,6 +112,20 @@ class KeyboardRootView: UIView {
   /// 中文九宫格键盘
   private lazy var chineseNineGridKeyboardView: UIView = {
     let view = ChineseNineGridKeyboard(
+      actionHandler: actionHandler,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  /// 自定义键盘
+  private lazy var customizeKeyboardView: UIView = {
+    let view = CustomizeKeyboard(
+      keyboardLayoutProvider: keyboardLayoutProvider,
       actionHandler: actionHandler,
       appearance: appearance,
       keyboardContext: keyboardContext,
@@ -135,28 +148,12 @@ class KeyboardRootView: UIView {
 
     view.isHidden = true
     view.translatesAutoresizingMaskIntoConstraints = false
-
-    return view
-  }()
-
-  /// 自定义键盘
-  private lazy var customizeKeyboardView: UIView = {
-    let view = CustomizeKeyboard(
-      keyboardLayoutProvider: keyboardLayoutProvider,
-      actionHandler: actionHandler,
-      appearance: appearance,
-      keyboardContext: keyboardContext,
-      calloutContext: calloutContext,
-      rimeContext: rimeContext
-    )
-    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
   /// 符号分类键盘
   private lazy var classifySymbolicKeyboardView: ClassifySymbolicKeyboard = {
     let view = ClassifySymbolicKeyboard(actionHandler: actionHandler, layoutProvider: keyboardLayoutProvider, keyboardContext: keyboardContext)
-    view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
     return view
   }()
@@ -166,12 +163,12 @@ class KeyboardRootView: UIView {
     // TODO:
     let view = UIView()
     view.isHidden = true
-    view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = .red
     return view
   }()
 
-  var keyboardView: UIView {
+  /// 主键盘
+  private lazy var primaryKeyboardView: UIView = {
     switch keyboardContext.keyboardType {
     case .alphabetic, .symbolic, .numeric, .chinese, .chineseNumeric, .chineseSymbolic:
       return alphabeticKeyboardView
@@ -182,7 +179,7 @@ class KeyboardRootView: UIView {
     default:
       return UIView(frame: .zero)
     }
-  }
+  }()
 
   // MARK: - Initializations
 
@@ -232,69 +229,34 @@ class KeyboardRootView: UIView {
     combine()
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   // MARK: - Layout
 
   func setupView() {
     // 开启键盘配色
     backgroundColor = keyboardContext.backgroundColor
+  }
 
-    keyboardViewHierarchy()
+  override func willMove(toWindow newWindow: UIWindow?) {
+    super.willMove(toWindow: newWindow)
+
     constructViewHierarchy()
     activateViewConstraints()
   }
 
-  /// 构建键盘容器内视图
-  func keyboardViewHierarchy() {
-    let keyboardView = keyboardView
-    keyboardContainerView.addSubview(keyboardView)
-    NSLayoutConstraint.activate([
-      keyboardView.topAnchor.constraint(equalTo: keyboardContainerView.topAnchor),
-      keyboardView.bottomAnchor.constraint(equalTo: keyboardContainerView.bottomAnchor),
-      keyboardView.leadingAnchor.constraint(equalTo: keyboardContainerView.leadingAnchor),
-      keyboardView.trailingAnchor.constraint(equalTo: keyboardContainerView.trailingAnchor)
-    ])
-  }
-
   /// 构建视图层次
-  func constructViewHierarchy() {
-    // TODO: 根据当前键盘类型设置
+  override func constructViewHierarchy() {
     if keyboardContext.enableToolbar {
       addSubview(toolbarView)
-      addSubview(keyboardContainerView)
+      addSubview(primaryKeyboardView)
     } else {
-      addSubview(keyboardContainerView)
+      addSubview(primaryKeyboardView)
     }
-
-    addSubview(numericNineGridKeyboardView)
-    addSubview(classifySymbolicKeyboardView)
-    addSubview(emojisKeyboardView)
   }
 
   /// 激活约束
-  func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      numericNineGridKeyboardView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
-      numericNineGridKeyboardView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      numericNineGridKeyboardView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      numericNineGridKeyboardView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-      classifySymbolicKeyboardView.topAnchor.constraint(equalTo: topAnchor),
-      classifySymbolicKeyboardView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      classifySymbolicKeyboardView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      classifySymbolicKeyboardView.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-      emojisKeyboardView.topAnchor.constraint(equalTo: topAnchor),
-      emojisKeyboardView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      emojisKeyboardView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      emojisKeyboardView.trailingAnchor.constraint(equalTo: trailingAnchor)
-    ])
-
+  override func activateViewConstraints() {
     if keyboardContext.enableToolbar {
+      // 工具栏高度约束，可随配置调整高度
       toolbarHeightConstraint = toolbarView.heightAnchor.constraint(equalToConstant: keyboardContext.heightOfToolbar)
 
       // 工具栏收缩时约束
@@ -303,28 +265,28 @@ class KeyboardRootView: UIView {
         toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
         toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-        keyboardContainerView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
-        keyboardContainerView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-        keyboardContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        keyboardContainerView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        primaryKeyboardView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+        primaryKeyboardView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+        primaryKeyboardView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+        primaryKeyboardView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
       ]
 
       // 工具栏展开时约束
       toolbarExpandConstraints = [
-        toolbarView.topAnchor.constraint(equalTo: topAnchor),
-        toolbarView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        toolbarView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        toolbarView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        toolbarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+        toolbarView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+        toolbarView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+        toolbarView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
       ]
 
       toolbarHeightConstraint?.isActive = true
       NSLayoutConstraint.activate(keyboardContext.candidatesViewState.isCollapse() ? toolbarCollapseConstraints : toolbarExpandConstraints)
     } else {
       NSLayoutConstraint.activate([
-        keyboardContainerView.topAnchor.constraint(equalTo: topAnchor),
-        keyboardContainerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        keyboardContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        keyboardContainerView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        primaryKeyboardView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+        primaryKeyboardView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+        primaryKeyboardView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+        primaryKeyboardView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
       ])
     }
   }
@@ -334,63 +296,63 @@ class KeyboardRootView: UIView {
     if keyboardContext.enableToolbar {
       keyboardContext.candidatesViewStatePublished
         .receive(on: DispatchQueue.main)
-        .sink { [unowned self] _ in
+        .sink { [unowned self] in
+          guard candidateViewState != $0 else { return }
           setNeedsUpdateConstraints()
         }
         .store(in: &subscriptions)
     }
 
     // 键盘类型
-    keyboardContext.$keyboardType
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        switch $0 {
-        case .classifySymbolic:
-          // TODO: 动画代码重构
-          classifySymbolicKeyboardView.isHidden = false
-          classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: -frame.height)
-          UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut) { [unowned self] in
-            classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: frame.height)
-          }
-        case .numericNineGrid:
-          numericNineGridKeyboardView.isHidden = false
-        case .emojis:
-          emojisKeyboardView.isHidden = false
-        case .alphabetic, .chinese, .chineseNineGrid, .custom:
-          classifySymbolicKeyboardView.isHidden = true
-          numericNineGridKeyboardView.isHidden = true
-          emojisKeyboardView.isHidden = true
-          keyboardContainerView.subviews.forEach { $0.removeFromSuperview() }
-          let keyboardView = keyboardView
-          keyboardContainerView.addSubview(keyboardView)
-          NSLayoutConstraint.activate([
-            keyboardView.topAnchor.constraint(equalTo: keyboardContainerView.topAnchor),
-            keyboardView.bottomAnchor.constraint(equalTo: keyboardContainerView.bottomAnchor),
-            keyboardView.leadingAnchor.constraint(equalTo: keyboardContainerView.leadingAnchor),
-            keyboardView.trailingAnchor.constraint(equalTo: keyboardContainerView.trailingAnchor)
-          ])
-        default:
-          break
-        }
-      }
-      .store(in: &subscriptions)
+//    keyboardContext.$keyboardType
+//      .receive(on: DispatchQueue.main)
+//      .sink { [unowned self] in
+//        switch $0 {
+//        case .classifySymbolic:
+//          // TODO: 动画代码重构
+//          classifySymbolicKeyboardView.isHidden = false
+//          classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: -frame.height)
+//          UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut) { [unowned self] in
+//            classifySymbolicKeyboardView.frame = classifySymbolicKeyboardView.frame.offsetBy(dx: 0, dy: frame.height)
+//          }
+//        case .numericNineGrid:
+//          numericNineGridKeyboardView.isHidden = false
+//        case .emojis:
+//          emojisKeyboardView.isHidden = false
+//        case .alphabetic, .chinese, .chineseNineGrid, .custom:
+//          classifySymbolicKeyboardView.isHidden = true
+//          numericNineGridKeyboardView.isHidden = true
+//          emojisKeyboardView.isHidden = true
+//          keyboardContainerView.subviews.forEach { $0.removeFromSuperview() }
+//          let keyboardView = keyboardView
+//          keyboardContainerView.addSubview(keyboardView)
+//          NSLayoutConstraint.activate([
+//            keyboardView.topAnchor.constraint(equalTo: keyboardContainerView.topAnchor),
+//            keyboardView.bottomAnchor.constraint(equalTo: keyboardContainerView.bottomAnchor),
+//            keyboardView.leadingAnchor.constraint(equalTo: keyboardContainerView.leadingAnchor),
+//            keyboardView.trailingAnchor.constraint(equalTo: keyboardContainerView.trailingAnchor)
+//          ])
+//        default:
+//          break
+//        }
+//      }
+//      .store(in: &subscriptions)
   }
 
   override func updateConstraints() {
     super.updateConstraints()
 
+    // 检测候选栏状态是否发生变化
     guard self.candidateViewState != keyboardContext.candidatesViewState else { return }
     self.candidateViewState = keyboardContext.candidatesViewState
     if candidateViewState.isCollapse() {
-      keyboardContainerView.isHidden = false
       toolbarHeightConstraint?.constant = keyboardContext.heightOfToolbar
       NSLayoutConstraint.deactivate(toolbarExpandConstraints)
       NSLayoutConstraint.activate(toolbarCollapseConstraints)
     } else {
-      keyboardContainerView.isHidden = true
       NSLayoutConstraint.deactivate(toolbarCollapseConstraints)
       NSLayoutConstraint.activate(toolbarExpandConstraints)
-      toolbarHeightConstraint?.constant = keyboardContainerView.bounds.height + keyboardContext.heightOfToolbar
+      toolbarHeightConstraint?.constant = primaryKeyboardView.bounds.height + keyboardContext.heightOfToolbar
     }
   }
 }

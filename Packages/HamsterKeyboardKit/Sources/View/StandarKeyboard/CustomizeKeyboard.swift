@@ -150,7 +150,7 @@ class CustomizeKeyboard: NibLessView {
         if button.column == 0 {
           let heightConstant = button.item.size.height
           let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
-          buttonHeightConstraint.priority = .required
+          buttonHeightConstraint.priority = button.row + 1 == row.endIndex ? .defaultHigh : .required
           buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
           dynamicConstraints.append(buttonHeightConstraint)
         } else {

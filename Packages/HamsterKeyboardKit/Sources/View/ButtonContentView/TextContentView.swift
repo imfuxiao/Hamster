@@ -92,7 +92,6 @@ public class TextContentView: UIView {
     let containerView = UIView(frame: .zero)
     containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.addSubview(label)
-    containerView.addSubview(swipeLabelContainer)
 
     if swipeLabelContainer.arrangedSubviews.isEmpty {
       NSLayoutConstraint.activate([
@@ -101,6 +100,7 @@ public class TextContentView: UIView {
         label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
       ])
     } else {
+      containerView.addSubview(swipeLabelContainer)
       NSLayoutConstraint.activate([
         swipeLabelContainer.topAnchor.constraint(equalTo: containerView.topAnchor),
         swipeLabelContainer.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 3),

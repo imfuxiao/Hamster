@@ -26,7 +26,6 @@ public class StanderSystemKeyboard: UIView {
     case none
   }
 
-  public typealias AutocompleteToolbarAction = (AutocompleteSuggestion) -> Void
   public typealias KeyboardWidth = CGFloat
 
   // MARK: - Properties
@@ -34,8 +33,6 @@ public class StanderSystemKeyboard: UIView {
   private let keyboardLayoutProvider: KeyboardLayoutProvider
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
-  private let autocompleteToolbarMode: AutocompleteToolbarMode
-  private let autocompleteToolbarAction: AutocompleteToolbarAction
   private let touchView = KeyboardTouchView()
 
   private var actionCalloutContext: ActionCalloutContext
@@ -96,7 +93,6 @@ public class StanderSystemKeyboard: UIView {
      - actionHandler: The action handler to use.
      - autocompleteContext: The autocomplete context to use.
      - autocompleteToolbar: The autocomplete toolbar mode to use.
-     - autocompleteToolbarAction: The action to trigger when tapping an autocomplete suggestion.
      - keyboardContext: The keyboard context to use.
      - calloutContext: The callout context to use.
    */
@@ -105,8 +101,6 @@ public class StanderSystemKeyboard: UIView {
     appearance: KeyboardAppearance,
     actionHandler: KeyboardActionHandler,
     autocompleteContext: AutocompleteContext,
-    autocompleteToolbar: AutocompleteToolbarMode,
-    autocompleteToolbarAction: @escaping AutocompleteToolbarAction,
     keyboardContext: KeyboardContext,
     rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext?
@@ -114,8 +108,6 @@ public class StanderSystemKeyboard: UIView {
     self.keyboardLayoutProvider = keyboardLayoutProvider
     self.actionHandler = actionHandler
     self.appearance = appearance
-    self.autocompleteToolbarMode = autocompleteToolbar
-    self.autocompleteToolbarAction = autocompleteToolbarAction
     self.autocompleteContext = autocompleteContext
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
@@ -123,7 +115,6 @@ public class StanderSystemKeyboard: UIView {
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.interfaceOrientation = keyboardContext.interfaceOrientation
-//    self.currentKeyboardType = keyboardContext.keyboardType
 
     super.init(frame: .zero)
 
