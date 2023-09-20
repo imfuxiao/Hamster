@@ -40,12 +40,18 @@ class KeyboardSettingsRootView: NibLessView {
     tableView.delegate = self
     tableView.fillSuperview()
 
-    keyboardSettingsViewModel.$enableSymbolKeyboard
-      .combineLatest(keyboardSettingsViewModel.$enableNineGridOfNumericKeyboard, keyboardSettingsViewModel.$enableToolbar)
-      .sink { [unowned self] _ in
-        tableView.reloadData()
-      }
-      .store(in: &subscriptions)
+//    keyboardSettingsViewModel.$enableSymbolKeyboard
+//      .combineLatest(keyboardSettingsViewModel.$enableNineGridOfNumericKeyboard, keyboardSettingsViewModel.$enableToolbar)
+//      .sink { [unowned self] _ in
+//        tableView.reloadData()
+//      }
+//      .store(in: &subscriptions)
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    tableView.reloadData()
   }
 }
 

@@ -27,16 +27,16 @@ class KeyboardLayoutRootView: NibLessCollectionView {
 
     self.delegate = self
     self.diffableDataSource = makeDataSource()
-    self.diffableDataSource.apply(keyboardSettingsViewModel.initKeyboardLayoutDataSource(), animatingDifferences: false)
+  }
 
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    self.diffableDataSource.apply(keyboardSettingsViewModel.initKeyboardLayoutDataSource(), animatingDifferences: false)
     if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(where: { $0 == keyboardSettingsViewModel.useKeyboardType }) {
       self.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
     }
-
-    setupView()
   }
-
-  func setupView() {}
 }
 
 extension KeyboardLayoutRootView {

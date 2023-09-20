@@ -21,39 +21,42 @@ public class HamsterConfigurationRepositories {
   private init() {}
 
   /// 加载 hamster.yaml 配置文件
-  public func loadFromYAML(yamlPath path: URL) async throws -> HamsterConfiguration {
-//    let str = try String(contentsOf: path, encoding: .utf8)
-//    return try YAMLDecoder().decode(HamsterConfiguration.self, from: Data(str.utf8))
-    let data = try Data(contentsOf: path)
+  public func loadFromYAML(_ path: URL) throws -> HamsterConfiguration {
+    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
     return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 加载 hamster.custom.yaml 文件
-  public func loadPatchFromYAML(yamlPath path: URL) async throws -> HamsterPatchConfiguration {
-//    let str = try String(contentsOf: path, encoding: .utf8)
-//    return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: Data(str.utf8))
-    let data = try Data(contentsOf: path)
+  public func loadPatchFromYAML(yamlPath path: URL) throws -> HamsterPatchConfiguration {
+    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
     return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: data)
   }
 
   /// 保存配置至 yaml 文件中
-  public func saveToYAML(config: HamsterConfiguration, yamlPath path: URL) async throws {
+  public func saveToYAML(config: HamsterConfiguration, yamlPath path: URL) throws {
     let str = try Self.transform(YAMLEncoder().encode(config))
     try str.write(to: path, atomically: true, encoding: .utf8)
   }
 
-  /// 在 UserDefaults 中保存应用配置
-  public func saveToUserDefaults(_ config: HamsterConfiguration) async throws {
-    try await saveToUserDefaults(config, key: Self.hamsterConfigurationKey)
+  /// 保存配置补丁文件
+  public func savePatchToYAML(config: HamsterConfiguration, yamlPath path: URL) throws {
+    let patch = HamsterPatchConfiguration(patch: config)
+    let str = try Self.transform(YAMLEncoder().encode(patch))
+    try str.write(to: path, atomically: true, encoding: .utf8)
   }
 
   /// 在 UserDefaults 中保存应用配置
-  /// 注意这里的保存项是作为应用的默认配置，用于还原用户修改配置项
-  public func saveToUserDefaultsOnDefault(_ config: HamsterConfiguration) async throws {
-    try await saveToUserDefaults(config, key: Self.defaultHamsterConfigurationKey)
+  public func saveToUserDefaults(_ config: HamsterConfiguration) throws {
+    try saveToUserDefaults(config, key: Self.hamsterConfigurationKey)
   }
 
-  private func saveToUserDefaults(_ config: HamsterConfiguration, key: String) async throws {
+  /// 在 UserDefaults 中保存应用配置
+  /// 注意: 这里的保存项是作为应用的默认配置，用于还原用户修改配置项
+  public func saveToUserDefaultsOnDefault(_ config: HamsterConfiguration) throws {
+    try saveToUserDefaults(config, key: Self.defaultHamsterConfigurationKey)
+  }
+
+  private func saveToUserDefaults(_ config: HamsterConfiguration, key: String) throws {
     let data = try HamsterConfigurationRepositories.transform(YAMLEncoder().encode(config)).data(using: .utf8)
     UserDefaults.hamster.setValue(data, forKey: key)
   }
@@ -78,7 +81,7 @@ public class HamsterConfigurationRepositories {
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
   }
 
-  /// 清空应用配置
+  /// 清空应用配置（包含默认的应用配置）
   public func resetConfiguration() {
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
     UserDefaults.hamster.removeObject(forKey: Self.defaultHamsterConfigurationKey)

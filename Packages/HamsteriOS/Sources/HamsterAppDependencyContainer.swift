@@ -11,7 +11,7 @@ import HamsterKit
 import OSLog
 import UIKit
 
-/// Hamster 应用依赖容器
+/// Hamster 应用依赖注入容器
 /// 通过此容器，为对象注入依赖
 open class HamsterAppDependencyContainer {
   /// 单例
@@ -37,12 +37,29 @@ open class HamsterAppDependencyContainer {
   }()
 
   public lazy var keyboardSettingsViewModel: KeyboardSettingsViewModel = {
-    let vm = KeyboardSettingsViewModel(configuration: configuration)
+    let vm = KeyboardSettingsViewModel()
     return vm
   }()
 
+  /// 应用配置
+  /// 注意：应用首次启动时需要先将配置从配置文件中加载到 UserDefault 中
+  public var configuration: HamsterConfiguration {
+    didSet {
+      Task {
+        do {
+          try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
+          try HamsterConfigurationRepositories.shared.savePatchToYAML(config: configuration, yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
+        } catch {
+          Logger.statistics.error("hamster configuration didSet error: \(error.localizedDescription)")
+        }
+      }
+    }
+  }
+
   // 应用默认配置
-  // 注意：此配置用于还原系统默认配置
+  // 注意：
+  // 1. 此配置用于还原系统默认配置
+  // 2. 计算属性
   public var defaultConfiguration: HamsterConfiguration? {
     do {
       return try HamsterConfigurationRepositories.shared.loadFromUserDefaultsOnDefault()
@@ -52,42 +69,51 @@ open class HamsterAppDependencyContainer {
     }
   }
 
-  /// 应用配置
-  /// 注意：应用首次启动时需要先将配置从配置文件中加载到 UserDefault 中
-  private var configCache: HamsterConfiguration?
-  public var configuration: HamsterConfiguration {
-    get {
-      if let config = configCache {
-        return config
-      }
-      if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
-        configCache = config
-        return config
-      }
-      Logger.statistics.warning("load HamsterConfiguration from UserDefaults error.")
-      return HamsterConfiguration()
-    }
-    set {
-      configCache = newValue
-      Task {
-        do {
-          try await HamsterConfigurationRepositories.shared.saveToUserDefaults(newValue)
-        } catch {
-          Logger.statistics.error("configuration didSet error: \(error.localizedDescription)")
-        }
-      }
-    }
-  }
-
   private init() {
     // 创建 long-lived 属性
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
+
+    // 判断应用是否首次运行
+    // 注意 UserDefaults.hamster.isFirstRunning 标志位在 SettingsViewModel 的 loadAppData() 方法内重置
+    if UserDefaults.hamster.isFirstRunning {
+      do {
+        // 首次运行解压 zip 文件（包含应用内置输入方案及配置文件）
+        try FileManager.initSandboxSharedSupportDirectory(override: true)
+
+        // 读取 Hamster.yaml, 生成应用全局配置
+        let hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
+
+        // 保存应用配置
+        try HamsterConfigurationRepositories.shared.saveToUserDefaults(hamsterConfiguration)
+
+        // 作为应用的默认配置，可从默认值中恢复
+        try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
+
+        self.configuration = hamsterConfiguration
+      } catch {
+        self.configuration = HamsterConfiguration()
+        Logger.statistics.error("init SharedSupport error: \(error.localizedDescription)")
+      }
+      return
+    }
+
+    // 非首次启动从 UserDefault 文件中加载
+    do {
+      self.configuration = try HamsterConfigurationRepositories.shared.loadFromUserDefaults()
+    } catch {
+      Logger.statistics.error("load configuration from UserDefault error: \(error.localizedDescription)")
+      // 如果从 UserDefaults 加载失败，则尝试从配置文件中加载一次
+      if let hamsterConfiguration = try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport) {
+        self.configuration = hamsterConfiguration
+      } else {
+        self.configuration = HamsterConfiguration()
+      }
+    }
   }
 
   /// 重置应用配置
   public func resetHamsterConfiguration() {
-    configCache = nil
     HamsterConfigurationRepositories.shared.resetConfiguration()
   }
 }
@@ -120,7 +146,7 @@ extension HamsterAppDependencyContainer: BackupViewModelFactory {
 
 extension HamsterAppDependencyContainer: FinderViewModelFactory {
   func makeFinderViewModel() -> FinderViewModel {
-    return FinderViewModel(configuration: configuration)
+    return FinderViewModel()
   }
 }
 
@@ -148,13 +174,13 @@ extension HamsterAppDependencyContainer: KeyboardSettingsSubViewControllerFactor
 
 extension HamsterAppDependencyContainer: KeyboardColorViewModelFactory {
   func makeKeyboardColorViewModel() -> KeyboardColorViewModel {
-    KeyboardColorViewModel(settingsViewModel: settingsViewModel, configuration: configuration)
+    KeyboardColorViewModel(settingsViewModel: settingsViewModel)
   }
 }
 
 extension HamsterAppDependencyContainer: KeyboardFeedbackViewModelFactory {
   func makeKeyboardFeedbackViewModel() -> KeyboardFeedbackViewModel {
-    KeyboardFeedbackViewModel(configuration: configuration)
+    KeyboardFeedbackViewModel()
   }
 }
 

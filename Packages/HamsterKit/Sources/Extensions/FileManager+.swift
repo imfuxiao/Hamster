@@ -294,9 +294,19 @@ public extension FileManager {
     sandboxUserDataDirectory.appendingPathComponent("installation.yaml")
   }
 
-  /// Sandbox/sharedSupport/hamster.yaml 文件
+  /// Sandbox/SharedSupport/hamster.yaml 文件
   static var hamsterConfigFileOnSandboxSharedSupport: URL {
     sandboxSharedSupportDirectory.appendingPathComponent("hamster.yaml")
+  }
+  
+  /// Sandbox/Rime/hamster.yaml 文件
+  static var hamsterConfigFileOnUserDataSupport: URL {
+    sandboxUserDataDirectory.appendingPathComponent("hamster.yaml")
+  }
+  
+  /// Sandbox/Rime/hamster.custom.yaml 文件
+  static var hamsterPatchConfigFileOnUserDataSupport: URL {
+    sandboxUserDataDirectory.appendingPathComponent("hamster.custom.yaml")
   }
 
   // 沙盒 Document 目录下 ShareSupport 目录

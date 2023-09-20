@@ -152,7 +152,6 @@ extension SettingsViewModel {
         
     // 首次启动始化输入方案目录
     do {
-      try FileManager.initSandboxSharedSupportDirectory(override: true)
       try FileManager.initSandboxUserDataDirectory(override: true)
       try FileManager.initSandboxBackupDirectory(override: true)
     } catch {
@@ -160,30 +159,21 @@ extension SettingsViewModel {
       throw error
     }
         
-    // 读取 Hamster.yaml 生成 configuration, 作为默认值
-    let hamsterConfiguration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
-        
     // 部署 RIME
-    try await rimeContext.deployment(configuration: hamsterConfiguration)
+    try await rimeContext.deployment(configuration: configuration)
       
     // 部署后将方案copy至AppGroup下供keyboard使用
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
       
     // 保存应用配置
-    if let enableAppleCloud = hamsterConfiguration.general?.enableAppleCloud {
+    if let enableAppleCloud = configuration.general?.enableAppleCloud {
       self.enableAppleCloud = enableAppleCloud
     }
-    if let enableColorSchema = hamsterConfiguration.Keyboard?.enableColorSchema {
+    if let enableColorSchema = configuration.Keyboard?.enableColorSchema {
       self.enableColorSchema = enableColorSchema
     }
     
-    // 作为运行时配置，随时被用户修改并保存
-    HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
-    
-    // 作为应用的默认配置，可从默认值中恢复
-    try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
-      
     // 修改应用首次运行标志
     UserDefaults.hamster.isFirstRunning = false
       

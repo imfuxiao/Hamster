@@ -32,203 +32,303 @@ public class KeyboardSettingsViewModel: ObservableObject {
   // MARK: - properties
 
   public var displayButtonBubbles: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles = displayButtonBubbles
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles = newValue
     }
   }
 
   public var upSwipeOnLeft: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft = upSwipeOnLeft
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft = newValue
     }
   }
 
   public var enableEmbeddedInputMode: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode = enableEmbeddedInputMode
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode = newValue
     }
   }
 
   public var lockShiftState: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState = lockShiftState
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState = newValue
     }
   }
 
   public var displaySpaceLeftButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceLeftButton = displaySpaceLeftButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceLeftButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceLeftButton = newValue
     }
   }
 
   public var keyValueOfSpaceLeftButton: String {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton = keyValueOfSpaceLeftButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton = newValue
     }
   }
 
   public var displaySpaceRightButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton = displaySpaceRightButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton = newValue
     }
   }
 
   public var keyValueOfSpaceRightButton: String {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceRightButton = keyValueOfSpaceRightButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceRightButton ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceRightButton = newValue
     }
   }
 
   public var displayChineseEnglishSwitchButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayChineseEnglishSwitchButton = displayChineseEnglishSwitchButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayChineseEnglishSwitchButton ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayChineseEnglishSwitchButton = newValue
     }
   }
 
   public var chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = chineseEnglishSwitchButtonIsOnLeftOfSpaceButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = newValue
     }
   }
 
-  @Published
   public var enableToolbar: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.enableToolbar = enableToolbar
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.enableToolbar ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.enableToolbar = newValue
     }
   }
 
   public var displaySemicolonButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton = displaySemicolonButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton = newValue
     }
   }
 
   public var displayClassifySymbolButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton = displayClassifySymbolButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton = newValue
     }
   }
 
-  @Published
   public var enableNineGridOfNumericKeyboard: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard = enableNineGridOfNumericKeyboard
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard = newValue
     }
   }
 
   public var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = enterDirectlyOnScreenByNineGridOfNumericKeyboard
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
     }
   }
 
-  @Published
   public var enableSymbolKeyboard: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard = enableSymbolKeyboard
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard = newValue
     }
   }
 
   public var candidateWordFontSize: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize = candidateWordFontSize
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize ?? 20
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize = newValue
     }
   }
 
   public var heightOfToolbar: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfToolbar = heightOfToolbar
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfToolbar ?? 50
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfToolbar = newValue
     }
   }
 
   public var heightOfCodingArea: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfCodingArea = heightOfCodingArea
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfCodingArea ?? 10
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfCodingArea = newValue
     }
   }
 
   public var codingAreaFontSize: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.codingAreaFontSize = codingAreaFontSize
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.codingAreaFontSize ?? 12
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.codingAreaFontSize = newValue
     }
   }
 
   public var candidateCommentFontSize: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize = candidateCommentFontSize
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize ?? 12
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize = newValue
     }
   }
 
   public var displayKeyboardDismissButton: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton = displayKeyboardDismissButton
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton = newValue
     }
   }
 
   public var displayIndexOfCandidateWord: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayIndexOfCandidateWord = displayIndexOfCandidateWord
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayIndexOfCandidateWord ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayIndexOfCandidateWord = newValue
     }
   }
 
   public var displayCommentOfCandidateWord: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayCommentOfCandidateWord = displayCommentOfCandidateWord
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayCommentOfCandidateWord ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayCommentOfCandidateWord = newValue
     }
   }
 
   public var maximumNumberOfCandidateWords: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords = maximumNumberOfCandidateWords
+    get {
+      HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords ?? 100
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords = newValue
     }
   }
 
-  @Published
   public var symbolsOfGridOfNumericKeyboard: [String] {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfGridOfNumericKeyboard = symbolsOfGridOfNumericKeyboard
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfGridOfNumericKeyboard = newValue
     }
   }
 
-  @Published
   public var pairsOfSymbols: [String] {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.pairsOfSymbols = pairsOfSymbols
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.pairsOfSymbols ?? []
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.pairsOfSymbols = newValue
     }
   }
 
-  @Published
   public var symbolsOfCursorBack: [String] {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfCursorBack = symbolsOfCursorBack
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfCursorBack ?? []
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfCursorBack = newValue
     }
   }
 
-  @Published
   public var symbolsOfReturnToMainKeyboard: [String] {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfReturnToMainKeyboard = symbolsOfReturnToMainKeyboard
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfReturnToMainKeyboard = newValue
     }
   }
 
-  @Published
-  public var symbolTableIsEditing: Bool = false
+  /// 中文标准键盘默认划动选项
+  public var chineseStanderSystemKeyboardSwipeList: [Key] {
+    HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
+      .first(where: { $0.keyboardType?.isChinesePrimaryKeyboard ?? false })?
+      .keys ?? []
+  }
 
   /// 选择键盘类型
-  public var useKeyboardType: KeyboardType {
-    didSet {
-      if case .custom(let named) = useKeyboardType {
-        if !named.isEmpty {
-          HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.yamlString
-        }
-      } else {
-        HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = useKeyboardType.yamlString
-      }
+  public var useKeyboardType: KeyboardType? {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType?.keyboardType
     }
+    set {
+      guard let keyboardType = newValue else { return }
+      if case .custom(let named) = keyboardType {
+        if !named.isEmpty {
+          HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = keyboardType.yamlString
+        }
+        return
+      }
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = keyboardType.yamlString
+    }
+  }
+
+  /// 键盘类型
+  public var keyboardLayoutList: [KeyboardType] {
+    let list: [KeyboardType] = [
+      .chinese(.lowercased),
+      .chineseNineGrid
+    ]
+    return list + (HamsterAppDependencyContainer.shared.configuration.customizeKeyboards ?? []).map { $0.type }
   }
 
   // MARK: - combine
+
+  @Published
+  public var symbolTableIsEditing: Bool = false
 
   /// 键盘类型
   /// 注意：没有为属性 useKeyboardType 加 @Published 是因为不想进入键盘布局页面解决跳转
@@ -358,7 +458,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
           text: "符号键盘",
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
+          // navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.symbolKeyboard)
           })
@@ -594,13 +694,13 @@ public class KeyboardSettingsViewModel: ObservableObject {
   ]
 
   lazy var symbolKeyboardSettings: [SettingItemModel] = [
-    .init(
-      text: "启用符号键盘",
-      type: .toggle,
-      toggleValue: enableSymbolKeyboard,
-      toggleHandled: { [unowned self] in
-        enableSymbolKeyboard = $0
-      }),
+//    .init(
+//      text: "启用符号键盘",
+//      type: .toggle,
+//      toggleValue: enableSymbolKeyboard,
+//      toggleHandled: { [unowned self] in
+//        enableSymbolKeyboard = $0
+//      }),
     .init(
       text: "常用符号 - 恢复默认值",
       textTintColor: .systemRed,
@@ -613,69 +713,48 @@ public class KeyboardSettingsViewModel: ObservableObject {
       })
   ]
 
-  /// 键盘类型
-  public var keyboardLayoutList: [KeyboardType] = [
-    .chinese(.lowercased),
-    .chineseNineGrid
-  ]
-
-  /// 中文标准键盘默认划动选项
-  public var chineseStanderSystemKeyboardSwipeList: [Key] = []
-//  public var chineseStanderSystemKeyboardSwipeList: [Key] = [
-//    Key(action: .character("a"), swipe: [
-//      KeySwipe(direction: .up, action: .character("1"), label: KeyLabel(text: "1")),
-//      KeySwipe(direction: .down, action: .character("x"), processByRIME: false, display: false, label: KeyLabel(text: "x"))
-//    ]),
-//    Key(action: .keyboardType(.numericNineGrid), swipe: [
-//      KeySwipe(direction: .up, action: .custom(named: "#"), label: KeyLabel(text: "1"))
-//    ]),
-//    Key(action: .character("b"), swipe: [
-//      KeySwipe(direction: .up, action: .character("2"), label: KeyLabel(text: "2"))
-//    ])
-//  ]
-
   // MARK: - Initialization
 
-  public init(configuration: HamsterConfiguration) {
-    self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
-    self.upSwipeOnLeft = configuration.Keyboard?.upSwipeOnLeft ?? true
-    self.displayKeyboardDismissButton = configuration.toolbar?.displayKeyboardDismissButton ?? true
-    self.lockShiftState = configuration.Keyboard?.lockShiftState ?? true
-    self.displaySpaceLeftButton = configuration.Keyboard?.displaySpaceLeftButton ?? true
-    self.keyValueOfSpaceLeftButton = configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ","
-    self.displaySpaceRightButton = configuration.Keyboard?.displaySpaceRightButton ?? false
-    self.keyValueOfSpaceRightButton = configuration.Keyboard?.keyValueOfSpaceRightButton ?? "."
-    self.displayChineseEnglishSwitchButton = configuration.Keyboard?.displayChineseEnglishSwitchButton ?? true
-    self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
-    self.enableToolbar = configuration.toolbar?.enableToolbar ?? true
-    self.displaySemicolonButton = configuration.Keyboard?.displaySemicolonButton ?? false
-    self.displayClassifySymbolButton = configuration.Keyboard?.displayClassifySymbolButton ?? true
-    self.enableNineGridOfNumericKeyboard = configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? false
-    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? false
-    self.enableSymbolKeyboard = configuration.Keyboard?.enableSymbolKeyboard ?? false
-    self.symbolsOfGridOfNumericKeyboard = configuration.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
-    self.pairsOfSymbols = configuration.Keyboard?.pairsOfSymbols ?? []
-    self.symbolsOfCursorBack = configuration.Keyboard?.symbolsOfCursorBack ?? []
-    self.symbolsOfReturnToMainKeyboard = configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
-    self.useKeyboardType = (configuration.Keyboard?.useKeyboardType ?? "chinese").keyboardType ?? .chinese(.lowercased)
+  public init() {
+//    self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
+//    self.upSwipeOnLeft = configuration.Keyboard?.upSwipeOnLeft ?? true
+//    self.displayKeyboardDismissButton = configuration.toolbar?.displayKeyboardDismissButton ?? true
+//    self.lockShiftState = configuration.Keyboard?.lockShiftState ?? true
+//    self.displaySpaceLeftButton = configuration.Keyboard?.displaySpaceLeftButton ?? true
+//    self.keyValueOfSpaceLeftButton = configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ","
+//    self.displaySpaceRightButton = configuration.Keyboard?.displaySpaceRightButton ?? false
+//    self.keyValueOfSpaceRightButton = configuration.Keyboard?.keyValueOfSpaceRightButton ?? "."
+//    self.displayChineseEnglishSwitchButton = configuration.Keyboard?.displayChineseEnglishSwitchButton ?? true
+//    self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
+//    self.enableToolbar = configuration.toolbar?.enableToolbar ?? true
+//    self.displaySemicolonButton = configuration.Keyboard?.displaySemicolonButton ?? false
+//    self.displayClassifySymbolButton = configuration.Keyboard?.displayClassifySymbolButton ?? true
+//    self.enableNineGridOfNumericKeyboard = configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? false
+//    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? false
+//    self.enableSymbolKeyboard = configuration.Keyboard?.enableSymbolKeyboard ?? false
+//    self.symbolsOfGridOfNumericKeyboard = configuration.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
+//    self.pairsOfSymbols = configuration.Keyboard?.pairsOfSymbols ?? []
+//    self.symbolsOfCursorBack = configuration.Keyboard?.symbolsOfCursorBack ?? []
+//    self.symbolsOfReturnToMainKeyboard = configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
+//    self.useKeyboardType = (configuration.Keyboard?.useKeyboardType ?? "chinese").keyboardType ?? .chinese(.lowercased)
+//
+//    self.enableEmbeddedInputMode = configuration.Keyboard?.enableEmbeddedInputMode ?? false
+//    self.candidateWordFontSize = configuration.toolbar?.candidateWordFontSize ?? 20
+//    self.heightOfToolbar = configuration.toolbar?.heightOfToolbar ?? 50
+//    self.heightOfCodingArea = configuration.toolbar?.heightOfCodingArea ?? 10
+//    self.codingAreaFontSize = configuration.toolbar?.codingAreaFontSize ?? 12
+//    self.candidateCommentFontSize = configuration.toolbar?.candidateCommentFontSize ?? 12
+//    self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
+//    self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
+//    self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
 
-    self.enableEmbeddedInputMode = configuration.Keyboard?.enableEmbeddedInputMode ?? false
-    self.candidateWordFontSize = configuration.toolbar?.candidateWordFontSize ?? 20
-    self.heightOfToolbar = configuration.toolbar?.heightOfToolbar ?? 50
-    self.heightOfCodingArea = configuration.toolbar?.heightOfCodingArea ?? 10
-    self.codingAreaFontSize = configuration.toolbar?.codingAreaFontSize ?? 12
-    self.candidateCommentFontSize = configuration.toolbar?.candidateCommentFontSize ?? 12
-    self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
-    self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
-    self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
+//    for keyboardSwipe in configuration.swipe?.keyboardSwipe ?? [] {
+//      if keyboardSwipe.keyboardType?.isChinesePrimaryKeyboard ?? false {
+//        self.chineseStanderSystemKeyboardSwipeList = keyboardSwipe.keys ?? []
+//      }
+//    }
 
-    for keyboardSwipe in configuration.swipe?.keyboardSwipe ?? [] {
-      if keyboardSwipe.keyboardType?.isChinesePrimaryKeyboard ?? false {
-        self.chineseStanderSystemKeyboardSwipeList = keyboardSwipe.keys ?? []
-      }
-    }
-
-    self.keyboardLayoutList = keyboardLayoutList + (configuration.customizeKeyboards ?? []).map { $0.type }
+//    self.keyboardLayoutList = keyboardLayoutList + (configuration.customizeKeyboards ?? []).map { $0.type }
   }
 }
 

@@ -23,7 +23,9 @@ public enum FinderSegmentAction {
 public class FinderViewModel: ObservableObject {
   // MARK: properties
 
-  private let configuration: HamsterConfiguration
+  private var configuration: HamsterConfiguration {
+    HamsterAppDependencyContainer.shared.configuration
+  }
 
   public var segmentActionPublished: AnyPublisher<FinderSegmentAction, Never> {
     segmentActionSubject.eraseToAnyPublisher()
@@ -74,9 +76,7 @@ public class FinderViewModel: ObservableObject {
 
   // MARK: methods
 
-  init(configuration: HamsterConfiguration) {
-    self.configuration = configuration
-  }
+  init() {}
 
   @objc func segmentChangeAction(sender: UISegmentedControl) {
     switch sender.selectedSegmentIndex {

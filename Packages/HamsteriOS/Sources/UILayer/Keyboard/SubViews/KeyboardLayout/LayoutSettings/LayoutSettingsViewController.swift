@@ -37,15 +37,15 @@ class LayoutSettingsViewController: NibLessViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    let useKeyboardType = keyboardSettingsViewModel.useKeyboardType
-
-    self.title = useKeyboardType.label
-    if useKeyboardType.isChinesePrimaryKeyboard {
-      self.view = self.chineseStanderSystemKeyboardSettingsView
-    } else if useKeyboardType.isChineseNineGrid {
-      self.view = self.chineseNineGridKeyboardSettingsView
-    } else {
-      self.view = self.customKeyboardSettingsView
+    if let useKeyboardType = keyboardSettingsViewModel.useKeyboardType {
+      self.title = useKeyboardType.label
+      if useKeyboardType.isChinesePrimaryKeyboard {
+        self.view = self.chineseStanderSystemKeyboardSettingsView
+      } else if useKeyboardType.isChineseNineGrid {
+        self.view = self.chineseNineGridKeyboardSettingsView
+      } else {
+        self.view = self.customKeyboardSettingsView
+      }
     }
   }
 }

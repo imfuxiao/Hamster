@@ -33,7 +33,7 @@ class KeyboardFeedbackRootView: NibLessView {
 
     setupTableView()
 
-    keyboardFeedbackViewModel.$enableHapticFeedback
+    keyboardFeedbackViewModel.hapticFeedbackStatePublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
         let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {

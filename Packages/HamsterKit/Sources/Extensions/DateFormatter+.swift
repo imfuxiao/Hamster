@@ -28,7 +28,7 @@ public extension DateFormatter {
   static var tempFileNameStyle: DateFormatter {
     let format = DateFormatter()
     format.locale = Locale(identifier: "zh_Hans_SG")
-    format.dateFormat = "yyyy-MM-dd HH_mm_ss"
+    format.dateFormat = "yyyyMMdd-HHmmss"
     return format
   }
 }

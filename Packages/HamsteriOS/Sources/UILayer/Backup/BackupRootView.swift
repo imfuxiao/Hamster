@@ -63,19 +63,20 @@ extension BackupRootView: UITableViewDelegate {
     let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, _ in
       backupViewModel.backupSwipeAction = .delete
     }
+    deleteAction.backgroundColor = .systemRed
 
     let restoreAction = UIContextualAction(style: .normal, title: "恢复") { [unowned self] _, _, completion in
       Task {
-        try await backupViewModel.restore(fileInfo: fileInfo)
+        await backupViewModel.restore(fileInfo: fileInfo)
         completion(true)
       }
     }
-    restoreAction.backgroundColor = .systemYellow.withAlphaComponent(0.5)
+    restoreAction.backgroundColor = .systemYellow
 
     let editAction = UIContextualAction(style: .normal, title: "修改名称") { [unowned self] _, _, _ in
       backupViewModel.backupSwipeAction = .rename
     }
-    editAction.backgroundColor = .systemBlue.withAlphaComponent(0.5)
+    editAction.backgroundColor = .systemBlue
     return UISwipeActionsConfiguration(actions: [editAction, restoreAction, deleteAction])
   }
 }

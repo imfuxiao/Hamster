@@ -14,26 +14,27 @@ class KeyboardColorViewModel {
   public unowned let settingsViewModel: SettingsViewModel
   
   public var useColorSchema: String {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchema = useColorSchema
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchema ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchema = newValue
     }
   }
   
-  public var keyboardColorList: [HamsterKeyboardColor]
-  
-  init(settingsViewModel: SettingsViewModel, configuration: HamsterConfiguration) {
-    self.settingsViewModel = settingsViewModel
-    self.useColorSchema = configuration.Keyboard?.useColorSchema ?? ""
-    
-    if let colorSchemas = configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
-      self.keyboardColorList = colorSchemas
+  public var keyboardColorList: [HamsterKeyboardColor] {
+    if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
+      return colorSchemas
         .sorted()
         .compactMap {
           HamsterKeyboardColor(colorSchema: $0)
         }
-    } else {
-      self.keyboardColorList = []
     }
+    return []
+  }
+  
+  init(settingsViewModel: SettingsViewModel) {
+    self.settingsViewModel = settingsViewModel
   }
   
   // MARK: methods

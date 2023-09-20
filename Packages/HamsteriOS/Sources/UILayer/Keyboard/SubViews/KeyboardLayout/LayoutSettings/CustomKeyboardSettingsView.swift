@@ -30,7 +30,7 @@ class CustomKeyboardSettingsView: NibLessCollectionView {
     self.diffableDataSource = makeDataSource()
 //    self.diffableDataSource.apply(keyboardSettingsViewModel.initCustomizerKeyboardLayoutDataSource(), animatingDifferences: false)
 
-    if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(of: keyboardSettingsViewModel.useKeyboardType) {
+    if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(where: { $0 == keyboardSettingsViewModel.useKeyboardType }) {
       self.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
     }
 

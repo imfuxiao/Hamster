@@ -16,15 +16,20 @@ public class KeyboardFeedbackViewModel {
   // MARK: properties
 
   public var enableKeySounds: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableKeySounds = enableKeySounds
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableKeySounds ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableKeySounds = newValue
     }
   }
 
-  @Published
   public var enableHapticFeedback: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback = enableHapticFeedback
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback = newValue
     }
   }
 
@@ -34,8 +39,11 @@ public class KeyboardFeedbackViewModel {
   }
 
   public var hapticFeedbackIntensity: Int {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.hapticFeedbackIntensity = hapticFeedbackIntensity
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.hapticFeedbackIntensity ?? 2
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.hapticFeedbackIntensity = newValue
     }
   }
 
@@ -45,11 +53,7 @@ public class KeyboardFeedbackViewModel {
 
   // MARK: methods
 
-  init(configuration: HamsterConfiguration) {
-    self.enableKeySounds = configuration.Keyboard?.enableKeySounds ?? true
-    self.enableHapticFeedback = configuration.Keyboard?.enableHapticFeedback ?? false
-    self.hapticFeedbackIntensity = configuration.Keyboard?.hapticFeedbackIntensity ?? 2
-  }
+  init() {}
 
   @objc func changeHaptic(_ control: UIControl) {
     if let control = control as? StepSlider {
@@ -60,5 +64,6 @@ public class KeyboardFeedbackViewModel {
 
   @objc func toggleAction(_ sender: UISwitch) {
     enableHapticFeedback = sender.isOn
+    hapticFeedbackStateSubject.send(sender.isOn)
   }
 }

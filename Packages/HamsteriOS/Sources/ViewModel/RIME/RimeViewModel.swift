@@ -96,8 +96,28 @@ public extension RimeViewModel {
   /// RIME 部署
   func rimeDeploy() async throws {
     await ProgressHUD.show("RIME部署中, 请稍候……", interaction: false)
-    // TODO: 每次重新部署重新读取yaml中的文件，并与目前配置取差集
-    try await rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
+
+    var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
+
+    // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
+    if let configuration =
+      try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
+    {
+      hamsterConfiguration = configuration
+    }
+
+    // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
+    if let patchConfiguration =
+      try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
+      let configuration = patchConfiguration.patch
+    {
+      hamsterConfiguration = try hamsterConfiguration.merge(with: configuration, uniquingKeysWith: { $1 })
+    }
+
+    try await rimeContext.deployment(configuration: hamsterConfiguration)
+
+    HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
+
     await ProgressHUD.showSuccess("部署成功", interaction: false, delay: 1.5)
   }
 
@@ -136,11 +156,11 @@ public extension RimeViewModel {
       HamsterAppDependencyContainer.shared.resetHamsterConfiguration()
 
       // 重新读取 Hamster.yaml 生成 configuration
-      let hamsterConfiguration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
+      let hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       /// 在另存一份用于应用配置还原
-      try await HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
+      try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
 
       await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
     } catch {

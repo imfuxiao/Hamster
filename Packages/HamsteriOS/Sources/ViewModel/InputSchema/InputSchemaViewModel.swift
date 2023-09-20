@@ -70,20 +70,27 @@ extension InputSchemaViewModel {
     do {
       try await FileManager.default.unzip(fileURL, dst: FileManager.sandboxUserDataDirectory)
 
-      // 判断是否存在 hamster.yaml/hamster.custom.yaml 文件，如果存在则更新
-      // 加载应用配置
-//      let configuration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.hamsterConfigFileOnSandboxSharedSupport)
-//      HamsterAppDependencyContainer.shared.configuration = configuration
+      var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
+
+      // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
+      if let configuration =
+        try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
+      {
+        hamsterConfiguration = configuration
+      }
+
+      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge （已 hamster.custom.yaml 文件为主）
+      if let patchConfiguration =
+        try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
+        let configuration = patchConfiguration.patch
+      {
+        hamsterConfiguration = try hamsterConfiguration.merge(with: configuration, uniquingKeysWith: { $1 })
+      }
 
       await ProgressHUD.show("方案部署中……", interaction: false)
 
-      try await rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
-
-      // 复制输入方案至AppGroup下
-      try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
-
-      // 键盘复制方案标志
-      UserDefaults.hamster.overrideRimeDirectory = true
+      try await rimeContext.deployment(configuration: hamsterConfiguration)
+      HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       // 发布
       reloadTableStateSubject.send(true)

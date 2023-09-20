@@ -12,12 +12,12 @@ import UIKit
 public class AppleCloudViewModel: ObservableObject {
   public let settingsViewModel: SettingsViewModel
 
-  @Published
-  public var regexOnCopyFile: String
-    = HamsterAppDependencyContainer.shared.configuration.general?.regexOnCopyFile?.joined(separator: ",") ?? ""
-  {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.general?.regexOnCopyFile = (regexOnCopyFile.split(separator: ",").map { String($0) })
+  public var regexOnCopyFile: String {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.general?.regexOnCopyFile?.joined(separator: ",") ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.general?.regexOnCopyFile = (newValue.split(separator: ",").map { String($0) })
     }
   }
 

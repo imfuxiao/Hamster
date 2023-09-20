@@ -17,9 +17,7 @@ class BackupViewModel {
   lazy var settingItem = SettingItemModel(
     text: "软件备份",
     buttonAction: { [unowned self] in
-      Task {
-        try await backup()
-      }
+      Task { await backup() }
     },
     favoriteButton: .appBackup
   )
@@ -46,20 +44,20 @@ class BackupViewModel {
   }
 
   /// 备份应用
-  func backup() async throws {
+  func backup() async {
     await ProgressHUD.show("软件备份中，请等待……", interaction: false)
     do {
       try await makeBackup()
       await loadBackupFiles()
+      await ProgressHUD.showSuccess("备份成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("App backup error: \(error.localizedDescription)")
-      throw error
+      await ProgressHUD.showError("备份失败")
     }
-    await ProgressHUD.showSuccess("备份成功", interaction: false, delay: 1.5)
   }
 
   /// 应用恢复
-  func restore(fileInfo: FileInfo) async throws {
+  func restore(fileInfo: FileInfo) async {
     await ProgressHUD.show("恢复中，请等待……", interaction: false)
     let selectRestoreFileURL = fileInfo.url
     do {
@@ -73,15 +71,11 @@ class BackupViewModel {
       // 恢复输入方案
       try FileManager.copyDirectory(override: true, src: FileManager.tempSharedSupportDirectory, dst: FileManager.sandboxSharedSupportDirectory)
       try FileManager.copyDirectory(override: true, src: FileManager.tempUserDataDirectory, dst: FileManager.sandboxUserDataDirectory)
-
-      // 恢复设置
-      let configuration = try await HamsterConfigurationRepositories.shared.loadFromYAML(yamlPath: FileManager.tempAppConfigurationYaml)
-      HamsterAppDependencyContainer.shared.configuration = configuration
+      await ProgressHUD.showSuccess("恢复成功, 请重新部署。", delay: 1.5)
     } catch {
       Logger.statistics.error("App restore error: \(error.localizedDescription)")
-      throw error
+      await ProgressHUD.showError("恢复失败")
     }
-    await ProgressHUD.showSuccess("恢复成功", delay: 1.5)
   }
 
   /// 修改备份文件名称
@@ -96,6 +90,10 @@ class BackupViewModel {
 
   /// 创建备份文件
   private func makeBackup() async throws {
+    // 生成当前配置的文件
+    let configuration = HamsterAppDependencyContainer.shared.configuration
+    try HamsterConfigurationRepositories.shared.savePatchToYAML(config: configuration, yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
+
     // 创建备份临时文件夹
     try FileManager.createDirectory(override: true, dst: FileManager.tempBackupDirectory)
 
@@ -103,13 +101,11 @@ class BackupViewModel {
     try FileManager.copyDirectory(override: true, src: FileManager.sandboxSharedSupportDirectory, dst: FileManager.tempSharedSupportDirectory)
     try FileManager.copyDirectory(override: true, src: FileManager.sandboxUserDataDirectory, dst: FileManager.tempUserDataDirectory)
 
-    // 生成当前配置文件
-    let configuration = try HamsterConfigurationRepositories.shared.loadFromUserDefaults()
-    try await HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, yamlPath: FileManager.tempAppConfigurationYaml)
-
-    // 生成zip包至备份目录。
+    // 检测备份文件夹是否存在
     let backupURL = FileManager.sandboxBackupDirectory
-    try FileManager.createDirectory(dst: backupURL)
+    if !FileManager.default.fileExists(atPath: backupURL.path) {
+      try FileManager.createDirectory(dst: backupURL)
+    }
 
     let fileName = DateFormatter.tempFileNameStyle.string(from: Date())
 

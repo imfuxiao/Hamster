@@ -21,18 +21,18 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
   }
 
   /// 测试 yaml 文件到导入和导入
-  func testLoadAndSaveYaml() async throws {
+  func testLoadAndSaveYaml() throws {
     let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
     Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
     let config = HamsterConfiguration.preview
     let configRepositories = HamsterConfigurationRepositories.shared
-    try await configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
-    let tempConfig = try await configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    try configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
+    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
     XCTAssertEqual(tempConfig, config)
   }
 
-  func testLoadPatchYaml() async throws {
-    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.custom.yaml")
+  func testLoadPatchYaml() throws {
+    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("hamster.custom.yaml")
     Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
 
     // 生成配置文件
@@ -43,7 +43,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
 
     // 读取配置文件
     let configRepositories = HamsterConfigurationRepositories.shared
-    let patchConfig = try await configRepositories.loadPatchFromYAML(yamlPath: tempYamlPath)
+    let patchConfig = try configRepositories.loadPatchFromYAML(yamlPath: tempYamlPath)
     Logger.statistics.debug("patchConfig: \(patchConfig)")
 
     guard let patch = patchConfig.patch else { throw "patch can not found." }
@@ -53,7 +53,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
   }
 
   /// 测试保存至 UserDefaults
-  func testLoadAndSaveUserDefault() async throws {
+  func testLoadAndSaveUserDefault() throws {
     let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
     Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
     if let data = HamsterConfiguration.sampleString.data(using: .utf8) {
@@ -65,13 +65,13 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     let configRepositories = HamsterConfigurationRepositories.shared
     configRepositories.removeFromUserDefaults()
 
-    let tempConfig = try await configRepositories.loadFromYAML(yamlPath: tempYamlPath)
-    try await configRepositories.saveToUserDefaults(tempConfig)
+    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    try configRepositories.saveToUserDefaults(tempConfig)
     let config = try configRepositories.loadFromUserDefaults()
     XCTAssertNotNil(config.swipe?.keyboardSwipe)
   }
 
-  func testLoadConfigYaml() async throws {
+  func testLoadConfigYaml() throws {
     let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
     Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
     if let data = HamsterConfiguration.sampleString.data(using: .utf8) {
@@ -80,7 +80,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
       fatalError("can not generator hamster.yaml")
     }
     let configRepositories = HamsterConfigurationRepositories.shared
-    let tempConfig = try await configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
     print(tempConfig)
   }
 }

@@ -100,6 +100,8 @@ extension RimeRootView: UITableViewDataSource {
       return TableFooterView(footer: Self.rimeSimplifiedAndTraditionalSwitcherKeyRemark)
     case 1:
       return TableFooterView(footer: Self.overrideRemark)
+    case 2:
+      return TableFooterView(footer: "注意：Rime 根目录下 hamster.yaml 与 hamster.custom.yaml 配置文件会覆盖当前应用配置。")
     case 4:
       let footer = TableFooterView(footer: Self.rimeSyncRemark)
       let gesture = UITapGestureRecognizer(target: self, action: #selector(copySyncConfig))
