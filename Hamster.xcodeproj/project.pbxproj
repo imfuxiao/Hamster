@@ -62,6 +62,7 @@
 
 /* Begin PBXFileReference section */
 		C000CA9D296EA72600EC5323 /* HamsterKeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardInputViewController.swift; sourceTree = "<group>"; };
+		C00749622ABAD48C00C5CD0A /* HamsterFileServer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterFileServer; path = Packages/HamsterFileServer; sourceTree = "<group>"; };
 		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C01396F92AB499CA0043674A /* RimeSyncIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeSyncIntent.swift; sourceTree = "<group>"; };
 		C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployIntent.swift; sourceTree = "<group>"; };
@@ -200,6 +201,7 @@
 				C08387F42A5589AF00EA8082 /* HamsterKit */,
 				C08387F12A55897700EA8082 /* RimeKit */,
 				C0C8B57E2A823BBF009972C1 /* HamsterKeyboardKit */,
+				C00749622ABAD48C00C5CD0A /* HamsterFileServer */,
 			);
 			name = Packages;
 			sourceTree = "<group>";

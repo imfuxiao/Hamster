@@ -265,6 +265,8 @@ public class KeyboardButton: UIControl {
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
 
+    Logger.statistics.debug("\(self.row)-\(self.column) updateSubviewConstraints()")
+    
     let insets = item.insets
 
     // Logger.statistics.debug("KeyboardButtonRowItem layoutSubviews() rowHeight: \(layoutConfig.rowHeight), buttonInsets [left: \(insets.left), top: \(insets.top), right: \(insets.right), bottom: \(insets.bottom)]")
@@ -305,8 +307,6 @@ public class KeyboardButton: UIControl {
   
   override public func layoutSubviews() {
     super.layoutSubviews()
-    
-    Logger.statistics.debug("\(self.row)-\(self.column) layoutSubviews()")
     
     setupInputCallout()
     updateSubviewConstraints()

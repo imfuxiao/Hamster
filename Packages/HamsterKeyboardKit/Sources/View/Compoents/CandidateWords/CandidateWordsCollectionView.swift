@@ -51,9 +51,9 @@ public class CandidateWordsCollectionView: UICollectionView {
     self.candidatesViewState = keyboardContext.candidatesViewState
 
     self.horizontalLayout = {
-      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
+      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(35), heightDimension: .fractionalHeight(1.0))
       let item = NSCollectionLayoutItem(layoutSize: itemSize)
-      let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
+      let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(35), heightDimension: .fractionalHeight(1.0))
       let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
       let section = NSCollectionLayoutSection(group: group)
       // 控制水平方向 item 之间间距
@@ -70,7 +70,7 @@ public class CandidateWordsCollectionView: UICollectionView {
     let heightOfCodingArea = keyboardContext.heightOfCodingArea
 
     self.verticalLayout = {
-      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(40), heightDimension: .fractionalHeight(1.0))
+      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(35), heightDimension: .fractionalHeight(1.0))
       let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
       let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(heightOfToolbar - heightOfCodingArea))

@@ -17,17 +17,16 @@ let package = Package(
     .package(url: "https://github.com/relatedcode/ProgressHUD.git", exact: "13.7.1"),
     .package(url: "https://github.com/simonbs/Runestone.git", exact: "0.3.0"),
     .package(url: "https://github.com/simonbs/TreeSitterLanguages.git", exact: "0.1.7"),
-    .package(url: "https://github.com/imfuxiao/iFilemanager.git", exact: "0.7.16"),
     .package(path: "../HamsterUIKit"),
     .package(path: "../HamsterKit"),
     .package(path: "../RimeKit"),
     .package(path: "../HamsterKeyboardKit"),
+    .package(path: "../HamsterFileServer"),
   ],
   targets: [
     .target(
       name: "HamsteriOS",
       dependencies: [
-        "iFilemanager",
         "Runestone",
         .product(name: "TreeSitterLua", package: "TreeSitterLanguages"),
         .product(name: "TreeSitterLuaQueries", package: "TreeSitterLanguages"),
@@ -40,6 +39,7 @@ let package = Package(
         "HamsterKit",
         "HamsterKeyboardKit",
         "RimeKit",
+        "HamsterFileServer",
       ],
       path: "Sources"),
     .testTarget(

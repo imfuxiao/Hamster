@@ -98,7 +98,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: keyboardAppearance,
       actionHandler: keyboardActionHandler,
-      autocompleteContext: autocompleteContext,
       keyboardContext: keyboardContext,
       calloutContext: calloutContext,
       rimeContext: rimeContext

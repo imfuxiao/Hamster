@@ -14,18 +14,6 @@ import UIKit
  标准系统键盘
  */
 public class StanderSystemKeyboard: UIView {
-  public enum AutocompleteToolbarMode {
-    /// Show the autocomplete toolbar if the keyboard context prefers it.
-    ///
-    /// 如果键盘上下文偏好自动完成工具栏，则显示该工具栏。
-    case automatic
-
-    /// Never show the autocomplete toolbar.
-    ///
-    /// 绝不显示自动完成工具栏。
-    case none
-  }
-
   public typealias KeyboardWidth = CGFloat
 
   // MARK: - Properties
@@ -36,7 +24,6 @@ public class StanderSystemKeyboard: UIView {
   private let touchView = KeyboardTouchView()
 
   private var actionCalloutContext: ActionCalloutContext
-  private var autocompleteContext: AutocompleteContext
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
@@ -100,7 +87,6 @@ public class StanderSystemKeyboard: UIView {
     keyboardLayoutProvider: KeyboardLayoutProvider,
     appearance: KeyboardAppearance,
     actionHandler: KeyboardActionHandler,
-    autocompleteContext: AutocompleteContext,
     keyboardContext: KeyboardContext,
     rimeContext: RimeContext,
     calloutContext: KeyboardCalloutContext?
@@ -108,7 +94,6 @@ public class StanderSystemKeyboard: UIView {
     self.keyboardLayoutProvider = keyboardLayoutProvider
     self.actionHandler = actionHandler
     self.appearance = appearance
-    self.autocompleteContext = autocompleteContext
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
     self.calloutContext = calloutContext ?? .disabled

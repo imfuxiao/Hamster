@@ -104,7 +104,7 @@ public class CandidateWordsView: UIView {
   private var controlStateHeightConstraint: NSLayoutConstraint {
     keyboardContext.candidatesViewState.isCollapse()
       ? controlStateView.heightAnchor.constraint(equalTo: candidatesArea.heightAnchor)
-      : controlStateView.heightAnchor.constraint(equalToConstant: 50)
+      : controlStateView.heightAnchor.constraint(equalToConstant: 35)
   }
 
   init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
@@ -175,8 +175,8 @@ public class CandidateWordsView: UIView {
           guard let self = self else { return }
           if self.keyboardContext.keyboardType.isChineseNineGrid {
             // Debug
-            self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
-//            self.phoneticArea.text = self.rimeContext.t9UserInputKey
+            // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
+            self.phoneticArea.text = self.rimeContext.t9UserInputKey
           } else {
             self.phoneticArea.text = inputKeys
           }
@@ -190,9 +190,9 @@ public class CandidateWordsView: UIView {
         stateImageView.image = stateImage(state)
         controlStateView.layer.shadowOpacity = state.isCollapse() ? 0.3 : 0
         if let dynamicControlStateHeightConstraint = dynamicControlStateHeightConstraint {
-          NSLayoutConstraint.deactivate([dynamicControlStateHeightConstraint])
+          dynamicControlStateHeightConstraint.isActive = false
           self.dynamicControlStateHeightConstraint = controlStateHeightConstraint
-          NSLayoutConstraint.activate([self.dynamicControlStateHeightConstraint!])
+          self.dynamicControlStateHeightConstraint?.isActive = true
         }
       }.store(in: &subscription)
   }

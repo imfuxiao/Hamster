@@ -18,12 +18,12 @@ protocol FileBrowserViewModelFactory {
 }
 
 class FinderViewController: NibLessViewController {
-  private let finderViewModelFactory: FinderViewModelFactory
+  private let finderViewModel: FinderViewModel
   private let fileBrowserViewModelFactory: FileBrowserViewModelFactory
   private var subscription = Set<AnyCancellable>()
 
   init(finderViewModelFactory: FinderViewModelFactory, fileBrowserViewModelFactory: FileBrowserViewModelFactory) {
-    self.finderViewModelFactory = finderViewModelFactory
+    self.finderViewModel = finderViewModelFactory.makeFinderViewModel()
     self.fileBrowserViewModelFactory = fileBrowserViewModelFactory
 
     super.init()
@@ -67,8 +67,6 @@ extension FinderViewController {
     super.loadView()
 
     title = "方案文件管理"
-    let finderViewModel = finderViewModelFactory.makeFinderViewModel()
-    view = FinderRootView(finderViewModel: finderViewModel, fileBrowserViewModelFactory: fileBrowserViewModelFactory)
 
     finderViewModel.presentTextEditorPublished
       .receive(on: DispatchQueue.main)
@@ -83,5 +81,11 @@ extension FinderViewController {
         presentConformAlert(conform: $0)
       }
       .store(in: &subscription)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    view = FinderRootView(finderViewModel: finderViewModel, fileBrowserViewModelFactory: fileBrowserViewModelFactory)
   }
 }

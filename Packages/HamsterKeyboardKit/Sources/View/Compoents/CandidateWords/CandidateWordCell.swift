@@ -19,6 +19,7 @@ class CandidateWordCell: UICollectionViewCell {
     label.textAlignment = .center
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     return label
   }()
 
@@ -27,6 +28,7 @@ class CandidateWordCell: UICollectionViewCell {
     label.textAlignment = .center
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     return label
   }()
 

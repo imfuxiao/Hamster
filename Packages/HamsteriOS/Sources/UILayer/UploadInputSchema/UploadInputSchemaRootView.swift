@@ -5,6 +5,7 @@
 //  Created by morse on 2023/7/11.
 //
 
+import Combine
 import HamsterKit
 import HamsterUIKit
 import ProgressHUD
@@ -14,10 +15,24 @@ class UploadInputSchemaRootView: NibLessView {
   // MARK: properties
 
   private let viewModel: UploadInputSchemaViewModel
+  private var subscriptions = Set<AnyCancellable>()
 
-  private let tableView: UITableView = {
+  private lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.dataSource = self
+    tableView.delegate = self
     return tableView
+  }()
+
+  private lazy var buttonView: UIButton = {
+    let button = UIButton(type: .system)
+    button.addTarget(
+      viewModel,
+      action: #selector(viewModel.managerfileServer),
+      for: .touchUpInside
+    )
+    button.translatesAutoresizingMaskIntoConstraints = false
+    return button
   }()
 
   // MARK: methods
@@ -26,12 +41,17 @@ class UploadInputSchemaRootView: NibLessView {
     self.viewModel = uploadInputSchemaViewModel
 
     super.init(frame: frame)
+
+    self.viewModel.$fileServerRunning
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        buttonView.setTitle($0 ? "停止服务" : "启动服务", for: .normal)
+      }
+      .store(in: &subscriptions)
   }
 
   override func constructViewHierarchy() {
     addSubview(tableView)
-    tableView.dataSource = self
-    tableView.delegate = self
   }
 
   override func activateViewConstraints() {
@@ -53,18 +73,8 @@ class UploadInputSchemaRootView: NibLessView {
 
   func buttonCell() -> UITableViewCell {
     let cell = UITableViewCell()
-
-    let button = UIButton(type: .system)
-    button.setTitle(viewModel.fileServerRunning ? "停止服务" : "启动服务", for: .normal)
-//    button.addTarget(
-//      self,
-//      action: viewModel.fileServerRunning ? #selector(viewModel.stopFileServer) : #selector(viewModel.startFileServer),
-//      for: .touchUpInside)
-
-    button.translatesAutoresizingMaskIntoConstraints = false
-    cell.contentView.addSubview(button)
-    button.fillSuperviewOnMarginsGuide()
-
+    cell.contentView.addSubview(buttonView)
+    buttonView.fillSuperviewOnMarginsGuide()
     return cell
   }
 }
@@ -75,10 +85,6 @@ extension UploadInputSchemaRootView {
 
     constructViewHierarchy()
     activateViewConstraints()
-
-    if let indexPath = tableView.indexPathForSelectedRow {
-      tableView.deselectRow(at: indexPath, animated: true)
-    }
   }
 }
 
@@ -121,13 +127,6 @@ extension UploadInputSchemaRootView: UITableViewDelegate {
         UIPasteboard.general.string = "http://\(ip)"
         ProgressHUD.showSuccess("复制成功", delay: 1.5)
       }
-    } else if indexPath.section == 1, indexPath.row == 0 {
-      if viewModel.fileServerRunning {
-        viewModel.stopFileServer()
-      } else {
-        viewModel.startFileServer()
-      }
-      tableView.reloadData()
     }
     tableView.deselectRow(at: indexPath, animated: true)
   }
