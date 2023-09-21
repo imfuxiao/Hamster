@@ -126,7 +126,7 @@ public class KeyboardContext: ObservableObject {
   @Published
   public var keyboardType = KeyboardType.chinese(.lowercased)
 
-  /// 记录上一次的键盘类型, 用于返回
+  /// 记录键盘切换栈, 用于「返回」按钮
   public var lastKeyboardTypeStack: [KeyboardType] = []
 
   /**

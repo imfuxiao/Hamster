@@ -21,6 +21,7 @@ class KeyboardFeedbackRootView: NibLessView {
     tableView.dataSource = self
     tableView.allowsSelection = false
     tableView.rowHeight = UITableView.automaticDimension
+    tableView.estimatedRowHeight = 40
     return tableView
   }()
 
@@ -48,6 +49,10 @@ class KeyboardFeedbackRootView: NibLessView {
     addSubview(tableView)
     tableView.fillSuperview()
   }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+  }
 }
 
 extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
@@ -72,5 +77,12 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
       return cell
     }
     return HapticFeedbackTableViewCell(keyboardFeedbackViewModel: keyboardFeedbackViewModel)
+  }
+
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    if section == 1 {
+      return "开启震动需要为键盘开启“完全访问权限”"
+    }
+    return ""
   }
 }

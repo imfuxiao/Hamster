@@ -578,9 +578,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func returnLastKeyboard() {
-    if let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() {
-      keyboardContext.keyboardType = keyboard
+    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map{ $0.yamlString }.joined(separator: ","))")
+    guard let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() else {
+      keyboardContext.keyboardType = keyboardContext.selectKeyboard
+      return
     }
+    keyboardContext.keyboardType = keyboard
   }
 
   // MARK: - Syncing

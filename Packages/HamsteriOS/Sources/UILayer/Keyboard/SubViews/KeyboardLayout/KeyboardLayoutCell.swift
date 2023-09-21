@@ -23,6 +23,7 @@ class KeyboardLayoutCell: UICollectionViewListCell {
 
   private lazy var checkbox: Checkbox = {
     let checkbox = Checkbox()
+    checkbox.isUserInteractionEnabled = true
     checkbox.translatesAutoresizingMaskIntoConstraints = false
     return checkbox
   }()
@@ -63,8 +64,8 @@ class KeyboardLayoutCell: UICollectionViewListCell {
   }
 }
 
-private class Checkbox: UIButton {
-  override var isSelected: Bool {
+private class Checkbox: UIView {
+  public var isSelected: Bool = false {
     didSet {
       checkboxImageView.image = isSelected ? UIImage(systemName: "checkmark.circle") : UIImage(systemName: "circle")
       checkboxImageView.tintColor = isSelected ? .systemGreen : .systemGray
@@ -76,6 +77,7 @@ private class Checkbox: UIButton {
     view.image = UIImage(systemName: "circle")
     view.contentMode = .scaleAspectFit
     view.tintColor = .systemGray
+    view.isUserInteractionEnabled = true
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()

@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterUIKit
+import ProgressHUD
 import UIKit
 
 class SymbolSettingsRootView: NibLessView {
@@ -15,7 +16,7 @@ class SymbolSettingsRootView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   lazy var segmentedView: UISegmentedControl = {
-    let segmentedControl = UISegmentedControl(items: ["设置", "成对上屏", "光标居中", "返回主键盘"])
+    let segmentedControl = UISegmentedControl(items: ["成对上屏", "光标居中", "返回主键盘"])
     segmentedControl.selectedSegmentIndex = 0
     segmentedControl.addTarget(
       keyboardSettingsViewModel,
@@ -31,29 +32,49 @@ class SymbolSettingsRootView: NibLessView {
     return view
   }()
 
-  lazy var symbolSettingView: SymbolSettingsView = {
-    let view = SymbolSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
-    return view
-  }()
+//  lazy var symbolSettingView: SymbolSettingsView = {
+//    let view = SymbolSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
+//    return view
+//  }()
 
   lazy var pairsOfSymbolsView: UIView = SymbolEditorView(
-    headerTitle: "成对上屏符号列表",
     getSymbols: { [unowned self] in keyboardSettingsViewModel.pairsOfSymbols },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.pairsOfSymbols = $0
     },
     symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
-    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished,
+    needRestButton: true,
+    restButtonAction: { [unowned self] in
+      guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+        throw "未找到系统默认配置"
+      }
+      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.pairsOfSymbols else {
+        throw "未找到默认值"
+      }
+      keyboardSettingsViewModel.pairsOfSymbols = defaultOfSymbols
+      keyboardSettingsViewModel.resetSignSubject.send(true)
+    }
   )
 
   lazy var cursorBackOfSymbolsView: UIView = SymbolEditorView(
-    headerTitle: "光标居中符号列表",
     getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfCursorBack },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfCursorBack = $0
     },
     symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
-    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished,
+    needRestButton: true,
+    restButtonAction: { [unowned self] in
+      guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+        throw "未找到系统默认配置"
+      }
+      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.symbolsOfCursorBack else {
+        throw "未找到默认值"
+      }
+      keyboardSettingsViewModel.symbolsOfCursorBack = defaultOfSymbols
+      keyboardSettingsViewModel.resetSignSubject.send(true)
+    }
   )
 
   lazy var symbolsOfReturnToMainKeyboardView: UIView = SymbolEditorView(
@@ -63,7 +84,18 @@ class SymbolSettingsRootView: NibLessView {
       keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard = $0
     },
     symbolTableIsEditingPublished: keyboardSettingsViewModel.$symbolTableIsEditing.eraseToAnyPublisher(),
-    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished
+    reloadDataPublished: keyboardSettingsViewModel.resetSignPublished,
+    needRestButton: true,
+    restButtonAction: { [unowned self] in
+      guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+        throw "未找到系统默认配置"
+      }
+      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.symbolsOfReturnToMainKeyboard else {
+        throw "未找到默认值"
+      }
+      keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard = defaultOfSymbols
+      keyboardSettingsViewModel.resetSignSubject.send(true)
+    }
   )
 
   // MARK: methods
@@ -106,12 +138,10 @@ class SymbolSettingsRootView: NibLessView {
   func presentTabView(_ tabIndex: Int) {
     switch tabIndex {
     case 0:
-      changeTabView(tabView: symbolSettingView)
-    case 1:
       changeTabView(tabView: pairsOfSymbolsView)
-    case 2:
+    case 1:
       changeTabView(tabView: cursorBackOfSymbolsView)
-    case 3:
+    case 2:
       changeTabView(tabView: symbolsOfReturnToMainKeyboardView)
     default:
       return

@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterUIKit
+import ProgressHUD
 import UIKit
 
 /// 符号编辑View
@@ -49,21 +50,43 @@ public class SymbolEditorView: NibLessView {
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
-    tableView.tableHeaderView = headerView
-    tableView.rowHeight = UITableView.automaticDimension
+    if !headerTitle.isEmpty {
+      tableView.tableHeaderView = headerView
+    }
     tableView.allowsSelection = false
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.translatesAutoresizingMaskIntoConstraints = false
     return tableView
+  }()
+
+  // 重置符号按钮
+  private var needRestButton: Bool
+  private var restButtonAction: (() throws -> Void)?
+
+  lazy var restButton: UIButton = {
+    let button = UIButton(type: .roundedRect)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("恢复默认值", for: .normal)
+    button.setTitleColor(.systemRed, for: .normal)
+    button.addTarget(self, action: #selector(restSymbols), for: .touchUpInside)
+    return button
   }()
 
   // MARK: methods
 
+  /**
+   * 符号列表编辑组件
+   */
   init(
     frame: CGRect = .zero,
-    headerTitle: String,
+    headerTitle: String = "",
     getSymbols: @escaping () -> [String],
     symbolsDidSet: @escaping ([String]) -> Void,
     symbolTableIsEditingPublished: AnyPublisher<Bool, Never>,
-    reloadDataPublished: AnyPublisher<Bool, Never>
+    reloadDataPublished: AnyPublisher<Bool, Never>,
+    needRestButton: Bool = true,
+    restButtonAction: (() throws -> Void)? = nil
   ) {
     self.headerTitle = headerTitle
     self.getSymbols = getSymbols
@@ -71,10 +94,12 @@ public class SymbolEditorView: NibLessView {
     self.symbolsDidSet = symbolsDidSet
     self.symbolTableIsEditingPublished = symbolTableIsEditingPublished
     self.reloadDataPublished = reloadDataPublished
+    self.needRestButton = needRestButton
+    self.restButtonAction = restButtonAction
 
     super.init(frame: frame)
 
-    setupTableView()
+    setupView()
 
     self.symbolTableIsEditingPublished
       .receive(on: DispatchQueue.main)
@@ -98,11 +123,26 @@ public class SymbolEditorView: NibLessView {
       .store(in: &subscriptions)
   }
 
-  func setupTableView() {
+  func setupView() {
+    backgroundColor = .secondarySystemBackground
+
     addSubview(tableView)
-    tableView.delegate = self
-    tableView.dataSource = self
-    tableView.fillSuperview()
+    if !needRestButton {
+      tableView.fillSuperview()
+      return
+    }
+
+    addSubview(restButton)
+    NSLayoutConstraint.activate([
+      tableView.topAnchor.constraint(equalTo: topAnchor),
+      tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+      restButton.topAnchor.constraint(equalToSystemSpacingBelow: tableView.bottomAnchor, multiplier: 1.0),
+      safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: restButton.bottomAnchor, multiplier: 1.0),
+      restButton.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
+      trailingAnchor.constraint(equalToSystemSpacingAfter: restButton.trailingAnchor, multiplier: 1.0)
+    ])
   }
 }
 
@@ -140,6 +180,15 @@ extension SymbolEditorView {
       cell.textField.becomeFirstResponder()
     }
   }
+
+  @objc func restSymbols() {
+    do {
+      try restButtonAction?()
+      ProgressHUD.showSucceed("重置成功", interaction: false, delay: 1.5)
+    } catch {
+      ProgressHUD.showError("重置失败", interaction: false, delay: 1.5)
+    }
+  }
 }
 
 extension SymbolEditorView: UITableViewDataSource {
@@ -165,7 +214,7 @@ extension SymbolEditorView: UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footView = TableFooterView(footer: "点我添加新符号")
+    let footView = TableFooterView(footer: "点我添加新符号(回车键自动保存)。")
     footView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addTableRow)))
     return footView
   }

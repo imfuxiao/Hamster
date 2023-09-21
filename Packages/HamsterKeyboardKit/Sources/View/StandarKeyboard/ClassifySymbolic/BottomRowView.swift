@@ -105,12 +105,12 @@ class BottomRowView: UIView {
 
 extension BottomRowView {
   @objc func returnKeyboardPressHandled(_ button: UIButton) {
-    actionHandler.handle(.press, on: .keyboardType(keyboardContext.selectKeyboard))
+    actionHandler.handle(.press, on: .returnLastKeyboard)
     button.backgroundColor = .systemGray
   }
 
   @objc func returnKeyboardReleaseHandled(_ button: UIButton) {
-    actionHandler.handle(.release, on: .keyboardType(keyboardContext.selectKeyboard))
+    actionHandler.handle(.release, on: .returnLastKeyboard)
     button.backgroundColor = .systemBlue
   }
 

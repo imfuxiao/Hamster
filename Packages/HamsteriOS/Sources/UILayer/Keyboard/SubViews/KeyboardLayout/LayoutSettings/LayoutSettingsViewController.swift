@@ -12,6 +12,7 @@ import UIKit
 /// 布局设置
 class LayoutSettingsViewController: NibLessViewController {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
+  private var subscriptions = Set<AnyCancellable>()
 
   private lazy var chineseStanderSystemKeyboardSettingsView: ChineseStanderSystemKeyboardSettingsView = {
     let view = ChineseStanderSystemKeyboardSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
@@ -37,15 +38,33 @@ class LayoutSettingsViewController: NibLessViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    if let useKeyboardType = keyboardSettingsViewModel.useKeyboardType {
-      self.title = useKeyboardType.label
-      if useKeyboardType.isChinesePrimaryKeyboard {
+    if let settingsKeyboardType = keyboardSettingsViewModel.settingsKeyboardType {
+      self.title = settingsKeyboardType.label
+      if settingsKeyboardType.isChinesePrimaryKeyboard {
         self.view = self.chineseStanderSystemKeyboardSettingsView
-      } else if useKeyboardType.isChineseNineGrid {
+      } else if settingsKeyboardType.isChineseNineGrid {
         self.view = self.chineseNineGridKeyboardSettingsView
       } else {
         self.view = self.customKeyboardSettingsView
       }
     }
+
+    // 中文九宫格符号编辑
+    keyboardSettingsViewModel.$symbolsOfChineseNineGridIsEditing
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] isEditing in
+        guard keyboardSettingsViewModel.settingsKeyboardType?.isChineseNineGrid ?? false else {
+          navigationItem.rightBarButtonItem = nil
+          return
+        }
+        let rightBarButtonItem = UIBarButtonItem(
+          title: isEditing ? "完成" : "编辑",
+          style: .plain,
+          target: keyboardSettingsViewModel,
+          action: #selector(keyboardSettingsViewModel.changeSymbolsOfChineseNineGridEditorState)
+        )
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+      }
+      .store(in: &subscriptions)
   }
 }

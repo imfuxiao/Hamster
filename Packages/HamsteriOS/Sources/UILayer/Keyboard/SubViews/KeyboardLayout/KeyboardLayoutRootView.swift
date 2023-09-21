@@ -9,32 +9,53 @@ import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
-class KeyboardLayoutRootView: NibLessCollectionView {
+class KeyboardLayoutRootView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
-  private var diffableDataSource: UICollectionViewDiffableDataSource<Int, KeyboardType>!
-
-  init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
-    self.keyboardSettingsViewModel = keyboardSettingsViewModel
-
+  private lazy var listView: UICollectionView = {
     let layout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
-      let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+      var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+      configuration.footerMode = .supplementary
+      configuration.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in
+        let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+        guard !keyboardType.isCustom else { return nil }
+        let action = UIContextualAction(style: .normal, title: "设置", handler: { [unowned self] _, _, completion in
+          keyboardSettingsAction(keyboardType)
+          completion(true)
+        })
+        action.backgroundColor = .systemBlue
+        return UISwipeActionsConfiguration(actions: [action])
+      }
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       return section
     }
 
-    super.init(frame: .zero, collectionViewLayout: layout)
+    let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    view.delegate = self
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
 
-    self.delegate = self
-    self.diffableDataSource = makeDataSource()
+  private lazy var diffableDataSource: UICollectionViewDiffableDataSource<Int, KeyboardType> = {
+    let dataSource = makeDataSource()
+    return dataSource
+  }()
+
+  init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
+    self.keyboardSettingsViewModel = keyboardSettingsViewModel
+
+    super.init(frame: .zero)
   }
 
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
+    addSubview(listView)
+    listView.fillSuperview()
+
     self.diffableDataSource.apply(keyboardSettingsViewModel.initKeyboardLayoutDataSource(), animatingDifferences: false)
     if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(where: { $0 == keyboardSettingsViewModel.useKeyboardType }) {
-      self.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
+      self.listView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
     }
   }
 }
@@ -49,10 +70,27 @@ extension KeyboardLayoutRootView {
     }
   }
 
+  /// 页脚配置
+  func footerRegistration() -> UICollectionView.SupplementaryRegistration<UICollectionViewListCell> {
+    UICollectionView.SupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter) { footerView, _, _ in
+      var configuration = footerView.defaultContentConfiguration()
+      configuration.text = """
+      注意：
+      1. 内置键盘向左滑动进入设置页面。
+      2. 自定义布局通过配置文件调整，调整后需重新部署。
+      """
+      configuration.textProperties.font = UIFont.preferredFont(forTextStyle: .caption2)
+      configuration.textProperties.color = UIColor.secondaryLabel
+      footerView.contentConfiguration = configuration
+    }
+  }
+
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, KeyboardType> {
     let cellRegistration = cellRegistration()
-    return UICollectionViewDiffableDataSource(
-      collectionView: self,
+    let footerRegistration = footerRegistration()
+
+    let dataSource = UICollectionViewDiffableDataSource<Int, KeyboardType>(
+      collectionView: listView,
       cellProvider: { collectionView, indexPath, item in
         collectionView.dequeueConfiguredReusableCell(
           using: cellRegistration,
@@ -61,6 +99,22 @@ extension KeyboardLayoutRootView {
         )
       }
     )
+
+    dataSource.supplementaryViewProvider = { collectionView, elementKind, indexPath -> UICollectionReusableView? in
+      if elementKind == UICollectionView.elementKindSectionFooter {
+        return collectionView.dequeueConfiguredReusableSupplementary(using: footerRegistration, for: indexPath)
+      }
+      return nil
+    }
+
+    return dataSource
+  }
+
+  /// 内置键盘设置页面
+  func keyboardSettingsAction(_ keyboardType: KeyboardType) {
+    guard !keyboardType.isCustom else { return }
+    keyboardSettingsViewModel.settingsKeyboardType = keyboardType
+    keyboardSettingsViewModel.useKeyboardTypeSubject.send(keyboardType)
   }
 }
 
@@ -68,10 +122,5 @@ extension KeyboardLayoutRootView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     keyboardSettingsViewModel.useKeyboardType = keyboardType
-    if !keyboardType.isCustom {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [unowned self] in
-        keyboardSettingsViewModel.useKeyboardTypeSubject.send(keyboardType)
-      }
-    }
   }
 }

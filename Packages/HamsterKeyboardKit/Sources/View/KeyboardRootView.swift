@@ -277,14 +277,25 @@ class KeyboardRootView: NibLessView {
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
+        Logger.statistics.debug("KeyboardRootView keyboardType combine: \($0.yamlString)")
         guard $0 != keyboardContext.selectKeyboard else {
           if let view = self.tempKeyboardView, self.frame.contains(view.frame) {
+            self.tempKeyboardView = nil
             UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut, animations: {
+              view.layer.zPosition = -1
               view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
             })
           }
           return
         }
+        
+        // 将之前的临时键盘隐藏
+        if let view = self.tempKeyboardView {
+          view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
+          self.tempKeyboardView = nil
+        }
+        
+        // 获取临时键盘
         switch $0 {
         case .numericNineGrid:
           if numericNineGridKeyboardView.superview == nil {
@@ -308,9 +319,11 @@ class KeyboardRootView: NibLessView {
           // 注意：非临时键盘类型外的类型直接 return
           return
         }
+        
         if let view = self.tempKeyboardView {
           UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut, animations: {
             view.frame = view.frame.offsetBy(dx: 0, dy: self.frame.height)
+            view.layer.zPosition = 999
           })
         }
       }

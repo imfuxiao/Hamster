@@ -44,7 +44,7 @@ class KeyboardLayoutViewController: NibLessViewController {
 
     keyboardSettingsViewModel.useKeyboardTypePublished
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [unowned self] keyboardType in
         self.navigationController?.pushViewController(layoutSettingsViewController, animated: true)
       }
       .store(in: &subscriptions)

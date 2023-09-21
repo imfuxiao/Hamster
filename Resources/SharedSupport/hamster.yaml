@@ -828,7 +828,7 @@ customizeKeyboards:
       - keys:
           - action: keyboardType(alphabetic)
             width: percentage(0.13)
-          - action: keyboardType(numeric)
+          - action: keyboardType(numericNineGrid)
             width: percentage(0.13)
           - action: space
             width: available

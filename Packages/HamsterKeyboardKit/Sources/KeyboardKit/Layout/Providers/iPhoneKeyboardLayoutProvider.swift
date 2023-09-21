@@ -191,7 +191,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if context.textDocumentProxy.returnKeyType == .go {
       result.append(.character("."))
     }
-    result.append(keyboardReturnAction(for: context))
+    result.append(.keyboardType(.chinese(.lowercased)))
     return result
   }
 

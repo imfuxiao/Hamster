@@ -50,11 +50,13 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     }
   }
 
-  let textField: UITextField = {
+  public lazy var textField: UITextField = {
     let textField = CellTextField(frame: .zero)
     textField.leftViewMode = .always
     textField.rightViewMode = .always
     textField.clearButtonMode = .whileEditing
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.delegate = self
     return textField
   }()
 
@@ -86,8 +88,6 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   func setupTextFieldView() {
     contentView.addSubview(leftTextLabel)
     contentView.addSubview(textField)
-    textField.delegate = self
-    textField.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
       leftTextLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),

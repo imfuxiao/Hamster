@@ -292,6 +292,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  public var symbolsOfChineseNineGridKeyboard: [String] {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfChineseNineGridKeyboard ?? []
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfChineseNineGridKeyboard = newValue
+    }
+  }
+
   /// 中文标准键盘默认划动选项
   public var chineseStanderSystemKeyboardSwipeList: [Key] {
     HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
@@ -316,6 +325,9 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  /// 键盘布局用户选择设置键盘类型
+  public var settingsKeyboardType: KeyboardType? = nil
+
   /// 键盘类型
   public var keyboardLayoutList: [KeyboardType] {
     let list: [KeyboardType] = [
@@ -327,6 +339,10 @@ public class KeyboardSettingsViewModel: ObservableObject {
 
   // MARK: - combine
 
+  // 中文九宫格符号列表编辑状态
+  @Published
+  public var symbolsOfChineseNineGridIsEditing: Bool = false
+
   @Published
   public var symbolTableIsEditing: Bool = false
 
@@ -337,7 +353,8 @@ public class KeyboardSettingsViewModel: ObservableObject {
     useKeyboardTypeSubject.eraseToAnyPublisher()
   }
 
-  private var resetSignSubject = PassthroughSubject<Bool, Never>()
+  /// 重置信号，当需要 table/collection 重新加载时使用
+  public var resetSignSubject = PassthroughSubject<Bool, Never>()
   public var resetSignPublished: AnyPublisher<Bool, Never> {
     resetSignSubject.eraseToAnyPublisher()
   }
@@ -534,49 +551,6 @@ public class KeyboardSettingsViewModel: ObservableObject {
       ])
   ]
 
-  /// 符号设置选项
-  lazy var buttonSettingItems: [SettingItemModel] = [
-    .init(
-      text: "成对上屏符号 - 恢复默认值",
-      textTintColor: .systemRed,
-      buttonAction: { [unowned self] in
-        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-          throw "获取系统默认配置失败"
-        }
-        if let defaultPairsOfSymbols = defaultConfiguration.Keyboard?.pairsOfSymbols {
-          self.pairsOfSymbols = defaultPairsOfSymbols
-          resetSignSubject.send(true)
-          ProgressHUD.showSuccess()
-        }
-      }),
-    .init(
-      text: "光标居中符号 - 恢复默认值",
-      textTintColor: .systemRed,
-      buttonAction: { [unowned self] in
-        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-          throw "获取系统默认配置失败"
-        }
-        if let defaultSymbolsOfCursorBack = defaultConfiguration.Keyboard?.symbolsOfCursorBack {
-          self.symbolsOfCursorBack = defaultSymbolsOfCursorBack
-          resetSignSubject.send(true)
-          ProgressHUD.showSuccess()
-        }
-      }),
-    .init(
-      text: "返回主键盘符号 - 恢复默认值",
-      textTintColor: .systemRed,
-      buttonAction: { [unowned self] in
-        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-          throw "获取系统默认配置失败"
-        }
-        if let defaultSymbolsOfReturnToMainKeyboard = defaultConfiguration.Keyboard?.symbolsOfReturnToMainKeyboard {
-          self.symbolsOfReturnToMainKeyboard = defaultSymbolsOfReturnToMainKeyboard
-          resetSignSubject.send(true)
-          ProgressHUD.showSuccess()
-        }
-      })
-  ]
-
   /// 工具栏设置选项
   lazy var toolbarSteppers: [StepperModel] = [
     .init(
@@ -663,7 +637,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
   ]
 
   lazy var numberNineGridSettings: [SettingItemModel] = [
-//    .init(
+    //    .init(
 //      text: "启用数字九宫格",
 //      type: .toggle,
 //      toggleValue: enableNineGridOfNumericKeyboard,
@@ -694,7 +668,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
   ]
 
   lazy var symbolKeyboardSettings: [SettingItemModel] = [
-//    .init(
+    //    .init(
 //      text: "启用符号键盘",
 //      type: .toggle,
 //      toggleValue: enableSymbolKeyboard,
@@ -771,6 +745,10 @@ extension KeyboardSettingsViewModel {
 
   @objc func changeTableEditModel() {
     symbolTableIsEditing.toggle()
+  }
+
+  @objc func changeSymbolsOfChineseNineGridEditorState() {
+    symbolsOfChineseNineGridIsEditing.toggle()
   }
 
   @objc func symbolsSegmentedControlChange(_ sender: UISegmentedControl) {

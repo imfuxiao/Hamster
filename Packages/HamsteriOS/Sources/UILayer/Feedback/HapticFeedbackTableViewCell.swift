@@ -58,16 +58,16 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
 
   private lazy var firstRowView: UIStackView = {
     let stackView = UIStackView(arrangedSubviews: [label, switchView])
-
     stackView.axis = .horizontal
     stackView.alignment = .center
     stackView.distribution = .fill
-
+    stackView.translatesAutoresizingMaskIntoConstraints = false
     return stackView
   }()
 
   private lazy var secondaryRowView: StepSlider = {
-    let slider = StepSlider(frame: .zero)
+    let slider = StepSlider(frame: CGRect(x: 0, y: 0, width: contentView.bounds.width, height: 61))
+    slider.translatesAutoresizingMaskIntoConstraints = false
     slider.tintColor = .systemGreen
     slider.maxCount = UInt(HapticIntensity.allCases.count)
     slider.index = UInt(keyboardFeedbackViewModel.hapticFeedbackIntensity)
@@ -104,18 +104,23 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
 
   func setupView() {
     if !keyboardFeedbackViewModel.enableHapticFeedback {
-      activityConstraints = staticConstraints + dynamicFirstRowConstraints
       contentView.addSubview(firstRowView)
-      firstRowView.translatesAutoresizingMaskIntoConstraints = false
+      return
+    }
+    contentView.addSubview(firstRowView)
+    contentView.addSubview(secondaryRowView)
+
+    updateActivityConstraints()
+  }
+
+  func updateActivityConstraints() {
+    if !keyboardFeedbackViewModel.enableHapticFeedback {
+      activityConstraints = staticConstraints + dynamicFirstRowConstraints
       NSLayoutConstraint.activate(activityConstraints)
       return
     }
 
     activityConstraints = staticConstraints + dynamicSecondaryRowConstraints
-    contentView.addSubview(firstRowView)
-    contentView.addSubview(secondaryRowView)
-    firstRowView.translatesAutoresizingMaskIntoConstraints = false
-    secondaryRowView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate(activityConstraints)
   }
 
@@ -126,7 +131,7 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
       NSLayoutConstraint.deactivate(activityConstraints)
       activityConstraints.removeAll()
     }
-    setupView()
+    updateActivityConstraints()
   }
 
   private func image(name: String) -> UIImageView {
