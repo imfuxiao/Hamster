@@ -17,6 +17,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/vapor/vapor.git", exact: "4.81.0"),
     .package(url: "https://github.com/vapor/leaf.git", exact: "4.2.4"),
+    .package(url: "https://github.com/apple/swift-nio.git", exact: "2.57.0"),
     .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.16"),
   ],
   targets: [
