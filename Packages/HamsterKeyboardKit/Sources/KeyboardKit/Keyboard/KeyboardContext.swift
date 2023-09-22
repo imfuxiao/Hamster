@@ -682,4 +682,9 @@ public extension KeyboardContext {
   var keyboards: [Keyboard] {
     hamsterConfig?.keyboards ?? []
   }
+
+  /// 是否启用内嵌输入模式
+  var enableEmbeddedInputMode: Bool {
+    hamsterConfig?.Keyboard?.enableEmbeddedInputMode ?? false
+  }
 }

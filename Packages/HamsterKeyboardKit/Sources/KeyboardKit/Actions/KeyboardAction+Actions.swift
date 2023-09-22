@@ -105,7 +105,10 @@ public extension KeyboardAction {
    */
   var standardReleaseAction: GestureAction? {
     switch self {
-    case .keyboardType(let type): return { $0?.setKeyboardType(type) }
+    case .keyboardType(let type): return {
+        let type = type == .classifySymbolicOfLight ? .classifySymbolic : type
+        $0?.setKeyboardType(type)
+      }
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }

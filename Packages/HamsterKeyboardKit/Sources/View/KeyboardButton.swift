@@ -331,7 +331,9 @@ extension KeyboardButton {
     guard action.showKeyBubble else { return }
     inputCalloutView.isHidden = false
     inputCalloutView.shapeLayer.zPosition = 9999
-    inputCalloutView.label.text = action.inputCalloutText?.uppercased()
+//    inputCalloutView.label.text = action.inputCalloutText?.uppercased()
+    inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
+    
     inputCalloutView.updateStyle()
   }
   

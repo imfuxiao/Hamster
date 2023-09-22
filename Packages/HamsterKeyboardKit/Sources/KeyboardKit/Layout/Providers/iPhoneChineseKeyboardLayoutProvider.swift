@@ -61,9 +61,9 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case .backspace: return lowerSystemButtonWidth(for: context)
     case .keyboardType:
       /// 中文主键盘的最后一行第一个键
-      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
-        return smallBottomWidth(for: context)
-      }
+//      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
+//        return smallBottomWidth(for: context)
+//      }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary:

@@ -268,7 +268,8 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
     switch context.keyboardType {
 //    case .chinese: return .keyboardType(.chineseNumeric)
     case .chinese: return .keyboardType(.numericNineGrid)
-    case .alphabetic: return .keyboardType(.numeric)
+//    case .alphabetic: return .keyboardType(.numeric)
+    case .alphabetic: return .keyboardType(.numericNineGrid)
     case .numeric: return .keyboardType(.alphabetic(.auto))
     case .chineseNumeric: return .keyboardType(.chinese(.auto))
     case .symbolic: return .keyboardType(.alphabetic(.auto))

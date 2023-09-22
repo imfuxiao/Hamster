@@ -63,10 +63,15 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType: return bottomSystemButtonWidth(for: context)
+    case .keyboardType:
+//      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
+//        return smallBottomWidth(for: context)
+//      }
+      return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary: return smallBottomWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
+    case .returnLastKeyboard: return bottomSystemButtonWidth(for: context)
     default: return .available
     }
   }
@@ -177,12 +182,10 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
 
     let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
+    
+    result.append(.keyboardType(.classifySymbolic))
 
-    result.append(.keyboardType(.symbolic))
     result.append(.space)
-
-    /// 切换用户设置键盘
-    result.append(.returnLastKeyboard)
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.character("@"))
@@ -191,7 +194,9 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if context.textDocumentProxy.returnKeyType == .go {
       result.append(.character("."))
     }
-    result.append(.keyboardType(.chinese(.lowercased)))
+    /// 切换用户设置键盘
+    result.append(.returnLastKeyboard)
+    result.append(keyboardReturnAction(for: context))
     return result
   }
 

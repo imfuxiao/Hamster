@@ -51,6 +51,8 @@ public extension KeyboardType {
     case .numericNineGrid: return true
     case .chineseNumeric: return true
     case .chineseSymbolic: return true
+    default:
+      return false
     }
   }
 }

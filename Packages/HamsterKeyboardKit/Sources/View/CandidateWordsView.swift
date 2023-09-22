@@ -43,6 +43,7 @@ public class CandidateWordsView: UIView {
       label.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
     }
     label.textColor = keyboardContext.phoneticTextColor
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -52,6 +53,7 @@ public class CandidateWordsView: UIView {
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
       rimeContext: rimeContext)
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -69,7 +71,7 @@ public class CandidateWordsView: UIView {
     ])
 
     // 添加阴影
-    let heightOfCodingArea = keyboardContext.heightOfCodingArea
+    let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
     let heightOfToolbar = keyboardContext.heightOfToolbar
     let offsetY = (heightOfToolbar - heightOfCodingArea - 30) / 2
 
@@ -125,41 +127,53 @@ public class CandidateWordsView: UIView {
 
   /// 构建视图层次
   func constructViewHierarchy() {
-    addSubview(phoneticArea)
-    addSubview(candidatesArea)
-
-    if keyboardContext.hamsterConfig?.toolbar?.displayKeyboardDismissButton ?? true {
-      addSubview(controlStateView)
+    // 非内嵌模式添加拼写区域
+    if !keyboardContext.enableEmbeddedInputMode {
+      addSubview(phoneticArea)
     }
+    addSubview(candidatesArea)
+    addSubview(controlStateView)
   }
 
   /// 激活视图约束
   func activateViewConstraints() {
-    phoneticArea.translatesAutoresizingMaskIntoConstraints = false
-    candidatesArea.translatesAutoresizingMaskIntoConstraints = false
-
     let buttonInsets = layoutConfig.buttonInsets
     let codingAreaHeight = CGFloat(keyboardContext.hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
 
     let controlStateHeightConstraint = controlStateHeightConstraint
     dynamicControlStateHeightConstraint = controlStateHeightConstraint
 
-    NSLayoutConstraint.activate([
-      phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
-      phoneticArea.topAnchor.constraint(equalTo: topAnchor),
-      phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-      phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
+    /// 内嵌模式
+    if keyboardContext.enableEmbeddedInputMode {
+      NSLayoutConstraint.activate([
+        candidatesArea.topAnchor.constraint(equalTo: topAnchor),
+        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
+        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+        candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
 
-      candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
-      candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-      candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-      candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
+        controlStateView.topAnchor.constraint(equalTo: topAnchor),
+        controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        controlStateHeightConstraint,
+        controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
+      ])
+    } else {
+      NSLayoutConstraint.activate([
+        phoneticArea.heightAnchor.constraint(equalToConstant: codingAreaHeight),
+        phoneticArea.topAnchor.constraint(equalTo: topAnchor),
+        phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+        phoneticArea.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right),
 
-      controlStateView.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
-      controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      controlStateHeightConstraint,
-      controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
-    ])
+        candidatesArea.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
+        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
+        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+        candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
+
+        controlStateView.topAnchor.constraint(equalTo: phoneticArea.bottomAnchor),
+        controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+        controlStateHeightConstraint,
+        controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
+      ])
+    }
   }
 
   func setupContentView() {
@@ -169,6 +183,8 @@ public class CandidateWordsView: UIView {
 
   func combine() {
     Task {
+      // 检测是否启用内嵌编码
+      guard !keyboardContext.enableEmbeddedInputMode else { return }
       await rimeContext.$userInputKey
         .receive(on: DispatchQueue.main)
         .sink { [weak self] inputKeys in

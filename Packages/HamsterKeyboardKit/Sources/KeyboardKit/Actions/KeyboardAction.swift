@@ -308,6 +308,7 @@ public extension KeyboardAction {
     case .shift: return true
     case .settings: return true
     case .tab: return true
+    case .returnLastKeyboard: return true
     default: return false
     }
   }
@@ -315,6 +316,22 @@ public extension KeyboardAction {
   var isSymbolAction: Bool {
     switch self {
     case .symbol: return true
+    default: return false
+    }
+  }
+  
+  /// 分类符号按键
+  var isClassifySymbolic: Bool {
+    switch self {
+    case .keyboardType(.classifySymbolic), .keyboardType(.classifySymbolicOfLight): return true
+    default: return false
+    }
+  }
+  
+  /// 显示为白色的分类符号按键
+  var isClassifySymbolicOfLight: Bool {
+    switch self {
+    case .keyboardType(.classifySymbolicOfLight): return true
     default: return false
     }
   }

@@ -32,7 +32,7 @@ public extension KeyboardType {
     switch self {
     case .chinese: return "中"
     case .chineseNineGrid: return "中"
-    case .classifySymbolic: return "符"
+    case .classifySymbolic, .classifySymbolicOfLight: return "符"
     case .alphabetic: return "英"
     case .numeric: return "123"
     case .numericNineGrid: return "123"

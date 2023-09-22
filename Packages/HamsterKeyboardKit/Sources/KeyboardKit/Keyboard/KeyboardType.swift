@@ -127,9 +127,14 @@ public enum KeyboardType: Codable, Identifiable, Hashable {
   case numericNineGrid
 
   /**
-   分类符号键盘
+   分类符号键
    */
   case classifySymbolic
+
+  /**
+   （白色）分类符号键盘
+   */
+  case classifySymbolicOfLight
 }
 
 public extension KeyboardType {
@@ -151,6 +156,7 @@ public extension KeyboardType {
     case .chineseNineGrid: return "chineseNineGrid"
     case .numericNineGrid: return "numericNineGrid"
     case .classifySymbolic: return "classifySymbolic"
+    case .classifySymbolicOfLight: return "classifySymbolicOfLight"
     case .chineseNumeric: return "chineseNumeric"
     case .chineseSymbolic: return "chineseSymbolic"
     }
@@ -193,6 +199,15 @@ public extension KeyboardType {
   var isChineseNineGrid: Bool {
     switch self {
     case .chineseNineGrid: return true
+    default:
+      return false
+    }
+  }
+
+  /// 是否数字九宫格键盘
+  var isNumberNineGrid: Bool {
+    switch self {
+    case .numericNineGrid: return true
     default:
       return false
     }
