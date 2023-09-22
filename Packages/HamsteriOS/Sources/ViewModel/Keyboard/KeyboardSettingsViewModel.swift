@@ -334,7 +334,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
       .chinese(.lowercased),
       .chineseNineGrid
     ]
-    return list + (HamsterAppDependencyContainer.shared.configuration.customizeKeyboards ?? []).map { $0.type }
+    return list + (HamsterAppDependencyContainer.shared.configuration.keyboards ?? []).map { $0.type }
   }
 
   // MARK: - combine

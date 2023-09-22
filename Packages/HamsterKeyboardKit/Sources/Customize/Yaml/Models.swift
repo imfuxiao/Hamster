@@ -215,7 +215,7 @@ public struct KeySwipe: Codable, Hashable {
   public var processByRIME: Bool
 
   /// 是否在按键上显示
-  /// 可选，默认值为 false
+  /// 可选，默认值为 true
   public var display: Bool
 
   /// 显示文本

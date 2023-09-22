@@ -679,7 +679,7 @@ public extension KeyboardContext {
   }
 
   /// 自定义键盘
-  var customizeKeyboards: [Keyboard] {
-    hamsterConfig?.customizeKeyboards ?? []
+  var keyboards: [Keyboard] {
+    hamsterConfig?.keyboards ?? []
   }
 }

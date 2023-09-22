@@ -52,7 +52,7 @@ class CustomizeKeyboard: NibLessView {
     calloutContext: KeyboardCalloutContext,
     rimeContext: RimeContext
   ) {
-    self.keyboardLayoutProvider = CustomizeKeyboardLayoutProvider(keyboardLayoutProvider: keyboardLayoutProvider, keyboards: keyboardContext.customizeKeyboards)
+    self.keyboardLayoutProvider = CustomizeKeyboardLayoutProvider(keyboardLayoutProvider: keyboardLayoutProvider, keyboards: keyboardContext.keyboards)
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.keyboardContext = keyboardContext

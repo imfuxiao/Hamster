@@ -27,7 +27,7 @@ public indirect enum KeyboardLayoutItemWidth: Hashable, Codable {
    This width can be used to give all input items the same
    width, based on the row with the smallest input width.
    
-   根据同一行类型为 `input` 中宽度的最小值，作为这些 item 的宽度
+   该宽度可用于根据 input 最小的行，赋予所有 input 项相同的宽度。
    */
   case input
     

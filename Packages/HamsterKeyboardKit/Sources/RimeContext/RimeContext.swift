@@ -442,12 +442,8 @@ public extension RimeContext {
     // 处理失败则返回 inputText
     guard handled else { return text }
 
-    // 唯一码直接上屏
+    // 获取上屏文字
     let commitText = Rime.shared.getCommitText()
-    guard commitText.isEmpty else {
-      self.reset()
-      return commitText
-    }
 
     // 查看输入法状态
     let status = Rime.shared.status()
@@ -456,7 +452,8 @@ public extension RimeContext {
       self.reset()
     }
     await self.syncContext()
-    return nil
+
+    return commitText.isEmpty ? nil : commitText
   }
 
   @MainActor

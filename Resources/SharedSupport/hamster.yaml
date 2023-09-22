@@ -648,7 +648,7 @@ swipe:
 # 默认的 character(value) 中的 String 会经过 rime 处理，如果不希望通过 rime 引擎，则改为 false。
 #
 # display: BOOL 是否显示, 默认值为 true。
-customizeKeyboards:
+keyboards:
   - name: "仓颉"
     rows:
       - keys:
