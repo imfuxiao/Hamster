@@ -11,21 +11,34 @@ import UIKit
 public class SettingTableViewCell: NibLessTableViewCell {
   static let identifier = "SettingTableViewCell"
 
+  private var setting: SettingItemModel?
+
+  override public var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.settingItemModel = self.setting
+    return state
+  }
+
   override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
   }
 
-  var setting: SettingItemModel?
+  func updateWithSettingItem(_ item: SettingItemModel) {
+    guard setting != item else { return }
+    self.setting = item
+    setNeedsUpdateConfiguration()
+  }
 
   override public func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
-    guard let setting = setting else { return }
 
     var config = UIListContentConfiguration.valueCell()
-    config.text = setting.text
-    config.secondaryText = setting.navigationLinkLabel()
-    config.image = setting.icon
-    accessoryType = setting.accessoryType
+    config.text = state.settingItemModel?.text
+    config.secondaryText = state.settingItemModel?.navigationLinkLabel()
+    config.image = state.settingItemModel?.icon
+    if let type = state.settingItemModel?.accessoryType {
+      accessoryType = type
+    }
     contentConfiguration = config
   }
 }

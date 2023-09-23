@@ -11,52 +11,49 @@ import UIKit
 class ToggleTableViewCell: NibLessTableViewCell {
   static let identifier = "ToggleTableViewCell"
 
-  // MARK: properties
+  // MARK: - properties
 
-  public var settingItem: SettingItemModel {
-    didSet {
-      setupToggleView()
-    }
+  override var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.settingItemModel = self.settingItem
+    return state
   }
 
-  let switchView: UISwitch = {
+  lazy var switchView: UISwitch = {
     let switchView = UISwitch(frame: .zero)
+    switchView.addTarget(self, action: #selector(toggleAction), for: .valueChanged)
     return switchView
   }()
 
-  // MARK: methods
+  public var settingItem: SettingItemModel? = nil
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.settingItem = SettingItemModel()
+  // MARK: - methods
 
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-    setupToggleView()
+  func updateWithSettingItem(_ item: SettingItemModel) {
+    guard settingItem != item else { return }
+    self.settingItem = item
+    setNeedsUpdateConfiguration()
   }
 
-  func setupToggleView() {
-    switchView.setOn(settingItem.toggleValue, animated: false)
-    switchView.addTarget(self, action: #selector(toggleAction), for: .valueChanged)
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
     accessoryView = switchView
   }
 
   @objc func toggleAction(_ sender: UISwitch) {
-    settingItem.toggleValue = sender.isOn
-    settingItem.toggleHandled?(sender.isOn)
-  }
-
-  override func prepareForReuse() {
-    settingItem.text = ""
+    settingItem?.toggleValue = sender.isOn
+    settingItem?.toggleHandled?(sender.isOn)
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
 
     var config = UIListContentConfiguration.cell()
-    config.text = settingItem.text
-    config.secondaryText = settingItem.secondaryText
+    config.text = state.settingItemModel?.text
+    config.secondaryText = state.settingItemModel?.secondaryText
+    if let toggleValue = state.settingItemModel?.toggleValue {
+      switchView.setOn(toggleValue, animated: false)
+    }
     contentConfiguration = config
-
-    setupToggleView()
   }
 }

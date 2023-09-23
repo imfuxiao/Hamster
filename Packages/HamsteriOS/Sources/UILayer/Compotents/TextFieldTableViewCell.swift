@@ -34,21 +34,15 @@ class CellTextField: UITextField {
 class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   static let identifier = "TextFieldTableViewCell"
 
-  // MARK: properties
+  // MARK: - properties
 
-  public var settingItem: SettingItemModel {
-    didSet {
-      if let iconImage = settingItem.icon {
-        let imageView = UIImageView(image: iconImage)
-        imageView.contentMode = .scaleAspectFit
-        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(textFieldFocus)))
-        textField.leftView = imageView
-      }
-      leftTextLabel.text = settingItem.text
-      textField.text = settingItem.textValue
-      textField.placeholder = settingItem.placeholder
-    }
+  override var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.settingItemModel = self.settingItem
+    return state
   }
+
+  private var settingItem: SettingItemModel? = nil
 
   public lazy var textField: UITextField = {
     let textField = CellTextField(frame: .zero)
@@ -67,22 +61,32 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     return label
   }()
 
-  // MARK: methods
+  // MARK: - Initialization
 
-  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.settingItem = SettingItemModel()
-
+  override init(style: UITableViewCell.CellStyle = .default, reuseIdentifier: String? = TextFieldTableViewCell.identifier) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     setupTextFieldView()
   }
 
-  init(settingItem: SettingItemModel) {
-    self.settingItem = settingItem
+  // MARK: - methods
 
-    super.init(style: .default, reuseIdentifier: Self.identifier)
+  override func updateConfiguration(using state: UICellConfigurationState) {
+    if let iconImage = state.settingItemModel?.icon {
+      let imageView = UIImageView(image: iconImage)
+      imageView.contentMode = .scaleAspectFit
+      imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(textFieldFocus)))
+      textField.leftView = imageView
+    }
+    leftTextLabel.text = state.settingItemModel?.text
+    textField.text = state.settingItemModel?.textValue
+    textField.placeholder = state.settingItemModel?.placeholder
+  }
 
-    setupTextFieldView()
+  func updateWithSettingItem(_ item: SettingItemModel) {
+    guard settingItem != item else { return }
+    self.settingItem = item
+    setNeedsUpdateConfiguration()
   }
 
   func setupTextFieldView() {
@@ -109,11 +113,11 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
   // MARK: implementation UITextFieldDelegate
 
   func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-    settingItem.textFieldShouldBeginEditing
+    settingItem?.textFieldShouldBeginEditing ?? true
   }
 
   func textFieldDidEndEditing(_ textField: UITextField) {
-    settingItem.textHandled?(textField.text ?? "")
+    settingItem?.textHandled?(textField.text ?? "")
   }
 
   // 当按下 "return" 键时调用。

@@ -75,22 +75,22 @@ extension KeySwipeSettingsView: UITableViewDataSource {
     case .navigation:
       let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? SettingTableViewCell else { return cell }
-      cell.setting = setting
+      cell.updateWithSettingItem(setting)
       return cell
     case .toggle:
       let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ToggleTableViewCell else { return cell }
-      cell.settingItem = setting
+      cell.updateWithSettingItem(setting)
       return cell
     case .textField:
       let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? TextFieldTableViewCell else { return cell }
-      cell.settingItem = setting
+      cell.updateWithSettingItem(setting)
       return cell
     case .button:
       let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ButtonTableViewCell else { return cell }
-      cell.settingItem = setting
+      cell.updateWithSettingItem(setting)
       return cell
     }
   }

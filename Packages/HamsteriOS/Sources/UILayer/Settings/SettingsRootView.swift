@@ -85,7 +85,7 @@ extension SettingsRootView: UITableViewDataSource {
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? SettingTableViewCell else { return cell }
-    cell.setting = settingsViewModel.sections[indexPath.section].items[indexPath.row]
+    cell.updateWithSettingItem(settingsViewModel.sections[indexPath.section].items[indexPath.row])
     return cell
   }
 }

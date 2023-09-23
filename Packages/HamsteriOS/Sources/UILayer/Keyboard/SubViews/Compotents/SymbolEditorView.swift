@@ -170,12 +170,12 @@ extension SymbolEditorView {
     let indexPath = IndexPath(row: symbols.count - 1, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     if let cell = tableView.cellForRow(at: indexPath), let cell = cell as? TextFieldTableViewCell {
-      cell.settingItem = SettingItemModel(
+      cell.updateWithSettingItem(SettingItemModel(
         textValue: "",
         textHandled: { [unowned self] in
           symbols[indexPath.row] = $0
         }
-      )
+      ))
       tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
       cell.textField.becomeFirstResponder()
     }
@@ -200,12 +200,12 @@ extension SymbolEditorView: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
     let symbol = symbols[indexPath.row]
     guard let cell = cell as? TextFieldTableViewCell else { return cell }
-    cell.settingItem = SettingItemModel(
+    cell.updateWithSettingItem(SettingItemModel(
       textValue: symbol,
       textHandled: { [unowned self] in
         symbols[indexPath.row] = $0
       }
-    )
+    ))
     return cell
   }
 

@@ -91,20 +91,20 @@ extension AppleCloudRootView: UITableViewDataSource {
     if settingItem.type == .button {
       let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ButtonTableViewCell else { return cell }
-      cell.settingItem = settingItem
+      cell.updateWithSettingItem(settingItem)
       return cell
     }
 
     if settingItem.type == .toggle {
       let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ToggleTableViewCell else { return cell }
-      cell.settingItem = settingItem
+      cell.updateWithSettingItem(settingItem)
       return cell
     }
 
     let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? TextFieldTableViewCell else { return cell }
-    cell.settingItem = settingItem
+    cell.updateWithSettingItem(settingItem)
     return cell
   }
 }

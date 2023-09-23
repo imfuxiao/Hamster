@@ -53,13 +53,13 @@ extension SymbolKeyboardSettingsRootView: UITableViewDataSource, UITableViewDele
     if settingItem.type == .button {
       let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ButtonTableViewCell else { return cell }
-      cell.settingItem = settingItem
+      cell.updateWithSettingItem(settingItem)
       return cell
     }
 
     let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? ToggleTableViewCell else { return cell }
-    cell.settingItem = settingItem
+    cell.updateWithSettingItem(settingItem)
     return cell
   }
 

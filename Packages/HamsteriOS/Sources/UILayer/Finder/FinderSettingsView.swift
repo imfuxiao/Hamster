@@ -64,7 +64,7 @@ extension FinderSettingsView: UITableViewDataSource {
     let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? ButtonTableViewCell else { return cell }
     guard indexPath.section < finderViewModel.settingItems.count else { return cell }
-    cell.settingItem = finderViewModel.settingItems[indexPath.section]
+    cell.updateWithSettingItem(finderViewModel.settingItems[indexPath.section])
     return cell
   }
 }

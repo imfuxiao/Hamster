@@ -14,25 +14,22 @@ import UIKit
 public class ButtonTableViewCell: NibLessTableViewCell {
   static let identifier = "ButtonTableCell"
 
-  // MARK: properties
+  // MARK: - properties
+
+  override public var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.settingItemModel = self.settingItem
+    return state
+  }
 
   let buttonView: UIButton = {
     let button = UIButton(type: .roundedRect)
     return button
   }()
 
-  public var settingItem: SettingItemModel {
-    didSet {
-      buttonView.setTitle(settingItem.text, for: .normal)
-      buttonView.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
-      if let textTintColor = settingItem.textTintColor {
-        buttonView.titleLabel?.tintColor = textTintColor
-      }
-      buttonView.addTarget(self, action: #selector(buttonHandled), for: .touchUpInside)
-    }
-  }
+  private var settingItem: SettingItemModel
 
-  // MARK: methods
+  // MARK: - initialization
 
   override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     self.settingItem = SettingItemModel()
@@ -40,6 +37,23 @@ public class ButtonTableViewCell: NibLessTableViewCell {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     setupButtonView()
+  }
+
+  // MARK: - methods
+
+  func updateWithSettingItem(_ item: SettingItemModel) {
+    guard settingItem != item else { return }
+    self.settingItem = item
+    setNeedsUpdateConfiguration()
+  }
+
+  override public func updateConfiguration(using state: UICellConfigurationState) {
+    buttonView.setTitle(state.settingItemModel?.text, for: .normal)
+    buttonView.titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
+    if let textTintColor = state.settingItemModel?.textTintColor {
+      buttonView.titleLabel?.tintColor = textTintColor
+    }
+    buttonView.addTarget(self, action: #selector(buttonHandled), for: .touchUpInside)
   }
 
   func setupButtonView() {

@@ -80,7 +80,7 @@ extension FileBrowserView: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: FinderViewCell.identifier, for: indexPath)
     if let cell = cell as? FinderViewCell {
-      cell.fileInfo = fileBrowserViewModel.files[indexPath.row]
+      cell.updateWithFileInfo(fileBrowserViewModel.files[indexPath.row])
     }
     return cell
   }

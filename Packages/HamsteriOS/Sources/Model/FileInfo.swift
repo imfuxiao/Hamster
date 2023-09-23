@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct FileInfo: Identifiable {
+public struct FileInfo: Identifiable, Hashable {
   public let id = UUID()
   public var url: URL
   public var fileResourceType: URLFileResourceType?

@@ -96,14 +96,14 @@ extension BackupRootView: UITableViewDataSource {
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if indexPath.section == 0 {
       let cell = ButtonTableViewCell(style: .default, reuseIdentifier: ButtonTableViewCell.identifier)
-      cell.settingItem = backupViewModel.settingItem
+      cell.updateWithSettingItem(backupViewModel.settingItem)
       return cell
     }
 
     let fileInfo = backupViewModel.backupFiles[indexPath.row]
     let cell = tableView.dequeueReusableCell(withIdentifier: FinderViewCell.identifier, for: indexPath)
     if let cell = cell as? FinderViewCell {
-      cell.fileInfo = fileInfo
+      cell.updateWithFileInfo(fileInfo)
     }
     return cell
   }
