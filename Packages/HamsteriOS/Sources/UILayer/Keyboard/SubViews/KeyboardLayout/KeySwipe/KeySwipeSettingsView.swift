@@ -99,10 +99,6 @@ extension KeySwipeSettingsView: UITableViewDataSource {
 extension KeySwipeSettingsView: UITableViewDelegate {}
 
 extension KeySwipeSettingsView {
-  func setProcessByRIME(_ state: Bool) {
-    key?.processByRIME = state
-  }
-
   /// 将 key 变为设置属性, 方便 Tabel 展示
   func getSettingsItems(_ key: Key) -> [SettingSectionModel] {
     var swipeSettingsItem: [SettingSectionModel] = [
