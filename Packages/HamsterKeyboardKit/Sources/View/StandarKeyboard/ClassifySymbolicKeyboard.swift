@@ -6,10 +6,11 @@
 //
 
 import Combine
+import HamsterUIKit
 import UIKit
 
 /// 分类符号键盘
-class ClassifySymbolicKeyboard: UIView {
+class ClassifySymbolicKeyboard: NibLessView {
   private let keyboardContext: KeyboardContext
   private let actionHandler: KeyboardActionHandler
   private let layoutProvider: KeyboardLayoutProvider
@@ -34,11 +35,6 @@ class ClassifySymbolicKeyboard: UIView {
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   private lazy var viewModel: ClassifySymbolicViewModel = {
@@ -75,14 +71,14 @@ class ClassifySymbolicKeyboard: UIView {
   }
 
   /// 构建视图层次
-  open func constructViewHierarchy() {
+  override func constructViewHierarchy() {
     addSubview(classifyView)
     addSubview(symbolsView)
     addSubview(bottomRow)
   }
 
   /// 激活视图约束
-  open func activateViewConstraints() {
+  override func activateViewConstraints() {
     let rowHeight = layoutConfig.rowHeight
 
     classifyViewWidthConstraint = classifyView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.1)

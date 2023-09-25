@@ -83,13 +83,18 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
   // MARK: - Initialization
 
   public init(
+    keyboardLayoutProvider: KeyboardLayoutProvider,
     actionHandler: KeyboardActionHandler,
     appearance: KeyboardAppearance,
     keyboardContext: KeyboardContext,
     calloutContext: KeyboardCalloutContext,
     rimeContext: RimeContext
   ) {
-    self.keyboardLayoutProvider = ChineseNineGridLayoutProvider(keyboardContext: keyboardContext)
+    if let keyboardLayoutProvider = keyboardLayoutProvider as? StandardKeyboardLayoutProvider {
+      self.keyboardLayoutProvider = keyboardLayoutProvider.chineseNineGridLayoutProvider
+    } else {
+      self.keyboardLayoutProvider = ChineseNineGridLayoutProvider()
+    }
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.keyboardContext = keyboardContext

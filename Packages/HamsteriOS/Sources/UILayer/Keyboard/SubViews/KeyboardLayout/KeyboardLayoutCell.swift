@@ -46,6 +46,11 @@ class KeyboardLayoutCell: UICollectionViewListCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    accessories = []
+  }
+
   func setupView() {
     contentView.addSubview(checkbox)
     contentView.addSubview(label)

@@ -5,12 +5,14 @@
 //  Created by morse on 2023/9/13.
 //
 
+import Combine
 import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
 class KeyboardLayoutRootView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
+  private var subscriptions = Set<AnyCancellable>()
 
   private lazy var listView: UICollectionView = {
     let layout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
@@ -18,12 +20,21 @@ class KeyboardLayoutRootView: NibLessView {
       configuration.footerMode = .supplementary
       configuration.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in
         let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-        guard !keyboardType.isCustom else { return nil }
-        let action = UIContextualAction(style: .normal, title: "设置", handler: { [unowned self] _, _, completion in
-          keyboardSettingsAction(keyboardType)
-          completion(true)
-        })
-        action.backgroundColor = .systemBlue
+        let action: UIContextualAction
+
+        if keyboardType.isCustom {
+          action = UIContextualAction(style: .destructive, title: "删除", handler: { [unowned self] _, _, completion in
+            keyboardSettingsViewModel.deleteCustomizeKeyboardLayout(keyboardType)
+            completion(true)
+          })
+          action.backgroundColor = .systemRed
+        } else {
+          action = UIContextualAction(style: .normal, title: "设置", handler: { [unowned self] _, _, completion in
+            keyboardSettingsAction(keyboardType)
+            completion(true)
+          })
+          action.backgroundColor = .systemBlue
+        }
         return UISwipeActionsConfiguration(actions: [action])
       }
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
@@ -45,6 +56,13 @@ class KeyboardLayoutRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: .zero)
+
+    keyboardSettingsViewModel.reloadRootViewPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        loadDataSource()
+      }
+      .store(in: &subscriptions)
   }
 
   override func didMoveToWindow() {
@@ -53,14 +71,18 @@ class KeyboardLayoutRootView: NibLessView {
     addSubview(listView)
     listView.fillSuperview()
 
+    loadDataSource()
+  }
+}
+
+extension KeyboardLayoutRootView {
+  func loadDataSource() {
     self.diffableDataSource.apply(keyboardSettingsViewModel.initKeyboardLayoutDataSource(), animatingDifferences: false)
     if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(where: { $0 == keyboardSettingsViewModel.useKeyboardType }) {
       self.listView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
     }
   }
-}
 
-extension KeyboardLayoutRootView {
   func cellRegistration() -> UICollectionView.CellRegistration<KeyboardLayoutCell, KeyboardType> {
     UICollectionView.CellRegistration { cell, _, item in
       cell.label.text = item.label

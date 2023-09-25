@@ -25,6 +25,12 @@ class FinderViewCell: NibLessTableViewCell {
 
   private var fileInfo: FileInfo?
 
+  override var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.fileInfo = self.fileInfo
+    return state
+  }
+
   override init(style: UITableViewCell.CellStyle = .default, reuseIdentifier: String? = FinderViewCell.identifier) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
   }

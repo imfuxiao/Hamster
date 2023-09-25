@@ -30,6 +30,13 @@ class KeyboardLayoutViewController: NibLessViewController {
     return vc
   }()
 
+  private lazy var documentPickerViewController: UIDocumentPickerViewController = {
+    let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.yaml])
+    vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    vc.delegate = self
+    return vc
+  }()
+
   init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
@@ -42,9 +49,12 @@ class KeyboardLayoutViewController: NibLessViewController {
     title = "键盘布局"
     view = rootView
 
+    // 右侧导入按钮
+    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: keyboardSettingsViewModel, action: #selector(keyboardSettingsViewModel.importCustomizeKeyboardLayout))
+
     keyboardSettingsViewModel.useKeyboardTypePublished
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] keyboardType in
+      .sink { [unowned self] _ in
         self.navigationController?.pushViewController(layoutSettingsViewController, animated: true)
       }
       .store(in: &subscriptions)
@@ -56,5 +66,28 @@ class KeyboardLayoutViewController: NibLessViewController {
         self.navigationController?.pushViewController(keySwipeSettingsViewController, animated: true)
       }
       .store(in: &subscriptions)
+
+    keyboardSettingsViewModel.openDocumentPickerPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard $0 == true else { return }
+        presentDocumentPicker()
+      }
+      .store(in: &subscriptions)
+  }
+
+  func presentDocumentPicker() {
+    present(documentPickerViewController, animated: true)
+  }
+}
+
+extension KeyboardLayoutViewController: UIDocumentPickerDelegate {
+  /// 自定义键盘导入
+  func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    guard !urls.isEmpty else { return }
+    Task {
+      await self.keyboardSettingsViewModel.importCustomizeKeyboardLayout(fileURL: urls[0])
+      self.view.setNeedsLayout()
+    }
   }
 }

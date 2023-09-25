@@ -548,6 +548,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       keyboardContext.keyboardType = .chinese(casing)
       return
     }
+
+    if case .custom(let name, _) = keyboardContext.keyboardType {
+      keyboardContext.keyboardType = .custom(named: name, case: casing)
+      return
+    }
+
     keyboardContext.keyboardType = .alphabetic(casing)
   }
 
@@ -578,7 +584,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func returnLastKeyboard() {
-    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map{ $0.yamlString }.joined(separator: ","))")
+    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map { $0.yamlString }.joined(separator: ","))")
     guard let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() else {
       keyboardContext.keyboardType = keyboardContext.selectKeyboard
       return

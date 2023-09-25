@@ -7,6 +7,8 @@
 
 import Combine
 import HamsterKeyboardKit
+import HamsterKit
+import OSLog
 import ProgressHUD
 import UIKit
 
@@ -315,7 +317,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
     set {
       guard let keyboardType = newValue else { return }
-      if case .custom(let named) = keyboardType {
+      if case .custom(let named, _) = keyboardType {
         if !named.isEmpty {
           HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = keyboardType.yamlString
         }
@@ -387,6 +389,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
   public var keySwipeSettingsActionSubject = PassthroughSubject<Key?, Never>()
   public var keySwipeSettingsActionPublished: AnyPublisher<Key?, Never> {
     keySwipeSettingsActionSubject.eraseToAnyPublisher()
+  }
+
+  /// 打开文档页面
+  public var openDocumentPickerSubject = PassthroughSubject<Bool, Never>()
+  public var openDocumentPickerPublished: AnyPublisher<Bool, Never> {
+    openDocumentPickerSubject.eraseToAnyPublisher()
+  }
+
+  /// keyboardLayout Root View Reload
+  public var reloadRootViewSubject = PassthroughSubject<Bool, Never>()
+  public var reloadRootViewPublished: AnyPublisher<Bool, Never> {
+    reloadRootViewSubject.eraseToAnyPublisher()
   }
 
   // MARK: - init data
@@ -765,6 +779,14 @@ extension KeyboardSettingsViewModel {
       return
     }
   }
+
+  /// 导入自定义键盘布局
+  @objc func importCustomizeKeyboardLayout() {
+    openDocumentPickerSubject.send(true)
+  }
+
+  /// 导出自定义键盘布局
+  @objc func exportCustomizeKeyboardLayout() {}
 }
 
 // MARK: - KeyboardLayout 键盘布局相关
@@ -803,6 +825,65 @@ extension KeyboardSettingsViewModel {
     snapshot.appendItems(chineseStanderSystemKeyboardSwipeList, toSection: 0)
     return snapshot
   }
+
+  /// 导入自定义键盘布局
+  public func importCustomizeKeyboardLayout(fileURL: URL) async {
+    Logger.statistics.debug("importCustomizeKeyboardLayout fileName: \(fileURL.path)")
+    await ProgressHUD.show("导入中……", interaction: false)
+    // 检测是否为iCloudURL, 需要特殊处理
+    var needAccessingSecurity = false
+    if fileURL.path.contains("com~apple~CloudDocs") {
+      needAccessingSecurity = true
+      // iCloud中的URL须添加安全访问资源语句，否则会异常：Operation not permitted
+      // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
+      if !fileURL.startAccessingSecurityScopedResource() {
+        await ProgressHUD.showError("导入文件读取受限，无法加载文件", interaction: false, delay: 1.5)
+        return
+      }
+    }
+
+    // 加载自定义键盘配置文件
+    do {
+      let keyboards = try HamsterConfigurationRepositories.shared.loadCustomizerKeyboardLayoutYAML(fileURL)
+
+      // 停止读取url文件
+      if needAccessingSecurity { fileURL.stopAccessingSecurityScopedResource() }
+
+      // 内置键盘
+      // 注意：.filter 会过滤掉与导入键盘名称相同的键盘
+      let originalKeyboards = (HamsterAppDependencyContainer.shared.configuration.keyboards ?? [])
+        .filter {
+          for importKeyboard in keyboards.keyboards {
+            if importKeyboard.type == $0.type {
+              return false
+            }
+          }
+          return true
+        }
+
+      HamsterAppDependencyContainer.shared.configuration.keyboards = originalKeyboards + keyboards.keyboards
+
+      await ProgressHUD.showSuccess("导入成功", interaction: false, delay: 1.5)
+      reloadRootViewSubject.send(true)
+    } catch {
+      Logger.statistics.error("importCustomizeKeyboardLayout error: \(error)")
+      await ProgressHUD.showError("自定义键盘配置文件加载失败", interaction: false, delay: 1.5)
+      return
+    }
+  }
+
+  /// 删除自定义键盘布局
+  func deleteCustomizeKeyboardLayout(_ keyboardType: KeyboardType) {
+    var keyboards = HamsterAppDependencyContainer.shared.configuration.keyboards ?? []
+    if let index = keyboards.firstIndex(where: { $0.type == keyboardType }) {
+      keyboards.remove(at: index)
+      HamsterAppDependencyContainer.shared.configuration.keyboards = keyboards
+      ProgressHUD.showSuccess("删除成功", interaction: false, delay: 1.5)
+      reloadRootViewSubject.send(true)
+    } else {
+      ProgressHUD.showFailed("未找到此键盘", interaction: false, delay: 1.5)
+    }
+  }
 }
 
 // MARK: - Constants
@@ -817,7 +898,7 @@ extension KeyboardType {
     switch self {
     case .chinese: return "中文26键"
     case .chineseNineGrid: return "中文9键"
-    case .custom(let name): return name.isEmpty ? "自定义键盘" : "自定义-\(name)"
+    case .custom(let name, _): return name.isEmpty ? "自定义键盘" : "自定义-\(name)"
     case .numericNineGrid: return "数字九宫格"
     default: return ""
     }
@@ -827,7 +908,7 @@ extension KeyboardType {
     switch self {
     case .chinese: return "chinese"
     case .chineseNineGrid: return "chineseNineGrid"
-    case .custom(let name): return "custom(\(name))"
+    case .custom(let name, _): return "custom(\(name))"
     default: return ""
     }
   }

@@ -62,6 +62,9 @@ class KeyboardRootView: NibLessView {
   /// 非主键盘之外的临时键盘，如：数字九宫格/分类符号键盘等
   private var tempKeyboardView: UIView? = nil
 
+  /// 非主键盘的临时键盘
+  private var tempCustomKeyboardView: [KeyboardType: CustomizeKeyboard] = [:]
+
   // MARK: - 计算属性
 
   // MARK: - subview
@@ -90,6 +93,7 @@ class KeyboardRootView: NibLessView {
   /// 中文九宫格键盘
   private lazy var chineseNineGridKeyboardView: ChineseNineGridKeyboard = {
     let view = ChineseNineGridKeyboard(
+      keyboardLayoutProvider: keyboardLayoutProvider,
       actionHandler: actionHandler,
       appearance: appearance,
       keyboardContext: keyboardContext,
@@ -321,6 +325,30 @@ class KeyboardRootView: NibLessView {
             standerSystemKeyboard.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
           }
           self.tempKeyboardView = standerSystemKeyboard
+        // TODO: Custom keyboard
+
+        case .custom:
+          var keyboardView: CustomizeKeyboard
+          if let view = tempCustomKeyboardView[$0] {
+            keyboardView = view
+          } else {
+            keyboardView = CustomizeKeyboard(
+              keyboardLayoutProvider: keyboardLayoutProvider,
+              actionHandler: actionHandler,
+              appearance: appearance,
+              keyboardContext: keyboardContext,
+              calloutContext: calloutContext,
+              rimeContext: rimeContext
+            )
+            tempCustomKeyboardView[$0] = keyboardView
+          }
+
+          if keyboardView.superview == nil {
+            keyboardView.translatesAutoresizingMaskIntoConstraints = true
+            addSubview(keyboardView)
+            keyboardView.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
+          }
+          self.tempKeyboardView = keyboardView
         default:
           // 注意：非临时键盘类型外的类型直接 return
           return

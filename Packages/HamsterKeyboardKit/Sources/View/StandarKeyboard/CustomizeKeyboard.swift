@@ -13,7 +13,7 @@ import UIKit
 class CustomizeKeyboard: NibLessView {
   // MARK: - Properties
 
-  private let keyboardLayoutProvider: CustomizeKeyboardLayoutProvider
+  private let keyboardLayoutProvider: KeyboardLayoutProvider
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private var keyboardContext: KeyboardContext
@@ -52,7 +52,7 @@ class CustomizeKeyboard: NibLessView {
     calloutContext: KeyboardCalloutContext,
     rimeContext: RimeContext
   ) {
-    self.keyboardLayoutProvider = CustomizeKeyboardLayoutProvider(keyboardLayoutProvider: keyboardLayoutProvider, keyboards: keyboardContext.keyboards)
+    self.keyboardLayoutProvider = keyboardLayoutProvider
     self.actionHandler = actionHandler
     self.appearance = appearance
     self.keyboardContext = keyboardContext

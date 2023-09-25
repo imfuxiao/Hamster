@@ -12,6 +12,7 @@
 		C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */; };
 		C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C02435B52A0490230080CFB4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
+		C02C4D982AC105CA00FF91BA /* IntentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02C4D972AC105CA00FF91BA /* IntentProvider.swift */; };
 		C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */; };
 		C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */; };
 		C03319E22A2E1BEA00CE4950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */; };
@@ -70,6 +71,7 @@
 		C02435952A0490220080CFB4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C02435962A0490220080CFB4 /* Hamster.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Hamster.entitlements; sourceTree = "<group>"; };
 		C02435972A0490220080CFB4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C02C4D972AC105CA00FF91BA /* IntentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentProvider.swift; sourceTree = "<group>"; };
 		C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegete.swift; sourceTree = "<group>"; };
 		C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				C01396F82AB499CA0043674A /* Actions */,
+				C02C4D972AC105CA00FF91BA /* IntentProvider.swift */,
 			);
 			path = Shortcuts;
 			sourceTree = "<group>";
@@ -374,6 +377,7 @@
 				C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */,
 				C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */,
 				C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */,
+				C02C4D982AC105CA00FF91BA /* IntentProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

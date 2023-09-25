@@ -32,6 +32,12 @@ public class HamsterConfigurationRepositories {
     return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: data)
   }
 
+  /// 加载自定义键盘 yaml 配置文件
+  public func loadCustomizerKeyboardLayoutYAML(_ path: URL) throws -> Keyboards {
+    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
+    return try YAMLDecoder().decode(Keyboards.self, from: data)
+  }
+
   /// 保存配置至 yaml 文件中
   public func saveToYAML(config: HamsterConfiguration, yamlPath path: URL) throws {
     let str = try Self.transform(YAMLEncoder().encode(config))

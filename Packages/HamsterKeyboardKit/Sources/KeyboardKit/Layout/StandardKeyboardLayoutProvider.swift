@@ -51,6 +51,18 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
   /// 中文键盘布局
   private let chineseKeyboardLayoutProvider: ChineseKeyboardLayoutProvider
 
+  /// 中文九宫格键盘布局
+  public lazy var chineseNineGridLayoutProvider: ChineseNineGridLayoutProvider = {
+    let provider = ChineseNineGridLayoutProvider()
+    return provider
+  }()
+
+  /// 自定义键盘布局
+  public lazy var customizeKeyboardLayoutProvider: CustomizeKeyboardLayoutProvider = {
+    let provider = CustomizeKeyboardLayoutProvider(keyboardLayoutProvider: self, keyboards: keyboardContext.keyboards)
+    return provider
+  }()
+
   // MARK: - Initializations
 
   /**
@@ -83,6 +95,14 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
    在给定的上下文中使用的键盘布局 provider。
    */
   open func keyboardLayoutProvider(for context: KeyboardContext) -> KeyboardLayoutProvider {
+    if context.keyboardType.isCustom {
+      return customizeKeyboardLayoutProvider
+    }
+
+    if context.keyboardType.isChineseNineGrid {
+      return chineseNineGridLayoutProvider
+    }
+
     if context.deviceType == .pad {
       return context.keyboardType.isChinese ? chineseKeyboardLayoutProvider.iPadProvider : englishKeyboardLayoutProvider.iPadProvider
     }

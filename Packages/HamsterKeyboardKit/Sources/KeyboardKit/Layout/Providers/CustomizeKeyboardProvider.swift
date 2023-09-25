@@ -5,11 +5,13 @@
 //  Created by morse on 2023/9/4.
 //
 
+import HamsterKit
+import OSLog
 import UIKit
 
 /// 自定义键盘布局 Provider
 open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
-  private let keyboardLayoutProvider: KeyboardLayoutProvider
+  private unowned let keyboardLayoutProvider: KeyboardLayoutProvider
 
   /// 自定义键盘
   private let keyboards: [Keyboard]
@@ -21,10 +23,13 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
 
   public func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
     // 非自定义键盘返回其他 provider
-    guard context.keyboardType.isCustom else { return keyboardLayout(for: context) }
-    guard case .custom(let name) = context.keyboardType else { return keyboardLayout(for: context) }
-    guard let keyboard = keyboards.first(where: { $0.name == name }) else { return keyboardLayout(for: context) }
-    let actions = self.actions(keyboard: keyboard)
+    guard case .custom(let name, let casing) = context.keyboardType else { return keyboardLayoutProvider.keyboardLayout(for: context) }
+    guard let keyboard = keyboards.first(where: { $0.name == name }) else {
+      Logger.statistics.error("not found custom keyboard. name: \(name)")
+      return KeyboardLayout(itemRows: [])
+    }
+    let keyboardCase = casing ?? .lowercased
+    let actions = self.actions(keyboard: keyboard, casing: keyboardCase)
     let items = self.items(for: actions, keyboard: keyboard, context: context)
     return KeyboardLayout(itemRows: items, customKeyboard: keyboard)
   }
@@ -36,8 +41,22 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
   /**
    获取自定义键盘 actions
    */
-  open func actions(keyboard: Keyboard) -> KeyboardActionRows {
-    return keyboard.rows.map { $0.keys.map { $0.action } }
+  open func actions(keyboard: Keyboard, casing: KeyboardCase) -> KeyboardActionRows {
+    return keyboard.rows
+      .map {
+        $0.keys.map {
+          if $0.action.isShiftAction {
+            return .shift(currentCasing: casing)
+          }
+          if case .character(let char) = $0.action {
+            return .character(casing.isUppercased ? char.uppercased() : char.lowercased())
+          }
+          if case .characterMargin(let char) = $0.action {
+            return .characterMargin(casing.isUppercased ? char.uppercased() : char.lowercased())
+          }
+          return $0.action
+        }
+      }
   }
 
   open func items(for actions: KeyboardActionRows, keyboard: Keyboard, context: KeyboardContext) -> KeyboardLayoutItemRows {

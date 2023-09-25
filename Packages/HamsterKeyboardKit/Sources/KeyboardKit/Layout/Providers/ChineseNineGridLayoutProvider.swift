@@ -8,7 +8,7 @@
 import UIKit
 
 /// 中文九宫格布局
-class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
+public class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
   static let actionRows: KeyboardActionRows = [
     [.chineseNineGrid(Symbol(char: "@/.")), .chineseNineGrid(Symbol(char: "ABC")), .chineseNineGrid(Symbol(char: "DEF")), .backspace],
     // TODO: 分词
@@ -20,14 +20,8 @@ class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
 
   static let insets = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
 
-  private let keyboardContext: KeyboardContext
-
   public var insets: UIEdgeInsets {
     Self.insets
-  }
-
-  init(keyboardContext: KeyboardContext) {
-    self.keyboardContext = keyboardContext
   }
 
   public func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
@@ -119,7 +113,7 @@ class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
   /// 最后面一行（空格所在行）小的按钮(如 `Return` 键)的宽度。
   /// 注意：当系统为最后一行添加了更多的按键，则会使用此宽度
   open func smallBottomWidth(for context: KeyboardContext) -> KeyboardLayoutItemWidth {
-    .percentage(keyboardContext.interfaceOrientation.isPortrait ? 0.165 : 0.135)
+    .percentage(context.interfaceOrientation.isPortrait ? 0.165 : 0.135)
   }
 
   /**

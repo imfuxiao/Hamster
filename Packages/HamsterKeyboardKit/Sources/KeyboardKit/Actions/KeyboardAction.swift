@@ -189,6 +189,13 @@ public extension KeyboardAction {
     default: return false
     }
   }
+  
+  var isCharacterMarginAction: Bool {
+    switch self {
+    case .characterMargin: return true
+    default: return false
+    }
+  }
 
   /**
    Whether or not the action is an emoji action.

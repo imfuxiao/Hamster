@@ -532,7 +532,7 @@ public extension KeyboardType {
       return "classifySymbolic"
     case .emojis:
       return "emojis"
-    case .custom(let name):
+    case .custom(let name, _):
       return "custom(\(name))"
     default:
       return ""
