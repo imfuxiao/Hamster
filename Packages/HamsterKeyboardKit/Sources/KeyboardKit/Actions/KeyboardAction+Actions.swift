@@ -106,7 +106,7 @@ public extension KeyboardAction {
   var standardReleaseAction: GestureAction? {
     switch self {
     case .keyboardType(let type): return {
-        let type = type == .classifySymbolicOfLight ? .classifySymbolic : type
+        let type = (type == .classifySymbolicOfLight) ? .classifySymbolic : type
         $0?.setKeyboardType(type)
       }
     case .character(let char): return { $0?.insertText(char) }
@@ -155,6 +155,10 @@ public extension KeyboardAction {
   /// 注意默认滑动操作不经过 RIME 引擎，如果需要经过 RIME 引擎处理，直接调用 standardReleaseAction
   var standerSwipeAction: GestureAction? {
     switch self {
+    case .keyboardType(let type): return {
+        let type = (type == .classifySymbolicOfLight) ? .classifySymbolic : type
+        $0?.setKeyboardType(type)
+      }
     case .character(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .characterMargin(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }

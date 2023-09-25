@@ -211,7 +211,7 @@ public class KeyboardButton: UIControl {
     let layoutConfig = layoutConfig
     setupContentView(layoutConfig)
     setupUnderShadowView(layoutConfig)
-    updateButtonStyle(isPressed: false)
+    updateButtonStyle(isPressed: isHighlighted)
     
     NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
@@ -329,7 +329,7 @@ extension KeyboardButton {
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
     guard action.showKeyBubble else { return }
     inputCalloutView.isHidden = false
-    inputCalloutView.shapeLayer.zPosition = 9999
+//    inputCalloutView.shapeLayer.zPosition = 9999
 //    inputCalloutView.label.text = action.inputCalloutText?.uppercased()
     inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
     
@@ -403,11 +403,16 @@ public extension KeyboardButton {
   func tryHandleRelease(_ touch: UITouch) {
     guard isPressed else { return }
     isPressed = false
+    isHighlighted = false
     touchBeginTimestamp = nil
     dragStartLocation = nil
     longPressDate = nil
     repeatDate = nil
     repeatTimer.stop()
+    
+    defer {
+      endAction()
+    }
     
     // 取消状态不触发 .release
     if touch.phase != .cancelled {
@@ -425,8 +430,6 @@ public extension KeyboardButton {
         }
       }
     }
-    
-    endAction()
   }
   
   func tryTriggerLongPressAfterDelay() {
@@ -550,6 +553,7 @@ public extension KeyboardButton {
   
   // TODO: 手势结束处理
   func endAction() {
+    Logger.statistics.debug("tryHandleRelease endAction()")
     calloutContext.action.endDragGesture()
     calloutContext.input.resetWithDelay()
     calloutContext.action.reset()
