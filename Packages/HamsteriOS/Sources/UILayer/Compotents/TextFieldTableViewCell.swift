@@ -79,7 +79,7 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
       textField.leftView = imageView
     }
     leftTextLabel.text = state.settingItemModel?.text
-    textField.text = state.settingItemModel?.textValue
+    textField.text = state.settingItemModel?.textValue?()
     textField.placeholder = state.settingItemModel?.placeholder
   }
 

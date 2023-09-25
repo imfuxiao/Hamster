@@ -18,11 +18,11 @@ public struct SettingItemModel: Hashable, Identifiable {
   public var secondaryText: String?
   public var accessoryType: UITableViewCell.AccessoryType
   public var type: SettingType
-  public var toggleValue: Bool
+  public var toggleValue: (() -> Bool)?
   public var toggleHandled: ((Bool) -> Void)?
   public var navigationAction: (() -> Void)?
   public var navigationLinkLabel: () -> String
-  public var textValue: String?
+  public var textValue: (() -> String)?
   public var textFieldShouldBeginEditing: Bool
   public var textHandled: ((String) -> Void)?
   public var shouldBeginEditing: ((UITextField) -> Bool)?
@@ -39,11 +39,11 @@ public struct SettingItemModel: Hashable, Identifiable {
     accessoryType: UITableViewCell.AccessoryType = .none,
     placeholder: String = "",
     type: SettingType = .navigation,
-    toggleValue: Bool = false,
+    toggleValue: (() -> Bool)? = nil,
     toggleHandled: ((Bool) -> Void)? = nil,
     navigationLinkLabel: @escaping (() -> String) = { "" },
     navigationAction: (() -> Void)? = nil,
-    textValue: String? = nil,
+    textValue: (() -> String)? = nil,
     textFieldShouldBeginEditing: Bool = true,
     textHandled: ((String) -> Void)? = nil,
     shouldBeginEditing: ((UITextField) -> Bool)? = nil,

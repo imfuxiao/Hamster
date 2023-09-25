@@ -47,6 +47,7 @@ open class HamsterAppDependencyContainer {
     didSet {
       Task {
         do {
+          Logger.statistics.debug("hamster configuration didSet")
           try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
           try HamsterConfigurationRepositories.shared.savePatchToYAML(config: configuration, yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
         } catch {

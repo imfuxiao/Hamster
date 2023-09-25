@@ -111,13 +111,13 @@ extension KeySwipeSettingsView {
           .init(
             text: "按键操作",
             type: .textField,
-            textValue: key.action.yamlString,
+            textValue: { key.action.yamlString },
             textFieldShouldBeginEditing: false
           ),
           .init(
             text: "按键显示",
             type: .textField,
-            textValue: key.labelText,
+            textValue: { key.labelText },
             textFieldShouldBeginEditing: false
           ),
         ]),
@@ -129,27 +129,27 @@ extension KeySwipeSettingsView {
           .init(
             text: "划动方向",
             type: .textField,
-            textValue: swipe.direction.rawValue
+            textValue: { swipe.direction.rawValue }
           ),
           .init(
             text: "划动操作",
             type: .textField,
-            textValue: swipe.action.yamlString
+            textValue: { swipe.action.yamlString }
           ),
           .init(
             text: "键盘显示文本",
             type: .textField,
-            textValue: swipe.label.text
+            textValue: { swipe.label.text }
           ),
           .init(
             text: "是否显示文本",
             type: .toggle,
-            toggleValue: swipe.display
+            toggleValue: { swipe.display }
           ),
           .init(
             text: "是否由 RIME 处理",
             type: .toggle,
-            toggleValue: swipe.processByRIME
+            toggleValue: { swipe.processByRIME }
           ),
         ]
       ))

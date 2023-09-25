@@ -413,21 +413,21 @@ public class KeyboardSettingsViewModel: ObservableObject {
         .init(
           text: "显示按键气泡",
           type: .toggle,
-          toggleValue: displayButtonBubbles,
+          toggleValue: { [unowned self] in displayButtonBubbles },
           toggleHandled: { [unowned self] in
             displayButtonBubbles = $0
           }),
         .init(
           text: "启用内嵌模式",
           type: .toggle,
-          toggleValue: enableEmbeddedInputMode,
+          toggleValue: { [unowned self] in enableEmbeddedInputMode },
           toggleHandled: { [unowned self] in
             enableEmbeddedInputMode = $0
           }),
         .init(
           text: "Shift状态锁定",
           type: .toggle,
-          toggleValue: lockShiftState,
+          toggleValue: { [unowned self] in lockShiftState },
           toggleHandled: { [unowned self] in
             lockShiftState = $0
           })
@@ -439,7 +439,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
         .init(
           text: "左侧显示上划",
           type: .toggle,
-          toggleValue: upSwipeOnLeft,
+          toggleValue: { [unowned self] in upSwipeOnLeft },
           toggleHandled: { [unowned self] in
             upSwipeOnLeft = $0
           })
@@ -504,28 +504,28 @@ public class KeyboardSettingsViewModel: ObservableObject {
         .init(
           text: "启用分号按键",
           type: .toggle,
-          toggleValue: displaySemicolonButton,
+          toggleValue: { [unowned self] in displaySemicolonButton },
           toggleHandled: { [unowned self] in
             displaySemicolonButton = $0
           }),
         .init(
           text: "启用符号按键",
           type: .toggle,
-          toggleValue: displayClassifySymbolButton,
+          toggleValue: { [unowned self] in displayClassifySymbolButton },
           toggleHandled: { [unowned self] in
             displayClassifySymbolButton = $0
           }),
         .init(
           text: "启用中英切换按键",
           type: .toggle,
-          toggleValue: displayChineseEnglishSwitchButton,
+          toggleValue: { [unowned self] in displayChineseEnglishSwitchButton },
           toggleHandled: { [unowned self] in
             displayChineseEnglishSwitchButton = $0
           }),
         .init(
           text: "按键位于空格左侧",
           type: .toggle,
-          toggleValue: chineseEnglishSwitchButtonIsOnLeftOfSpaceButton,
+          toggleValue: { [unowned self] in chineseEnglishSwitchButtonIsOnLeftOfSpaceButton },
           toggleHandled: { [unowned self] in
             chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = $0
           })
@@ -535,7 +535,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
         .init(
           text: "启用空格左侧按键",
           type: .toggle,
-          toggleValue: displaySpaceLeftButton,
+          toggleValue: { [unowned self] in displaySpaceLeftButton },
           toggleHandled: { [unowned self] in
             displaySpaceLeftButton = $0
           }),
@@ -543,14 +543,14 @@ public class KeyboardSettingsViewModel: ObservableObject {
           icon: UIImage(systemName: "square.and.pencil"),
           placeholder: "左侧按键键值",
           type: .textField,
-          textValue: keyValueOfSpaceLeftButton,
+          textValue: { [unowned self] in keyValueOfSpaceLeftButton },
           textHandled: { [unowned self] in
             keyValueOfSpaceLeftButton = $0
           }),
         .init(
           text: "启用空格右侧按键",
           type: .toggle,
-          toggleValue: displaySpaceRightButton,
+          toggleValue: { [unowned self] in displaySpaceRightButton },
           toggleHandled: { [unowned self] in
             displaySpaceRightButton = $0
           }),
@@ -558,7 +558,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
           icon: UIImage(systemName: "square.and.pencil"),
           placeholder: "右侧按键键值",
           type: .textField,
-          textValue: keyValueOfSpaceRightButton,
+          textValue: { [unowned self] in keyValueOfSpaceRightButton },
           textHandled: { [unowned self] in
             keyValueOfSpaceRightButton = $0
           })
@@ -626,25 +626,25 @@ public class KeyboardSettingsViewModel: ObservableObject {
   lazy var toolbarToggles: [SettingItemModel] = [
     .init(
       text: "启用候选工具栏",
-      toggleValue: enableToolbar,
+      toggleValue: { [unowned self] in enableToolbar },
       toggleHandled: { [unowned self] in
         enableToolbar = $0
       }),
     .init(
       text: "显示键盘收起图标",
-      toggleValue: displayKeyboardDismissButton,
+      toggleValue: { [unowned self] in displayKeyboardDismissButton },
       toggleHandled: { [unowned self] in
         displayKeyboardDismissButton = $0
       }),
     .init(
       text: "显示候选项索引",
-      toggleValue: displayIndexOfCandidateWord,
+      toggleValue: { [unowned self] in displayIndexOfCandidateWord },
       toggleHandled: { [unowned self] in
         displayIndexOfCandidateWord = $0
       }),
     .init(
       text: "显示候选文字 Comment",
-      toggleValue: displayCommentOfCandidateWord,
+      toggleValue: { [unowned self] in displayCommentOfCandidateWord },
       toggleHandled: { [unowned self] in
         displayCommentOfCandidateWord = $0
       })
@@ -661,7 +661,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     .init(
       text: "是否直接上屏",
       type: .toggle,
-      toggleValue: enterDirectlyOnScreenByNineGridOfNumericKeyboard,
+      toggleValue: { [unowned self] in enterDirectlyOnScreenByNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
         enterDirectlyOnScreenByNineGridOfNumericKeyboard = $0
       }),

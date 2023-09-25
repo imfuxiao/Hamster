@@ -325,8 +325,6 @@ class KeyboardRootView: NibLessView {
             standerSystemKeyboard.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
           }
           self.tempKeyboardView = standerSystemKeyboard
-        // TODO: Custom keyboard
-
         case .custom:
           var keyboardView: CustomizeKeyboard
           if let view = tempCustomKeyboardView[$0] {

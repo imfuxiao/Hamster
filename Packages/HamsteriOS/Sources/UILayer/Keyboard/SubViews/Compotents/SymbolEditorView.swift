@@ -171,7 +171,6 @@ extension SymbolEditorView {
     tableView.insertRows(at: [indexPath], with: .automatic)
     if let cell = tableView.cellForRow(at: indexPath), let cell = cell as? TextFieldTableViewCell {
       cell.updateWithSettingItem(SettingItemModel(
-        textValue: "",
         textHandled: { [unowned self] in
           symbols[indexPath.row] = $0
         }
@@ -201,7 +200,7 @@ extension SymbolEditorView: UITableViewDataSource {
     let symbol = symbols[indexPath.row]
     guard let cell = cell as? TextFieldTableViewCell else { return cell }
     cell.updateWithSettingItem(SettingItemModel(
-      textValue: symbol,
+      textValue: { symbol },
       textHandled: { [unowned self] in
         symbols[indexPath.row] = $0
       }

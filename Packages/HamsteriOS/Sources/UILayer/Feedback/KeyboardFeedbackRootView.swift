@@ -69,7 +69,7 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
       let cell = ToggleTableViewCell(style: .default, reuseIdentifier: ToggleTableViewCell.identifier)
       cell.settingItem = .init(
         text: "开启按键声",
-        toggleValue: keyboardFeedbackViewModel.enableKeySounds,
+        toggleValue: { [unowned self] in keyboardFeedbackViewModel.enableKeySounds },
         toggleHandled: { [unowned self] in
           keyboardFeedbackViewModel.enableKeySounds = $0
         }

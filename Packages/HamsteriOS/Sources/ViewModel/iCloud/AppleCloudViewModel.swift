@@ -25,7 +25,7 @@ public class AppleCloudViewModel: ObservableObject {
     .init(
       text: "iCloud",
       type: .toggle,
-      toggleValue: settingsViewModel.enableAppleCloud,
+      toggleValue: { [unowned self] in settingsViewModel.enableAppleCloud },
       toggleHandled: { [unowned self] in
         settingsViewModel.enableAppleCloud = $0
       }
@@ -44,9 +44,9 @@ public class AppleCloudViewModel: ObservableObject {
       }
     ),
     .init(
-//      icon: UIImage(systemName: "square.and.pencil"),
+      //      icon: UIImage(systemName: "square.and.pencil"),
       text: "正则过滤",
-      textValue: regexOnCopyFile,
+      textValue: { [unowned self] in regexOnCopyFile },
       textHandled: { [unowned self] in
         regexOnCopyFile = $0
       }

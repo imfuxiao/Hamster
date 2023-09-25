@@ -41,7 +41,7 @@ public class RimeViewModel {
       icon: UIImage(systemName: "square.and.pencil"),
       placeholder: "简繁切换键值",
       type: .textField,
-      textValue: keyValueOfSwitchSimplifiedAndTraditional,
+      textValue: { [unowned self] in keyValueOfSwitchSimplifiedAndTraditional },
       textHandled: { [unowned self] in
         keyValueOfSwitchSimplifiedAndTraditional = $0
       }
@@ -49,7 +49,7 @@ public class RimeViewModel {
     .init(
       text: "部署时覆盖键盘词库文件",
       type: .toggle,
-      toggleValue: overrideDictFiles,
+      toggleValue: { [unowned self] in overrideDictFiles },
       toggleHandled: { [unowned self] in
         overrideDictFiles = $0
       }
