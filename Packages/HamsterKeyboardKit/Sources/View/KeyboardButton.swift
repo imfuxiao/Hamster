@@ -395,7 +395,7 @@ public extension KeyboardButton {
       doubleTapAction()
     }
     touchBeginTimestamp = touch.timestamp
-    dragStartLocation = touch.location(in: self)
+    dragStartLocation = touch.location(in: self.superview)
     tryTriggerLongPressAfterDelay()
     tryTriggerRepeatAfterDelay()
   }
@@ -455,14 +455,14 @@ public extension KeyboardButton {
   func tryHandleDrag(_ touch: UITouch) {
     // dragStartLocation 在 touchesBegan 阶段设置值，在 touchesEnd/touchesCancel 阶段取消值
     guard let startLocation = dragStartLocation else { return }
-    let currentPoint = touch.location(in: self)
+    let currentPoint = touch.location(in: self.superview)
     lastDragLocation = currentPoint
     
     // TODO: 划动改写
     // 识别 swipe
     if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
-      let tanThreshold: CGFloat = 1 // tan(30º)) = 0.58, tan(45º) = 1
-      let distanceThreshold: CGFloat = 20 // TODO: 划动距离的阈值
+      let tanThreshold: CGFloat = 1.732 // tan(30º)) = 0.58, tan(45º) = 1, tan(60º) = 1.732
+      let distanceThreshold: CGFloat = 10 // TODO: 划动距离的阈值
 
       let distanceY = currentPoint.y - startLocation.y
       let distanceX = currentPoint.x - startLocation.x
@@ -486,15 +486,16 @@ public extension KeyboardButton {
       // distanceX > 0 && distanceY < 0 表示 右上角
       // distanceX > 0 && distanceY > 0 表示 右下角
       // distanceX < 0 && distanceY < 0 表示 左上角
-      // distanceX > 0 && distanceY > 0 表示 左下角
+      // distanceX < 0 && distanceY > 0 表示 左下角
       var direction: SwipeDirection?
       
-      // 垂直方向夹角
-      if tanVerticalCorner <= tanThreshold {
-        // 右上角或左上角或垂直向上
-        if (distanceX > 0 && distanceY < 0) || (distanceX < 0 && distanceY < 0) || (distanceX == 0 && distanceY < 0) {
+      // 左上角或右上角或垂直方向
+      if (distanceX < 0 && distanceY < 0) || (distanceX > 0 && distanceY < 0) || (distanceX == 0 && distanceY < 0) {
+        if tanVerticalCorner <= tanThreshold {
           direction = .up
-        } else if (distanceX > 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) || distanceX == 0 && distanceY > 0 { // 右下角或左下角
+        }
+      } else if (distanceX < 0 && distanceY > 0) || (distanceX > 0 && distanceY > 0) || (distanceX == 0 && distanceY > 0) { // 左下角或右下角或垂直方向
+        if tanVerticalCorner <= tanThreshold {
           direction = .down
         }
       }
