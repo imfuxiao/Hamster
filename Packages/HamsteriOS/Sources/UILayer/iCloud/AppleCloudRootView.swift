@@ -31,6 +31,13 @@ class AppleCloudRootView: NibLessView {
   init(frame: CGRect = .zero, viewModel: AppleCloudViewModel) {
     self.viewModel = viewModel
     super.init(frame: frame)
+
+    setupView()
+  }
+
+  func setupView() {
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   override func constructViewHierarchy() {
@@ -51,8 +58,7 @@ extension AppleCloudRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    constructViewHierarchy()
-    activateViewConstraints()
+    tableView.reloadData()
   }
 }
 

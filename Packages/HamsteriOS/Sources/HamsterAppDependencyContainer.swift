@@ -25,8 +25,7 @@ open class HamsterAppDependencyContainer {
   public lazy var settingsViewModel: SettingsViewModel = {
     let vm = SettingsViewModel(
       mainViewModel: mainViewModel,
-      rimeContext: rimeContext,
-      configuration: configuration
+      rimeContext: rimeContext
     )
     return vm
   }()
@@ -49,7 +48,7 @@ open class HamsterAppDependencyContainer {
         do {
           Logger.statistics.debug("hamster configuration didSet")
           try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
-          try HamsterConfigurationRepositories.shared.savePatchToYAML(config: configuration, yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
+          try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, yamlPath: FileManager.hamsterConfigFileOnUserDataSupport)
         } catch {
           Logger.statistics.error("hamster configuration didSet error: \(error.localizedDescription)")
         }
@@ -175,7 +174,7 @@ extension HamsterAppDependencyContainer: KeyboardSettingsSubViewControllerFactor
 
 extension HamsterAppDependencyContainer: KeyboardColorViewModelFactory {
   func makeKeyboardColorViewModel() -> KeyboardColorViewModel {
-    KeyboardColorViewModel(settingsViewModel: settingsViewModel)
+    KeyboardColorViewModel()
   }
 }
 

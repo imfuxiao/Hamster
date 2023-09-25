@@ -10,9 +10,16 @@ import UIKit
 
 class KeyboardColorViewModel {
   // MARK: properties
-  
-  public unowned let settingsViewModel: SettingsViewModel
-  
+
+  public var enableColorSchema: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = newValue
+    }
+  }
+
   public var useColorSchema: String {
     get {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchema ?? ""
@@ -21,7 +28,7 @@ class KeyboardColorViewModel {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchema = newValue
     }
   }
-  
+
   public var keyboardColorList: [HamsterKeyboardColor] {
     if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
       return colorSchemas
@@ -31,15 +38,5 @@ class KeyboardColorViewModel {
         }
     }
     return []
-  }
-  
-  init(settingsViewModel: SettingsViewModel) {
-    self.settingsViewModel = settingsViewModel
-  }
-  
-  // MARK: methods
-  
-  @objc func colorSchemaEnableHandled(_ sender: UISwitch) {
-    settingsViewModel.enableColorSchema = sender.isOn
   }
 }

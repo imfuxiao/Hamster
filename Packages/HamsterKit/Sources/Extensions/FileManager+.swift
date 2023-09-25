@@ -12,7 +12,6 @@ import ZIPFoundation
 
 /// FileManager 扩展
 public extension FileManager {
-
   /// 创建文件夹
   /// override: 当目标文件夹存在时，是否覆盖
   /// dst: 目标文件夹URL
@@ -86,8 +85,6 @@ public extension FileManager {
         Logger.statistics.debug("filter filterRegex: \(filterRegex), match: \(match), filterMatchBreak: \(filterMatchBreak), file: \(file.path)")
         continue
       }
-
-      Logger.statistics.debug("incrementalCopy src: \(src.path) dst: \(dst.path), file: \(file.path)")
 
       let isDirectory = (try? file.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
       let relativePath = file.path.hasPrefix(srcPrefix) ? file.path.replacingOccurrences(of: srcPrefix, with: "") : file.path.replacingOccurrences(of: "/private" + srcPrefix, with: "")
@@ -298,12 +295,12 @@ public extension FileManager {
   static var hamsterConfigFileOnSandboxSharedSupport: URL {
     sandboxSharedSupportDirectory.appendingPathComponent("hamster.yaml")
   }
-  
+
   /// Sandbox/Rime/hamster.yaml 文件
   static var hamsterConfigFileOnUserDataSupport: URL {
     sandboxUserDataDirectory.appendingPathComponent("hamster.yaml")
   }
-  
+
   /// Sandbox/Rime/hamster.custom.yaml 文件
   static var hamsterPatchConfigFileOnUserDataSupport: URL {
     sandboxUserDataDirectory.appendingPathComponent("hamster.custom.yaml")

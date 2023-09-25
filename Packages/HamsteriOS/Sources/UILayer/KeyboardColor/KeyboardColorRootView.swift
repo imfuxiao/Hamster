@@ -15,9 +15,6 @@ class KeyboardColorRootView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
   private let keyboardColorViewModel: KeyboardColorViewModel
 
-  @Published
-  private var selectCell: UITableViewCell?
-
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.text = "启用配色"
@@ -27,10 +24,9 @@ class KeyboardColorRootView: NibLessView {
 
   lazy var toggle: UISwitch = {
     let toggle = UISwitch(frame: .zero)
-    toggle.setOn(keyboardColorViewModel.settingsViewModel.enableColorSchema, animated: false)
     toggle.addTarget(
-      keyboardColorViewModel,
-      action: #selector(keyboardColorViewModel.colorSchemaEnableHandled(_:)),
+      self,
+      action: #selector(colorSchemaEnableHandled(_:)),
       for: .valueChanged)
     return toggle
   }()
@@ -46,7 +42,7 @@ class KeyboardColorRootView: NibLessView {
 
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    tableView.isHidden = !keyboardColorViewModel.settingsViewModel.enableColorSchema
+    tableView.isHidden = !keyboardColorViewModel.enableColorSchema
     tableView.register(KeyboardColorTableViewCell.self, forCellReuseIdentifier: KeyboardColorTableViewCell.identifier)
     tableView.delegate = self
     tableView.dataSource = self
@@ -65,23 +61,6 @@ class KeyboardColorRootView: NibLessView {
     super.init(frame: frame)
 
     setupSubview()
-
-    self.keyboardColorViewModel.settingsViewModel.$enableColorSchema
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        tableView.isHidden = !$0
-        scrollToUseColorSchemaCell()
-      }
-      .store(in: &subscriptions)
-
-    $selectCell
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] selectCell in
-        if let cell = selectCell, let indexPath = tableView.indexPath(for: cell) {
-          tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-        }
-      }
-      .store(in: &subscriptions)
   }
 
   func setupSubview() {
@@ -107,7 +86,7 @@ class KeyboardColorRootView: NibLessView {
 
   func scrollToUseColorSchemaCell() {
     // 初始view时，滚动到目标cell
-    if keyboardColorViewModel.settingsViewModel.enableColorSchema {
+    if keyboardColorViewModel.enableColorSchema {
       let useColorSchema = keyboardColorViewModel.useColorSchema
       let section = keyboardColorViewModel
         .keyboardColorList
@@ -123,20 +102,31 @@ class KeyboardColorRootView: NibLessView {
     }
   }
 
+  @objc func colorSchemaEnableHandled(_ sender: UISwitch) {
+    keyboardColorViewModel.enableColorSchema = sender.isOn
+    tableView.isHidden = !sender.isOn
+    if sender.isOn {
+      tableView.reloadData()
+      scrollToUseColorSchemaCell()
+    }
+  }
+
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
+    toggle.setOn(keyboardColorViewModel.enableColorSchema, animated: false)
+    tableView.isHidden = !keyboardColorViewModel.enableColorSchema
     scrollToUseColorSchemaCell()
   }
 }
 
 extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
-  func numberOfSections(in tableView: UITableView) -> Int {
-    keyboardColorViewModel.keyboardColorList.count
-  }
-
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     1
+  }
+
+  func numberOfSections(in tableView: UITableView) -> Int {
+    keyboardColorViewModel.keyboardColorList.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -151,13 +141,6 @@ extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
     keyboardColorViewModel.useColorSchema = keyboardColor.schemaName
-    if let selectCell = selectCell {
-      if let selectIndexPath = tableView.indexPath(for: selectCell),
-         selectIndexPath != indexPath
-      {
-        selectCell.setSelected(false, animated: false)
-      }
-    }
-    selectCell = tableView.cellForRow(at: indexPath)
+    scrollToUseColorSchemaCell()
   }
 }

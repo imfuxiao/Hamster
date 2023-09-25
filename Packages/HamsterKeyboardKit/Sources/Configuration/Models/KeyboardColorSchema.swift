@@ -79,6 +79,7 @@ extension KeyboardColorSchema {
   enum CodingKeys: String, CodingKey {
     case name
     case author
+    case schemaName
     case backColor = "back_color"
     case borderColor = "border_color"
     case textColor = "text_color"

@@ -27,17 +27,15 @@ public class FinderViewModel: ObservableObject {
     HamsterAppDependencyContainer.shared.configuration
   }
 
+  public var segmentActionSubject = CurrentValueSubject<FinderSegmentAction, Never>(.settings)
   public var segmentActionPublished: AnyPublisher<FinderSegmentAction, Never> {
     segmentActionSubject.eraseToAnyPublisher()
   }
 
-  private var segmentActionSubject = CurrentValueSubject<FinderSegmentAction, Never>(.settings)
-
+  public let presentTextEditorSubject = PassthroughSubject<URL, Never>()
   public var presentTextEditorPublished: AnyPublisher<URL, Never> {
     presentTextEditorSubject.eraseToAnyPublisher()
   }
-
-  private let presentTextEditorSubject = PassthroughSubject<URL, Never>()
 
   public var conformPublished: AnyPublisher<Conform, Never> {
     conformSubject.eraseToAnyPublisher()

@@ -22,19 +22,19 @@ public class HamsterConfigurationRepositories {
 
   /// 加载 hamster.yaml 配置文件
   public func loadFromYAML(_ path: URL) throws -> HamsterConfiguration {
-    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
+    let data = try Data(contentsOf: path, options: [])
     return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 加载 hamster.custom.yaml 文件
   public func loadPatchFromYAML(yamlPath path: URL) throws -> HamsterPatchConfiguration {
-    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
+    let data = try Data(contentsOf: path, options: [])
     return try YAMLDecoder().decode(HamsterPatchConfiguration.self, from: data)
   }
 
   /// 加载自定义键盘 yaml 配置文件
   public func loadCustomizerKeyboardLayoutYAML(_ path: URL) throws -> Keyboards {
-    let data = try Data(contentsOf: path, options: [.mappedIfSafe])
+    let data = try Data(contentsOf: path, options: [])
     return try YAMLDecoder().decode(Keyboards.self, from: data)
   }
 

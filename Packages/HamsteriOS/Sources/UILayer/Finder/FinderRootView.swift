@@ -70,11 +70,13 @@ class FinderRootView: NibLessView {
     super.init(frame: frame)
 
     backgroundColor = UIColor.systemBackground
+
+    setupView()
   }
 
-  override func constructViewHierarchy() {
-    addSubview(segmentedControl)
-    addSubview(contentView)
+  func setupView() {
+    constructViewHierarchy()
+    activateViewConstraints()
 
     finderViewModel.segmentActionPublished
       .receive(on: DispatchQueue.main)
@@ -82,6 +84,11 @@ class FinderRootView: NibLessView {
         switchView($0)
       }
       .store(in: &subscriptions)
+  }
+
+  override func constructViewHierarchy() {
+    addSubview(segmentedControl)
+    addSubview(contentView)
   }
 
   override func activateViewConstraints() {
@@ -104,8 +111,7 @@ extension FinderRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    constructViewHierarchy()
-    activateViewConstraints()
+    finderViewModel.segmentActionSubject.send(.settings)
   }
 }
 

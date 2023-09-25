@@ -17,27 +17,27 @@ public class SettingsViewModel: ObservableObject {
   private var cancelable = Set<AnyCancellable>()
   private unowned let mainViewModel: MainViewModel
   private let rimeContext: RimeContext
-  private var configuration: HamsterConfiguration
   
-  init(mainViewModel: MainViewModel, rimeContext: RimeContext, configuration: HamsterConfiguration) {
+  init(mainViewModel: MainViewModel, rimeContext: RimeContext) {
     self.mainViewModel = mainViewModel
     self.rimeContext = rimeContext
-    self.configuration = configuration
-    self.enableColorSchema = configuration.Keyboard?.enableColorSchema ?? false
-    self.enableAppleCloud = configuration.general?.enableAppleCloud ?? false
   }
   
-  @Published
   public var enableColorSchema: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = enableColorSchema
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = newValue
     }
   }
   
-  @Published
   public var enableAppleCloud: Bool {
-    didSet {
-      HamsterAppDependencyContainer.shared.configuration.general?.enableAppleCloud = enableAppleCloud
+    get {
+      HamsterAppDependencyContainer.shared.configuration.general?.enableAppleCloud ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.general?.enableAppleCloud = newValue
     }
   }
   
@@ -160,20 +160,12 @@ extension SettingsViewModel {
     }
         
     // 部署 RIME
-    try await rimeContext.deployment(configuration: configuration)
+    try await rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
       
     // 部署后将方案copy至AppGroup下供keyboard使用
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
       
-    // 保存应用配置
-    if let enableAppleCloud = configuration.general?.enableAppleCloud {
-      self.enableAppleCloud = enableAppleCloud
-    }
-    if let enableColorSchema = configuration.Keyboard?.enableColorSchema {
-      self.enableColorSchema = enableColorSchema
-    }
-    
     // 修改应用首次运行标志
     UserDefaults.hamster.isFirstRunning = false
       

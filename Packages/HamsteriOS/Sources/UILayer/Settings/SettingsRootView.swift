@@ -29,13 +29,21 @@ public class SettingsRootView: NibLessView {
     self.settingsViewModel = settingsViewModel
     super.init(frame: frame)
 
-    settingsViewModel.$enableAppleCloud
-      .combineLatest(settingsViewModel.$enableColorSchema.eraseToAnyPublisher())
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
-        tableView.reloadData()
-      }
-      .store(in: &subscriptions)
+    setupView()
+
+//    settingsViewModel.$enableAppleCloud
+//      .combineLatest(settingsViewModel.$enableColorSchema.eraseToAnyPublisher())
+//      .receive(on: DispatchQueue.main)
+//      .sink { [unowned self] _ in
+//        tableView.reloadData()
+//      }
+//      .store(in: &subscriptions)
+  }
+
+  func setupView() {
+    backgroundColor = UIColor.secondarySystemBackground
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   override public func constructViewHierarchy() {
@@ -55,14 +63,7 @@ public extension SettingsRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    backgroundColor = UIColor.secondarySystemBackground
-
-    constructViewHierarchy()
-    activateViewConstraints()
-
-    if let selectIndexPath = tableView.indexPathForSelectedRow {
-      tableView.deselectRow(at: selectIndexPath, animated: false)
-    }
+    tableView.reloadData()
   }
 }
 

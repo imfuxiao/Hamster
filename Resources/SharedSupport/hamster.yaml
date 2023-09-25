@@ -2,7 +2,7 @@
 general:
   enableAppleCloud: false
   regexOnCopyFile:
-    - "^.text|.yaml$"
+  #  - "^.text|.yaml$"
 
 # 工具栏
 toolbar:
