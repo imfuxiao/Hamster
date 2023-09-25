@@ -371,8 +371,10 @@ swipe:
             - direction: up
               action: character(`)
               processByRIME: true
+              display: true
             - direction: down
               action: character(~)
+              processByRIME: true
               display: false
         - action: character(b)
           swipe:
@@ -970,7 +972,7 @@ keyboards:
             swipe:
               - direction: up
                 action: character(。)
-                display: true 
+                display: true
           - action: enter
             width:
               portrait: percentage(0.25)

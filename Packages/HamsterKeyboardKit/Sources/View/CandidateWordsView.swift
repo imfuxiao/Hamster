@@ -106,7 +106,7 @@ public class CandidateWordsView: UIView {
   private var controlStateHeightConstraint: NSLayoutConstraint {
     keyboardContext.candidatesViewState.isCollapse()
       ? controlStateView.heightAnchor.constraint(equalTo: candidatesArea.heightAnchor)
-      : controlStateView.heightAnchor.constraint(equalToConstant: 35)
+      : controlStateView.heightAnchor.constraint(equalToConstant: 50)
   }
 
   init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {

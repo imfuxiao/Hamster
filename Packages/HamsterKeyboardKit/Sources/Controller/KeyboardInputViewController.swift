@@ -45,6 +45,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     KeyboardUrlOpener.shared.controller = self
 
     setupRIME()
+    setupEmbeddedInputMode()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -503,6 +504,15 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertSymbol(_ symbol: Symbol) {
+    // 符号顶字
+    if !rimeContext.userInputKey.isEmpty {
+      textDocumentProxy.setMarkedText("", selectedRange: .init(location: 0, length: 0))
+      textDocumentProxy.unmarkText()
+      if let firstCandidate = rimeContext.suggestions.first {
+        textDocumentProxy.insertText(firstCandidate.text)
+      }
+      rimeContext.reset()
+    }
     textDocumentProxy.insertText(symbol.char)
   }
 
@@ -789,6 +799,56 @@ private extension KeyboardInputViewController {
       self.primaryLanguage = locale.identifier
       self.autocompleteProvider.locale = locale
     }.store(in: &cancellables)
+  }
+
+  /// 内嵌模式
+  /// TODO: 内嵌模式
+  func setupEmbeddedInputMode() {
+    Task {
+      // 检测是否启用内嵌输入模式
+      guard keyboardContext.enableEmbeddedInputMode else { return }
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] inputKeys in
+          guard let self = self else { return }
+
+          /// rimeContext.$userInputKey 被清空
+          guard !inputKeys.isEmpty else {
+            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+            self.textDocumentProxy.unmarkText()
+            return
+          }
+
+          let pairKeys = self.keyboardContext.getPairSymbols(inputKeys)
+          guard pairKeys == inputKeys else {
+            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+            self.textDocumentProxy.unmarkText()
+            self.textDocumentProxy.insertText(pairKeys)
+            if self.keyboardContext.cursorBackOfSymbols(key: pairKeys) {
+              self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+            }
+
+            /// 返回主键盘
+            if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
+              self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
+            }
+            return
+          }
+
+          /// 返回主键盘
+          if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
+            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+            self.textDocumentProxy.unmarkText()
+            self.textDocumentProxy.insertText(pairKeys)
+            self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
+            return
+          }
+
+          // 这使用utf16计数，以避免表情符号和类似的问题。
+          self.textDocumentProxy.setMarkedText(pairKeys, selectedRange: NSRange(location: pairKeys.utf16.count, length: 0))
+        }
+        .store(in: &cancellables)
+    }
   }
 
   /**

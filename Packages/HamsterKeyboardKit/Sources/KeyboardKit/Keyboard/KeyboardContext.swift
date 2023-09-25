@@ -708,4 +708,26 @@ public extension KeyboardContext {
   var enableEmbeddedInputMode: Bool {
     hamsterConfig?.Keyboard?.enableEmbeddedInputMode ?? false
   }
+
+  /// 光标回退
+  func cursorBackOfSymbols(key: String) -> Bool {
+    if hamsterConfig?.Keyboard?.symbolsOfCursorBack?.contains(key) ?? false {
+      self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
+      return true
+    }
+    return false
+  }
+
+  /// 成对上屏符号
+  func getPairSymbols(_ key: String) -> String {
+    if let pairValue = hamsterConfig?.Keyboard?.pairsOfSymbols?.first(where: { $0.hasPrefix(key) }) {
+      return pairValue
+    }
+    return key
+  }
+
+  /// 返回主键盘
+  func returnToPrimaryKeyboardOfSymbols(key: String) -> Bool {
+    hamsterConfig?.Keyboard?.symbolsOfReturnToMainKeyboard?.contains(key) ?? false
+  }
 }
