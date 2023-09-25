@@ -634,6 +634,27 @@ public extension KeyboardContext {
     return .clear
   }
 
+  /// 暗色系统按键背景色
+  var systemButtonBackgroundColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.backColor
+    }
+    return .standardDarkButtonBackground(for: self)
+  }
+
+  /// 符号 List 背景色
+  var symbolListBackgroundColor: UIColor {
+    if let keyboardColor = hamsterKeyboardColor {
+      return keyboardColor.backColor
+    }
+    return .standardDarkButtonBackground(for: self)
+  }
+
+  /// 符号 List 按下时背景色
+  var symbolListHighlightedBackgroundColor: UIColor {
+    return hasDarkColorScheme ? .standardButtonBackground(for: self) : .white
+  }
+
   /// 编码区拼音颜色
   var phoneticTextColor: UIColor {
     if let keyboardColor = hamsterKeyboardColor {

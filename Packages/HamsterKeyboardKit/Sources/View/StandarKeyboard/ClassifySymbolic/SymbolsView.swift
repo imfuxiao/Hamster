@@ -47,6 +47,7 @@ class SymbolsView: UICollectionView {
 
     super.init(frame: .zero, collectionViewLayout: layout)
 
+    self.backgroundColor = .clear
     self.delegate = self
     self.diffableDataSource = makeDataSource()
 
@@ -69,10 +70,11 @@ class SymbolsView: UICollectionView {
   }
 
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Symbol> {
-    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, Symbol> { cell, _, symbol in
-      var config = UIListContentConfiguration.cell()
-      config.text = symbol.char
-      cell.contentConfiguration = config
+    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, Symbol> { [unowned self] cell, _, symbol in
+      cell.textLabel.text = symbol.char
+      cell.textLabel.textColor = keyboardContext.candidateTextColor
+      cell.normalColor = keyboardContext.symbolListBackgroundColor
+      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
     }
 
     let dataSource = UICollectionViewDiffableDataSource<Int, Symbol>(collectionView: self) { collectionView, indexPath, symbol in

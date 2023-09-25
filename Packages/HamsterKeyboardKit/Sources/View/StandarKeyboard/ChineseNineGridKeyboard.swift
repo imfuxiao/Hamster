@@ -138,7 +138,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
   // MARK: - Layout
 
   func setupKeyboardView() {
-    backgroundColor = .standardKeyboardBackground
+    backgroundColor = .clear
 
     constructViewHierarchy()
     activateViewConstraints()

@@ -14,6 +14,7 @@ class BottomRowView: UIView {
   private let actionHandler: KeyboardActionHandler
   private let layoutProvider: KeyboardLayoutProvider
   private let keyboardContext: KeyboardContext
+  private var returnButtonWidthConstraint: NSLayoutConstraint? = nil
 
   init(
     actionHandler: KeyboardActionHandler,
@@ -38,7 +39,8 @@ class BottomRowView: UIView {
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("返回", for: .normal)
-    button.backgroundColor = .systemBlue
+    button.tintColor = keyboardContext.secondaryLabelColor
+    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
     button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(returnKeyboardReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -49,7 +51,8 @@ class BottomRowView: UIView {
   lazy var lockStateButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: keyboardContext.classifySymbolKeyboardLockState ? "lock" : "lock.open"), for: .normal)
-    button.tintColor = .label
+    button.tintColor = keyboardContext.secondaryLabelColor
+    button.backgroundColor = keyboardContext.backgroundColor
     button.addTarget(self, action: #selector(lockStatePressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(lockStateReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -58,6 +61,7 @@ class BottomRowView: UIView {
 
   lazy var backspaceButton: UIButton = {
     let button = UIButton(type: .custom)
+    button.tintColor = keyboardContext.secondaryLabelColor
     button.setImage(UIImage(systemName: "delete.left"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.tintColor = .label
@@ -76,17 +80,13 @@ class BottomRowView: UIView {
   /// 激活视图约束
   func activateViewConstraints() {
     // TODO: 这里获取不到值
-    var buttonWidthPercent: CGFloat = 0.25
-    if let layoutProvider = layoutProvider as? SystemKeyboardLayoutProvider, case .percentage(let percent) = layoutProvider.largeBottomWidth(for: keyboardContext) {
-      buttonWidthPercent = percent
-    } else {
-      Logger.statistics.warning("get largeBottomWidth is empty")
-    }
+    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.1)
 
     NSLayoutConstraint.activate([
       returnButton.topAnchor.constraint(equalTo: topAnchor),
       returnButton.bottomAnchor.constraint(equalTo: bottomAnchor),
       returnButton.leadingAnchor.constraint(equalTo: leadingAnchor),
+      returnButtonWidthConstraint!,
 
       lockStateButton.topAnchor.constraint(equalTo: topAnchor),
       lockStateButton.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -97,21 +97,26 @@ class BottomRowView: UIView {
       backspaceButton.leadingAnchor.constraint(equalTo: lockStateButton.trailingAnchor),
       backspaceButton.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-      returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: buttonWidthPercent),
       backspaceButton.widthAnchor.constraint(equalTo: returnButton.widthAnchor)
     ])
+  }
+
+  override func updateConstraints() {
+    super.updateConstraints()
+
+    returnButtonWidthConstraint?.isActive = false
+    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.1)
+    returnButtonWidthConstraint?.isActive = true
   }
 }
 
 extension BottomRowView {
   @objc func returnKeyboardPressHandled(_ button: UIButton) {
     actionHandler.handle(.press, on: .returnLastKeyboard)
-    button.backgroundColor = .systemGray
   }
 
   @objc func returnKeyboardReleaseHandled(_ button: UIButton) {
     actionHandler.handle(.release, on: .returnLastKeyboard)
-    button.backgroundColor = .systemBlue
   }
 
   @objc func lockStatePressHandled(_ button: UIButton) {
@@ -125,12 +130,12 @@ extension BottomRowView {
   }
 
   @objc func backspacePressHandled(_ button: UIButton) {
-    button.backgroundColor = .systemBackground
+    button.backgroundColor = .white
     actionHandler.handle(.press, on: .backspace)
   }
 
   @objc func backspaceReleaseHandled(_ button: UIButton) {
-    button.backgroundColor = .clear
+    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
     actionHandler.handle(.release, on: .backspace)
   }
 }

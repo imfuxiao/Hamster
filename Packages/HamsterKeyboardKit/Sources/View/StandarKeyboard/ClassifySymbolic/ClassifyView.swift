@@ -18,26 +18,14 @@ class ClassifyView: UICollectionView {
     self.keyboardContext = keyboardContext
     self.viewModel = viewModel
     
-    let layout: UICollectionViewCompositionalLayout = {
-      let categoryItem = NSCollectionLayoutItem(
-        layoutSize: NSCollectionLayoutSize(
-          widthDimension: .fractionalWidth(1.0),
-          heightDimension: .fractionalHeight(1.0)
-        )
-      )
-      
-      let categoryGroup = NSCollectionLayoutGroup.vertical(
-        layoutSize: NSCollectionLayoutSize(
-          widthDimension: .fractionalWidth(1.0),
-          heightDimension: .fractionalHeight(0.25)
-        ),
-        subitems: [categoryItem]
-      )
-      categoryGroup.edgeSpacing = .init(leading: .none, top: .none, trailing: .none, bottom: .fixed(1))
-      
-      let section = NSCollectionLayoutSection(group: categoryGroup)
-      return UICollectionViewCompositionalLayout(section: section)
-    }()
+    let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
+      var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
+      configuration.backgroundColor = keyboardContext.symbolListBackgroundColor
+      configuration.separatorConfiguration.color = keyboardContext.enableHamsterKeyboardColor ? .systemGray : .secondarySystemBackground
+      let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
+      section.contentInsets = .zero
+      return section
+    })
     
     super.init(frame: .zero, collectionViewLayout: layout)
     
@@ -65,12 +53,13 @@ class ClassifyView: UICollectionView {
   }
   
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, SymbolCategory> {
-    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, SymbolCategory> { cell, _, symbol in
-      var config = UIListContentConfiguration.valueCell()
+    let symbolCellRegistration = UICollectionView.CellRegistration<SymbolCell, SymbolCategory> { [unowned self] cell, _, symbol in
       // TODO: 符号分类国际化
-      // config.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
-      config.text = symbol.string
-      cell.contentConfiguration = config
+      // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
+      cell.textLabel.text = symbol.string
+      cell.textLabel.textColor = keyboardContext.candidateTextColor
+      cell.normalColor = keyboardContext.symbolListBackgroundColor
+      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
     }
     
     let dataSource = UICollectionViewDiffableDataSource<Int, SymbolCategory>(collectionView: self) { collectionView, indexPath, symbol in

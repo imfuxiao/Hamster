@@ -67,7 +67,7 @@ class CustomizeKeyboard: NibLessView {
   // MARK: - Layout
 
   func setupKeyboardView() {
-    backgroundColor = .standardKeyboardBackground
+    backgroundColor = .clear
 
     constructViewHierarchy()
     activateViewConstraints()

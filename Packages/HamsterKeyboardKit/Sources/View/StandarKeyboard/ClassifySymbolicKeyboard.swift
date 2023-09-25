@@ -24,7 +24,7 @@ class ClassifySymbolicKeyboard: NibLessView {
 
     super.init(frame: .zero)
 
-    backgroundColor = .standardKeyboardBackground
+    backgroundColor = .clear
 
     constructViewHierarchy()
     activateViewConstraints()

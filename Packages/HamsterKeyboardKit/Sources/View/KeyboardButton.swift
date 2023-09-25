@@ -292,13 +292,12 @@ public class KeyboardButton: UIControl {
 //    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按钮样式
+    buttonContentView.backgroundColor = style.backgroundColor ?? .clear
     if isPressed {
-      buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       underShadowView.shapeLayer.opacity = 0
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
-      buttonContentView.backgroundColor = style.backgroundColor ?? .clear
       underShadowView.shapeLayer.path = underPath.cgPath
       underShadowView.shapeLayer.opacity = 1
       hideInputCallout()

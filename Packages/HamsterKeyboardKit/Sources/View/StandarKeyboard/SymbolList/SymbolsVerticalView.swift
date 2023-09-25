@@ -31,7 +31,8 @@ class SymbolsVerticalView: UICollectionView {
     self.actionHandler = actionHandler
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-      configuration.backgroundColor = .standardDarkButtonBackground
+      configuration.backgroundColor = keyboardContext.symbolListBackgroundColor
+      configuration.separatorConfiguration.color = keyboardContext.enableHamsterKeyboardColor ? .systemGray : .secondarySystemBackground
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       section.contentInsets = .zero
       return section
@@ -56,8 +57,11 @@ class SymbolsVerticalView: UICollectionView {
   // MARK: - Functional
 
   func symbolCellRegistration() -> UICollectionView.CellRegistration<SymbolCell, String> {
-    UICollectionView.CellRegistration { cell, _, item in
+    UICollectionView.CellRegistration { [unowned self] cell, _, item in
       cell.textLabel.text = item
+      cell.textLabel.textColor = keyboardContext.candidateTextColor
+      cell.normalColor = keyboardContext.symbolListBackgroundColor
+      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
     }
   }
 

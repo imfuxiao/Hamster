@@ -11,8 +11,6 @@ import UIKit
 class SymbolCell: UICollectionViewListCell {
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
-
-    self.textLabel.text = ""
   }
 
   @available(*, unavailable)
@@ -20,29 +18,33 @@ class SymbolCell: UICollectionViewListCell {
     fatalError("init(coder:) has not been implemented")
   }
 
+  public var highlightedColor: UIColor? = nil
+  public var normalColor: UIColor? = nil
+
   public lazy var textLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
     label.translatesAutoresizingMaskIntoConstraints = false
     self.contentView.addSubview(label)
     NSLayoutConstraint.activate([
-      label.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1.0),
-      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 1.0),
+      label.heightAnchor.constraint(greaterThanOrEqualToConstant: 35),
+      label.topAnchor.constraint(equalTo: contentView.topAnchor),
+      contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor),
       label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      separatorLayoutGuide.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
     ])
     return label
   }()
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
-
+    var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
     if state.isHighlighted || state.isSelected {
-      contentView.backgroundColor = .secondarySystemBackground
+      backgroundConfig.backgroundColor = highlightedColor
     } else {
-      contentView.backgroundColor = .standardDarkButtonBackground
+      backgroundConfig.backgroundColor = normalColor
     }
-
-    separatorLayoutGuide.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+    self.backgroundConfiguration = backgroundConfig
   }
 }

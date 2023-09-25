@@ -37,7 +37,6 @@ public class TextContentView: UIView {
   private lazy var leftSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
-    label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
@@ -47,7 +46,6 @@ public class TextContentView: UIView {
 
   private lazy var rightSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
@@ -159,6 +157,12 @@ public class TextContentView: UIView {
 
     label.font = style.font?.font
     label.textColor = style.foregroundColor
+
+    leftSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    leftSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+
+    rightSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    rightSwipeLabel.textColor = keyboardContext.secondaryLabelColor
   }
 }
 
