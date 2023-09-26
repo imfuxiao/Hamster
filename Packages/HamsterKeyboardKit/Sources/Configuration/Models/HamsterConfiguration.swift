@@ -49,7 +49,7 @@ public extension HamsterConfiguration {
   /// 合并 HamsterConfiguration
   /// 利用JSON序列化的api做合并逻辑
   /// uniquingKeysWith: 合并中当键相同时，使用那个值。$1 表示 使用 with 的值
-  func merge(with: HamsterConfiguration, uniquingKeysWith conflictResolver: (Any, Any) throws -> Any) throws -> HamsterConfiguration {
+  func merge(with: HamsterConfiguration, uniquingKeysWith conflictResolver: @escaping (Any, Any) throws -> Any) throws -> HamsterConfiguration {
     let encoder = JSONEncoder()
     let selfData = try encoder.encode(self)
     let withData = try encoder.encode(with)
@@ -57,10 +57,27 @@ public extension HamsterConfiguration {
     var selfDict = try JSONSerialization.jsonObject(with: selfData) as! [String: Any]
     let withDict = try JSONSerialization.jsonObject(with: withData) as! [String: Any]
 
-    try selfDict.merge(withDict, uniquingKeysWith: conflictResolver)
+    selfDict = try deepMerge(selfDict, withDict, uniquingKeysWith: conflictResolver)
+    // try selfDict.merge(withDict, uniquingKeysWith: conflictResolver)
 
     let final = try JSONSerialization.data(withJSONObject: selfDict)
     return try JSONDecoder().decode(HamsterConfiguration.self, from: final)
+  }
+
+  func deepMerge(_ d1: [String: Any], _ d2: [String: Any], uniquingKeysWith conflictResolver: @escaping (Any, Any) throws -> Any) throws -> [String: Any] {
+    var result = d1
+    for (k2, v2) in d2 {
+      if let v1 = result[k2] as? [String: Any], let v2 = v2 as? [String: Any] {
+        result[k2] = try deepMerge(v1, v2, uniquingKeysWith: conflictResolver)
+      } else {
+        if let v1 = d1[k2] {
+          result[k2] = try conflictResolver(v1, v2)
+        } else {
+          result[k2] = v2
+        }
+      }
+    }
+    return result
   }
 }
 

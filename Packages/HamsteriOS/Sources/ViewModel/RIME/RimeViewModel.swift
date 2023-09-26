@@ -100,7 +100,7 @@ public extension RimeViewModel {
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
     try await rimeContext.deployment(configuration: hamsterConfiguration)
-    
+
     // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
     if let configuration =
       try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
@@ -113,7 +113,10 @@ public extension RimeViewModel {
       try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
       let configuration = patchConfiguration.patch
     {
-      hamsterConfiguration = try hamsterConfiguration.merge(with: configuration, uniquingKeysWith: { $1 })
+      hamsterConfiguration = try hamsterConfiguration.merge(
+        with: configuration,
+        uniquingKeysWith: { _, patchValue in patchValue }
+      )
     }
 
     HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
