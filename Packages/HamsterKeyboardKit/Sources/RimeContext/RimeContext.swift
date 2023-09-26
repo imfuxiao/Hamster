@@ -172,7 +172,7 @@ public extension RimeContext {
     }
 
     // 判断是否需要覆盖键盘词库文件，如果为否，则先copy键盘词库文件至应用目录
-    if let overrideDictFiles = configuration.rime?.overrideDictFiles, overrideDictFiles == true {
+    if let overrideDictFiles = configuration.rime?.overrideDictFiles, overrideDictFiles == false {
       let regex = configuration.rime?.regexOnOverrideDictFiles ?? []
       do {
         try FileManager.copyAppGroupUserDict(regex)
@@ -181,6 +181,10 @@ public extension RimeContext {
         throw error
       }
     }
+
+    // 检测文件目录是否存在不存在，新建
+    try FileManager.createDirectory(override: false, dst: FileManager.sandboxSharedSupportDirectory)
+    try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
 
     Rime.shared.shutdown()
     Rime.shared.start(Rime.createTraits(

@@ -59,7 +59,7 @@ public class RimeViewModel {
       type: .button,
       buttonAction: { [unowned self] in
         Task {
-          try await rimeDeploy()
+          await rimeDeploy()
         }
       },
       favoriteButton: .rimeDeploy
@@ -69,7 +69,7 @@ public class RimeViewModel {
       type: .button,
       buttonAction: { [unowned self] in
         Task {
-          try await rimeSync()
+          await rimeSync()
         }
       },
       favoriteButton: .rimeSync
@@ -80,7 +80,7 @@ public class RimeViewModel {
       type: .button,
       buttonAction: { [unowned self] in
         Task {
-          try await rimeRest()
+          await rimeRest()
         }
       },
       favoriteButton: .rimeRest
@@ -94,64 +94,73 @@ public class RimeViewModel {
 
 public extension RimeViewModel {
   /// RIME 部署
-  func rimeDeploy() async throws {
+  func rimeDeploy() async {
     await ProgressHUD.show("RIME部署中, 请稍候……", interaction: false)
 
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
-    try await rimeContext.deployment(configuration: hamsterConfiguration)
+    do {
+      try await rimeContext.deployment(configuration: hamsterConfiguration)
 
-    // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
-    if let configuration =
-      try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
-    {
-      hamsterConfiguration = configuration
+      // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
+      if let configuration =
+        try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
+      {
+        hamsterConfiguration = configuration
+      }
+
+      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
+      if let patchConfiguration =
+        try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
+        let configuration = patchConfiguration.patch
+      {
+        hamsterConfiguration = try hamsterConfiguration.merge(
+          with: configuration,
+          uniquingKeysWith: { _, patchValue in patchValue }
+        )
+      }
+
+      HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
+
+      await ProgressHUD.showSuccess("部署成功", interaction: false, delay: 1.5)
+    } catch {
+      Logger.statistics.error("rime deploy error: \(error)")
+      await ProgressHUD.showError("部署失败", interaction: false, delay: 1.5)
     }
-
-    // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
-    if let patchConfiguration =
-      try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
-      let configuration = patchConfiguration.patch
-    {
-      hamsterConfiguration = try hamsterConfiguration.merge(
-        with: configuration,
-        uniquingKeysWith: { _, patchValue in patchValue }
-      )
-    }
-
-    HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
-
-    await ProgressHUD.showSuccess("部署成功", interaction: false, delay: 1.5)
   }
 
   /// RIME 同步
-  func rimeSync() async throws {
-    await ProgressHUD.show("RIME同步中, 请稍候……", interaction: false)
-    // 先打开iCloud地址，防止Crash
-    _ = URL.iCloudDocumentURL
+  func rimeSync() async {
+    do {
+      await ProgressHUD.show("RIME同步中, 请稍候……", interaction: false)
+      // 先打开iCloud地址，防止Crash
+      _ = URL.iCloudDocumentURL
 
-    // 增加同步路径检测（sync_dir），检测是否有权限写入。
-    if let syncDir = FileManager.sandboxInstallationYaml.getSyncPath() {
-      if !FileManager.default.fileExists(atPath: syncDir) {
-        do {
-          try FileManager.default.createDirectory(atPath: syncDir, withIntermediateDirectories: true)
-        } catch {
-          throw "同步地址无写入权限：\(syncDir)"
-        }
-      } else {
-        if !FileManager.default.isWritableFile(atPath: syncDir) {
-          throw "同步地址无写入权限：\(syncDir)"
+      // 增加同步路径检测（sync_dir），检测是否有权限写入。
+      if let syncDir = FileManager.sandboxInstallationYaml.getSyncPath() {
+        if !FileManager.default.fileExists(atPath: syncDir) {
+          do {
+            try FileManager.default.createDirectory(atPath: syncDir, withIntermediateDirectories: true)
+          } catch {
+            throw "同步地址无写入权限：\(syncDir)"
+          }
+        } else {
+          if !FileManager.default.isWritableFile(atPath: syncDir) {
+            throw "同步地址无写入权限：\(syncDir)"
+          }
         }
       }
+      try await rimeContext.syncRime()
+      await ProgressHUD.showSuccess("同步成功", interaction: false, delay: 1.5)
+    } catch {
+      Logger.statistics.error("rime sync error: \(error)")
+      await ProgressHUD.showError("同步失败", interaction: false, delay: 1.5)
     }
-    try await rimeContext.syncRime()
-    await ProgressHUD.showSuccess("同步成功", interaction: false, delay: 1.5)
   }
 
   /// Rime重置
-  func rimeRest() async throws {
+  func rimeRest() async {
     await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
-
     do {
       try await rimeContext.restRime()
 
