@@ -205,11 +205,9 @@ extension CandidateWordsCollectionView: UICollectionViewDelegate {
       if let text = await self.rimeContext.selectCandidate(index: indexPath.item) {
         keyboardContext.textDocumentProxy.insertText(text)
         self.rimeContext.reset()
-        keyboardContext.candidatesViewState = .collapse
-      } else {
-        collectionView.contentOffset.x = .zero
-        collectionView.contentOffset.y = .zero
       }
+      keyboardContext.candidatesViewState = .collapse
+      collectionView.contentOffset = .zero
     }
   }
 
