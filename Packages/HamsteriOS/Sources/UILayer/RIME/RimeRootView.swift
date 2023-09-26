@@ -5,6 +5,7 @@
 //  Created by morse on 2023/7/10.
 //
 
+import Combine
 import HamsterUIKit
 import ProgressHUD
 import UIKit
@@ -23,12 +24,21 @@ public class RimeRootView: NibLessView {
     return tableView
   }()
 
+  private var subscriptions = Set<AnyCancellable>()
+
   // MARK: methods
 
   public init(frame: CGRect = .zero, rimeViewModel: RimeViewModel) {
     self.rimeViewModel = rimeViewModel
 
     super.init(frame: frame)
+
+    self.rimeViewModel.reloadTablePublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        self.tableView.reloadData()
+      }
+      .store(in: &subscriptions)
   }
 
   override public func constructViewHierarchy() {

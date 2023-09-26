@@ -34,6 +34,9 @@ public extension KeyboardInputViewController {
       self.textDocumentProxy.insertText("\r")
     case .clearSpellingArea:
       self.rimeContext.reset()
+      if keyboardContext.enableEmbeddedInputMode {
+        self.textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
+      }
     case .selectColorSchema:
       // TODO: 颜色方案切换
       break

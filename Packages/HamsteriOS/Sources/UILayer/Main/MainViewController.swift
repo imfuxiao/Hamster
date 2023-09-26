@@ -113,9 +113,9 @@ extension MainViewController {
         Task {
           switch type {
           case .rimeDeploy:
-            try? await rimeViewController.rimeViewModel.rimeDeploy()
+            await rimeViewController.rimeViewModel.rimeDeploy()
           case .rimeSync:
-            try? await rimeViewController.rimeViewModel.rimeSync()
+            await rimeViewController.rimeViewModel.rimeSync()
           default:
             break
           }

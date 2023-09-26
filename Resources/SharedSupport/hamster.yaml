@@ -2,7 +2,10 @@
 general:
   enableAppleCloud: false
   regexOnCopyFile:
-  #  - "^.text|.yaml$"
+#    - ^.*[.]userdb.*$
+#    - ^.*build.*$
+#    - ^.*SharedSupport.*$
+#    - ^.*[.]bin$
 
 # 工具栏
 toolbar:

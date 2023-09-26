@@ -5,6 +5,7 @@
 //  Created by morse on 2023/6/15.
 //
 
+import Combine
 import Foundation
 import HamsterKeyboardKit
 import HamsterKit
@@ -60,6 +61,7 @@ public class RimeViewModel {
       buttonAction: { [unowned self] in
         Task {
           await rimeDeploy()
+          reloadTableSubject.send(true)
         }
       },
       favoriteButton: .rimeDeploy
@@ -81,11 +83,17 @@ public class RimeViewModel {
       buttonAction: { [unowned self] in
         Task {
           await rimeRest()
+          reloadTableSubject.send(true)
         }
       },
       favoriteButton: .rimeRest
     )
   ]
+
+  private var reloadTableSubject = PassthroughSubject<Bool, Never>()
+  public var reloadTablePublished: AnyPublisher<Bool, Never> {
+    reloadTableSubject.eraseToAnyPublisher()
+  }
 
   init(rimeContext: RimeContext) {
     self.rimeContext = rimeContext
