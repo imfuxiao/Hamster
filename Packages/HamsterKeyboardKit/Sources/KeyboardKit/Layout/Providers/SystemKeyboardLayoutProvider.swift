@@ -67,7 +67,6 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
     let inputs = inputRows(for: context)
     let actions = self.actions(for: inputs, context: context)
-    // TODO: 这里添加 swipe 属性
     let items = self.items(for: actions, context: context)
     return KeyboardLayout(itemRows: items)
   }
@@ -135,7 +134,6 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func items(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardLayoutItemRows {
     actions.enumerated().map { row in
       row.element.enumerated().map { action in
-        // TODO: 这里添加 swipe 属性
         item(for: action.element, row: row.offset, index: action.offset, context: context)
       }
     }
@@ -182,7 +180,15 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func itemSwipes(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> [KeySwipe] {
     if let keyboardSwipe = context.keyboardSwipe.first(where: { $0.keyboardType == context.keyboardType }) {
-      return keyboardSwipe.keys?.first(where: { $0.action == action })?.swipe ?? []
+      return keyboardSwipe.keys?
+        .first(where: {
+          // primary action 不比较具体里面的值
+          if action.isPrimaryAction, $0.action.isPrimaryAction {
+            return true
+          }
+          return $0.action == action
+        })?
+        .swipe ?? []
     }
     return []
   }
