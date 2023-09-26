@@ -631,7 +631,7 @@ public extension KeyboardContext {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.backColor
     }
-    return .clear
+    return .clearInteractable
   }
 
   /// 暗色系统按键背景色

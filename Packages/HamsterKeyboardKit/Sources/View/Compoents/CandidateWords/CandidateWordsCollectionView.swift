@@ -168,15 +168,29 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   func changeLayout(_ state: CandidateWordsView.State) {
     if state.isCollapse() {
-      self.setCollectionViewLayout(horizontalLayout, animated: false) { _ in
+      self.setCollectionViewLayout(horizontalLayout, animated: false) { [weak self] _ in
+        guard let self = self else { return }
         self.alwaysBounceHorizontal = true
         self.alwaysBounceVertical = false
+        self.contentOffset = .zero
       }
     } else {
-      self.setCollectionViewLayout(verticalLayout, animated: false) { _ in
+      self.setCollectionViewLayout(verticalLayout, animated: false) { [weak self] _ in
+        guard let self = self else { return }
         self.alwaysBounceHorizontal = false
         self.alwaysBounceVertical = true
+        self.contentOffset = .zero
       }
+    }
+
+    // init data
+    var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(rimeContext.suggestions, toSection: 0)
+    diffableDataSource.apply(snapshot, animatingDifferences: false)
+
+    if !rimeContext.suggestions.isEmpty {
+      self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
     }
   }
 }
