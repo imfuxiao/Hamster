@@ -60,10 +60,10 @@ class UploadInputSchemaRootView: NibLessView {
 
   func localIPCell() -> UITableViewCell {
     var valueCellConfig = UIListContentConfiguration.cell()
-    if let ip = UIDevice.current.localIP() {
+    if let ip = UIDevice.current.getAddress() {
       valueCellConfig.text = "http://\(ip)"
     } else {
-      valueCellConfig.text = "无法获取IP地址"
+      valueCellConfig.text = "无法获取 IP 地址，请在系统设置 - WiFi 中查看地址。"
     }
 
     let cell = UITableViewCell()
@@ -123,7 +123,7 @@ extension UploadInputSchemaRootView: UITableViewDataSource {
 extension UploadInputSchemaRootView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.section == 0, indexPath.row == 0 {
-      if let ip = UIDevice.current.localIP() {
+      if let ip = UIDevice.current.getAddress() {
         UIPasteboard.general.string = "http://\(ip)"
         ProgressHUD.showSuccess("复制成功", delay: 1.5)
       }
