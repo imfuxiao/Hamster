@@ -452,12 +452,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func deleteBackward() {
-    if keyboardContext.keyboardType.isChineseNineGrid {
-      if rimeContext.userInputKey.isEmpty {
-        textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
-        return
-      }
+    guard !rimeContext.userInputKey.isEmpty else {
+      textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+      return
+    }
 
+    if keyboardContext.keyboardType.isChineseNineGrid {
       // 判断代删除字符是否为用户选择精确拼音，如果是，则需要将精确拼音还原为模糊拼音
       if let lastSelectPinyin = rimeContext.selectPinyinList.last, rimeContext.userInputKey.hasSuffix(lastSelectPinyin) {
         // 根据用户选择的候选拼音，反查得到对应的 T9 编码
@@ -487,14 +487,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
           await rimeContext.deleteBackward()
         }
       }
-
-      return
     }
-    if rimeContext.userInputKey.isEmpty {
-      textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
-    } else {
-      Task {
-        await rimeContext.deleteBackward()
+
+    // 非九宫格处理
+    Task {
+      await rimeContext.deleteBackward()
+      if keyboardContext.enableEmbeddedInputMode {
+        self.textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
       }
     }
   }
@@ -506,12 +505,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   open func insertSymbol(_ symbol: Symbol) {
     // 符号顶字
     if !rimeContext.userInputKey.isEmpty {
-      textDocumentProxy.setMarkedText("", selectedRange: .init(location: 0, length: 0))
-      textDocumentProxy.unmarkText()
-      if let firstCandidate = rimeContext.suggestions.first {
-        textDocumentProxy.insertText(firstCandidate.text)
+      if keyboardContext.enableEmbeddedInputMode {
+        self.textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
       }
-      rimeContext.reset()
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
+        guard let self = self else { return }
+        if let firstCandidate = self.rimeContext.suggestions.first {
+          self.textDocumentProxy.insertText(firstCandidate.text)
+        }
+        self.rimeContext.reset()
+      }
     }
     textDocumentProxy.insertText(symbol.char)
   }
@@ -531,7 +534,17 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // rime 引擎处理
     Task {
       if let inputText = await rimeContext.tryHandleInputText(text) {
-        textDocumentProxy.insertText(inputText)
+        if keyboardContext.enableEmbeddedInputMode {
+          textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
+          guard let self = self else { return }
+          self.textDocumentProxy.insertText(inputText)
+        }
+      } else {
+        if keyboardContext.enableEmbeddedInputMode {
+          textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
+        }
       }
     }
   }
@@ -584,7 +597,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     Task {
       do {
         guard let text = try await rimeContext.tryHandleInputCode(keyCode) else { return }
-        textDocumentProxy.insertText(text)
+        if keyboardContext.enableEmbeddedInputMode {
+          textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
+          guard let self = self else { return }
+          self.textDocumentProxy.insertText(text)
+        }
       } catch {
         let errorMessage = error.localizedDescription
         Logger.statistics.info("insertRimeKeyCode(): \(errorMessage)")
@@ -804,51 +823,56 @@ private extension KeyboardInputViewController {
   /// 内嵌模式
   /// TODO: 内嵌模式
   func setupEmbeddedInputMode() {
-    Task {
-      // 检测是否启用内嵌输入模式
-      guard keyboardContext.enableEmbeddedInputMode else { return }
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] inputKeys in
-          guard let self = self else { return }
+//    Task {
+//      // 检测是否启用内嵌输入模式
+//      guard keyboardContext.enableEmbeddedInputMode else { return }
+//      await rimeContext.$userInputKey
+//        .receive(on: DispatchQueue.main)
+//        .sink { [weak self] inputKeys in
+//          guard let self = self else { return }
+//
+//          // fix: 部分App(如 bilibili app 端的评论)上屏不会触发
+//          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+//            self.textDocumentProxy.setMarkedText(inputKeys, selectedRange: NSMakeRange(inputKeys.utf8.count, 0))
+//          }
 
-          /// rimeContext.$userInputKey 被清空
-          guard !inputKeys.isEmpty else {
-            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-            self.textDocumentProxy.unmarkText()
-            return
-          }
-
-          let pairKeys = self.keyboardContext.getPairSymbols(inputKeys)
-          guard pairKeys == inputKeys else {
-            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-            self.textDocumentProxy.unmarkText()
-            self.textDocumentProxy.insertText(pairKeys)
-            if self.keyboardContext.cursorBackOfSymbols(key: pairKeys) {
-              self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
-            }
-
-            /// 返回主键盘
-            if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
-              self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
-            }
-            return
-          }
-
-          /// 返回主键盘
-          if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
-            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-            self.textDocumentProxy.unmarkText()
-            self.textDocumentProxy.insertText(pairKeys)
-            self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
-            return
-          }
-
-          // 这使用utf16计数，以避免表情符号和类似的问题。
-          self.textDocumentProxy.setMarkedText(pairKeys, selectedRange: NSRange(location: pairKeys.utf16.count, length: 0))
-        }
-        .store(in: &cancellables)
-    }
+//          /// rimeContext.$userInputKey 被清空
+//          guard !inputKeys.isEmpty else {
+//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+//            self.textDocumentProxy.unmarkText()
+//            return
+//          }
+//
+//          let pairKeys = self.keyboardContext.getPairSymbols(inputKeys)
+//          guard pairKeys == inputKeys else {
+//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+//            self.textDocumentProxy.unmarkText()
+//            self.textDocumentProxy.insertText(pairKeys)
+//            if self.keyboardContext.cursorBackOfSymbols(key: pairKeys) {
+//              self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+//            }
+//
+//            /// 返回主键盘
+//            if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
+//              self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
+//            }
+//            return
+//          }
+//
+//          /// 返回主键盘
+//          if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
+//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+//            self.textDocumentProxy.unmarkText()
+//            self.textDocumentProxy.insertText(pairKeys)
+//            self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
+//            return
+//          }
+//
+//          // 这使用utf16计数，以避免表情符号和类似的问题。
+//          self.textDocumentProxy.setMarkedText(pairKeys, selectedRange: NSRange(location: pairKeys.utf16.count, length: 0))
+//        }
+//        .store(in: &cancellables)
+//    }
   }
 
   /**
