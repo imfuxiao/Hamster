@@ -284,7 +284,7 @@ class KeyboardRootView: NibLessView {
         Logger.statistics.debug("KeyboardRootView keyboardType combine: \($0.yamlString)")
         guard $0 != keyboardContext.selectKeyboard else {
           primaryKeyboardView.isHidden = false
-          if let view = self.tempKeyboardView, view != primaryKeyboardView, self.frame.contains(view.frame) {
+          if let view = self.tempKeyboardView, self.frame.contains(view.frame) {
             self.tempKeyboardView = nil
             view.layer.zPosition = -1
             view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
@@ -319,12 +319,8 @@ class KeyboardRootView: NibLessView {
           }
           self.tempKeyboardView = emojisKeyboardView
         case .alphabetic, .numeric, .symbolic, .chineseNumeric, .chineseSymbolic:
-          if standerSystemKeyboard.superview == nil {
-            standerSystemKeyboard.translatesAutoresizingMaskIntoConstraints = true
-            addSubview(standerSystemKeyboard)
-            standerSystemKeyboard.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
-          }
-          self.tempKeyboardView = standerSystemKeyboard
+          primaryKeyboardView.isHidden = false
+          return
         case .custom:
           var keyboardView: CustomizeKeyboard
           if let view = tempCustomKeyboardView[$0] {
@@ -352,7 +348,7 @@ class KeyboardRootView: NibLessView {
           return
         }
 
-        if let view = self.tempKeyboardView, view != primaryKeyboardView {
+        if let view = self.tempKeyboardView {
           primaryKeyboardView.isHidden = true
           view.frame = view.frame.offsetBy(dx: 0, dy: self.frame.height)
           view.layer.zPosition = 999

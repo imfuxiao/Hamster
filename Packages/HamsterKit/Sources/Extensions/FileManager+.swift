@@ -141,7 +141,7 @@ public extension FileManager {
     var tempURL = zipURL
 
     // 检测是否为iCloudURL, 需要特殊处理
-    if zipURL.path.contains("com~apple~CloudDocs") {
+    if zipURL.path.contains("com~apple~CloudDocs") || zipURL.path.contains("iCloud~dev~fuxiao~app~hamsterapp") {
       // iCloud中的URL须添加安全访问资源语句，否则会异常：Operation not permitted
       // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
       if !zipURL.startAccessingSecurityScopedResource() {

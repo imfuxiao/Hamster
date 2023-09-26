@@ -282,9 +282,14 @@ public class StanderSystemKeyboard: UIView {
     // 键盘类型发生变化重新加载键盘
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
-        Logger.statistics.debug("keyboardContext.keyboardType is change")
-        setNeedsLayout()
+      .sink { [unowned self] in
+        switch $0 {
+        case .chinese, .chineseNumeric, .chineseSymbolic, .alphabetic, .numeric, .symbolic:
+          Logger.statistics.debug("keyboardContext.keyboardType is change")
+          setNeedsLayout()
+        default:
+          return
+        }
       }
       .store(in: &subscriptions)
   }
