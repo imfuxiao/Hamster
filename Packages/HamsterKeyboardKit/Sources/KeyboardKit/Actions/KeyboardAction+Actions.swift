@@ -112,6 +112,7 @@ public extension KeyboardAction {
     case .character(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
+    case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }
     case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
     case .chineseNineGrid(let symbol): return { $0?.insertText(String(symbol.char.first!)) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
@@ -162,6 +163,7 @@ public extension KeyboardAction {
     case .character(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .characterMargin(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
+    case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }
     case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
     case .chineseNineGrid(let symbol): return { $0?.insertSymbol(symbol) }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }

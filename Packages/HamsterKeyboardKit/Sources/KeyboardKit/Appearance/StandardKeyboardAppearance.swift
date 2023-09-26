@@ -340,7 +340,7 @@ extension KeyboardAction {
       return .standardButtonBackground(for: context)
     }
     if isUppercasedShiftAction { return buttonBackgroundColorForPressedState(for: context) }
-    if isSystemAction || isSymbolAction || isCleanSpellingArea {
+    if isSystemAction || isSymbolOfDarkAction || isCleanSpellingArea {
       return .standardDarkButtonBackground(for: context)
     }
     if isPrimaryAction { return UIColor.systemBlue }
@@ -355,7 +355,7 @@ extension KeyboardAction {
       return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white
     }
 
-    if isSystemAction || isSymbolAction || isCleanSpellingArea {
+    if isSystemAction || isSymbolOfDarkAction || isCleanSpellingArea {
       return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white
     }
     if isPrimaryAction { return context.hasDarkColorScheme ? .standardDarkButtonBackground(for: context) : .white }

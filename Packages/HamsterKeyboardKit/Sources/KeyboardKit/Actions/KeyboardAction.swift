@@ -146,6 +146,9 @@ public enum KeyboardAction: Codable, Hashable {
   /// 插入一个符号
   case symbol(Symbol)
   
+  /// (按钮显示为暗色)插入一个符号
+  case symbolOfDark(Symbol)
+  
   /// 返回上一个键盘
   case returnLastKeyboard
   
@@ -320,9 +323,9 @@ public extension KeyboardAction {
     }
   }
   
-  var isSymbolAction: Bool {
+  var isSymbolOfDarkAction: Bool {
     switch self {
-    case .symbol: return true
+    case .symbolOfDark: return true
     default: return false
     }
   }
