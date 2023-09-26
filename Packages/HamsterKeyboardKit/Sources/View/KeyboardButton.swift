@@ -462,7 +462,7 @@ public extension KeyboardButton {
     // 识别 swipe
     if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
       let tanThreshold: CGFloat = 1.732 // tan(30º)) = 0.58, tan(45º) = 1, tan(60º) = 1.732
-      let distanceThreshold: CGFloat = 10 // TODO: 划动距离的阈值
+      let distanceThreshold: CGFloat = 15 // TODO: 划动距离的阈值
 
       let distanceY = currentPoint.y - startLocation.y
       let distanceX = currentPoint.x - startLocation.x
