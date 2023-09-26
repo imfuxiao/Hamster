@@ -481,6 +481,7 @@ public extension String {
       }
       return .symbol(Symbol(char: value))
     case "none": return KeyboardAction.none
+    case "nextKeyboard": return KeyboardAction.nextKeyboard
     default:
       return nil
     }
@@ -608,6 +609,8 @@ public extension KeyboardAction {
       return "chineseNineGrid(\(symbol.char))"
     case .none:
       return "none"
+    case .nextKeyboard:
+      return "nextKeyboard"
     default:
       return ""
     }
