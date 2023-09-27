@@ -534,12 +534,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // rime 引擎处理
     Task {
       if let inputText = await rimeContext.tryHandleInputText(text) {
-        if keyboardContext.enableEmbeddedInputMode {
-          textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
-        }
+        textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
           guard let self = self else { return }
           self.textDocumentProxy.insertText(inputText)
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
+            guard let self = self else { return }
+            if self.keyboardContext.enableEmbeddedInputMode {
+              self.textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
+            }
+          }
         }
       } else {
         if keyboardContext.enableEmbeddedInputMode {
