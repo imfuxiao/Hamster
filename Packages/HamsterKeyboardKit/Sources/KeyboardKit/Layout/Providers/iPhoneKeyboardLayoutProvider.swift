@@ -182,7 +182,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
 
     let needsInputSwitch = context.needsInputModeSwitchKey
     if needsInputSwitch { result.append(.nextKeyboard) }
-    
+
     result.append(.keyboardType(.classifySymbolic))
 
     result.append(.space)
@@ -195,7 +195,13 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       result.append(.character("."))
     }
     /// 切换用户设置键盘
-    result.append(.returnLastKeyboard)
+    if context.selectKeyboard.isCustom {
+      result.append(.returnLastKeyboard)
+    } else if context.selectKeyboard.isChinesePrimaryKeyboard {
+      result.append(.keyboardType(.chinese(.lowercased)))
+    } else if context.selectKeyboard.isChineseNineGrid {
+      result.append(.keyboardType(.chineseNineGrid))
+    }
     result.append(keyboardReturnAction(for: context))
     return result
   }

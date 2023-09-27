@@ -62,8 +62,8 @@ class KeyboardRootView: NibLessView {
   /// 非主键盘之外的临时键盘，如：数字九宫格/分类符号键盘等
   private var tempKeyboardView: UIView? = nil
 
-  /// 非主键盘的临时键盘
-  private var tempCustomKeyboardView: [KeyboardType: CustomizeKeyboard] = [:]
+  /// 非主键盘的临时键盘Cache
+  private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
 
   // MARK: - 计算属性
 
@@ -77,7 +77,7 @@ class KeyboardRootView: NibLessView {
   }()
 
   /// 26键键盘，包含默认中文26键及英文26键
-  private lazy var standerSystemKeyboard: StanderSystemKeyboard = {
+  private var standerSystemKeyboard: StanderSystemKeyboard {
     let view = StanderSystemKeyboard(
       keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: appearance,
@@ -88,10 +88,10 @@ class KeyboardRootView: NibLessView {
     )
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
-  }()
+  }
 
   /// 中文九宫格键盘
-  private lazy var chineseNineGridKeyboardView: ChineseNineGridKeyboard = {
+  private var chineseNineGridKeyboardView: ChineseNineGridKeyboard {
     let view = ChineseNineGridKeyboard(
       keyboardLayoutProvider: keyboardLayoutProvider,
       actionHandler: actionHandler,
@@ -102,10 +102,10 @@ class KeyboardRootView: NibLessView {
     )
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
-  }()
+  }
 
   /// 自定义键盘
-  private lazy var customizeKeyboardView: CustomizeKeyboard = {
+  private var customizeKeyboardView: CustomizeKeyboard {
     let view = CustomizeKeyboard(
       keyboardLayoutProvider: keyboardLayoutProvider,
       actionHandler: actionHandler,
@@ -116,7 +116,7 @@ class KeyboardRootView: NibLessView {
     )
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
-  }()
+  }
 
   /// 主键盘
   private lazy var primaryKeyboardView: UIView = {
@@ -282,9 +282,11 @@ class KeyboardRootView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         Logger.statistics.debug("KeyboardRootView keyboardType combine: \($0.yamlString)")
+        // 判断当前键盘类型是否为 primaryKeyboard
         guard $0 != keyboardContext.selectKeyboard else {
+          // 显示主键盘，并隐藏非主键盘
           primaryKeyboardView.isHidden = false
-          if let view = self.tempKeyboardView, self.frame.contains(view.frame) {
+          if let view = self.tempKeyboardView {
             self.tempKeyboardView = nil
             view.layer.zPosition = -1
             view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
@@ -292,66 +294,58 @@ class KeyboardRootView: NibLessView {
           return
         }
 
-        // 将之前的临时键盘隐藏
-        if let view = self.tempKeyboardView, view != primaryKeyboardView {
+        // 先将之前的临时键盘隐藏
+        if let view = self.tempKeyboardView {
           view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
           self.tempKeyboardView = nil
         }
 
-        // 获取临时键盘
-        switch $0 {
-        case .numericNineGrid:
-          if numericNineGridKeyboardView.superview == nil {
-            addSubview(numericNineGridKeyboardView)
-            numericNineGridKeyboardView.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
-          }
-          self.tempKeyboardView = numericNineGridKeyboardView
-        case .classifySymbolic:
-          if classifySymbolicKeyboardView.superview == nil {
-            addSubview(classifySymbolicKeyboardView)
-            classifySymbolicKeyboardView.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
-          }
-          self.tempKeyboardView = classifySymbolicKeyboardView
-        case .emojis:
-          if emojisKeyboardView.superview == nil {
-            addSubview(emojisKeyboardView)
-            emojisKeyboardView.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
-          }
-          self.tempKeyboardView = emojisKeyboardView
-        case .alphabetic, .numeric, .symbolic, .chineseNumeric, .chineseSymbolic:
-          primaryKeyboardView.isHidden = false
-          return
-        case .custom:
-          var keyboardView: CustomizeKeyboard
-          if let view = tempCustomKeyboardView[$0] {
-            keyboardView = view
-          } else {
-            keyboardView = CustomizeKeyboard(
-              keyboardLayoutProvider: keyboardLayoutProvider,
-              actionHandler: actionHandler,
-              appearance: appearance,
-              keyboardContext: keyboardContext,
-              calloutContext: calloutContext,
-              rimeContext: rimeContext
-            )
-            tempCustomKeyboardView[$0] = keyboardView
-          }
+        // 从 cache 中获取键盘
+        if let tempKeyboardView = tempKeyboardViewCache[$0] {
+          // 隐藏主键盘并显示非主键盘
+          primaryKeyboardView.isHidden = true
+          tempKeyboardView.frame = tempKeyboardView.frame.offsetBy(dx: 0, dy: self.frame.height)
+          tempKeyboardView.layer.zPosition = 999
+          self.tempKeyboardView = tempKeyboardView
 
-          if keyboardView.superview == nil {
-            keyboardView.translatesAutoresizingMaskIntoConstraints = true
-            addSubview(keyboardView)
-            keyboardView.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
-          }
-          self.tempKeyboardView = keyboardView
-        default:
-          // 注意：非临时键盘类型外的类型直接 return
           return
         }
 
-        if let view = self.tempKeyboardView {
+        // 生成临时键盘
+        var tempKeyboardView: UIView? = nil
+        switch $0 {
+        case .numericNineGrid:
+          tempKeyboardView = numericNineGridKeyboardView
+          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        case .classifySymbolic:
+          tempKeyboardView = classifySymbolicKeyboardView
+          tempKeyboardView!.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        case .emojis:
+          tempKeyboardView = emojisKeyboardView
+          tempKeyboardView!.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        case .alphabetic, .numeric, .symbolic, .chinese, .chineseNumeric, .chineseSymbolic:
+          tempKeyboardView = standerSystemKeyboard
+          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        case .chineseNineGrid:
+          tempKeyboardView = chineseNineGridKeyboardView
+          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        case .custom:
+          tempKeyboardView = customizeKeyboardView
+          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
+        default:
+          // 注意：非临时键盘类型外的类型直接 return
+          Logger.statistics.error("keyboadType: \($0.yamlString) not match tempKeyboardType")
+        }
+
+        if let tempKeyboardView = tempKeyboardView {
+          // 隐藏主键盘并显示临时键盘
           primaryKeyboardView.isHidden = true
-          view.frame = view.frame.offsetBy(dx: 0, dy: self.frame.height)
-          view.layer.zPosition = 999
+          tempKeyboardViewCache[$0] = tempKeyboardView
+          tempKeyboardView.translatesAutoresizingMaskIntoConstraints = true
+          addSubview(tempKeyboardView)
+          tempKeyboardView.frame = tempKeyboardView.frame.offsetBy(dx: 0, dy: self.frame.height)
+          tempKeyboardView.layer.zPosition = 999
+          self.tempKeyboardView = tempKeyboardView
         }
       }
       .store(in: &subscriptions)
