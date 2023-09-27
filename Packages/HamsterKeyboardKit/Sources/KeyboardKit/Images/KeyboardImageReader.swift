@@ -34,6 +34,8 @@ public extension KeyboardImageReader {
   static var keyboardDismiss: UIImage { .init(systemName: "keyboard.chevron.compact.down")! }
   static var keyboardEmail: UIImage { .init(systemName: "envelope")! }
   static var keyboardEmoji: UIImage { .asset("keyboardEmoji")! }
+  static var keyboardStateChinese: UIImage { .asset("chineseState")! }
+  static var keyboardStateEnglish: UIImage { .asset("englishState")! }
   static var keyboardEmojiSymbol: UIImage { .init(systemName: "face.smiling")! }
   static var keyboardGlobe: UIImage { .init(systemName: "globe")! }
   static var keyboardImages: UIImage { .init(systemName: "photo")! }
@@ -50,7 +52,6 @@ public extension KeyboardImageReader {
   static var keyboardTab: UIImage { .init(systemName: "arrow.right.to.line")! }
   static var keyboardUndo: UIImage { .init(systemName: "arrow.uturn.left")! }
   static var keyboardZeroWidthSpace: UIImage { .init(systemName: "circle.dotted")! }
-
 
   static func keyboardNewline(for locale: Locale) -> UIImage {
     locale.isLeftToRight ? .keyboardNewline : .keyboardNewlineRtl

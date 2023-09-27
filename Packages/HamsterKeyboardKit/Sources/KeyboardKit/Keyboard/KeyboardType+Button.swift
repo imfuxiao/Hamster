@@ -19,6 +19,8 @@ public extension KeyboardType {
     case .email: return .keyboardEmail
     case .emojis: return .keyboardEmoji
     case .images: return .keyboardImages
+    case .alphabetic: return .keyboardStateChinese
+    case .chinese: return .keyboardStateEnglish
     default: return nil
     }
   }
