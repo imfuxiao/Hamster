@@ -68,9 +68,14 @@ extension InputSchemaViewModel {
 
     await ProgressHUD.show("方案导入中……", interaction: false)
     do {
+      // 检测 Rime 目录是否存在
+      try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
       try await FileManager.default.unzip(fileURL, dst: FileManager.sandboxUserDataDirectory)
 
       var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
+
+      await ProgressHUD.show("方案部署中……", interaction: false)
+      try await rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
       if let configuration =
@@ -87,9 +92,6 @@ extension InputSchemaViewModel {
         hamsterConfiguration = try hamsterConfiguration.merge(with: configuration, uniquingKeysWith: { $1 })
       }
 
-      await ProgressHUD.show("方案部署中……", interaction: false)
-
-      try await rimeContext.deployment(configuration: hamsterConfiguration)
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       // 发布
