@@ -503,9 +503,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertSymbol(_ symbol: Symbol) {
-    // 替换为成对符号
-    let text = keyboardContext.getPairSymbols(symbol.char)
-
     // 检测是否需要顶字上屏
     if !rimeContext.userInputKey.isEmpty {
       // 内嵌模式需要先清空
@@ -519,35 +516,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
           self.textDocumentProxy.insertText(firstCandidate.text)
         }
         self.rimeContext.reset()
-        textDocumentProxy.insertText(text)
-
-        // 光标回退
-        if keyboardContext.cursorBackOfSymbols(key: text) {
-          self.adjustTextPosition(byCharacterOffset: -1)
-        }
-
-        // 检测是否需要返回主键盘
-        let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: symbol.char)
-        if returnToPrimaryKeyboard {
-          keyboardContext.keyboardType = keyboardContext.selectKeyboard
-        }
+        self.insertTextPatch(symbol.char)
       }
       return
     }
-    
-    
-    textDocumentProxy.insertText(text)
 
-    // 光标回退
-    if keyboardContext.cursorBackOfSymbols(key: text) {
-      self.adjustTextPosition(byCharacterOffset: -1)
-    }
-
-    // 检测是否需要返回主键盘
-    let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: symbol.char)
-    if returnToPrimaryKeyboard {
-      keyboardContext.keyboardType = keyboardContext.selectKeyboard
-    }
+    self.insertTextPatch(symbol.char)
   }
 
   open func insertText(_ text: String) {
@@ -568,26 +542,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
         textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
           guard let self = self else { return }
-
-          // 替换为成对符号
-          let text = keyboardContext.getPairSymbols(inputText)
-          self.textDocumentProxy.insertText(text)
-
+          self.insertTextPatch(inputText)
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
             guard let self = self else { return }
             if self.keyboardContext.enableEmbeddedInputMode {
               self.textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
-            } else {
-              // 光标回退
-              if keyboardContext.cursorBackOfSymbols(key: text) {
-                self.adjustTextPosition(byCharacterOffset: -1)
-              }
-
-              // 检测是否需要返回主键盘
-              let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputText)
-              if returnToPrimaryKeyboard {
-                keyboardContext.keyboardType = keyboardContext.selectKeyboard
-              }
             }
           }
         }
@@ -998,6 +957,24 @@ private extension KeyboardInputViewController {
       case .failure(let error): context.lastError = error
       case .success(let result): context.suggestions = result
       }
+    }
+  }
+
+  /// 上屏补丁：增加了成对符号/光标回退/返回主键盘的支持
+  func insertTextPatch(_ insertText: String) {
+    // 替换为成对符号
+    let text = keyboardContext.getPairSymbols(insertText)
+    textDocumentProxy.insertText(text)
+
+    // 检测光标是否需要回退
+    if keyboardContext.cursorBackOfSymbols(key: text) {
+      self.adjustTextPosition(byCharacterOffset: -1)
+    }
+
+    // 检测是否需要返回主键盘
+    let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: insertText)
+    if returnToPrimaryKeyboard {
+      keyboardContext.keyboardType = keyboardContext.selectKeyboard
     }
   }
 }
