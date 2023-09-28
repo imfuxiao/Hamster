@@ -111,17 +111,12 @@ public extension RimeViewModel {
       try await rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
-      if let configuration =
-        try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
-      {
-        hamsterConfiguration = configuration
-      }
+      let configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
+      hamsterConfiguration = configuration
 
       // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
-      if let patchConfiguration =
-        try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
-        let configuration = patchConfiguration.patch
-      {
+      let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
+      if let configuration = patchConfiguration.patch {
         hamsterConfiguration = try hamsterConfiguration.merge(
           with: configuration,
           uniquingKeysWith: { _, patchValue in patchValue }
@@ -133,7 +128,7 @@ public extension RimeViewModel {
       await ProgressHUD.showSuccess("部署成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime deploy error: \(error)")
-      await ProgressHUD.showError("部署失败", interaction: false, delay: 1.5)
+      await ProgressHUD.showError("部署失败:\(error.localizedDescription)", interaction: false, delay: 1.5)
     }
   }
 

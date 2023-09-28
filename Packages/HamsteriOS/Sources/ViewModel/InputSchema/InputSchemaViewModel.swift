@@ -78,18 +78,16 @@ extension InputSchemaViewModel {
       try await rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
-      if let configuration =
-        try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
-      {
-        hamsterConfiguration = configuration
-      }
+      let configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
+      hamsterConfiguration = configuration
 
-      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge （已 hamster.custom.yaml 文件为主）
-      if let patchConfiguration =
-        try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport),
-        let configuration = patchConfiguration.patch
-      {
-        hamsterConfiguration = try hamsterConfiguration.merge(with: configuration, uniquingKeysWith: { $1 })
+      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
+      let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
+      if let configuration = patchConfiguration.patch {
+        hamsterConfiguration = try hamsterConfiguration.merge(
+          with: configuration,
+          uniquingKeysWith: { _, patchValue in patchValue }
+        )
       }
 
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
