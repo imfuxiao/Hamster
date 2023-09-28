@@ -78,7 +78,6 @@ class SymbolSettingsRootView: NibLessView {
   )
 
   lazy var symbolsOfReturnToMainKeyboardView: UIView = SymbolEditorView(
-    headerTitle: "返回主键盘符号列表",
     getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard = $0

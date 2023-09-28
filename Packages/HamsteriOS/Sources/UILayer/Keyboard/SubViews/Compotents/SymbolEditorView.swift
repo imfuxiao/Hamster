@@ -117,7 +117,6 @@ public class SymbolEditorView: NibLessView {
     self.reloadDataPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
-        self.symbols = getSymbols()
         self.tableView.reloadData()
       }
       .store(in: &subscriptions)
@@ -144,6 +143,13 @@ public class SymbolEditorView: NibLessView {
       trailingAnchor.constraint(equalToSystemSpacingAfter: restButton.trailingAnchor, multiplier: 1.0)
     ])
   }
+
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    symbols = getSymbols()
+    tableView.reloadData()
+  }
 }
 
 // MARK: custom methods
@@ -159,23 +165,30 @@ extension SymbolEditorView {
     // 只保留一个空行
     if lastSymbol.isEmpty, !symbols.isEmpty {
       let indexPath = IndexPath(row: symbols.count - 1, section: 0)
-      if let cell = tableView.cellForRow(at: indexPath), let _ = cell as? TextFieldTableViewCell {
-        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+      if let cell = tableView.cellForRow(at: indexPath), let textCell = cell as? TextFieldTableViewCell {
+        ProgressHUD.showAdded("我在这", interaction: false, delay: 1)
+        textCell.textField.becomeFirstResponder()
       }
       return
     }
 
-    // 先更新数据源, 在添加行
+    // 注意：先更新数据源, 在添加行
     symbols.append("")
+
     let indexPath = IndexPath(row: symbols.count - 1, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
     if let cell = tableView.cellForRow(at: indexPath), let cell = cell as? TextFieldTableViewCell {
       cell.updateWithSettingItem(SettingItemModel(
-        textHandled: { [unowned self] in
-          symbols[indexPath.row] = $0
+        textHandled: { [weak self] in
+          guard let self = self else { return }
+          if $0.isEmpty {
+            self.symbols.remove(at: indexPath.row)
+          } else {
+            self.symbols[indexPath.row] = $0
+          }
+          self.tableView.reloadData()
         }
       ))
-      tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
       cell.textField.becomeFirstResponder()
     }
   }
@@ -201,19 +214,25 @@ extension SymbolEditorView: UITableViewDataSource {
     guard let cell = cell as? TextFieldTableViewCell else { return cell }
     cell.updateWithSettingItem(SettingItemModel(
       textValue: { symbol },
-      textHandled: { [unowned self] in
-        symbols[indexPath.row] = $0
+      textHandled: { [weak self] in
+        guard let self = self else { return }
+        if $0.isEmpty {
+          self.symbols.remove(at: indexPath.row)
+        } else {
+          self.symbols[indexPath.row] = $0
+        }
+        self.tableView.reloadData()
       }
     ))
     return cell
   }
 
   public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return "点击行可编辑"
+    return "点击行可编辑/划动可删除"
   }
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footView = TableFooterView(footer: "点我添加新符号(回车键自动保存)。")
+    let footView = TableFooterView(footer: "点我添加新符号(回车键保存)。")
     footView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addTableRow)))
     return footView
   }
