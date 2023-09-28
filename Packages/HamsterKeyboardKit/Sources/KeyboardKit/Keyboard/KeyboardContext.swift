@@ -618,6 +618,11 @@ public extension KeyboardContext {
     hamsterConfig?.Keyboard?.enableColorSchema ?? false
   }
 
+  /// 数字九宫格符号是否直接上屏
+  var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
+    hamsterConfig?.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+  }
+
   /// Hamster 键盘配色
   var keyboardColor: HamsterKeyboardColor? {
     if hamsterConfig?.Keyboard?.enableColorSchema ?? false, let color = hamsterKeyboardColor {

@@ -243,14 +243,22 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
 
 public extension NumericNineGridKeyboard {
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    actionHandler.handle(.press, on: .symbol(.init(char: symbol)))
+    let char = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    if keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard {
+      actionHandler.handle(.press, on: .symbol(.init(char: char)))
+    } else {
+      actionHandler.handle(.press, on: .character(char))
+    }
     return true
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
+    let char = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    if keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard {
+      actionHandler.handle(.release, on: .symbol(.init(char: char)))
+    } else {
+      actionHandler.handle(.release, on: .character(char))
+    }
     collectionView.deselectItem(at: indexPath, animated: true)
   }
 }
