@@ -453,7 +453,17 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   open func deleteBackward() {
     guard !rimeContext.userInputKey.isEmpty else {
-      textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+      // 获取光标前后上下文，用于删除需要光标居中的符号
+      let beforeInput = self.textDocumentProxy.documentContextBeforeInput ?? ""
+      let afterInput = self.textDocumentProxy.documentContextAfterInput ?? ""
+      let text = String(beforeInput.suffix(1) + afterInput.prefix(1))
+      // 光标可以居中的符号，需要成对删除
+      if keyboardContext.cursorBackOfSymbols(key: text) {
+        self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
+        self.textDocumentProxy.deleteBackward(times: 2)
+      } else {
+        textDocumentProxy.deleteBackward(range: keyboardBehavior.backspaceRange)
+      }
       return
     }
 
