@@ -83,6 +83,7 @@
 		C08387F32A5589A400EA8082 /* HamsterUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterUIKit; path = Packages/HamsterUIKit; sourceTree = "<group>"; };
 		C08387F42A5589AF00EA8082 /* HamsterKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterKit; path = Packages/HamsterKit; sourceTree = "<group>"; };
 		C08387F52A5589DF00EA8082 /* HamsteriOS */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsteriOS; path = Packages/HamsteriOS; sourceTree = "<group>"; };
+		C0C642842AC561180084147F /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		C0C7EAEE29E5A236008D4EE1 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF029E5A23A008D4EE1 /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		C0C7EAF129E5A23B008D4EE1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 		C03E801C296D4F4C0083E53A = {
 			isa = PBXGroup;
 			children = (
+				C0C642812AC55E2E0084147F /* ci_scripts */,
 				C02435722A0490220080CFB4 /* Hamster */,
 				C03E803D296D53650083E53A /* HamsterKeyboard */,
 				C08387E82A55101A00EA8082 /* Packages */,
@@ -221,6 +223,14 @@
 			path = Assets;
 			sourceTree = "<group>";
 		};
+		C0C642812AC55E2E0084147F /* ci_scripts */ = {
+			isa = PBXGroup;
+			children = (
+				C0C642842AC561180084147F /* ci_post_clone.sh */,
+			);
+			path = ci_scripts;
+			sourceTree = "<group>";
+		};
 		C0D671B029F16D76002D0439 /* SharedSupport */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,7 +251,6 @@
 				C03E8022296D4F4C0083E53A /* Frameworks */,
 				C03E8047296D53650083E53A /* Embed Foundation Extensions */,
 				C0AC2E61299F743E00BC494C /* Resources */,
-				C0D672B129F1DE55002D0439 /* Make InputSchema */,
 				C071BF712970126C00E21FBC /* Copy Rime SharedSupport */,
 			);
 			buildRules = (
@@ -344,29 +353,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C0D672B129F1DE55002D0439 /* Make InputSchema */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/InputSchemaBuild.sh",
-			);
-			name = "Make InputSchema";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nbash ./InputSchemaBuild.sh\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C03E8021296D4F4C0083E53A /* Sources */ = {
