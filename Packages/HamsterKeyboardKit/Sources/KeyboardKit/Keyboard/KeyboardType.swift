@@ -195,6 +195,16 @@ public extension KeyboardType {
     }
   }
 
+  /**
+   该键盘类型是否为 custom 类型，是否具有特定的 shift 状态。
+   */
+  func isCustom(_ case: KeyboardCase) -> Bool {
+    switch self {
+    case .custom(_, let current): return current == `case`
+    default: return false
+    }
+  }
+
   /// 是否中文九宫格键盘
   var isChineseNineGrid: Bool {
     switch self {
@@ -219,6 +229,16 @@ public extension KeyboardType {
     case .chinese: return true
     default:
       return false
+    }
+  }
+
+  /**
+   该键盘类型是否为 chinese 类型，是否具有特定的 shift 状态。
+   */
+  func isChinesePrimaryKeyboard(_ case: KeyboardCase) -> Bool {
+    switch self {
+    case .chinese(let current): return current == `case`
+    default: return false
     }
   }
 

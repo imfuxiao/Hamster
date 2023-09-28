@@ -110,8 +110,21 @@ open class StandardKeyboardBehavior: KeyboardBehavior {
     after gesture: KeyboardGesture,
     on action: KeyboardAction
   ) -> KeyboardType {
-    if shouldSwitchToCapsLock(after: gesture, on: action) { return .alphabetic(.capsLocked) }
-    if action.isAlternateQuotationDelimiter(for: keyboardContext) { return .alphabetic(.lowercased) }
+    if shouldSwitchToCapsLock(after: gesture, on: action) {
+      if keyboardContext.keyboardType.isAlphabetic {
+        return .alphabetic(.capsLocked)
+      }
+      if keyboardContext.keyboardType.isChinesePrimaryKeyboard {
+        return .chinese(.capsLocked)
+      }
+
+      if case .custom(let named, _) = keyboardContext.keyboardType {
+        return .custom(named: named, case: .capsLocked)
+      }
+    }
+//    if action.isAlternateQuotationDelimiter(for: keyboardContext) {
+//      return .alphabetic(.lowercased)
+//    }
     let should = shouldSwitchToPreferredKeyboardType(after: gesture, on: action)
     switch action {
     case .shift: return keyboardContext.keyboardType
@@ -187,7 +200,8 @@ open class StandardKeyboardBehavior: KeyboardBehavior {
 
 private extension StandardKeyboardBehavior {
   var isDoubleShiftTap: Bool {
-    guard keyboardContext.keyboardType.isAlphabetic else { return false }
+    // 不应判断是否是 Aliphabetic 键盘类型
+//    guard keyboardContext.keyboardType.isAlphabetic else { return false }
     let date = Date().timeIntervalSinceReferenceDate
     let lastDate = lastShiftCheck.timeIntervalSinceReferenceDate
     let isDoubleTap = (date - lastDate) < doubleTapThreshold

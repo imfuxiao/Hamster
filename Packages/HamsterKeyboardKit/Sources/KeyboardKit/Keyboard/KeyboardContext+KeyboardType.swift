@@ -18,16 +18,27 @@ public extension KeyboardContext {
    */
   var preferredKeyboardType: KeyboardType {
     if keyboardType.isAlphabetic(.capsLocked) { return keyboardType }
+    if keyboardType.isChinesePrimaryKeyboard(.capsLocked) { return keyboardType }
+    if keyboardType.isCustom(.capsLocked) { return keyboardType }
 
-    // 中文输入不考虑切换
-    if keyboardType.isChinese { return keyboardType }
+    // 检测是否锁定了 Shift 状态
+    guard !lockShiftState else { return keyboardType }
 
-    // 默认锁定 Shift 状态，如果取消锁定 Shift 状态，则需要切换键盘大小写
-    if hamsterConfig?.Keyboard?.lockShiftState ?? true { return keyboardType }
+    if keyboardType.isAlphabetic {
+      if let type = preferredAutocapitalizedKeyboardType { return type }
+      if let type = preferredKeyboardTypeAfterAlphaTyping { return type }
+      if let type = preferredKeyboardTypeAfterNonAlphaSpace { return type }
+      return keyboardType
+    }
 
-    if let type = preferredAutocapitalizedKeyboardType { return type }
-    if let type = preferredKeyboardTypeAfterAlphaTyping { return type }
-    if let type = preferredKeyboardTypeAfterNonAlphaSpace { return type }
+    if keyboardType.isChinesePrimaryKeyboard, keyboardType.isChinesePrimaryKeyboard(.uppercased) {
+      return .chinese(.lowercased)
+    }
+
+    if keyboardType.isCustom, case .custom(let named, let current) = keyboardType, current?.isUppercased ?? false {
+      return .custom(named: named, case: .lowercased)
+    }
+
     return keyboardType
   }
 }

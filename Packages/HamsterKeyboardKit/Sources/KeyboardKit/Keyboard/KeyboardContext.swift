@@ -709,6 +709,11 @@ public extension KeyboardContext {
     hamsterConfig?.Keyboard?.enableEmbeddedInputMode ?? false
   }
 
+  /// Shift 状态锁定
+  var lockShiftState: Bool {
+    hamsterConfig?.Keyboard?.lockShiftState ?? true
+  }
+
   /// 光标回退
   func cursorBackOfSymbols(key: String) -> Bool {
     if hamsterConfig?.Keyboard?.symbolsOfCursorBack?.contains(key) ?? false {
