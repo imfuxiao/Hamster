@@ -712,7 +712,6 @@ public extension KeyboardContext {
   /// 光标回退
   func cursorBackOfSymbols(key: String) -> Bool {
     if hamsterConfig?.Keyboard?.symbolsOfCursorBack?.contains(key) ?? false {
-      self.textDocumentProxy.adjustTextPosition(byCharacterOffset: -1)
       return true
     }
     return false

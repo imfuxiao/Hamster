@@ -100,10 +100,10 @@ extension SymbolsView: UICollectionViewDelegate {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    actionHandler.handle(.release, on: .symbol(item))
     collectionView.deselectItem(at: indexPath, animated: true)
     if !keyboardContext.classifySymbolKeyboardLockState {
       actionHandler.handle(.release, on: .returnLastKeyboard)
     }
+    actionHandler.handle(.release, on: .symbol(item))
   }
 }
