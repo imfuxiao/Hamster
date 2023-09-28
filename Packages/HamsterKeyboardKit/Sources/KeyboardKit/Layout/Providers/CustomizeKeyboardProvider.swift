@@ -28,8 +28,7 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
       Logger.statistics.error("not found custom keyboard. name: \(name)")
       return KeyboardLayout(itemRows: [])
     }
-    let keyboardCase = casing ?? .lowercased
-    let actions = self.actions(keyboard: keyboard, casing: keyboardCase)
+    let actions = self.actions(keyboard: keyboard, casing: casing)
     let items = self.items(for: actions, keyboard: keyboard, context: context)
     return KeyboardLayout(itemRows: items, customKeyboard: keyboard)
   }

@@ -35,7 +35,7 @@ public extension KeyboardContext {
       return .chinese(.lowercased)
     }
 
-    if keyboardType.isCustom, case .custom(let named, let current) = keyboardType, current?.isUppercased ?? false {
+    if keyboardType.isCustom, case .custom(let named, let current) = keyboardType, current.isUppercased {
       return .custom(named: named, case: .lowercased)
     }
 

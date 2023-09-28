@@ -103,7 +103,7 @@ public enum KeyboardType: Codable, Identifiable, Hashable {
 
    `.custom` 可用来表示键盘应使用完全自定义的类型。
    */
-  case custom(named: String, case: KeyboardCase? = nil)
+  case custom(named: String, case: KeyboardCase = .lowercased)
 
   /**
    中文全键盘

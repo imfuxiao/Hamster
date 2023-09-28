@@ -586,7 +586,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func setKeyboardCase(_ casing: KeyboardCase) {
-    if keyboardContext.keyboardType.isChinese {
+    if keyboardContext.keyboardType.isChinesePrimaryKeyboard {
       keyboardContext.keyboardType = .chinese(casing)
       return
     }
