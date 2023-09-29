@@ -126,7 +126,10 @@ open class NumericNineGridKeyboardLayoutProvider: KeyboardLayoutProvider {
     for actions: KeyboardActionRows,
     context: KeyboardContext
   ) -> KeyboardActions {
-    return [.symbolOfDark(.init(char: "."))]
+    let action: KeyboardAction = keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard
+      ? .symbolOfDark(.init(char: "."))
+      : .characterOfDark(".")
+    return [action]
   }
 
   /**
@@ -136,7 +139,10 @@ open class NumericNineGridKeyboardLayoutProvider: KeyboardLayoutProvider {
     for actions: KeyboardActionRows,
     context: KeyboardContext
   ) -> KeyboardActions {
-    return [.symbolOfDark(.init(char: "@"))]
+    let action: KeyboardAction = keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard
+      ? .symbolOfDark(.init(char: "@"))
+      : .characterOfDark("@")
+    return [action]
   }
 
   /**

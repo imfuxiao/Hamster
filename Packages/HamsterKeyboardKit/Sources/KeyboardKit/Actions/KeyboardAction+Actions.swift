@@ -110,6 +110,7 @@ public extension KeyboardAction {
         $0?.setKeyboardType(type)
       }
     case .character(let char): return { $0?.insertText(char) }
+    case .characterOfDark(let char): return { $0?.insertText(char) }
     case .characterMargin(let char): return { $0?.insertText(char) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
     case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }
@@ -161,6 +162,7 @@ public extension KeyboardAction {
         $0?.setKeyboardType(type)
       }
     case .character(let char): return { $0?.insertSymbol(Symbol(char: char)) }
+    case .characterOfDark(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .characterMargin(let char): return { $0?.insertSymbol(Symbol(char: char)) }
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
     case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }

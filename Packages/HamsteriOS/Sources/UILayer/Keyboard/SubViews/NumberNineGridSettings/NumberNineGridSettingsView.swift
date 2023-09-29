@@ -9,6 +9,7 @@ import HamsterUIKit
 import ProgressHUD
 import UIKit
 
+/// 数字九宫格设置页面
 class NumberNineGridSettingsView: NibLessView {
   // MARK: properties
 

@@ -41,7 +41,7 @@ public extension KeyboardInputViewController {
       // TODO: 颜色方案切换
       break
     case .switchLastInputSchema:
-      switchLastInputSchema()
+      self.switchLastInputSchema()
     case .oneHandOnLeft:
       // TODO: 左手单手模式切换
       break
@@ -49,7 +49,7 @@ public extension KeyboardInputViewController {
       // TODO: 右手单手模式切换
       break
     case .rimeSwitcher:
-      rimeSwitcher()
+      self.rimeSwitcher()
     case .emojiKeyboard:
       // TODO: 切换 emoji 键盘
       break

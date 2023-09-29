@@ -39,6 +39,9 @@ public enum KeyboardAction: Codable, Hashable {
   /// 释放时插入一个文本字符。
   case character(String)
   
+  /// (按钮显示为暗色)插入一个文本字符。
+  case characterOfDark(String)
+  
   /// Inserts a text character when released, but is rendered as empty space.
   /// 释放时插入一个文本字符，但UI显示为空白。
   case characterMargin(String)
@@ -189,6 +192,14 @@ public extension KeyboardAction {
   var isCharacterAction: Bool {
     switch self {
     case .character: return true
+    default: return false
+    }
+  }
+  
+  /// (暗色)该操作是否属于字符类型。
+  var isCharacterOfDarkAction: Bool {
+    switch self {
+    case .characterOfDark: return true
     default: return false
     }
   }

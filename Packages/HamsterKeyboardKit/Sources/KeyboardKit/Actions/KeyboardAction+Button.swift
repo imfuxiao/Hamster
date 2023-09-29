@@ -48,7 +48,7 @@ public extension KeyboardAction {
    */
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
-    case .character(let char):
+    case .character(let char), .characterOfDark(let char):
       // 中文输入法显示大写
       if context.keyboardType.isChinese {
         return char.uppercased()
@@ -62,8 +62,7 @@ public extension KeyboardAction {
     case .space:
       return KKL10n.space.text(for: context)
     case .returnLastKeyboard: return "返回"
-    case .symbol(let symbol): return symbol.char
-    case .symbolOfDark(let symbol): return symbol.char
+    case .symbol(let symbol), .symbolOfDark(let symbol): return symbol.char
     case .chineseNineGrid(let symbol): return symbol.char
     case .cleanSpellingArea: return "重输"
     case .delimiter: return "分词"

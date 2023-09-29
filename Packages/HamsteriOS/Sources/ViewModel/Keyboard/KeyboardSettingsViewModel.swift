@@ -659,7 +659,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
 //        enableNineGridOfNumericKeyboard = $0
 //      }),
     .init(
-      text: "是否直接上屏",
+      text: "符号是否直接上屏",
       type: .toggle,
       toggleValue: { [unowned self] in enterDirectlyOnScreenByNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
