@@ -355,15 +355,26 @@ class KeyboardRootView: NibLessView {
     super.updateConstraints()
 
     // 检测候选栏状态是否发生变化
-    guard self.candidateViewState != keyboardContext.candidatesViewState else { return }
-    self.candidateViewState = keyboardContext.candidatesViewState
+    guard candidateViewState != keyboardContext.candidatesViewState else { return }
+    candidateViewState = keyboardContext.candidatesViewState
     if candidateViewState.isCollapse() {
       toolbarHeightConstraint?.constant = keyboardContext.heightOfToolbar
-      primaryKeyboardView.isHidden = false
+      // 临时键盘显示
+      if let view = tempKeyboardView {
+        view.frame = view.frame.offsetBy(dx: 0, dy: frame.height)
+      } else {
+        primaryKeyboardView.isHidden = false
+      }
       NSLayoutConstraint.deactivate(toolbarExpandConstraints)
       NSLayoutConstraint.activate(toolbarCollapseConstraints)
     } else {
-      primaryKeyboardView.isHidden = true
+      // 临时键盘隐藏
+      if let view = tempKeyboardView {
+        view.frame = view.frame.offsetBy(dx: 0, dy: -frame.height)
+      } else {
+        primaryKeyboardView.isHidden = true
+      }
+
       NSLayoutConstraint.deactivate(toolbarCollapseConstraints)
       NSLayoutConstraint.activate(toolbarExpandConstraints)
       toolbarHeightConstraint?.constant = primaryKeyboardView.bounds.height + keyboardContext.heightOfToolbar
