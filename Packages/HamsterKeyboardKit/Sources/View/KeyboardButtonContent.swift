@@ -6,11 +6,12 @@
 //
 
 import HamsterKit
+import HamsterUIKit
 import UIKit
 
 /// 标准按键内容视图
 /// 可以继承此类实现不同的按键样式
-public class KeyboardButtonContentView: UIView {
+public class KeyboardButtonContentView: NibLessView {
   private let item: KeyboardLayoutItem
   private let action: KeyboardAction
   private let appearance: KeyboardAppearance
@@ -22,7 +23,16 @@ public class KeyboardButtonContentView: UIView {
 
   private let keyboardContext: KeyboardContext
   private let rimeContext: RimeContext
-  private var contentView: UIView!
+
+  private lazy var contentView: UIView = {
+    // TODO: 补充空格自定义加载文本
+    if action == .space {
+      return SpaceContentView(keyboardContext: keyboardContext, item: item, style: style, loadingText: .space, spaceText: buttonText)
+    } else if let image = appearance.buttonImage(for: action) {
+      return ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
+    }
+    return TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
+  }()
 
   var buttonText: String {
     if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.labelText {
@@ -40,25 +50,15 @@ public class KeyboardButtonContentView: UIView {
     self.rimeContext = rimeContext
 
     super.init(frame: .zero)
-
-    if action == .space {
-      // TODO: 补充空格自定义加载文本
-      contentView = SpaceContentView(keyboardContext: keyboardContext, item: item, style: style, loadingText: .space, spaceText: buttonText)
-    } else if let image = appearance.buttonImage(for: action) {
-      contentView = ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
-    } else {
-      contentView = TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
-    }
-
-    setupContentView()
-  }
-
-  @available(*, unavailable)
-  public required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
   }
 
   // MARK: - Layout
+
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupContentView()
+  }
 
   func setupContentView() {
     contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -69,20 +69,5 @@ public class KeyboardButtonContentView: UIView {
       contentView.leadingAnchor.constraint(equalTo: leadingAnchor),
       contentView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    if let contentView = contentView as? SpaceContentView {
-      contentView.style = style
-    } else if let contentView = contentView as? ImageContentView {
-      contentView.style = style
-      if let image = appearance.buttonImage(for: action) {
-        contentView.imageView.image = image
-      }
-    } else if let contentView = contentView as? TextContentView {
-      contentView.style = style
-    }
   }
 }

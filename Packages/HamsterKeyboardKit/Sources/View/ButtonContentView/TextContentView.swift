@@ -6,6 +6,7 @@
 //
 
 import HamsterKit
+import HamsterUIKit
 import UIKit
 
 /**
@@ -13,7 +14,7 @@ import UIKit
 
  注意：文本行数限制为 1 行，如果按钮操作是 input 类型且文本为小写，则会有垂直方向的偏移。
  */
-public class TextContentView: UIView {
+public class TextContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
   /// 按钮样式
@@ -29,8 +30,10 @@ public class TextContentView: UIView {
     label.textAlignment = .center
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
+    label.minimumScaleFactor = 0.2
     label.text = text
+    label.font = style.font?.font
+    label.textColor = style.foregroundColor
     return label
   }()
 
@@ -133,16 +136,21 @@ public class TextContentView: UIView {
     self.isInputAction = isInputAction
 
     super.init(frame: .zero)
+  }
+
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
 
     setupTextView()
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   func setupTextView() {
+    leftSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    leftSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+
+    rightSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    rightSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+
     addSubview(containerView)
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: topAnchor),
@@ -150,19 +158,6 @@ public class TextContentView: UIView {
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    label.font = style.font?.font
-    label.textColor = style.foregroundColor
-
-    leftSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    leftSwipeLabel.textColor = keyboardContext.secondaryLabelColor
-
-    rightSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    rightSwipeLabel.textColor = keyboardContext.secondaryLabelColor
   }
 }
 

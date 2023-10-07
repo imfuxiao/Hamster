@@ -25,7 +25,11 @@ public extension KeyboardAction {
     case .dictation: return .keyboardDictation
     case .dismissKeyboard: return .keyboardDismiss
     case .image(_, let imageName, _): return UIImage(named: imageName)
-    case .keyboardType(let type): return type.standardButtonImage
+    case .keyboardType(let type):
+      if context.keyboardType.isNumber || context.keyboardType.isSymbol {
+        return nil
+      }
+      return type.standardButtonImage
     case .moveCursorBackward: return .keyboardLeft
     case .moveCursorForward: return .keyboardRight
     case .nextKeyboard: return .keyboardGlobe

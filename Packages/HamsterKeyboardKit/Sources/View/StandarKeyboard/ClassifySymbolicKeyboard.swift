@@ -17,26 +17,6 @@ class ClassifySymbolicKeyboard: NibLessView {
   private var classifyViewWidthConstraint: NSLayoutConstraint?
   private var subscriptions = Set<AnyCancellable>()
 
-  init(actionHandler: KeyboardActionHandler, layoutProvider: KeyboardLayoutProvider, keyboardContext: KeyboardContext) {
-    self.actionHandler = actionHandler
-    self.layoutProvider = layoutProvider
-    self.keyboardContext = keyboardContext
-
-    super.init(frame: .zero)
-
-    backgroundColor = .clear
-
-    constructViewHierarchy()
-    activateViewConstraints()
-
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
-  }
-
   private lazy var viewModel: ClassifySymbolicViewModel = {
     let vm = ClassifySymbolicViewModel()
     return vm
@@ -68,6 +48,34 @@ class ClassifySymbolicKeyboard: NibLessView {
 
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
+  }
+
+  // MARK: - Initailization
+
+  init(actionHandler: KeyboardActionHandler, layoutProvider: KeyboardLayoutProvider, keyboardContext: KeyboardContext) {
+    self.actionHandler = actionHandler
+    self.layoutProvider = layoutProvider
+    self.keyboardContext = keyboardContext
+
+    super.init(frame: .zero)
+
+    backgroundColor = .clear
+
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
+  }
+
+  // MARK: - Layout
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   /// 构建视图层次

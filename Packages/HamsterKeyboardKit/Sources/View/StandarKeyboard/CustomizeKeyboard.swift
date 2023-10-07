@@ -60,11 +60,15 @@ class CustomizeKeyboard: NibLessView {
     self.rimeContext = rimeContext
 
     super.init(frame: .zero)
-
-    setupKeyboardView()
   }
 
   // MARK: - Layout
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupKeyboardView()
+  }
 
   func setupKeyboardView() {
     backgroundColor = .clear
@@ -150,7 +154,8 @@ class CustomizeKeyboard: NibLessView {
         if button.column == 0 {
           let heightConstant = button.item.size.height
           let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
-          buttonHeightConstraint.priority = button.row + 1 == row.endIndex ? .defaultHigh : .required
+          // buttonHeightConstraint.priority = button.row + 1 == row.endIndex ? .defaultHigh : .required
+          buttonHeightConstraint.priority = .defaultHigh
           buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
           dynamicConstraints.append(buttonHeightConstraint)
         } else {

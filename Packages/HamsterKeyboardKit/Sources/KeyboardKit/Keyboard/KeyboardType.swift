@@ -205,6 +205,26 @@ public extension KeyboardType {
     }
   }
 
+  /// 是否数字键盘
+  var isNumber: Bool {
+    switch self {
+    case .numeric: return true
+    case .numericNineGrid: return true
+    case .chineseNumeric: return true
+    default:
+      return false
+    }
+  }
+
+  /// 是否符号键盘
+  var isSymbol: Bool {
+    switch self {
+    case .symbolic: return true
+    case .chineseSymbolic: return true
+    default: return false
+    }
+  }
+
   /// 是否中文九宫格键盘
   var isChineseNineGrid: Bool {
     switch self {

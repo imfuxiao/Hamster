@@ -59,7 +59,7 @@ open class ChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider, Keyboard
   open func keyboardLayoutProvider(for context: KeyboardContext) -> KeyboardLayoutProvider {
     switch context.deviceType {
     case .phone: return iPhoneProvider
-    case .pad: return iPadProvider
+    case .pad: return context.isKeyboardFloating ? iPhoneProvider : iPadProvider
     default: return iPhoneProvider
     }
   }

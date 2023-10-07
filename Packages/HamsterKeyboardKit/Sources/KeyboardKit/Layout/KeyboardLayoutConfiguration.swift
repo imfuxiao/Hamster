@@ -77,6 +77,7 @@ public extension KeyboardLayoutConfiguration
   {
     standard(
       forDevice: context.deviceType,
+      isKeyboardFloating: context.isKeyboardFloating,
       screenSize: context.screenSize,
       orientation: context.interfaceOrientation)
   }
@@ -88,12 +89,13 @@ public extension KeyboardLayoutConfiguration
    */
   static func standard(
     forDevice device: DeviceType,
+    isKeyboardFloating: Bool,
     screenSize size: CGSize,
     orientation: InterfaceOrientation) -> KeyboardLayoutConfiguration
   {
     switch device
     {
-    case .pad: return standardPad(forScreenSize: size, orientation: orientation)
+    case .pad: return isKeyboardFloating ? standardPhone(forScreenSize: size, orientation: orientation) : standardPad(forScreenSize: size, orientation: orientation)
     default: return standardPhone(forScreenSize: size, orientation: orientation)
     }
   }

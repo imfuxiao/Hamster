@@ -98,9 +98,20 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    获取 `inputs` 和 `context` 对应的操作字符。
    */
   open func actionCharacters(for rows: InputSetRows, context: KeyboardContext) -> [[String]] {
+    let isKeyboardFloating = context.isKeyboardFloating
     switch context.keyboardType {
-    case .alphabetic(let casing): return rows.characters(for: casing)
-    case .chinese(let casing): return rows.characters(for: casing)
+    case .alphabetic(let casing):
+      var chars = rows.characters(for: casing)
+      if isKeyboardFloating, chars.count >= 3 {
+        chars[2] = chars[2].prefix(7).map { String($0) }
+      }
+      return chars
+    case .chinese(let casing):
+      var chars = rows.characters(for: casing)
+      if isKeyboardFloating, chars.count >= 3 {
+        chars[2] = chars[2].prefix(7).map { String($0) }
+      }
+      return chars
     case .numeric: return rows.characters()
     case .chineseNumeric: return rows.characters()
     case .symbolic: return rows.characters()
@@ -210,7 +221,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemWidth {
     switch action {
-    case .character: return .input
+    case .character, .symbol: return .input
     default: return .available
     }
   }
@@ -272,10 +283,8 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    */
   open func keyboardSwitchActionForBottomRow(for context: KeyboardContext) -> KeyboardAction? {
     switch context.keyboardType {
-//    case .chinese: return .keyboardType(.chineseNumeric)
     case .chinese: return .keyboardType(.numericNineGrid)
-//    case .alphabetic: return .keyboardType(.numeric)
-    case .alphabetic: return .keyboardType(.numericNineGrid)
+    case .alphabetic: return .keyboardType(.numeric)
     case .numeric: return .keyboardType(.alphabetic(.auto))
     case .chineseNumeric: return .keyboardType(.chinese(.auto))
     case .symbolic: return .keyboardType(.alphabetic(.auto))

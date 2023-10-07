@@ -7,10 +7,11 @@
 
 import Combine
 import HamsterKit
+import HamsterUIKit
 import UIKit
 
 /// 数字九宫格键盘
-public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
+public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: NumericNineGridKeyboardLayoutProvider
@@ -95,8 +96,6 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
     self.rimeContext = rimeContext
 
     super.init(frame: .zero)
-
-    setupKeyboardView()
   }
 
   @available(*, unavailable)
@@ -105,6 +104,12 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
   }
 
   // MARK: - Layout
+
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupKeyboardView()
+  }
 
   func setupKeyboardView() {
     backgroundColor = .clear
@@ -121,7 +126,7 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
       .store(in: &subscriptions)
   }
 
-  open func constructViewHierarchy() {
+  override public func constructViewHierarchy() {
     // 添加右侧符号划动列表
     addSubview(symbolsListContainerView)
 
@@ -148,7 +153,7 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
     }
   }
 
-  open func activateViewConstraints() {
+  override public func activateViewConstraints() {
     // 根据 keyboardContext 获取当前布局配置
     // 注意：临时变量缓存计算属性的值，避免重复计算
     let layoutConfig = layoutConfig
@@ -158,12 +163,6 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
 
     // 暂存中间部分按键，用于平分剩余宽度
     var availableItems = [KeyboardButton]()
-
-    // 暂存前一个按键，用于按键之间的约束
-    var prevItem: KeyboardButton?
-
-    // 暂存上一行的按键，用于按键 y 轴约束
-    var prevRowItem: KeyboardButton?
 
     // 左侧符号栏约束
     staticConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
@@ -195,7 +194,8 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
           if button.column == 0, button.row + 1 == keyboardRows.endIndex {
             staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
             staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
-          } else if let prevRowItem = prevRowItem { // 其他列添加相对上一行的符号约束
+          } else { // 其他列添加相对上一行的符号约束
+            let prevRowItem = keyboardRows[button.row - 1][0]
             // 其他行添加按键相对上一行按键的 top 约束
             staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
           }
@@ -213,21 +213,14 @@ public class NumericNineGridKeyboard: UIView, UICollectionViewDelegate {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
         } else {
           // 其他列按键添加相对与前一个按键的 leading 约束
-          if let prevItem = prevItem {
-            staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
-          }
+          let prevItem = keyboardRows[button.row][button.column - 1]
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
 
           if button.column + 1 == row.endIndex {
             // 最后一列按键添加相对行的 trailing 约束
             staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
-
-            // 修改上一行 prevRowItem 变量引用
-            prevRowItem = button
           }
         }
-
-        // 修改上一个按键的引用，用于其他按键添加 leading 约束
-        prevItem = button
       }
     }
 

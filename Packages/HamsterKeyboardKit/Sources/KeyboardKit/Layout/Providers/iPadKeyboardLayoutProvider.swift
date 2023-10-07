@@ -44,7 +44,8 @@ open class iPadKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     for inputs: InputSetRows,
     context: KeyboardContext
   ) -> KeyboardActionRows {
-    let actions = super.actions(for: inputs, context: context)
+    let characters = actionCharacters(for: inputs, context: context)
+    let actions = KeyboardActionRows(symbols: characters)
     guard actions.count == 3 else { return actions }
     var result = KeyboardActionRows()
     result.append(topLeadingActions(for: context) + actions[0] + topTrailingActions(for: context))

@@ -37,7 +37,8 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     for inputs: InputSetRows,
     context: KeyboardContext
   ) -> KeyboardActionRows {
-    let actions = super.actions(for: inputs, context: context)
+    let characters = actionCharacters(for: inputs, context: context)
+    let actions = KeyboardActionRows(symbols: characters)
     guard isExpectedActionSet(actions) else { return actions }
     var result = KeyboardActionRows()
     result.append(topLeadingActions(for: actions, context: context) + actions[0] + topTrailingActions(for: actions, context: context))
@@ -61,15 +62,17 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   ) -> KeyboardLayoutItemWidth {
     switch action {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
-    case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
+    case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType:
-//      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
-//        return smallBottomWidth(for: context)
-//      }
+    case .keyboardType(let type):
+      if row == 3 && index == 0 {
+        if type.isNumber || type.isAlphabetic {
+          return largeBottomWidth(for: context)
+        }
+      }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .primary: return smallBottomWidth(for: context)
+    case .primary: return largeBottomWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     case .returnLastKeyboard: return bottomSystemButtonWidth(for: context)
     default: return .available
@@ -178,30 +181,34 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     for context: KeyboardContext
   ) -> KeyboardActions {
     var result = KeyboardActions()
+
+    // 英文键盘：返回主键盘
+    if !context.selectKeyboard.isAlphabetic && context.keyboardType.isAlphabetic {
+      result.append(.keyboardType(context.selectKeyboard))
+    }
+
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
 
-    let needsInputSwitch = context.needsInputModeSwitchKey
-    if needsInputSwitch { result.append(.nextKeyboard) }
-
-    result.append(.keyboardType(.classifySymbolic))
+    // 地球（系统输入法切换键）
+    if context.needsInputModeSwitchKey { result.append(.nextKeyboard) }
 
     result.append(.space)
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
-      result.append(.character("@"))
-      result.append(.character("."))
+      result.append(.symbol(.init(char: "@")))
+      result.append(.symbol(.init(char: ".")))
     }
     if context.textDocumentProxy.returnKeyType == .go {
-      result.append(.character("."))
+      result.append(.symbol(.init(char: ".")))
     }
-    /// 切换用户设置键盘
-    if context.selectKeyboard.isCustom {
-      result.append(.returnLastKeyboard)
-    } else if context.selectKeyboard.isChinesePrimaryKeyboard {
-      result.append(.keyboardType(.chinese(.lowercased)))
-    } else if context.selectKeyboard.isChineseNineGrid {
-      result.append(.keyboardType(.chineseNineGrid))
-    }
+    // 切换用户设置键盘
+//    if context.selectKeyboard.isCustom {
+//      result.append(.returnLastKeyboard)
+//    } else if context.selectKeyboard.isChinesePrimaryKeyboard {
+//      result.append(.keyboardType(.chinese(.lowercased)))
+//    } else if context.selectKeyboard.isChineseNineGrid {
+//      result.append(.keyboardType(.chineseNineGrid))
+//    }
     result.append(keyboardReturnAction(for: context))
     return result
   }

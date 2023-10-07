@@ -24,21 +24,6 @@ class KeyboardRootView: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let layoutConfig: KeyboardLayoutConfiguration
-
-  private var actionCalloutStyle: KeyboardActionCalloutStyle {
-    var style = appearance.actionCalloutStyle
-    let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = insets
-    return style
-  }
-
-  private var inputCalloutStyle: KeyboardInputCalloutStyle {
-    var style = appearance.inputCalloutStyle
-    let insets = layoutConfig.buttonInsets
-    style.callout.buttonInset = insets
-    return style
-  }
-
   private var actionCalloutContext: ActionCalloutContext
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
@@ -46,6 +31,9 @@ class KeyboardRootView: NibLessView {
   private var rimeContext: RimeContext
 
   private var subscriptions = Set<AnyCancellable>()
+
+  /// 当前键盘类型
+  private var currentKeyboardType: KeyboardType
 
   /// 工具栏收起时约束
   private var toolbarCollapseConstraints = [NSLayoutConstraint]()
@@ -67,14 +55,19 @@ class KeyboardRootView: NibLessView {
 
   // MARK: - 计算属性
 
-  // MARK: - subview
+//  private var actionCalloutStyle: KeyboardActionCalloutStyle {
+//    var style = appearance.actionCalloutStyle
+//    let insets = layoutConfig.buttonInsets
+//    style.callout.buttonInset = insets
+//    return style
+//  }
 
-  /// 工具栏
-  private lazy var toolbarView: KeyboardToolbarView = {
-    let view = KeyboardToolbarView(actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
+//  private var inputCalloutStyle: KeyboardInputCalloutStyle {
+//    var style = appearance.inputCalloutStyle
+//    let insets = layoutConfig.buttonInsets
+//    style.callout.buttonInset = insets
+//    return style
+//  }
 
   /// 26键键盘，包含默认中文26键及英文26键
   private var standerSystemKeyboard: StanderSystemKeyboard {
@@ -117,6 +110,15 @@ class KeyboardRootView: NibLessView {
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }
+
+  // MARK: - subview
+
+  /// 工具栏
+  private lazy var toolbarView: KeyboardToolbarView = {
+    let view = KeyboardToolbarView(actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
 
   /// 主键盘
   private lazy var primaryKeyboardView: UIView = {
@@ -195,23 +197,20 @@ class KeyboardRootView: NibLessView {
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.rimeContext = rimeContext
     self.candidateViewState = keyboardContext.candidatesViewState
+    self.currentKeyboardType = keyboardContext.keyboardType
 
     super.init(frame: .zero)
 
-    setupView()
+    // 开启键盘配色
+    backgroundColor = keyboardContext.backgroundColor
 
     combine()
   }
 
   // MARK: - Layout
 
-  func setupView() {
-    // 开启键盘配色
-    backgroundColor = keyboardContext.backgroundColor
-  }
-
-  override func willMove(toWindow newWindow: UIWindow?) {
-    super.willMove(toWindow: newWindow)
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
 
     constructViewHierarchy()
     activateViewConstraints()
@@ -281,7 +280,11 @@ class KeyboardRootView: NibLessView {
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
+        guard $0 != currentKeyboardType else { return }
+        currentKeyboardType = $0
+
         Logger.statistics.debug("KeyboardRootView keyboardType combine: \($0.yamlString)")
+
         // 判断当前键盘类型是否为 primaryKeyboard
         guard $0 != keyboardContext.selectKeyboard else {
           // 显示主键盘，并隐藏非主键盘
@@ -357,6 +360,7 @@ class KeyboardRootView: NibLessView {
     // 检测候选栏状态是否发生变化
     guard candidateViewState != keyboardContext.candidatesViewState else { return }
     candidateViewState = keyboardContext.candidatesViewState
+
     if candidateViewState.isCollapse() {
       toolbarHeightConstraint?.constant = keyboardContext.heightOfToolbar
       // 临时键盘显示

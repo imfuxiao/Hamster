@@ -30,4 +30,8 @@ public extension KeyboardActionRows {
   init(characters: [[String]]) {
     self = characters.map { KeyboardActions(characters: $0) }
   }
+
+  init(symbols: [[String]]) {
+    self = symbols.map { KeyboardActions(symbols: $0) }
+  }
 }

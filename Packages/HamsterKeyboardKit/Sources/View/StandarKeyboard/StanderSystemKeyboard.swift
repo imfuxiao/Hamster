@@ -7,13 +7,14 @@
 
 import Combine
 import HamsterKit
+import HamsterUIKit
 import OSLog
 import UIKit
 
 /**
  标准系统键盘
  */
-public class StanderSystemKeyboard: UIView {
+public class StanderSystemKeyboard: NibLessView {
   public typealias KeyboardWidth = CGFloat
 
   // MARK: - Properties
@@ -21,14 +22,16 @@ public class StanderSystemKeyboard: UIView {
   private let keyboardLayoutProvider: KeyboardLayoutProvider
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
-  private let touchView = KeyboardTouchView()
-
   private var actionCalloutContext: ActionCalloutContext
   private var calloutContext: KeyboardCalloutContext
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
   private var currentKeyboardType: KeyboardType?
+
+  /// TODO: 触摸管理视图
+  /// 统一手势处理
+  // private let touchView = KeyboardTouchView()
 
   /// 缓存所有按键视图
   private var keyboardRows: [[KeyboardButton]] = []
@@ -39,6 +42,8 @@ public class StanderSystemKeyboard: UIView {
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
+  // 键盘是否浮动
+  private var isKeyboardFloating: Bool
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -100,22 +105,25 @@ public class StanderSystemKeyboard: UIView {
     self.actionCalloutContext = calloutContext?.action ?? .disabled
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
-    setupKeyboardView()
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    combine()
   }
 
   // MARK: Layout
 
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    constructViewHierarchy()
+    activateViewConstraints()
+  }
+
   /// 构建视图层次
-  open func constructViewHierarchy() {
-    addSubview(touchView)
+  override public func constructViewHierarchy() {
+    // addSubview(touchView)
 
     // 添加按键至 View
     for (rowIndex, row) in layout.itemRows.enumerated() {
@@ -133,7 +141,8 @@ public class StanderSystemKeyboard: UIView {
         )
         buttonItem.translatesAutoresizingMaskIntoConstraints = false
         // 需要将按键添加至 touchView, 统一处理
-        touchView.addSubview(buttonItem)
+        // touchView.addSubview(buttonItem)
+        addSubview(buttonItem)
         tempRow.append(buttonItem)
       }
 
@@ -142,29 +151,24 @@ public class StanderSystemKeyboard: UIView {
   }
 
   /// 激活视图约束
-  open func activateViewConstraints() {
-    touchView.translatesAutoresizingMaskIntoConstraints = false
-    staticConstraints.append(contentsOf: [
-      touchView.topAnchor.constraint(equalTo: topAnchor),
-      touchView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      touchView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      touchView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+  override public func activateViewConstraints() {
+    // TODO: 需要将按键添加至 touchView, 统一处理
+    // touchView.translatesAutoresizingMaskIntoConstraints = false
+    // staticConstraints.append(contentsOf: [
+    //  touchView.topAnchor.constraint(equalTo: topAnchor),
+    //  touchView.bottomAnchor.constraint(equalTo: bottomAnchor),
+    //  touchView.leadingAnchor.constraint(equalTo: leadingAnchor),
+    //  touchView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    // ])
 
-    // 暂存行中 available 类型按键集合
+    // 暂存同一行中 available 宽度类型按键集合
     var availableItems = [KeyboardButton]()
-    // 暂存前一个按键，用于按键之间间隙约束
-    var prevItem: KeyboardButton?
-    // 暂存上一行的按键，用于按键 y 轴约束
-    var prevRowItem: KeyboardButton?
 
     // 根据 keyboardContext 获取当前布局配置
     // 注意：临时变量缓存计算属性的值，避免重复计算
     let layoutConfig = layoutConfig
 
-    // input 宽度类型的宽度约束乘法系数
-    // let inputMultiplier = CGFloat.rounded(1 / CGFloat(maxInputButtonCount))
-//    let inputWidth = layout.inputWidth(for: bounds.width)
+    // 首个 input 宽度类型按钮
     var firstInputButton: KeyboardButton? = nil
 
     // 为按键不同宽度类型生成约束
@@ -183,7 +187,9 @@ public class StanderSystemKeyboard: UIView {
           constraint = button.widthAnchor.constraint(equalTo: firstInputButton.widthAnchor, multiplier: percent)
         }
       case .percentage(let percent):
-        constraint = button.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: percent)
+        // TODO: 需要将按键添加至 touchView, 统一处理
+        // constraint = button.widthAnchor.constraint(equalTo: touchView.widthAnchor, multiplier: percent)
+        constraint = button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: percent)
       case .points(let points):
         constraint = button.widthAnchor.constraint(equalToConstant: points)
       default:
@@ -217,42 +223,43 @@ public class StanderSystemKeyboard: UIView {
         }
 
         if button.row == 0 {
+          // TODO: 需要将按键添加至 touchView, 统一处理
           // 首行添加按键相对视图的 top 约束
-          staticConstraints.append(button.topAnchor.constraint(equalTo: touchView.topAnchor))
+          // staticConstraints.append(button.topAnchor.constraint(equalTo: touchView.topAnchor))
+          staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
         } else {
-          if let prevRowItem = prevRowItem {
-            // 其他行添加按键相对上一行按键的 top 约束
-            staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
-          }
+          // 其他行添加按键相对上一行按键的 top 约束
+          let prevRowItem = keyboardRows[button.row - 1][0]
+          staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
 
           // 最后一行添加按键相对视图的 bottom 约束
           if button.row + 1 == keyboardRows.endIndex {
-            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: touchView.bottomAnchor))
+            // TODO: 需要将按键添加至 touchView, 统一处理
+            // staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: touchView.bottomAnchor))
+            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
           }
         }
 
         if button.column == 0 {
+          // TODO: 需要将按键添加至 touchView, 统一处理
           // 首列按键添加相对行的 leading 约束
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: touchView.leadingAnchor))
+          // staticConstraints.append(button.leadingAnchor.constraint(equalTo: touchView.leadingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else {
           // 其他列按键添加相对与前一个按键的 leading 约束
-          if let prevItem = prevItem {
-            staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
-          }
+          let prevItem = keyboardRows[button.row][button.column - 1]
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
 
           if button.column + 1 == row.endIndex {
+            // TODO: 需要将按键添加至 touchView, 统一处理
             // 最后一列按键添加相对行的 trailing 约束
-            staticConstraints.append(button.trailingAnchor.constraint(equalTo: touchView.trailingAnchor))
-
-            // 修改上一行 prevRowItem 变量引用
-            prevRowItem = button
+            // staticConstraints.append(button.trailingAnchor.constraint(equalTo: touchView.trailingAnchor))
+            staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
           }
         }
-
-        // 修改上一个按键的引用，用于其他按键添加 leading 约束
-        prevItem = button
       }
 
+      // 每行循环结束后，平均分配 .available 宽度类型的按键
       // 当行中 .available 类型按键数量大于 1 的情况下，添加等宽约束
       if let firstItem = availableItems.first {
         for item in availableItems.dropFirst() {
@@ -266,11 +273,11 @@ public class StanderSystemKeyboard: UIView {
   }
 
   func setupKeyboardView() {
-    backgroundColor = .clear
-
     constructViewHierarchy()
     activateViewConstraints()
+  }
 
+  func combine() {
     // 屏幕方向改变调整行高
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
@@ -283,6 +290,7 @@ public class StanderSystemKeyboard: UIView {
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
+        guard currentKeyboardType != $0 else { return }
         switch $0 {
         case .chinese, .chineseNumeric, .chineseSymbolic, .alphabetic, .numeric, .symbolic:
           Logger.statistics.debug("keyboardContext.keyboardType is change")
@@ -290,6 +298,16 @@ public class StanderSystemKeyboard: UIView {
         default:
           return
         }
+      }
+      .store(in: &subscriptions)
+
+    // iPad 键盘浮动
+    keyboardContext.$isKeyboardFloating
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        Logger.statistics.debug("keyboardContext.isKeyboardFloating is \($0)")
+        guard $0 == true else { return }
+        setNeedsLayout()
       }
       .store(in: &subscriptions)
   }
@@ -309,11 +327,14 @@ public class StanderSystemKeyboard: UIView {
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    if currentKeyboardType != keyboardContext.keyboardType, keyboardContext.keyboardType.needLayoutSubviews {
+    if currentKeyboardType != keyboardContext.keyboardType || isKeyboardFloating != keyboardContext.isKeyboardFloating, keyboardContext.keyboardType.needLayoutSubviews {
       currentKeyboardType = keyboardContext.keyboardType
+      isKeyboardFloating = keyboardContext.isKeyboardFloating
 
-      touchView.subviews.forEach { $0.removeFromSuperview() }
-      touchView.removeFromSuperview()
+      // TODO: 需要将按键添加至 touchView, 统一处理
+      // touchView.subviews.forEach { $0.removeFromSuperview() }
+      // touchView.removeFromSuperview()
+      subviews.forEach { $0.removeFromSuperview() }
 
       self.keyboardRows.removeAll(keepingCapacity: true)
       self.staticConstraints.removeAll(keepingCapacity: true)
@@ -321,7 +342,6 @@ public class StanderSystemKeyboard: UIView {
 
       constructViewHierarchy()
       activateViewConstraints()
-      return
     }
   }
 }

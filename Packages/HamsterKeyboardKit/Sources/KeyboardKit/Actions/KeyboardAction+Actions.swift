@@ -120,8 +120,14 @@ public extension KeyboardAction {
     case .emoji(let emoji): return { $0?.insertText(emoji.char) }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
     case .moveCursorForward: return { $0?.adjustTextPosition(byCharacterOffset: 1) }
-    case .nextLocale: return { $0?.selectNextLocale() }
-    case .nextKeyboard: return { $0?.selectNextKeyboard() }
+    case .nextLocale: return {
+        RepeatGestureTimer.shared.stop()
+        $0?.selectNextLocale()
+      }
+    case .nextKeyboard: return {
+        RepeatGestureTimer.shared.stop()
+        $0?.selectNextKeyboard()
+      }
     case .primary: return { $0?.insertRimeKeyCode(XK_Return) }
     case .shift(let currentState): return {
         switch currentState {

@@ -6,9 +6,10 @@
 //
 
 import Combine
+import HamsterUIKit
 import UIKit
 
-class SpaceContentView: UIView {
+class SpaceContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
   public var style: KeyboardButtonStyle
@@ -32,16 +33,17 @@ class SpaceContentView: UIView {
     loadingLabel.textAlignment = .center
     
     super.init(frame: .zero)
+  }
+  
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
     
     setupSpaceView()
   }
   
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
   func setupSpaceView() {
+    spaceView.style = style
+    
     loadingLabel.text = loadingText
     loadingLabel.font = style.font?.font
     loadingLabel.alpha = 1
@@ -72,12 +74,6 @@ class SpaceContentView: UIView {
         self.spaceView.alpha = 1
       }
     }
-  }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    spaceView.style = style
   }
 }
 

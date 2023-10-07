@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterKit
+import HamsterUIKit
 import UIKit
 
 /**
@@ -16,7 +17,7 @@ import UIKit
  1. 候选文字，包含横向部分文字显示及下拉显示全部文字
  2. 常用功能视图
  */
-class KeyboardToolbarView: UIView {
+class KeyboardToolbarView: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
@@ -89,12 +90,21 @@ class KeyboardToolbarView: UIView {
 
     super.init(frame: .zero)
 
-    setupSubview()
+    Task {
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [unowned self] in
+          let isEmpty = $0.isEmpty
+          self.candidateWordView.isHidden = isEmpty
+        }
+        .store(in: &subscriptions)
+    }
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupSubview()
   }
 
   func setupSubview() {
@@ -113,24 +123,8 @@ class KeyboardToolbarView: UIView {
       candidateWordView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
 
-//    commonFunctionBar.isHidden = false
     commonFunctionBar.isHidden = true
     candidateWordView.isHidden = true
-
-    Task {
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
-          let isEmpty = $0.isEmpty
-//          self.commonFunctionBar.isHidden = !isEmpty
-          self.candidateWordView.isHidden = isEmpty
-        }
-        .store(in: &subscriptions)
-    }
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
   }
 
   @objc func dismissKeyboardAction() {

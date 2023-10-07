@@ -59,18 +59,18 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType:
+    case .keyboardType(let type):
       /// 中文主键盘的最后一行第一个键
-//      if row == 3 && index == 0 && context.keyboardType.isChinesePrimaryKeyboard {
-//        return smallBottomWidth(for: context)
-//      }
+      if row == 3 && index == 0 && type.isNumber {
+        return largeBottomWidth(for: context)
+      }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary:
-      if context.keyboardType.isChinesePrimaryKeyboard {
-        return smallBottomWidth(for: context)
+      if row == 3 && (index == 2 || index == 3) {
+        return largeBottomWidth(for: context)
       }
-      return largeBottomWidth(for: context)
+      return smallBottomWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     default: return .available
     }
@@ -205,13 +205,13 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       result.append(action)
     }
 
-    if context.textDocumentProxy.keyboardType == .emailAddress {
-      result.append(.character("@"))
-      result.append(.character("."))
-    }
-    if context.textDocumentProxy.returnKeyType == .go {
-      result.append(.character("."))
-    }
+//    if context.textDocumentProxy.keyboardType == .emailAddress {
+//      result.append(.symbol(.init(char: "@")))
+//      result.append(.symbol(.init(char: ".")))
+//    }
+//    if context.textDocumentProxy.returnKeyType == .go {
+//      result.append(.symbol(.init(char: ".")))
+//    }
     result.append(keyboardReturnAction(for: context))
     return result
   }

@@ -31,6 +31,10 @@ public extension KeyboardActions {
     self = characters.map { .character($0) }
   }
 
+  init(symbols: [String]) {
+    self = symbols.map { KeyboardAction.symbol(Symbol(char: $0)) }
+  }
+
   /**
    Create keyboard actions by mapping image names to a set
    of ``KeyboardAction/image(description:keyboardImageName:imageName:)``

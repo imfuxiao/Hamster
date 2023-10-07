@@ -56,9 +56,6 @@ public class KeyboardButton: UIControl {
   /// 设备方向
   private var interfaceOrientation: InterfaceOrientation
   
-  /// 按键内容视图
-  private var buttonContentView: KeyboardButtonContentView!
-  
   /// 按键阴影路径缓存
   private var shadowPathCache = [ButtonBounds: UIBezierPath]()
   
@@ -104,6 +101,18 @@ public class KeyboardButton: UIControl {
   private let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
   
   // MARK: - subview
+  
+  /// 按键内容视图
+  private lazy var buttonContentView: KeyboardButtonContentView = {
+    let contentView = KeyboardButtonContentView(
+      item: item,
+      style: buttonStyle,
+      appearance: appearance,
+      keyboardContext: keyboardContext,
+      rimeContext: rimeContext)
+    contentView.translatesAutoresizingMaskIntoConstraints = false
+    return contentView
+  }()
   
   // 按钮底部立体阴影视图
   private lazy var underShadowView: ShapeView = {
@@ -182,15 +191,6 @@ public class KeyboardButton: UIControl {
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     
     super.init(frame: .zero)
-    
-    self.buttonContentView = KeyboardButtonContentView(
-      item: item,
-      style: buttonStyle,
-      appearance: appearance,
-      keyboardContext: keyboardContext,
-      rimeContext: rimeContext)
-    
-    setupSubview()
   }
   
   @available(*, unavailable)
@@ -203,6 +203,17 @@ public class KeyboardButton: UIControl {
   }
   
   // MARK: - Layout Functions
+  
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+    
+    // fix: 系统为 light mode， 而部分状态(safari 隐私模式，App搜索页面)下为 dark mode, 导致键盘按钮颜色异常
+    if keyboardContext.traitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+      keyboardContext.traitCollection = traitCollection
+    }
+    
+    setupSubview()
+  }
   
   func setupSubview() {
     /// spacer 类型不可见
@@ -224,10 +235,16 @@ public class KeyboardButton: UIControl {
     addSubview(buttonContentView)
     buttonContentView.translatesAutoresizingMaskIntoConstraints = false
     let insets = item.insets
+    
+    let buttonContentTrailingConstraint = buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
+    buttonContentTrailingConstraint.identifier = "buttonContent-\(row)-\(column)-trailing"
+    buttonContentTrailingConstraint.priority = .defaultHigh
+    
     topConstraints.append(buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top))
     bottomConstraints.append(buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom))
     leadingConstraints.append(buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left))
-    trailingConstraints.append(buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+    // trailingConstraints.append(buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right))
+    trailingConstraints.append(buttonContentTrailingConstraint)
   }
   
   /// 设置按钮底部阴影及暗线
@@ -316,15 +333,6 @@ public class KeyboardButton: UIControl {
   override public var debugDescription: String {
     let description = super.debugDescription
     return "\(row)-\(column) button: \(description)"
-  }
-  
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-    
-    // fix: 系统为 light mode， 而部分状态(safari 隐私模式，App搜索页面)下为 dark mode, 导致键盘按钮颜色异常
-    if keyboardContext.traitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
-      keyboardContext.traitCollection = traitCollection
-    }
   }
 }
 

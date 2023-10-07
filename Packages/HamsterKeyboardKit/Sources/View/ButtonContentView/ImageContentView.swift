@@ -5,9 +5,10 @@
 //  Created by morse on 2023/8/10.
 //
 
+import HamsterUIKit
 import UIKit
 
-class ImageContentView: UIView {
+class ImageContentView: NibLessView {
 //  private let scaleFactor: CGFloat
   public let imageView: UIImageView
   public var style: KeyboardButtonStyle
@@ -23,13 +24,12 @@ class ImageContentView: UIView {
     }
 
     super.init(frame: .zero)
-
-    setupImage()
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupImage()
   }
 
   func setupImage() {

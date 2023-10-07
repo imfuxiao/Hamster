@@ -7,11 +7,12 @@
 
 import Combine
 import HamsterKit
+import HamsterUIKit
 import OSLog
 import UIKit
 
 /// 中文九宫格键盘
-public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
+public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: ChineseNineGridLayoutProvider
@@ -103,8 +104,6 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
 
     super.init(frame: .zero)
 
-    setupKeyboardView()
-
     Task {
       await rimeContext.$userInputKey
         .receive(on: DispatchQueue.main)
@@ -130,12 +129,13 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
     }
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   // MARK: - Layout
+
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupKeyboardView()
+  }
 
   func setupKeyboardView() {
     backgroundColor = .clear
@@ -152,7 +152,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
       .store(in: &subscriptions)
   }
 
-  open func constructViewHierarchy() {
+  override public func constructViewHierarchy() {
     // 添加右侧符号划动列表
     addSubview(symbolsListContainerView)
 
@@ -178,7 +178,7 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
     }
   }
 
-  open func activateViewConstraints() {
+  override public func activateViewConstraints() {
     // 根据 keyboardContext 获取当前布局配置
     // 注意：临时变量缓存计算属性的值，避免重复计算
     let layoutConfig = layoutConfig
@@ -191,9 +191,6 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
 
     // 暂存中间部分按键，用于平分剩余宽度
     var availableItems = [KeyboardButton]()
-
-    // 暂存前一个按键，用于按键之间的约束
-    var prevItem: KeyboardButton?
 
     // 回车键
     var returnButton: KeyboardButton?
@@ -236,7 +233,8 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else if button.column == 0 {
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
-        } else if let prevItem = prevItem {
+        } else {
+          let prevItem = keyboardRows[button.row][button.column - 1]
           staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
         }
 
@@ -263,9 +261,6 @@ public class ChineseNineGridKeyboard: UIView, UICollectionViewDelegate {
         } else if button.column + 1 == row.endIndex, button.row + 1 == keyboardRows.endIndex, let returnButton = returnButton {
           staticConstraints.append(button.trailingAnchor.constraint(equalTo: returnButton.leadingAnchor))
         }
-
-        // 修改上一个按键的引用，用于其他按键添加 leading 约束
-        prevItem = button
       }
     }
 

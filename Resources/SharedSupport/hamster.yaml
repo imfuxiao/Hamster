@@ -38,19 +38,31 @@ Keyboard:
   useKeyboardType: chinese
   # 上划显示到左侧
   upSwipeOnLeft: true
+  # 显示按键气泡
   displayButtonBubbles: true
+  # 启用按键声
   enableKeySounds: true
+  # 启用触控反馈
   enableHapticFeedback: false
+  # 反馈强度
   hapticFeedbackIntensity: 3
+  # 启用分号按键
   displaySemicolonButton: false
-  displayClassifySymbolButton: true
-  displaySpaceLeftButton: true
+  # 启用符号按键
+  displayClassifySymbolButton: false
+  # 启用空格左侧按键
+  displaySpaceLeftButton: false
   keyValueOfSpaceLeftButton: ","
+  # 启用空格右侧按键
   displaySpaceRightButton: false
   keyValueOfSpaceRightButton: "."
-  displayChineseEnglishSwitchButton: true
+  # 启用中英切换按键
+  displayChineseEnglishSwitchButton: false
+  # 按键位于空格左侧
   chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: false
+  # 启用数字九宫格键盘
   enableNineGridOfNumericKeyboard: true
+  # (数字九宫格键盘)符号是否直接上屏
   enterDirectlyOnScreenByNineGridOfNumericKeyboard: true
   symbolsOfGridOfNumericKeyboard:
     - +
@@ -65,9 +77,9 @@ Keyboard:
     - "“”"
     - "[]"
   symbolsOfReturnToMainKeyboard:
-    - ","
-    - .
-    - "!"
+    - "，"
+    - "。"
+    - "！"
   symbolsOfChineseNineGridKeyboard:
     - "，"
     - "。"
@@ -404,8 +416,11 @@ swipe:
           swipe:
             - direction: up
               action: character(3)
+            # - direction: down
+            #   action: character(#)
+            #   display: false
             - direction: down
-              action: character(#)
+              action: keyboardType(alphabetic)
               display: false
         - action: character(f)
           swipe:

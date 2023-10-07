@@ -25,6 +25,14 @@ public extension KeyboardType {
     }
   }
 
+  var chineseImage: UIImage {
+    .keyboardStateChinese
+  }
+
+  var englishImage: UIImage {
+    .keyboardStateEnglish
+  }
+
   /**
    The keyboard type's standard button text.
 
@@ -32,10 +40,9 @@ public extension KeyboardType {
    */
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
-    case .chinese: return "中"
-    case .chineseNineGrid: return "中"
+    case .chinese, .chineseNineGrid: return "中"
     case .classifySymbolic, .classifySymbolicOfLight: return "符"
-    case .alphabetic: return "英"
+    case .alphabetic: return "ABC"
     case .numeric: return "123"
     case .numericNineGrid: return "123"
     case .chineseNumeric: return "123"
