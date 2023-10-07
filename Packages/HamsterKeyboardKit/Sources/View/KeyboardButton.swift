@@ -283,7 +283,6 @@ public class KeyboardButton: UIControl {
     buttonContentView.style = style
       
     // 按键底部深色样式
-    // underShadowView.shapeLayer.borderColor = style.border?.color.cgColor ?? UIColor.clear.cgColor
     underShadowView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按键阴影样式
@@ -292,14 +291,14 @@ public class KeyboardButton: UIControl {
 //    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
       
     // 按钮样式
-    buttonContentView.backgroundColor = style.backgroundColor ?? .clear
+    buttonContentView.backgroundColor = style.backgroundColor
     if isPressed {
       underShadowView.shapeLayer.opacity = 0
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
       underShadowView.shapeLayer.path = underPath.cgPath
-      underShadowView.shapeLayer.opacity = 1
+      underShadowView.shapeLayer.opacity = 0.7
       hideInputCallout()
     }
   }
@@ -318,6 +317,15 @@ public class KeyboardButton: UIControl {
     let description = super.debugDescription
     return "\(row)-\(column) button: \(description)"
   }
+  
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+    
+    // fix: 系统为 light mode， 而部分状态(safari 隐私模式，App搜索页面)下为 dark mode, 导致键盘按钮颜色异常
+    if keyboardContext.traitCollection.userInterfaceStyle != traitCollection.userInterfaceStyle {
+      keyboardContext.traitCollection = traitCollection
+    }
+  }
 }
 
 // MARK: - Input Callout
@@ -329,10 +337,7 @@ extension KeyboardButton {
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
     guard action.showKeyBubble else { return }
     inputCalloutView.isHidden = false
-//    inputCalloutView.shapeLayer.zPosition = 9999
-//    inputCalloutView.label.text = action.inputCalloutText?.uppercased()
     inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
-    
     inputCalloutView.updateStyle()
   }
   

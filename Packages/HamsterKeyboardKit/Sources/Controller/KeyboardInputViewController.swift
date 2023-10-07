@@ -104,11 +104,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       rimeContext: rimeContext
     )
 
-    // fix: 系统为 light mode， 而 safari 隐私模式为 dark mode, 导致键盘按钮颜色异常
-    if keyboardContext.traitCollection.userInterfaceStyle != keyboardRootView.traitCollection.userInterfaceStyle {
-      keyboardContext.traitCollection = keyboardRootView.traitCollection
-    }
-
     view.addSubview(keyboardRootView)
     keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
     view.addConstraints([
