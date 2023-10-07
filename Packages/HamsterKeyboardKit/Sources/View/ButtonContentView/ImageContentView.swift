@@ -8,15 +8,14 @@
 import UIKit
 
 class ImageContentView: UIView {
-  private let scaleFactor: CGFloat
+//  private let scaleFactor: CGFloat
   public let imageView: UIImageView
   public var style: KeyboardButtonStyle
 
   init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
     self.style = style
     self.imageView = UIImageView(image: image)
-    self.scaleFactor = scaleFactor
-    imageView.contentMode = .scaleAspectFit
+    imageView.contentMode = .center
     if let color = style.foregroundColor {
       imageView.tintColor = color
     } else {
@@ -36,7 +35,6 @@ class ImageContentView: UIView {
   func setupImage() {
     addSubview(imageView)
 
-//    imageView.contentScaleFactor = scaleFactor
     imageView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
