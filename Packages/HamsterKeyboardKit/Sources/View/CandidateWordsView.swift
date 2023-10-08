@@ -170,7 +170,7 @@ public class CandidateWordsView: NibLessView {
     phoneticAreaLeadingConstraint.priority = .defaultHigh
 
     let candidatesAreaLeadingConstraint = candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left)
-    candidatesAreaLeadingConstraint.identifier = "candidatesAreaLeadingConstraint "
+    candidatesAreaLeadingConstraint.identifier = "candidatesAreaLeadingConstraint"
     candidatesAreaLeadingConstraint.priority = .defaultHigh
 
     /// 内嵌模式

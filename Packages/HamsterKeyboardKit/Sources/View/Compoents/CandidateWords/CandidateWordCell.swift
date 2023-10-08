@@ -12,14 +12,22 @@ import UIKit
  候选文字单元格
  */
 class CandidateWordCell: UICollectionViewCell {
-  private lazy var listContentView = UIListContentView(configuration: contentConfiguration())
+  private var candidateSuggestion: CandidateSuggestion? = nil
+  private var keyboardColor: HamsterKeyboardColor? = nil
+  private var showIndex: Bool = false
+  private var showComment: Bool = false
+  private var titleFont: UIFont = KeyboardFont.title3.font
+  private var subtitleFont: UIFont = KeyboardFont.caption2.font
+
+  private var candidateWidthConstraint: NSLayoutConstraint?
 
   public lazy var textLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
+//    label.adjustsFontSizeToFitWidth = true
+//    label.minimumScaleFactor = 0.5
+//    label.lineBreakMode = .byClipping
     return label
   }()
 
@@ -27,8 +35,9 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
+//    label.adjustsFontSizeToFitWidth = true
+//    label.minimumScaleFactor = 0.5
+//    label.lineBreakMode = .byClipping
     return label
   }()
 
@@ -39,7 +48,20 @@ class CandidateWordCell: UICollectionViewCell {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
+  }
 
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    setupView()
+  }
+
+  func setupView() {
     containerView.translatesAutoresizingMaskIntoConstraints = false
     textLabel.translatesAutoresizingMaskIntoConstraints = false
     secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -48,32 +70,20 @@ class CandidateWordCell: UICollectionViewCell {
     containerView.addSubview(textLabel)
     containerView.addSubview(secondaryLabel)
     NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
-      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -3),
-      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
+      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 1),
+      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -1),
 
-      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
+      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 3),
+      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -3),
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5),
 
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
+      secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
     ])
   }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  private var candidateSuggestion: CandidateSuggestion? = nil
-  private var keyboardColor: HamsterKeyboardColor? = nil
-  private var showIndex: Bool = false
-  private var showComment: Bool = false
-  private var titleFont: UIFont = KeyboardFont.title3.font
-  private var subtitleFont: UIFont = KeyboardFont.caption2.font
 
   /// 当每次 CandidateSuggestion 发生变化时调用此方法，来更新 UI
   func updateWithCandidateSuggestion(
@@ -110,7 +120,7 @@ class CandidateWordCell: UICollectionViewCell {
     let index = state.candidateSuggestion?.index
     let title = state.candidateSuggestion?.title
     if showIndex {
-      textLabel.text = index == nil ? title : "\(index!). \(title ?? "")"
+      textLabel.text = index == nil ? title : "\(index! + 1). \(title ?? "")"
     } else {
       textLabel.text = title
     }
