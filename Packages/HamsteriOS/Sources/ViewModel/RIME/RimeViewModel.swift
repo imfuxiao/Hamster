@@ -140,8 +140,13 @@ public extension RimeViewModel {
   func rimeSync() async {
     do {
       await ProgressHUD.show("RIME同步中, 请稍候……", interaction: false)
-      // 先打开iCloud地址，防止Crash
-      _ = URL.iCloudDocumentURL
+
+      let hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
+
+      if hamsterConfiguration.general?.enableAppleCloud ?? false {
+        // 先打开iCloud地址，防止Crash
+        _ = URL.iCloudDocumentURL
+      }
 
       // 增加同步路径检测（sync_dir），检测是否有权限写入。
       if let syncDir = FileManager.sandboxInstallationYaml.getSyncPath() {
@@ -157,7 +162,8 @@ public extension RimeViewModel {
           }
         }
       }
-      try await rimeContext.syncRime()
+
+      try await rimeContext.syncRime(configuration: hamsterConfiguration)
       await ProgressHUD.showSuccess("同步成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime sync error: \(error)")

@@ -28,9 +28,10 @@ struct RimeSyncIntent: AppIntent {
 
   func perform() async throws -> some ReturnsValue & ProvidesDialog {
     do {
+      let hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
       // 先打开iCloud地址，防止Crash
       _ = URL.iCloudDocumentURL
-      try await rimeContext.syncRime()
+      try await rimeContext.syncRime(configuration: hamsterConfiguration)
       return .result(dialog: .init("RIME 同步完成"))
     } catch {
       Logger.statistics.error("RimeSyncIntent failed: \(error)")

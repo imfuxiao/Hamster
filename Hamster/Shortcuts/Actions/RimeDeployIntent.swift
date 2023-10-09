@@ -22,6 +22,26 @@ struct RimeDeployIntent: AppIntent {
   func perform() async throws -> some ReturnsValue & ProvidesDialog {
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
     do {
+      if hamsterConfiguration.general?.enableAppleCloud ?? false {
+        // 先打开iCloud地址，防止Crash
+        _ = URL.iCloudDocumentURL
+      }
+
+      // 增加同步路径检测（sync_dir），检测是否有权限写入。
+      if let syncDir = FileManager.sandboxInstallationYaml.getSyncPath() {
+        if !FileManager.default.fileExists(atPath: syncDir) {
+          do {
+            try FileManager.default.createDirectory(atPath: syncDir, withIntermediateDirectories: true)
+          } catch {
+            throw "同步地址无写入权限：\(syncDir)"
+          }
+        } else {
+          if !FileManager.default.isWritableFile(atPath: syncDir) {
+            throw "同步地址无写入权限：\(syncDir)"
+          }
+        }
+      }
+
       try await rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
