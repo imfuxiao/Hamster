@@ -85,7 +85,7 @@ public class SymbolEditorView: NibLessView {
     symbolsDidSet: @escaping ([String]) -> Void,
     symbolTableIsEditingPublished: AnyPublisher<Bool, Never>,
     reloadDataPublished: AnyPublisher<Bool, Never>,
-    needRestButton: Bool = true,
+    needRestButton: Bool = false,
     restButtonAction: (() throws -> Void)? = nil
   ) {
     self.headerTitle = headerTitle

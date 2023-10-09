@@ -418,18 +418,23 @@ public class KeyboardSettingsViewModel: ObservableObject {
             displayButtonBubbles = $0
           }),
         .init(
-          text: "启用内嵌模式",
-          type: .toggle,
-          toggleValue: { [unowned self] in enableEmbeddedInputMode },
-          toggleHandled: { [unowned self] in
-            enableEmbeddedInputMode = $0
-          }),
-        .init(
           text: "Shift状态锁定",
           type: .toggle,
           toggleValue: { [unowned self] in lockShiftState },
           toggleHandled: { [unowned self] in
             lockShiftState = $0
+          })
+      ]),
+
+    .init(
+      footer: "开启后建议调整工具栏高度为：40。\n（位置：键盘设置 -> 候选栏设置 -> 工具栏高度）",
+      items: [
+        .init(
+          text: "启用内嵌模式",
+          type: .toggle,
+          toggleValue: { [unowned self] in enableEmbeddedInputMode },
+          toggleHandled: { [unowned self] in
+            enableEmbeddedInputMode = $0
           })
       ]),
 
@@ -459,7 +464,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
     .init(
       items: [
         .init(
-          text: "候选工具栏设置",
+          text: "候选栏设置",
           accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationLinkLabel: { [unowned self] in enableToolbar ? "启用" : "禁用" },
@@ -676,7 +681,7 @@ public class KeyboardSettingsViewModel: ObservableObject {
         if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.Keyboard?.symbolsOfGridOfNumericKeyboard {
           self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
           resetSignSubject.send(true)
-          ProgressHUD.showSuccess()
+          ProgressHUD.showSuccess("重置成功")
         }
       })
   ]

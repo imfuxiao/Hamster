@@ -64,7 +64,7 @@ extension NumberNineGridSettingsView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    if section == 1 {
+    if section == 0 {
       return TableFooterView(footer: Self.enableNumberNineGridInputOnScreenModeRemark)
     }
     return nil
@@ -74,5 +74,5 @@ extension NumberNineGridSettingsView: UITableViewDataSource {
 extension NumberNineGridSettingsView: UITableViewDelegate {}
 
 extension NumberNineGridSettingsView {
-  static let enableNumberNineGridInputOnScreenModeRemark = "开启此选项后，字符与数字会直接上屏，不在经过RIME引擎处理。"
+  static let enableNumberNineGridInputOnScreenModeRemark = "开启此选项后，符号会直接上屏，不在经过RIME引擎处理。"
 }

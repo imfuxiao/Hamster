@@ -30,8 +30,6 @@ class KeyboardSettingsRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
-
-    setupView()
   }
 
   func setupView() {
@@ -50,6 +48,8 @@ class KeyboardSettingsRootView: NibLessView {
 
   override func didMoveToWindow() {
     super.didMoveToWindow()
+
+    setupView()
 
     tableView.reloadData()
   }
