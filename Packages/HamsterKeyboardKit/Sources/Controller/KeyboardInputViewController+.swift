@@ -34,9 +34,6 @@ public extension KeyboardInputViewController {
       self.textDocumentProxy.insertText("\r")
     case .clearSpellingArea:
       self.rimeContext.reset()
-      if keyboardContext.enableEmbeddedInputMode {
-        self.textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
-      }
     case .selectColorSchema:
       // TODO: 颜色方案切换
       break
@@ -98,30 +95,21 @@ public extension KeyboardInputViewController {
   /// 首选候选字上屏
   func selectPrimaryCandidate() {
     Task {
-      if let text = await rimeContext.selectCandidate(index: 0) {
-        textDocumentProxy.insertText(text)
-        rimeContext.reset()
-      }
+      await rimeContext.selectCandidate(index: 0)
     }
   }
 
   /// 第二位候选字上屏
   func selectSecondaryCandidate() {
     Task {
-      if let text = await rimeContext.selectCandidate(index: 1) {
-        textDocumentProxy.insertText(text)
-        rimeContext.reset()
-      }
+      await rimeContext.selectCandidate(index: 1)
     }
   }
 
   /// 第三位候选字上屏
   func selectTertiaryCandidate() {
     Task {
-      if let text = await rimeContext.selectCandidate(index: 2) {
-        textDocumentProxy.insertText(text)
-        rimeContext.reset()
-      }
+      await rimeContext.selectCandidate(index: 2)
     }
   }
 

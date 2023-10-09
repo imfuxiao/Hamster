@@ -188,10 +188,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegate {
     Task {
       // 用于触发反馈
       actionHandler.handle(.press, on: .none)
-      if let text = await self.rimeContext.selectCandidate(index: indexPath.item) {
-        keyboardContext.textDocumentProxy.insertText(text)
-        self.rimeContext.reset()
-      }
+      await self.rimeContext.selectCandidate(index: indexPath.item)
       keyboardContext.candidatesViewState = .collapse
     }
   }

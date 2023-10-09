@@ -48,6 +48,10 @@ public actor RimeContext: ObservableObject {
   @Published @MainActor
   public var userInputKey: String = ""
 
+  /// 待上屏文字
+  @MainActor
+  public private(set) var commitText: String = ""
+
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
   @MainActor
   public var t9UserInputKey: String {
@@ -86,6 +90,11 @@ public extension RimeContext {
     self.selectPinyinList.removeAll(keepingCapacity: false)
     self.suggestions.removeAll(keepingCapacity: false)
     Rime.shared.cleanComposition()
+  }
+
+  @MainActor
+  func resetCommitText() {
+    self.commitText = ""
   }
 
   @MainActor
@@ -242,7 +251,22 @@ public extension RimeContext {
 
   /// RIME 同步
   /// 注意：仅可用于主 App 调用
-  func syncRime() async throws {
+  func syncRime(configuration: HamsterConfiguration) async throws {
+    // 检测文件目录是否存在不存在，新建
+    try FileManager.createDirectory(override: false, dst: FileManager.sandboxSharedSupportDirectory)
+    try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
+
+    // 判断是否需要覆盖键盘词库文件，如果为否，则先copy键盘词库文件至应用目录
+    if let overrideDictFiles = configuration.rime?.overrideDictFiles, overrideDictFiles == false {
+      let regex = configuration.rime?.regexOnOverrideDictFiles ?? []
+      do {
+        try FileManager.copyAppGroupUserDict(regex)
+      } catch {
+        Logger.statistics.error("RIME deploy error \(error.localizedDescription)")
+        throw error
+      }
+    }
+
     Rime.shared.shutdown()
     Rime.shared.start(Rime.createTraits(
       sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
@@ -380,17 +404,14 @@ public extension RimeContext {
     let hotKeyCode = RimeContext.hotKeyCodeMapping[hotkey, default: XK_F4]
     let hotKeyModifier = RimeContext.hotKeyCodeModifiersMapping[hotkey, default: Int32(0)]
     Logger.statistics.info("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
-    let handled = Rime.shared.inputKeyCode(hotKeyCode, modifier: hotKeyModifier)
-    _ = await updateRimeEngine(handled)
+    _ = Rime.shared.inputKeyCode(hotKeyCode, modifier: hotKeyModifier)
+    await syncContext()
   }
 
   /// 根据索引选择候选字
-  func selectCandidate(index: Int) async -> String? {
-    let handled = Rime.shared.selectCandidate(index: index)
-    if let commitText = await updateRimeEngine(handled) {
-      return commitText
-    }
-    return nil
+  func selectCandidate(index: Int) async {
+    _ = Rime.shared.selectCandidate(index: index)
+    await syncContext()
   }
 
   // 同步中文简繁状态
@@ -439,65 +460,61 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入文字
    */
-  @MainActor
-  func tryHandleInputText(_ text: String) async -> String? {
+  func tryHandleInputText(_ text: String) async -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKey(text)
+
     // 处理失败则返回 inputText
-    guard handled else { return text }
+    guard handled else { return false }
 
-    // 获取上屏文字
-    let commitText = Rime.shared.getCommitText()
-
-    // 查看输入法状态
-    let status = Rime.shared.status()
-    // 如不存在候选字,则重置输入法
-    if !status.isComposing {
-      self.reset()
-    }
     await self.syncContext()
 
-    return commitText.isEmpty ? nil : commitText
+    return true
   }
 
-  @MainActor
-  func tryHandleInputCode(_ code: Int32) async throws -> String? {
+  /**
+   RIME引擎尝试处理输入编码
+   */
+  func tryHandleInputCode(_ code: Int32) async -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKeyCode(code)
     // 处理失败则返回 inputText
-    guard handled else { throw "code = \(code), rimeEngine handle failed." }
+    guard handled else { return false }
 
-    // 唯一码直接上屏
-    let commitText = Rime.shared.getCommitText()
-    guard commitText.isEmpty else {
-      self.reset()
-      return commitText
-    }
-
-    // 查看输入法状态
-    let status = Rime.shared.status()
-    // 如不存在候选字,则重置输入法
-    if !status.isComposing {
-      self.reset()
-    }
     await self.syncContext()
-    return nil
+
+    return true
   }
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
-  @MainActor
   func syncContext() async {
     let context = Rime.shared.context()
+    let userInputText = context.composition?.preedit ?? ""
+    let commitText = Rime.shared.getCommitText()
+    let candidates = self.candidateListLimit()
 
-    if context.composition != nil {
-      self.userInputKey = context.composition.preedit ?? ""
+    Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
+
+    // 查看输入法状态
+    let status = Rime.shared.status()
+
+    // 注意：commitText 值的修改需要在修改 userInputKey 之前，
+    // 因为 userInputKey 是 @Published，观测其值时会用到 commitText，所以如果 commitText 值修改滞后，会造成读取 commitText 不正确
+
+    // 如果输入状态不是待组字阶段, 则重置输入法
+    if !status.isComposing {
+      await MainActor.run { self.commitText = commitText }
+      await self.reset()
+      return
     }
 
-    // 获取候选字
-    self.suggestions = self.candidateListLimit()
+    await MainActor.run {
+      self.commitText = commitText
+      self.userInputKey = userInputText
+      self.suggestions = candidates
+    }
   }
 
-  @MainActor
   func candidateListLimit(_ count: Int = 100) -> [CandidateSuggestion] {
     // TODO: 最大候选文字数量
     let candidates = Rime.shared.getCandidate(index: 0, count: count)
@@ -515,7 +532,6 @@ public extension RimeContext {
     return result
   }
 
-  @MainActor
   func deleteBackward() async {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
     await self.syncContext()
@@ -529,31 +545,6 @@ public extension RimeContext {
   @MainActor
   func inputKeyNotSync(_ text: String) -> Bool {
     Rime.shared.inputKey(text)
-  }
-
-  /// 更新 RIME 引擎
-  func updateRimeEngine(_ handled: Bool) async -> String? {
-    // 唯一码直接上屏
-    let commitText = Rime.shared.getCommitText()
-    if !commitText.isEmpty {
-      return commitText
-    }
-
-    // 查看输入法状态
-    let status = Rime.shared.status()
-
-    // 如不存在候选字,则重置输入法
-    if !status.isComposing {
-      await self.reset()
-      return nil
-    }
-
-    if handled {
-      await self.syncContext()
-      return nil
-    }
-
-    return nil
   }
 }
 

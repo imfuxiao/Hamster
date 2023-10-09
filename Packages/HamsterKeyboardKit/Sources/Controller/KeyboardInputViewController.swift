@@ -45,7 +45,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     KeyboardUrlOpener.shared.controller = self
 
     setupRIME()
-    setupEmbeddedInputMode()
+    setupComibneRIMEInput()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -497,9 +497,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // 非九宫格处理
     Task {
       await rimeContext.deleteBackward()
-      if keyboardContext.enableEmbeddedInputMode {
-        self.textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
-      }
     }
   }
 
@@ -543,22 +540,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
     // rime 引擎处理
     Task {
-      if let inputText = await rimeContext.tryHandleInputText(text) {
-        textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
-          guard let self = self else { return }
-          self.insertTextPatch(inputText)
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
-            guard let self = self else { return }
-            if self.keyboardContext.enableEmbeddedInputMode {
-              self.textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
-            }
-          }
+      let handled = await rimeContext.tryHandleInputText(text)
+      if !handled {
+        if !keyboardContext.keyboardType.isChinesePrimaryKeyboard(.lowercased) || !keyboardContext.keyboardType.isCustom(.lowercased) {
+          textDocumentProxy.insertText(text)
+          return
         }
-      } else {
-        if keyboardContext.enableEmbeddedInputMode {
-          textDocumentProxy.setMarkedText(rimeContext.userInputKey, selectedRange: NSMakeRange(rimeContext.userInputKey.utf8.count, 0))
-        }
+        Logger.statistics.error("try handle input text: \(text), handle false")
       }
     }
   }
@@ -609,19 +597,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   open func insertRimeKeyCode(_ keyCode: Int32) {
     Task {
-      do {
-        guard let text = try await rimeContext.tryHandleInputCode(keyCode) else { return }
-        if keyboardContext.enableEmbeddedInputMode {
-          textDocumentProxy.setMarkedText("", selectedRange: NSMakeRange(0, 0))
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
-          guard let self = self else { return }
-          self.textDocumentProxy.insertText(text)
-        }
-      } catch {
-        let errorMessage = error.localizedDescription
-        Logger.statistics.info("insertRimeKeyCode(): \(errorMessage)")
+      guard await rimeContext.tryHandleInputCode(keyCode) else {
         tryHandleSpecificCode(keyCode)
+        return
       }
     }
   }
@@ -834,61 +812,6 @@ private extension KeyboardInputViewController {
     }.store(in: &cancellables)
   }
 
-  /// 内嵌模式
-  /// TODO: 内嵌模式
-  func setupEmbeddedInputMode() {
-//    Task {
-//      // 检测是否启用内嵌输入模式
-//      guard keyboardContext.enableEmbeddedInputMode else { return }
-//      await rimeContext.$userInputKey
-//        .receive(on: DispatchQueue.main)
-//        .sink { [weak self] inputKeys in
-//          guard let self = self else { return }
-//
-//          // fix: 部分App(如 bilibili app 端的评论)上屏不会触发
-//          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-//            self.textDocumentProxy.setMarkedText(inputKeys, selectedRange: NSMakeRange(inputKeys.utf8.count, 0))
-//          }
-
-//          /// rimeContext.$userInputKey 被清空
-//          guard !inputKeys.isEmpty else {
-//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-//            self.textDocumentProxy.unmarkText()
-//            return
-//          }
-//
-//          let pairKeys = self.keyboardContext.getPairSymbols(inputKeys)
-//          guard pairKeys == inputKeys else {
-//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-//            self.textDocumentProxy.unmarkText()
-//            self.textDocumentProxy.insertText(pairKeys)
-//            if self.keyboardContext.cursorBackOfSymbols(key: pairKeys) {
-//              self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
-//            }
-//
-//            /// 返回主键盘
-//            if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
-//              self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
-//            }
-//            return
-//          }
-//
-//          /// 返回主键盘
-//          if self.keyboardContext.returnToPrimaryKeyboardOfSymbols(key: inputKeys) {
-//            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-//            self.textDocumentProxy.unmarkText()
-//            self.textDocumentProxy.insertText(pairKeys)
-//            self.keyboardContext.keyboardType = self.keyboardContext.selectKeyboard
-//            return
-//          }
-//
-//          // 这使用utf16计数，以避免表情符号和类似的问题。
-//          self.textDocumentProxy.setMarkedText(pairKeys, selectedRange: NSRange(location: pairKeys.utf16.count, length: 0))
-//        }
-//        .store(in: &cancellables)
-//    }
-  }
-
   /**
    Set up the standard next keyboard button behavior.
 
@@ -934,6 +857,39 @@ private extension KeyboardInputViewController {
       await rimeContext.start(hasFullAccess: hasFullAccess)
       let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+    }
+  }
+
+  /// Combine 观测 RIME 引擎中的用户输入及上屏文字
+  func setupComibneRIMEInput() {
+    Task {
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] inpuText in
+          guard let self = self else { return }
+
+          let commitText = self.rimeContext.commitText
+
+          // 写入上屏文字
+          if !commitText.isEmpty {
+            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
+
+            // 写入 userInputKey
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+              self.insertTextPatch(commitText)
+              self.rimeContext.resetCommitText()
+            }
+          }
+
+          // 非嵌入模式在 CandidateWordsView.swift 中处理，直接输入 Label 中
+          guard self.keyboardContext.enableEmbeddedInputMode else { return }
+
+          // 写入 userInputKey
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+            self.textDocumentProxy.setMarkedText(inpuText, selectedRange: NSMakeRange(inpuText.utf8.count, 0))
+          }
+        }
+        .store(in: &cancellables)
     }
   }
 

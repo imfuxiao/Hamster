@@ -286,8 +286,11 @@ public extension ChineseNineGridKeyboard {
     // 当 symbol 非字母数字，顶码上屏
     if !symbol.isMatch(regex: "\\w.*") {
       Task {
-        if let str = try? await rimeContext.tryHandleInputCode(XK_space) {
-          actionHandler.handle(.release, on: .symbol(.init(char: str)))
+        if await rimeContext.tryHandleInputCode(XK_space) {
+          let commitText = rimeContext.commitText
+          if !commitText.isEmpty {
+            actionHandler.handle(.release, on: .symbol(.init(char: commitText)))
+          }
         }
         actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
       }
