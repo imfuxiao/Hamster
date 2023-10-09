@@ -59,12 +59,7 @@ open class iPadChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
    根据提供的 `context`、`row` 和行中的 `index`
    获取某个 `action` 的对应的键盘布局 item 的宽度。
    */
-  override open func itemSizeWidth(
-    for action: KeyboardAction,
-    row: Int,
-    index: Int,
-    context: KeyboardContext
-  ) -> KeyboardLayoutItemWidth {
+  override open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemWidth {
     if isLowerTrailingSwitcher(action, row: row, index: index) { return .available }
     switch action {
     case context.keyboardDictationReplacement: return .input
@@ -79,7 +74,7 @@ open class iPadChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     default: break
     }
     if action.isSystemAction { return systemButtonWidth(for: context) }
-    return super.itemSizeWidth(for: action, row: row, index: index, context: context)
+    return super.itemSizeWidth(for: action, row: row, index: index, context: context, actions: actions)
   }
 
   /**

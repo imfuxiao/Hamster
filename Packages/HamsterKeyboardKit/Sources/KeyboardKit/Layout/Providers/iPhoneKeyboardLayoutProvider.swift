@@ -54,12 +54,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
 
    根据提供的 `context`、`row` 和行中 `index` 获取某个 `action` 的键盘布局 item 的宽度。
    */
-  override open func itemSizeWidth(
-    for action: KeyboardAction,
-    row: Int,
-    index: Int,
-    context: KeyboardContext
-  ) -> KeyboardLayoutItemWidth {
+  override open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemWidth {
     switch action {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input

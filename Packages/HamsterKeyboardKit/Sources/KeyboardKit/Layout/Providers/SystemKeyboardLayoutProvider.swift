@@ -145,7 +145,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
   open func items(for actions: KeyboardActionRows, context: KeyboardContext) -> KeyboardLayoutItemRows {
     actions.enumerated().map { row in
       row.element.enumerated().map { action in
-        item(for: action.element, row: row.offset, index: action.offset, context: context)
+        item(for: action.element, row: row.offset, index: action.offset, context: context, actions: actions)
       }
     }
   }
@@ -155,8 +155,8 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    
    根据提供的布局参数获取 KeyboardLayoutItem。
    */
-  open func item(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItem {
-    let size = itemSize(for: action, row: row, index: index, context: context)
+  open func item(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItem {
+    let size = itemSize(for: action, row: row, index: index, context: context, actions: actions)
     let insets = itemInsets(for: action, row: row, index: index, context: context)
     let swipes = itemSwipes(for: action, row: row, index: index, context: context)
     return KeyboardLayoutItem(action: action, size: size, insets: insets, swipes: swipes)
@@ -167,8 +167,8 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    
    根据提供的布局参数获取布局项的 KeyboardLayoutItemSize。
    */
-  open func itemSize(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemSize {
-    let width = itemSizeWidth(for: action, row: row, index: index, context: context)
+  open func itemSize(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemSize {
+    let width = itemSizeWidth(for: action, row: row, index: index, context: context, actions: actions)
     let height = itemSizeHeight(for: action, row: row, index: index, context: context)
     return KeyboardLayoutItemSize(width: width, height: height)
   }
@@ -219,7 +219,7 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    
    根据提供的参数获取布局 item 的宽度。
    */
-  open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> KeyboardLayoutItemWidth {
+  open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemWidth {
     switch action {
     case .character, .symbol: return .input
     default: return .available
