@@ -28,7 +28,7 @@ open class StandardHapticFeedbackEngine: HapticFeedbackEngine {
   public init() {}
 
   private var notificationGenerator = UINotificationFeedbackGenerator()
-  private var softImpactGenerator = UIImpactFeedbackGenerator(style: .soft)
+  private var softImpactGenerator = UISelectionFeedbackGenerator()
   private var lightImpactGenerator = UIImpactFeedbackGenerator(style: .light)
   private var mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
   private var rigidImpactGenerator = UIImpactFeedbackGenerator(style: .rigid)
@@ -63,7 +63,7 @@ open class StandardHapticFeedbackEngine: HapticFeedbackEngine {
     case .error: triggerNotification(.error)
     case .success: triggerNotification(.success)
     case .warning: triggerNotification(.warning)
-    case .softImpact: softImpactGenerator.impactOccurred()
+    case .softImpact: softImpactGenerator.selectionChanged()
     case .lightImpact: lightImpactGenerator.impactOccurred()
     case .mediumImpact: mediumImpactGenerator.impactOccurred()
     case .rigidImpact: rigidImpactGenerator.impactOccurred()

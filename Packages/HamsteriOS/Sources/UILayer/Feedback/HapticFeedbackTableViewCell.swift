@@ -84,7 +84,10 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
     slider.enableHapticFeedback = true
     slider.labels = HapticIntensity.allCases.map { $0.text }
     slider.feedbackGeneratorBuild = {
-      UIImpactFeedbackGenerator(style: HapticIntensity(rawValue: $0)!.feedbackStyle())
+      // UIImpactFeedbackGenerator(style: HapticIntensity(rawValue: $0)!.feedbackStyle())
+      if let intensity = HapticIntensity(rawValue: $0) {
+        StandardHapticFeedbackEngine.shared.trigger(intensity.hapticFeedback())
+      }
     }
 
     slider.addTarget(keyboardFeedbackViewModel, action: #selector(keyboardFeedbackViewModel.changeHaptic(_:)), for: .valueChanged)

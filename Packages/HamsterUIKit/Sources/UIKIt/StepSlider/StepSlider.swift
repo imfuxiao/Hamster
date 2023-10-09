@@ -78,7 +78,7 @@ public class StepSlider: UIControl {
   /// 默认值为 "false"。
   public var enableHapticFeedback: Bool = false
   
-  public var feedbackGeneratorBuild: ((Int) -> UIImpactFeedbackGenerator)?
+  public var feedbackGeneratorBuild: ((Int) -> Void)?
   
   // MARK: private properties
   
@@ -87,8 +87,6 @@ public class StepSlider: UIControl {
   private var trackCircles: [CAShapeLayer] = []
   private var trackLabels: [CATextLayer] = []
   private var trackCircleImages: [UIControl.State.RawValue: UIImage] = [:]
-  
-  private var selectFeedback: UIImpactFeedbackGenerator? = nil
   
   private var animateLayouts: Bool = false
   
@@ -171,11 +169,8 @@ public class StepSlider: UIControl {
     // if enableHapticFeedback && !ProcessInfo.processInfo.isLowPowerModeEnabled {
     if enableHapticFeedback {
       if let feedbackGeneratorBuild = feedbackGeneratorBuild {
-        selectFeedback = feedbackGeneratorBuild(Int(index))
-      } else {
-        selectFeedback = UIImpactFeedbackGenerator()
+        feedbackGeneratorBuild(Int(index))
       }
-      selectFeedback?.prepare()
     }
   }
   
@@ -546,7 +541,7 @@ public extension StepSlider {
         if index != i {
           index = UInt(i)
           sendActions(for: .valueChanged)
-          selectFeedback?.impactOccurred()
+          feedbackGeneratorBuild?(Int(index))
         }
         animateLayouts = true
         setNeedsLayout()
@@ -576,7 +571,7 @@ public extension StepSlider {
         }
         self.index = index
         sendActions(for: .valueChanged)
-        selectFeedback?.impactOccurred()
+        feedbackGeneratorBuild?(Int(index))
       }
     }
     
@@ -602,12 +597,9 @@ public extension StepSlider {
       generatorHapticFeedback()
     }
 
-    selectFeedback?.impactOccurred()
-    selectFeedback?.prepare()
-
+    feedbackGeneratorBuild?(Int(index))
     animateLayouts = true
     setNeedsLayout()
-    selectFeedback = nil
   }
   
   private func withoutCAAnimation(_ code: @escaping () -> Void) {
