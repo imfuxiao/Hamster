@@ -70,4 +70,11 @@ public extension KeyboardGesture {
     case .swipeDown(let keySwipe): return "SwipeDown(\(keySwipe.hashValue))"
     }
   }
+
+  var isSwipe: Bool {
+    switch self {
+    case .swipeUp, .swipeDown: return true
+    default: return false
+    }
+  }
 }
