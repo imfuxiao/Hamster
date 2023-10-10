@@ -35,7 +35,7 @@ public class KeyboardButtonContentView: NibLessView {
   }()
 
   var buttonText: String {
-    if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.labelText {
+    if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.label.text, !buttonText.isEmpty {
       return buttonText
     }
     return appearance.buttonText(for: action) ?? ""
