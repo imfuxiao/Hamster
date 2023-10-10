@@ -126,10 +126,14 @@ public struct Key: Codable, Hashable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    if let action = try? container.decode(String.self, forKey: .action), let keyboardAction = action.keyboardAction {
-      self.action = keyboardAction
+    if let action = try? container.decode(String.self, forKey: .action) {
+      if let keyboardAction = action.keyboardAction {
+        self.action = keyboardAction
+      } else {
+        throw "action: \(action) to KeyboardAction is error."
+      }
     } else {
-      throw "action is empty"
+      throw "action is empty."
     }
 
     if let width = try? container.decode(String.self, forKey: .width), let keyWidth = width.keyWidth {
@@ -480,7 +484,7 @@ public extension String {
       }
       return .chineseNineGrid(Symbol(char: value))
     case "none": return KeyboardAction.none
-    case "nextKeyboard": return KeyboardAction.nextKeyboard
+    case "nextKeyboard".lowercased(): return KeyboardAction.nextKeyboard
     default:
       return nil
     }
