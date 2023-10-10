@@ -124,9 +124,7 @@ public extension KeyboardButton {
     let currentPoint = touch.location(in: self)
     lastDragLocation = currentPoint
     
-    // TODO: 划动改写
-    // 识别 swipe
-    // 取消长按限制
+    // 识别 swipe 并取消长按限制
     // if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
     if let _ = touchBeginTimestamp {
       let distanceThreshold: CGFloat = keyboardContext.distanceThreshold // 划动距离的阈值

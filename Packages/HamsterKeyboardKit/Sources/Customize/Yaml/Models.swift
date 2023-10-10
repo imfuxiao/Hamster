@@ -478,7 +478,7 @@ public extension String {
         Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
         return nil
       }
-      return .symbol(Symbol(char: value))
+      return .chineseNineGrid(Symbol(char: value))
     case "none": return KeyboardAction.none
     case "nextKeyboard": return KeyboardAction.nextKeyboard
     default:

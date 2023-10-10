@@ -197,6 +197,9 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
           if action.isPrimaryAction, $0.action.isPrimaryAction {
             return true
           }
+          if case .symbol(let c1) = $0.action, case .symbol(let c2) = action {
+            return c1 == c2
+          }
           return $0.action == action
         })?
         .swipe ?? []
