@@ -748,4 +748,14 @@ public extension KeyboardContext {
   func returnToPrimaryKeyboardOfSymbols(key: String) -> Bool {
     hamsterConfig?.Keyboard?.symbolsOfReturnToMainKeyboard?.contains(key) ?? false
   }
+
+  /// 划动阈值
+  var distanceThreshold: CGFloat {
+    CGFloat(hamsterConfig?.swipe?.distanceThreshold ?? 20)
+  }
+
+  /// 滑动角度正切阈值
+  var tangentThreshold: CGFloat {
+    hamsterConfig?.swipe?.tangentThreshold ?? 0.268
+  }
 }

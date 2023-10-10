@@ -54,10 +54,7 @@ public extension KeyboardAction {
     case .press: return standardPressAction
     case .release: return standardReleaseAction
     case .repeatPress: return standardRepeatAction
-    case .swipeUp(let swipe):
-      if swipe.processByRIME { return standardReleaseAction }
-      return standerSwipeAction
-    case .swipeDown(let swipe):
+    case .swipeUp(let swipe), .swipeDown(let swipe), .swipeLeft(let swipe), .swipeRight(let swipe):
       if swipe.processByRIME { return standardReleaseAction }
       return standerSwipeAction
     }

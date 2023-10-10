@@ -197,9 +197,8 @@ public struct KeySwipe: Codable, Hashable {
   public enum Direction: String, Codable, Hashable {
     case up
     case down
-    // TODO: 暂不开启左右划动
-    // case left
-    // case right
+    case left
+    case right
   }
 
   /// 划动方向, up / down 两个方向

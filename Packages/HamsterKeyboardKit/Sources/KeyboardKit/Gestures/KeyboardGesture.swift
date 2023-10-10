@@ -46,11 +46,11 @@ public enum KeyboardGesture: Codable, Equatable, Identifiable {
   /// 下划
   case swipeDown(KeySwipe)
 
-//  /// 左划
-//  case swipeLeft
-//
-//  /// 右划
-//  case swipeRight
+  /// 左划
+  case swipeLeft(KeySwipe)
+
+  /// 右划
+  case swipeRight(KeySwipe)
 }
 
 public extension KeyboardGesture {
@@ -68,12 +68,14 @@ public extension KeyboardGesture {
     case .repeatPress: return "repeatPress"
     case .swipeUp(let keySwipe): return "swipeUp(\(keySwipe.hashValue))"
     case .swipeDown(let keySwipe): return "SwipeDown(\(keySwipe.hashValue))"
+    case .swipeLeft(let keySwipe): return "swipeUp(\(keySwipe.hashValue))"
+    case .swipeRight(let keySwipe): return "SwipeDown(\(keySwipe.hashValue))"
     }
   }
 
   var isSwipe: Bool {
     switch self {
-    case .swipeUp, .swipeDown: return true
+    case .swipeUp, .swipeDown, .swipeLeft, .swipeRight: return true
     default: return false
     }
   }

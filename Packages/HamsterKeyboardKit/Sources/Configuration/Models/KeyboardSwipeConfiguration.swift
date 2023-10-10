@@ -18,6 +18,14 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
   /// 空格移动光标划动灵敏度
   public var spaceSwipeSensitivity: Int?
 
+  /// 划动距离阈值，当划动的距离大于或等于此值时，才会识别为一次划动
+  public var distanceThreshold: Int?
+
+  // 此值是正切角度的阈值，用来限制上下左右划动时的角度，如果太大容易误触
+  // 默认为 15 度的正切值，即上下左右划的的角度不能超过 15 度
+  // tan(10º) ≈ 0.176, tan(15º) ≈ 0.268, tan(30º) ≈ 0.577, tan(45º) = 1, tan(60º) ≈ 1.732
+  public var tangentThreshold: CGFloat?
+
   /// 内置键盘滑动配置
   public var keyboardSwipe: [KeyboardSwipe]?
 }
