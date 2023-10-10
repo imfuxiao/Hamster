@@ -97,7 +97,14 @@ public class KeyboardButton: UIControl {
   let releaseOutsideTolerance: Double = 0.75
   
   let repeatTimer: RepeatGestureTimer = .shared
-  let longPressDelay: TimeInterval = GestureButtonDefaults.longPressDelay
+  
+  lazy var longPressDelay: TimeInterval = {
+    if let longPressDelay = keyboardContext.longPressDelay {
+      return longPressDelay
+    }
+    return GestureButtonDefaults.longPressDelay
+  }()
+  
   let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
   
   // MARK: - subview

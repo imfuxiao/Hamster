@@ -26,6 +26,9 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
   // tan(10º) ≈ 0.176, tan(15º) ≈ 0.268, tan(30º) ≈ 0.577, tan(45º) = 1, tan(60º) ≈ 1.732
   public var tangentThreshold: CGFloat?
 
+  // 长按延迟时间，只要大于或等于此阈值，才会触发长按 Action，如空格划动
+  public var longPressDelay: Double?
+
   /// 内置键盘滑动配置
   public var keyboardSwipe: [KeyboardSwipe]?
 }

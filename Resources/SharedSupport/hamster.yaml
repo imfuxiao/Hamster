@@ -383,6 +383,8 @@ swipe:
   # 默认为 15 度的正切值，即上下左右划的的角度不能超过 15 度
   # tan(10º) ≈ 0.176, tan(15º) ≈ 0.268, tan(30º) ≈ 0.577, tan(45º) = 1, tan(60º) ≈ 1.732
   tangentThreshold: 0.268
+  # 长按延迟时间，只要大于或等于此阈值，才会触发长按 Action，如空格划动
+  longPressDelay: 0.3
   keyboardSwipe:
     # 中文 26 键滑动设置
     - keyboardType: chinese

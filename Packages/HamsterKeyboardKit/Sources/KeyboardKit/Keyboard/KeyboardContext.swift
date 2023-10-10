@@ -758,4 +758,9 @@ public extension KeyboardContext {
   var tangentThreshold: CGFloat {
     hamsterConfig?.swipe?.tangentThreshold ?? 0.268
   }
+
+  /// 长按延迟时间
+  var longPressDelay: Double? {
+    hamsterConfig?.swipe?.longPressDelay
+  }
 }
