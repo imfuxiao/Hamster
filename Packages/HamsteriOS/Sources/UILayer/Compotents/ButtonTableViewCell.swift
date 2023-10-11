@@ -41,6 +41,12 @@ public class ButtonTableViewCell: NibLessTableViewCell {
 
   // MARK: - methods
 
+  override public func prepareForReuse() {
+    super.prepareForReuse()
+
+    buttonView.titleLabel?.tintColor = nil
+  }
+
   func updateWithSettingItem(_ item: SettingItemModel) {
     guard settingItem != item else { return }
     self.settingItem = item
