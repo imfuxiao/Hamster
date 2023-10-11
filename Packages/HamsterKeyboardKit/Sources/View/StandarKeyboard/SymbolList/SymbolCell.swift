@@ -20,6 +20,8 @@ class SymbolCell: UICollectionViewListCell {
 
   public var highlightedColor: UIColor? = nil
   public var normalColor: UIColor? = nil
+  public var labelHighlightColor: UIColor? = nil
+  public var labelNormalColor: UIColor? = nil
 
   public lazy var textLabel: UILabel = {
     let label = UILabel(frame: .zero)
@@ -42,8 +44,10 @@ class SymbolCell: UICollectionViewListCell {
     var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
     if state.isHighlighted || state.isSelected {
       backgroundConfig.backgroundColor = highlightedColor
+      textLabel.textColor = labelHighlightColor
     } else {
       backgroundConfig.backgroundColor = normalColor
+      textLabel.textColor = labelNormalColor
     }
     self.backgroundConfiguration = backgroundConfig
   }

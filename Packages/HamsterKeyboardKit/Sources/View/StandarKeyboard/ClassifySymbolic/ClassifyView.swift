@@ -57,9 +57,10 @@ class ClassifyView: UICollectionView {
       // TODO: 符号分类国际化
       // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
       cell.textLabel.text = symbol.string
-      cell.textLabel.textColor = keyboardContext.candidateTextColor
+      // cell.textLabel.textColor = keyboardContext.candidateTextColor
       cell.normalColor = keyboardContext.symbolListBackgroundColor
       cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
+      cell.labelNormalColor = keyboardContext.candidateTextColor
     }
     
     let dataSource = UICollectionViewDiffableDataSource<Int, SymbolCategory>(collectionView: self) { collectionView, indexPath, symbol in
