@@ -30,6 +30,16 @@ open class HamsterAppDependencyContainer {
     return vm
   }()
 
+  public lazy var rimeViewModel: RimeViewModel = {
+    let vm = RimeViewModel(rimeContext: rimeContext)
+    return vm
+  }()
+
+  public lazy var backupViewModel: BackupViewModel = {
+    let vm = BackupViewModel(fileBrowserViewModel: makeFileBrowserViewModel(rootURL: FileManager.sandboxBackupDirectory))
+    return vm
+  }()
+
   public lazy var inputSchemaViewModel: InputSchemaViewModel = {
     let vm = InputSchemaViewModel(rimeContext: rimeContext)
     return vm
@@ -132,18 +142,6 @@ extension HamsterAppDependencyContainer: UploadInputSchemaViewModelFactory {
   }
 }
 
-extension HamsterAppDependencyContainer: RimeViewModelFactory {
-  func makeRimeViewModel() -> RimeViewModel {
-    return RimeViewModel(rimeContext: rimeContext)
-  }
-}
-
-extension HamsterAppDependencyContainer: BackupViewModelFactory {
-  func makeBackupViewModel() -> BackupViewModel {
-    return BackupViewModel(fileBrowserViewModel: makeFileBrowserViewModel(rootURL: FileManager.sandboxBackupDirectory))
-  }
-}
-
 extension HamsterAppDependencyContainer: FinderViewModelFactory {
   func makeFinderViewModel() -> FinderViewModel {
     return FinderViewModel()
@@ -222,7 +220,7 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
   }
 
   public func makeSettingsViewController() -> SettingsViewController {
-    let settingViewController = SettingsViewController(settingsViewModel: settingsViewModel)
+    let settingViewController = SettingsViewController(settingsViewModel: settingsViewModel, rimeViewModel: rimeViewModel, backupViewModel: backupViewModel)
     return settingViewController
   }
 
@@ -268,12 +266,12 @@ extension HamsterAppDependencyContainer: SubViewControllerFactory {
   }
 
   func makeRimeViewController() -> RimeViewController {
-    let rimeViewController = RimeViewController(rimeViewModelFactory: self)
+    let rimeViewController = RimeViewController(rimeViewModel: rimeViewModel)
     return rimeViewController
   }
 
   func makeBackupViewController() -> BackupViewController {
-    let backupViewController = BackupViewController(backupViewModelFactory: self)
+    let backupViewController = BackupViewController(backupViewModel: backupViewModel)
     return backupViewController
   }
 

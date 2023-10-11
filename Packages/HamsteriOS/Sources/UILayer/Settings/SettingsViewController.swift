@@ -18,9 +18,13 @@ public class SettingsViewController: NibLessViewController {
   // MARK: - properties
 
   private var settingsViewModel: SettingsViewModel
+  private var rimeViewModel: RimeViewModel
+  private var backupViewModel: BackupViewModel
 
-  init(settingsViewModel: SettingsViewModel) {
+  init(settingsViewModel: SettingsViewModel, rimeViewModel: RimeViewModel, backupViewModel: BackupViewModel) {
     self.settingsViewModel = settingsViewModel
+    self.rimeViewModel = rimeViewModel
+    self.backupViewModel = backupViewModel
     super.init()
   }
 }
@@ -30,7 +34,7 @@ public class SettingsViewController: NibLessViewController {
 public extension SettingsViewController {
   override func loadView() {
     title = "输入法设置"
-    view = SettingsRootView(settingsViewModel: settingsViewModel)
+    view = SettingsRootView(settingsViewModel: settingsViewModel, rimeViewModel: rimeViewModel, backupViewModel: backupViewModel)
   }
 
   override func viewDidAppear(_ animated: Bool) {

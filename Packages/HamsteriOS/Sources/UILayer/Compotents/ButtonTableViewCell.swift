@@ -22,8 +22,10 @@ public class ButtonTableViewCell: NibLessTableViewCell {
     return state
   }
 
-  let buttonView: UIButton = {
+  lazy var buttonView: UIButton = {
     let button = UIButton(type: .roundedRect)
+    let interaction = UIContextMenuInteraction(delegate: self)
+    button.addInteraction(interaction)
     return button
   }()
 
@@ -80,5 +82,34 @@ public class ButtonTableViewCell: NibLessTableViewCell {
       Logger.statistics.error("\(#file) error: \(error)")
       ProgressHUD.showError("操作异常：\(error.localizedDescription)", delay: 1.5)
     }
+  }
+}
+
+extension ButtonTableViewCell: UIContextMenuInteractionDelegate {
+  public func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+    guard settingItem.type == .button else { return nil }
+    guard let favoriteButton = settingItem.favoriteButton else { return nil }
+    let isExists = UserDefaults.standard.favoriteButtonExist(button: favoriteButton)
+    return UIContextMenuConfiguration(actionProvider: { [unowned self] _ in
+      UIMenu(title: "", children: [isExists ? removeFavoriteAction(favoriteButton) : addFavoriteAction(favoriteButton)])
+    })
+  }
+
+  func addFavoriteAction(_ favoriteButton: FavoriteButton) -> UIAction {
+    return UIAction(
+      title: "添加至首页",
+      image: UIImage(systemName: "star.fill")?.withTintColor(.systemYellow),
+      handler: { _ in
+        UserDefaults.standard.setFavoriteButton(button: favoriteButton)
+      })
+  }
+
+  func removeFavoriteAction(_ favoriteButton: FavoriteButton) -> UIAction {
+    return UIAction(
+      title: "取消添加",
+      image: UIImage(systemName: "star.slash.fill")?.withTintColor(.systemYellow),
+      handler: { _ in
+        UserDefaults.standard.removeFavoriteButton(button: favoriteButton)
+      })
   }
 }

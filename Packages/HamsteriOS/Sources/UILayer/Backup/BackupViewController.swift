@@ -9,10 +9,6 @@ import Combine
 import HamsterUIKit
 import UIKit
 
-protocol BackupViewModelFactory {
-  func makeBackupViewModel() -> BackupViewModel
-}
-
 class BackupViewController: NibLessViewController {
   // MARK: properties
 
@@ -21,8 +17,8 @@ class BackupViewController: NibLessViewController {
 
   // MARK: methods
 
-  init(backupViewModelFactory: BackupViewModelFactory) {
-    self.backupViewModel = backupViewModelFactory.makeBackupViewModel()
+  init(backupViewModel: BackupViewModel) {
+    self.backupViewModel = backupViewModel
     super.init()
 
     backupViewModel.$backupSwipeAction

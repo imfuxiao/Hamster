@@ -11,7 +11,7 @@ import OSLog
 import ProgressHUD
 import ZIPFoundation
 
-class BackupViewModel {
+public class BackupViewModel {
   // MARK: properties
 
   lazy var settingItem = SettingItemModel(
@@ -21,6 +21,15 @@ class BackupViewModel {
     },
     favoriteButton: .appBackup
   )
+
+  /// 收藏按钮模型映射
+  lazy var favoriteButtonSettings: [FavoriteButton: SettingItemModel] = {
+    let map: [FavoriteButton: SettingItemModel] = [
+      .appBackup: settingItem
+    ]
+    return map
+  }()
+
   /// 备份文件列表
   @Published
   var backupFiles: [FileInfo] = []

@@ -8,14 +8,11 @@
 import HamsterUIKit
 import UIKit
 
-protocol RimeViewModelFactory {
-  func makeRimeViewModel() -> RimeViewModel
-}
-
 public class RimeViewController: NibLessViewController {
   public let rimeViewModel: RimeViewModel
-  init(rimeViewModelFactory: RimeViewModelFactory) {
-    self.rimeViewModel = rimeViewModelFactory.makeRimeViewModel()
+
+  init(rimeViewModel: RimeViewModel) {
+    self.rimeViewModel = rimeViewModel
     super.init()
   }
 }

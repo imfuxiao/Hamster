@@ -12,4 +12,6 @@ public enum FavoriteButton: String, Hashable, Equatable {
   case rimeSync
   case rimeRest
   case appBackup
+  
+  
 }
