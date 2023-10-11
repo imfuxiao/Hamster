@@ -615,6 +615,11 @@ swipe:
             - direction: up
               action: character(3)
               display: true
+        - action: chineseNineGrid(GHI)
+          swipe:
+            - direction: up
+              action: character(4)
+              display: true
         - action: chineseNineGrid(JKL)
           swipe:
             - direction: up

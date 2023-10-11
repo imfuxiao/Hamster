@@ -18,7 +18,12 @@ public class TextContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
   /// 按钮样式
-  public var style: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle {
+    didSet {
+      setNeedsLayout()
+    }
+  }
+
   /// 文本内容
   private let text: String
   /// 是否为输入类型操作
@@ -31,9 +36,7 @@ public class TextContentView: NibLessView {
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.2
-    label.text = text
-    label.font = style.font?.font
-    label.textColor = style.foregroundColor
+
     return label
   }()
 
@@ -144,13 +147,21 @@ public class TextContentView: NibLessView {
     setupTextView()
   }
 
-  func setupTextView() {
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    label.text = text
+    label.font = style.font?.font
+    label.textColor = style.foregroundColor
+
     leftSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     leftSwipeLabel.textColor = keyboardContext.secondaryLabelColor
 
     rightSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     rightSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+  }
 
+  func setupTextView() {
     addSubview(containerView)
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: topAnchor),

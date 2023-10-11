@@ -49,8 +49,8 @@ public class AppleCloudViewModel: ObservableObject {
       }
     ),
     .init(
-      icon: UIImage(systemName: "square.and.pencil"),
-//      text: "正则过滤",
+//      icon: UIImage(systemName: "square.and.pencil"),
+      text: "正则过滤",
       textValue: { [unowned self] in regexOnCopyFile },
       textHandled: { [unowned self] in
         regexOnCopyFile = $0

@@ -17,6 +17,13 @@ public class KeyboardButtonContentView: NibLessView {
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
     didSet {
+      if let view = contentView as? SpaceContentView {
+        view.style = style
+      } else if let view = contentView as? ImageContentView {
+        view.style = style
+      } else if let view = contentView as? TextContentView {
+        view.style = style
+      }
       setNeedsLayout()
     }
   }
@@ -54,11 +61,17 @@ public class KeyboardButtonContentView: NibLessView {
 
   // MARK: - Layout
 
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
+  override public func layoutSubviews() {
+    super.layoutSubviews()
 
     setupContentView()
   }
+
+//  override public func didMoveToWindow() {
+//    super.didMoveToWindow()
+//
+//    setupContentView()
+//  }
 
   func setupContentView() {
     contentView.translatesAutoresizingMaskIntoConstraints = false

@@ -12,10 +12,14 @@ import UIKit
 class SpaceContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
-  public var style: KeyboardButtonStyle
   private let loadingText: String
   private let loadingLabel: UILabel
   private let spaceView: TextContentView
+  public var style: KeyboardButtonStyle {
+    didSet {
+      setNeedsLayout()
+    }
+  }
   
   init(keyboardContext: KeyboardContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, loadingText: String, spaceText: String) {
     self.keyboardContext = keyboardContext
@@ -35,8 +39,8 @@ class SpaceContentView: NibLessView {
     super.init(frame: .zero)
   }
   
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
+  override func layoutSubviews() {
+    super.layoutSubviews()
     
     setupSpaceView()
   }
@@ -46,6 +50,7 @@ class SpaceContentView: NibLessView {
     
     loadingLabel.text = loadingText
     loadingLabel.font = style.font?.font
+    
     loadingLabel.alpha = 1
     addSubview(loadingLabel)
     loadingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -65,7 +70,7 @@ class SpaceContentView: NibLessView {
       spaceView.leadingAnchor.constraint(equalTo: leadingAnchor),
       spaceView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
-
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
       guard let self = self else { return }
       

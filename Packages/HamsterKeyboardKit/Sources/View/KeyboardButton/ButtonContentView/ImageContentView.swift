@@ -11,17 +11,16 @@ import UIKit
 class ImageContentView: NibLessView {
 //  private let scaleFactor: CGFloat
   public let imageView: UIImageView
-  public var style: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle {
+    didSet {
+      setNeedsLayout()
+    }
+  }
 
   init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
     self.style = style
     self.imageView = UIImageView(image: image)
     imageView.contentMode = .center
-    if let color = style.foregroundColor {
-      imageView.tintColor = color
-    } else {
-      imageView.tintColor = UIColor.label
-    }
 
     super.init(frame: .zero)
   }
@@ -30,6 +29,16 @@ class ImageContentView: NibLessView {
     super.didMoveToWindow()
 
     setupImage()
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    if let color = style.foregroundColor {
+      imageView.tintColor = color
+    } else {
+      imageView.tintColor = UIColor.label
+    }
   }
 
   func setupImage() {

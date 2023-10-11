@@ -107,6 +107,10 @@ public class KeyboardButton: UIControl {
   
   let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
   
+  var userInterfaceStyle: UIUserInterfaceStyle
+  
+  private var subscriptions = Set<AnyCancellable>()
+  
   // MARK: - subview
   
   /// 按键内容视图
@@ -196,8 +200,21 @@ public class KeyboardButton: UIControl {
     self.calloutContext = calloutContext
     self.appearance = appearance
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
     
     super.init(frame: .zero)
+    
+    // 系统外观发生变化，键盘颜色随亦随之变化
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        userInterfaceStyle = $0.userInterfaceStyle
+        
+        let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
+        buttonContentView.style = style
+      }
+      .store(in: &subscriptions)
   }
   
   @available(*, unavailable)

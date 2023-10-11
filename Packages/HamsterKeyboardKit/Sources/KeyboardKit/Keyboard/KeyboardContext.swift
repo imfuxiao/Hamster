@@ -674,7 +674,7 @@ public extension KeyboardContext {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.textColor
     }
-    return .label
+    return .standardButtonForeground(for: self)
   }
 
   /// 候选字颜色
@@ -682,7 +682,7 @@ public extension KeyboardContext {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.candidateTextColor
     }
-    return .label
+    return .standardButtonForeground(for: self)
   }
 
   /// secondaryLabel 颜色，如果开启仓配色，则取候选文字颜色
@@ -690,7 +690,7 @@ public extension KeyboardContext {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.candidateTextColor
     }
-    return .secondaryLabel
+    return .standardButtonForeground(for: self)
   }
 
   /// 分类符号键盘状态
