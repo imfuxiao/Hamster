@@ -36,12 +36,12 @@ class ClassifySymbolCell: UICollectionViewListCell {
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
-//    var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
-//    if state.isHighlighted || state.isSelected {
-//      backgroundConfig.backgroundColor = highlightedColor
-//    } else {
-//      backgroundConfig.backgroundColor = normalColor
-//    }
-//    self.backgroundConfiguration = backgroundConfig
+    var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
+    if state.isHighlighted || state.isSelected {
+      backgroundConfig.backgroundColor = highlightedColor
+    } else {
+      backgroundConfig.backgroundColor = normalColor
+    }
+    self.backgroundConfiguration = backgroundConfig
   }
 }

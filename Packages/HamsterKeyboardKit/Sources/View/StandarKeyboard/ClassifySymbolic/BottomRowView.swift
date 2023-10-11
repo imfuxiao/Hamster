@@ -5,36 +5,22 @@
 //  Created by morse on 2023/9/5.
 //
 
+import Combine
 import HamsterKit
+import HamsterUIKit
 import OSLog
 import UIKit
 
 /// 底部行
-class BottomRowView: UIView {
+class BottomRowView: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let layoutProvider: KeyboardLayoutProvider
   private let keyboardContext: KeyboardContext
   private var returnButtonWidthConstraint: NSLayoutConstraint? = nil
+  private var subscriptions = Set<AnyCancellable>()
 
-  init(
-    actionHandler: KeyboardActionHandler,
-    layoutProvider: KeyboardLayoutProvider,
-    keyboardContext: KeyboardContext
-  ) {
-    self.actionHandler = actionHandler
-    self.layoutProvider = layoutProvider
-    self.keyboardContext = keyboardContext
-
-    super.init(frame: .zero)
-
-    constructViewHierarchy()
-    activateViewConstraints()
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
+  // 屏幕方向
+  private var interfaceOrientation: InterfaceOrientation
 
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -70,17 +56,44 @@ class BottomRowView: UIView {
     return button
   }()
 
+  init(
+    actionHandler: KeyboardActionHandler,
+    layoutProvider: KeyboardLayoutProvider,
+    keyboardContext: KeyboardContext
+  ) {
+    self.actionHandler = actionHandler
+    self.layoutProvider = layoutProvider
+    self.keyboardContext = keyboardContext
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
+
+    super.init(frame: .zero)
+
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
+  }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    constructViewHierarchy()
+    activateViewConstraints()
+  }
+
   /// 构建视图层次
-  func constructViewHierarchy() {
+  override func constructViewHierarchy() {
     addSubview(returnButton)
     addSubview(lockStateButton)
     addSubview(backspaceButton)
   }
 
   /// 激活视图约束
-  func activateViewConstraints() {
+  override func activateViewConstraints() {
     // TODO: 这里获取不到值
-    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.1)
+    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
 
     NSLayoutConstraint.activate([
       returnButton.topAnchor.constraint(equalTo: topAnchor),
@@ -104,8 +117,11 @@ class BottomRowView: UIView {
   override func updateConstraints() {
     super.updateConstraints()
 
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    interfaceOrientation = keyboardContext.interfaceOrientation
+
     returnButtonWidthConstraint?.isActive = false
-    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.1)
+    returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
     returnButtonWidthConstraint?.isActive = true
   }
 }

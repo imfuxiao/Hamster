@@ -272,11 +272,6 @@ public class StanderSystemKeyboard: NibLessView {
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
-  func setupKeyboardView() {
-    constructViewHierarchy()
-    activateViewConstraints()
-  }
-
   func combine() {
     // 屏幕方向改变调整行高
     keyboardContext.$interfaceOrientation

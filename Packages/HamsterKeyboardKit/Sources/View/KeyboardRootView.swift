@@ -290,16 +290,15 @@ class KeyboardRootView: NibLessView {
           // 显示主键盘，并隐藏非主键盘
           primaryKeyboardView.isHidden = false
           if let view = self.tempKeyboardView {
+            view.isHidden = true
             self.tempKeyboardView = nil
-            view.layer.zPosition = -1
-            view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
           }
           return
         }
 
         // 先将之前的临时键盘隐藏
         if let view = self.tempKeyboardView {
-          view.frame = view.frame.offsetBy(dx: 0, dy: -self.frame.height)
+          view.isHidden = true
           self.tempKeyboardView = nil
         }
 
@@ -307,8 +306,7 @@ class KeyboardRootView: NibLessView {
         if let tempKeyboardView = tempKeyboardViewCache[$0] {
           // 隐藏主键盘并显示非主键盘
           primaryKeyboardView.isHidden = true
-          tempKeyboardView.frame = tempKeyboardView.frame.offsetBy(dx: 0, dy: self.frame.height)
-          tempKeyboardView.layer.zPosition = 999
+          tempKeyboardView.isHidden = false
           self.tempKeyboardView = tempKeyboardView
 
           return
@@ -319,35 +317,36 @@ class KeyboardRootView: NibLessView {
         switch $0 {
         case .numericNineGrid:
           tempKeyboardView = numericNineGridKeyboardView
-          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
         case .classifySymbolic:
           tempKeyboardView = classifySymbolicKeyboardView
-          tempKeyboardView!.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
         case .emojis:
           tempKeyboardView = emojisKeyboardView
-          tempKeyboardView!.frame = self.frame.offsetBy(dx: 0, dy: -self.frame.height)
         case .alphabetic, .numeric, .symbolic, .chinese, .chineseNumeric, .chineseSymbolic:
           tempKeyboardView = standerSystemKeyboard
-          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
         case .chineseNineGrid:
           tempKeyboardView = chineseNineGridKeyboardView
-          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
         case .custom:
           tempKeyboardView = customizeKeyboardView
-          tempKeyboardView!.frame = primaryKeyboardView.frame.offsetBy(dx: 0, dy: -self.frame.height)
         default:
           // 注意：非临时键盘类型外的类型直接 return
           Logger.statistics.error("keyboadType: \($0.yamlString) not match tempKeyboardType")
         }
 
+        tempKeyboardView?.translatesAutoresizingMaskIntoConstraints = false
+        tempKeyboardView?.isHidden = true
+        addSubview(tempKeyboardView!)
+        NSLayoutConstraint.activate([
+          tempKeyboardView!.topAnchor.constraint(equalTo: primaryKeyboardView.topAnchor),
+          tempKeyboardView!.bottomAnchor.constraint(equalTo: primaryKeyboardView.bottomAnchor),
+          tempKeyboardView!.leadingAnchor.constraint(equalTo: primaryKeyboardView.leadingAnchor),
+          tempKeyboardView!.trailingAnchor.constraint(equalTo: primaryKeyboardView.trailingAnchor)
+        ])
+
         if let tempKeyboardView = tempKeyboardView {
           // 隐藏主键盘并显示临时键盘
           primaryKeyboardView.isHidden = true
+          tempKeyboardView.isHidden = false
           tempKeyboardViewCache[$0] = tempKeyboardView
-          tempKeyboardView.translatesAutoresizingMaskIntoConstraints = true
-          addSubview(tempKeyboardView)
-          tempKeyboardView.frame = tempKeyboardView.frame.offsetBy(dx: 0, dy: self.frame.height)
-          tempKeyboardView.layer.zPosition = 999
           self.tempKeyboardView = tempKeyboardView
         }
       }
