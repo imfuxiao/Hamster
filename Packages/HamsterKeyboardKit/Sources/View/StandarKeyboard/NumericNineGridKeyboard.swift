@@ -47,8 +47,8 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     let insets = keyboardLayoutProvider.insets
 
     let container = UIView(frame: .zero)
-    container.backgroundColor = .clear
     container.translatesAutoresizingMaskIntoConstraints = false
+    container.backgroundColor = .clear
 
     container.addSubview(symbolsListView)
     NSLayoutConstraint.activate([

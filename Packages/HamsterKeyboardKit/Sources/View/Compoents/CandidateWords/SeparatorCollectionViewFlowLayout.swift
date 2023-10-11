@@ -17,8 +17,9 @@ public class SeparatorCollectionViewFlowLayout: AlignedCollectionViewFlowLayout 
   
   // MARK: - Lifecycle
   
-  init() {
-    super.init(horizontalAlignment: .justified, verticalAlignment: .center)
+  override init(horizontalAlignment: HorizontalAlignment = .justified, verticalAlignment: VerticalAlignment = .center) {
+    super.init(horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment)
+    
     setup()
   }
   

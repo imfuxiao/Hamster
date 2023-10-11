@@ -7,10 +7,43 @@
 
 import UIKit
 
+/// 扩展 UIConfigurationStateCustomKey，用来表示 state 中自定义的数据
+private extension UIConfigurationStateCustomKey {
+  static let classifySymbolCellText = UIConfigurationStateCustomKey("com.ihsiao.apps.hamster.keyboard.ClassifyKeyboardCell.text")
+}
+
+/// 扩展 UICellConfigurationState，添加自定义数据属性
+private extension UICellConfigurationState {
+  var symbol: String? {
+    get {
+      self[.classifySymbolCellText] as? String
+    }
+    set {
+      self[.classifySymbolCellText] = newValue
+    }
+  }
+}
+
 /// 符号单元格
 class SymbolCell: UICollectionViewListCell {
+  public var highlightedColor: UIColor? = nil
+  public var normalColor: UIColor? = nil
+  public var labelHighlightColor: UIColor? = nil
+  public var labelNormalColor: UIColor? = nil
+  public var symbol: String? = nil
+
+  override var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.symbol = symbol
+    return state
+  }
+
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
+
+    NSLayoutConstraint.activate([
+      separatorLayoutGuide.leadingAnchor.constraint(equalTo: leadingAnchor)
+    ])
   }
 
   @available(*, unavailable)
@@ -18,37 +51,44 @@ class SymbolCell: UICollectionViewListCell {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public var highlightedColor: UIColor? = nil
-  public var normalColor: UIColor? = nil
-  public var labelHighlightColor: UIColor? = nil
-  public var labelNormalColor: UIColor? = nil
+  func updateWithSymbol(_ symbol: String,
+                        highlightedColor: UIColor? = nil,
+                        normalColor: UIColor? = nil,
+                        labelHighlightColor: UIColor? = nil,
+                        labelNormalColor: UIColor? = nil)
+  {
+    self.symbol = symbol
+    self.highlightedColor = highlightedColor
+    self.normalColor = normalColor
+    self.labelNormalColor = labelNormalColor
+    self.labelHighlightColor = labelHighlightColor
 
-  public lazy var textLabel: UILabel = {
-    let label = UILabel(frame: .zero)
-    label.textAlignment = .center
-    label.translatesAutoresizingMaskIntoConstraints = false
-    self.contentView.addSubview(label)
-    NSLayoutConstraint.activate([
-      label.heightAnchor.constraint(greaterThanOrEqualToConstant: 35),
-      label.topAnchor.constraint(equalTo: contentView.topAnchor),
-      contentView.bottomAnchor.constraint(equalTo: label.bottomAnchor),
-      label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-      separatorLayoutGuide.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-    ])
-    return label
-  }()
+    setNeedsUpdateConfiguration()
+  }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
+
+    var contentConfig = defaultContentConfiguration()
+    contentConfig.text = state.symbol
+    contentConfig.textProperties.alignment = .center
+    contentConfig.textProperties.adjustsFontSizeToFitWidth = true
+
     var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
+
     if state.isHighlighted || state.isSelected {
       backgroundConfig.backgroundColor = highlightedColor
-      textLabel.textColor = labelHighlightColor
+      if let color = labelHighlightColor {
+        contentConfig.textProperties.color = color
+      }
     } else {
       backgroundConfig.backgroundColor = normalColor
-      textLabel.textColor = labelNormalColor
+      if let color = labelNormalColor {
+        contentConfig.textProperties.color = color
+      }
     }
+
+    self.contentConfiguration = contentConfig
     self.backgroundConfiguration = backgroundConfig
   }
 }

@@ -25,7 +25,7 @@ class BottomRowView: NibLessView {
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("返回", for: .normal)
-    button.tintColor = keyboardContext.secondaryLabelColor
+    button.setTitleColor(keyboardContext.candidateTextColor, for: .normal)
     button.backgroundColor = keyboardContext.systemButtonBackgroundColor
     button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(returnKeyboardReleaseHandled(_:)), for: .touchUpInside)
@@ -37,8 +37,7 @@ class BottomRowView: NibLessView {
   lazy var lockStateButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: keyboardContext.classifySymbolKeyboardLockState ? "lock" : "lock.open"), for: .normal)
-    button.tintColor = keyboardContext.secondaryLabelColor
-    button.backgroundColor = keyboardContext.backgroundColor
+    button.tintColor = keyboardContext.candidateTextColor
     button.addTarget(self, action: #selector(lockStatePressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(lockStateReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +46,7 @@ class BottomRowView: NibLessView {
 
   lazy var backspaceButton: UIButton = {
     let button = UIButton(type: .custom)
-    button.tintColor = keyboardContext.secondaryLabelColor
+    button.tintColor = keyboardContext.candidateTextColor
     button.setImage(UIImage(systemName: "delete.left"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.tintColor = .label
@@ -128,10 +127,12 @@ class BottomRowView: NibLessView {
 
 extension BottomRowView {
   @objc func returnKeyboardPressHandled(_ button: UIButton) {
+    button.backgroundColor = keyboardContext.symbolListHighlightedBackgroundColor
     actionHandler.handle(.press, on: .returnLastKeyboard)
   }
 
   @objc func returnKeyboardReleaseHandled(_ button: UIButton) {
+    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
     actionHandler.handle(.release, on: .returnLastKeyboard)
   }
 
@@ -146,12 +147,12 @@ extension BottomRowView {
   }
 
   @objc func backspacePressHandled(_ button: UIButton) {
-    button.backgroundColor = .white
+    button.backgroundColor = keyboardContext.symbolListHighlightedBackgroundColor
     actionHandler.handle(.press, on: .backspace)
   }
 
   @objc func backspaceReleaseHandled(_ button: UIButton) {
-    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
+    button.backgroundColor = .clear
     actionHandler.handle(.release, on: .backspace)
   }
 }

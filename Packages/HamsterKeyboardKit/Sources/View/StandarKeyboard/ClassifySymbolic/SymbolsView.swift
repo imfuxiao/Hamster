@@ -22,32 +22,38 @@ class SymbolsView: UICollectionView {
     self.actionHandler = actionHandler
     self.viewModel = viewModel
 
-    let layout: UICollectionViewCompositionalLayout = {
-      let symbolItem = NSCollectionLayoutItem(
-        layoutSize: NSCollectionLayoutSize(
-          widthDimension: .fractionalWidth(0.25),
-          heightDimension: .fractionalHeight(1.0)
-        )
-      )
+//    let layout: UICollectionViewCompositionalLayout = {
+//      let symbolItem = NSCollectionLayoutItem(
+//        layoutSize: NSCollectionLayoutSize(
+//          widthDimension: .fractionalWidth(0.25),
+//          heightDimension: .fractionalHeight(1.0)
+//        )
+//      )
+//
+//      let symbolGroup = NSCollectionLayoutGroup.horizontal(
+//        layoutSize: NSCollectionLayoutSize(
+//          widthDimension: .fractionalWidth(1.0),
+//          heightDimension: .fractionalHeight(0.25)
+//        ),
+//        subitems: [symbolItem, symbolItem, symbolItem, symbolItem]
+//      )
+//      symbolGroup.edgeSpacing = .init(leading: .none, top: .none, trailing: .none, bottom: .fixed(1))
+//
+//      let section = NSCollectionLayoutSection(group: symbolGroup)
+//      section.contentInsets = .zero
+//      section.interGroupSpacing = .zero
+//      return UICollectionViewCompositionalLayout(section: section)
+//    }()
 
-      let symbolGroup = NSCollectionLayoutGroup.horizontal(
-        layoutSize: NSCollectionLayoutSize(
-          widthDimension: .fractionalWidth(1.0),
-          heightDimension: .fractionalHeight(0.25)
-        ),
-        subitems: [symbolItem, symbolItem, symbolItem, symbolItem]
-      )
-      symbolGroup.edgeSpacing = .init(leading: .none, top: .none, trailing: .none, bottom: .fixed(1))
-
-      let section = NSCollectionLayoutSection(group: symbolGroup)
-      section.contentInsets = .zero
-      section.interGroupSpacing = .zero
-      return UICollectionViewCompositionalLayout(section: section)
+    let layout = {
+      let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .leading, verticalAlignment: .center)
+      layout.scrollDirection = .vertical
+      return layout
     }()
 
     super.init(frame: .zero, collectionViewLayout: layout)
 
-    self.backgroundColor = keyboardContext.backgroundColor
+    self.backgroundColor = keyboardContext.symbolListBackgroundColor
     self.delegate = self
     self.diffableDataSource = makeDataSource()
 
@@ -70,11 +76,23 @@ class SymbolsView: UICollectionView {
   }
 
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Symbol> {
-    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, Symbol> { [unowned self] cell, _, symbol in
-      cell.textLabel.text = symbol.char
-      cell.textLabel.textColor = keyboardContext.candidateTextColor
-      cell.normalColor = keyboardContext.symbolListBackgroundColor
-      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
+//    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, Symbol> { [unowned self] cell, _, symbol in
+//      cell.textLabel.text = symbol.char
+//      cell.textLabel.textColor = keyboardContext.candidateTextColor
+//      cell.normalColor = keyboardContext.symbolListBackgroundColor
+//      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
+//    }
+    let symbolCellRegistration = UICollectionView.CellRegistration<SymbolCell, Symbol> { [unowned self] cell, _, symbol in
+      // TODO: 符号分类国际化
+      // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
+      cell.updateWithSymbol(
+        symbol.char,
+        highlightedColor: keyboardContext.symbolListHighlightedBackgroundColor,
+//        normalColor: keyboardContext.symbolListBackgroundColor,
+        normalColor: .clear,
+        labelHighlightColor: .label,
+        labelNormalColor: keyboardContext.candidateTextColor
+      )
     }
 
     let dataSource = UICollectionViewDiffableDataSource<Int, Symbol>(collectionView: self) { collectionView, indexPath, symbol in

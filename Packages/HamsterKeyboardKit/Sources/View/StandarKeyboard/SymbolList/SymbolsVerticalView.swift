@@ -31,13 +31,15 @@ class SymbolsVerticalView: UICollectionView {
     self.actionHandler = actionHandler
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
-      configuration.backgroundColor = keyboardContext.symbolListBackgroundColor
+      configuration.backgroundColor = .clear
       configuration.separatorConfiguration.color = keyboardContext.enableHamsterKeyboardColor ? .systemGray : .secondarySystemBackground
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       section.contentInsets = .zero
       return section
     })
     super.init(frame: .zero, collectionViewLayout: layout)
+
+    self.backgroundColor = keyboardContext.symbolListBackgroundColor
 
     self.diffalbeDataSource = makeDataSource()
     self.showsVerticalScrollIndicator = false
@@ -58,10 +60,14 @@ class SymbolsVerticalView: UICollectionView {
 
   func symbolCellRegistration() -> UICollectionView.CellRegistration<SymbolCell, String> {
     UICollectionView.CellRegistration { [unowned self] cell, _, item in
-      cell.textLabel.text = item
-      cell.textLabel.textColor = keyboardContext.candidateTextColor
-      cell.normalColor = keyboardContext.symbolListBackgroundColor
-      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
+      cell.updateWithSymbol(
+        item,
+        highlightedColor: keyboardContext.symbolListHighlightedBackgroundColor,
+//        normalColor: keyboardContext.symbolListBackgroundColor,
+        normalColor: .clear,
+        labelHighlightColor: .label,
+        labelNormalColor: keyboardContext.candidateTextColor
+      )
     }
   }
 
