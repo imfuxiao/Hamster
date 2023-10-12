@@ -154,8 +154,8 @@ class CustomizeKeyboard: NibLessView {
         if button.column == 0 {
           let heightConstant = button.item.size.height
           let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
-          // buttonHeightConstraint.priority = button.row + 1 == row.endIndex ? .defaultHigh : .required
-          buttonHeightConstraint.priority = .defaultHigh
+          // TODO: .required 会导致日志打印约束错误，但是改为 .defaultHigh 后，高度约束不起作用，会导致显示的高度有问题
+          buttonHeightConstraint.priority = .required
           buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
           dynamicConstraints.append(buttonHeightConstraint)
         } else {
