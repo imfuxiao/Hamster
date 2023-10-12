@@ -32,6 +32,12 @@ class SymbolCell: UICollectionViewListCell {
   public var labelNormalColor: UIColor? = nil
   public var symbol: String? = nil
 
+  var symbolLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
+
   override var configurationState: UICellConfigurationState {
     var state = super.configurationState
     state.symbol = symbol
@@ -41,7 +47,11 @@ class SymbolCell: UICollectionViewListCell {
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
 
+    contentView.addSubview(symbolLabel)
+    symbolLabel.fillSuperview()
+
     NSLayoutConstraint.activate([
+      symbolLabel.heightAnchor.constraint(equalToConstant: 40),
       separatorLayoutGuide.leadingAnchor.constraint(equalTo: leadingAnchor)
     ])
   }
@@ -69,26 +79,36 @@ class SymbolCell: UICollectionViewListCell {
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
 
-    var contentConfig = defaultContentConfiguration()
-    contentConfig.text = state.symbol
-    contentConfig.textProperties.alignment = .center
-    contentConfig.textProperties.adjustsFontSizeToFitWidth = true
+//    var contentConfig = UIListContentConfiguration.valueCell()
+//    contentConfig.text = state.symbol
+//    contentConfig.textProperties.font = UIFont.systemFont(ofSize: 12)
+//    contentConfig.textProperties.alignment = .center
+//    contentConfig.textProperties.adjustsFontSizeToFitWidth = true
+//    contentConfig.axesPreservingSuperviewLayoutMargins = .both
+//    contentConfig.directionalLayoutMargins = .zero
+
+    symbolLabel.text = state.symbol
+    symbolLabel.font = UIFont.systemFont(ofSize: 16)
+    symbolLabel.textAlignment = .center
+    symbolLabel.adjustsFontSizeToFitWidth = true
 
     var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
 
     if state.isHighlighted || state.isSelected {
       backgroundConfig.backgroundColor = highlightedColor
       if let color = labelHighlightColor {
-        contentConfig.textProperties.color = color
+        // contentConfig.textProperties.color = color
+        symbolLabel.textColor = color
       }
     } else {
       backgroundConfig.backgroundColor = normalColor
       if let color = labelNormalColor {
-        contentConfig.textProperties.color = color
+        // contentConfig.textProperties.color = color
+        symbolLabel.textColor = color
       }
     }
 
-    self.contentConfiguration = contentConfig
+    // self.contentConfiguration = contentConfig
     self.backgroundConfiguration = backgroundConfig
   }
 }

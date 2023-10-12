@@ -35,6 +35,7 @@ class SymbolsVerticalView: UICollectionView {
       configuration.separatorConfiguration.color = keyboardContext.enableHamsterKeyboardColor ? .systemGray : .secondarySystemBackground
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       section.contentInsets = .zero
+      section.interGroupSpacing = .zero
       return section
     })
     super.init(frame: .zero, collectionViewLayout: layout)
