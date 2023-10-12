@@ -33,7 +33,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
   public var textDocumentProxy: UITextDocumentProxy { keyboardContext.textDocumentProxy }
 
   /// 空格拖动手势是否激活
-  public private(set) var isSpaceDragGestureActive = false
+  public var isSpaceDragGestureActive = false
 
   /// 空格拖动手势的激活位置
   private var spaceDragActivationLocation: CGPoint?

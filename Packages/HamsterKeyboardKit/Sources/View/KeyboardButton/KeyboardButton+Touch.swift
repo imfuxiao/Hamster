@@ -75,6 +75,11 @@ public extension KeyboardButton {
     
     defer {
       endAction()
+
+      // action 手势结束后重置空格划动激活状态
+      if action == .space, let actionHandler = actionHandler as? StandardKeyboardActionHandler, actionHandler.isSpaceDragGestureActive {
+        actionHandler.isSpaceDragGestureActive = false
+      }
     }
     
     // 取消状态不触发 .release
