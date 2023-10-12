@@ -96,6 +96,20 @@ Keyboard:
   enableSymbolKeyboard: true
   lockForSymbolKeyboard: false
 
+  # 是否启用空格加载文本
+  enableLoadingTextForSpaceButton: false
+
+  # 空格按钮加载文本
+  loadingTextForSpaceButton: ""
+
+  # 空格按钮长显文本
+  labelTextForSpaceButton: ""
+
+  # 空格按钮长显为当前输入方案
+  # 当开启此选项后，labelForSpaceButton 设置的值无效
+  showCurrentInputSchemaNameForSpaceButton: false
+
+
   enableColorSchema: false
   useColorSchema: ""
 

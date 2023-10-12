@@ -59,10 +59,13 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       if row == 3 && index == 0 && actions[row].count == 3 && type.isNumber {
         return largeBottomWidth(for: context)
       }
+      if row == 3 && actions[row].count == 4 && type.isNumber {
+        return smallBottomWidth(for: context)
+      }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
     case .primary:
-      if row == 3 && (index == 2 || index == 3) {
+      if row == 3 && actions[row].count == 3 {
         return largeBottomWidth(for: context)
       }
       return smallBottomWidth(for: context)

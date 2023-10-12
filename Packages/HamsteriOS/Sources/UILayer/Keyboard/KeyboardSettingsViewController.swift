@@ -15,6 +15,7 @@ protocol KeyboardSettingsSubViewControllerFactory {
   func makeSymbolKeyboardSettingsViewController() -> SymbolKeyboardSettingsViewController
   func makeToolbarSettingsViewController() -> ToolbarSettingsViewController
   func makeKeyboardLayoutViewController() -> KeyboardLayoutViewController
+  func makeSpaceSettingsViewController() -> SpaceSettingsViewController
 }
 
 public class KeyboardSettingsViewController: NibLessViewController {
@@ -25,6 +26,7 @@ public class KeyboardSettingsViewController: NibLessViewController {
   private let symbolSettingsViewController: SymbolSettingsViewController
   private let symbolKeyboardSettingsViewController: SymbolKeyboardSettingsViewController
   private let keyboardLayoutViewController: KeyboardLayoutViewController
+  private let spaceSettingsViewController: SpaceSettingsViewController
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -37,6 +39,7 @@ public class KeyboardSettingsViewController: NibLessViewController {
     self.symbolSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolSettingsViewController()
     self.symbolKeyboardSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSymbolKeyboardSettingsViewController()
     self.keyboardLayoutViewController = keyboardSettingsSubViewControllerFactory.makeKeyboardLayoutViewController()
+    self.spaceSettingsViewController = keyboardSettingsSubViewControllerFactory.makeSpaceSettingsViewController()
 
     super.init()
 
@@ -60,6 +63,8 @@ public class KeyboardSettingsViewController: NibLessViewController {
       presentToolbar()
     case .keyboardLayout:
       presentKeyboardLayout()
+    case .space:
+      presentSpaceSettings()
     }
   }
 
@@ -81,6 +86,10 @@ public class KeyboardSettingsViewController: NibLessViewController {
 
   func presentKeyboardLayout() {
     navigationController?.pushViewController(keyboardLayoutViewController, animated: true)
+  }
+
+  func presentSpaceSettings() {
+    navigationController?.pushViewController(spaceSettingsViewController, animated: true)
   }
 }
 

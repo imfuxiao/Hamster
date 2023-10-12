@@ -101,4 +101,17 @@ public struct KeyboardConfiguration: Codable, Hashable {
   
   /// 键盘颜色方案列表
   public var colorSchemas: [KeyboardColorSchema]?
+
+  // 是否启用空格加载文本
+  public var enableLoadingTextForSpaceButton: Bool?
+
+  // 空格按钮加载文本
+  public var loadingTextForSpaceButton: String?
+
+  // 空格按钮长显文本
+  public var labelTextForSpaceButton: String?
+
+  // 空格按钮长显为当前输入方案
+  // 当开启此选项后，labelForSpaceButton 设置的值无效
+  public var showCurrentInputSchemaNameForSpaceButton: Bool?
 }

@@ -18,6 +18,7 @@ public enum KeyboardSettingsSubView {
   case symbols
   case symbolKeyboard
   case keyboardLayout
+  case space
 }
 
 public enum NumberNineGridTabView {
@@ -303,6 +304,47 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  // 是否启用空格加载文本
+  public var enableLoadingTextForSpaceButton: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableLoadingTextForSpaceButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableLoadingTextForSpaceButton = newValue
+    }
+  }
+
+  // 空格按钮加载文本
+  public var loadingTextForSpaceButton: String {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.loadingTextForSpaceButton ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.loadingTextForSpaceButton = newValue
+    }
+  }
+
+  // 空格按钮长显文本
+  public var labelTextForSpaceButton: String {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.labelTextForSpaceButton ?? ""
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.labelTextForSpaceButton = newValue
+    }
+  }
+
+  // 空格按钮长显为当前输入方案
+  // 当开启此选项后，labelForSpaceButton 设置的值无效
+  public var showCurrentInputSchemaNameForSpaceButton: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameForSpaceButton = newValue
+    }
+  }
+
   /// 中文标准键盘默认划动选项
   public var chineseStanderSystemKeyboardSwipeList: [Key] {
     HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
@@ -435,6 +477,17 @@ public class KeyboardSettingsViewModel: ObservableObject {
           toggleValue: { [unowned self] in enableEmbeddedInputMode },
           toggleHandled: { [unowned self] in
             enableEmbeddedInputMode = $0
+          })
+      ]),
+
+    .init(
+      items: [
+        .init(
+          text: "空格设置",
+          accessoryType: .disclosureIndicator,
+          type: .navigation,
+          navigationAction: { [unowned self] in
+            self.subViewSubject.send(.space)
           })
       ]),
 
@@ -706,49 +759,56 @@ public class KeyboardSettingsViewModel: ObservableObject {
       })
   ]
 
+  lazy var spaceSettings: [SettingSectionModel] = [
+    .init(items: [
+      .init(
+        icon: UIImage(systemName: "square.and.pencil"),
+        placeholder: "加载文字",
+        type: .textField,
+        textValue: { [unowned self] in
+          loadingTextForSpaceButton
+        },
+        textHandled: { [unowned self] in
+          loadingTextForSpaceButton = $0
+        })
+    ]),
+    .init(items: [
+      .init(
+        icon: UIImage(systemName: "square.and.pencil"),
+        placeholder: "长显文字",
+        type: .textField,
+        textValue: { [unowned self] in
+          labelTextForSpaceButton
+        },
+        textHandled: { [unowned self] in
+          labelTextForSpaceButton = $0
+        })
+    ]),
+    .init(items: [
+      .init(
+        text: "启用加载文字",
+        type: .toggle,
+        toggleValue: { [unowned self] in
+          enableLoadingTextForSpaceButton
+        },
+        toggleHandled: { [unowned self] in
+          enableLoadingTextForSpaceButton = $0
+        }),
+      .init(
+        text: "长显显示输入方案名",
+        type: .toggle,
+        toggleValue: { [unowned self] in
+          showCurrentInputSchemaNameForSpaceButton
+        },
+        toggleHandled: { [unowned self] in
+          showCurrentInputSchemaNameForSpaceButton = $0
+        })
+    ])
+  ]
+
   // MARK: - Initialization
 
-  public init() {
-//    self.displayButtonBubbles = configuration.Keyboard?.displayButtonBubbles ?? true
-//    self.upSwipeOnLeft = configuration.Keyboard?.upSwipeOnLeft ?? true
-//    self.displayKeyboardDismissButton = configuration.toolbar?.displayKeyboardDismissButton ?? true
-//    self.lockShiftState = configuration.Keyboard?.lockShiftState ?? true
-//    self.displaySpaceLeftButton = configuration.Keyboard?.displaySpaceLeftButton ?? true
-//    self.keyValueOfSpaceLeftButton = configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ","
-//    self.displaySpaceRightButton = configuration.Keyboard?.displaySpaceRightButton ?? false
-//    self.keyValueOfSpaceRightButton = configuration.Keyboard?.keyValueOfSpaceRightButton ?? "."
-//    self.displayChineseEnglishSwitchButton = configuration.Keyboard?.displayChineseEnglishSwitchButton ?? true
-//    self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
-//    self.enableToolbar = configuration.toolbar?.enableToolbar ?? true
-//    self.displaySemicolonButton = configuration.Keyboard?.displaySemicolonButton ?? false
-//    self.displayClassifySymbolButton = configuration.Keyboard?.displayClassifySymbolButton ?? true
-//    self.enableNineGridOfNumericKeyboard = configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? false
-//    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? false
-//    self.enableSymbolKeyboard = configuration.Keyboard?.enableSymbolKeyboard ?? false
-//    self.symbolsOfGridOfNumericKeyboard = configuration.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
-//    self.pairsOfSymbols = configuration.Keyboard?.pairsOfSymbols ?? []
-//    self.symbolsOfCursorBack = configuration.Keyboard?.symbolsOfCursorBack ?? []
-//    self.symbolsOfReturnToMainKeyboard = configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
-//    self.useKeyboardType = (configuration.Keyboard?.useKeyboardType ?? "chinese").keyboardType ?? .chinese(.lowercased)
-//
-//    self.enableEmbeddedInputMode = configuration.Keyboard?.enableEmbeddedInputMode ?? false
-//    self.candidateWordFontSize = configuration.toolbar?.candidateWordFontSize ?? 20
-//    self.heightOfToolbar = configuration.toolbar?.heightOfToolbar ?? 50
-//    self.heightOfCodingArea = configuration.toolbar?.heightOfCodingArea ?? 10
-//    self.codingAreaFontSize = configuration.toolbar?.codingAreaFontSize ?? 12
-//    self.candidateCommentFontSize = configuration.toolbar?.candidateCommentFontSize ?? 12
-//    self.displayIndexOfCandidateWord = configuration.toolbar?.displayIndexOfCandidateWord ?? false
-//    self.displayCommentOfCandidateWord = configuration.toolbar?.displayCommentOfCandidateWord ?? false
-//    self.maximumNumberOfCandidateWords = configuration.rime?.maximumNumberOfCandidateWords ?? 100
-
-//    for keyboardSwipe in configuration.swipe?.keyboardSwipe ?? [] {
-//      if keyboardSwipe.keyboardType?.isChinesePrimaryKeyboard ?? false {
-//        self.chineseStanderSystemKeyboardSwipeList = keyboardSwipe.keys ?? []
-//      }
-//    }
-
-//    self.keyboardLayoutList = keyboardLayoutList + (configuration.customizeKeyboards ?? []).map { $0.type }
-  }
+  public init() {}
 }
 
 // MARK: - target-action

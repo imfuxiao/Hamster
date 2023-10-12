@@ -60,14 +60,19 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
     case .keyboardType(let type):
-      if row == 3 && index == 0 {
-        if type.isNumber || type.isAlphabetic {
-          return largeBottomWidth(for: context)
-        }
+      if row == 3 && index == 0 && actions[row].count == 3 && type.isNumber {
+        return largeBottomWidth(for: context)
+      }
+      if row == 3 && index == 0 && actions[row].count == 4 && type.isNumber {
+        return smallBottomWidth(for: context)
       }
       return bottomSystemButtonWidth(for: context)
     case .nextKeyboard: return bottomSystemButtonWidth(for: context)
-    case .primary: return largeBottomWidth(for: context)
+    case .primary:
+      if row == 3 && actions[row].count == 3 {
+        return largeBottomWidth(for: context)
+      }
+      return smallBottomWidth(for: context)
     case .shift: return lowerSystemButtonWidth(for: context)
     case .returnLastKeyboard: return bottomSystemButtonWidth(for: context)
     default: return .available
@@ -177,8 +182,8 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   ) -> KeyboardActions {
     var result = KeyboardActions()
 
-    // 英文键盘：返回主键盘
-    if !context.selectKeyboard.isAlphabetic && context.keyboardType.isAlphabetic {
+    // 自定义键盘：返回主键盘
+    if (context.selectKeyboard.isCustom || context.selectKeyboard.isChineseNineGrid) && context.keyboardType.isAlphabetic {
       result.append(.keyboardType(context.selectKeyboard))
     }
 
@@ -188,6 +193,11 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if context.needsInputModeSwitchKey { result.append(.nextKeyboard) }
 
     result.append(.space)
+
+    // 英文键盘：返回主键盘
+    if context.selectKeyboard.isChinesePrimaryKeyboard && context.keyboardType.isAlphabetic {
+      result.append(.keyboardType(context.selectKeyboard))
+    }
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.symbol(.init(char: "@")))

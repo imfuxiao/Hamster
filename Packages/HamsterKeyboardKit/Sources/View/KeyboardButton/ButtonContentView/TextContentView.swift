@@ -25,7 +25,8 @@ public class TextContentView: NibLessView {
   }
 
   /// 文本内容
-  private let text: String
+  private var text: String
+
   /// 是否为输入类型操作
   private let isInputAction: Bool
 
@@ -33,6 +34,7 @@ public class TextContentView: NibLessView {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
+    label.lineBreakMode = .byTruncatingTail
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.2
@@ -102,6 +104,8 @@ public class TextContentView: NibLessView {
         label.topAnchor.constraint(equalTo: containerView.topAnchor, constant: useOffset ? -2 : 0),
         label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+        label.leadingAnchor.constraint(equalToSystemSpacingAfter: containerView.leadingAnchor, multiplier: 1.0),
+        containerView.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.0)
       ])
     } else {
       containerView.addSubview(swipeLabelContainer)
@@ -114,6 +118,8 @@ public class TextContentView: NibLessView {
         label.topAnchor.constraint(equalTo: swipeLabelContainer.bottomAnchor, constant: useOffset ? -2 : 0),
         label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+        label.leadingAnchor.constraint(equalToSystemSpacingAfter: containerView.leadingAnchor, multiplier: 1.0),
+        containerView.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.0)
       ])
     }
 
@@ -167,8 +173,12 @@ public class TextContentView: NibLessView {
       containerView.topAnchor.constraint(equalTo: topAnchor),
       containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
       containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      containerView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ])
+  }
+
+  func setTextValue(_ text: String) {
+    label.text = text
   }
 }
 

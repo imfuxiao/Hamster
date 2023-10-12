@@ -29,33 +29,19 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 当前输入方案
-  @MainActor
-  public var currentSchema: RimeSchema? {
-    get {
-      if let currentSchema = UserDefaults.standard.currentSchema {
-        return currentSchema
-      }
-      return UserDefaults.hamster.currentSchema
-    }
-    set {
+  @MainActor @Published
+  public var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
+    didSet {
       // 如果没有完全访问权限，UserDefaults.hamster 会保存失败
-      UserDefaults.standard.currentSchema = newValue
-      UserDefaults.hamster.currentSchema = newValue
+      UserDefaults.hamster.currentSchema = currentSchema
     }
   }
 
   /// 上次使用输入方案
   @MainActor
-  public var latestSchema: RimeSchema? {
-    get {
-      if let latestSchema = UserDefaults.standard.latestSchema {
-        return latestSchema
-      }
-      return UserDefaults.hamster.latestSchema
-    }
-    set {
-      UserDefaults.standard.latestSchema = newValue
-      UserDefaults.hamster.latestSchema = newValue
+  public var latestSchema: RimeSchema? = UserDefaults.hamster.latestSchema {
+    didSet {
+      UserDefaults.hamster.currentSchema = currentSchema
     }
   }
 

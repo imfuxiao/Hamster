@@ -32,9 +32,8 @@ public class KeyboardButtonContentView: NibLessView {
   private let rimeContext: RimeContext
 
   private lazy var contentView: UIView = {
-    // TODO: 补充空格自定义加载文本
     if action == .space {
-      return SpaceContentView(keyboardContext: keyboardContext, item: item, style: style, loadingText: .space, spaceText: buttonText)
+      return SpaceContentView(keyboardContext: keyboardContext, rimeContext: rimeContext, item: item, style: style, spaceText: buttonText)
     } else if let image = appearance.buttonImage(for: action) {
       return ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
     }
@@ -66,12 +65,6 @@ public class KeyboardButtonContentView: NibLessView {
 
     setupContentView()
   }
-
-//  override public func didMoveToWindow() {
-//    super.didMoveToWindow()
-//
-//    setupContentView()
-//  }
 
   func setupContentView() {
     contentView.translatesAutoresizingMaskIntoConstraints = false

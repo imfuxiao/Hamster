@@ -763,4 +763,25 @@ public extension KeyboardContext {
   var longPressDelay: Double? {
     hamsterConfig?.swipe?.longPressDelay
   }
+
+  // 是否启用空格加载文本
+  var enableLoadingTextForSpaceButton: Bool {
+    hamsterConfig?.Keyboard?.enableLoadingTextForSpaceButton ?? false
+  }
+
+  // 空格按钮加载文本
+  var loadingTextForSpaceButton: String {
+    hamsterConfig?.Keyboard?.loadingTextForSpaceButton ?? ""
+  }
+
+  // 空格按钮长显文本
+  var labelTextForSpaceButton: String {
+    hamsterConfig?.Keyboard?.labelTextForSpaceButton ?? ""
+  }
+
+  // 空格按钮长显为当前输入方案
+  // 当开启此选项后，labelForSpaceButton 设置的值无效
+  var showCurrentInputSchemaNameForSpaceButton: Bool {
+    hamsterConfig?.Keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
+  }
 }

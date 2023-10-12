@@ -11,114 +11,107 @@ import UIKit
 
 class SpaceContentView: NibLessView {
   private let keyboardContext: KeyboardContext
+  private let rimeContext: RimeContext
   private let item: KeyboardLayoutItem
-  private let loadingText: String
-  private let loadingLabel: UILabel
-  private let spaceView: TextContentView
+  private var spaceText: String
+  private var subscriptions = Set<AnyCancellable>()
+
   public var style: KeyboardButtonStyle {
     didSet {
-      setNeedsLayout()
+      textView.style = style
     }
   }
-  
-  init(keyboardContext: KeyboardContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, loadingText: String, spaceText: String) {
-    self.keyboardContext = keyboardContext
-    self.item = item
-    self.style = style
-    self.loadingText = loadingText
-    self.spaceView = TextContentView(
+
+  private lazy var loadingLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textAlignment = .center
+    if keyboardContext.keyboardType.isCustom {
+      label.text = item.key?.label.loadingText ?? ""
+    } else {
+      label.text = keyboardContext.loadingTextForSpaceButton
+    }
+    return label
+  }()
+
+  private lazy var textView: TextContentView = {
+    var spaceText = ""
+    if keyboardContext.keyboardType.isCustom {
+      spaceText = item.key?.label.text ?? ""
+      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
+        spaceText = rimeContext.currentSchema?.schemaName ?? ""
+      }
+    } else {
+      spaceText = keyboardContext.labelTextForSpaceButton
+      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
+        spaceText = rimeContext.currentSchema?.schemaName ?? ""
+      }
+    }
+
+    // 数字键盘不显示
+    if keyboardContext.keyboardType.isNumber {
+      spaceText = self.spaceText
+    }
+
+    let textView = TextContentView(
       keyboardContext: keyboardContext,
       item: item,
       style: style,
       text: spaceText,
-      isInputAction: KeyboardAction.space.isInputAction
+      isInputAction: true
     )
-    self.loadingLabel = UILabel(frame: .zero)
-    loadingLabel.textAlignment = .center
-    
+    return textView
+  }()
+
+  init(keyboardContext: KeyboardContext, rimeContext: RimeContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, spaceText: String) {
+    self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
+    self.item = item
+    self.style = style
+    self.spaceText = spaceText
+
     super.init(frame: .zero)
+
+    if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
+      Task {
+        await rimeContext.$currentSchema
+          .receive(on: DispatchQueue.main)
+          .sink { [weak self] in
+            guard let self = self else { return }
+            guard let schema = $0 else { return }
+            guard !keyboardContext.keyboardType.isNumber else { return }
+            textView.setTextValue(schema.schemaName)
+          }
+          .store(in: &subscriptions)
+      }
+    }
   }
-  
-  override func layoutSubviews() {
-    super.layoutSubviews()
-    
-    setupSpaceView()
-  }
-  
-  func setupSpaceView() {
-    spaceView.style = style
-    
-    loadingLabel.text = loadingText
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    /// 数字键盘不显示加载文字
+    if keyboardContext.keyboardType.isNumber || !keyboardContext.enableLoadingTextForSpaceButton {
+      addSubview(textView)
+      textView.fillSuperview()
+      return
+    }
+
     loadingLabel.font = style.font?.font
-    
     loadingLabel.alpha = 1
     addSubview(loadingLabel)
-    loadingLabel.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      loadingLabel.topAnchor.constraint(equalTo: topAnchor),
-      loadingLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-      loadingLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-      loadingLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
-    
-    spaceView.alpha = 0
-    addSubview(spaceView)
-    spaceView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      spaceView.topAnchor.constraint(equalTo: topAnchor),
-      spaceView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      spaceView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      spaceView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
-    
+    loadingLabel.fillSuperview()
+
+    textView.alpha = 0
+    addSubview(textView)
+    textView.fillSuperview()
+
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
       guard let self = self else { return }
-      
-      UIView.animate(withDuration: 0.5) {
+
+      UIView.animate(withDuration: 0.35) {
         self.loadingLabel.alpha = 0
-        self.spaceView.alpha = 1
+        self.textView.alpha = 1
       }
     }
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct SpaceContentView_Previews: PreviewProvider {
-  static func spaceContent(loadingText: String, spaceView: UIView) -> some View {
-    return UIViewPreview {
-      let view = SpaceContentView(
-        keyboardContext: KeyboardContext.preview,
-        item: KeyboardLayoutItem(action: .character("a"), size: .init(width: .available, height: 24), insets: .zero, swipes: []),
-        style: .preview1, loadingText: loadingText, spaceText: "空格"
-      )
-      view.frame = .init(x: 0, y: 0, width: 80, height: 80)
-      return view
-    }
-  }
-  
-  static func spaceContent(loadingText: String, spaceText: String) -> some View {
-    return UIViewPreview {
-      let view = SpaceContentView(
-        keyboardContext: KeyboardContext.preview,
-        item: KeyboardLayoutItem(action: .character("a"), size: .init(width: .available, height: 24), insets: .zero, swipes: []),
-        style: .preview1, loadingText: loadingText, spaceText: spaceText
-      )
-      view.frame = .init(x: 0, y: 0, width: 80, height: 80)
-      return view
-    }
-  }
-
-  static var previews: some View {
-    HStack {
-      spaceContent(loadingText: "测试", spaceText: "空格")
-      spaceContent(
-        loadingText: "空格",
-        spaceView: UIImageView(image: UIImage.keyboardGlobe)
-      )
-    }
-  }
-}
-
-#endif
