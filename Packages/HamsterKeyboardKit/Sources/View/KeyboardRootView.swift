@@ -364,7 +364,7 @@ class KeyboardRootView: NibLessView {
       toolbarHeightConstraint?.constant = keyboardContext.heightOfToolbar
       // 临时键盘显示
       if let view = tempKeyboardView {
-        view.frame = view.frame.offsetBy(dx: 0, dy: frame.height)
+        view.isHidden = false
       } else {
         primaryKeyboardView.isHidden = false
       }
@@ -373,7 +373,7 @@ class KeyboardRootView: NibLessView {
     } else {
       // 临时键盘隐藏
       if let view = tempKeyboardView {
-        view.frame = view.frame.offsetBy(dx: 0, dy: -frame.height)
+        view.isHidden = true
       } else {
         primaryKeyboardView.isHidden = true
       }
