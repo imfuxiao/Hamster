@@ -257,6 +257,14 @@ public class Rime: IRimeNotificationDelegate {
     rimeAPI.getHotkeys()
   }
 
+  public func getCaretPosition() -> Int {
+    Int(rimeAPI.getCaretPosition(session))
+  }
+
+  public func setCaretPosition(_ position: Int) {
+    rimeAPI.setCaret(session, withPosition: Int32(position))
+  }
+
   public func getConfigFileValue(configFileName: String, key: String) -> String? {
     guard let config = rimeAPI.openUserConfig(configFileName) else { return nil }
     let value = config.getString(key)

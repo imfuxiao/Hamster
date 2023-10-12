@@ -104,29 +104,30 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
 
     super.init(frame: .zero)
 
-    Task {
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
-          if $0.isEmpty {
-            var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-            snapshot.appendSections([0])
-            snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
-            symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
-            return
-          }
-
-          var t9pinyin = rimeContext.getPinyinCandidates(userInputKey: $0, selectPinyin: rimeContext.selectPinyinList)
-          if t9pinyin.isEmpty {
-            t9pinyin = keyboardContext.symbolsOfChineseNineGridKeyboard
-          }
-          var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-          snapshot.appendSections([0])
-          snapshot.appendItems(t9pinyin, toSection: 0)
-          symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
-        }
-        .store(in: &subscriptions)
-    }
+    // TODO: 屏蔽左侧候选拼音功能
+//    Task {
+//      await rimeContext.$userInputKey
+//        .receive(on: DispatchQueue.main)
+//        .sink { [unowned self] in
+//          if $0.isEmpty {
+//            var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+//            snapshot.appendSections([0])
+//            snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
+//            symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+//            return
+//          }
+//
+//          var t9pinyin = rimeContext.getPinyinCandidates(userInputKey: $0, selectPinyin: rimeContext.selectPinyinList)
+//          if t9pinyin.isEmpty {
+//            t9pinyin = keyboardContext.symbolsOfChineseNineGridKeyboard
+//          }
+//          var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+//          snapshot.appendSections([0])
+//          snapshot.appendItems(t9pinyin, toSection: 0)
+//          symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+//        }
+//        .store(in: &subscriptions)
+//    }
   }
 
   // MARK: - Layout
@@ -298,38 +299,38 @@ public extension ChineseNineGridKeyboard {
       return
     }
 
-    // 根据用户选择的候选拼音，反查得到对应的 T9 编码
-    guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
-
-    // 替换 inputKey 中的空格分词
-    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
-
-    // 获取 t9Pinyin 所处字符串的 index
-    guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
-
-    // 删除 t9Pinyin 后的全部字符
-    for _ in userInputKey[starIndex ..< userInputKey.endIndex] {
-      rimeContext.deleteBackwardNotSync()
-    }
-
-    // 组合用户选择字符，并输入
-    let endIndex = userInputKey.index(starIndex, offsetBy: t9Pinyin.count)
-    let newInputKey: String
-    if endIndex >= userInputKey.endIndex {
-      newInputKey = symbol
-    } else {
-      newInputKey = symbol + String(userInputKey[endIndex ..< userInputKey.endIndex])
-    }
-    for text in newInputKey {
-      if !rimeContext.inputKeyNotSync(String(text)) {
-        Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
-      }
-    }
-
-    Task {
-      rimeContext.selectPinyinList.append(symbol)
-      await rimeContext.syncContext()
-      collectionView.deselectItem(at: indexPath, animated: true)
-    }
+//    // 根据用户选择的候选拼音，反查得到对应的 T9 编码
+//    guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
+//
+//    // 替换 inputKey 中的空格分词
+//    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
+//
+//    // 获取 t9Pinyin 所处字符串的 index
+//    guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
+//
+//    // 删除 t9Pinyin 后的全部字符
+//    for _ in userInputKey[starIndex ..< userInputKey.endIndex] {
+//      rimeContext.deleteBackwardNotSync()
+//    }
+//
+//    // 组合用户选择字符，并输入
+//    let endIndex = userInputKey.index(starIndex, offsetBy: t9Pinyin.count)
+//    let newInputKey: String
+//    if endIndex >= userInputKey.endIndex {
+//      newInputKey = symbol
+//    } else {
+//      newInputKey = symbol + String(userInputKey[endIndex ..< userInputKey.endIndex])
+//    }
+//    for text in newInputKey {
+//      if !rimeContext.inputKeyNotSync(String(text)) {
+//        Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
+//      }
+//    }
+//
+//    Task {
+//      rimeContext.selectPinyinList.append(symbol)
+//      await rimeContext.syncContext()
+//      collectionView.deselectItem(at: indexPath, animated: true)
+//    }
   }
 }

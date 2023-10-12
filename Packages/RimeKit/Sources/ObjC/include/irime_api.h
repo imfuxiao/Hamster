@@ -69,6 +69,9 @@ typedef uintptr_t RimeSessionId;
 - (IRimeStatus *)getStatus:(RimeSessionId)session;
 - (IRimeContext *)getContext:(RimeSessionId)session;
 
+- (int) getCaretPosition:(RimeSessionId)session;
+- (BOOL) setCaret:(RimeSessionId)session withPosition:(int)position;
+
 // MARK: schema
 - (NSArray<IRimeSchema *> *)schemaList;
 - (IRimeSchema *)currentSchema:(RimeSessionId)session;

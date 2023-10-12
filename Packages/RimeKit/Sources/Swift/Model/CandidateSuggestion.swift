@@ -11,6 +11,9 @@ import Foundation
 public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
   public var id = UUID()
 
+  /// 候选文字索引
+  public var index: Int
+
   /// 应该发送至 documentProxy 的文本。
   public var text: String
 
@@ -32,6 +35,7 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
   public var additionalInfo: [String: Any]
 
   public init(
+    index: Int,
     text: String,
     title: String? = nil,
     isAutocomplete: Bool = false,
@@ -39,26 +43,13 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
     subtitle: String? = nil,
     additionalInfo: [String: Any] = [:]
   ) {
+    self.index = index
     self.text = text
     self.title = title ?? text
     self.isAutocomplete = isAutocomplete
     self.isUnknown = isUnknown
     self.subtitle = subtitle
     self.additionalInfo = additionalInfo
-  }
-}
-
-public extension CandidateSuggestion {
-  var index: Int {
-    get {
-      if let comment = additionalInfo["index"] {
-        return comment as! Int
-      }
-      return 0
-    }
-    set {
-      additionalInfo["index"] = newValue
-    }
   }
 }
 

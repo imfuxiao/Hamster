@@ -45,7 +45,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     KeyboardUrlOpener.shared.controller = self
 
     setupRIME()
-    setupComibneRIMEInput()
+    setupCombineRIMEInput()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -492,6 +492,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
           await rimeContext.deleteBackward()
         }
       }
+      return
     }
 
     // 非九宫格处理
@@ -861,7 +862,7 @@ private extension KeyboardInputViewController {
   }
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
-  func setupComibneRIMEInput() {
+  func setupCombineRIMEInput() {
     Task {
       await rimeContext.$userInputKey
         .receive(on: DispatchQueue.main)
@@ -886,6 +887,11 @@ private extension KeyboardInputViewController {
 
           // 写入 userInputKey
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+            if self.keyboardContext.keyboardType.isChineseNineGrid {
+              let t9UserInputKey = self.rimeContext.t9UserInputKey
+              self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
+              return
+            }
             self.textDocumentProxy.setMarkedText(inpuText, selectedRange: NSMakeRange(inpuText.utf8.count, 0))
           }
         }

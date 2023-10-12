@@ -520,13 +520,13 @@ public extension RimeContext {
     let candidates = Rime.shared.getCandidate(index: 0, count: count)
     var result: [CandidateSuggestion] = []
     for (index, candidate) in candidates.enumerated() {
-      var suggestion = CandidateSuggestion(
+      let suggestion = CandidateSuggestion(
+        index: index,
         text: candidate.text,
         title: candidate.text,
         isAutocomplete: index == 0,
         subtitle: candidate.comment
       )
-      suggestion.index = index
       result.append(suggestion)
     }
     return result
@@ -537,6 +537,8 @@ public extension RimeContext {
     await self.syncContext()
   }
 
+  /// 删除用户输入，且不需要同步 RIME 上下文
+  /// 注意：此方法是 T9 拼音用来做删除操作的
   @MainActor
   func deleteBackwardNotSync() {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
@@ -545,6 +547,21 @@ public extension RimeContext {
   @MainActor
   func inputKeyNotSync(_ text: String) -> Bool {
     Rime.shared.inputKey(text)
+  }
+
+  @MainActor
+  func getCaretPosition() -> Int {
+    Rime.shared.getCaretPosition()
+  }
+
+  @MainActor
+  func setCaretPosition(_ position: Int) {
+    Rime.shared.setCaretPosition(position)
+  }
+
+  @MainActor
+  func getContext() -> IRimeContext {
+    Rime.shared.context()
   }
 }
 

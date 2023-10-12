@@ -592,6 +592,15 @@ static RimeLeversApi *get_levers() {
   return context;
 }
 
+- (int) getCaretPosition:(RimeSessionId)session {
+  size_t pos = rime_get_api()->get_caret_pos(session);
+  return (int)pos;
+}
+
+- (BOOL) setCaret:(RimeSessionId)session withPosition:(int)position {
+  rime_get_api()->set_caret_pos(session, (size_t)position);
+}
+
 // MARK: Schema
 - (NSArray<IRimeSchema *> *)schemaList {
   RimeSchemaList list = {0};
