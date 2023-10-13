@@ -128,10 +128,11 @@ public extension RimeContext {
       userDataDir: hasFullAccess ? FileManager.appGroupUserDataDirectoryURL.path : FileManager.sandboxUserDataDirectory.path
     ))
 
+    // 设置初始输入方案
     await setupRimeInputSchema()
 
     // 中英状态同步
-    await setAsciiMode(Rime.shared.isAsciiMode())
+    // await setAsciiMode(Rime.shared.isAsciiMode())
 
     // 加载Switcher切换键
     let hotKeys = Rime.shared.getHotkeys()
@@ -142,7 +143,7 @@ public extension RimeContext {
     }
     Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
 
-    // RIME 输入方案切换状态同步
+    // RIME 输入方案切换后同步状态
     Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
       guard let self = self else { return }
       Task {
@@ -232,14 +233,14 @@ public extension RimeContext {
 
       // 默认当前方案为输入方案中的第一个输入方案
       var firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
-      if firstInputSchema == nil, selectSchemas.isEmpty {
+      if firstInputSchema == nil, !selectSchemas.isEmpty {
         self.currentSchema = selectSchemas[0]
         firstInputSchema = selectSchemas[0]
       }
 
       // 默认最近一个输入方案为方案输入列表中的第二位
       let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
-      if self.latestSchema == nil, schemas.count > 0 {
+      if self.latestSchema == nil, !schemas.isEmpty {
         self.latestSchema = schemas[0]
       }
     }
@@ -336,14 +337,15 @@ public extension RimeContext {
       self.selectSchemas = selectSchemas
 
       // 默认当前方案为输入方案中的第一个输入方案
-      let firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
-      if firstInputSchema == nil, selectSchemas.isEmpty {
+      var firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
+      if firstInputSchema == nil, !selectSchemas.isEmpty {
         self.currentSchema = selectSchemas[0]
+        firstInputSchema = selectSchemas[0]
       }
 
       // 默认最近一个输入方案为方案输入列表中的第二位
       let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
-      if self.latestSchema == nil, schemas.count > 0 {
+      if self.latestSchema == nil, !schemas.isEmpty {
         self.latestSchema = schemas[0]
       }
     }
