@@ -24,7 +24,7 @@ public actor RimeContext: ObservableObject {
   @Published @MainActor
   public private(set) var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
     didSet {
-      UserDefaults.hamster.selectSchemas = self.selectSchemas
+      UserDefaults.hamster.selectSchemas = self.selectSchemas.sorted()
     }
   }
 
@@ -101,6 +101,7 @@ public extension RimeContext {
   @MainActor
   func appendSelectSchema(_ schema: RimeSchema) async {
     self.selectSchemas.append(schema)
+    self.selectSchemas.sort()
   }
 
   @MainActor
@@ -230,15 +231,16 @@ public extension RimeContext {
       self.selectSchemas = selectSchemas
 
       // 默认当前方案为输入方案中的第一个输入方案
-      let firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
+      var firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
       if firstInputSchema == nil, selectSchemas.isEmpty {
         self.currentSchema = selectSchemas[0]
+        firstInputSchema = selectSchemas[0]
       }
 
       // 默认最近一个输入方案为方案输入列表中的第二位
-      self.latestSchema = selectSchemas.first { self.latestSchema == $0 }
-      if self.latestSchema == nil, selectSchemas.count > 1 {
-        self.latestSchema = selectSchemas[1]
+      let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
+      if self.latestSchema == nil, schemas.count > 0 {
+        self.latestSchema = schemas[0]
       }
     }
 
@@ -328,6 +330,8 @@ public extension RimeContext {
 
     /// 切换 Main 线程 修改 @MainActor 标记的属性值
     await MainActor.run { [selectSchemas] in
+      guard !schemas.isEmpty else { return }
+
       self.schemas = schemas
       self.selectSchemas = selectSchemas
 
@@ -338,9 +342,9 @@ public extension RimeContext {
       }
 
       // 默认最近一个输入方案为方案输入列表中的第二位
-      self.latestSchema = selectSchemas.first { self.latestSchema == $0 }
-      if self.latestSchema == nil, selectSchemas.count > 1 {
-        self.latestSchema = selectSchemas[1]
+      let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
+      if self.latestSchema == nil, schemas.count > 0 {
+        self.latestSchema = schemas[0]
       }
     }
 
@@ -363,13 +367,11 @@ public extension RimeContext {
     if let currentSchema = currentSchema {
       schema = currentSchema
     } else {
-      let selectSchemas = selectSchemas
-      guard !selectSchemas.isEmpty else {
+      guard let currentSchema = selectSchemas.first else {
         Logger.statistics.error("rime select schemas is empty.")
         return
       }
-      schema = selectSchemas.sorted().first!
-      currentSchema = schema
+      schema = currentSchema
     }
     let handle = Rime.shared.setSchema(schema.schemaId)
     Logger.statistics.info("self.rimeEngine set schema: \(schema.schemaName), handle = \(handle)")
@@ -382,12 +384,13 @@ public extension RimeContext {
     if let schema = self.latestSchema {
       latestSchema = schema
     } else {
-      let selectSchemas = selectSchemas
-      guard selectSchemas.count > 1 else {
+      // 过滤掉当前输入方案，取第一个方案为上个方案
+      let selectSchemas = selectSchemas.filter { $0.schemaId != self.currentSchema?.schemaId }
+      guard selectSchemas.count > 0 else {
         Logger.statistics.error("rime select schemas count less than 1.")
         return
       }
-      latestSchema = selectSchemas.sorted()[1]
+      latestSchema = selectSchemas[0]
     }
     let handle = Rime.shared.setSchema(latestSchema.schemaId)
     Logger.statistics.info("self.rimeEngine set latest schema: \(latestSchema.schemaName), handle = \(handle)")
