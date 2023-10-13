@@ -47,6 +47,9 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
           if $0.action.isShiftAction {
             return .shift(currentCasing: casing)
           }
+          if case .symbol(let symbol) = $0.action {
+            return .symbol(Symbol(char: casing.isUppercased ? symbol.char.uppercased() : symbol.char.lowercased()))
+          }
           if case .character(let char) = $0.action {
             return .character(casing.isUppercased ? char.uppercased() : char.lowercased())
           }

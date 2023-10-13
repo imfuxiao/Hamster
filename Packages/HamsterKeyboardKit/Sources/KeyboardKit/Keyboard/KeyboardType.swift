@@ -151,7 +151,7 @@ public extension KeyboardType {
     case .email: return "email"
     case .emojis: return "emojis"
     case .images: return "images"
-    case .custom(let name, _): return name
+    case .custom(let name, let casing): return "custom_\(name)_\(casing.id)"
     case .chinese(let casing): return "chinese_\(casing.id)"
     case .chineseNineGrid: return "chineseNineGrid"
     case .numericNineGrid: return "numericNineGrid"
