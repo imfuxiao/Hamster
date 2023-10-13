@@ -104,8 +104,7 @@ public class TextContentView: NibLessView {
         label.topAnchor.constraint(equalTo: containerView.topAnchor, constant: useOffset ? -2 : 0),
         label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-        label.leadingAnchor.constraint(equalToSystemSpacingAfter: containerView.leadingAnchor, multiplier: 1.0),
-        containerView.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.0)
+        label.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 0.9)
       ])
     } else {
       containerView.addSubview(swipeLabelContainer)
@@ -118,8 +117,7 @@ public class TextContentView: NibLessView {
         label.topAnchor.constraint(equalTo: swipeLabelContainer.bottomAnchor, constant: useOffset ? -2 : 0),
         label.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         label.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-        label.leadingAnchor.constraint(equalToSystemSpacingAfter: containerView.leadingAnchor, multiplier: 1.0),
-        containerView.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.0)
+        label.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 0.9)
       ])
     }
 
