@@ -98,15 +98,50 @@ public extension RimeContext {
     self.commitText = ""
   }
 
+  /// 选择输入方案后重置当前输入方案
+  /// 注意：仅限内部调用
+  @MainActor
+  private func resetCurrentSchema() {
+    // 默认当前方案为输入方案中的第一个输入方案
+    // 注意：当前方案可能为空，所以不能用 contains() 判断
+    let firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
+    if firstInputSchema == nil, !selectSchemas.isEmpty {
+      self.currentSchema = selectSchemas[0]
+    }
+  }
+
+  /// 选择输入方案后重置
+  /// 注意：仅限内部调用
+  @MainActor
+  private func resetLatestSchema() {
+    // 默认最近一个输入方案为方案输入列表中的第二位
+    let schemas = selectSchemas
+      .filter { $0.schemaId != self.currentSchema?.schemaId }
+
+    if self.latestSchema == nil, !schemas.isEmpty {
+      self.latestSchema = schemas[0]
+      return
+    }
+
+    if let latestSchema = self.latestSchema, !schemas.contains(latestSchema) {
+      self.latestSchema = schemas.isEmpty ? nil : schemas[0]
+    }
+  }
+
   @MainActor
   func appendSelectSchema(_ schema: RimeSchema) async {
     self.selectSchemas.append(schema)
     self.selectSchemas.sort()
+    resetCurrentSchema()
+    resetLatestSchema()
   }
 
   @MainActor
   func removeSelectSchema(_ schema: RimeSchema) async {
     self.selectSchemas.removeAll(where: { $0 == schema })
+    self.selectSchemas.sort()
+    resetCurrentSchema()
+    resetLatestSchema()
   }
 
   @MainActor
@@ -230,19 +265,8 @@ public extension RimeContext {
     await MainActor.run { [selectSchemas] in
       self.schemas = schemas
       self.selectSchemas = selectSchemas
-
-      // 默认当前方案为输入方案中的第一个输入方案
-      var firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
-      if firstInputSchema == nil, !selectSchemas.isEmpty {
-        self.currentSchema = selectSchemas[0]
-        firstInputSchema = selectSchemas[0]
-      }
-
-      // 默认最近一个输入方案为方案输入列表中的第二位
-      let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
-      if self.latestSchema == nil, !schemas.isEmpty {
-        self.latestSchema = schemas[0]
-      }
+      resetCurrentSchema()
+      resetLatestSchema()
     }
 
     // 键盘重新同步文件标志
@@ -335,19 +359,8 @@ public extension RimeContext {
 
       self.schemas = schemas
       self.selectSchemas = selectSchemas
-
-      // 默认当前方案为输入方案中的第一个输入方案
-      var firstInputSchema = selectSchemas.first { self.currentSchema == $0 }
-      if firstInputSchema == nil, !selectSchemas.isEmpty {
-        self.currentSchema = selectSchemas[0]
-        firstInputSchema = selectSchemas[0]
-      }
-
-      // 默认最近一个输入方案为方案输入列表中的第二位
-      let schemas = selectSchemas.filter { $0.schemaId != firstInputSchema?.schemaId }
-      if self.latestSchema == nil, !schemas.isEmpty {
-        self.latestSchema = schemas[0]
-      }
+      resetCurrentSchema()
+      resetLatestSchema()
     }
 
     // 键盘重新同步文件标志
