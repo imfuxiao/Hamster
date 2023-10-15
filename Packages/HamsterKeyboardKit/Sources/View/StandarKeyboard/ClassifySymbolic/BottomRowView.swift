@@ -67,19 +67,19 @@ class BottomRowView: NibLessView {
 
     super.init(frame: .zero)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
+    combine()
+  }
+
+  func combine() {
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 
   /// 构建视图层次

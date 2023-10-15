@@ -22,6 +22,9 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   private var calloutContext: KeyboardCalloutContext
   private var rimeContext: RimeContext
 
+  // 屏幕方向
+  private var interfaceOrientation: InterfaceOrientation
+
   /// 符号列表视图
 
   private lazy var symbolsListView: SymbolsVerticalView = {
@@ -68,8 +71,7 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   /// 静态视图约束，视图创建完毕后不在发生变化
   private var staticConstraints: [NSLayoutConstraint] = []
 
-  /// 动态视图约束，在键盘方向发生变化后需要更新约束
-  private var dynamicConstraints: [NSLayoutConstraint] = []
+  private var dynamicHeightConstraints: [NSLayoutConstraint] = []
 
   // MARK: - 计算属性
 
@@ -101,9 +103,24 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     self.keyboardContext = keyboardContext
     self.calloutContext = calloutContext
     self.rimeContext = rimeContext
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
 
     super.init(frame: .zero)
 
+    setupKeyboardView()
+
+    combine()
+  }
+
+  func combine() {
+    // 屏幕方向改变重新计算动态高度
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard interfaceOrientation != $0 else { return }
+        setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
     // TODO: 屏蔽左侧候选拼音功能
 //    Task {
 //      await rimeContext.$userInputKey
@@ -131,12 +148,6 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   }
 
   // MARK: - Layout
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    setupKeyboardView()
-  }
 
   func setupKeyboardView() {
     backgroundColor = .clear
@@ -199,7 +210,6 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     // 左侧符号栏约束
     staticConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
     staticConstraints.append(symbolsListContainerView.leadingAnchor.constraint(equalTo: leadingAnchor))
-    dynamicConstraints.append(symbolsListContainerView.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight * 3))
 
     for row in keyboardRows {
       for button in row {
@@ -212,18 +222,18 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
         // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
-        buttonHeightConstraint.priority = .defaultHigh
-        dynamicConstraints.append(buttonHeightConstraint)
+        buttonHeightConstraint.priority = UILayoutPriority(999)
+        dynamicHeightConstraints.append(buttonHeightConstraint)
 
         // 按键宽度约束
         if button.row + 1 != keyboardRows.endIndex, button.column + 1 == row.endIndex { // 非最后一行的尾列
-          dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
+          staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
         } else if button.row + 1 == keyboardRows.endIndex { // 最后一行的按键宽度
           if button.column == 0 {
             staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
-            dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
+            staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
           } else if button.column + 1 == row.endIndex || button.column == 1 {
-            dynamicConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: lowerSystemButtonWidth.percentageValue!))
+            staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: lowerSystemButtonWidth.percentageValue!))
           }
         } else {
           availableItems.append(button)
@@ -242,11 +252,14 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
         // 按键 top
         if button.row == 0 {
           staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
-        } else if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-          staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
         } else { // 其他行添加按键相对上一行按键的 top 约束
           let prevRowItem = keyboardRows[button.row - 1][0]
           staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
+
+          // 最后一行的第一列添加相对划动符号列的 top 约束
+          if button.column == 0, button.row + 1 == keyboardRows.endIndex {
+            staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
+          }
         }
 
         // 按键 bottom
@@ -271,7 +284,21 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
       }
     }
 
-    NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
+    NSLayoutConstraint.activate(staticConstraints + dynamicHeightConstraints)
+  }
+
+  override public func updateConstraints() {
+    super.updateConstraints()
+
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    interfaceOrientation = keyboardContext.interfaceOrientation
+
+    // 根据 keyboardContext 获取当前布局配置
+    // 注意：临时变量缓存计算属性的值，避免重复计算
+    let layoutConfig = layoutConfig
+    dynamicHeightConstraints.forEach {
+      $0.constant = layoutConfig.rowHeight
+    }
   }
 }
 

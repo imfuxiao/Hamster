@@ -66,8 +66,10 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   /// 缓存所有按键视图
   private var keyboardRows: [[KeyboardButton]] = []
 
-  /// 视图约束
-  private var buttonConstraints: [NSLayoutConstraint] = []
+  /// 静态约束
+  private var staticConstraints: [NSLayoutConstraint] = []
+  /// 动态约束
+  private var dynamicConstraints: [NSLayoutConstraint] = []
 
   // MARK: - 计算属性
 
@@ -97,6 +99,10 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     self.interfaceOrientation = keyboardContext.interfaceOrientation
 
     super.init(frame: .zero)
+
+    setupKeyboardView()
+
+    combine()
   }
 
   @available(*, unavailable)
@@ -104,27 +110,24 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     fatalError("init(coder:) has not been implemented")
   }
 
-  // MARK: - Layout
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    setupKeyboardView()
+  func combine() {
+    // 屏幕方向改变重新计算动态高度
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard interfaceOrientation != $0 else { return }
+        setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
   }
+
+  // MARK: - Layout
 
   func setupKeyboardView() {
     backgroundColor = .clear
 
     constructViewHierarchy()
     activateViewConstraints()
-
-    // 屏幕方向改变重新计算布局
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
   }
 
   override public func constructViewHierarchy() {
@@ -166,8 +169,8 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     var availableItems = [KeyboardButton]()
 
     // 左侧符号栏约束
-    buttonConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
-    buttonConstraints.append(symbolsListContainerView.leadingAnchor.constraint(equalTo: leadingAnchor))
+    staticConstraints.append(symbolsListContainerView.topAnchor.constraint(equalTo: topAnchor))
+    staticConstraints.append(symbolsListContainerView.leadingAnchor.constraint(equalTo: leadingAnchor))
 
     for row in keyboardRows {
       for button in row {
@@ -175,51 +178,51 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
         // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
-        buttonHeightConstraint.priority = .defaultHigh
-        buttonConstraints.append(buttonHeightConstraint)
+        buttonHeightConstraint.priority = UILayoutPriority(999)
+        dynamicConstraints.append(buttonHeightConstraint)
 
         // 按键宽度约束
         // 注意：最后一行的第一个按钮和每行最后一个按键的宽度是固定的，其他按键的宽度是平分的
         if (button.column == 0 && button.row + 1 == keyboardRows.endIndex) || button.column + 1 == row.endIndex {
-          buttonConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
+          staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
         } else {
           availableItems.append(button)
         }
 
         if button.row == 0 {
           // 首行添加按键相对视图的 top 约束
-          buttonConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
+          staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
         } else {
           // 其他列添加相对上一行的符号约束
           // 其他行添加按键相对上一行按键的 top 约束
           let prevRowItem = keyboardRows[button.row - 1][0]
-          buttonConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
+          staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
 
           // 最后一行的第一列添加相对划动符号列的 top 约束
           if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-            buttonConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
-            buttonConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
+            staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
+            staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
           }
 
           // 最后一行添加按键相对视图的 bottom 约束
           if button.row + 1 == keyboardRows.endIndex {
-            buttonConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
+            staticConstraints.append(button.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor))
           }
         }
 
         // 首列按键添加相对划动符号视图的 leading 约束
         if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-          buttonConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
         } else if button.column == 0 {
-          buttonConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
         } else {
           // 其他列按键添加相对与前一个按键的 leading 约束
           let prevItem = keyboardRows[button.row][button.column - 1]
-          buttonConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
 
           if button.column + 1 == row.endIndex {
             // 最后一列按键添加相对行的 trailing 约束
-            buttonConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
+            staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
           }
         }
       }
@@ -227,11 +230,11 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
 
     if let firstItem = availableItems.first {
       for item in availableItems.dropFirst() {
-        buttonConstraints.append(item.widthAnchor.constraint(equalTo: firstItem.widthAnchor))
+        staticConstraints.append(item.widthAnchor.constraint(equalTo: firstItem.widthAnchor))
       }
     }
 
-    NSLayoutConstraint.activate(buttonConstraints)
+    NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
   override public func updateConstraints() {
@@ -240,9 +243,12 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
 
-    NSLayoutConstraint.deactivate(buttonConstraints)
-    buttonConstraints.removeAll(keepingCapacity: true)
-    activateViewConstraints()
+    // 根据 keyboardContext 获取当前布局配置
+    // 注意：临时变量缓存计算属性的值，避免重复计算
+    let layoutConfig = layoutConfig
+    dynamicConstraints.forEach {
+      $0.constant = layoutConfig.rowHeight
+    }
   }
 }
 

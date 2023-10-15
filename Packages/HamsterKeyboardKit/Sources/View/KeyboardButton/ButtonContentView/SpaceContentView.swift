@@ -62,6 +62,13 @@ class SpaceContentView: NibLessView {
     return textView
   }()
 
+  var isShowLoadingText: Bool {
+    if keyboardContext.keyboardType.isNumber || !keyboardContext.enableLoadingTextForSpaceButton {
+      return false
+    }
+    return true
+  }
+
   init(keyboardContext: KeyboardContext, rimeContext: RimeContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, spaceText: String) {
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
@@ -71,6 +78,30 @@ class SpaceContentView: NibLessView {
 
     super.init(frame: .zero)
 
+    setupView()
+
+    combine()
+  }
+
+  func setupView() {
+    /// 数字键盘不显示加载文字
+    if !isShowLoadingText {
+      addSubview(textView)
+      textView.fillSuperview()
+      return
+    }
+
+    loadingLabel.font = style.font?.font
+    loadingLabel.alpha = 1
+    addSubview(loadingLabel)
+    loadingLabel.fillSuperview()
+
+    textView.alpha = 0
+    addSubview(textView)
+    textView.fillSuperview()
+  }
+
+  func combine() {
     if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
       Task {
         await rimeContext.$currentSchema
@@ -89,25 +120,10 @@ class SpaceContentView: NibLessView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    /// 数字键盘不显示加载文字
-    if keyboardContext.keyboardType.isNumber || !keyboardContext.enableLoadingTextForSpaceButton {
-      addSubview(textView)
-      textView.fillSuperview()
-      return
-    }
-
-    loadingLabel.font = style.font?.font
-    loadingLabel.alpha = 1
-    addSubview(loadingLabel)
-    loadingLabel.fillSuperview()
-
-    textView.alpha = 0
-    addSubview(textView)
-    textView.fillSuperview()
+    guard isShowLoadingText else { return }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
       guard let self = self else { return }
-
       UIView.animate(withDuration: 0.35) {
         self.loadingLabel.alpha = 0
         self.textView.alpha = 1

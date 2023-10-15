@@ -109,17 +109,13 @@ public class StanderSystemKeyboard: NibLessView {
 
     super.init(frame: .zero)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
     combine()
   }
 
   // MARK: Layout
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
-  }
 
   /// 构建视图层次
   override public func constructViewHierarchy() {
@@ -208,7 +204,7 @@ public class StanderSystemKeyboard: NibLessView {
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
         // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
-        buttonHeightConstraint.priority = .defaultHigh
+        buttonHeightConstraint.priority = UILayoutPriority(999)
         dynamicConstraints.append(buttonHeightConstraint)
 
         // 按键宽度约束
@@ -276,7 +272,8 @@ public class StanderSystemKeyboard: NibLessView {
     // 屏幕方向改变调整行高
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [unowned self] in
+        guard $0 != self.interfaceOrientation else { return }
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)

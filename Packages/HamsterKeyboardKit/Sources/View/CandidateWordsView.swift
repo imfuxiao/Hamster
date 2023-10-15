@@ -41,10 +41,6 @@ public class CandidateWordsView: NibLessView {
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
-    if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
-      label.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
-    }
-    label.textColor = keyboardContext.phoneticTextColor
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
@@ -75,7 +71,7 @@ public class CandidateWordsView: NibLessView {
     view.contentMode = .center
     view.translatesAutoresizingMaskIntoConstraints = false
     view.image = stateImage(.collapse)
-    view.tintColor = keyboardContext.candidateTextColor
+
     return view
   }()
 
@@ -128,13 +124,9 @@ public class CandidateWordsView: NibLessView {
 
     super.init(frame: .zero)
 
-    combine()
-  }
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
     setupContentView()
+
+    combine()
   }
 
   func setupContentView() {
@@ -144,6 +136,12 @@ public class CandidateWordsView: NibLessView {
 
   /// 构建视图层次
   override public func constructViewHierarchy() {
+    if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
+      phoneticLabel.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
+    }
+    phoneticLabel.textColor = keyboardContext.phoneticTextColor
+    stateImageView.tintColor = keyboardContext.candidateTextColor
+
     // 非内嵌模式添加拼写区域
     if !keyboardContext.enableEmbeddedInputMode {
       addSubview(phoneticArea)

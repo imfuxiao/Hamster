@@ -36,6 +36,8 @@ Keyboard:
   # chineseNineGrid: 中文九宫格
   # custom(name): 自定义键盘，其中 name 对应自定义键盘配置(customizeKeyboards)中的 name。如: custom(中文26键)
   useKeyboardType: chinese
+  # 划动显示Label是否为上下布局。默认为左右布局
+  swipeLabelUpAndDownLayout: false
   # 上划显示到左侧
   upSwipeOnLeft: true
   # 显示按键气泡

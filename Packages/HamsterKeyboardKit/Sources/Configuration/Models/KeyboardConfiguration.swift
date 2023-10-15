@@ -14,7 +14,10 @@ public struct KeyboardConfiguration: Codable, Hashable {
   
   /// 上划显示在左侧
   public var upSwipeOnLeft: Bool?
-  
+
+  /// 划动上下布局 or 左右布局
+  public var swipeLabelUpAndDownLayout: Bool?
+
   /// 显示按键气泡
   /// true: 显示 false: 不显示
   public var displayButtonBubbles: Bool?

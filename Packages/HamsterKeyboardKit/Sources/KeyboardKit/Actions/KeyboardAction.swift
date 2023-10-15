@@ -241,7 +241,6 @@ public extension KeyboardAction {
     case .image: return true
     case .space: return true
     case .systemImage: return true
-    case .returnLastKeyboard: return true
     case .symbol: return true
     case .chineseNineGrid: return true
     default: return false

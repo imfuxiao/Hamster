@@ -52,6 +52,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  public var swipeLabelUpAndDownLayout: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.swipeLabelUpAndDownLayout ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.swipeLabelUpAndDownLayout = newValue
+    }
+  }
+
   public var enableEmbeddedInputMode: Bool {
     get {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode ?? false
@@ -502,6 +511,18 @@ public class KeyboardSettingsViewModel: ObservableObject {
             upSwipeOnLeft = $0
           })
       ]),
+
+      .init(
+        footer: "默认关闭状态下，在按键上方显示上下划动符号（如果存在），开启状态下，按键上方显示上划，下方显示下划。",
+        items: [
+          .init(
+            text: "按键上下方显示划动",
+            type: .toggle,
+            toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
+            toggleHandled: { [unowned self] in
+              swipeLabelUpAndDownLayout = $0
+            })
+        ]),
 
     .init(
       items: [

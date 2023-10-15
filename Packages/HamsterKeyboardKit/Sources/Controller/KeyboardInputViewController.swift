@@ -74,6 +74,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    Logger.statistics.info("controller traitCollectionDidChange()")
     super.traitCollectionDidChange(previousTraitCollection)
     viewWillSyncWithContext()
   }
@@ -553,7 +554,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func selectNextKeyboard() {
-    advanceToNextInputMode()
+    // advanceToNextInputMode()
   }
 
   open func selectNextLocale() {
@@ -561,11 +562,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func setKeyboardType(_ type: KeyboardType) {
-    if !rimeContext.userInputKey.isEmpty, type.isCustom || type.isChinesePrimaryKeyboard || type.isChineseNineGrid || type.isAlphabetic {
-      textDocumentProxy.insertText(rimeContext.userInputKey)
-      rimeContext.reset()
-    }
-    keyboardContext.lastKeyboardTypeStack.append(keyboardContext.keyboardType)
+    // TODO: 键盘切换
+//    if !rimeContext.userInputKey.isEmpty, type.isCustom || type.isChinesePrimaryKeyboard || type.isChineseNineGrid || type.isAlphabetic {
+//      textDocumentProxy.insertText(rimeContext.userInputKey)
+//      rimeContext.reset()
+//    }
     keyboardContext.keyboardType = type
   }
 
@@ -606,12 +607,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func returnLastKeyboard() {
-    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map { $0.yamlString }.joined(separator: ","))")
-    guard let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() else {
-      keyboardContext.keyboardType = keyboardContext.selectKeyboard
-      return
-    }
-    keyboardContext.keyboardType = keyboard
+//    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map { $0.yamlString }.joined(separator: ","))")
+//    guard let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() else {
+//      keyboardContext.keyboardType = keyboardContext.selectKeyboard
+//      return
+//    }
+    keyboardContext.keyboardType = keyboardContext.selectKeyboard
   }
 
   // MARK: - Syncing

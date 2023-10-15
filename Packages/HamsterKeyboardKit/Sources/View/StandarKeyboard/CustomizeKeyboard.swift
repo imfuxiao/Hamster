@@ -6,7 +6,9 @@
 //
 
 import Combine
+import HamsterKit
 import HamsterUIKit
+import OSLog
 import UIKit
 
 /// 自定义布局键盘
@@ -19,6 +21,7 @@ class CustomizeKeyboard: NibLessView {
   private var keyboardContext: KeyboardContext
   private var calloutContext: KeyboardCalloutContext
   private var rimeContext: RimeContext
+  private var interfaceOrientation: InterfaceOrientation
 
   // combine
   private var subscriptions = Set<AnyCancellable>()
@@ -58,28 +61,30 @@ class CustomizeKeyboard: NibLessView {
     self.keyboardContext = keyboardContext
     self.calloutContext = calloutContext
     self.rimeContext = rimeContext
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
 
     super.init(frame: .zero)
+
+    setupKeyboardView()
+
+    combine()
   }
 
   // MARK: - Layout
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    setupKeyboardView()
-  }
 
   func setupKeyboardView() {
     backgroundColor = .clear
 
     constructViewHierarchy()
     activateViewConstraints()
+  }
 
+  func combine() {
     // 屏幕方向改变调整行高
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [unowned self] in
+        guard interfaceOrientation != $0 else { return }
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
@@ -155,7 +160,7 @@ class CustomizeKeyboard: NibLessView {
           let heightConstant = button.item.size.height
           let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
           // TODO: .required 会导致日志打印约束错误，但是改为 .defaultHigh 后，高度约束不起作用，会导致显示的高度有问题
-          buttonHeightConstraint.priority = .required
+          buttonHeightConstraint.priority = UILayoutPriority(999)
           buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
           dynamicConstraints.append(buttonHeightConstraint)
         } else {
@@ -213,5 +218,19 @@ class CustomizeKeyboard: NibLessView {
       }
     }
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
+  }
+
+  override func updateConstraints() {
+    super.updateConstraints()
+
+    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
+
+    let rowHeight = layoutConfig.rowHeight
+    Logger.statistics.debug("Custom keyboard updateConstraints() buttonInsets rowHeight: \(rowHeight)")
+    for (index, constraint) in dynamicConstraints.enumerated() {
+      let height = keyboardRows[index][0].item.size.height
+      constraint.constant = keyboardContext.interfaceOrientation.isPortrait ? height : rowHeight
+    }
   }
 }

@@ -22,29 +22,6 @@ class SymbolsView: UICollectionView {
     self.actionHandler = actionHandler
     self.viewModel = viewModel
 
-//    let layout: UICollectionViewCompositionalLayout = {
-//      let symbolItem = NSCollectionLayoutItem(
-//        layoutSize: NSCollectionLayoutSize(
-//          widthDimension: .fractionalWidth(0.25),
-//          heightDimension: .fractionalHeight(1.0)
-//        )
-//      )
-//
-//      let symbolGroup = NSCollectionLayoutGroup.horizontal(
-//        layoutSize: NSCollectionLayoutSize(
-//          widthDimension: .fractionalWidth(1.0),
-//          heightDimension: .fractionalHeight(0.25)
-//        ),
-//        subitems: [symbolItem, symbolItem, symbolItem, symbolItem]
-//      )
-//      symbolGroup.edgeSpacing = .init(leading: .none, top: .none, trailing: .none, bottom: .fixed(1))
-//
-//      let section = NSCollectionLayoutSection(group: symbolGroup)
-//      section.contentInsets = .zero
-//      section.interGroupSpacing = .zero
-//      return UICollectionViewCompositionalLayout(section: section)
-//    }()
-
     let layout = {
       let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .leading, verticalAlignment: .center)
       layout.scrollDirection = .vertical
@@ -61,6 +38,15 @@ class SymbolsView: UICollectionView {
     diffableDataSource.apply(makeSnapshot(symbols: viewModel.currentCategory.symbols), animatingDifferences: false)
     scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
 
+    combine()
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func combine() {
     viewModel.$currentCategory
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
@@ -70,18 +56,7 @@ class SymbolsView: UICollectionView {
       .store(in: &subscriptions)
   }
 
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Symbol> {
-//    let symbolCellRegistration = UICollectionView.CellRegistration<ClassifySymbolCell, Symbol> { [unowned self] cell, _, symbol in
-//      cell.textLabel.text = symbol.char
-//      cell.textLabel.textColor = keyboardContext.candidateTextColor
-//      cell.normalColor = keyboardContext.symbolListBackgroundColor
-//      cell.highlightedColor = keyboardContext.symbolListHighlightedBackgroundColor
-//    }
     let symbolCellRegistration = UICollectionView.CellRegistration<SymbolCell, Symbol> { [unowned self] cell, _, symbol in
       // TODO: 符号分类国际化
       // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)

@@ -15,9 +15,9 @@ class ClassifySymbolicKeyboard: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let layoutProvider: KeyboardLayoutProvider
   private var subscriptions = Set<AnyCancellable>()
-  private var subviewConstraints = [NSLayoutConstraint]()
-  private var classifyViewWidthConstraint: NSLayoutConstraint?
+  private var classifyViewHeightConstraint: NSLayoutConstraint?
   private var bottomRowViewHeightConstraint: NSLayoutConstraint?
+  private var classifyViewWidthConstraint: NSLayoutConstraint?
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
@@ -67,22 +67,23 @@ class ClassifySymbolicKeyboard: NibLessView {
 
     super.init(frame: .zero)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
+    combine()
+  }
+
+  func combine() {
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [unowned self] in
+        guard $0 != self.interfaceOrientation else { return }
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
   }
 
   // MARK: - Layout
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
-  }
 
   /// 构建视图层次
   override func constructViewHierarchy() {
@@ -93,8 +94,14 @@ class ClassifySymbolicKeyboard: NibLessView {
 
   /// 激活视图约束
   override func activateViewConstraints() {
-    classifyViewWidthConstraint = classifyView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
-    bottomRowViewHeightConstraint = bottomRow.heightAnchor.constraint(equalToConstant: keyboardContext.interfaceOrientation.isPortrait ? 40 : 30)
+    let layoutConfig = layoutConfig
+    let symbolViewHeight = layoutConfig.rowHeight * 3
+
+    classifyViewWidthConstraint = createClassifyViewWidthConstraint()
+    bottomRowViewHeightConstraint = bottomRow.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
+    bottomRowViewHeightConstraint?.priority = .defaultHigh
+    classifyViewHeightConstraint = classifyView.heightAnchor.constraint(equalToConstant: symbolViewHeight)
+    classifyViewHeightConstraint?.priority = .defaultHigh
 
     NSLayoutConstraint.activate([
       classifyView.topAnchor.constraint(equalTo: topAnchor),
@@ -107,8 +114,10 @@ class ClassifySymbolicKeyboard: NibLessView {
       bottomRow.topAnchor.constraint(equalTo: classifyView.bottomAnchor),
       bottomRow.topAnchor.constraint(equalTo: symbolsView.bottomAnchor),
       bottomRow.bottomAnchor.constraint(equalTo: bottomAnchor),
+      symbolsView.heightAnchor.constraint(equalTo: classifyView.heightAnchor),
       classifyViewWidthConstraint!,
       bottomRowViewHeightConstraint!,
+      classifyViewHeightConstraint!
     ])
   }
 
@@ -119,12 +128,16 @@ class ClassifySymbolicKeyboard: NibLessView {
     interfaceOrientation = keyboardContext.interfaceOrientation
 
     classifyViewWidthConstraint?.isActive = false
-    bottomRowViewHeightConstraint?.isActive = false
-
-    classifyViewWidthConstraint = classifyView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
-    bottomRowViewHeightConstraint = bottomRow.heightAnchor.constraint(equalToConstant: keyboardContext.interfaceOrientation.isPortrait ? 40 : 30)
-
+    classifyViewWidthConstraint = createClassifyViewWidthConstraint()
     classifyViewWidthConstraint?.isActive = true
-    bottomRowViewHeightConstraint?.isActive = true
+
+    let layoutConfig = layoutConfig
+    let symbolViewHeight = layoutConfig.rowHeight * 3
+    classifyViewHeightConstraint?.constant = symbolViewHeight
+    bottomRowViewHeightConstraint?.constant = layoutConfig.rowHeight
+  }
+
+  func createClassifyViewWidthConstraint() -> NSLayoutConstraint {
+    classifyView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
   }
 }

@@ -97,7 +97,7 @@ public class Rime: IRimeNotificationDelegate {
       rimeAPI.startMaintenance(fullCheck)
     }
 
-    session = rimeAPI.createSession()
+    // session = rimeAPI.createSession()
   }
 
   public func deploy(_ traits: IRimeTraits? = nil) -> Bool {

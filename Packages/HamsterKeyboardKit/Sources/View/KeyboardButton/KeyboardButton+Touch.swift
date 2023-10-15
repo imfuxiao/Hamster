@@ -19,37 +19,61 @@ public extension KeyboardButton {
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if action == .nextKeyboard {
+      if let event = event {
+        self.handleInputModeListFromView(from: self, with: event)
+      }
+      return
+    }
     isHighlighted = true
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesBegan")
       tryHandlePress(touch)
     }
   }
-  
+
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if action == .nextKeyboard {
+      if let event = event {
+        self.handleInputModeListFromView(from: self, with: event)
+      }
+      return
+    }
     isHighlighted = true
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
       tryHandleDrag(touch)
     }
   }
-  
+
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if action == .nextKeyboard {
+      if let event = event {
+        self.handleInputModeListFromView(from: self, with: event)
+      }
+      return
+    }
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesEnded")
       tryHandleRelease(touch)
     }
     isHighlighted = false
   }
-  
+
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if action == .nextKeyboard {
+      if let event = event {
+        self.handleInputModeListFromView(from: self, with: event)
+      }
+      return
+    }
     for touch in touches {
       Logger.statistics.debug("\(self.row)-\(self.column) button touchesCancelled")
       tryHandleRelease(touch)
     }
     isHighlighted = false
   }
-  
+
   func tryHandlePress(_ touch: UITouch) {
     guard !isPressed else { return }
     isPressed = true
@@ -62,7 +86,7 @@ public extension KeyboardButton {
     tryTriggerLongPressAfterDelay()
     tryTriggerRepeatAfterDelay()
   }
-  
+
   func tryHandleRelease(_ touch: UITouch) {
     guard isPressed else { return }
     isPressed = false
@@ -72,7 +96,7 @@ public extension KeyboardButton {
     longPressDate = nil
     repeatDate = nil
     repeatTimer.stop()
-    
+
     defer {
       endAction()
 
@@ -81,7 +105,7 @@ public extension KeyboardButton {
         actionHandler.isSpaceDragGestureActive = false
       }
     }
-    
+
     // 取消状态不触发 .release
     if touch.phase != .cancelled {
       // 轻扫手势不触发 release
@@ -102,7 +126,7 @@ public extension KeyboardButton {
       }
     }
   }
-  
+
   func tryTriggerLongPressAfterDelay() {
     let date = Date.now
     longPressDate = date
@@ -112,7 +136,7 @@ public extension KeyboardButton {
       self.longPressAction()
     }
   }
-  
+
   func tryTriggerRepeatAfterDelay() {
     let date = Date.now
     repeatDate = date
@@ -122,13 +146,13 @@ public extension KeyboardButton {
       self.repeatTimer.start(action: self.repeatAction)
     }
   }
-  
+
   func tryHandleDrag(_ touch: UITouch) {
     // dragStartLocation 在 touchesBegan 阶段设置值，在 touchesEnd/touchesCancel 阶段取消值
     guard let startLocation = dragStartLocation else { return }
     let currentPoint = touch.location(in: self)
     lastDragLocation = currentPoint
-    
+
     // 识别 swipe 并取消长按限制
     // if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
     if let _ = touchBeginTimestamp {
@@ -137,10 +161,10 @@ public extension KeyboardButton {
 
       let distanceY = currentPoint.y - startLocation.y
       let distanceX = currentPoint.x - startLocation.x
-      
+
       // 两点距离
       let distance = sqrt(pow(distanceY, 2) + pow(distanceX, 2))
-      
+
       // 轻扫的距离必须符合阈值要求
       if distance >= distanceThreshold {
         Logger.statistics.debug("current point: \(currentPoint.debugDescription)")
@@ -157,23 +181,23 @@ public extension KeyboardButton {
     } else {
       swipeGestureHandle = nil
     }
-    
+
     // TODO: 更新呼出选择位置
     dragAction(start: startLocation, current: currentPoint)
   }
-  
+
   func handleReleaseInside() {
     updateShouldApplyReleaseAction()
     guard shouldApplyReleaseAction else { return }
     Logger.statistics.debug("inside release")
     releaseAction()
   }
-  
+
   func handleReleaseOutside(_ currentPoint: CGPoint) {
     guard shouldApplyReleaseOutsize(for: currentPoint) else { return }
     handleReleaseInside()
   }
-  
+
   // TODO: 手势结束处理
   func endAction() {
     Logger.statistics.debug("tryHandleRelease endAction()")
@@ -182,56 +206,56 @@ public extension KeyboardButton {
     calloutContext.action.reset()
     resetGestureState()
   }
-  
+
   func shouldApplyReleaseOutsize(for currentPoint: CGPoint) -> Bool {
     guard let _ = lastDragLocation else { return false }
     let rect = CGRect.releaseOutsideToleranceArea(for: bounds.size, tolerance: releaseOutsideTolerance)
     let isInsideRect = rect.contains(currentPoint)
     return isInsideRect
   }
-  
+
   func updateShouldApplyReleaseAction() {
     let context = calloutContext.action
     shouldApplyReleaseAction = shouldApplyReleaseAction && !context.hasSelectedAction
   }
-  
+
   func resetGestureState() {
     lastDragLocation = nil
     shouldApplyReleaseAction = true
   }
-  
+
   func pressAction() {
     Logger.statistics.debug("pressAction()")
     actionHandler.handle(.press, on: action)
   }
-  
+
   func doubleTapAction() {
     Logger.statistics.debug("doubleTapAction()")
     actionHandler.handle(.doubleTap, on: action)
   }
-  
+
   func longPressAction() {
     // 空格长按不需要应用 release
     shouldApplyReleaseAction = shouldApplyReleaseAction && action != .space
     Logger.statistics.debug("longPressAction()")
     actionHandler.handle(.longPress, on: action)
   }
-  
+
   func releaseAction() {
     Logger.statistics.debug("releaseAction()")
     actionHandler.handle(.release, on: action)
   }
-  
+
   func repeatAction() {
     Logger.statistics.debug("repeatAction()")
     actionHandler.handle(.repeatPress, on: action)
   }
-  
+
   func dragAction(start: CGPoint, current: CGPoint) {
     Logger.statistics.debug("dragAction()")
     actionHandler.handleDrag(on: action, from: start, to: current)
   }
-  
+
   func swipeAction(direction: SwipeDirection) {
     Logger.statistics.debug("swipeAction(), direction: \(direction.debugDescription)")
     switch direction {
@@ -253,14 +277,14 @@ public extension KeyboardButton {
       }
     }
   }
-  
+
   /// 划动方向
   enum SwipeDirection: CustomDebugStringConvertible {
     case up
     case down
     case left
     case right
-    
+
     public var debugDescription: String {
       switch self {
       case .up:
@@ -273,7 +297,7 @@ public extension KeyboardButton {
         return "right"
       }
     }
-    
+
     /// 根据 x 轴 与 y 轴的划动距离判断划动的方向
     /// distanceX: x 轴划动距离, 用值的正负表划动的方向
     /// distanceY: Y 轴划动距离, 用值的正负表划动的方向
@@ -299,13 +323,13 @@ public extension KeyboardButton {
     public static func direction(distanceX: CGFloat, distanceY: CGFloat, tangentThreshold: CGFloat) -> SwipeDirection? {
       // 水平方向夹角 tan 值
       let tanHorizontalCorner = distanceX == .zero ? .zero : abs(distanceY) / abs(distanceX)
-      
+
       // 垂直方向夹角 tan 值
       let tanVerticalCorner = distanceY == .zero ? .zero : abs(distanceX) / abs(distanceY)
-      
+
       Logger.statistics.debug("tanHorizontalCorner: \(tanHorizontalCorner)")
       Logger.statistics.debug("tanVerticalCorner: \(tanVerticalCorner)")
-      
+
       switch (distanceX, distanceY) {
       case (let x, let y) where x == 0 && y < 0: return .up
       case (let x, let y) where x == 0 && y > 0: return .down

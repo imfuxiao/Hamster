@@ -126,9 +126,6 @@ public class KeyboardContext: ObservableObject {
   @Published
   public var keyboardType = KeyboardType.chinese(.lowercased)
 
-  /// 记录键盘切换栈, 用于「返回」按钮
-  public var lastKeyboardTypeStack: [KeyboardType] = []
-
   /**
    The locale that is currently being used.
 
@@ -282,7 +279,15 @@ public class KeyboardContext: ObservableObject {
     self.init()
     guard let controller = controller else { return }
     self.hamsterConfig = controller.hamsterConfiguration
+    self.handleInputModeBuilder = { from, with in
+      controller.handleInputModeList(from: from, with: with)
+    }
     sync(with: controller)
+  }
+
+  var handleInputModeBuilder: ((_ from: UIView, _ with: UIEvent) -> Void)?
+  @objc func handleInputModeListFromView(from: UIView, with: UIEvent) {
+    handleInputModeBuilder?(from, with)
   }
 }
 
@@ -711,6 +716,11 @@ public extension KeyboardContext {
   /// 上划显示在左侧
   var upSwipeOnLeft: Bool {
     hamsterConfig?.Keyboard?.upSwipeOnLeft ?? true
+  }
+
+  /// 划动上下布局
+  var swipeLabelUpAndDownLayout: Bool {
+    hamsterConfig?.Keyboard?.swipeLabelUpAndDownLayout ?? false
   }
 
   /// 自定义键盘

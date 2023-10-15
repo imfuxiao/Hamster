@@ -90,27 +90,24 @@ class KeyboardToolbarView: NibLessView {
 
     super.init(frame: .zero)
 
-    Task {
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
-          let isEmpty = $0.isEmpty
-          self.candidateWordView.isHidden = isEmpty
-        }
-        .store(in: &subscriptions)
-    }
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
     setupSubview()
+
+    combine()
   }
 
   func setupSubview() {
+    constructViewHierarchy()
+    activateViewConstraints()
+    commonFunctionBar.isHidden = true
+    candidateWordView.isHidden = true
+  }
+
+  override func constructViewHierarchy() {
     addSubview(commonFunctionBar)
     addSubview(candidateWordView)
+  }
 
+  override func activateViewConstraints() {
     NSLayoutConstraint.activate([
       commonFunctionBar.topAnchor.constraint(equalTo: topAnchor),
       commonFunctionBar.bottomAnchor.constraint(equalTo: bottomAnchor),
@@ -122,9 +119,18 @@ class KeyboardToolbarView: NibLessView {
       candidateWordView.leadingAnchor.constraint(equalTo: leadingAnchor),
       candidateWordView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
+  }
 
-    commonFunctionBar.isHidden = true
-    candidateWordView.isHidden = true
+  func combine() {
+    Task {
+      await rimeContext.$userInputKey
+        .receive(on: DispatchQueue.main)
+        .sink { [unowned self] in
+          let isEmpty = $0.isEmpty
+          self.candidateWordView.isHidden = isEmpty
+        }
+        .store(in: &subscriptions)
+    }
   }
 
   @objc func dismissKeyboardAction() {

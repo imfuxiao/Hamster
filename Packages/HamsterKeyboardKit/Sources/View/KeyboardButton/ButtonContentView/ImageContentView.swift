@@ -11,11 +11,7 @@ import UIKit
 class ImageContentView: NibLessView {
 //  private let scaleFactor: CGFloat
   public let imageView: UIImageView
-  public var style: KeyboardButtonStyle {
-    didSet {
-      setNeedsLayout()
-    }
-  }
+  public var style: KeyboardButtonStyle
 
   init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
     self.style = style
@@ -23,62 +19,25 @@ class ImageContentView: NibLessView {
     imageView.contentMode = .center
 
     super.init(frame: .zero)
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
 
     setupImage()
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  func setupImage() {
+    addSubview(imageView)
 
     if let color = style.foregroundColor {
       imageView.tintColor = color
     } else {
       imageView.tintColor = UIColor.label
     }
-  }
-
-  func setupImage() {
-    addSubview(imageView)
 
     imageView.translatesAutoresizingMaskIntoConstraints = false
-
     NSLayoutConstraint.activate([
-      imageView.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1.0),
-      bottomAnchor.constraint(equalToSystemSpacingBelow: imageView.bottomAnchor, multiplier: 1.0),
-      imageView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.0),
-      trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.trailingAnchor, multiplier: 1.0),
+      imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+      imageView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor),
+      imageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor),
     ])
   }
 }
-
-#if canImport(SwiftUI) && DEBUG
-import SwiftUI
-
-struct ImageContentView_Previews: PreviewProvider {
-  static func imageContent(action: KeyboardAction, scaleFactor: CGFloat = 1) -> some View {
-    let appearance: KeyboardAppearance = .preview
-    return UIViewPreview {
-      let view = ImageContentView(
-        style: .preview1,
-        image: appearance.buttonImage(for: action),
-        scaleFactor: scaleFactor
-      )
-//      view.frame = .init(origin: .zero, size: .init(width: 40, height: 40))
-      return view
-    }
-  }
-
-  static var previews: some View {
-    HStack {
-      imageContent(action: .backspace, scaleFactor: 2)
-      imageContent(action: .nextKeyboard)
-      imageContent(action: .keyboardType(.emojis))
-    }
-  }
-}
-
-#endif

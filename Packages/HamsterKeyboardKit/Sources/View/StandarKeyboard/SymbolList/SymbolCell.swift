@@ -34,6 +34,12 @@ class SymbolCell: UICollectionViewListCell {
 
   var symbolLabel: UILabel = {
     let label = UILabel()
+    label.textAlignment = .center
+    label.lineBreakMode = .byTruncatingTail
+    label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.2
+    label.text = " "
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
@@ -47,18 +53,27 @@ class SymbolCell: UICollectionViewListCell {
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
 
-    contentView.addSubview(symbolLabel)
-    symbolLabel.fillSuperview()
-
-    NSLayoutConstraint.activate([
-      symbolLabel.heightAnchor.constraint(equalToConstant: 40),
-      separatorLayoutGuide.leadingAnchor.constraint(equalTo: leadingAnchor)
-    ])
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  func constructViewHierarchy() {
+    contentView.addSubview(symbolLabel)
+  }
+
+  func activateViewConstraints() {
+    NSLayoutConstraint.activate([
+      symbolLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1.0),
+      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: symbolLabel.bottomAnchor, multiplier: 1.0),
+      symbolLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      symbolLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      separatorLayoutGuide.leadingAnchor.constraint(equalTo: leadingAnchor)
+    ])
   }
 
   func updateWithSymbol(_ symbol: String,
@@ -78,14 +93,6 @@ class SymbolCell: UICollectionViewListCell {
 
   override func updateConfiguration(using state: UICellConfigurationState) {
     super.updateConfiguration(using: state)
-
-//    var contentConfig = UIListContentConfiguration.valueCell()
-//    contentConfig.text = state.symbol
-//    contentConfig.textProperties.font = UIFont.systemFont(ofSize: 12)
-//    contentConfig.textProperties.alignment = .center
-//    contentConfig.textProperties.adjustsFontSizeToFitWidth = true
-//    contentConfig.axesPreservingSuperviewLayoutMargins = .both
-//    contentConfig.directionalLayoutMargins = .zero
 
     symbolLabel.text = state.symbol
     symbolLabel.font = UIFont.systemFont(ofSize: 16)
