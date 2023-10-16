@@ -27,7 +27,6 @@ public class StanderSystemKeyboard: NibLessView {
   private var inputCalloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
-  private var currentKeyboardType: KeyboardType?
 
   /// TODO: 触摸管理视图
   /// 统一手势处理
@@ -42,6 +41,7 @@ public class StanderSystemKeyboard: NibLessView {
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
+
   // 键盘是否浮动
   private var isKeyboardFloating: Bool
 
@@ -111,8 +111,6 @@ public class StanderSystemKeyboard: NibLessView {
 
     constructViewHierarchy()
     activateViewConstraints()
-
-    combine()
   }
 
   // MARK: Layout
@@ -268,72 +266,17 @@ public class StanderSystemKeyboard: NibLessView {
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
-  func combine() {
-    // 屏幕方向改变调整行高
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard $0 != self.interfaceOrientation else { return }
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
-
-    // 键盘类型发生变化重新加载键盘
-    keyboardContext.$keyboardType
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard currentKeyboardType != $0 else { return }
-        switch $0 {
-        case .chinese, .chineseNumeric, .chineseSymbolic, .alphabetic, .numeric, .symbolic:
-          Logger.statistics.debug("keyboardContext.keyboardType is change")
-          setNeedsLayout()
-        default:
-          return
-        }
-      }
-      .store(in: &subscriptions)
-
-    // iPad 键盘浮动
-    keyboardContext.$isKeyboardFloating
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        Logger.statistics.debug("keyboardContext.isKeyboardFloating is \($0)")
-        guard $0 == true else { return }
-        setNeedsLayout()
-      }
-      .store(in: &subscriptions)
-  }
-
   override public func updateConstraints() {
     super.updateConstraints()
 
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
+    isKeyboardFloating = keyboardContext.isKeyboardFloating
+
     let rowHeight = layoutConfig.rowHeight
     Logger.statistics.debug("StanderAlphabeticKeyboard layoutSubviews() buttonInsets rowHeight: \(rowHeight)")
     dynamicConstraints.forEach {
       $0.constant = rowHeight
-    }
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    if currentKeyboardType != keyboardContext.keyboardType || isKeyboardFloating != keyboardContext.isKeyboardFloating, keyboardContext.keyboardType.needLayoutSubviews {
-      currentKeyboardType = keyboardContext.keyboardType
-      isKeyboardFloating = keyboardContext.isKeyboardFloating
-
-      // TODO: 需要将按键添加至 touchView, 统一处理
-      // touchView.subviews.forEach { $0.removeFromSuperview() }
-      // touchView.removeFromSuperview()
-      subviews.forEach { $0.removeFromSuperview() }
-
-      self.keyboardRows.removeAll(keepingCapacity: true)
-      self.staticConstraints.removeAll(keepingCapacity: true)
-      self.dynamicConstraints.removeAll(keepingCapacity: true)
-
-      constructViewHierarchy()
-      activateViewConstraints()
     }
   }
 }

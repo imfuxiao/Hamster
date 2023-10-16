@@ -29,10 +29,7 @@ public class CandidateWordsView: NibLessView {
   private var actionHandler: KeyboardActionHandler
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
-  var userInterfaceStyle: UIUserInterfaceStyle
-
   private var subscriptions = Set<AnyCancellable>()
-
   private var dynamicControlStateHeightConstraint: NSLayoutConstraint?
 
   /// 拼音Label
@@ -42,17 +39,18 @@ public class CandidateWordsView: NibLessView {
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
     label.minimumScaleFactor = 0.5
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
   /// 拼音区域
   ///
   lazy var phoneticArea: UIView = {
-    let view = UIView(frame: .zero)
+    let view = UIStackView(arrangedSubviews: [phoneticLabel])
+    view.axis = .horizontal
+    view.alignment = .leading
+    view.distribution = .fill
+    view.spacing = 0
     view.translatesAutoresizingMaskIntoConstraints = false
-    view.addSubview(phoneticLabel)
-    phoneticLabel.fillSuperview()
     return view
   }()
 
@@ -72,7 +70,6 @@ public class CandidateWordsView: NibLessView {
     view.contentMode = .center
     view.translatesAutoresizingMaskIntoConstraints = false
     view.image = stateImage(.collapse)
-
     return view
   }()
 
@@ -82,12 +79,7 @@ public class CandidateWordsView: NibLessView {
     view.backgroundColor = .clearInteractable
 
     view.addSubview(stateImageView)
-    NSLayoutConstraint.activate([
-      stateImageView.topAnchor.constraint(equalTo: view.topAnchor),
-      stateImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      stateImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      stateImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-    ])
+    stateImageView.fillSuperview()
 
     // 添加阴影
     let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
@@ -107,11 +99,14 @@ public class CandidateWordsView: NibLessView {
     return view
   }()
 
+  // MARK: - 计算属性
+
   /// 布局配置
   private var layoutConfig: KeyboardLayoutConfiguration {
     .standard(for: keyboardContext)
   }
 
+  /// 控制状态按钮高度约束
   private var controlStateHeightConstraint: NSLayoutConstraint {
     keyboardContext.candidatesViewState.isCollapse()
       ? controlStateView.heightAnchor.constraint(equalTo: candidatesArea.heightAnchor)
@@ -122,7 +117,6 @@ public class CandidateWordsView: NibLessView {
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     super.init(frame: .zero)
 
@@ -141,8 +135,6 @@ public class CandidateWordsView: NibLessView {
     if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
       phoneticLabel.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
     }
-    phoneticLabel.textColor = keyboardContext.phoneticTextColor
-    stateImageView.tintColor = keyboardContext.candidateTextColor
 
     // 非内嵌模式添加拼写区域
     if !keyboardContext.enableEmbeddedInputMode {
@@ -163,7 +155,7 @@ public class CandidateWordsView: NibLessView {
     // 下拉状态按钮长宽比
     let controlStateWidthAndHeightConstraint = controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0)
     controlStateWidthAndHeightConstraint.identifier = "controlStateWidthAndHeightConstraint"
-    controlStateWidthAndHeightConstraint.priority = .defaultHigh
+    controlStateWidthAndHeightConstraint.priority = .required
 
     let phoneticAreaLeadingConstraint = phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left)
     phoneticAreaLeadingConstraint.identifier = "phoneticAreaLeadingConstraint"
@@ -243,17 +235,6 @@ public class CandidateWordsView: NibLessView {
           self.dynamicControlStateHeightConstraint?.isActive = true
         }
       }.store(in: &subscriptions)
-
-    // 系统外观发生变化，键盘颜色随亦随之变化
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        userInterfaceStyle = $0.userInterfaceStyle
-
-        setNeedsLayout()
-      }
-      .store(in: &subscriptions)
   }
 
   @objc func changeState() {

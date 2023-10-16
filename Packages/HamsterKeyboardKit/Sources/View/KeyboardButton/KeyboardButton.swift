@@ -57,6 +57,9 @@ public class KeyboardButton: UIControl {
   /// 设备方向
   var interfaceOrientation: InterfaceOrientation
 
+  /// iPad 浮动模式
+  var isKeyboardFloating: Bool
+
   /// 按键阴影路径缓存
   var shadowPathCache = [ButtonBounds: UIBezierPath]()
 
@@ -116,12 +119,14 @@ public class KeyboardButton: UIControl {
 
   /// 按键内容视图
   lazy var buttonContentView: KeyboardButtonContentView = {
+    let insets = item.insets
     let contentView = KeyboardButtonContentView(
       item: item,
       style: buttonStyle,
       appearance: appearance,
       keyboardContext: keyboardContext,
       rimeContext: rimeContext)
+
     contentView.translatesAutoresizingMaskIntoConstraints = false
     return contentView
   }()
@@ -129,6 +134,7 @@ public class KeyboardButton: UIControl {
   // 按钮底部立体阴影视图
   lazy var underShadowView: ShapeView = {
     let view = ShapeView()
+    view.backgroundColor = .clear
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -202,11 +208,14 @@ public class KeyboardButton: UIControl {
     self.appearance = appearance
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
     setupButtonContentView()
     setupButtonContentConstraints()
+
+    setupAppearance()
 
     combine()
   }
@@ -231,15 +240,6 @@ public class KeyboardButton: UIControl {
         setNeedsLayout()
       }
       .store(in: &subscriptions)
-
-    // 屏幕方向改变按钮内容视图内距
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard $0 != self.interfaceOrientation else { return }
-        updateButtonContentViewConstraints()
-      }
-      .store(in: &subscriptions)
   }
 
   // MARK: - Layout Functions
@@ -256,16 +256,20 @@ public class KeyboardButton: UIControl {
     buttonContentView.translatesAutoresizingMaskIntoConstraints = false
 
     let topContentConstraint = buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
-    topContentConstraint.priority = .defaultHigh
+    topContentConstraint.priority = .required
+    topContentConstraint.identifier = "\(row)-\(column)-top-content"
 
-    let bottomContentConstraint = buttonContentView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom)
-    bottomContentConstraint.priority = .defaultHigh
+    let bottomContentConstraint = bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor, constant: insets.bottom)
+    bottomContentConstraint.priority = .required
+    bottomContentConstraint.identifier = "\(row)-\(column)-bottom-content"
 
     let leadingContentConstraint = buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left)
-    leadingContentConstraint.priority = .defaultHigh
+    leadingContentConstraint.priority = .required
+    bottomContentConstraint.identifier = "\(row)-\(column)-leading-content"
 
-    let trailingContentConstraint = buttonContentView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -insets.right)
-    trailingContentConstraint.priority = .defaultHigh
+    let trailingContentConstraint = trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor, constant: insets.right)
+    trailingContentConstraint.priority = .required
+    bottomContentConstraint.identifier = "\(row)-\(column)-trailing-content"
 
     topConstraints.append(topContentConstraint)
     bottomConstraints.append(bottomContentConstraint)
@@ -305,17 +309,20 @@ public class KeyboardButton: UIControl {
     underShadowView.shapeLayer.lineWidth = 1
     underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
     underShadowView.shapeLayer.masksToBounds = false
-    underShadowView.shapeLayer.path = underPath.cgPath
 //    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
 
     updateButtonStyle(isPressed: isHighlighted)
   }
 
-  override public func layoutSubviews() {
-    super.layoutSubviews()
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
 
     setupUnderShadowView()
     setupUnderShadowViewConstraints()
+  }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
 
     // 当添加到父视图后，添加 Input 按钮类型的 Callout 视图
     setupInputCallout()
@@ -339,18 +346,25 @@ public class KeyboardButton: UIControl {
     ])
   }
 
-  /// 更新按钮内容视图的约束
+  override public func updateConstraints() {
+    super.updateConstraints()
+
+    updateButtonContentViewConstraints()
+  }
+
+  /// 更新按钮内容视图的内距
   func updateButtonContentViewConstraints() {
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
+    isKeyboardFloating = keyboardContext.isKeyboardFloating
 
-    Logger.statistics.debug("\(self.row)-\(self.column) updateSubviewConstraints()")
+    let insets = keyboardContext.isKeyboardFloating && !keyboardContext.keyboardType.isCustom ? layoutConfig.buttonInsets : item.insets
+    Logger.statistics.debug("\(self.row)-\(self.column) updateSubviewConstraints(): top: \(insets.top), bottom: \(insets.bottom), leading: \(insets.left), trailing: \(insets.right)")
 
-    let insets = item.insets
     topConstraints.forEach { $0.constant = insets.top }
-    bottomConstraints.forEach { $0.constant = -insets.bottom }
+    bottomConstraints.forEach { $0.constant = insets.bottom }
     leadingConstraints.forEach { $0.constant = insets.left }
-    trailingConstraints.forEach { $0.constant = -insets.right }
+    trailingConstraints.forEach { $0.constant = insets.right }
   }
 
   /// 根据按下状态更新当前按钮样式
@@ -361,6 +375,7 @@ public class KeyboardButton: UIControl {
 
     // 按键底部深色样式
     underShadowView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
+    underShadowView.shapeLayer.path = underPath.cgPath
 
     // 按键阴影样式
 //    underShadowView.shapeLayer.shadowPath = shadowPath.cgPath
@@ -444,6 +459,8 @@ extension KeyboardButton {
     let delta: CGFloat = 0.5 // 线宽的一半，backgroundView.shapeLayer.lineWidth = 1
     let maxX = underShadowView.frame.width - delta
     let maxY = underShadowView.frame.height + delta
+//    let maxX = buttonContentView.frame.width - delta
+//    let maxY = buttonContentView.frame.height + delta
 
     // 按钮底部边框
     let underPath: UIBezierPath = {

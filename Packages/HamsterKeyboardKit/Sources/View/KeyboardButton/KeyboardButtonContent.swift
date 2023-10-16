@@ -17,27 +17,51 @@ public class KeyboardButtonContentView: NibLessView {
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
     didSet {
-      if let view = contentView as? SpaceContentView {
-        view.style = style
-      } else if let view = contentView as? ImageContentView {
-        view.style = style
-      } else if let view = contentView as? TextContentView {
-        view.style = style
-      }
       setNeedsLayout()
+      if action == .space {
+        spaceContentView.style = style
+      } else if let image = appearance.buttonImage(for: action) {
+        imageContentView.imageView.image = image
+        imageContentView.style = style
+      } else {
+        textContentView.style = style
+      }
     }
   }
 
   private let keyboardContext: KeyboardContext
   private let rimeContext: RimeContext
 
+  private lazy var spaceContentView: SpaceContentView = {
+    let view = SpaceContentView(keyboardContext: keyboardContext, rimeContext: rimeContext, item: item, style: style, spaceText: buttonText)
+    return view
+  }()
+
+  private lazy var imageContentView: ImageContentView = {
+    let view = ImageContentView(style: style, scaleFactor: appearance.buttonImageScaleFactor(for: action))
+    return view
+  }()
+
+  private lazy var textContentView: TextContentView = {
+    let view = TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
+    return view
+  }()
+
   private lazy var contentView: UIView = {
+    let view = UIStackView(frame: .zero)
+    view.axis = .horizontal
+    view.alignment = .center
+    view.distribution = .fill
+    view.spacing = 0
+
     if action == .space {
-      return SpaceContentView(keyboardContext: keyboardContext, rimeContext: rimeContext, item: item, style: style, spaceText: buttonText)
+      view.addArrangedSubview(spaceContentView)
     } else if let image = appearance.buttonImage(for: action) {
-      return ImageContentView(style: style, image: image, scaleFactor: appearance.buttonImageScaleFactor(for: action))
+      view.addArrangedSubview(imageContentView)
+    } else {
+      view.addArrangedSubview(textContentView)
     }
-    return TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
+    return view
   }()
 
   /// 上划 Label
@@ -118,7 +142,7 @@ public class KeyboardButtonContentView: NibLessView {
     constructViewHierarchy()
     activateViewConstraints()
 
-    // fot test
+    // for test
 //    let view = UIView()
 //    view.backgroundColor = .red
 //    view.translatesAutoresizingMaskIntoConstraints = false
@@ -176,52 +200,45 @@ public class KeyboardButtonContentView: NibLessView {
   override public func activateViewConstraints() {
     contentView.translatesAutoresizingMaskIntoConstraints = false
 
-    if !action.isInputAction || action == .space {
-      NSLayoutConstraint.activate([
-        contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        contentView.centerYAnchor.constraint(equalTo: centerYAnchor),
-        contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
-        contentView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor),
-      ])
-      return
-    }
-
-    // 检测是否开启上下布局
-    if keyboardContext.swipeLabelUpAndDownLayout {
-      NSLayoutConstraint.activate([
-        // x 轴位置一致
-        upSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-        contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        downSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-        upSwipeContainer.topAnchor.constraint(equalTo: topAnchor, constant: 1),
-        contentView.topAnchor.constraint(equalTo: upSwipeLabel.bottomAnchor),
-        downSwipeContainer.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1),
-
-        contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
-        upSwipeContainer.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
-        downSwipeContainer.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
-
-        upSwipeContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.225),
-        downSwipeContainer.heightAnchor.constraint(equalTo: upSwipeLabel.heightAnchor),
-        contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.55),
-      ])
-      return
-    }
-
-    NSLayoutConstraint.activate([
-      swipeLeftAndRightContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+    var contentConstraints = [
       contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-
-      swipeLeftAndRightContainer.topAnchor.constraint(equalTo: topAnchor),
-      contentView.topAnchor.constraint(equalTo: swipeLeftAndRightContainer.bottomAnchor),
-      contentView.bottomAnchor.constraint(equalTo: bottomAnchor),
-
-      swipeLeftAndRightContainer.widthAnchor.constraint(equalTo: widthAnchor),
       contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
+    ]
 
+    if !action.isInputAction || action == .space {
+      contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
+      contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.9))
+      NSLayoutConstraint.activate(contentConstraints)
+      return
+    }
+
+    // 划动上下布局
+    if keyboardContext.swipeLabelUpAndDownLayout {
+      contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.7))
+      contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
+      NSLayoutConstraint.activate([
+        upSwipeContainer.topAnchor.constraint(equalTo: topAnchor),
+        upSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+        upSwipeContainer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.9),
+        upSwipeContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
+
+        downSwipeContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
+        downSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
+        downSwipeContainer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.9),
+        downSwipeContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
+      ] + contentConstraints)
+      return
+    }
+
+    // 划动左右布局
+    contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8))
+    contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
+    NSLayoutConstraint.activate([
+      swipeLeftAndRightContainer.topAnchor.constraint(equalTo: topAnchor),
+      swipeLeftAndRightContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
       swipeLeftAndRightContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
-      contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8),
-    ])
+      swipeLeftAndRightContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
+      swipeLeftAndRightContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ] + contentConstraints)
   }
 }

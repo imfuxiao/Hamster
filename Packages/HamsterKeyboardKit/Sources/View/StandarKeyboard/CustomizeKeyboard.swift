@@ -23,6 +23,9 @@ class CustomizeKeyboard: NibLessView {
   private var rimeContext: RimeContext
   private var interfaceOrientation: InterfaceOrientation
 
+  // 键盘是否浮动
+  private var isKeyboardFloating: Bool
+
   // combine
   private var subscriptions = Set<AnyCancellable>()
 
@@ -62,12 +65,11 @@ class CustomizeKeyboard: NibLessView {
     self.calloutContext = calloutContext
     self.rimeContext = rimeContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
     setupKeyboardView()
-
-    combine()
   }
 
   // MARK: - Layout
@@ -77,17 +79,6 @@ class CustomizeKeyboard: NibLessView {
 
     constructViewHierarchy()
     activateViewConstraints()
-  }
-
-  func combine() {
-    // 屏幕方向改变调整行高
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard interfaceOrientation != $0 else { return }
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
   }
 
   override func constructViewHierarchy() {
@@ -223,8 +214,9 @@ class CustomizeKeyboard: NibLessView {
   override func updateConstraints() {
     super.updateConstraints()
 
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     let rowHeight = layoutConfig.rowHeight
     Logger.statistics.debug("Custom keyboard updateConstraints() buttonInsets rowHeight: \(rowHeight)")

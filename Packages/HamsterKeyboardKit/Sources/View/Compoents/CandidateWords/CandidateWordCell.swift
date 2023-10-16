@@ -68,7 +68,7 @@ class CandidateWordCell: UICollectionViewCell {
     NSLayoutConstraint.activate([
       containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
       containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 1),
+      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -1),
 
       textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 3),

@@ -69,6 +69,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   override open func viewDidLayoutSubviews() {
+    Logger.statistics.debug("KeyboardInputViewController: viewDidLayoutSubviews()")
     super.viewDidLayoutSubviews()
     keyboardContext.syncAfterLayout(with: self)
   }

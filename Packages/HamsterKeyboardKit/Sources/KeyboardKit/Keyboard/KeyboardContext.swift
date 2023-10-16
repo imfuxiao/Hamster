@@ -514,15 +514,6 @@ extension KeyboardContext {
     if isKeyboardFloating == isFloating { return }
     isKeyboardFloating = isFloating
   }
-
-  /**
-   Perform a sync to check if the keyboard is floating.
-   */
-  func syncIsFloating(_ view: UIView) {
-    let isFloating = view.frame.width != 0 && view.frame.width < screenSize.width / 2
-    if isKeyboardFloating == isFloating { return }
-    isKeyboardFloating = isFloating
-  }
 }
 
 private extension UIInputViewController {

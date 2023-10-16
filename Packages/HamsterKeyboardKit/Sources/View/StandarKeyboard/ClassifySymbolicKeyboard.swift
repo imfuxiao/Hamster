@@ -22,6 +22,9 @@ class ClassifySymbolicKeyboard: NibLessView {
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
 
+  // 键盘是否浮动
+  private var isKeyboardFloating: Bool
+
   private lazy var viewModel: ClassifySymbolicViewModel = {
     let vm = ClassifySymbolicViewModel()
     return vm
@@ -64,23 +67,12 @@ class ClassifySymbolicKeyboard: NibLessView {
     self.layoutProvider = layoutProvider
     self.keyboardContext = keyboardContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
     constructViewHierarchy()
     activateViewConstraints()
-
-    combine()
-  }
-
-  func combine() {
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard $0 != self.interfaceOrientation else { return }
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
   }
 
   // MARK: - Layout
@@ -124,8 +116,9 @@ class ClassifySymbolicKeyboard: NibLessView {
   override func updateConstraints() {
     super.updateConstraints()
 
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
+    isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     classifyViewWidthConstraint?.isActive = false
     classifyViewWidthConstraint = createClassifyViewWidthConstraint()

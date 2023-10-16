@@ -103,7 +103,7 @@ open class StandardKeyboardLayoutProvider: KeyboardLayoutProvider {
       return chineseNineGridLayoutProvider
     }
 
-    if context.deviceType == .pad && !context.isKeyboardFloating {
+    if context.deviceType == .pad {
       return context.keyboardType.isChinese ? chineseKeyboardLayoutProvider.iPadProvider : englishKeyboardLayoutProvider.iPadProvider
     }
     return context.keyboardType.isChinese ? chineseKeyboardLayoutProvider.iPhoneProvider : englishKeyboardLayoutProvider.iPhoneProvider

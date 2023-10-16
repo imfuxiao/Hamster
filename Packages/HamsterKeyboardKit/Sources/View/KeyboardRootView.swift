@@ -35,6 +35,12 @@ class KeyboardRootView: NibLessView {
   /// 当前键盘类型
   private var currentKeyboardType: KeyboardType
 
+  /// 当前屏幕方向
+  private var interfaceOrientation: InterfaceOrientation
+
+  /// 键盘是否浮动
+  private var isKeyboardFloating: Bool
+
   /// 工具栏收起时约束
   private var toolbarCollapseDynamicConstraints = [NSLayoutConstraint]()
 
@@ -48,7 +54,7 @@ class KeyboardRootView: NibLessView {
   private var candidateViewState: CandidateWordsView.State
 
   /// 非主键盘的临时键盘Cache
-  private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
+  // private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
 
   // MARK: - 计算属性
 
@@ -165,7 +171,6 @@ class KeyboardRootView: NibLessView {
     default:
       view = UIView(frame: .zero)
     }
-    tempKeyboardViewCache[keyboardContext.selectKeyboard] = view
     return view
   }()
 
@@ -207,6 +212,8 @@ class KeyboardRootView: NibLessView {
     self.rimeContext = rimeContext
     self.candidateViewState = keyboardContext.candidatesViewState
     self.currentKeyboardType = keyboardContext.keyboardType
+    self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
@@ -300,6 +307,27 @@ class KeyboardRootView: NibLessView {
         .store(in: &subscriptions)
     }
 
+    // 屏幕方向改变调整按键高度及按键内距
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard $0 != self.interfaceOrientation else { return }
+        self.interfaceOrientation = $0
+        self.primaryKeyboardView.setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
+
+    // iPad 浮动模式开启
+    keyboardContext.$isKeyboardFloating
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard self.isKeyboardFloating != $0 else { return }
+        self.isKeyboardFloating = $0
+        self.primaryKeyboardView.subviews.forEach { $0.setNeedsUpdateConstraints() }
+        self.primaryKeyboardView.setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
+
     // 跟踪键盘类型变化
     keyboardContext.$keyboardType
       .receive(on: DispatchQueue.main)
@@ -314,14 +342,17 @@ class KeyboardRootView: NibLessView {
           return
         }
 
-        // 需要删除与 primaryKeyboardView 视图相关约束
-        primaryKeyboardView.removeFromSuperview()
-
-        // 需要在替换之前删除之前的引用
-        primaryKeyboardView = keyboardView
-        addSubview(primaryKeyboardView)
-        primaryKeyboardView.setNeedsLayout()
         if keyboardContext.enableToolbar {
+          // NSLayoutConstraint.deactivate(toolbarCollapseDynamicConstraints)
+          toolbarCollapseDynamicConstraints.removeAll(keepingCapacity: true)
+          toolbarExpandDynamicConstraints.removeAll(keepingCapacity: true)
+
+          primaryKeyboardView.subviews.forEach { $0.removeFromSuperview() }
+          primaryKeyboardView.removeFromSuperview()
+
+          primaryKeyboardView = keyboardView
+          addSubview(primaryKeyboardView)
+
           // 工具栏收缩时约束
           toolbarCollapseDynamicConstraints = createToolbarCollapseDynamicConstraints()
 
@@ -330,6 +361,10 @@ class KeyboardRootView: NibLessView {
 
           NSLayoutConstraint.activate(toolbarCollapseDynamicConstraints)
         } else {
+          NSLayoutConstraint.deactivate(constraints)
+          primaryKeyboardView.removeFromSuperview()
+          primaryKeyboardView = keyboardView
+          addSubview(primaryKeyboardView)
           NSLayoutConstraint.activate(createNoToolbarConstraints())
         }
       }
@@ -338,6 +373,7 @@ class KeyboardRootView: NibLessView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
+    Logger.statistics.debug("KeyboardRootView: layoutSubviews()")
 
     // 检测候选栏状态是否发生变化
     guard candidateViewState != keyboardContext.candidatesViewState else { return }
@@ -363,10 +399,10 @@ class KeyboardRootView: NibLessView {
 
   /// 根据键盘类型选择键盘
   func chooseKeyboard(keyboardType: KeyboardType) -> UIView? {
-    // 从 cache 中获取键盘
-    if let tempKeyboardView = tempKeyboardViewCache[keyboardType] {
-      return tempKeyboardView
-    }
+//    // 从 cache 中获取键盘
+//    if let tempKeyboardView = tempKeyboardViewCache[keyboardType] {
+//      return tempKeyboardView
+//    }
 
     // 生成临时键盘
     var tempKeyboardView: UIView? = nil
@@ -390,7 +426,7 @@ class KeyboardRootView: NibLessView {
     }
 
     // 保存 cache
-    tempKeyboardViewCache[keyboardType] = tempKeyboardView
+//    tempKeyboardViewCache[keyboardType] = tempKeyboardView
     return tempKeyboardView
   }
 }

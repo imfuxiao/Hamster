@@ -262,25 +262,12 @@ public extension KeyboardType {
     }
   }
 
+  /// 显示按键气泡的键盘类型
   var displayButtonBubbles: Bool {
     switch self {
     case .chinese: return true
     case .alphabetic: return true
     case .custom: return true
-    default:
-      return false
-    }
-  }
-
-  /// 是否需要重新布局
-  var needLayoutSubviews: Bool {
-    switch self {
-    case .chinese: return true
-    case .chineseNumeric: return true
-    case .chineseSymbolic: return true
-    case .alphabetic: return true
-    case .numeric: return true
-    case .symbolic: return true
     default:
       return false
     }

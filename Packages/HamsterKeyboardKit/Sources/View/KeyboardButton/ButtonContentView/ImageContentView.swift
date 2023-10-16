@@ -21,10 +21,11 @@ class ImageContentView: NibLessView {
     }
   }
 
-  init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
+  init(style: KeyboardButtonStyle, image: UIImage? = nil, scaleFactor: CGFloat = .zero) {
     self.style = style
     self.imageView = UIImageView(image: image)
     imageView.contentMode = .center
+    imageView.contentScaleFactor = scaleFactor
 
     super.init(frame: .zero)
 

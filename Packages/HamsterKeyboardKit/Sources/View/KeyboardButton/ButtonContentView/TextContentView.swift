@@ -74,7 +74,12 @@ public class TextContentView: NibLessView {
   }
 
   override public func activateViewConstraints() {
-    label.fillSuperview()
+    NSLayoutConstraint.activate([
+      label.centerXAnchor.constraint(equalTo: centerXAnchor),
+      label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: useOffset ? -2 : 0),
+      label.widthAnchor.constraint(equalTo: widthAnchor),
+      label.heightAnchor.constraint(equalTo: heightAnchor),
+    ])
   }
 
   func setTextValue(_ text: String) {

@@ -24,6 +24,9 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
 
+  // 键盘是否浮动
+  private var isKeyboardFloating: Bool
+
   /// 符号列表视图
   private lazy var symbolsListView: SymbolsVerticalView = {
     let view = SymbolsVerticalView(
@@ -97,28 +100,16 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     self.calloutContext = calloutContext
     self.rimeContext = rimeContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
 
     setupKeyboardView()
-
-    combine()
   }
 
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  func combine() {
-    // 屏幕方向改变重新计算动态高度
-    keyboardContext.$interfaceOrientation
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard interfaceOrientation != $0 else { return }
-        setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
   }
 
   // MARK: - Layout
@@ -240,8 +231,9 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   override public func updateConstraints() {
     super.updateConstraints()
 
-    guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
+    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
+    isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     // 根据 keyboardContext 获取当前布局配置
     // 注意：临时变量缓存计算属性的值，避免重复计算

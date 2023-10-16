@@ -98,20 +98,9 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
    获取 `inputs` 和 `context` 对应的操作字符。
    */
   open func actionCharacters(for rows: InputSetRows, context: KeyboardContext) -> [[String]] {
-    let isKeyboardFloating = context.isKeyboardFloating
     switch context.keyboardType {
-    case .alphabetic(let casing):
-      var chars = rows.characters(for: casing)
-      if isKeyboardFloating, chars.count >= 3 {
-        chars[2] = chars[2].prefix(7).map { String($0) }
-      }
-      return chars
-    case .chinese(let casing):
-      var chars = rows.characters(for: casing)
-      if isKeyboardFloating, chars.count >= 3 {
-        chars[2] = chars[2].prefix(7).map { String($0) }
-      }
-      return chars
+    case .alphabetic(let casing): return rows.characters(for: casing)
+    case .chinese(let casing): return rows.characters(for: casing)
     case .numeric: return rows.characters()
     case .chineseNumeric: return rows.characters()
     case .symbolic: return rows.characters()
