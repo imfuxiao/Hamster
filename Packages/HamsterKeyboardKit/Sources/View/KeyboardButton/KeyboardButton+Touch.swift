@@ -10,6 +10,11 @@ import OSLog
 import UIKit
 
 public extension KeyboardButton {
+  // 系统地球图标添加选择系统输入方案
+  @objc func handleInputModeListFromView(from: UIView, with: UIEvent) {
+    keyboardContext.handleInputModeListFromView(from: from, with: with)
+  }
+
   // TODO: 如果开启划动输入则统一在 TouchView 处理手势
   // 注意： inputMargin 不可见的按钮也需要触发，所以必须重载 hitTest 方法
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {

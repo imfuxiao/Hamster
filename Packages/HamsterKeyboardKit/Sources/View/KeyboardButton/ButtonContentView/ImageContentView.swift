@@ -11,7 +11,15 @@ import UIKit
 class ImageContentView: NibLessView {
 //  private let scaleFactor: CGFloat
   public let imageView: UIImageView
-  public var style: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle {
+    didSet {
+      if let color = style.foregroundColor {
+        imageView.tintColor = color
+      } else {
+        imageView.tintColor = UIColor.label
+      }
+    }
+  }
 
   init(style: KeyboardButtonStyle, image: UIImage?, scaleFactor: CGFloat = .zero) {
     self.style = style

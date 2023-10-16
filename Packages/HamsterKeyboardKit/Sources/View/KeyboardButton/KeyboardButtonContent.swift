@@ -24,6 +24,7 @@ public class KeyboardButtonContentView: NibLessView {
       } else if let view = contentView as? TextContentView {
         view.style = style
       }
+      setNeedsLayout()
     }
   }
 
@@ -80,11 +81,11 @@ public class KeyboardButtonContentView: NibLessView {
   }()
 
   private lazy var swipeLeftAndRightContainer: UIStackView = {
-    let view = UIStackView(frame: .zero)
+    let view = UIStackView(arrangedSubviews: keyboardContext.upSwipeOnLeft ? [upSwipeLabel, downSwipeLabel] : [downSwipeLabel, upSwipeLabel])
     view.translatesAutoresizingMaskIntoConstraints = false
     view.axis = .horizontal
     view.alignment = .center
-    view.distribution = .fillEqually
+    view.distribution = .fillProportionally
     view.spacing = 0
 
     return view
@@ -108,6 +109,7 @@ public class KeyboardButtonContentView: NibLessView {
     super.init(frame: .zero)
 
     setupContentView()
+    setupAppearance()
   }
 
   // MARK: - Layout
@@ -122,11 +124,20 @@ public class KeyboardButtonContentView: NibLessView {
 //    view.translatesAutoresizingMaskIntoConstraints = false
 //    addSubview(view)
 //    view.fillSuperview()
+  }
 
+  func setupAppearance() {
     upSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     upSwipeLabel.textColor = keyboardContext.secondaryLabelColor
 
     downSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
+    downSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+  }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    upSwipeLabel.textColor = keyboardContext.secondaryLabelColor
     downSwipeLabel.textColor = keyboardContext.secondaryLabelColor
   }
 
@@ -137,6 +148,8 @@ public class KeyboardButtonContentView: NibLessView {
     if keyboardContext.swipeLabelUpAndDownLayout {
       addSubview(upSwipeContainer)
       addSubview(downSwipeContainer)
+      upSwipeLabel.text = " "
+      downSwipeLabel.text = " "
       for swipe in item.swipes {
         if swipe.display, swipe.direction == .up {
           upSwipeLabel.text = swipe.labelText
@@ -150,12 +163,10 @@ public class KeyboardButtonContentView: NibLessView {
       for swipe in item.swipes {
         if swipe.display, swipe.direction == .up {
           upSwipeLabel.text = swipe.labelText
-          swipeLeftAndRightContainer.addArrangedSubview(upSwipeLabel)
         }
 
         if swipe.display, swipe.direction == .down {
           downSwipeLabel.text = swipe.labelText
-          swipeLeftAndRightContainer.addArrangedSubview(downSwipeLabel)
         }
       }
       addSubview(swipeLeftAndRightContainer)

@@ -17,7 +17,12 @@ import UIKit
 public class TextContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
-  public var style: KeyboardButtonStyle
+  public var style: KeyboardButtonStyle {
+    didSet {
+      label.font = style.font?.font
+      label.textColor = style.foregroundColor
+    }
+  }
 
   /// 文本内容
   private var text: String
@@ -70,14 +75,6 @@ public class TextContentView: NibLessView {
 
   override public func activateViewConstraints() {
     label.fillSuperview()
-//    NSLayoutConstraint.activate([
-//      label.centerXAnchor.constraint(equalTo: centerXAnchor),
-//      label.centerYAnchor.constraint(equalTo: centerYAnchor),
-//      label.leadingAnchor.constraint(greaterThanOrEqualTo: leadingAnchor),
-//      label.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor),
-//      label.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
-//      label.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
-//    ])
   }
 
   func setTextValue(_ text: String) {

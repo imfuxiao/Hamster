@@ -29,8 +29,9 @@ public class CandidateWordsView: NibLessView {
   private var actionHandler: KeyboardActionHandler
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
+  var userInterfaceStyle: UIUserInterfaceStyle
 
-  private var subscription = Set<AnyCancellable>()
+  private var subscriptions = Set<AnyCancellable>()
 
   private var dynamicControlStateHeightConstraint: NSLayoutConstraint?
 
@@ -121,6 +122,7 @@ public class CandidateWordsView: NibLessView {
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
+    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     super.init(frame: .zero)
 
@@ -204,6 +206,13 @@ public class CandidateWordsView: NibLessView {
     }
   }
 
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    phoneticLabel.textColor = keyboardContext.phoneticTextColor
+    stateImageView.tintColor = keyboardContext.candidateTextColor
+  }
+
   func combine() {
     Task {
       // 检测是否启用内嵌编码
@@ -220,7 +229,7 @@ public class CandidateWordsView: NibLessView {
             self.phoneticLabel.text = inputKeys
           }
         }
-        .store(in: &subscription)
+        .store(in: &subscriptions)
     }
 
     keyboardContext.$candidatesViewState
@@ -233,7 +242,18 @@ public class CandidateWordsView: NibLessView {
           self.dynamicControlStateHeightConstraint = controlStateHeightConstraint
           self.dynamicControlStateHeightConstraint?.isActive = true
         }
-      }.store(in: &subscription)
+      }.store(in: &subscriptions)
+
+    // 系统外观发生变化，键盘颜色随亦随之变化
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        userInterfaceStyle = $0.userInterfaceStyle
+
+        setNeedsLayout()
+      }
+      .store(in: &subscriptions)
   }
 
   @objc func changeState() {

@@ -18,6 +18,7 @@ class SpaceContentView: NibLessView {
 
   public var style: KeyboardButtonStyle {
     didSet {
+      loadingLabel.textColor = style.foregroundColor
       textView.style = style
     }
   }

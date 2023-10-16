@@ -52,6 +52,7 @@ public class KeyboardButton: UIControl {
   var bottomConstraints = [NSLayoutConstraint]()
   var leadingConstraints = [NSLayoutConstraint]()
   var trailingConstraints = [NSLayoutConstraint]()
+  var underShadowViewConstraints = [NSLayoutConstraint]()
 
   /// 设备方向
   var interfaceOrientation: InterfaceOrientation
@@ -204,7 +205,8 @@ public class KeyboardButton: UIControl {
 
     super.init(frame: .zero)
 
-    setupSubview()
+    setupButtonContentView()
+    setupButtonContentConstraints()
 
     combine()
   }
@@ -218,8 +220,6 @@ public class KeyboardButton: UIControl {
     repeatTimer.stop()
   }
 
-  // MARK: - Layout Functions
-
   func combine() {
     // 系统外观发生变化，键盘颜色随亦随之变化
     keyboardContext.$traitCollection
@@ -228,36 +228,32 @@ public class KeyboardButton: UIControl {
         guard userInterfaceStyle != $0.userInterfaceStyle else { return }
         userInterfaceStyle = $0.userInterfaceStyle
 
-        let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
-        buttonContentView.style = style
+        setNeedsLayout()
+      }
+      .store(in: &subscriptions)
+
+    // 屏幕方向改变按钮内容视图内距
+    keyboardContext.$interfaceOrientation
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard $0 != self.interfaceOrientation else { return }
+        updateButtonContentViewConstraints()
       }
       .store(in: &subscriptions)
   }
 
-  // 系统地球图标添加选择系统输入方案
-  @objc func handleInputModeListFromView(from: UIView, with: UIEvent) {
-    keyboardContext.handleInputModeListFromView(from: from, with: with)
-  }
-
-  func setupSubview() {
-    /// spacer 类型不可见
-    alpha = isSpacer ? 0 : 1
-
-    setupContentView()
-    setupUnderShadowView()
-    updateButtonStyle(isPressed: isHighlighted)
-
-    NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
-  }
+  // MARK: - Layout Functions
 
   /// 设置按钮内容视图
-  func setupContentView() {
-    // 不变的样式
-    buttonContentView.layer.cornerRadius = cornerRadius
-
+  func setupButtonContentView() {
     addSubview(buttonContentView)
-    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
+  }
+
+  /// 设置按钮内容视图约束
+  func setupButtonContentConstraints() {
+    // 按钮内容约束
     let insets = item.insets
+    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
 
     let topContentConstraint = buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
     topContentConstraint.priority = .defaultHigh
@@ -275,30 +271,65 @@ public class KeyboardButton: UIControl {
     bottomConstraints.append(bottomContentConstraint)
     leadingConstraints.append(leadingContentConstraint)
     trailingConstraints.append(trailingContentConstraint)
+
+    NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
   }
 
-  /// 设置按钮底部阴影及暗线
+  /// 设置按钮底部阴影视图
   func setupUnderShadowView() {
-    // 不变的样式
-    underShadowView.shapeLayer.lineWidth = 1
-    underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
-    underShadowView.shapeLayer.masksToBounds = false
-//    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
-
+    guard underShadowView.superview == nil else { return }
     insertSubview(underShadowView, belowSubview: buttonContentView)
-    NSLayoutConstraint.activate([
+  }
+
+  func setupUnderShadowViewConstraints() {
+    guard underShadowViewConstraints.isEmpty else { return }
+    // 底部阴影边框视图约束
+    self.underShadowViewConstraints = [
       underShadowView.topAnchor.constraint(equalTo: buttonContentView.topAnchor),
       underShadowView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
       underShadowView.leadingAnchor.constraint(equalTo: buttonContentView.leadingAnchor),
       underShadowView.trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor),
-    ])
+    ]
+
+    NSLayoutConstraint.activate(underShadowViewConstraints)
   }
 
-  /// 设置 inputCallout 样式
+  /// 设置外观
+  func setupAppearance() {
+    /// spacer 类型不可见
+    alpha = isSpacer ? 0 : 1
+
+    buttonContentView.layer.cornerRadius = cornerRadius
+
+    // 按钮底部阴影边框
+    underShadowView.shapeLayer.lineWidth = 1
+    underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
+    underShadowView.shapeLayer.masksToBounds = false
+    underShadowView.shapeLayer.path = underPath.cgPath
+//    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
+
+    updateButtonStyle(isPressed: isHighlighted)
+  }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    setupUnderShadowView()
+    setupUnderShadowViewConstraints()
+
+    // 当添加到父视图后，添加 Input 按钮类型的 Callout 视图
+    setupInputCallout()
+
+    setupAppearance()
+  }
+
+  /// 设置 inputCallout 视图
+  /// 注意: InputCallout 视图是定义在父视图中，因为 button 之间会有遮盖
   func setupInputCallout() {
     guard keyboardContext.displayButtonBubbles else { return }
     guard inputCalloutView.superview == nil else { return }
     guard let superview = superview else { return }
+    guard !superview.subviews.contains(inputCalloutView) else { return }
     superview.addSubview(inputCalloutView)
     NSLayoutConstraint.activate([
       inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 2),
@@ -308,7 +339,8 @@ public class KeyboardButton: UIControl {
     ])
   }
 
-  func updateSubviewConstraints() {
+  /// 更新按钮内容视图的约束
+  func updateButtonContentViewConstraints() {
     guard interfaceOrientation != keyboardContext.interfaceOrientation else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
 
@@ -321,6 +353,7 @@ public class KeyboardButton: UIControl {
     trailingConstraints.forEach { $0.constant = -insets.right }
   }
 
+  /// 根据按下状态更新当前按钮样式
   func updateButtonStyle(isPressed: Bool) {
     // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
     let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
@@ -341,18 +374,9 @@ public class KeyboardButton: UIControl {
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
-      underShadowView.shapeLayer.path = underPath.cgPath
       underShadowView.shapeLayer.opacity = 0.7
       hideInputCallout()
     }
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    setupInputCallout()
-    updateSubviewConstraints()
-    updateButtonStyle(isPressed: isHighlighted)
   }
 
   // MARK: debuger
