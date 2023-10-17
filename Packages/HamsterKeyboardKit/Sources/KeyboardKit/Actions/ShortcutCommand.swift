@@ -30,6 +30,8 @@ public enum ShortcutCommand: String, CaseIterable, Hashable, Identifiable, Codab
   case emojiKeyboard = "#emojiKeyboard"
   case symbolKeyboard = "#symbolKeyboard"
   case numberKeyboard = "#numberKeyboard"
+  case moveLeft = "#左移"
+  case moveRight = "#右移"
   case none = "无"
 
   var text: String {

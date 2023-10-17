@@ -56,6 +56,10 @@ public extension KeyboardInputViewController {
     case .numberKeyboard:
       // TODO: 切换数字键盘
       break
+    case .moveLeft:
+      adjustTextPosition(byCharacterOffset: -1)
+    case .moveRight:
+      adjustTextPosition(byCharacterOffset: 1)
     default:
       break
     }
