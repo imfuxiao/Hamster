@@ -134,7 +134,9 @@ public class KeyboardButton: UIControl {
   // 按钮底部立体阴影视图
   lazy var underShadowView: ShapeView = {
     let view = ShapeView()
-    view.backgroundColor = .clear
+//    view.layer.shouldRasterize = true
+//    view.layer.rasterizationScale = UIScreen.main.scale
+//    view.isOpaque = false
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -215,7 +217,8 @@ public class KeyboardButton: UIControl {
     setupButtonContentView()
     setupButtonContentConstraints()
 
-    setupAppearance()
+    setupUnderShadowView()
+    setupUnderShadowViewConstraints()
 
     combine()
   }
@@ -290,7 +293,7 @@ public class KeyboardButton: UIControl {
     // 底部阴影边框视图约束
     self.underShadowViewConstraints = [
       underShadowView.topAnchor.constraint(equalTo: buttonContentView.topAnchor),
-      underShadowView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
+      underShadowView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor, constant: 1),
       underShadowView.leadingAnchor.constraint(equalTo: buttonContentView.leadingAnchor),
       underShadowView.trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor),
     ]
@@ -306,19 +309,12 @@ public class KeyboardButton: UIControl {
     buttonContentView.layer.cornerRadius = cornerRadius
 
     // 按钮底部阴影边框
-    underShadowView.shapeLayer.lineWidth = 1
-    underShadowView.shapeLayer.fillColor = UIColor.clear.cgColor
-    underShadowView.shapeLayer.masksToBounds = false
-//    underShadowView.shapeLayer.shadowOpacity = Float(0.2)
-
+    underShadowView.shapeLayer.path = underPath.cgPath
     updateButtonStyle(isPressed: isHighlighted)
   }
 
   override public func didMoveToWindow() {
     super.didMoveToWindow()
-
-    setupUnderShadowView()
-    setupUnderShadowViewConstraints()
   }
 
   override public func layoutSubviews() {
@@ -374,22 +370,17 @@ public class KeyboardButton: UIControl {
     buttonContentView.style = style
 
     // 按键底部深色样式
-    underShadowView.shapeLayer.strokeColor = (style.shadow?.color ?? UIColor.clear).cgColor
-    underShadowView.shapeLayer.path = underPath.cgPath
-
-    // 按键阴影样式
-//    underShadowView.shapeLayer.shadowPath = shadowPath.cgPath
-//    underShadowView.shapeLayer.shadowOffset = .init(width: 0, height: 1)
-//    underShadowView.shapeLayer.shadowColor = (style.shadow?.color ?? UIColor.clear).cgColor
+    underShadowView.shapeLayer.fillColor = (style.shadow?.color ?? UIColor.clear).cgColor
 
     // 按钮样式
     buttonContentView.backgroundColor = style.backgroundColor
+
     if isPressed {
       underShadowView.shapeLayer.opacity = 0
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
-      underShadowView.shapeLayer.opacity = 0.7
+      underShadowView.shapeLayer.opacity = 1
       hideInputCallout()
     }
   }
@@ -433,9 +424,9 @@ extension KeyboardButton {
   /// 按钮阴影路径
   var shadowPath: UIBezierPath {
     // 缓存 Path
-    if let path = shadowPathCache[frame] {
-      return path
-    }
+//    if let path = shadowPathCache[frame] {
+//      return path
+//    }
     let shadowSize = buttonStyle.shadow?.size ?? 1
     let rect = CGRect(
       x: 0,
@@ -445,7 +436,7 @@ extension KeyboardButton {
     let path = UIBezierPath(
       roundedRect: rect,
       cornerRadius: shadowSize)
-    shadowPathCache[frame] = path
+//    shadowPathCache[frame] = path
     return path
   }
 
@@ -455,33 +446,65 @@ extension KeyboardButton {
 //    if let path = underPathCache[frame] {
 //      return path
 //    }
-    let cornerRadius = cornerRadius
-    let delta: CGFloat = 0.5 // 线宽的一半，backgroundView.shapeLayer.lineWidth = 1
-    let maxX = underShadowView.frame.width - delta
-    let maxY = underShadowView.frame.height + delta
-//    let maxX = buttonContentView.frame.width - delta
-//    let maxY = buttonContentView.frame.height + delta
 
-    // 按钮底部边框
+    let cornerRadius = cornerRadius
+    let offset: CGFloat = 1
+    let maxX: CGFloat = underShadowView.frame.width
+    let maxY: CGFloat = underShadowView.frame.height
+
     let underPath: UIBezierPath = {
-      // 按钮底部右下圆角
-      let path = UIBezierPath(
-        arcCenter: CGPoint(x: maxX - cornerRadius, y: maxY - cornerRadius), // 圆心
+      let path = UIBezierPath()
+
+      // 右下底部圆角起始点
+      var point = CGPoint(x: maxX, y: maxY - cornerRadius)
+      path.move(to: point)
+
+      // 右下圆角（从 0 度到 90度，顺时针）
+      path.addArc(
+        withCenter: CGPoint(x: maxX - cornerRadius, y: maxY - cornerRadius),
         radius: cornerRadius,
         startAngle: 0,
         endAngle: CGFloat.pi / 2,
         clockwise: true)
 
-      let point = CGPoint(x: cornerRadius + delta, y: maxY)
+      // 左下圆角起始点
+      point = CGPoint(x: cornerRadius, y: maxY)
       path.addLine(to: point)
 
-      // 按钮底部左下圆角
+      // 左下圆角（从 90 度到 180 度，顺时针）
       path.addArc(
-        withCenter: CGPoint(x: cornerRadius + delta, y: maxY - cornerRadius), // 圆心
+        withCenter: CGPoint(x: cornerRadius, y: maxY - cornerRadius),
         radius: cornerRadius,
         startAngle: CGFloat.pi / 2,
         endAngle: CGFloat.pi,
         clockwise: true)
+
+      // 左下偏移点
+      point = CGPoint(x: 0, y: maxY - cornerRadius - offset)
+      path.addLine(to: point)
+
+      // 左下偏移圆角（从 180 度到 90 度，逆时针）
+      path.addArc(
+        withCenter: CGPoint(x: cornerRadius, y: maxY - cornerRadius - offset),
+        radius: cornerRadius,
+        startAngle: CGFloat.pi,
+        endAngle: CGFloat.pi / 2,
+        clockwise: false)
+
+      // 右下偏移点
+      point = CGPoint(x: maxX - cornerRadius, y: maxY - offset)
+      path.addLine(to: point)
+
+      // 右下偏移圆角（从 90 度到 0 度，逆时针）
+      path.addArc(
+        withCenter: CGPoint(x: maxX - cornerRadius, y: maxY - cornerRadius - offset),
+        radius: cornerRadius,
+        startAngle: CGFloat.pi / 2,
+        endAngle: 0,
+        clockwise: false)
+
+      path.close()
+
       return path
     }()
 //    underPathCache[frame] = underPath

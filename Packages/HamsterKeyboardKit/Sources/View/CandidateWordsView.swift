@@ -31,6 +31,7 @@ public class CandidateWordsView: NibLessView {
   private var rimeContext: RimeContext
   private var subscriptions = Set<AnyCancellable>()
   private var dynamicControlStateHeightConstraint: NSLayoutConstraint?
+  private var userInterfaceStyle: UIUserInterfaceStyle
 
   /// 拼音Label
   lazy var phoneticLabel: UILabel = {
@@ -117,6 +118,7 @@ public class CandidateWordsView: NibLessView {
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
+    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     super.init(frame: .zero)
 
@@ -219,6 +221,16 @@ public class CandidateWordsView: NibLessView {
         }
         .store(in: &subscriptions)
     }
+
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
+        phoneticLabel.textColor = keyboardContext.phoneticTextColor
+        stateImageView.tintColor = keyboardContext.candidateTextColor
+      }
+      .store(in: &subscriptions)
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)

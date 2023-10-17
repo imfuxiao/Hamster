@@ -124,7 +124,8 @@ public extension KeyboardColorReader {
    深色键盘按钮的标准背景色。
    */
   static var standardDarkButtonBackground: UIColor {
-    color(for: .standardDarkButtonBackground)
+//     color(for: .standardDarkButtonBackground)
+    return UIColor(red: 0, green: 0, blue: 0, alpha: 0.15)
   }
 
   /**
