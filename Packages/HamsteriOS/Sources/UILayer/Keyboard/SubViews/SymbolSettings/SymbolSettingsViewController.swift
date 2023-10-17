@@ -20,10 +20,7 @@ public class SymbolSettingsViewController: NibLessViewController {
 
 public extension SymbolSettingsViewController {
   override func loadView() {
-    super.loadView()
-
     title = "符号设置"
-
     view = SymbolSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }
 }

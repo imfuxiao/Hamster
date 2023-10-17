@@ -18,8 +18,6 @@ public class ToolbarSettingsViewController: NibLessViewController {
   }
 
   override public func loadView() {
-    super.loadView()
-
     title = "候选栏"
     view = ToolbarSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }

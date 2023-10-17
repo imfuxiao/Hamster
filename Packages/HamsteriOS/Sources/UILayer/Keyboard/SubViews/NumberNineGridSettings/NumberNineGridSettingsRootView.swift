@@ -34,6 +34,8 @@ class NumberNineGridSettingsRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    combine()
   }
 
   func presentTabView(_ view: NumberNineGridTabView) {
@@ -50,12 +52,8 @@ class NumberNineGridSettingsRootView: NibLessView {
     addSubview(tabView)
     tabView.fillSuperview()
   }
-}
 
-extension NumberNineGridSettingsRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
+  func combine() {
     keyboardSettingsViewModel.numberNineGridSubviewSwitchPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in

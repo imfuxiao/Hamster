@@ -28,12 +28,16 @@ class SpaceSettingsRootView: NibLessView {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init(frame: frame)
+
+    setupTableView()
   }
 
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    setupTableView()
+    if let _ = window {
+      tableView.reloadData()
+    }
   }
 
   func setupTableView() {

@@ -108,14 +108,6 @@ class FinderRootView: NibLessView {
 }
 
 extension FinderRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    finderViewModel.segmentActionSubject.send(.settings)
-  }
-}
-
-extension FinderRootView {
   func switchView(_ action: FinderSegmentAction) {
     switch action {
     case .settings:

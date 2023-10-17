@@ -28,8 +28,6 @@ class KeyboardColorViewController: NibLessViewController {
 
 extension KeyboardColorViewController {
   override func loadView() {
-    super.loadView()
-
     title = "键盘配色"
     view = rootView
   }

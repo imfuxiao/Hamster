@@ -97,8 +97,6 @@ public class KeyboardSettingsViewController: NibLessViewController {
 
 public extension KeyboardSettingsViewController {
   override func loadView() {
-    super.loadView()
-
     title = "键盘设置"
     view = KeyboardSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }

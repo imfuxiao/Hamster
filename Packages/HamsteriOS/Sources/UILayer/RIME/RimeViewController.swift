@@ -21,8 +21,6 @@ public class RimeViewController: NibLessViewController {
 
 public extension RimeViewController {
   override func loadView() {
-    super.loadView()
-
     title = "RIME"
     view = RimeRootView(rimeViewModel: rimeViewModel)
   }

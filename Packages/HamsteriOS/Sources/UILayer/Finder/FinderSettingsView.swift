@@ -24,6 +24,9 @@ class FinderSettingsView: NibLessView {
     self.finderViewModel = finderViewModel
 
     super.init(frame: frame)
+
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   override func constructViewHierarchy() {
@@ -32,15 +35,6 @@ class FinderSettingsView: NibLessView {
 
   override func activateViewConstraints() {
     settingTableView.fillSuperview()
-  }
-}
-
-extension FinderSettingsView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 

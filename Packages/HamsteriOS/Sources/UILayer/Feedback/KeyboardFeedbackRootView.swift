@@ -49,10 +49,6 @@ class KeyboardFeedbackRootView: NibLessView {
     addSubview(tableView)
     tableView.fillSuperview()
   }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-  }
 }
 
 extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {

@@ -57,21 +57,17 @@ class KeyboardLayoutRootView: NibLessView {
 
     super.init(frame: .zero)
 
+    addSubview(listView)
+    listView.fillSuperview()
+
+    loadDataSource()
+
     keyboardSettingsViewModel.reloadRootViewPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
         loadDataSource()
       }
       .store(in: &subscriptions)
-  }
-
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    addSubview(listView)
-    listView.fillSuperview()
-
-    loadDataSource()
   }
 }
 

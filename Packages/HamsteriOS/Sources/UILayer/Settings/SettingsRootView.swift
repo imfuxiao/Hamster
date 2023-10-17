@@ -121,7 +121,9 @@ public extension SettingsRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    tableView.reloadData()
+    if let _ = window {
+      tableView.reloadData()
+    }
   }
 }
 

@@ -34,6 +34,9 @@ class FileBrowserView: NibLessView {
 
     super.init(frame: frame)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
     self.fileBrowserViewModel.$files
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
@@ -60,15 +63,6 @@ class FileBrowserView: NibLessView {
 
   func showFileEditorSheet(fileURL: URL) {
     finderViewModel.openFileEditorController(fileURL: fileURL)
-  }
-}
-
-extension FileBrowserView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 

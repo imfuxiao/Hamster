@@ -147,8 +147,10 @@ public class SymbolEditorView: NibLessView {
   override public func didMoveToWindow() {
     super.didMoveToWindow()
 
-    symbols = getSymbols()
-    tableView.reloadData()
+    if let _ = window {
+      symbols = getSymbols()
+      tableView.reloadData()
+    }
   }
 }
 

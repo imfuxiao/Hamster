@@ -33,6 +33,9 @@ public class RimeRootView: NibLessView {
 
     super.init(frame: frame)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
     self.rimeViewModel.reloadTablePublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
@@ -54,15 +57,6 @@ public class RimeRootView: NibLessView {
   @objc func copySyncConfig() {
     UIPasteboard.general.string = Self.rimeSyncConfigSample
     ProgressHUD.showSuccess("复制成功", interaction: false, delay: 1.5)
-  }
-}
-
-public extension RimeRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 

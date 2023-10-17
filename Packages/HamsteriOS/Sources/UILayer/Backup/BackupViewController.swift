@@ -29,6 +29,11 @@ class BackupViewController: NibLessViewController {
       }.store(in: &subscriptions)
   }
 
+  override func loadView() {
+    title = "备份与恢复"
+    view = BackupRootView(backupViewModel: backupViewModel)
+  }
+
   func swipeActionHandled(action: BackupSwipeAction) {
     switch action {
     case .delete:
@@ -70,16 +75,5 @@ class BackupViewController: NibLessViewController {
     }))
     alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
     present(alertController, animated: true)
-  }
-}
-
-// MARK: override UIViewController
-
-extension BackupViewController {
-  override func loadView() {
-    super.loadView()
-
-    title = "备份与恢复"
-    view = BackupRootView(backupViewModel: backupViewModel)
   }
 }

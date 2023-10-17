@@ -33,6 +33,9 @@ class InputSchemaRootView: NibLessView {
 
     super.init(frame: frame)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
     inputSchemaViewModel.reloadTableStatePublisher
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
@@ -49,15 +52,6 @@ class InputSchemaRootView: NibLessView {
 
   override func activateViewConstraints() {
     tableView.fillSuperview()
-  }
-}
-
-extension InputSchemaRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 

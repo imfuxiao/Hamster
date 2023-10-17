@@ -27,8 +27,6 @@ public class UploadInputSchemaViewController: NibLessViewController {
 
 public extension UploadInputSchemaViewController {
   override func loadView() {
-    super.loadView()
-
     title = "输入方案上传"
     view = UploadInputSchemaRootView(uploadInputSchemaViewModel: viewModel)
   }

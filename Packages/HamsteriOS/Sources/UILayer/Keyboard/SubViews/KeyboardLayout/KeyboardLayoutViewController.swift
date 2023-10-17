@@ -44,8 +44,6 @@ class KeyboardLayoutViewController: NibLessViewController {
   }
 
   override func loadView() {
-    super.loadView()
-
     title = "键盘布局"
     view = rootView
 

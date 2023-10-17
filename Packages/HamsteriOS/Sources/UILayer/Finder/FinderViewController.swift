@@ -64,9 +64,8 @@ class FinderViewController: NibLessViewController {
 
 extension FinderViewController {
   override func loadView() {
-    super.loadView()
-
     title = "方案文件管理"
+    view = FinderRootView(finderViewModel: finderViewModel, fileBrowserViewModelFactory: fileBrowserViewModelFactory)
 
     finderViewModel.presentTextEditorPublished
       .receive(on: DispatchQueue.main)
@@ -81,11 +80,5 @@ extension FinderViewController {
         presentConformAlert(conform: $0)
       }
       .store(in: &subscription)
-  }
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    view = FinderRootView(finderViewModel: finderViewModel, fileBrowserViewModelFactory: fileBrowserViewModelFactory)
   }
 }

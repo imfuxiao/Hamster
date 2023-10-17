@@ -29,8 +29,6 @@ class AboutViewController: NibLessViewController {
   }
 
   override func loadView() {
-    super.loadView()
-
     title = "关于"
     view = AboutRootView(aboutViewModel: aboutViewModel)
 

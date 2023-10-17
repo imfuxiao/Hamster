@@ -14,6 +14,9 @@ class OpenSourceRootView: NibLessView {
   init(frame: CGRect = .zero, openSourceViewModel: OpenSourceViewModel) {
     self.openSourceViewModel = openSourceViewModel
     super.init(frame: frame)
+
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   let tableView: UITableView = {
@@ -30,15 +33,6 @@ class OpenSourceRootView: NibLessView {
 
   override func activateViewConstraints() {
     tableView.fillSuperview()
-  }
-}
-
-extension OpenSourceRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 

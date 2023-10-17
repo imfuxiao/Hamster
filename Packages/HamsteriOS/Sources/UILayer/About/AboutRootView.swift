@@ -15,12 +15,10 @@ class AboutRootView: NibLessView {
   private let aboutViewModel: AboutViewModel
 
   lazy var logoImageView: UIImageView = {
-    let logoDarkImage = UIImage(named: "Hamster")!
-    let logoLightImage = UIImage(named: "HamsterWhite")!
-    logoDarkImage.imageAsset?.register(logoLightImage, with: UITraitCollection(userInterfaceStyle: .dark))
-    let imageView = UIImageView(image: logoDarkImage)
+    let imageView = UIImageView(frame: .zero)
     imageView.contentMode = .scaleAspectFit
     imageView.clipsToBounds = true
+    imageView.image = UIImage(named: "Hamster", in: .main, with: .none)
     return imageView
   }()
 
@@ -83,6 +81,9 @@ class AboutRootView: NibLessView {
   init(frame: CGRect = .zero, aboutViewModel: AboutViewModel) {
     self.aboutViewModel = aboutViewModel
     super.init(frame: frame)
+
+    constructViewHierarchy()
+    activateViewConstraints()
   }
 
   override func constructViewHierarchy() {
@@ -107,16 +108,15 @@ class AboutRootView: NibLessView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    constructViewHierarchy()
-    activateViewConstraints()
+    if let _ = window {
+      guard let tableHeaderView = tableView.tableHeaderView else { return }
 
-    guard let tableHeaderView = tableView.tableHeaderView else { return }
-
-    let width = tableView.bounds.width
-    let size = tableHeaderView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
-    if tableHeaderView.frame.size.height != size.height {
-      tableHeaderView.frame.size = size
-      tableView.tableHeaderView = tableHeaderView
+      let width = tableView.bounds.width
+      let size = tableHeaderView.systemLayoutSizeFitting(CGSize(width: width, height: UIView.layoutFittingCompressedSize.height))
+      if tableHeaderView.frame.size.height != size.height {
+        tableHeaderView.frame.size = size
+        tableView.tableHeaderView = tableHeaderView
+      }
     }
   }
 

@@ -21,7 +21,10 @@ class KeySwipeSettingsViewController: NibLessViewController {
     self.keyboardSettingsViewModel = keyboardSettingsViewModel
 
     super.init()
+  }
 
+  override func loadView() {
+    title = "划动设置"
     self.view = rootView
   }
 

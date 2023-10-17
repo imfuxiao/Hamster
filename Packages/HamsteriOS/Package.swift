@@ -41,7 +41,9 @@ let package = Package(
         "RimeKit",
         "HamsterFileServer",
       ],
-      path: "Sources"),
+      path: "Sources",
+      resources: [.process("Resources")]
+    ),
     .testTarget(
       name: "HamsteriOSTests",
       dependencies: ["HamsteriOS"],

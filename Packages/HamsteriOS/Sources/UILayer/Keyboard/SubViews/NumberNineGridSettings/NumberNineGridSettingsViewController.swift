@@ -37,11 +37,10 @@ public class NumberNineGridSettingsViewController: NibLessViewController {
 
 public extension NumberNineGridSettingsViewController {
   override func loadView() {
-    super.loadView()
-
-    navigationItem.titleView = segmentedView
+    title = "数字九宫格"
     view = NumberNineGridSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
 
+    navigationItem.titleView = segmentedView
     keyboardSettingsViewModel.numberNineGridSubviewSwitchPublished
       .combineLatest(keyboardSettingsViewModel.$symbolTableIsEditing)
       .receive(on: DispatchQueue.main)

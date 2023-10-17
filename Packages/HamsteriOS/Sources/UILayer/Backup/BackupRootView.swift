@@ -47,8 +47,10 @@ extension BackupRootView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    Task {
-      await backupViewModel.loadBackupFiles()
+    if let _ = window {
+      Task {
+        await backupViewModel.loadBackupFiles()
+      }
     }
   }
 }

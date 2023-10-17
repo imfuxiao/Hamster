@@ -29,8 +29,6 @@ class AppleCloudViewController: NibLessViewController {
 
 extension AppleCloudViewController {
   override func loadView() {
-    super.loadView()
-
     title = "iCloud同步"
     let viewModel = appleCloudViewModelFactory.makeAppleCloudViewModel()
     view = AppleCloudRootView(viewModel: viewModel)

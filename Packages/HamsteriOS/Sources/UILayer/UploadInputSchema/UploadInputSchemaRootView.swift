@@ -42,6 +42,9 @@ class UploadInputSchemaRootView: NibLessView {
 
     super.init(frame: frame)
 
+    constructViewHierarchy()
+    activateViewConstraints()
+
     self.viewModel.$fileServerRunning
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
@@ -76,15 +79,6 @@ class UploadInputSchemaRootView: NibLessView {
     cell.contentView.addSubview(buttonView)
     buttonView.fillSuperviewOnMarginsGuide()
     return cell
-  }
-}
-
-extension UploadInputSchemaRootView {
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    constructViewHierarchy()
-    activateViewConstraints()
   }
 }
 
