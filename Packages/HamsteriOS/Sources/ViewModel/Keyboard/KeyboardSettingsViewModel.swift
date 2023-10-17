@@ -354,6 +354,17 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  // 空格按钮加载文字显示当前输入方案
+  // 当开启此选项后， loadingTextForSpaceButton 设置的值无效
+  public var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = newValue
+    }
+  }
+
   /// 中文标准键盘默认划动选项
   public var chineseStanderSystemKeyboardSwipeList: [Key] {
     HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
@@ -512,17 +523,17 @@ public class KeyboardSettingsViewModel: ObservableObject {
           })
       ]),
 
-      .init(
-        footer: "默认关闭状态下，在按键上方显示上下划动符号（如果存在），开启状态下，按键上方显示上划，下方显示下划。",
-        items: [
-          .init(
-            text: "按键上下方显示划动",
-            type: .toggle,
-            toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
-            toggleHandled: { [unowned self] in
-              swipeLabelUpAndDownLayout = $0
-            })
-        ]),
+    .init(
+      footer: "默认关闭状态下，在按键上方显示上下划动符号（如果存在），开启状态下，按键上方显示上划，下方显示下划。",
+      items: [
+        .init(
+          text: "按键上下方显示划动",
+          type: .toggle,
+          toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
+          toggleHandled: { [unowned self] in
+            swipeLabelUpAndDownLayout = $0
+          })
+      ]),
 
     .init(
       items: [
@@ -823,6 +834,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
         },
         toggleHandled: { [unowned self] in
           showCurrentInputSchemaNameForSpaceButton = $0
+        }),
+      .init(
+        text: "加载文字显示输入方案名",
+        type: .toggle,
+        toggleValue: { [unowned self] in
+          showCurrentInputSchemaNameOnLoadingTextForSpaceButton
+        },
+        toggleHandled: { [unowned self] in
+          showCurrentInputSchemaNameOnLoadingTextForSpaceButton = $0
         })
     ])
   ]

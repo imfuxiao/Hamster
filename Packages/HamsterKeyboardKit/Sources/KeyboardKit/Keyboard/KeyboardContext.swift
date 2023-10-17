@@ -785,4 +785,10 @@ public extension KeyboardContext {
   var showCurrentInputSchemaNameForSpaceButton: Bool {
     hamsterConfig?.Keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
   }
+
+  // 空格按钮加载文字显示当前输入方案
+  // 当开启此选项后， loadingTextForSpaceButton 设置的值无效
+  var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool {
+    hamsterConfig?.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
+  }
 }

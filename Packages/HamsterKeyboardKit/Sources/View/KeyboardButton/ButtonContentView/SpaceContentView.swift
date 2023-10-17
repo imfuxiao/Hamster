@@ -28,8 +28,14 @@ class SpaceContentView: NibLessView {
     label.textAlignment = .center
     if keyboardContext.keyboardType.isCustom {
       label.text = item.key?.label.loadingText ?? ""
+      if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton, let text = rimeContext.currentSchema?.schemaName {
+        label.text = text
+      }
     } else {
       label.text = keyboardContext.loadingTextForSpaceButton
+      if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton, let text = rimeContext.currentSchema?.schemaName {
+        label.text = text
+      }
     }
     return label
   }()
@@ -38,13 +44,13 @@ class SpaceContentView: NibLessView {
     var spaceText = ""
     if keyboardContext.keyboardType.isCustom {
       spaceText = item.key?.label.text ?? ""
-      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-        spaceText = rimeContext.currentSchema?.schemaName ?? ""
+      if keyboardContext.showCurrentInputSchemaNameForSpaceButton, let text = rimeContext.currentSchema?.schemaName {
+        spaceText = text
       }
     } else {
       spaceText = keyboardContext.labelTextForSpaceButton
-      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-        spaceText = rimeContext.currentSchema?.schemaName ?? ""
+      if keyboardContext.showCurrentInputSchemaNameForSpaceButton, let text = rimeContext.currentSchema?.schemaName {
+        spaceText = text
       }
     }
 
