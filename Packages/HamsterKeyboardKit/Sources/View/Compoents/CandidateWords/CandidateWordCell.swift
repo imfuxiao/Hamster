@@ -141,7 +141,8 @@ class CandidateWordCell: UICollectionViewCell {
 
     if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted
     {
-      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ?? UIColor.secondarySystemBackground
+      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ??
+        (traitCollection.userInterfaceStyle == .dark ? .standardButtonBackgroundForColorSchemeBug : .standardButtonBackground)
       containerView.layer.cornerRadius = 5
     } else {
       containerView.backgroundColor = .clear

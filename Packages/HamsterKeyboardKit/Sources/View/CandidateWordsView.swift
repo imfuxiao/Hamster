@@ -136,6 +136,9 @@ public class CandidateWordsView: NibLessView {
       phoneticLabel.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
     }
 
+    phoneticLabel.textColor = keyboardContext.phoneticTextColor
+    stateImageView.tintColor = keyboardContext.candidateTextColor
+
     // 非内嵌模式添加拼写区域
     if !keyboardContext.enableEmbeddedInputMode {
       addSubview(phoneticArea)
@@ -196,13 +199,6 @@ public class CandidateWordsView: NibLessView {
         controlStateWidthAndHeightConstraint
       ])
     }
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    phoneticLabel.textColor = keyboardContext.phoneticTextColor
-    stateImageView.tintColor = keyboardContext.candidateTextColor
   }
 
   func combine() {
