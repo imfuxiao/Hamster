@@ -13,7 +13,7 @@ public enum ShortcutCommand: String, CaseIterable, Hashable, Identifiable, Codab
     self
   }
 
-  case simplifiedTraditionalSwitch = "#繁简切换"
+  case simplifiedTraditionalSwitch = "#简繁切换"
   case switchChineseOrEnglish = "#中英切换"
   case beginOfSentence = "#行首"
   case endOfSentence = "#行尾"

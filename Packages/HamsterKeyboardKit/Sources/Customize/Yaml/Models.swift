@@ -251,8 +251,12 @@ public struct KeySwipe: Codable, Hashable {
       throw "KeySwipe direction is error"
     }
 
-    if let action = try? container.decode(String.self, forKey: .action), let keyboardAction = action.keyboardAction {
-      self.action = keyboardAction
+    if let action = try? container.decode(String.self, forKey: .action) {
+      if let keyboardAction = action.keyboardAction {
+        self.action = keyboardAction
+      } else {
+        throw "swipe \(action) to action is error"
+      }
     } else {
       throw "swipe action is empty"
     }
@@ -481,7 +485,8 @@ public extension String {
       }
       return .symbol(Symbol(char: value))
     case "shortCommand".lowercased():
-      guard !value.isEmpty, let command = ShortcutCommand(rawValue: value) else {
+      // 注意：value == "#繁简切换" 为补丁
+      guard !value.isEmpty, let command = ShortcutCommand(rawValue: value == "#繁简切换" ? "#简繁切换" : value) else {
         Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
         return nil
       }
