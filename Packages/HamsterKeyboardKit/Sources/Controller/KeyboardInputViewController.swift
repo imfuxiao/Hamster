@@ -933,11 +933,18 @@ private extension KeyboardInputViewController {
   func insertTextPatch(_ insertText: String) {
     // 替换为成对符号
     let text = keyboardContext.getPairSymbols(insertText)
-    textDocumentProxy.insertText(text)
 
     // 检测光标是否需要回退
     if keyboardContext.cursorBackOfSymbols(key: text) {
-      self.adjustTextPosition(byCharacterOffset: -1)
+      // 检测是否有选中的文字，可以居中的光标将自动包裹选中的文本
+      if text.count == 2, let selectText = textDocumentProxy.selectedText {
+        textDocumentProxy.insertText("\(String(text.first!))\(selectText)\(String(text.last!))")
+      } else {
+        textDocumentProxy.insertText(text)
+        self.adjustTextPosition(byCharacterOffset: -1)
+      }
+    } else {
+      textDocumentProxy.insertText(text)
     }
 
     // 检测是否需要返回主键盘
