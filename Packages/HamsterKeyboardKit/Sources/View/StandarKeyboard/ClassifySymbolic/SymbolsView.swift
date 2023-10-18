@@ -14,6 +14,7 @@ class SymbolsView: UICollectionView {
   let actionHandler: KeyboardActionHandler
   let viewModel: ClassifySymbolicViewModel
   var subscriptions = Set<AnyCancellable>()
+  private var userInterfaceStyle: UIUserInterfaceStyle
 
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, Symbol>!
 
@@ -21,6 +22,7 @@ class SymbolsView: UICollectionView {
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     self.viewModel = viewModel
+    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     let layout = {
       let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .leading, verticalAlignment: .center)
@@ -46,12 +48,33 @@ class SymbolsView: UICollectionView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard userInterfaceStyle != keyboardContext.traitCollection.userInterfaceStyle else { return }
+    userInterfaceStyle = traitCollection.userInterfaceStyle
+
+    self.backgroundColor = keyboardContext.symbolListBackgroundColor
+
+    var snapshot = diffableDataSource.snapshot()
+    snapshot.reloadSections([0])
+    diffableDataSource.apply(snapshot)
+  }
+
   func combine() {
     viewModel.$currentCategory
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         diffableDataSource.apply(makeSnapshot(symbols: $0.symbols), animatingDifferences: false)
         self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+      }
+      .store(in: &subscriptions)
+
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        setNeedsLayout()
       }
       .store(in: &subscriptions)
   }

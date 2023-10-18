@@ -21,6 +21,7 @@ class BottomRowView: NibLessView {
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
+  private var userInterfaceStyle: UIUserInterfaceStyle
 
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -64,6 +65,7 @@ class BottomRowView: NibLessView {
     self.layoutProvider = layoutProvider
     self.keyboardContext = keyboardContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
+    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     super.init(frame: .zero)
 
@@ -78,6 +80,14 @@ class BottomRowView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
         setNeedsUpdateConstraints()
+      }
+      .store(in: &subscriptions)
+
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        setNeedsLayout()
       }
       .store(in: &subscriptions)
   }
@@ -122,6 +132,17 @@ class BottomRowView: NibLessView {
     returnButtonWidthConstraint?.isActive = false
     returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
     returnButtonWidthConstraint?.isActive = true
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard userInterfaceStyle != keyboardContext.traitCollection.userInterfaceStyle else { return }
+    userInterfaceStyle = traitCollection.userInterfaceStyle
+
+    returnButton.setTitleColor(keyboardContext.candidateTextColor, for: .normal)
+    lockStateButton.tintColor = keyboardContext.candidateTextColor
+    backspaceButton.tintColor = keyboardContext.candidateTextColor
   }
 }
 

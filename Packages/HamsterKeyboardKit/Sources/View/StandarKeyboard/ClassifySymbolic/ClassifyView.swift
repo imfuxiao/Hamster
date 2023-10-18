@@ -50,7 +50,7 @@ class ClassifyView: UICollectionView {
       selectItem(at: IndexPath(item: 2, section: 0), animated: false, scrollPosition: .top)
     } else {
       viewModel.currentCategory = .frequent
-      selectItem(at: IndexPath(item: 1, section: 0), animated: false, scrollPosition: .top)
+      selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .top)
     }
 
     combine()
