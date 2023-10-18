@@ -9,9 +9,10 @@ import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
-/// 按键划动配置
+/// 按键划动设置
 class KeySwipeSettingsView: NibLessView {
   private let KeyboardSettingsViewModel: KeyboardSettingsViewModel
+  private var keyboardType: KeyboardType? = nil
   private var key: Key? = nil
   private var settingItems: [SettingSectionModel]? = nil
   private let saveKeyHandled: ((Key) -> Void)? = nil
@@ -49,9 +50,10 @@ class KeySwipeSettingsView: NibLessView {
     ])
   }
 
-  func updateWithKey(_ key: Key?) {
-    guard let key = key, key != self.key else { return }
+  /// 更新 KeySwipeSettingsView 视图
+  func updateWithKey(_ key: Key, for keyboardType: KeyboardType) {
     self.key = key
+    self.keyboardType = keyboardType
     self.settingItems = getSettingsItems(key)
     tableView.reloadData()
   }
@@ -108,12 +110,6 @@ extension KeySwipeSettingsView {
             text: "按键操作",
             type: .textField,
             textValue: { key.action.yamlString },
-            textFieldShouldBeginEditing: false
-          ),
-          .init(
-            text: "按键显示",
-            type: .textField,
-            textValue: { key.labelText },
             textFieldShouldBeginEditing: false
           ),
         ]),

@@ -203,6 +203,15 @@ public struct KeySwipe: Codable, Hashable {
     case down
     case left
     case right
+
+    public var labelText: String {
+      switch self {
+      case .up: return "上划"
+      case .down: return "下划"
+      case .left: return "左划"
+      case .right: return "右划"
+      }
+    }
   }
 
   /// 划动方向, up / down 两个方向

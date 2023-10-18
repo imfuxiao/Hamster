@@ -448,8 +448,8 @@ public class KeyboardSettingsViewModel: ObservableObject {
   }
 
   /// 按键划动设置页面
-  public var keySwipeSettingsActionSubject = PassthroughSubject<Key?, Never>()
-  public var keySwipeSettingsActionPublished: AnyPublisher<Key?, Never> {
+  public var keySwipeSettingsActionSubject = PassthroughSubject<(Key, KeyboardType), Never>()
+  public var keySwipeSettingsActionPublished: AnyPublisher<(Key, KeyboardType), Never> {
     keySwipeSettingsActionSubject.eraseToAnyPublisher()
   }
 

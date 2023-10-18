@@ -9,6 +9,7 @@ import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
 
+/// 中文标准26键划动设置
 class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
@@ -21,7 +22,11 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
   }()
 
   private lazy var swipeListView: SwipeListView = {
-    let view = SwipeListView(keyboardSettingsViewModel: keyboardSettingsViewModel)
+    let view = SwipeListView(
+      loadDataSource: {
+        $0.apply(keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource())
+      }
+    )
     view.translatesAutoresizingMaskIntoConstraints = false
     view.delegate = self
     return view
@@ -54,46 +59,32 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
   }
 }
 
+// MARK: - 处理 SwipeListView 委托
+
 extension ChineseStanderSystemKeyboardSwipeSettingsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let key = swipeListView.diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    keyboardSettingsViewModel.keySwipeSettingsActionSubject.send(key)
+    keyboardSettingsViewModel.keySwipeSettingsActionSubject.send((key, .chinese(.lowercased)))
   }
 }
+
+// MARK: - 处理 UISearchBar 委托
 
 extension ChineseStanderSystemKeyboardSwipeSettingsView: UISearchBarDelegate {
-  // TODO: 查询功能
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        performQuery(with: searchText)
-//    }
-}
-
-private class SwipeListView: NibLessCollectionView {
-  private let keyboardSettingsViewModel: KeyboardSettingsViewModel
-  public var diffableDataSource: UICollectionViewDiffableDataSource<Int, Key>!
-
-  init(keyboardSettingsViewModel: KeyboardSettingsViewModel) {
-    self.keyboardSettingsViewModel = keyboardSettingsViewModel
-
-    let configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
-    let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-
-    super.init(frame: .zero, collectionViewLayout: layout)
-
-    self.diffableDataSource = makeDataSource()
-    self.diffableDataSource.apply(keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource())
-  }
-
-  func cellRegistration() -> UICollectionView.CellRegistration<SwipeSettingsCell, Key> {
-    return UICollectionView.CellRegistration { cell, _, item in
-      cell.updateWithKey(item)
+  // 查询功能
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    if searchText.isEmpty {
+      let snapshot = keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource()
+      swipeListView.diffableDataSource.apply(snapshot)
+      return
     }
-  }
+    let items = swipeListView.diffableDataSource.snapshot(for: 0)
+      .items
+      .filter { $0.action.labelText.uppercased().contains(searchText.uppercased()) }
 
-  func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Key> {
-    let cellRegistration = cellRegistration()
-    return UICollectionViewDiffableDataSource(collectionView: self) { collectionView, indexPath, item in
-      collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
-    }
+    var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(items, toSection: 0)
+    swipeListView.diffableDataSource.apply(snapshot)
   }
 }

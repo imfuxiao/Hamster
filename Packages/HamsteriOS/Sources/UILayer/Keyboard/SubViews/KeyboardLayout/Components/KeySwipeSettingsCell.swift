@@ -19,7 +19,7 @@ private extension UICellConfigurationState {
   }
 }
 
-/// 划动设置 Cell
+/// 划动设置显示 Cell
 class SwipeSettingsCell: UICollectionViewListCell {
   override var configurationState: UICellConfigurationState {
     var state = super.configurationState
@@ -32,38 +32,59 @@ class SwipeSettingsCell: UICollectionViewListCell {
   /// cell 开头显示当前键的名称
   private lazy var keyNameLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     label.textAlignment = .left
+    label.adjustsFontSizeToFitWidth = true
+    label.contentScaleFactor = 0.5
     label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     return label
   }()
 
-  // 上划显示 label
+  // 上划 label
   private lazy var swipeUpLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "上划："
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .left
+    label.adjustsFontSizeToFitWidth = true
+    label.contentScaleFactor = 0.5
     return label
   }()
 
-  private lazy var swipeUpValueLabel: UILabel = {
-    let label = UILabel(frame: .zero)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-
-  // 下划显示 label
+  // 下划 label
   private lazy var swipeDownLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "下划："
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .left
+    label.adjustsFontSizeToFitWidth = true
+    label.contentScaleFactor = 0.5
     return label
   }()
 
-  private lazy var swipeDownValueLabel: UILabel = {
+  // 左划 label
+  private lazy var swipeLeftLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.textAlignment = .left
+    label.adjustsFontSizeToFitWidth = true
+    label.contentScaleFactor = 0.5
     return label
+  }()
+
+  // 右划 label
+  private lazy var swipeRightLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textAlignment = .left
+    label.adjustsFontSizeToFitWidth = true
+    label.contentScaleFactor = 0.5
+    return label
+  }()
+
+  private lazy var swipeLabelContainerView: UIStackView = {
+    let view = UIStackView(arrangedSubviews: [swipeUpLabel, swipeDownLabel, swipeLeftLabel, swipeRightLabel])
+    view.axis = .vertical
+    view.alignment = .leading
+    view.distribution = .fillEqually
+    view.spacing = 3
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
   }()
 
   // make: - Initialization
@@ -83,36 +104,16 @@ class SwipeSettingsCell: UICollectionViewListCell {
     accessories = [.disclosureIndicator()]
 
     contentView.addSubview(keyNameLabel)
-    contentView.addSubview(swipeUpLabel)
-    contentView.addSubview(swipeUpValueLabel)
-    contentView.addSubview(swipeDownLabel)
-    contentView.addSubview(swipeDownValueLabel)
+    contentView.addSubview(swipeLabelContainerView)
 
     NSLayoutConstraint.activate([
       keyNameLabel.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.3),
-      keyNameLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
-      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: keyNameLabel.bottomAnchor, multiplier: 1),
       keyNameLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 1),
-
-      swipeUpLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
-      swipeDownLabel.topAnchor.constraint(equalTo: swipeUpLabel.bottomAnchor),
-      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: swipeDownLabel.bottomAnchor, multiplier: 1),
-
-      swipeUpValueLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
-      swipeDownValueLabel.topAnchor.constraint(equalTo: swipeUpValueLabel.bottomAnchor),
-      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: swipeDownValueLabel.bottomAnchor, multiplier: 1),
-
-      swipeUpLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: keyNameLabel.trailingAnchor, multiplier: 1),
-      swipeDownLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: keyNameLabel.trailingAnchor, multiplier: 1),
-      swipeUpLabel.widthAnchor.constraint(equalTo: swipeDownLabel.widthAnchor, multiplier: 1),
-
-      swipeUpValueLabel.leadingAnchor.constraint(equalTo: swipeUpLabel.trailingAnchor),
-      swipeDownValueLabel.leadingAnchor.constraint(equalTo: swipeDownLabel.trailingAnchor),
-      swipeUpValueLabel.widthAnchor.constraint(equalTo: swipeDownValueLabel.widthAnchor, multiplier: 1),
-
-      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: swipeUpValueLabel.trailingAnchor, multiplier: 1),
-      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: swipeDownValueLabel.trailingAnchor, multiplier: 1),
-
+      keyNameLabel.heightAnchor.constraint(equalTo: swipeLabelContainerView.heightAnchor),
+      swipeLabelContainerView.leadingAnchor.constraint(equalToSystemSpacingAfter: keyNameLabel.trailingAnchor, multiplier: 1),
+      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: swipeLabelContainerView.trailingAnchor, multiplier: 1),
+      swipeLabelContainerView.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
+      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: swipeLabelContainerView.bottomAnchor, multiplier: 1),
       separatorLayoutGuide.leadingAnchor.constraint(equalTo: keyNameLabel.leadingAnchor)
     ])
   }
@@ -127,9 +128,18 @@ class SwipeSettingsCell: UICollectionViewListCell {
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
-    keyNameLabel.text = state.key?.action.labelText
-    swipeUpValueLabel.text = state.key?.swipe.first(where: { $0.direction == .up })?.action.labelText ?? " "
-    swipeDownValueLabel.text = state.key?.swipe.first(where: { $0.direction == .down })?.action.labelText ?? " "
+    keyNameLabel.text = state.key?.action.yamlString
+    swipeUpLabel.text = getSwipeLabelText(key: key, direction: .up)
+    swipeDownLabel.text = getSwipeLabelText(key: key, direction: .down)
+    swipeLeftLabel.text = getSwipeLabelText(key: key, direction: .left)
+    swipeRightLabel.text = getSwipeLabelText(key: key, direction: .right)
+  }
+
+  func getSwipeLabelText(key: Key?, direction: KeySwipe.Direction) -> String {
+    if let swipe = key?.swipe.first(where: { $0.direction == direction }) {
+      return "\(direction.labelText)：\(swipe.action.yamlString)"
+    }
+    return "\(direction.labelText)：未设置"
   }
 }
 

@@ -60,7 +60,7 @@ class KeyboardLayoutViewController: NibLessViewController {
     keyboardSettingsViewModel.keySwipeSettingsActionPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
-        keySwipeSettingsViewController.updateWithKey($0)
+        keySwipeSettingsViewController.updateWithKey($0.0, for: $0.1)
         self.navigationController?.pushViewController(keySwipeSettingsViewController, animated: true)
       }
       .store(in: &subscriptions)
