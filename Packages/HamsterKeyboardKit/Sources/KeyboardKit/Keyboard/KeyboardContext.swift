@@ -686,7 +686,7 @@ public extension KeyboardContext {
     if let keyboardColor = hamsterKeyboardColor {
       return keyboardColor.candidateTextColor
     }
-    return .standardButtonForeground(for: self)
+    return UIColor.secondaryLabel
   }
 
   /// 分类符号键盘状态
