@@ -202,7 +202,7 @@ public class KeyboardButtonContentView: NibLessView {
 
     var contentConstraints = [
       contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: 0.9),
+      contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: keyboardContext.keyboardType.isChineseNineGrid ? 0.8 : 0.6),
     ]
 
     if !action.isInputAction || action == .space {
