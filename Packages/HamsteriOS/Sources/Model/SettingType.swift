@@ -13,4 +13,5 @@ public enum SettingType: Hashable, Equatable {
   case toggle
   case textField
   case button
+  case PullDown
 }

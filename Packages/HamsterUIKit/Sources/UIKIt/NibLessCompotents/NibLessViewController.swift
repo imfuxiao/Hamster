@@ -22,4 +22,48 @@ open class NibLessViewController: UIViewController {
   public required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  /// 弹出一个确认对话框
+  public func alertConfirm(alertTitle: String, confirmTitle: String, confirmCallback: @escaping () -> Void) {
+    let optionMenu = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+
+    let confirmAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
+      confirmCallback()
+    }
+    optionMenu.addAction(confirmAction)
+
+    let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+    optionMenu.addAction(cancelAction)
+
+    present(optionMenu, animated: true)
+  }
+
+  /// 弹出包含一个文本框的对话框
+  public func alertText(alertTitle: String? = nil, submitTitle: String, submitCallback: @escaping (UITextField) -> Void) {
+    let optionMenu = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+    optionMenu.addTextField()
+
+    let submitAction = UIAlertAction(title: submitTitle, style: .default) { [unowned optionMenu] _ in
+      let textField = optionMenu.textFields![0]
+      submitCallback(textField)
+    }
+    optionMenu.addAction(submitAction)
+
+    let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+    optionMenu.addAction(cancelAction)
+
+    present(optionMenu, animated: true)
+  }
+
+  /// 弹出选择列表对话表
+  public func alertOptionSheet(alertTitle: String? = nil, addAlertOptions: @escaping (UIAlertController) -> Void) {
+    let optionMenu = UIAlertController(title: alertTitle, message: nil, preferredStyle: .actionSheet)
+
+    addAlertOptions(optionMenu)
+
+    let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+    optionMenu.addAction(cancelAction)
+
+    present(optionMenu, animated: true)
+  }
 }

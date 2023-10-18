@@ -21,6 +21,7 @@ class KeyboardSettingsRootView: NibLessView {
     tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
     tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
+    tableView.register(PullDownMenuCell.self, forCellReuseIdentifier: PullDownMenuCell.identifier)
     return tableView
   }()
 
@@ -88,6 +89,11 @@ extension KeyboardSettingsRootView: UITableViewDataSource {
     case .button:
       let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? ButtonTableViewCell else { return cell }
+      cell.updateWithSettingItem(setting)
+      return cell
+    case .PullDown:
+      let cell = tableView.dequeueReusableCell(withIdentifier: PullDownMenuCell.identifier, for: indexPath)
+      guard let cell = cell as? PullDownMenuCell else { return cell }
       cell.updateWithSettingItem(setting)
       return cell
     }

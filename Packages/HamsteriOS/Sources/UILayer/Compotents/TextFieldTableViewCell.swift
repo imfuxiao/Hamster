@@ -120,6 +120,10 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     settingItem?.textHandled?(textField.text ?? "")
   }
 
+  func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    return true
+  }
+
   // 当按下 "return" 键时调用。
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     textField.resignFirstResponder()

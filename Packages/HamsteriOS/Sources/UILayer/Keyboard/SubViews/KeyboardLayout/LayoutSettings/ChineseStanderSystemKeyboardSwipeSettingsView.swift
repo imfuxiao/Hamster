@@ -5,6 +5,7 @@
 //  Created by morse on 2023/9/15.
 //
 
+import Combine
 import HamsterKeyboardKit
 import HamsterUIKit
 import UIKit
@@ -12,6 +13,7 @@ import UIKit
 /// 中文标准26键划动设置
 class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
+  private var subscriptions = Set<AnyCancellable>()
 
   private lazy var searchBar: UISearchBar = {
     let view = UISearchBar(frame: .zero)
@@ -38,6 +40,13 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
     super.init(frame: .zero)
 
     setupView()
+
+    self.keyboardSettingsViewModel.chineseStanderSystemKeyboardSwipeListReloadPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        reloadSwipeList()
+      }
+      .store(in: &subscriptions)
   }
 
   func setupView() {
@@ -57,6 +66,29 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
       swipeListView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
   }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+    if let _ = window {
+      reloadSwipeList()
+    }
+  }
+
+  func reloadSwipeList() {
+    guard let searchText = searchBar.text, !searchText.isEmpty else {
+      swipeListView.diffableDataSource.apply(keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource(), animatingDifferences: false)
+      return
+    }
+
+    let items = swipeListView.diffableDataSource.snapshot(for: 0)
+      .items
+      .filter { $0.action.labelText.uppercased().contains(searchText.uppercased()) }
+
+    var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
+    snapshot.appendSections([0])
+    snapshot.appendItems(items, toSection: 0)
+    swipeListView.diffableDataSource.apply(snapshot)
+  }
 }
 
 // MARK: - 处理 SwipeListView 委托
@@ -65,6 +97,7 @@ extension ChineseStanderSystemKeyboardSwipeSettingsView: UICollectionViewDelegat
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let key = swipeListView.diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     keyboardSettingsViewModel.keySwipeSettingsActionSubject.send((key, .chinese(.lowercased)))
+    collectionView.deselectItem(at: indexPath, animated: false)
   }
 }
 

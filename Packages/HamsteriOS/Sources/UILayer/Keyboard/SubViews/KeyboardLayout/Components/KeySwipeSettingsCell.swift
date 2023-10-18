@@ -34,8 +34,8 @@ class SwipeSettingsCell: UICollectionViewListCell {
     let label = UILabel(frame: .zero)
     label.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
     label.textAlignment = .left
-    label.adjustsFontSizeToFitWidth = true
-    label.contentScaleFactor = 0.5
+    label.numberOfLines = 2
+    label.lineBreakMode = .byCharWrapping
     label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     return label
@@ -45,6 +45,8 @@ class SwipeSettingsCell: UICollectionViewListCell {
   private lazy var swipeUpLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .left
+    label.numberOfLines = 2
+    label.lineBreakMode = .byCharWrapping
     label.adjustsFontSizeToFitWidth = true
     label.contentScaleFactor = 0.5
     return label
@@ -53,6 +55,8 @@ class SwipeSettingsCell: UICollectionViewListCell {
   // 下划 label
   private lazy var swipeDownLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.numberOfLines = 2
+    label.lineBreakMode = .byCharWrapping
     label.textAlignment = .left
     label.adjustsFontSizeToFitWidth = true
     label.contentScaleFactor = 0.5
@@ -62,6 +66,8 @@ class SwipeSettingsCell: UICollectionViewListCell {
   // 左划 label
   private lazy var swipeLeftLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.numberOfLines = 2
+    label.lineBreakMode = .byCharWrapping
     label.textAlignment = .left
     label.adjustsFontSizeToFitWidth = true
     label.contentScaleFactor = 0.5
@@ -71,6 +77,8 @@ class SwipeSettingsCell: UICollectionViewListCell {
   // 右划 label
   private lazy var swipeRightLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.numberOfLines = 2
+    label.lineBreakMode = .byCharWrapping
     label.textAlignment = .left
     label.adjustsFontSizeToFitWidth = true
     label.contentScaleFactor = 0.5

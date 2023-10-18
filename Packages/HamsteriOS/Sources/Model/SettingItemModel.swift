@@ -29,6 +29,7 @@ public struct SettingItemModel: Hashable, Identifiable {
   public var buttonAction: (() throws -> Void)?
   public var favoriteButton: FavoriteButton?
   public var favoriteButtonHandler: (() -> Void)?
+  public var pullDownMenuActionsBuilder: (() -> [UIAction])?
 
   init(
     icon: UIImage? = nil,
@@ -49,7 +50,8 @@ public struct SettingItemModel: Hashable, Identifiable {
     shouldBeginEditing: ((UITextField) -> Bool)? = nil,
     buttonAction: (() throws -> Void)? = nil,
     favoriteButton: FavoriteButton? = nil,
-    favoriteButtonHandler: (() -> Void)? = nil
+    favoriteButtonHandler: (() -> Void)? = nil,
+    pullDownMenuActionsBuilder: (() -> [UIAction])? = nil
   ) {
     self.icon = icon
     self.iconBackgroundColor = iconBackgroundColor
@@ -71,6 +73,7 @@ public struct SettingItemModel: Hashable, Identifiable {
     self.buttonAction = buttonAction
     self.favoriteButton = favoriteButton
     self.favoriteButtonHandler = favoriteButtonHandler
+    self.pullDownMenuActionsBuilder = pullDownMenuActionsBuilder
   }
 }
 

@@ -198,7 +198,7 @@ public struct Key: Codable, Hashable {
 /// 按键划动
 public struct KeySwipe: Codable, Hashable {
   /// 按键划动方向
-  public enum Direction: String, Codable, Hashable {
+  public enum Direction: String, Codable, Hashable, CaseIterable, Comparable {
     case up
     case down
     case left
@@ -211,6 +211,19 @@ public struct KeySwipe: Codable, Hashable {
       case .left: return "左划"
       case .right: return "右划"
       }
+    }
+
+    public var value: Int {
+      switch self {
+      case .up: 4
+      case .down: 3
+      case .left: 2
+      case .right: 1
+      }
+    }
+
+    public static func < (lhs: KeySwipe.Direction, rhs: KeySwipe.Direction) -> Bool {
+      lhs.value < rhs.value
     }
   }
 

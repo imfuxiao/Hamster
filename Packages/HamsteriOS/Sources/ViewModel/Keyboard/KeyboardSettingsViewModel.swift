@@ -31,8 +31,10 @@ public enum KeyboardLayoutSegmentAction {
   case chineseLayoutSwipeSettings
 }
 
-public class KeyboardSettingsViewModel: ObservableObject {
+public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable {
   // MARK: - properties
+
+  public var id = UUID()
 
   public var displayButtonBubbles: Bool {
     get {
@@ -88,6 +90,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
   }
 
+  public var spaceLeftButtonProcessByRIME: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceLeftButtonProcessByRIME ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceLeftButtonProcessByRIME = newValue
+    }
+  }
+
   public var keyValueOfSpaceLeftButton: String {
     get {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ""
@@ -103,6 +114,15 @@ public class KeyboardSettingsViewModel: ObservableObject {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton = newValue
+    }
+  }
+
+  public var spaceRightButtonProcessByRIME: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceRightButtonProcessByRIME ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceRightButtonProcessByRIME = newValue
     }
   }
 
@@ -465,6 +485,42 @@ public class KeyboardSettingsViewModel: ObservableObject {
     reloadRootViewSubject.eraseToAnyPublisher()
   }
 
+  /// 划动设置页面重新加载
+  public var reloadKeySwipeSettingViewSubject = PassthroughSubject<(Key, KeyboardType), Never>()
+  public var reloadKeySwipeSettingViewPublished: AnyPublisher<(Key, KeyboardType), Never> {
+    reloadKeySwipeSettingViewSubject.eraseToAnyPublisher()
+  }
+
+  /// 划动设置页面选项弹出框
+  public var alertSwipeSettingSubject = PassthroughSubject<(KeyboardActionOption, KeySwipe, Key, KeyboardType), Never>()
+  public var alertSwipeSettingPublished: AnyPublisher<(KeyboardActionOption, KeySwipe, Key, KeyboardType), Never> {
+    alertSwipeSettingSubject.eraseToAnyPublisher()
+  }
+
+  /// 划动设置页面删除对话框
+  public var alertSwipeSettingDeleteConfirmSubject = PassthroughSubject<() -> Void, Never>()
+  public var alertSwipeSettingDeleteConfirmPublished: AnyPublisher<() -> Void, Never> {
+    alertSwipeSettingDeleteConfirmSubject.eraseToAnyPublisher()
+  }
+
+  /// 新增划动设置页面弹出框
+  public var addAlertSwipeSettingSubject = PassthroughSubject<(KeyboardActionOption, (KeyboardAction) -> Void), Never>()
+  public var addAlertSwipeSettingPublished: AnyPublisher<(KeyboardActionOption, (KeyboardAction) -> Void), Never> {
+    addAlertSwipeSettingSubject.eraseToAnyPublisher()
+  }
+
+  /// 新增划动设置页面 dismiss
+  public var addAlertSwipeSettingDismissSubject = PassthroughSubject<(Key, KeyboardType), Never>()
+  public var addAlertSwipeSettingDismissPublished: AnyPublisher<(Key, KeyboardType), Never> {
+    addAlertSwipeSettingDismissSubject.eraseToAnyPublisher()
+  }
+
+  /// 中文26键划动列表重新加载
+  public var chineseStanderSystemKeyboardSwipeListReloadSubject = PassthroughSubject<Bool, Never>()
+  public var chineseStanderSystemKeyboardSwipeListReloadPublished: AnyPublisher<Bool, Never> {
+    chineseStanderSystemKeyboardSwipeListReloadSubject.eraseToAnyPublisher()
+  }
+
   // MARK: - init data
 
   /// 键盘设置选项
@@ -630,6 +686,13 @@ public class KeyboardSettingsViewModel: ObservableObject {
             displaySpaceLeftButton = $0
           }),
         .init(
+          text: "左侧按键由RIME处理",
+          type: .toggle,
+          toggleValue: { [unowned self] in spaceLeftButtonProcessByRIME },
+          toggleHandled: { [unowned self] in
+            spaceLeftButtonProcessByRIME = $0
+          }),
+        .init(
           icon: UIImage(systemName: "square.and.pencil"),
           placeholder: "左侧按键键值",
           type: .textField,
@@ -643,6 +706,13 @@ public class KeyboardSettingsViewModel: ObservableObject {
           toggleValue: { [unowned self] in displaySpaceRightButton },
           toggleHandled: { [unowned self] in
             displaySpaceRightButton = $0
+          }),
+        .init(
+          text: "右侧按键由RIME处理",
+          type: .toggle,
+          toggleValue: { [unowned self] in spaceRightButtonProcessByRIME },
+          toggleHandled: { [unowned self] in
+            spaceRightButtonProcessByRIME = $0
           }),
         .init(
           icon: UIImage(systemName: "square.and.pencil"),
@@ -850,6 +920,14 @@ public class KeyboardSettingsViewModel: ObservableObject {
   // MARK: - Initialization
 
   public init() {}
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
+  public static func == (lhs: KeyboardSettingsViewModel, rhs: KeyboardSettingsViewModel) -> Bool {
+    lhs.id == rhs.id
+  }
 }
 
 // MARK: - target-action
@@ -898,11 +976,46 @@ extension KeyboardSettingsViewModel {
 // MARK: - KeyboardLayout 键盘布局相关
 
 extension KeyboardSettingsViewModel {
+  public struct KeyboardLayoutItem: Hashable {
+    let id = UUID()
+    public var keyboardType: KeyboardType
+    public var checkState: Bool
+    private let viewModel: KeyboardSettingsViewModel
+
+    init(keyboardType: KeyboardType, checkState: Bool, viewModel: KeyboardSettingsViewModel) {
+      self.keyboardType = keyboardType
+      self.checkState = checkState
+      self.viewModel = viewModel
+    }
+
+    public func setChecked() {
+      viewModel.useKeyboardType = keyboardType
+      viewModel.reloadRootViewSubject.send(true)
+    }
+
+    public func settings() {
+      viewModel.settingsKeyboardType = keyboardType
+      viewModel.useKeyboardTypeSubject.send(keyboardType)
+    }
+
+    public static func == (lhs: KeyboardSettingsViewModel.KeyboardLayoutItem, rhs: KeyboardSettingsViewModel.KeyboardLayoutItem) -> Bool {
+      lhs.id == rhs.id
+    }
+
+    public func hash(into hasher: inout Hasher) {
+      hasher.combine(id)
+    }
+  }
+
   /// 键盘布局总列表 DataSource
-  func initKeyboardLayoutDataSource() -> NSDiffableDataSourceSnapshot<Int, KeyboardType> {
-    var snapshot = NSDiffableDataSourceSnapshot<Int, KeyboardType>()
+  func initKeyboardLayoutDataSource() -> NSDiffableDataSourceSnapshot<Int, KeyboardSettingsViewModel.KeyboardLayoutItem> {
+    var snapshot = NSDiffableDataSourceSnapshot<Int, KeyboardSettingsViewModel.KeyboardLayoutItem>()
     snapshot.appendSections([0])
-    snapshot.appendItems(keyboardLayoutList, toSection: 0)
+
+    let item = keyboardLayoutList.map {
+      KeyboardSettingsViewModel.KeyboardLayoutItem(keyboardType: $0, checkState: $0 == self.useKeyboardType, viewModel: self)
+    }
+    snapshot.appendItems(item, toSection: 0)
     return snapshot
   }
 
@@ -989,6 +1102,289 @@ extension KeyboardSettingsViewModel {
     } else {
       ProgressHUD.showFailed("未找到此键盘", interaction: false, delay: 1.5)
     }
+  }
+}
+
+// MARK: - Swipe Settings
+
+extension KeyboardSettingsViewModel {
+  /// App中可以用来下拉选择的 KeyboardAction
+  /// 注意：需要与 Customize/Yaml/Models.swift 中扩展的 String 方法内 var keyboardAction: KeyboardAction 的选项对应, 否则无法序列化
+  public enum KeyboardActionOption: CaseIterable, Comparable {
+    case character
+    case symbol
+    case shortCommand
+    case keyboardType
+
+    var option: String {
+      switch self {
+      case .character: "字符（由 RIME 处理）"
+      case .symbol: "符号字符（不由 RIME 处理）"
+      case .shortCommand: "快捷指令"
+      case .keyboardType: "切换键盘"
+      }
+    }
+  }
+
+  /// App中可以用来下拉选择的 KeyboardAction
+  /// 注意：需要与 Customize/Yaml/Models.swift 中扩展的 String 方法内  var keyboardType: KeyboardType 的选项对应, 否则无法序列化
+  public enum KeyboardTypeOption: CaseIterable {
+    case alphabetic
+    case chinese
+    case classifySymbolic
+    case chineseNineGrid
+    case numericNineGrid
+    case custom
+    case emojis
+
+    var option: String {
+      switch self {
+      case .alphabetic: "英文键盘"
+      case .chinese: "中文26键键盘"
+      case .classifySymbolic: "分类符号键盘"
+      case .chineseNineGrid: "中文九宫格键盘"
+      case .numericNineGrid: "数字九宫格键盘"
+      case .custom: "自定义键盘"
+      case .emojis: "Emojis键盘"
+      }
+    }
+
+    var keyboardType: KeyboardType? {
+      switch self {
+      case .alphabetic: return .alphabetic(.lowercased)
+      case .chinese: return .chinese(.lowercased)
+      case .classifySymbolic: return .classifySymbolic
+      case .chineseNineGrid: return .chineseNumeric
+      case .numericNineGrid: return .numericNineGrid
+      case .emojis: return .emojis
+      default:
+        return nil
+      }
+    }
+  }
+
+  /// 获取新增 Swipe 设置项
+  func addKeySwipeSettingItems(
+    _ key: Key,
+    keySwipe: KeySwipe,
+    setDirection: @escaping (KeySwipe.Direction) -> Void,
+    setActionOption: @escaping (KeyboardActionOption) -> Void,
+    setLabelText: @escaping (String) -> Void,
+    setShowLabel: @escaping (Bool) -> Void,
+    saveHandle: @escaping () -> Void) -> [SettingSectionModel]
+  {
+    let swipeSettingItems = [
+      SettingSectionModel(
+        items: [
+          .init(
+            text: "按键操作",
+            type: .textField,
+            textValue: { key.action.yamlString },
+            textFieldShouldBeginEditing: false)
+        ]),
+      SettingSectionModel(items: [
+        .init(
+          text: "划动方向",
+          type: .PullDown,
+          textValue: { keySwipe.direction.labelText },
+          pullDownMenuActionsBuilder: {
+            KeySwipe.Direction.allCases
+              .map { direction in
+                UIAction(title: direction.labelText) { _ in
+                  if let _ = key.swipe.first(where: { swipe in swipe.direction == direction }) {
+                    ProgressHUD.showError("划动方向:\(direction.labelText) 配置已存在")
+                    return
+                  }
+                  setDirection(direction)
+                }
+              }
+          }),
+        .init(
+          text: "划动操作",
+          type: .PullDown,
+          textValue: { keySwipe.action.yamlString },
+          pullDownMenuActionsBuilder: {
+            KeyboardActionOption.allCases
+              .map { action in
+                UIAction(title: action.option) { _ in
+                  setActionOption(action)
+                }
+              }
+          }),
+        .init(
+          text: "键盘显示文本",
+          placeholder: "显示文本",
+          type: .textField,
+          textValue: { keySwipe.label.text },
+          textHandled: { labelText in
+            setLabelText(labelText)
+          }),
+        .init(
+          text: "是否显示文本",
+          type: .toggle,
+          toggleValue: { keySwipe.display },
+          toggleHandled: { display in
+            setShowLabel(display)
+          }),
+        .init(
+          text: "保存",
+          type: .button,
+          buttonAction: {
+            saveHandle()
+          })
+      ])
+    ]
+
+    return swipeSettingItems
+  }
+
+  /// 将 key 变为设置属性, 方便 Tabel 展示
+  func getSettingsItems(_ key: Key, keyboardType: KeyboardType) -> [SettingSectionModel] {
+    var swipeSettingsItem: [SettingSectionModel] = [
+      .init(
+        items: [
+          .init(
+            text: "按键操作",
+            type: .textField,
+            textValue: { key.action.yamlString },
+            textFieldShouldBeginEditing: false)
+
+        ])
+    ]
+
+    for swipe in key.swipe.sorted(by: { $0.direction > $1.direction }) {
+      swipeSettingsItem.append(SettingSectionModel(
+        items: [
+          .init(
+            text: "划动方向",
+            type: .PullDown,
+            textValue: { swipe.direction.labelText },
+            pullDownMenuActionsBuilder: {
+              let setupDirection = { [unowned self] (direction: KeySwipe.Direction) in
+                var key = key
+                var swipe = swipe
+                // 删除原先的滑动方向配置
+                key.swipe.removeAll(where: { $0.direction == swipe.direction })
+                guard !key.swipe.contains(where: { $0.direction == direction }) else {
+                  ProgressHUD.showError("划动方向：\(direction.labelText) 已存在。")
+                  return
+                }
+                swipe.direction = direction
+                key.swipe.append(swipe)
+                key.swipe.sort(by: { $0.direction > $1.direction })
+                self.saveKeySwipe(key, keyboardType: keyboardType)
+                // 添加刷新表格操作
+                self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
+              }
+
+              return KeySwipe.Direction.allCases
+                .map { direction in
+                  UIAction(title: direction.labelText) { _ in
+                    setupDirection(direction)
+                  }
+                }
+            }),
+          .init(
+            text: "划动操作",
+            type: .PullDown,
+            textValue: { swipe.action.yamlString },
+            pullDownMenuActionsBuilder: {
+              let setupAction = { [unowned self] (option: KeyboardActionOption) in
+                // 通知划动设置 controller 弹出设置对话框
+                self.alertSwipeSettingSubject.send((option, swipe, key, keyboardType))
+              }
+
+              return KeyboardActionOption.allCases
+                .map { action in
+                  UIAction(title: action.option) { _ in
+                    setupAction(action)
+                  }
+                }
+            }),
+          .init(
+            text: "键盘显示文本",
+            placeholder: "显示文本",
+            type: .textField,
+            textValue: { swipe.label.text },
+            textHandled: { labelText in
+              var key = key
+              var swipe = swipe
+              swipe.label = KeyLabel(loadingText: "", text: labelText)
+              key.swipe.removeAll(where: { $0.direction == swipe.direction })
+              key.swipe.append(swipe)
+              self.saveKeySwipe(key, keyboardType: keyboardType)
+            }),
+          .init(
+            text: "是否显示文本",
+            type: .toggle,
+            toggleValue: { swipe.display },
+            toggleHandled: { display in
+              var key = key
+              var swipe = swipe
+              swipe.display = display
+              key.swipe.removeAll(where: { $0.direction == swipe.direction })
+              key.swipe.append(swipe)
+              self.saveKeySwipe(key, keyboardType: keyboardType)
+            }),
+          .init(
+            text: "删除",
+            textTintColor: .systemRed,
+            type: .button,
+            buttonAction: { [unowned self] in
+              alertSwipeSettingDeleteConfirmSubject.send {
+                var key = key
+                key.swipe.removeAll(where: { $0.direction == swipe.direction })
+                self.saveKeySwipe(key, keyboardType: keyboardType)
+                self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
+              }
+            })
+        ]
+      ))
+    }
+
+    return swipeSettingsItem
+  }
+
+  func saveKeySwipe(_ key: Key, keyboardType: KeyboardType) {
+    if var keyboardSwipe = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe,
+       var keyboard = keyboardSwipe.first(where: { $0.keyboardType == keyboardType })
+    {
+      if let keyIndex = keyboard.keys?.firstIndex(where: { $0.action == key.action }) {
+        keyboard.keys?[keyIndex] = key
+      } else {
+        keyboard.keys?.append(key)
+      }
+
+      keyboardSwipe.removeAll(where: { $0.keyboardType == keyboardType })
+      keyboardSwipe.append(keyboard)
+      HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = keyboardSwipe
+    }
+  }
+
+  func deleteKeySwipe(_ key: Key, swipe: KeySwipe, keyboardType: KeyboardType) {
+    if var keyboardSwipe = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe,
+       var keyboard = keyboardSwipe.first(where: { $0.keyboardType == keyboardType })
+    {
+      if let keyIndex = keyboard.keys?.firstIndex(where: { $0.action == key.action }) {
+        keyboard.keys?[keyIndex] = key
+      } else {
+        keyboard.keys?.append(key)
+      }
+
+      keyboardSwipe.removeAll(where: { $0.keyboardType == keyboardType })
+      keyboardSwipe.append(keyboard)
+      HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = keyboardSwipe
+    }
+  }
+
+  /// 判断划动的 Key 是否存在
+  func swipeKeyExists(_ key: Key, keyboardType: KeyboardType) -> Bool {
+    if let keyboardSwipe = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe,
+       let keyboard = keyboardSwipe.first(where: { $0.keyboardType == keyboardType })
+    {
+      return keyboard.keys?.contains(where: { $0.action == key.action }) ?? false
+    }
+    return false
   }
 }
 

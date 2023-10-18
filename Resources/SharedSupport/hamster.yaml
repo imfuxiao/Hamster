@@ -54,9 +54,11 @@ Keyboard:
   displayClassifySymbolButton: false
   # 启用空格左侧按键
   displaySpaceLeftButton: false
+  spaceLeftButtonProcessByRIME: true
   keyValueOfSpaceLeftButton: ","
   # 启用空格右侧按键
   displaySpaceRightButton: false
+  spaceRightButtonProcessByRIME: true
   keyValueOfSpaceRightButton: "."
   # 启用中英切换按键
   displayChineseEnglishSwitchButton: false

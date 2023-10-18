@@ -568,6 +568,10 @@ public extension KeyboardContext {
     hamsterConfig?.Keyboard?.displaySpaceLeftButton ?? false
   }
 
+  var spaceLeftButtonProcessByRIME: Bool {
+    hamsterConfig?.Keyboard?.spaceLeftButtonProcessByRIME ?? true
+  }
+
   /// 空格左侧按键键值
   var keyValueOfSpaceLeftButton: String {
     hamsterConfig?.Keyboard?.keyValueOfSpaceLeftButton ?? ""
@@ -576,6 +580,10 @@ public extension KeyboardContext {
   /// 空格右侧自定义按键
   var displaySpaceRightButton: Bool {
     hamsterConfig?.Keyboard?.displaySpaceRightButton ?? false
+  }
+
+  var spaceRightButtonProcessByRIME: Bool {
+    hamsterConfig?.Keyboard?.spaceRightButtonProcessByRIME ?? true
   }
 
   /// 空格右侧按键键值

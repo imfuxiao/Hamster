@@ -42,13 +42,19 @@ public struct KeyboardConfiguration: Codable, Hashable {
   
   /// 显示空格左边按键
   public var displaySpaceLeftButton: Bool?
-  
+
+  /// 空格左侧按键由RIME处理
+  public var spaceLeftButtonProcessByRIME: Bool?
+
   /// 空格左边按键对应的键值
   public var keyValueOfSpaceLeftButton: String?
   
   /// 显示空格右边按键
   public var displaySpaceRightButton: Bool?
-  
+
+  /// 空格右侧按键由RIME处理
+  public var spaceRightButtonProcessByRIME: Bool?
+
   /// 空格右边按键对应的键值
   public var keyValueOfSpaceRightButton: String?
   

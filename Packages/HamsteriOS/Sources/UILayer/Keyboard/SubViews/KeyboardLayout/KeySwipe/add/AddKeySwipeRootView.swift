@@ -1,19 +1,20 @@
 //
-//  KeySwipeSettingsView.swift
+//  AddKeySwipeRootView.swift
 //
 //
-//  Created by morse on 2023/9/15.
+//  Created by morse on 2023/10/19.
 //
 
 import HamsterKeyboardKit
 import HamsterUIKit
+import ProgressHUD
 import UIKit
 
-/// 按键划动设置
-class KeySwipeSettingsView: NibLessView {
+class AddKeySwipeRootView: NibLessView {
   private let KeyboardSettingsViewModel: KeyboardSettingsViewModel
-  private var keyboardType: KeyboardType? = nil
-  private var key: Key? = nil
+  private var keyboardType: KeyboardType
+  private var key: Key
+  private var keySwipe: KeySwipe
   private var settingItems: [SettingSectionModel]? = nil
   private let saveKeyHandled: ((Key) -> Void)? = nil
 
@@ -32,11 +33,14 @@ class KeySwipeSettingsView: NibLessView {
     return tableView
   }()
 
-  init(KeyboardSettingsViewModel: KeyboardSettingsViewModel) {
+  init(KeyboardSettingsViewModel: KeyboardSettingsViewModel, key: Key, keyboardType: KeyboardType) {
     self.KeyboardSettingsViewModel = KeyboardSettingsViewModel
-
+    self.keyboardType = keyboardType
+    self.key = key
+    self.keySwipe = .init(direction: .up, action: .none, label: .empty)
     super.init(frame: .zero)
 
+    self.settingItems = getSettingItems()
     setupView()
   }
 
@@ -51,25 +55,55 @@ class KeySwipeSettingsView: NibLessView {
     ])
   }
 
-  override func didMoveToWindow() {
-    super.didMoveToWindow()
-    if let _ = window {
-      if let key = key, let keyboardType = keyboardType {
-        updateWithKey(key, for: keyboardType)
+  func getSettingItems() -> [SettingSectionModel] {
+    KeyboardSettingsViewModel.addKeySwipeSettingItems(
+      key,
+      keySwipe: keySwipe,
+      setDirection: { [unowned self] direction in
+        keySwipe.direction = direction
+        realod()
+      },
+      setActionOption: { [unowned self] actionOption in
+        KeyboardSettingsViewModel.addAlertSwipeSettingSubject.send((
+          actionOption,
+          { [unowned self] action in
+            keySwipe.action = action
+            realod()
+          }
+        ))
+      },
+      setLabelText: { [unowned self] in
+        keySwipe.label = KeyLabel(loadingText: "", text: $0)
+        realod()
+      },
+      setShowLabel: { [unowned self] in
+        keySwipe.display = $0
+        realod()
+      },
+      saveHandle: { [unowned self] in
+        if let _ = key.swipe.first(where: { swipe in swipe.direction == keySwipe.direction }) {
+          ProgressHUD.showError("划动方向:\(keySwipe.direction.labelText) 配置已存在")
+          return
+        }
+        if keySwipe.action == .none {
+          ProgressHUD.showError("划动Action不能为空")
+          return
+        }
+
+        key.swipe.append(keySwipe)
+        KeyboardSettingsViewModel.saveKeySwipe(key, keyboardType: keyboardType)
+        KeyboardSettingsViewModel.addAlertSwipeSettingDismissSubject.send((key, keyboardType))
       }
-    }
+    )
   }
 
-  /// 更新 KeySwipeSettingsView 视图
-  func updateWithKey(_ key: Key, for keyboardType: KeyboardType) {
-    self.key = key
-    self.keyboardType = keyboardType
-    self.settingItems = KeyboardSettingsViewModel.getSettingsItems(key, keyboardType: keyboardType)
-    tableView.reloadData()
+  func realod() {
+    self.settingItems = getSettingItems()
+    self.tableView.reloadData()
   }
 }
 
-extension KeySwipeSettingsView: UITableViewDataSource {
+extension AddKeySwipeRootView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
     settingItems?.count ?? 0
   }
@@ -113,4 +147,4 @@ extension KeySwipeSettingsView: UITableViewDataSource {
   }
 }
 
-extension KeySwipeSettingsView: UITableViewDelegate {}
+extension AddKeySwipeRootView: UITableViewDelegate {}

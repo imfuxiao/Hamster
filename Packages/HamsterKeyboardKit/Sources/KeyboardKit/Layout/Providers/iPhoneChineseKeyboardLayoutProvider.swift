@@ -190,13 +190,19 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     }
 
     if context.displaySpaceLeftButton {
-      result.append(.character(context.keyValueOfSpaceLeftButton))
+      let action: KeyboardAction = context.spaceLeftButtonProcessByRIME
+        ? .character(context.keyValueOfSpaceLeftButton)
+        : .symbol(Symbol(char: context.keyValueOfSpaceLeftButton))
+      result.append(action)
     }
 
     result.append(.space)
 
     if context.displaySpaceRightButton {
-      result.append(.character(context.keyValueOfSpaceRightButton))
+      let action: KeyboardAction = context.spaceRightButtonProcessByRIME
+        ? .character(context.keyValueOfSpaceRightButton)
+        : .symbol(Symbol(char: context.keyValueOfSpaceRightButton))
+      result.append(action)
     }
 
     if !context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {

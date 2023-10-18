@@ -19,18 +19,18 @@ class KeyboardLayoutRootView: NibLessView {
       var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
       configuration.footerMode = .supplementary
       configuration.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in
-        let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+        let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
         let action: UIContextualAction
 
-        if keyboardType.isCustom {
+        if item.keyboardType.isCustom {
           action = UIContextualAction(style: .destructive, title: "删除", handler: { [unowned self] _, _, completion in
-            keyboardSettingsViewModel.deleteCustomizeKeyboardLayout(keyboardType)
+            keyboardSettingsViewModel.deleteCustomizeKeyboardLayout(item.keyboardType)
             completion(true)
           })
           action.backgroundColor = .systemRed
         } else {
           action = UIContextualAction(style: .normal, title: "设置", handler: { [unowned self] _, _, completion in
-            keyboardSettingsAction(keyboardType)
+            keyboardSettingsAction(item.keyboardType)
             completion(true)
           })
           action.backgroundColor = .systemBlue
@@ -43,11 +43,12 @@ class KeyboardLayoutRootView: NibLessView {
 
     let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
     view.delegate = self
+    view.allowsSelection = false
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
-  private lazy var diffableDataSource: UICollectionViewDiffableDataSource<Int, KeyboardType> = {
+  private lazy var diffableDataSource: UICollectionViewDiffableDataSource<Int, KeyboardSettingsViewModel.KeyboardLayoutItem> = {
     let dataSource = makeDataSource()
     return dataSource
   }()
@@ -80,17 +81,14 @@ class KeyboardLayoutRootView: NibLessView {
 extension KeyboardLayoutRootView {
   func loadDataSource() {
     self.diffableDataSource.apply(keyboardSettingsViewModel.initKeyboardLayoutDataSource(), animatingDifferences: false)
-    if let index = self.diffableDataSource.snapshot(for: 0).items.firstIndex(where: { $0 == keyboardSettingsViewModel.useKeyboardType }) {
-      self.listView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: .centeredVertically)
-    }
   }
 
-  func cellRegistration() -> UICollectionView.CellRegistration<KeyboardLayoutCell, KeyboardType> {
+  func cellRegistration() -> UICollectionView.CellRegistration<KeyboardLayoutCell, KeyboardSettingsViewModel.KeyboardLayoutItem> {
     UICollectionView.CellRegistration { cell, _, item in
-      cell.label.text = item.label
-      if !item.isCustom {
-        cell.accessories = [.disclosureIndicator()]
-      }
+      cell.updateWithSettingItem(item)
+//      if !item.isCustom {
+//        cell.accessories = [.disclosureIndicator()]
+//      }
     }
   }
 
@@ -109,11 +107,11 @@ extension KeyboardLayoutRootView {
     }
   }
 
-  func makeDataSource() -> UICollectionViewDiffableDataSource<Int, KeyboardType> {
+  func makeDataSource() -> UICollectionViewDiffableDataSource<Int, KeyboardSettingsViewModel.KeyboardLayoutItem> {
     let cellRegistration = cellRegistration()
     let footerRegistration = footerRegistration()
 
-    let dataSource = UICollectionViewDiffableDataSource<Int, KeyboardType>(
+    let dataSource = UICollectionViewDiffableDataSource<Int, KeyboardSettingsViewModel.KeyboardLayoutItem>(
       collectionView: listView,
       cellProvider: { collectionView, indexPath, item in
         collectionView.dequeueConfiguredReusableCell(
@@ -143,8 +141,9 @@ extension KeyboardLayoutRootView {
 }
 
 extension KeyboardLayoutRootView: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    keyboardSettingsViewModel.useKeyboardType = keyboardType
-  }
+//  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//    let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+//    keyboardSettingsViewModel.useKeyboardType = keyboardType
+//    collectionView.deselectItem(at: indexPath, animated: false)
+//  }
 }
