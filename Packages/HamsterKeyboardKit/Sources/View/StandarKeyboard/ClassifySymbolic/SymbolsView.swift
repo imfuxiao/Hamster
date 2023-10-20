@@ -10,19 +10,18 @@ import UIKit
 
 /// 符号显示视图
 class SymbolsView: UICollectionView {
+  var style: NonStandardKeyboardStyle
   let keyboardContext: KeyboardContext
   let actionHandler: KeyboardActionHandler
   let viewModel: ClassifySymbolicViewModel
   var subscriptions = Set<AnyCancellable>()
-  private var userInterfaceStyle: UIUserInterfaceStyle
-
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, Symbol>!
 
-  init(keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler, viewModel: ClassifySymbolicViewModel) {
+  init(style: NonStandardKeyboardStyle, keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler, viewModel: ClassifySymbolicViewModel) {
+    self.style = style
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     self.viewModel = viewModel
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     let layout = {
       let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .leading, verticalAlignment: .center)
@@ -32,9 +31,10 @@ class SymbolsView: UICollectionView {
 
     super.init(frame: .zero, collectionViewLayout: layout)
 
-    self.backgroundColor = keyboardContext.symbolListBackgroundColor
     self.delegate = self
     self.diffableDataSource = makeDataSource()
+
+    setupAppearance()
 
     // init data
     diffableDataSource.apply(makeSnapshot(symbols: viewModel.currentCategory.symbols), animatingDifferences: false)
@@ -48,17 +48,20 @@ class SymbolsView: UICollectionView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  func setupAppearance() {
+    self.backgroundColor = style.backgroundColor
+  }
 
-    guard userInterfaceStyle != keyboardContext.traitCollection.userInterfaceStyle else { return }
-    userInterfaceStyle = traitCollection.userInterfaceStyle
-
-    self.backgroundColor = keyboardContext.symbolListBackgroundColor
-
+  func reloadDiffableData() {
     var snapshot = diffableDataSource.snapshot()
     snapshot.reloadSections([0])
     diffableDataSource.apply(snapshot)
+  }
+
+  func setStyle(_ style: NonStandardKeyboardStyle) {
+    self.style = style
+    setupAppearance()
+    reloadDiffableData()
   }
 
   func combine() {
@@ -69,14 +72,6 @@ class SymbolsView: UICollectionView {
         self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
       }
       .store(in: &subscriptions)
-
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        setNeedsLayout()
-      }
-      .store(in: &subscriptions)
   }
 
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, Symbol> {
@@ -85,11 +80,7 @@ class SymbolsView: UICollectionView {
       // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
       cell.updateWithSymbol(
         symbol.char,
-        highlightedColor: keyboardContext.symbolListHighlightedBackgroundColor,
-//        normalColor: keyboardContext.symbolListBackgroundColor,
-        normalColor: .clear,
-        labelHighlightColor: .label,
-        labelNormalColor: keyboardContext.candidateTextColor
+        style: style
       )
     }
 

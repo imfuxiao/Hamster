@@ -201,6 +201,12 @@ public extension KeyboardColorReader {
       .standardButtonBackground
   }
 
+  static func standardButtonBackground(for userInterfaceStyle: UIUserInterfaceStyle) -> UIColor {
+    userInterfaceStyle == .dark ?
+      .standardButtonBackgroundForColorSchemeBug :
+      .standardButtonBackground
+  }
+
   /**
    The standard foreground color of light keyboard buttons.
 
@@ -208,6 +214,12 @@ public extension KeyboardColorReader {
    */
   static func standardButtonForeground(for context: KeyboardContext) -> UIColor {
     context.hasDarkColorScheme ?
+      .standardButtonForegroundForDarkAppearance :
+      .standardButtonForeground
+  }
+
+  static func standardButtonForeground(for style: UIUserInterfaceStyle) -> UIColor {
+    style == .dark ?
       .standardButtonForegroundForDarkAppearance :
       .standardButtonForeground
   }
@@ -228,6 +240,12 @@ public extension KeyboardColorReader {
    */
   static func standardDarkButtonBackground(for context: KeyboardContext) -> UIColor {
     context.hasDarkColorScheme ?
+      .standardDarkButtonBackgroundForColorSchemeBug :
+      .standardDarkButtonBackground
+  }
+
+  static func standardDarkButtonBackground(for style: UIUserInterfaceStyle) -> UIColor {
+    style == .dark ?
       .standardDarkButtonBackgroundForColorSchemeBug :
       .standardDarkButtonBackground
   }

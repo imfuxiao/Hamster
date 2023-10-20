@@ -38,6 +38,9 @@ class KeyboardRootView: NibLessView {
   /// 当前屏幕方向
   private var interfaceOrientation: InterfaceOrientation
 
+  /// 当前界面样式
+  private var userInterfaceStyle: UIUserInterfaceStyle
+
   /// 键盘是否浮动
   private var isKeyboardFloating: Bool
 
@@ -51,7 +54,7 @@ class KeyboardRootView: NibLessView {
   private var toolbarHeightConstraint: NSLayoutConstraint?
 
   /// 候选文字视图状态
-  private var candidateViewState: CandidateWordsView.State
+  private var candidateViewState: CandidateBarView.State
 
   /// 非主键盘的临时键盘Cache
   // private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
@@ -136,7 +139,12 @@ class KeyboardRootView: NibLessView {
   /// 符号分类键盘
   /// 注意：计算属性
   private var classifySymbolicKeyboardView: ClassifySymbolicKeyboard {
-    let view = ClassifySymbolicKeyboard(actionHandler: actionHandler, layoutProvider: keyboardLayoutProvider, keyboardContext: keyboardContext)
+    let view = ClassifySymbolicKeyboard(
+      actionHandler: actionHandler,
+      appearance: appearance,
+      layoutProvider: keyboardLayoutProvider,
+      keyboardContext: keyboardContext
+    )
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }
@@ -153,7 +161,7 @@ class KeyboardRootView: NibLessView {
 
   /// 工具栏
   private lazy var toolbarView: UIView = {
-    let view = KeyboardToolbarView(actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
+    let view = KeyboardToolbarView(appearance: appearance, actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -214,14 +222,13 @@ class KeyboardRootView: NibLessView {
     self.currentKeyboardType = keyboardContext.keyboardType
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
+    self.userInterfaceStyle = keyboardContext.colorScheme
 
     super.init(frame: .zero)
 
-    // 开启键盘配色
-    backgroundColor = keyboardContext.backgroundColor
-
     constructViewHierarchy()
     activateViewConstraints()
+    setupAppearance()
 
     combine()
   }
@@ -257,6 +264,10 @@ class KeyboardRootView: NibLessView {
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
+  }
+
+  override func setupAppearance() {
+    backgroundColor = appearance.backgroundStyle.backgroundColor
   }
 
   /// 工具栏静态约束（不会发生变动）
@@ -306,6 +317,17 @@ class KeyboardRootView: NibLessView {
         }
         .store(in: &subscriptions)
     }
+
+    // 跟踪 UIUserInterfaceStyle 变化
+    keyboardContext.$traitCollection
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
+        userInterfaceStyle = $0.userInterfaceStyle
+        setupAppearance()
+        primaryKeyboardView.setNeedsLayout()
+      }
+      .store(in: &subscriptions)
 
     // 屏幕方向改变调整按键高度及按键内距
     keyboardContext.$interfaceOrientation

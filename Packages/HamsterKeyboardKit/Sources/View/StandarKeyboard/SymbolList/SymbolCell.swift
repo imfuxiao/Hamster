@@ -26,11 +26,8 @@ private extension UICellConfigurationState {
 
 /// 符号单元格
 class SymbolCell: UICollectionViewListCell {
-  public var highlightedColor: UIColor? = nil
-  public var normalColor: UIColor? = nil
-  public var labelHighlightColor: UIColor? = nil
-  public var labelNormalColor: UIColor? = nil
   public var symbol: String? = nil
+  private var style: NonStandardKeyboardStyle? = nil
 
   var symbolLabel: UILabel = {
     let label = UILabel()
@@ -76,17 +73,12 @@ class SymbolCell: UICollectionViewListCell {
     ])
   }
 
-  func updateWithSymbol(_ symbol: String,
-                        highlightedColor: UIColor? = nil,
-                        normalColor: UIColor? = nil,
-                        labelHighlightColor: UIColor? = nil,
-                        labelNormalColor: UIColor? = nil)
-  {
+  func updateWithSymbol(
+    _ symbol: String,
+    style: NonStandardKeyboardStyle
+  ) {
     self.symbol = symbol
-    self.highlightedColor = highlightedColor
-    self.normalColor = normalColor
-    self.labelNormalColor = labelNormalColor
-    self.labelHighlightColor = labelHighlightColor
+    self.style = style
 
     setNeedsUpdateConfiguration()
   }
@@ -102,20 +94,14 @@ class SymbolCell: UICollectionViewListCell {
     var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
 
     if state.isHighlighted || state.isSelected {
-      backgroundConfig.backgroundColor = highlightedColor
-      if let color = labelHighlightColor {
-        // contentConfig.textProperties.color = color
-        symbolLabel.textColor = color
-      }
+      backgroundConfig.backgroundColor = style?.pressedBackgroundColor
+      symbolLabel.textColor = style?.pressedForegroundColor
     } else {
-      backgroundConfig.backgroundColor = normalColor
-      if let color = labelNormalColor {
-        // contentConfig.textProperties.color = color
-        symbolLabel.textColor = color
-      }
+      // backgroundConfig.backgroundColor = style?.backgroundColor
+      backgroundConfig.backgroundColor = .clear
+      symbolLabel.textColor = style?.foregroundColor
     }
 
-    // self.contentConfiguration = contentConfig
     self.backgroundConfiguration = backgroundConfig
   }
 }

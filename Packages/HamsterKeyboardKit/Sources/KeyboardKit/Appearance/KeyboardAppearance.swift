@@ -48,12 +48,18 @@ public protocol KeyboardAppearance: AnyObject {
    */
   var backgroundStyle: KeyboardBackgroundStyle { get }
 
+  /// 非标准键盘样式
+  var nonStandardKeyboardStyle: NonStandardKeyboardStyle { get }
+
   /**
    The foreground color to apply to the keyboard, if any.
 
    应用于键盘的前景色（如果有）。
    */
   var foregroundColor: UIColor? { get }
+
+  /// 候选栏样式
+  var candidateBarStyle: CandidateBarStyle { get }
 
   /**
    The edge insets to apply to the entire keyboard.

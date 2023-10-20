@@ -11,9 +11,9 @@ import HamsterUIKit
 import UIKit
 
 /**
- 候选文字视图
+ 候选栏视图
  */
-public class CandidateWordsView: NibLessView {
+public class CandidateBarView: NibLessView {
   /// 候选区状态
   public enum State {
     /// 展开
@@ -26,6 +26,7 @@ public class CandidateWordsView: NibLessView {
     }
   }
 
+  private var style: CandidateBarStyle
   private var actionHandler: KeyboardActionHandler
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
@@ -58,6 +59,7 @@ public class CandidateWordsView: NibLessView {
   /// 候选文字区域
   lazy var candidatesArea: CandidateWordsCollectionView = {
     let view = CandidateWordsCollectionView(
+      style: style,
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
       rimeContext: rimeContext)
@@ -114,11 +116,12 @@ public class CandidateWordsView: NibLessView {
       : controlStateView.heightAnchor.constraint(equalToConstant: 50)
   }
 
-  init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+  init(style: CandidateBarStyle, actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+    self.style = style
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
+    self.userInterfaceStyle = keyboardContext.colorScheme
 
     super.init(frame: .zero)
 
@@ -130,17 +133,11 @@ public class CandidateWordsView: NibLessView {
   func setupContentView() {
     constructViewHierarchy()
     activateViewConstraints()
+    setupAppearance()
   }
 
   /// 构建视图层次
   override public func constructViewHierarchy() {
-    if let fontSize = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
-      phoneticLabel.font = UIFont.systemFont(ofSize: CGFloat(fontSize))
-    }
-
-    phoneticLabel.textColor = keyboardContext.phoneticTextColor
-    stateImageView.tintColor = keyboardContext.candidateTextColor
-
     // 非内嵌模式添加拼写区域
     if !keyboardContext.enableEmbeddedInputMode {
       addSubview(phoneticArea)
@@ -203,6 +200,18 @@ public class CandidateWordsView: NibLessView {
     }
   }
 
+  override public func setupAppearance() {
+    phoneticLabel.font = style.phoneticTextFont
+    phoneticLabel.textColor = style.phoneticTextColor
+    stateImageView.tintColor = style.candidateTextColor
+    candidatesArea.setupStyle(style)
+  }
+
+  func setStyle(_ style: CandidateBarStyle) {
+    self.style = style
+    setupAppearance()
+  }
+
   func combine() {
     Task {
       // 检测是否启用内嵌编码
@@ -221,16 +230,6 @@ public class CandidateWordsView: NibLessView {
         }
         .store(in: &subscriptions)
     }
-
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
-        phoneticLabel.textColor = keyboardContext.phoneticTextColor
-        stateImageView.tintColor = keyboardContext.candidateTextColor
-      }
-      .store(in: &subscriptions)
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)

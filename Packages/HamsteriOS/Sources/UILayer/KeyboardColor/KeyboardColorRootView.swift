@@ -37,11 +37,25 @@ class KeyboardColorRootView: NibLessView {
     stack.alignment = .center
     stack.distribution = .equalCentering
     stack.spacing = 8
+    stack.translatesAutoresizingMaskIntoConstraints = false
     return stack
+  }()
+
+  lazy var segmentedControl: UISegmentedControl = {
+    let segmentedControl = UISegmentedControl(items: ["系统浅色模式", "系统深色模式"])
+    segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    segmentedControl.isHidden = !keyboardColorViewModel.enableColorSchema
+    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.addTarget(
+      keyboardColorViewModel,
+      action: #selector(keyboardColorViewModel.segmentChangeAction(sender:)),
+      for: .valueChanged)
+    return segmentedControl
   }()
 
   lazy var tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.isHidden = !keyboardColorViewModel.enableColorSchema
     tableView.register(KeyboardColorTableViewCell.self, forCellReuseIdentifier: KeyboardColorTableViewCell.identifier)
     tableView.delegate = self
@@ -53,6 +67,14 @@ class KeyboardColorRootView: NibLessView {
     return tableView
   }()
 
+  var currentStyle: UIUserInterfaceStyle {
+    segmentedControl.selectedSegmentIndex == 0 ? .light : .dark
+  }
+
+  var hasLightColorScheme: Bool {
+    segmentedControl.selectedSegmentIndex == 0
+  }
+
   // MARK: methods
 
   init(frame: CGRect = .zero, keyboardColorViewModel: KeyboardColorViewModel) {
@@ -61,43 +83,57 @@ class KeyboardColorRootView: NibLessView {
     super.init(frame: frame)
 
     setupSubview()
+    combine()
   }
 
   func setupSubview() {
     backgroundColor = .secondarySystemBackground
 
     addSubview(enableColorSchemaView)
+    addSubview(segmentedControl)
     addSubview(tableView)
-
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-    enableColorSchemaView.translatesAutoresizingMaskIntoConstraints = false
 
     NSLayoutConstraint.activate([
       enableColorSchemaView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
       enableColorSchemaView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
       enableColorSchemaView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
 
-      tableView.topAnchor.constraint(equalToSystemSpacingBelow: enableColorSchemaView.bottomAnchor, multiplier: 1.0),
+      segmentedControl.topAnchor.constraint(equalToSystemSpacingBelow: enableColorSchemaView.bottomAnchor, multiplier: 1),
+      segmentedControl.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
+      segmentedControl.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
+
+      tableView.topAnchor.constraint(equalToSystemSpacingBelow: segmentedControl.bottomAnchor, multiplier: 1),
       tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
       tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
       tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
   }
 
+  func combine() {
+    keyboardColorViewModel.segmentActionPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        keyboardColorViewModel.reloadKeyboardColorList(style: $0)
+        tableView.reloadData()
+        scrollToUseColorSchemaCell()
+      }
+      .store(in: &subscriptions)
+  }
+
+  // 初始view时，滚动到目标cell
   func scrollToUseColorSchemaCell() {
-    // 初始view时，滚动到目标cell
-    if keyboardColorViewModel.enableColorSchema {
-      let useColorSchema = keyboardColorViewModel.useColorSchema
-      let section = keyboardColorViewModel
-        .keyboardColorList
-        .firstIndex(where: { $0.schemaName == useColorSchema })
-      if let section = section {
-        let indexPath = IndexPath(row: 0, section: section)
-        // 注意：这里必须在主线程做滚动，否则不能滚动到目标cell
-        DispatchQueue.main.async { [unowned self] in
-          tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
-          tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
-        }
+    guard keyboardColorViewModel.enableColorSchema else { return }
+    let useColorSchema = hasLightColorScheme ? keyboardColorViewModel.useColorSchemaForLight : keyboardColorViewModel.useColorSchemaForDark
+
+    let section = keyboardColorViewModel.keyboardColorList
+      .firstIndex(where: { $0.schemaName == useColorSchema })
+
+    if let section = section {
+      let indexPath = IndexPath(row: 0, section: section)
+      // 注意：这里必须在主线程做滚动，否则不能滚动到目标cell
+      DispatchQueue.main.async { [unowned self] in
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        tableView.scrollToRow(at: indexPath, at: .middle, animated: true)
       }
     }
   }
@@ -105,7 +141,9 @@ class KeyboardColorRootView: NibLessView {
   @objc func colorSchemaEnableHandled(_ sender: UISwitch) {
     keyboardColorViewModel.enableColorSchema = sender.isOn
     tableView.isHidden = !sender.isOn
+    segmentedControl.isHidden = !sender.isOn
     if sender.isOn {
+      keyboardColorViewModel.reloadKeyboardColorList(style: currentStyle)
       tableView.reloadData()
       scrollToUseColorSchemaCell()
     }
@@ -140,7 +178,11 @@ extension KeyboardColorRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let keyboardColor = keyboardColorViewModel.keyboardColorList[indexPath.section]
-    keyboardColorViewModel.useColorSchema = keyboardColor.schemaName
+    if hasLightColorScheme {
+      keyboardColorViewModel.useColorSchemaForLight = keyboardColor.schemaName
+    } else {
+      keyboardColorViewModel.useColorSchemaForDark = keyboardColor.schemaName
+    }
     scrollToUseColorSchemaCell()
   }
 }

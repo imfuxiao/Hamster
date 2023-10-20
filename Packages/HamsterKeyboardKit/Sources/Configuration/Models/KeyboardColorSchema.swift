@@ -23,6 +23,24 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
   /// 对应键盘整体背景色
   public var backColor: String?
 
+  /// 按键背景色 button_back_color
+  public var buttonBackColor: String?
+
+  /// 按键按下时背景色 button_pressed_back_color
+  public var buttonPressedBackColor: String?
+
+  /// 按键文字颜色 button_front_color
+  public var buttonFrontColor: String?
+
+  /// 按键按下时文字颜色 button_pressed_front_color
+  public var buttonPressedFrontColor: String?
+
+  /// 按键上划动文字颜色
+  public var buttonSwipeFrontColor: String?
+
+  /// 按键的圆角半径 corner_radius
+  public var cornerRadius: Int?
+
   /// 边框颜色 border_color
   /// 对应键盘按键边框颜色
   public var borderColor: String?
@@ -58,11 +76,35 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
   /// 次选提示文字颜色: comment_text_color
   public var commentTextColor: String?
 
-  public init(schemaName: String? = nil, name: String? = nil, author: String? = nil, backColor: String? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
+  public init(
+    schemaName: String? = nil,
+    name: String? = nil,
+    author: String? = nil,
+    backColor: String? = nil,
+    buttonBackColor: String? = nil,
+    buttonPressedBackColor: String? = nil,
+    buttonFrontColor: String? = nil,
+    buttonPressedFrontColor: String? = nil,
+    buttonSwipeFrontColor: String? = nil,
+    borderColor: String? = nil,
+    textColor: String? = nil,
+    hilitedTextColor: String? = nil,
+    hilitedBackColor: String? = nil,
+    hilitedCandidateTextColor: String? = nil,
+    hilitedCandidateBackColor: String? = nil,
+    hilitedCommentTextColor: String? = nil,
+    candidateTextColor: String? = nil,
+    commentTextColor: String? = nil)
+  {
     self.schemaName = schemaName
     self.name = name
     self.author = author
     self.backColor = backColor
+    self.buttonBackColor = buttonBackColor
+    self.buttonPressedBackColor = buttonPressedBackColor
+    self.buttonFrontColor = buttonFrontColor
+    self.buttonPressedFrontColor = buttonPressedFrontColor
+    self.buttonSwipeFrontColor = buttonSwipeFrontColor
     self.borderColor = borderColor
     self.textColor = textColor
     self.hilitedTextColor = hilitedTextColor
@@ -81,6 +123,11 @@ extension KeyboardColorSchema {
     case author
     case schemaName
     case backColor = "back_color"
+    case buttonBackColor = "button_back_color"
+    case buttonPressedBackColor = "button_pressed_back_color"
+    case buttonFrontColor = "button_front_color"
+    case buttonPressedFrontColor = "button_pressed_front_color"
+    case buttonSwipeFrontColor = "button_swipe_front_color"
     case borderColor = "border_color"
     case textColor = "text_color"
     case hilitedTextColor = "hilited_text_color"

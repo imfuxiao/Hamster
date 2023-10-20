@@ -23,4 +23,7 @@ open class NibLessView: UIView {
 
   /// 激活视图约束
   open func activateViewConstraints() {}
+
+  /// 设置 View 样式
+  open func setupAppearance() {}
 }

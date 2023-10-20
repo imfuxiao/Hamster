@@ -16,8 +16,7 @@ class CandidateWordCell: UICollectionViewCell {
   private var keyboardColor: HamsterKeyboardColor? = nil
   private var showIndex: Bool = false
   private var showComment: Bool = false
-  private var titleFont: UIFont = KeyboardFont.title3.font
-  private var subtitleFont: UIFont = KeyboardFont.caption2.font
+  private var style: CandidateBarStyle? = nil
 
   private var candidateWidthConstraint: NSLayoutConstraint?
 
@@ -84,26 +83,17 @@ class CandidateWordCell: UICollectionViewCell {
   /// 当每次 CandidateSuggestion 发生变化时调用此方法，来更新 UI
   func updateWithCandidateSuggestion(
     _ suggestion: CandidateSuggestion,
-    color: HamsterKeyboardColor? = nil,
+    style: CandidateBarStyle? = nil,
     showIndex: Bool? = nil,
-    showComment: Bool? = nil,
-    titleFont: UIFont? = nil,
-    subtitleFont: UIFont? = nil
+    showComment: Bool? = nil
   ) {
-    self.keyboardColor = color
+    self.style = style
     if let showIndex = showIndex {
       self.showIndex = showIndex
     }
     if let showComment = showComment {
       self.showComment = showComment
     }
-    if let titleFont = titleFont {
-      self.titleFont = titleFont
-    }
-    if let subtitleFont = subtitleFont {
-      self.subtitleFont = subtitleFont
-    }
-
     guard candidateSuggestion != suggestion else { return }
     candidateSuggestion = suggestion
 
@@ -126,16 +116,15 @@ class CandidateWordCell: UICollectionViewCell {
       secondaryLabel.text = ""
     }
 
-    textLabel.font = titleFont
-    secondaryLabel.font = subtitleFont
-
-    if let keyboardColor = keyboardColor {
+    if let style = style {
+      textLabel.font = style.candidateTextFont
+      secondaryLabel.font = style.candidateCommentFont
       if state.candidateSuggestion?.isAutocomplete ?? false {
-        self.textLabel.textColor = keyboardColor.hilitedCandidateTextColor
-        self.secondaryLabel.textColor = keyboardColor.hilitedCommentTextColor
+        self.textLabel.textColor = style.preferredCandidateTextColor
+        self.secondaryLabel.textColor = style.preferredCandidateCommentTextColor
       } else {
-        self.textLabel.textColor = keyboardColor.candidateTextColor
-        self.secondaryLabel.textColor = keyboardColor.commentTextColor
+        self.textLabel.textColor = style.candidateTextColor
+        self.secondaryLabel.textColor = style.candidateCommentTextColor
       }
     }
 

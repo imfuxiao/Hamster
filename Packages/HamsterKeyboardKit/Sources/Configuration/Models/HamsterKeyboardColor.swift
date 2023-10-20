@@ -16,14 +16,20 @@ public struct HamsterKeyboardColor: Equatable {
   public var name: String
   public var author: String
 
-  public var backColor: UIColor // 窗体背景色 back_color
+  public var backColor: UIColor // 键盘背景色 back_color
+  public var buttonBackColor: UIColor // 按键背景色 button_back_color
+  public var buttonPressedBackColor: UIColor // 按键按下时背景色 button_pressed_back_color
+  public var buttonFrontColor: UIColor /// 按键文字颜色 button_front_color
+  public var buttonPressedFrontColor: UIColor /// 按键按下时文字颜色 button_pressed_front_color
+  public var buttonSwipeFrontColor: UIColor /// 按键划动文字颜色 button_swipe_front_color
+  public var cornerRadius: CGFloat // 按键的圆角半径 corner_radius
   public var borderColor: UIColor // 边框颜色 border_color
 
   // MARK: 组字区域，对应键盘候选栏的用户输入字码
 
   public var textColor: UIColor // 编码行文字颜色 24位色值，16进制，BGR顺序: text_color
-  public var hilitedTextColor: UIColor // 编码高亮: hilited_text_color
-  public var hilitedBackColor: UIColor // 编码背景高亮: hilited_back_color
+  // public var hilitedTextColor: UIColor // (暂未使用)编码高亮: hilited_text_color
+  // public var hilitedBackColor: UIColor // (暂未使用)编码背景高亮: hilited_back_color
 
   // 候选栏颜色
   public var hilitedCandidateTextColor: UIColor // 首选文字颜色: hilited_candidate_text_color
@@ -35,20 +41,30 @@ public struct HamsterKeyboardColor: Equatable {
   public var commentTextColor: UIColor // 次选提示色: comment_text_color
   // label_color 次选序号颜色
 
-  public init(colorSchema schema: KeyboardColorSchema = KeyboardColorSchema()) {
+  public init(
+    colorSchema schema: KeyboardColorSchema = KeyboardColorSchema(),
+    userInterfaceStyle: UIUserInterfaceStyle
+  ) {
+    let foregroundColor = UIColor.standardButtonForeground(for: userInterfaceStyle)
+    let backgroundColor = UIColor.standardButtonBackground(for: userInterfaceStyle)
+
     self.schemaName = schema.schemaName ?? ""
     self.name = schema.name ?? ""
     self.author = schema.author ?? ""
-    self.backColor = schema.backColor?.bgrColor ?? .clear
+    self.backColor = schema.backColor?.bgrColor ?? .clearInteractable
+    self.buttonBackColor = schema.buttonBackColor?.bgrColor ?? backgroundColor
+    self.buttonPressedBackColor = schema.buttonPressedBackColor?.bgrColor ?? .standardDarkButtonBackground(for: userInterfaceStyle)
+    self.buttonFrontColor = schema.buttonFrontColor?.bgrColor ?? foregroundColor
+    self.buttonPressedFrontColor = schema.buttonPressedFrontColor?.bgrColor ?? foregroundColor
+    self.buttonSwipeFrontColor = schema.buttonSwipeFrontColor?.bgrColor ?? .secondaryLabel
+    self.cornerRadius = CGFloat(schema.cornerRadius ?? 5)
     self.borderColor = schema.borderColor?.bgrColor ?? .clear
-    self.textColor = schema.textColor?.bgrColor ?? .label
-    self.hilitedTextColor = schema.hilitedTextColor?.bgrColor ?? .label
-    self.hilitedBackColor = schema.hilitedBackColor?.bgrColor ?? .clear
-    self.hilitedCandidateTextColor = schema.hilitedCandidateTextColor?.bgrColor ?? .label
-    self.hilitedCandidateBackColor = schema.hilitedCandidateBackColor?.bgrColor ?? .clear
-    self.hilitedCommentTextColor = schema.hilitedCommentTextColor?.bgrColor ?? .secondaryLabel
-    self.candidateTextColor = schema.candidateTextColor?.bgrColor ?? .label
-    self.commentTextColor = schema.commentTextColor?.bgrColor ?? .label
+    self.textColor = schema.textColor?.bgrColor ?? foregroundColor
+    self.hilitedCandidateTextColor = schema.hilitedCandidateTextColor?.bgrColor ?? foregroundColor
+    self.hilitedCandidateBackColor = schema.hilitedCandidateBackColor?.bgrColor ?? backgroundColor
+    self.hilitedCommentTextColor = schema.hilitedCommentTextColor?.bgrColor ?? foregroundColor
+    self.candidateTextColor = schema.candidateTextColor?.bgrColor ?? foregroundColor
+    self.commentTextColor = schema.commentTextColor?.bgrColor ?? foregroundColor
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {

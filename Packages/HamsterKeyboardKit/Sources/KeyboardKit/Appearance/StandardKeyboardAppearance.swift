@@ -43,6 +43,9 @@ import UIKit
  如果只返回新样式，所有按钮都会受到影响。有时这是你想要的，但大多数情况下可能不是。
  */
 open class StandardKeyboardAppearance: KeyboardAppearance {
+  /// 输入法配色方案缓存
+  private var cacheHamsterKeyboardColor: [UIUserInterfaceStyle: HamsterKeyboardColor?] = [:]
+
   /// The keyboard context to use.
   ///
   /// 要使用的键盘上下文。
@@ -54,7 +57,37 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 应用于整个键盘的背景样式。
   open var backgroundStyle: KeyboardBackgroundStyle {
-    .standard
+    var style = KeyboardBackgroundStyle.standard
+    // 开启键盘配色
+    if let hamsterColor = hamsterColor() {
+      style.backgroundColor = hamsterColor.backColor
+    }
+    return style
+  }
+
+  /// 非标准键盘样式
+  open var nonStandardKeyboardStyle: NonStandardKeyboardStyle {
+    let pressedBackgroundColor: UIColor = keyboardContext.hasDarkColorScheme ? .standardButtonBackground(for: keyboardContext) : .white
+    let foregroundColor = UIColor.standardButtonForeground(for: keyboardContext)
+
+    // 开启键盘配色
+    if let hamsterColor = hamsterColor() {
+      let backColor = hamsterColor.backColor
+      return NonStandardKeyboardStyle(
+        backgroundColor: backColor,
+        pressedBackgroundColor: pressedBackgroundColor,
+        foregroundColor: hamsterColor.buttonFrontColor,
+        pressedForegroundColor: foregroundColor
+      )
+    }
+
+    let backColor = UIColor.standardDarkButtonBackground(for: keyboardContext)
+    return NonStandardKeyboardStyle(
+      backgroundColor: backColor,
+      pressedBackgroundColor: pressedBackgroundColor,
+      foregroundColor: foregroundColor,
+      pressedForegroundColor: foregroundColor
+    )
   }
 
   /// The foreground color to apply to the entire keyboard.
@@ -106,28 +139,118 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
   }
 
+  /// 仓输入法配色
+  open func hamsterColor() -> HamsterKeyboardColor? {
+    guard keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
+
+    // 配色缓存
+    if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] {
+      return cacheHamsterKeyboardColor
+    }
+
+    var schemaName: String? = nil
+    if keyboardContext.hasDarkColorScheme {
+      schemaName = keyboardContext.hamsterConfig?.Keyboard?.useColorSchemaForDark
+    } else {
+      schemaName = keyboardContext.hamsterConfig?.Keyboard?.useColorSchemaForLight
+    }
+
+    guard let schema = keyboardContext.hamsterConfig?.Keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
+
+    let hamsterColor = HamsterKeyboardColor(colorSchema: schema, userInterfaceStyle: keyboardContext.colorScheme)
+    self.cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] = hamsterColor
+    return hamsterColor
+  }
+
+  /// 键盘背景色
+  open func keyboardBackgroundColor() -> UIColor {
+    // 开启键盘配色
+    if let hamsterColor = hamsterColor() {
+      return hamsterColor.backColor
+    }
+
+    return .clearInteractable
+  }
+
+  /// 默认拼写区文字大小
+  open var phoneticTextFontSize: CGFloat {
+    12
+  }
+
+  /// 候选栏样式
+  open var candidateBarStyle: CandidateBarStyle {
+    var phoneticTextFontSize: CGFloat = phoneticTextFontSize
+    if let size = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
+      phoneticTextFontSize = CGFloat(size)
+    }
+    let phoneticTextFont = UIFont.systemFont(ofSize: phoneticTextFontSize)
+
+    var candidateTextFont = KeyboardFont.title3.font
+    var candidateCommentFont = KeyboardFont.caption2.font
+
+    if let toolbarConfig = keyboardContext.hamsterConfig?.toolbar {
+      if let candidateTextFontSize = toolbarConfig.candidateWordFontSize {
+        candidateTextFont = UIFont.systemFont(ofSize: CGFloat(candidateTextFontSize))
+      }
+      if let candidateCommentFontSize = toolbarConfig.candidateCommentFontSize {
+        candidateCommentFont = UIFont.systemFont(ofSize: CGFloat(candidateCommentFontSize))
+      }
+    }
+
+    // 开启键盘配色
+    if let hamsterColor = hamsterColor() {
+      return CandidateBarStyle(
+        phoneticTextColor: hamsterColor.textColor,
+        phoneticTextFont: phoneticTextFont,
+        preferredCandidateTextColor: hamsterColor.hilitedCandidateTextColor,
+        preferredCandidateCommentTextColor: hamsterColor.hilitedCommentTextColor,
+        preferredCandidateBackgroundColor: hamsterColor.hilitedCandidateBackColor,
+        candidateTextColor: hamsterColor.candidateTextColor,
+        candidateCommentTextColor: hamsterColor.commentTextColor,
+        candidateTextFont: candidateTextFont,
+        candidateCommentFont: candidateCommentFont
+      )
+    }
+
+    let foregroundColor = UIColor.standardButtonForeground(for: keyboardContext)
+    return CandidateBarStyle(
+      phoneticTextColor: foregroundColor,
+      phoneticTextFont: phoneticTextFont,
+      preferredCandidateTextColor: foregroundColor,
+      preferredCandidateCommentTextColor: foregroundColor,
+      preferredCandidateBackgroundColor: UIColor.standardButtonBackground(for: keyboardContext),
+      candidateTextColor: foregroundColor,
+      candidateCommentTextColor: foregroundColor,
+      candidateTextFont: candidateTextFont,
+      candidateCommentFont: candidateCommentFont
+    )
+  }
+
   /// The button style to use for a certain action.
   ///
   /// 在给定的 `isPressed` 状态下，用于特定 `action` 的按键样式。
   open func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
     // 开启键盘配色
-    if let keyboardColor = keyboardContext.keyboardColor {
+    if let hamsterColor = hamsterColor() {
       return KeyboardButtonStyle(
-        backgroundColor: isPressed ? buttonBackgroundColor(for: action, isPressed: isPressed) : keyboardColor.backColor,
-        foregroundColor: isPressed ? buttonForegroundColor(for: action, isPressed: isPressed) : keyboardColor.candidateTextColor,
-        font: buttonFont(for: action),
-        cornerRadius: buttonCornerRadius(for: action),
-        border: buttonBorderStyle(for: action),
-        shadow: buttonShadowStyle(for: action))
+        backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed, hamsterColor: hamsterColor),
+        foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed, hamsterColor: hamsterColor),
+        swipeForegroundColor: buttonSwipeForegroundColor(for: action, hamsterColor: hamsterColor),
+        font: buttonFont(for: action, hamsterColor: hamsterColor),
+        cornerRadius: buttonCornerRadius(for: action, hamsterColor: hamsterColor),
+        border: buttonBorderStyle(for: action, hamsterColor: hamsterColor),
+        shadow: buttonShadowStyle(for: action, hamsterColor: hamsterColor)
+      )
     }
-
     return KeyboardButtonStyle(
       backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed),
       foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed),
+      swipeForegroundColor: UIColor.secondaryLabel,
       font: buttonFont(for: action),
       cornerRadius: buttonCornerRadius(for: action),
       border: buttonBorderStyle(for: action),
-      shadow: buttonShadowStyle(for: action))
+      shadow: buttonShadowStyle(for: action)
+    )
   }
 
   /// The button text to use for a certain action, if any.
@@ -199,17 +322,24 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     return action.buttonBackgroundColor(for: keyboardContext, isPressed: isPressed)
   }
 
+  open func buttonBackgroundColor(for action: KeyboardAction, isPressed: Bool, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    return action.buttonBackgroundColor(for: keyboardContext, isPressed: isPressed, hamsterColor: hamsterColor)
+  }
+
   /// The border style to use for a certain action.
   ///
   /// 用于特定操作的边框样式。
   open func buttonBorderStyle(for action: KeyboardAction) -> KeyboardButtonBorderStyle {
     switch action {
     case .emoji, .emojiCategory, .none: return .noBorder
-    default:
-      if let keyboardColor = keyboardContext.keyboardColor {
-        return KeyboardButtonBorderStyle(color: keyboardColor.borderColor, size: 1)
-      }
-      return .standard
+    default: return .standard
+    }
+  }
+
+  open func buttonBorderStyle(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> KeyboardButtonBorderStyle {
+    switch action {
+    case .emoji, .emojiCategory, .none: return .noBorder
+    default: return KeyboardButtonBorderStyle(color: hamsterColor.borderColor, size: 1)
     }
   }
 
@@ -220,10 +350,22 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     keyboardLayoutConfiguration.buttonCornerRadius
   }
 
+  open func buttonCornerRadius(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> CGFloat {
+    hamsterColor.cornerRadius
+  }
+
   /// The font to use for a certain action.
   ///
   /// 用于特定操作的字体。
   open func buttonFont(for action: KeyboardAction) -> KeyboardFont {
+    let size = buttonFontSize(for: action)
+    let font = KeyboardFont.system(size: size)
+    guard let weight = buttonFontWeight(for: action) else { return font }
+    return font.weight(weight)
+  }
+
+  // TODO: 自定义配置字体
+  open func buttonFont(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> KeyboardFont {
     let size = buttonFontSize(for: action)
     let font = KeyboardFont.system(size: size)
     guard let weight = buttonFontWeight(for: action) else { return font }
@@ -300,10 +442,28 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     action.buttonForegroundColor(for: keyboardContext, isPressed: isPressed)
   }
 
+  open func buttonForegroundColor(for action: KeyboardAction, isPressed: Bool, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    action.buttonForegroundColor(for: keyboardContext, isPressed: isPressed, hamsterColor: hamsterColor)
+  }
+
+  open func buttonSwipeForegroundColor(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    action.buttonSwipeForegroundColor(for: keyboardContext, hamsterColor: hamsterColor)
+  }
+
   /// The shadow style to use for a certain action.
   ///
   /// 用于特定操作的按键阴影样式。
   open func buttonShadowStyle(for action: KeyboardAction) -> KeyboardButtonShadowStyle {
+    switch action {
+    case .characterMargin: return .noShadow
+    case .emoji, .emojiCategory: return .noShadow
+    case .none: return .noShadow
+    default: return .standard
+    }
+  }
+
+  // TODO: 自定义阴影配色
+  open func buttonShadowStyle(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> KeyboardButtonShadowStyle {
     switch action {
     case .characterMargin: return .noShadow
     case .emoji, .emojiCategory: return .noShadow
@@ -331,6 +491,11 @@ extension KeyboardAction {
     return isPressed ?
       buttonBackgroundColorForPressedState(for: context) :
       buttonBackgroundColorForIdleState(for: context)
+  }
+
+  func buttonBackgroundColor(for context: KeyboardContext, isPressed: Bool = false, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    if let color = buttonBackgroundColorForAllStates { return color }
+    return isPressed ? hamsterColor.buttonPressedBackColor : hamsterColor.buttonBackColor
   }
 
   /// 按键空闲状态的背景颜色
@@ -378,6 +543,16 @@ extension KeyboardAction {
     return isPressed ?
       buttonForegroundColorForPressedState(for: context) :
       buttonForegroundColorForIdleState(for: context)
+  }
+
+  func buttonForegroundColor(for context: KeyboardContext, isPressed: Bool = false, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    if let color = buttonForegroundColorForAllStates { return color }
+    return isPressed ? hamsterColor.buttonPressedFrontColor : hamsterColor.buttonFrontColor
+  }
+
+  func buttonSwipeForegroundColor(for context: KeyboardContext, hamsterColor: HamsterKeyboardColor) -> UIColor {
+    if let color = buttonForegroundColorForAllStates { return color }
+    return hamsterColor.buttonSwipeFrontColor
   }
 
   /// 空闲状态下按键的前景色

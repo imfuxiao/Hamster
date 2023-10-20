@@ -13,6 +13,7 @@ import UIKit
 
 /// 底部行
 class BottomRowView: NibLessView {
+  private var style: NonStandardKeyboardStyle
   private let actionHandler: KeyboardActionHandler
   private let layoutProvider: KeyboardLayoutProvider
   private let keyboardContext: KeyboardContext
@@ -21,13 +22,10 @@ class BottomRowView: NibLessView {
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
-  private var userInterfaceStyle: UIUserInterfaceStyle
 
   lazy var returnButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setTitle("返回", for: .normal)
-    button.setTitleColor(keyboardContext.candidateTextColor, for: .normal)
-    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
     button.addTarget(self, action: #selector(returnKeyboardPressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(returnKeyboardReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -38,7 +36,6 @@ class BottomRowView: NibLessView {
   lazy var lockStateButton: UIButton = {
     let button = UIButton(type: .custom)
     button.setImage(UIImage(systemName: keyboardContext.classifySymbolKeyboardLockState ? "lock" : "lock.open"), for: .normal)
-    button.tintColor = keyboardContext.candidateTextColor
     button.addTarget(self, action: #selector(lockStatePressHandled(_:)), for: .touchDown)
     button.addTarget(self, action: #selector(lockStateReleaseHandled(_:)), for: .touchUpInside)
     button.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +44,6 @@ class BottomRowView: NibLessView {
 
   lazy var backspaceButton: UIButton = {
     let button = UIButton(type: .custom)
-    button.tintColor = keyboardContext.candidateTextColor
     button.setImage(UIImage(systemName: "delete.left"), for: .normal)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.tintColor = .label
@@ -57,20 +53,22 @@ class BottomRowView: NibLessView {
   }()
 
   init(
+    style: NonStandardKeyboardStyle,
     actionHandler: KeyboardActionHandler,
     layoutProvider: KeyboardLayoutProvider,
     keyboardContext: KeyboardContext
   ) {
+    self.style = style
     self.actionHandler = actionHandler
     self.layoutProvider = layoutProvider
     self.keyboardContext = keyboardContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
 
     super.init(frame: .zero)
 
     constructViewHierarchy()
     activateViewConstraints()
+    setupAppearance()
 
     combine()
   }
@@ -80,14 +78,6 @@ class BottomRowView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
         setNeedsUpdateConstraints()
-      }
-      .store(in: &subscriptions)
-
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        setNeedsLayout()
       }
       .store(in: &subscriptions)
   }
@@ -123,6 +113,18 @@ class BottomRowView: NibLessView {
     ])
   }
 
+  override func setupAppearance() {
+    returnButton.backgroundColor = style.backgroundColor
+    returnButton.setTitleColor(style.foregroundColor, for: .normal)
+    lockStateButton.tintColor = style.foregroundColor
+    backspaceButton.tintColor = style.foregroundColor
+  }
+
+  func setStyle(_ style: NonStandardKeyboardStyle) {
+    self.style = style
+    setupAppearance()
+  }
+
   override func updateConstraints() {
     super.updateConstraints()
 
@@ -133,27 +135,16 @@ class BottomRowView: NibLessView {
     returnButtonWidthConstraint = returnButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: keyboardContext.interfaceOrientation.isPortrait ? 0.2 : 0.15)
     returnButtonWidthConstraint?.isActive = true
   }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    guard userInterfaceStyle != keyboardContext.traitCollection.userInterfaceStyle else { return }
-    userInterfaceStyle = traitCollection.userInterfaceStyle
-
-    returnButton.setTitleColor(keyboardContext.candidateTextColor, for: .normal)
-    lockStateButton.tintColor = keyboardContext.candidateTextColor
-    backspaceButton.tintColor = keyboardContext.candidateTextColor
-  }
 }
 
 extension BottomRowView {
   @objc func returnKeyboardPressHandled(_ button: UIButton) {
-    button.backgroundColor = keyboardContext.symbolListHighlightedBackgroundColor
+    button.backgroundColor = style.pressedBackgroundColor
     actionHandler.handle(.press, on: .returnLastKeyboard)
   }
 
   @objc func returnKeyboardReleaseHandled(_ button: UIButton) {
-    button.backgroundColor = keyboardContext.systemButtonBackgroundColor
+    button.backgroundColor = style.backgroundColor
     actionHandler.handle(.release, on: .returnLastKeyboard)
   }
 
@@ -168,7 +159,7 @@ extension BottomRowView {
   }
 
   @objc func backspacePressHandled(_ button: UIButton) {
-    button.backgroundColor = keyboardContext.symbolListHighlightedBackgroundColor
+    button.backgroundColor = style.pressedBackgroundColor
     actionHandler.handle(.press, on: .backspace)
   }
 

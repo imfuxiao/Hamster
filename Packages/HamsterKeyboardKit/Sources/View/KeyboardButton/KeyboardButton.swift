@@ -209,7 +209,7 @@ public class KeyboardButton: UIControl {
     self.calloutContext = calloutContext
     self.appearance = appearance
     self.interfaceOrientation = keyboardContext.interfaceOrientation
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
+    self.userInterfaceStyle = keyboardContext.colorScheme
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
 
     super.init(frame: .zero)
@@ -239,8 +239,7 @@ public class KeyboardButton: UIControl {
       .sink { [unowned self] in
         guard userInterfaceStyle != $0.userInterfaceStyle else { return }
         userInterfaceStyle = $0.userInterfaceStyle
-
-        setNeedsLayout()
+        setupAppearance()
       }
       .store(in: &subscriptions)
   }
@@ -367,6 +366,8 @@ public class KeyboardButton: UIControl {
   func updateButtonStyle(isPressed: Bool) {
     // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
     let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
+
+    // 更新按钮内容的样式
     buttonContentView.style = style
 
     // 按键底部深色样式
@@ -374,6 +375,10 @@ public class KeyboardButton: UIControl {
 
     // 按钮样式
     buttonContentView.backgroundColor = style.backgroundColor
+    if let color = style.border?.color {
+      buttonContentView.layer.borderColor = color.cgColor
+      buttonContentView.layer.borderWidth = style.border?.size ?? 1
+    }
 
     if isPressed {
       underShadowView.shapeLayer.opacity = 0

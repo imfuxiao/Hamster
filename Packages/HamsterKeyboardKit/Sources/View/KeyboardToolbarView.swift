@@ -18,10 +18,13 @@ import UIKit
  2. 常用功能视图
  */
 class KeyboardToolbarView: NibLessView {
+  private let appearance: KeyboardAppearance
   private let actionHandler: KeyboardActionHandler
   private let keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
   private var subscriptions = Set<AnyCancellable>()
+  private var style: CandidateBarStyle
+  private var userInterfaceStyle: UIUserInterfaceStyle
 
   /// 常用功能项: 仓输入法App
   lazy var iconView: UIView = {
@@ -29,7 +32,6 @@ class KeyboardToolbarView: NibLessView {
     label.text = "㞢"
     label.adjustsFontSizeToFitWidth = true
     label.textAlignment = .center
-    label.textColor = keyboardContext.secondaryLabelColor
     return label
   }()
 
@@ -39,7 +41,6 @@ class KeyboardToolbarView: NibLessView {
 
     let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
     let imageView = UIImageView(image: .init(systemName: "chevron.down.square", withConfiguration: config))
-    imageView.tintColor = keyboardContext.secondaryLabelColor
     imageView.contentMode = .scaleAspectFit
     imageView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -64,17 +65,13 @@ class KeyboardToolbarView: NibLessView {
     view.distribution = .equalSpacing
     view.spacing = 0
     view.translatesAutoresizingMaskIntoConstraints = false
-
-    if !keyboardContext.enableHamsterKeyboardColor {
-      view.backgroundColor = .systemGroupedBackground
-    }
-
     return view
   }()
 
   /// 候选文字视图
-  lazy var candidateWordView: UIView = {
-    let view = CandidateWordsView(
+  lazy var candidateBarView: CandidateBarView = {
+    let view = CandidateBarView(
+      style: style,
       actionHandler: actionHandler,
       keyboardContext: keyboardContext,
       rimeContext: rimeContext
@@ -83,10 +80,14 @@ class KeyboardToolbarView: NibLessView {
     return view
   }()
 
-  init(actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+  init(appearance: KeyboardAppearance, actionHandler: KeyboardActionHandler, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
+    self.appearance = appearance
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
     self.rimeContext = rimeContext
+    // KeyboardToolbarView 为 candidateBarStyle 样式根节点, 这里生成一次，减少计算次数
+    self.style = appearance.candidateBarStyle
+    self.userInterfaceStyle = keyboardContext.colorScheme
 
     super.init(frame: .zero)
 
@@ -98,13 +99,14 @@ class KeyboardToolbarView: NibLessView {
   func setupSubview() {
     constructViewHierarchy()
     activateViewConstraints()
+    setupAppearance()
     commonFunctionBar.isHidden = true
-    candidateWordView.isHidden = true
+    candidateBarView.isHidden = true
   }
 
   override func constructViewHierarchy() {
     addSubview(commonFunctionBar)
-    addSubview(candidateWordView)
+    addSubview(candidateBarView)
   }
 
   override func activateViewConstraints() {
@@ -114,11 +116,25 @@ class KeyboardToolbarView: NibLessView {
       commonFunctionBar.leadingAnchor.constraint(equalTo: leadingAnchor),
       commonFunctionBar.trailingAnchor.constraint(equalTo: trailingAnchor),
 
-      candidateWordView.topAnchor.constraint(equalTo: topAnchor),
-      candidateWordView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      candidateWordView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      candidateWordView.trailingAnchor.constraint(equalTo: trailingAnchor),
+      candidateBarView.topAnchor.constraint(equalTo: topAnchor),
+      candidateBarView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      candidateBarView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      candidateBarView.trailingAnchor.constraint(equalTo: trailingAnchor),
     ])
+  }
+
+  override func setupAppearance() {
+    self.style = appearance.candidateBarStyle
+    candidateBarView.setStyle(style)
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      setupAppearance()
+    }
   }
 
   func combine() {
@@ -127,7 +143,7 @@ class KeyboardToolbarView: NibLessView {
         .receive(on: DispatchQueue.main)
         .sink { [unowned self] in
           let isEmpty = $0.isEmpty
-          self.candidateWordView.isHidden = isEmpty
+          self.candidateBarView.isHidden = isEmpty
         }
         .store(in: &subscriptions)
     }

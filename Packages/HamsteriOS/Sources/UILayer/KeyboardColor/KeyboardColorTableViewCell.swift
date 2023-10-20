@@ -15,7 +15,7 @@ class KeyboardColorTableViewCell: NibLessTableViewCell {
   public var keyboardColor: HamsterKeyboardColor? = nil
 
   private let keyboardColorView: KeyboardColorView = {
-    let view = KeyboardColorView(frame: .zero)
+    let view = KeyboardColorView(frame: .zero, colorSchema: .init(userInterfaceStyle: .light))
     return view
   }()
   

@@ -9,12 +9,14 @@ import UIKit
 
 /// 垂直划动符号列表
 class SymbolsVerticalView: UICollectionView {
-  typealias initDataBuilder = (UICollectionViewDiffableDataSource<Int, String>) -> Void
+  typealias InitDataBuilder = (UICollectionViewDiffableDataSource<Int, String>) -> Void
 
   // MARK: - Properties
 
+  private var style: NonStandardKeyboardStyle
   private let keyboardContext: KeyboardContext
   private let actionHandler: KeyboardActionHandler
+  private let dataBuilder: InitDataBuilder
 
   public var diffalbeDataSource: UICollectionViewDiffableDataSource<Int, String>!
 
@@ -26,27 +28,26 @@ class SymbolsVerticalView: UICollectionView {
 
   // MARK: - Initialization
 
-  init(keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler, initDataBuilder: initDataBuilder) {
+  init(style: NonStandardKeyboardStyle, keyboardContext: KeyboardContext, actionHandler: KeyboardActionHandler, dataBuilder: @escaping InitDataBuilder) {
+    self.style = style
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
       configuration.backgroundColor = .clear
-      configuration.separatorConfiguration.color = keyboardContext.enableHamsterKeyboardColor ? .systemGray : .secondarySystemBackground
+      configuration.separatorConfiguration.color = .secondarySystemFill
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       section.contentInsets = .zero
       section.interGroupSpacing = .zero
       return section
     })
+    self.dataBuilder = dataBuilder
     super.init(frame: .zero, collectionViewLayout: layout)
-
-    self.backgroundColor = keyboardContext.symbolListBackgroundColor
 
     self.diffalbeDataSource = makeDataSource()
     self.showsVerticalScrollIndicator = false
 
-    // init data
-    initDataBuilder(self.diffalbeDataSource)
+    setupAppearance()
 
     // 圆角样式
     self.layer.cornerRadius = layoutConfig.buttonCornerRadius
@@ -57,18 +58,23 @@ class SymbolsVerticalView: UICollectionView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  func setupAppearance() {
+    self.backgroundColor = style.backgroundColor
+
+    dataBuilder(self.diffalbeDataSource)
+  }
+
+  func setStyle(_ style: NonStandardKeyboardStyle) {
+    self.style = style
+
+    setupAppearance()
+  }
+
   // MARK: - Functional
 
   func symbolCellRegistration() -> UICollectionView.CellRegistration<SymbolCell, String> {
     UICollectionView.CellRegistration { [unowned self] cell, _, item in
-      cell.updateWithSymbol(
-        item,
-        highlightedColor: keyboardContext.symbolListHighlightedBackgroundColor,
-//        normalColor: keyboardContext.symbolListBackgroundColor,
-        normalColor: .clear,
-        labelHighlightColor: .label,
-        labelNormalColor: keyboardContext.candidateTextColor
-      )
+      cell.updateWithSymbol(item, style: style)
     }
   }
 

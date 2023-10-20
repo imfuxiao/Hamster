@@ -127,7 +127,7 @@ class KeyboardColorView: NibLessView {
 
   init(
     frame: CGRect = .zero,
-    colorSchema: HamsterKeyboardColor = HamsterKeyboardColor())
+    colorSchema: HamsterKeyboardColor)
   {
     self.keyboardColor = colorSchema
 
@@ -168,7 +168,7 @@ class KeyboardColorView: NibLessView {
     schemaAuthorView.text = "作者: \(keyboardColor.author)"
 
     wordLabel.textColor = keyboardColor.textColor
-    wordPinyinLabel.textColor = keyboardColor.hilitedTextColor
+    wordPinyinLabel.textColor = keyboardColor.textColor
 //    codingAreaView.backgroundColor = keyboardColor.hilitedBackColor
 
     firstWordLabel.textColor = keyboardColor.hilitedCandidateTextColor

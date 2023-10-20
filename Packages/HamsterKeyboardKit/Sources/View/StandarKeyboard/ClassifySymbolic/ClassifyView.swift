@@ -10,17 +10,16 @@ import UIKit
 
 /// 符号分类显示视图
 class ClassifyView: UICollectionView {
+  private var style: NonStandardKeyboardStyle
   private let keyboardContext: KeyboardContext
   private let viewModel: ClassifySymbolicViewModel
-
-  private var userInterfaceStyle: UIUserInterfaceStyle!
-
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, SymbolCategory>!
   private var subscriptions = Set<AnyCancellable>()
 
-  init(keyboardContext: KeyboardContext, viewModel: ClassifySymbolicViewModel) {
+  init(style: NonStandardKeyboardStyle, keyboardContext: KeyboardContext, viewModel: ClassifySymbolicViewModel) {
     self.keyboardContext = keyboardContext
     self.viewModel = viewModel
+    self.style = style
 
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
@@ -31,11 +30,10 @@ class ClassifyView: UICollectionView {
       return section
     })
 
-    self.userInterfaceStyle = keyboardContext.traitCollection.userInterfaceStyle
-
     super.init(frame: .zero, collectionViewLayout: layout)
 
-    self.backgroundColor = keyboardContext.symbolListBackgroundColor
+    setupAppearance()
+
     self.delegate = self
     self.diffableDataSource = makeDataSource()
 
@@ -52,8 +50,6 @@ class ClassifyView: UICollectionView {
       viewModel.currentCategory = .frequent
       selectItem(at: IndexPath(item: 0, section: 0), animated: false, scrollPosition: .top)
     }
-
-    combine()
   }
 
   @available(*, unavailable)
@@ -61,22 +57,18 @@ class ClassifyView: UICollectionView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func combine() {
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        setNeedsLayout()
-      }
-      .store(in: &subscriptions)
+  func setupAppearance() {
+    self.backgroundColor = style.backgroundColor
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
+  func setStyle(_ style: NonStandardKeyboardStyle) {
+    self.style = style
 
-    guard userInterfaceStyle != keyboardContext.traitCollection.userInterfaceStyle else { return }
-    userInterfaceStyle = traitCollection.userInterfaceStyle
+    setupAppearance()
+    reloadDiffableDataSource()
+  }
 
+  func reloadDiffableDataSource() {
     var snapshot = diffableDataSource.snapshot()
     snapshot.reloadSections([0])
     diffableDataSource.apply(snapshot, animatingDifferences: false)
@@ -88,11 +80,7 @@ class ClassifyView: UICollectionView {
       // cell.text = KKL10n.text(forKey: symbol.rawValue, locale: keyboardContext.locale)
       cell.updateWithSymbol(
         symbol.string,
-        highlightedColor: keyboardContext.symbolListHighlightedBackgroundColor,
-//        normalColor: keyboardContext.symbolListBackgroundColor,
-        normalColor: .clear,
-        labelHighlightColor: .label,
-        labelNormalColor: keyboardContext.candidateTextColor
+        style: style
       )
     }
 

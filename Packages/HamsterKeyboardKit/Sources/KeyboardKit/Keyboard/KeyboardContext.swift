@@ -250,8 +250,8 @@ public class KeyboardContext: ObservableObject {
 
   /// 候选区域状态
   @Published
-  public var candidatesViewState: CandidateWordsView.State = .collapse
-  public var candidatesViewStatePublished: AnyPublisher<CandidateWordsView.State, Never> {
+  public var candidatesViewState: CandidateBarView.State = .collapse
+  public var candidatesViewStatePublished: AnyPublisher<CandidateBarView.State, Never> {
     $candidatesViewState.eraseToAnyPublisher()
   }
 
@@ -529,20 +529,6 @@ private extension UIInputViewController {
 // MARK: - Hamster Configuration
 
 public extension KeyboardContext {
-  /// hamster 键盘配色
-  var hamsterKeyboardColor: HamsterKeyboardColor? {
-    if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor {
-      return cacheHamsterKeyboardColor
-    }
-
-    guard hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
-    guard let schemaName = hamsterConfig?.Keyboard?.useColorSchema else { return nil }
-    guard let schema = hamsterConfig?.Keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
-
-    self.cacheHamsterKeyboardColor = HamsterKeyboardColor(colorSchema: schema)
-    return cacheHamsterKeyboardColor
-  }
-
   /// 用户设置的键盘类型
   var selectKeyboard: KeyboardType {
     hamsterConfig?.Keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
@@ -626,75 +612,9 @@ public extension KeyboardContext {
     CGFloat(hamsterConfig?.toolbar?.heightOfCodingArea ?? 15)
   }
 
-  /// 是否开启键盘配色
-  var enableHamsterKeyboardColor: Bool {
-    hamsterConfig?.Keyboard?.enableColorSchema ?? false
-  }
-
   /// 数字九宫格符号是否直接上屏
   var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
     hamsterConfig?.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
-  }
-
-  /// Hamster 键盘配色
-  var keyboardColor: HamsterKeyboardColor? {
-    if hamsterConfig?.Keyboard?.enableColorSchema ?? false, let color = hamsterKeyboardColor {
-      return color
-    }
-    return nil
-  }
-
-  /// 背景色
-  var backgroundColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.backColor
-    }
-    return .clearInteractable
-  }
-
-  /// 暗色系统按键背景色
-  var systemButtonBackgroundColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.backColor
-    }
-    return .standardDarkButtonBackground(for: self)
-  }
-
-  /// 符号 List 背景色
-  var symbolListBackgroundColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.backColor
-    }
-    return .standardDarkButtonBackground(for: self)
-  }
-
-  /// 符号 List 按下时背景色
-  var symbolListHighlightedBackgroundColor: UIColor {
-    return hasDarkColorScheme ? .standardButtonBackground(for: self) : .white
-  }
-
-  /// 编码区拼音颜色
-  var phoneticTextColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.textColor
-    }
-    return .standardButtonForeground(for: self)
-  }
-
-  /// 候选字颜色
-  var candidateTextColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.candidateTextColor
-    }
-    return .standardButtonForeground(for: self)
-  }
-
-  /// secondaryLabel 颜色，如果开启仓配色，则取候选文字颜色
-  var secondaryLabelColor: UIColor {
-    if let keyboardColor = hamsterKeyboardColor {
-      return keyboardColor.candidateTextColor
-    }
-    return UIColor.secondaryLabel
   }
 
   /// 分类符号键盘状态

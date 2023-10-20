@@ -105,9 +105,12 @@ public struct KeyboardConfiguration: Codable, Hashable {
   /// 启用颜色方案
   public var enableColorSchema: Bool?
   
-  /// 使用中颜色方案
-  public var useColorSchema: String?
-  
+  /// 浅色模式下颜色方案
+  public var useColorSchemaForLight: String?
+
+  /// 暗色模式下颜色方案
+  public var useColorSchemaForDark: String?
+
   /// 键盘颜色方案列表
   public var colorSchemas: [KeyboardColorSchema]?
 

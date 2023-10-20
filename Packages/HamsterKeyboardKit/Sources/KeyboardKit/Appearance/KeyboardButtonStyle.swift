@@ -30,6 +30,9 @@ public struct KeyboardButtonStyle: Equatable {
    */
   public var foregroundColor: UIColor?
 
+  /// 划动显示前景颜色
+  public var swipeForegroundColor: UIColor?
+
   /**
    The font to apply to the button.
 
@@ -152,6 +155,7 @@ public struct KeyboardButtonStyle: Equatable {
   public init(
     backgroundColor: UIColor? = nil,
     foregroundColor: UIColor? = nil,
+    swipeForegroundColor: UIColor? = nil,
     font: KeyboardFont? = nil,
     cornerRadius: CGFloat? = nil,
     border: KeyboardButtonBorderStyle? = nil,
@@ -160,6 +164,7 @@ public struct KeyboardButtonStyle: Equatable {
   ) {
     self.backgroundColor = backgroundColor
     self.foregroundColor = foregroundColor
+    self.swipeForegroundColor = swipeForegroundColor
     self.font = font
     self.cornerRadius = cornerRadius
     self.borderColor = border?.color

@@ -21,9 +21,12 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
   private var keyboardContext: KeyboardContext
   private var calloutContext: KeyboardCalloutContext
   private var rimeContext: RimeContext
+  private var nonStanderStyle: NonStandardKeyboardStyle
 
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
+
+  private var userInterfaceStyle: UIUserInterfaceStyle
 
   // 键盘是否浮动
   private var isKeyboardFloating: Bool
@@ -32,9 +35,10 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
 
   private lazy var symbolsListView: SymbolsVerticalView = {
     let view = SymbolsVerticalView(
+      style: nonStanderStyle,
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
-      initDataBuilder: {
+      dataBuilder: { [unowned self] in
         var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
         snapshot.appendSections([0])
         snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
@@ -108,6 +112,8 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     self.rimeContext = rimeContext
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
+    self.nonStanderStyle = appearance.nonStandardKeyboardStyle
+    self.userInterfaceStyle = keyboardContext.colorScheme
 
     super.init(frame: .zero)
 
@@ -295,6 +301,16 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     let layoutConfig = layoutConfig
     dynamicHeightConstraints.forEach {
       $0.constant = layoutConfig.rowHeight
+    }
+  }
+
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      nonStanderStyle = appearance.nonStandardKeyboardStyle
+      symbolsListView.setStyle(nonStanderStyle)
     }
   }
 }

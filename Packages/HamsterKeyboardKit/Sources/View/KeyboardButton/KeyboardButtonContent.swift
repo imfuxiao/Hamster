@@ -17,7 +17,7 @@ public class KeyboardButtonContentView: NibLessView {
   private let appearance: KeyboardAppearance
   public var style: KeyboardButtonStyle {
     didSet {
-      setNeedsLayout()
+      setupAppearance()
       if action == .space {
         spaceContentView.style = style
       } else if let image = appearance.buttonImage(for: action) {
@@ -150,19 +150,12 @@ public class KeyboardButtonContentView: NibLessView {
 //    view.fillSuperview()
   }
 
-  func setupAppearance() {
+  override public func setupAppearance() {
     upSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    upSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+    upSwipeLabel.textColor = style.swipeForegroundColor
 
     downSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    downSwipeLabel.textColor = keyboardContext.secondaryLabelColor
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    upSwipeLabel.textColor = keyboardContext.secondaryLabelColor
-    downSwipeLabel.textColor = keyboardContext.secondaryLabelColor
+    downSwipeLabel.textColor = style.swipeForegroundColor
   }
 
   override public func constructViewHierarchy() {

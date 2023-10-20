@@ -15,6 +15,8 @@ import UIKit
  候选文字集合视图
  */
 public class CandidateWordsCollectionView: UICollectionView {
+  var style: CandidateBarStyle
+
   /// RIME 上下文
   let rimeContext: RimeContext
 
@@ -32,15 +34,17 @@ public class CandidateWordsCollectionView: UICollectionView {
   var subscriptions = Set<AnyCancellable>()
 
   /// 候选栏状态
-  var candidatesViewState: CandidateWordsView.State
+  var candidatesViewState: CandidateBarView.State
 
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, CandidateSuggestion>! = nil
 
   init(
+    style: CandidateBarStyle,
     keyboardContext: KeyboardContext,
     actionHandler: KeyboardActionHandler,
     rimeContext: RimeContext
   ) {
+    self.style = style
     self.keyboardContext = keyboardContext
     self.actionHandler = actionHandler
     self.rimeContext = rimeContext
@@ -96,24 +100,26 @@ public class CandidateWordsCollectionView: UICollectionView {
     fatalError("init(coder:) has not been implemented")
   }
 
+  func setupStyle(_ style: CandidateBarStyle) {
+    self.style = style
+
+    // 重新加载数据
+    reloadDiffableDataSource()
+  }
+
   /// 构建数据源
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, CandidateSuggestion> {
-    let keyboardColor: HamsterKeyboardColor? = keyboardContext.keyboardColor
     let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
     let showComment = toolbarConfig?.displayCommentOfCandidateWord
-    let titleFontSize = toolbarConfig?.candidateWordFontSize
-    let subtileFontSize = toolbarConfig?.candidateCommentFontSize
 
     let candidateWordCellRegistration = UICollectionView.CellRegistration<CandidateWordCell, CandidateSuggestion>
-    { cell, _, candidateSuggestion in
+    { [unowned self] cell, _, candidateSuggestion in
       cell.updateWithCandidateSuggestion(
         candidateSuggestion,
-        color: keyboardColor,
+        style: style,
         showIndex: showIndex,
-        showComment: showComment,
-        titleFont: titleFontSize != nil ? UIFont.systemFont(ofSize: CGFloat(titleFontSize!)) : nil,
-        subtitleFont: subtileFontSize != nil ? UIFont.systemFont(ofSize: CGFloat(subtileFontSize!)) : nil
+        showComment: showComment
       )
     }
 
@@ -157,7 +163,7 @@ public class CandidateWordsCollectionView: UICollectionView {
       .store(in: &subscriptions)
   }
 
-  func changeLayout(_ state: CandidateWordsView.State) {
+  func changeLayout(_ state: CandidateBarView.State) {
     if state.isCollapse() {
       setCollectionViewLayout(horizontalLayout, animated: false) { [weak self] _ in
         guard let self = self else { return }
@@ -175,6 +181,10 @@ public class CandidateWordsCollectionView: UICollectionView {
     }
 
     // 改变布局后，需要重新加载数据，否则会显示不正确(iOS 15)
+    reloadDiffableDataSource()
+  }
+
+  func reloadDiffableDataSource() {
     var snapshot = self.diffableDataSource.snapshot()
     snapshot.reloadSections([0])
     self.diffableDataSource.apply(snapshot, animatingDifferences: false)
