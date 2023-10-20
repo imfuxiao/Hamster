@@ -28,7 +28,7 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
       Logger.statistics.error("not found custom keyboard. name: \(name)")
       return KeyboardLayout(itemRows: [])
     }
-    let actions = self.actions(keyboard: keyboard, casing: casing)
+    let actions = self.actions(keyboard: keyboard, casing: casing, context: context)
     let items = self.items(for: actions, keyboard: keyboard, context: context)
     return KeyboardLayout(itemRows: items, customKeyboard: keyboard)
   }
@@ -40,7 +40,7 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
   /**
    获取自定义键盘 actions
    */
-  open func actions(keyboard: Keyboard, casing: KeyboardCase) -> KeyboardActionRows {
+  open func actions(keyboard: Keyboard, casing: KeyboardCase, context: KeyboardContext) -> KeyboardActionRows {
     return keyboard.rows
       .map {
         $0.keys.map {
@@ -55,6 +55,10 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
           }
           if case .characterMargin(let char) = $0.action {
             return .characterMargin(casing.isUppercased ? char.uppercased() : char.lowercased())
+          }
+          /// 将自定义 return 按钮还原为跟随系统环境变化
+          if $0.action == .primary(.return) {
+            return keyboardReturnAction(for: context)
           }
           return $0.action
         }
