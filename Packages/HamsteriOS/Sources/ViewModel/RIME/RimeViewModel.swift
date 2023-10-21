@@ -16,6 +16,11 @@ import UIKit
 public class RimeViewModel {
   private let rimeContext: RimeContext
 
+  private let rimeRestSubject = PassthroughSubject<() ->Void, Never>()
+  public var rimeRestPublished: AnyPublisher<()->Void, Never> {
+    rimeRestSubject.eraseToAnyPublisher()
+  }
+
   // 简繁切换键值
   public var keyValueOfSwitchSimplifiedAndTraditional: String {
     get {
@@ -88,9 +93,11 @@ public class RimeViewModel {
     textTintColor: .systemRed,
     type: .button,
     buttonAction: { [unowned self] in
-      Task {
-        await rimeRest()
-        reloadTableSubject.send(true)
+      rimeRestSubject.send { [unowned self] in
+        Task {
+          await rimeRest()
+          reloadTableSubject.send(true)
+        }
       }
     },
     favoriteButton: .rimeRest

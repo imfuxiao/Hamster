@@ -24,8 +24,8 @@ open class NibLessViewController: UIViewController {
   }
 
   /// 弹出一个确认对话框
-  public func alertConfirm(alertTitle: String, confirmTitle: String, confirmCallback: @escaping () -> Void) {
-    let optionMenu = UIAlertController(title: alertTitle, message: nil, preferredStyle: .alert)
+  public func alertConfirm(alertTitle: String, message: String? = nil, confirmTitle: String, confirmCallback: @escaping () -> Void) {
+    let optionMenu = UIAlertController(title: alertTitle, message: message, preferredStyle: .alert)
 
     let confirmAction = UIAlertAction(title: confirmTitle, style: .destructive) { _ in
       confirmCallback()
