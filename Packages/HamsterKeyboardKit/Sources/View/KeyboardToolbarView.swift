@@ -126,6 +126,7 @@ class KeyboardToolbarView: NibLessView {
   override func setupAppearance() {
     self.style = appearance.candidateBarStyle
     candidateBarView.setStyle(style)
+    // TODO: 工具栏其他 view 更新 style
   }
 
   override func layoutSubviews() {

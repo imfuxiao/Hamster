@@ -325,6 +325,9 @@ class KeyboardRootView: NibLessView {
         guard userInterfaceStyle != $0.userInterfaceStyle else { return }
         userInterfaceStyle = $0.userInterfaceStyle
         setupAppearance()
+        if keyboardContext.enableToolbar {
+          toolbarView.setNeedsLayout()
+        }
         primaryKeyboardView.setNeedsLayout()
       }
       .store(in: &subscriptions)

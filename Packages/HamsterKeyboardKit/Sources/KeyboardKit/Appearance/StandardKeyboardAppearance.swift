@@ -58,10 +58,13 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 应用于整个键盘的背景样式。
   open var backgroundStyle: KeyboardBackgroundStyle {
     var style = KeyboardBackgroundStyle.standard
+    style.backgroundColor = .clearInteractable
+
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
       style.backgroundColor = hamsterColor.backColor
     }
+
     return style
   }
 
