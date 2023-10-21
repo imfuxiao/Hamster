@@ -153,6 +153,7 @@ class KeyboardColorRootView: NibLessView {
     super.didMoveToWindow()
 
     toggle.setOn(keyboardColorViewModel.enableColorSchema, animated: false)
+    segmentedControl.isHidden = !keyboardColorViewModel.enableColorSchema
     tableView.isHidden = !keyboardColorViewModel.enableColorSchema
     scrollToUseColorSchemaCell()
   }
