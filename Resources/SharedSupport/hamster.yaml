@@ -134,7 +134,7 @@ Keyboard:
       author: 雪齋 <lyc20041@gmail.com>/Morse <morse.hsiao@gmail.com>
       back_color: 0xF0352A0A # 键盘背景色
       button_back_color: 0xF0352A0A # 按键背景色
-      button_pressed_back_color: 0xF0352A0A # 按下时按键背景色
+      button_pressed_back_color: 0x403516 # 按下时按键背景色
       button_front_color: 0x7389FF # 按键上文字颜色
       button_pressed_front_color: 0x7389FF # 按下时按键上文字颜色
       button_swipe_front_color: 0x7389FF # 按键上划动文字的颜色
@@ -151,7 +151,7 @@ Keyboard:
       author: 雪齋 <lyc20041@gmail.com>/Morse <morse.hsiao@gmail.com>
       back_color: 0xF0E5F6FB # 键盘背景色
       button_back_color: 0xF0E5F6FB # 按键背景色
-      button_pressed_back_color: 0xF0E5F6FB # 按下时按键背景色
+      button_pressed_back_color: 0xD7E8ED # 按下时按键背景色
       button_front_color: 0x595E00 # 按键上文字颜色
       button_pressed_front_color: 0x595E00 # 按下时按键上文字颜色
       button_swipe_front_color: 0x595E00 # 按键上划动文字的颜色
