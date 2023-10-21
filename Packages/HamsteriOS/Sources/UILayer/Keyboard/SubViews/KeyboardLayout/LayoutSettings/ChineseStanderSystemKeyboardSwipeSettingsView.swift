@@ -75,15 +75,11 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
   }
 
   func reloadSwipeList() {
-    guard let searchText = searchBar.text, !searchText.isEmpty else {
-      swipeListView.diffableDataSource.apply(keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource(), animatingDifferences: false)
-      return
+    var items = keyboardSettingsViewModel.chineseStanderSystemKeyboardSwipeList
+    if let searchText = searchBar.text, !searchText.isEmpty {
+      items = items
+        .filter { $0.action.labelText.uppercased().contains(searchText.uppercased()) }
     }
-
-    let items = swipeListView.diffableDataSource.snapshot(for: 0)
-      .items
-      .filter { $0.action.labelText.uppercased().contains(searchText.uppercased()) }
-
     var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
     snapshot.appendSections([0])
     snapshot.appendItems(items, toSection: 0)
