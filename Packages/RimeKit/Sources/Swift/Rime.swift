@@ -121,14 +121,7 @@ public class Rime: IRimeNotificationDelegate {
 
   public func createSession() {
     if !isRunning() {
-      initialize(traits)
       session = rimeAPI.createSession()
-      if !currentInputSchema.isEmpty {
-        _ = setSchema(currentInputSchema)
-      }
-      if !currentSimplifiedModeKey.isEmpty, simplifiedChineseMode(key: currentInputSchema) != currentSimplifiedModeValue {
-        _ = setSimplifiedChineseMode(key: currentSimplifiedModeKey, value: currentSimplifiedModeValue)
-      }
     }
   }
 
@@ -238,6 +231,7 @@ public class Rime: IRimeNotificationDelegate {
   }
 
   public func setSchema(_ schemaId: String) -> Bool {
+    createSession()
     currentInputSchema = schemaId
     return rimeAPI.selectSchema(session, andSchemaId: schemaId)
   }

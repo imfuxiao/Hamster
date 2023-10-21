@@ -26,6 +26,9 @@ class SpaceContentView: NibLessView {
   private lazy var loadingLabel: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
+    label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.2
     if keyboardContext.keyboardType.isCustom {
       label.text = item.key?.label.loadingText ?? ""
       if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton, let text = rimeContext.currentSchema?.schemaName {
@@ -109,18 +112,28 @@ class SpaceContentView: NibLessView {
   }
 
   func combine() {
-    if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-      Task {
-        await rimeContext.$currentSchema
-          .receive(on: DispatchQueue.main)
-          .sink { [weak self] in
-            guard let self = self else { return }
-            guard let schema = $0 else { return }
-            guard !keyboardContext.keyboardType.isNumber else { return }
+    Task {
+      await rimeContext.$currentSchema
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] in
+          guard let self = self else { return }
+          guard let schema = $0 else { return }
+          guard !keyboardContext.keyboardType.isNumber else { return }
+
+          if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
+            if loadingLabel.text != schema.schemaName {
+              loadingLabel.text = schema.schemaName
+              self.textView.alpha = 0
+              self.loadingLabel.alpha = 1
+              loadingAnimate()
+            }
+          }
+
+          if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
             textView.setTextValue(schema.schemaName)
           }
-          .store(in: &subscriptions)
-      }
+        }
+        .store(in: &subscriptions)
     }
   }
 
@@ -129,6 +142,10 @@ class SpaceContentView: NibLessView {
 
     guard isShowLoadingText else { return }
 
+    loadingAnimate()
+  }
+
+  func loadingAnimate() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
       guard let self = self else { return }
       UIView.animate(withDuration: 0.35) {

@@ -7,7 +7,7 @@
 
 import Foundation
 import HamsterKit
-import os
+import OSLog
 import RimeKit
 
 /// RIME 运行时上下文
@@ -108,6 +108,7 @@ public extension RimeContext {
     if firstInputSchema == nil, !selectSchemas.isEmpty {
       self.currentSchema = selectSchemas[0]
     }
+    Logger.statistics.debug("current schema: \(self.currentSchema?.schemaId ?? "") \(self.currentSchema?.schemaName ?? "")")
   }
 
   /// 选择输入方案后重置
@@ -120,12 +121,10 @@ public extension RimeContext {
 
     if self.latestSchema == nil, !schemas.isEmpty {
       self.latestSchema = schemas[0]
-      return
-    }
-
-    if let latestSchema = self.latestSchema, !schemas.contains(latestSchema) {
+    } else if let latestSchema = self.latestSchema, !schemas.contains(latestSchema) {
       self.latestSchema = schemas.isEmpty ? nil : schemas[0]
     }
+    Logger.statistics.debug("latest schema: \(self.latestSchema?.schemaId ?? "") \(self.latestSchema?.schemaName ?? "")")
   }
 
   @MainActor
