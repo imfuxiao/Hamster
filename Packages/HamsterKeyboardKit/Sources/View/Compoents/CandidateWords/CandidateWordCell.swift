@@ -13,7 +13,6 @@ import UIKit
  */
 class CandidateWordCell: UICollectionViewCell {
   private var candidateSuggestion: CandidateSuggestion? = nil
-  private var keyboardColor: HamsterKeyboardColor? = nil
   private var showIndex: Bool = false
   private var showComment: Bool = false
   private var style: CandidateBarStyle? = nil
@@ -130,9 +129,8 @@ class CandidateWordCell: UICollectionViewCell {
 
     if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted
     {
-      containerView.backgroundColor = keyboardColor?.hilitedCandidateBackColor ??
-        (traitCollection.userInterfaceStyle == .dark ? .standardButtonBackgroundForColorSchemeBug : .standardButtonBackground)
       containerView.layer.cornerRadius = 5
+      containerView.backgroundColor = style?.preferredCandidateBackgroundColor
     } else {
       containerView.backgroundColor = .clear
     }
