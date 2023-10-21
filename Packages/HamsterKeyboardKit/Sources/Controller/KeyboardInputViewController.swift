@@ -545,11 +545,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     Task {
       let handled = await rimeContext.tryHandleInputText(text)
       if !handled {
-        if !keyboardContext.keyboardType.isChinesePrimaryKeyboard(.lowercased) || !keyboardContext.keyboardType.isCustom(.lowercased) {
-          textDocumentProxy.insertText(text)
-          return
-        }
         Logger.statistics.error("try handle input text: \(text), handle false")
+        insertTextPatch(text)
+        return
       }
     }
   }
