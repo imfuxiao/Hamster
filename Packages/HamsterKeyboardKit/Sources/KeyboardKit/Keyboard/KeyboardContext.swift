@@ -592,6 +592,16 @@ public extension KeyboardContext {
     (hamsterConfig?.Keyboard?.displayButtonBubbles ?? false) && keyboardType.displayButtonBubbles
   }
 
+  /// 工具栏应用图标按钮
+  var displayAppIconButton: Bool {
+    hamsterConfig?.toolbar?.displayAppIconButton ?? false
+  }
+
+  /// 工具栏键盘 dismiss 按键
+  var displayKeyboardDismissButton: Bool {
+    hamsterConfig?.toolbar?.displayKeyboardDismissButton ?? false
+  }
+
   /// 数字九宫格符号列表
   var symbolsOfNumericNineGridKeyboard: [String] {
     hamsterConfig?.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []

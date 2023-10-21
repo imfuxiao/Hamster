@@ -252,9 +252,18 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var displayAppIconButton: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayAppIconButton ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayAppIconButton = newValue
+    }
+  }
+
   public var displayKeyboardDismissButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton ?? true
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton ?? false
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton = newValue
@@ -789,6 +798,12 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       toggleValue: { [unowned self] in enableToolbar },
       toggleHandled: { [unowned self] in
         enableToolbar = $0
+      }),
+    .init(
+      text: "显示应用图标",
+      toggleValue: { [unowned self] in displayAppIconButton },
+      toggleHandled: { [unowned self] in
+        displayAppIconButton = $0
       }),
     .init(
       text: "显示键盘收起图标",

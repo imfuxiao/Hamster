@@ -16,6 +16,9 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
   /// 工具栏高度
   public var heightOfToolbar: Int?
 
+  /// 显示应用图标按钮
+  public var displayAppIconButton: Bool?
+
   /// 显示键盘收起键
   public var displayKeyboardDismissButton: Bool?
 

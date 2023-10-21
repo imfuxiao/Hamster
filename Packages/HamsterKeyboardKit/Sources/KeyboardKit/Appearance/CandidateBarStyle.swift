@@ -36,6 +36,15 @@ public struct CandidateBarStyle: Equatable {
   /// 候选文字 Comment 字体
   public var candidateCommentFont: UIFont
 
+  /// 候选栏工具按钮文字颜色
+  public var toolbarButtonFrontColor: UIColor?
+
+  /// 候选工具栏按钮背景色
+  public var toolbarButtonBackgroundColor: UIColor?
+
+  /// 候选工具栏按钮按下时背景色
+  public var toolbarButtonPressedBackgroundColor: UIColor?
+
   init(
     phoneticTextColor: UIColor? = nil,
     phoneticTextFont: UIFont,
@@ -45,7 +54,11 @@ public struct CandidateBarStyle: Equatable {
     candidateTextColor: UIColor? = nil,
     candidateCommentTextColor: UIColor? = nil,
     candidateTextFont: UIFont,
-    candidateCommentFont: UIFont
+    candidateCommentFont: UIFont,
+    toolbarButtonFrontColor: UIColor? = nil,
+    toolbarButtonBackgroundColor: UIColor? = nil,
+    toolbarButtonPressedBackgroundColor: UIColor? = nil
+
   ) {
     self.phoneticTextColor = phoneticTextColor
     self.phoneticTextFont = phoneticTextFont
@@ -56,5 +69,8 @@ public struct CandidateBarStyle: Equatable {
     self.candidateCommentTextColor = candidateCommentTextColor
     self.candidateTextFont = candidateTextFont
     self.candidateCommentFont = candidateCommentFont
+    self.toolbarButtonFrontColor = toolbarButtonFrontColor
+    self.toolbarButtonBackgroundColor = toolbarButtonBackgroundColor
+    self.toolbarButtonPressedBackgroundColor = toolbarButtonPressedBackgroundColor
   }
 }

@@ -211,7 +211,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         candidateTextColor: hamsterColor.candidateTextColor,
         candidateCommentTextColor: hamsterColor.commentTextColor,
         candidateTextFont: candidateTextFont,
-        candidateCommentFont: candidateCommentFont
+        candidateCommentFont: candidateCommentFont,
+        toolbarButtonFrontColor: hamsterColor.buttonFrontColor,
+        toolbarButtonBackgroundColor: .clear,
+        toolbarButtonPressedBackgroundColor: hamsterColor.buttonPressedBackColor
       )
     }
 
@@ -225,7 +228,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       candidateTextColor: foregroundColor,
       candidateCommentTextColor: foregroundColor,
       candidateTextFont: candidateTextFont,
-      candidateCommentFont: candidateCommentFont
+      candidateCommentFont: candidateCommentFont,
+      toolbarButtonFrontColor: .secondaryLabel,
+      toolbarButtonBackgroundColor: .clear,
+      toolbarButtonPressedBackgroundColor: .secondarySystemFill
     )
   }
 

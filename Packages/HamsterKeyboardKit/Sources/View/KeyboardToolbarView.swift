@@ -27,44 +27,68 @@ class KeyboardToolbarView: NibLessView {
   private var userInterfaceStyle: UIUserInterfaceStyle
 
   /// 常用功能项: 仓输入法App
-  lazy var iconView: UIView = {
-    let label = UILabel(frame: .zero)
-    label.text = "㞢"
-    label.adjustsFontSizeToFitWidth = true
-    label.textAlignment = .center
-    return label
+  lazy var iconButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "r.square"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 20), scale: .large), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(openHamsterAppTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(openHamsterAppTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+
+    return button
   }()
 
-  lazy var dismissKeyboardView: UIView = {
-    let view = UIView(frame: .zero)
-    view.backgroundColor = .clearInteractable
-
-    let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .regular, scale: .default)
-    let imageView = UIImageView(image: .init(systemName: "chevron.down.square", withConfiguration: config))
-    imageView.contentMode = .scaleAspectFit
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-
-    view.addSubview(imageView)
-
-    NSLayoutConstraint.activate([
-      imageView.topAnchor.constraint(equalTo: view.topAnchor),
-      imageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-      imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      imageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    ])
-
-    view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardAction)))
-    return view
+  /// 解散键盘 Button
+  lazy var dismissKeyboardButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "arrowtriangle.down.square"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 20), scale: .large), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(dismissKeyboardTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(dismissKeyboardTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    return button
   }()
 
   // TODO: 常用功能栏
   lazy var commonFunctionBar: UIView = {
-    let view = UIStackView(arrangedSubviews: [iconView, dismissKeyboardView])
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .equalSpacing
-    view.spacing = 0
+    let view = UIView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
+
+    var constraints = [NSLayoutConstraint]()
+    if keyboardContext.displayAppIconButton {
+      view.addSubview(iconButton)
+      constraints.append(contentsOf: [
+        iconButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        iconButton.heightAnchor.constraint(equalTo: iconButton.widthAnchor),
+        iconButton.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor),
+        view.bottomAnchor.constraint(greaterThanOrEqualTo: iconButton.bottomAnchor),
+        iconButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      ])
+    }
+
+    if keyboardContext.displayKeyboardDismissButton {
+      view.addSubview(dismissKeyboardButton)
+      constraints.append(contentsOf: [
+        dismissKeyboardButton.heightAnchor.constraint(equalTo: dismissKeyboardButton.widthAnchor),
+        dismissKeyboardButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        dismissKeyboardButton.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor),
+        view.bottomAnchor.constraint(greaterThanOrEqualTo: dismissKeyboardButton.bottomAnchor),
+        dismissKeyboardButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+      ])
+    }
+
+    if !constraints.isEmpty {
+      NSLayoutConstraint.activate(constraints)
+    }
+
     return view
   }()
 
@@ -100,7 +124,7 @@ class KeyboardToolbarView: NibLessView {
     constructViewHierarchy()
     activateViewConstraints()
     setupAppearance()
-    commonFunctionBar.isHidden = true
+    commonFunctionBar.isHidden = false
     candidateBarView.isHidden = true
   }
 
@@ -127,6 +151,8 @@ class KeyboardToolbarView: NibLessView {
     self.style = appearance.candidateBarStyle
     candidateBarView.setStyle(style)
     // TODO: 工具栏其他 view 更新 style
+    iconButton.tintColor = style.toolbarButtonFrontColor
+    dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
   }
 
   override func layoutSubviews() {
@@ -145,12 +171,32 @@ class KeyboardToolbarView: NibLessView {
         .sink { [unowned self] in
           let isEmpty = $0.isEmpty
           self.candidateBarView.isHidden = isEmpty
+          self.commonFunctionBar.isHidden = !isEmpty
         }
         .store(in: &subscriptions)
     }
   }
 
-  @objc func dismissKeyboardAction() {
+  @objc func dismissKeyboardTouchDownAction() {
+    dismissKeyboardButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func dismissKeyboardTouchUpAction() {
+    dismissKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
     actionHandler.handle(.release, on: .dismissKeyboard)
+  }
+
+  @objc func openHamsterAppTouchDownAction() {
+    iconButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func openHamsterAppTouchUpAction() {
+    iconButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+    actionHandler.handle(.release, on: .url(URL(string: "hamster://"), id: "openHamster"))
+  }
+
+  @objc func touchCancel() {
+    dismissKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
+    iconButton.backgroundColor = style.toolbarButtonBackgroundColor
   }
 }

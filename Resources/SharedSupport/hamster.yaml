@@ -11,8 +11,10 @@ general:
 toolbar:
   # 是否开启工具栏
   enableToolbar: true
+  # 显示键盘 icon 按钮
+  displayAppIconButton: false
   # 显示键盘 dissmiss 按钮
-  displayKeyboardDismissButton: true
+  displayKeyboardDismissButton: false
   # 工具栏总高度
   heightOfToolbar: 55
   # 拼写区高度(剩余高度由候选文字占用)
