@@ -32,6 +32,9 @@ public enum ShortcutCommand: String, CaseIterable, Hashable, Identifiable, Codab
   case numberKeyboard = "#numberKeyboard"
   case moveLeft = "#左移"
   case moveRight = "#右移"
+  case cut = "#剪切"
+  case copy = "#复制"
+  case paste = "#粘贴"
   case none = "无"
 
   var text: String {

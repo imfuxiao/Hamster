@@ -7,6 +7,7 @@
 
 import HamsterKit
 import OSLog
+import UIKit
 
 // MARK: - 快捷指令处理
 
@@ -60,6 +61,12 @@ public extension KeyboardInputViewController {
       adjustTextPosition(byCharacterOffset: -1)
     case .moveRight:
       adjustTextPosition(byCharacterOffset: 1)
+    case .cut:
+      self.cutCommand()
+    case .copy:
+      self.copyCommand()
+    case .paste:
+      self.pasteCommand()
     default:
       break
     }
@@ -150,6 +157,28 @@ public extension KeyboardInputViewController {
   func rimeSwitcher() {
     Task {
       await rimeContext.switcher()
+    }
+  }
+
+  /// 剪切命令
+  func cutCommand() {
+    if let selectText = textDocumentProxy.selectedText {
+      UIPasteboard.general.string = selectText
+      textDocumentProxy.deleteBackward()
+    }
+  }
+
+  /// 复制命令
+  func copyCommand() {
+    if let selectText = textDocumentProxy.selectedText {
+      UIPasteboard.general.string = selectText
+    }
+  }
+
+  /// 粘贴命令
+  func pasteCommand() {
+    if let text = UIPasteboard.general.string {
+      textDocumentProxy.insertText(text)
     }
   }
 }
