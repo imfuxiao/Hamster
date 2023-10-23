@@ -102,13 +102,23 @@ class SpaceContentView: NibLessView {
     }
 
     loadingLabel.font = style.font?.font
-    loadingLabel.alpha = 1
+    loadingLabel.alpha = showLoadingTextAlphaValue
     addSubview(loadingLabel)
     loadingLabel.fillSuperview()
 
-    textView.alpha = 0
+    textView.alpha = showTextViewAlphaValue
     addSubview(textView)
     textView.fillSuperview()
+  }
+
+  var showLoadingTextAlphaValue: CGFloat {
+    guard keyboardContext.firstLoadingSpace else { return 0 }
+    return isShowLoadingText ? 1 : 0
+  }
+
+  var showTextViewAlphaValue: CGFloat {
+    guard keyboardContext.firstLoadingSpace else { return 1 }
+    return isShowLoadingText ? 0 : 1
   }
 
   func combine() {
@@ -140,9 +150,13 @@ class SpaceContentView: NibLessView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
-    guard isShowLoadingText else { return }
-
-    loadingAnimate()
+    guard let _ = window else { return }
+    if keyboardContext.firstLoadingSpace {
+      self.keyboardContext.firstLoadingSpace = false
+      if isShowLoadingText {
+        loadingAnimate()
+      }
+    }
   }
 
   func loadingAnimate() {

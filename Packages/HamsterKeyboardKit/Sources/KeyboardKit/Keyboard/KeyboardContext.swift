@@ -235,6 +235,9 @@ public class KeyboardContext: ObservableObject {
   @Published
   public var traitCollection = UITraitCollection()
 
+  /// 是否首次加载空格
+  public var firstLoadingSpace = true
+
   /**
    仓输入法配置
    */
