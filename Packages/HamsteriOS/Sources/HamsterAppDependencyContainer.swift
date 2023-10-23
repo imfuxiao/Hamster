@@ -131,7 +131,11 @@ open class HamsterAppDependencyContainer {
 extension HamsterAppDependencyContainer {
   func makeZipDocumentPickerViewController() -> UIDocumentPickerViewController {
     let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.zip])
-    vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    if let iCloudURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") {
+      vc.directoryURL = iCloudURL
+    } else {
+      vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
     return vc
   }
 }

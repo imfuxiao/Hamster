@@ -32,7 +32,11 @@ class KeyboardLayoutViewController: NibLessViewController {
 
   private lazy var documentPickerViewController: UIDocumentPickerViewController = {
     let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.yaml])
-    vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    if let iCloudURL = FileManager.default.url(forUbiquityContainerIdentifier: nil)?.appendingPathComponent("Documents") {
+      vc.directoryURL = iCloudURL
+    } else {
+      vc.directoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
     vc.delegate = self
     return vc
   }()
