@@ -76,24 +76,33 @@ public class CandidateBarView: NibLessView {
     return view
   }()
 
+  /// 竖线
+  lazy var verticalLine: UIView = {
+    let view = UIView(frame: .zero)
+    view.backgroundColor = .secondarySystemFill
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
   /// 候选区展开或收起控制按钮
   lazy var controlStateView: UIView = {
     let view = UIView(frame: .zero)
+
     view.backgroundColor = .clearInteractable
-
     view.addSubview(stateImageView)
-    stateImageView.fillSuperview()
+    view.addSubview(verticalLine)
 
-    // 添加阴影
-    let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
-    let heightOfToolbar = keyboardContext.heightOfToolbar
-    let offsetY = (heightOfToolbar - heightOfCodingArea - 30) / 2
+    NSLayoutConstraint.activate([
+      verticalLine.topAnchor.constraint(equalTo: view.topAnchor, constant: 3),
+      view.bottomAnchor.constraint(equalTo: verticalLine.bottomAnchor, constant: 3),
+      view.leadingAnchor.constraint(equalTo: verticalLine.leadingAnchor),
+      verticalLine.widthAnchor.constraint(equalToConstant: 1),
 
-    view.layer.shadowColor = UIColor.black.cgColor
-    view.layer.shadowOpacity = 0.3
-    view.layer.shadowOffset = .init(width: 0.5, height: offsetY)
-    view.layer.shadowRadius = 0.5
-    view.layer.shadowPath = UIBezierPath(rect: .init(x: 0, y: 0, width: 1, height: 30)).cgPath
+      stateImageView.leadingAnchor.constraint(equalTo: verticalLine.trailingAnchor),
+      stateImageView.topAnchor.constraint(equalTo: view.topAnchor),
+      stateImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      stateImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
 
     // 添加状态控制
     view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(changeState)))
@@ -235,7 +244,7 @@ public class CandidateBarView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] state in
         stateImageView.image = stateImage(state)
-        controlStateView.layer.shadowOpacity = state.isCollapse() ? 0.3 : 0
+        verticalLine.isHidden = state == .expand
         if let dynamicControlStateHeightConstraint = dynamicControlStateHeightConstraint {
           dynamicControlStateHeightConstraint.isActive = false
           self.dynamicControlStateHeightConstraint = controlStateHeightConstraint
