@@ -24,7 +24,7 @@ class ClassifyView: UICollectionView {
     let layout = UICollectionViewCompositionalLayout(sectionProvider: { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
       configuration.backgroundColor = .clear
-      configuration.separatorConfiguration.color = .systemGray
+      configuration.separatorConfiguration.color = .secondarySystemFill
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       section.contentInsets = .zero
       return section
