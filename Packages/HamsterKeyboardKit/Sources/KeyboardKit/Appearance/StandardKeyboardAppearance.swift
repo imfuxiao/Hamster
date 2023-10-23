@@ -80,7 +80,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         backgroundColor: backColor,
         pressedBackgroundColor: pressedBackgroundColor,
         foregroundColor: hamsterColor.buttonFrontColor,
-        pressedForegroundColor: foregroundColor
+        pressedForegroundColor: foregroundColor,
+        borderColor: hamsterColor.borderColor,
+        shadowColor: .standardButtonShadow,
+        cornerRadius: keyboardLayoutConfiguration.buttonCornerRadius
       )
     }
 
@@ -89,7 +92,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       backgroundColor: backColor,
       pressedBackgroundColor: pressedBackgroundColor,
       foregroundColor: foregroundColor,
-      pressedForegroundColor: foregroundColor
+      pressedForegroundColor: foregroundColor,
+      borderColor: .clear,
+      shadowColor: .standardButtonShadow,
+      cornerRadius: keyboardLayoutConfiguration.buttonCornerRadius
     )
   }
 

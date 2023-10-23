@@ -43,9 +43,9 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
         snapshot.appendSections([0])
         snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
         $0.apply(snapshot, animatingDifferences: false)
-      }
+      },
+      collectionDelegateBuilder: { [unowned self] in self }
     )
-    view.delegate = self
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()

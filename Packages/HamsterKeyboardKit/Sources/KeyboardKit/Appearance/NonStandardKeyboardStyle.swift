@@ -21,10 +21,30 @@ public struct NonStandardKeyboardStyle {
   /// 按下时前景色
   public var pressedForegroundColor: UIColor
 
-  init(backgroundColor: UIColor? = nil, pressedBackgroundColor: UIColor? = nil, foregroundColor: UIColor? = nil, pressedForegroundColor: UIColor) {
+  /// 边框颜色
+  public var borderColor: UIColor?
+
+  /// 底部阴影颜色
+  public var shadowColor: UIColor
+
+  /// 圆角半径
+  public var cornerRadius: CGFloat
+
+  init(
+    backgroundColor: UIColor? = nil,
+    pressedBackgroundColor: UIColor? = nil,
+    foregroundColor: UIColor? = nil,
+    pressedForegroundColor: UIColor,
+    borderColor: UIColor? = nil,
+    shadowColor: UIColor,
+    cornerRadius: CGFloat
+  ) {
     self.backgroundColor = backgroundColor
     self.pressedBackgroundColor = pressedBackgroundColor
     self.foregroundColor = foregroundColor
     self.pressedForegroundColor = pressedForegroundColor
+    self.borderColor = borderColor
+    self.shadowColor = shadowColor
+    self.cornerRadius = cornerRadius
   }
 }

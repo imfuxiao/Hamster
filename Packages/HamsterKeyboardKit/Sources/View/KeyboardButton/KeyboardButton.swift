@@ -60,6 +60,9 @@ public class KeyboardButton: UIControl {
   /// iPad 浮动模式
   var isKeyboardFloating: Bool
 
+  /// 用来缓存是否需要重新计算 UnderShape
+  var oldUnderShapeFrame: CGRect
+
   /// 按键阴影路径缓存
   var shadowPathCache = [ButtonBounds: UIBezierPath]()
 
@@ -211,6 +214,7 @@ public class KeyboardButton: UIControl {
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     self.userInterfaceStyle = keyboardContext.colorScheme
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
+    self.oldUnderShapeFrame = .zero
 
     super.init(frame: .zero)
 
@@ -308,7 +312,10 @@ public class KeyboardButton: UIControl {
     buttonContentView.layer.cornerRadius = cornerRadius
 
     // 按钮底部阴影边框
-    underShadowView.shapeLayer.path = underPath.cgPath
+    if oldUnderShapeFrame != self.underShadowView.frame, self.underShadowView.frame != .zero {
+      self.oldUnderShapeFrame = self.underShadowView.frame
+      underShadowView.shapeLayer.path = underPath.cgPath
+    }
     updateButtonStyle(isPressed: isHighlighted)
   }
 
@@ -452,67 +459,10 @@ extension KeyboardButton {
 //      return path
 //    }
 
-    let cornerRadius = cornerRadius
-    let offset: CGFloat = 1
-    let maxX: CGFloat = underShadowView.frame.width
-    let maxY: CGFloat = underShadowView.frame.height
+    let underPath = CAShapeLayer.underPath(size: underShadowView.frame.size, cornerRadius: cornerRadius)
 
-    let underPath: UIBezierPath = {
-      let path = UIBezierPath()
-
-      // 右下底部圆角起始点
-      var point = CGPoint(x: maxX, y: maxY - cornerRadius)
-      path.move(to: point)
-
-      // 右下圆角（从 0 度到 90度，顺时针）
-      path.addArc(
-        withCenter: CGPoint(x: maxX - cornerRadius, y: maxY - cornerRadius),
-        radius: cornerRadius,
-        startAngle: 0,
-        endAngle: CGFloat.pi / 2,
-        clockwise: true)
-
-      // 左下圆角起始点
-      point = CGPoint(x: cornerRadius, y: maxY)
-      path.addLine(to: point)
-
-      // 左下圆角（从 90 度到 180 度，顺时针）
-      path.addArc(
-        withCenter: CGPoint(x: cornerRadius, y: maxY - cornerRadius),
-        radius: cornerRadius,
-        startAngle: CGFloat.pi / 2,
-        endAngle: CGFloat.pi,
-        clockwise: true)
-
-      // 左下偏移点
-      point = CGPoint(x: 0, y: maxY - cornerRadius - offset)
-      path.addLine(to: point)
-
-      // 左下偏移圆角（从 180 度到 90 度，逆时针）
-      path.addArc(
-        withCenter: CGPoint(x: cornerRadius, y: maxY - cornerRadius - offset),
-        radius: cornerRadius,
-        startAngle: CGFloat.pi,
-        endAngle: CGFloat.pi / 2,
-        clockwise: false)
-
-      // 右下偏移点
-      point = CGPoint(x: maxX - cornerRadius, y: maxY - offset)
-      path.addLine(to: point)
-
-      // 右下偏移圆角（从 90 度到 0 度，逆时针）
-      path.addArc(
-        withCenter: CGPoint(x: maxX - cornerRadius, y: maxY - cornerRadius - offset),
-        radius: cornerRadius,
-        startAngle: CGFloat.pi / 2,
-        endAngle: 0,
-        clockwise: false)
-
-      path.close()
-
-      return path
-    }()
 //    underPathCache[frame] = underPath
+
     return underPath
   }
 }
