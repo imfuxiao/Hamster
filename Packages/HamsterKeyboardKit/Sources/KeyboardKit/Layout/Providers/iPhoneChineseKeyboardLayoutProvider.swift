@@ -51,8 +51,8 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
    */
   override open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemWidth {
     switch action {
-    case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
-    case .character: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
+    // case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
+    case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
     case .keyboardType(let type):
       /// 中文主键盘的最后一行第一个键

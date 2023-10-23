@@ -62,7 +62,7 @@ open class iPadChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   override open func itemSizeWidth(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext, actions: KeyboardActionRows) -> KeyboardLayoutItemWidth {
     if isLowerTrailingSwitcher(action, row: row, index: index) { return .available }
     switch action {
-    case context.keyboardDictationReplacement: return .input
+    // case context.keyboardDictationReplacement: return .input
     case .primary, .keyboardType:
       if row == 1 {
         return .available
