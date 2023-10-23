@@ -69,8 +69,8 @@ class CandidateWordCell: UICollectionViewCell {
       containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -1),
 
-      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 3),
-      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -3),
+      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
+      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
       textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5),
 
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),

@@ -238,7 +238,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     let showComment = toolbarConfig?.displayCommentOfCandidateWord ?? false
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord ?? false
 
-    let intrinsicVerticalMargin: CGFloat = 3 + 3
+    let intrinsicVerticalMargin: CGFloat = 5 + 5
     let intrinsicHorizontalMargin: CGFloat = 5 + 5
     let maxWidth: CGFloat
     if self.window?.screen.interfaceOrientation == .portrait {
