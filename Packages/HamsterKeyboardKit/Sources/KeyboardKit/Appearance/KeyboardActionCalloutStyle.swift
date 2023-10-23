@@ -6,7 +6,7 @@
 //  Copyright © 2021-2023 Daniel Saidi. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 
 /**
  This style can be applied to ``ActionCalloutView`` to customize
@@ -38,13 +38,13 @@ public struct KeyboardActionCalloutStyle: Equatable {
   /**
    The background color of the selected item.
    */
-  public var selectedBackgroundColor: Color
-    
+  public var selectedBackgroundColor: UIColor
+
   /**
    The foreground color of the selected item.
    */
-  public var selectedForegroundColor: Color
-    
+  public var selectedForegroundColor: UIColor
+
   /**
    The vertical offset to apply to the callout.
    */
@@ -71,8 +71,8 @@ public struct KeyboardActionCalloutStyle: Equatable {
     callout: KeyboardCalloutStyle = .standard,
     font: KeyboardFont = .init(.title3),
     maxButtonSize: CGSize = CGSize(width: 50, height: 50),
-    selectedBackgroundColor: Color? = nil,
-    selectedForegroundColor: Color? = nil,
+    selectedBackgroundColor: UIColor? = nil,
+    selectedForegroundColor: UIColor? = nil,
     verticalOffset: CGFloat? = nil,
     verticalTextPadding: CGFloat = 6
   ) {

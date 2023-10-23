@@ -94,4 +94,106 @@ public extension CAShapeLayer {
     }()
     return underPath
   }
+
+  /// 按键气泡路径
+  ///
+  /// @Parameter size 按键气泡尺寸
+  /// @Parameter cornerRadius 圆角半径
+  static func inputCalloutPath(size: CGSize, cornerRadius: CGFloat) -> UIBezierPath {
+    let path = UIBezierPath()
+
+    let width = size.width / 4
+
+    // 按键气泡沿 x 轴共4个点，已垂直平分线为中间点，左右两侧各两个点
+    let rightMaxX: CGFloat = size.width
+    let rightMinX: CGFloat = rightMaxX - width
+
+    let leftMinX: CGFloat = 0
+    let leftMaxX: CGFloat = width
+
+    let minY = size.height / 2
+    let maxY = size.height
+
+    // 从按键右下圆角启始点开始
+    var point = CGPoint(x: rightMinX, y: maxY - cornerRadius)
+    path.move(to: point)
+
+    // 右下圆角(0度到90度，顺时针)
+    point = CGPoint(x: rightMinX - cornerRadius, y: maxY - cornerRadius)
+    path.addArc(
+      withCenter: point,
+      radius: cornerRadius,
+      startAngle: 0,
+      endAngle: CGFloat.pi / 2,
+      clockwise: true)
+
+    // 底部横线
+    point = CGPoint(x: leftMaxX + cornerRadius, y: maxY)
+    path.addLine(to: point)
+
+    // 左下圆角
+    point = CGPoint(x: leftMaxX + cornerRadius, y: maxY - cornerRadius)
+    path.addArc(
+      withCenter: point,
+      radius: cornerRadius,
+      startAngle: CGFloat.pi / 2,
+      endAngle: CGFloat.pi,
+      clockwise: true)
+
+    // 左下竖线
+    point = CGPoint(x: leftMaxX, y: maxY - minY / 2)
+    path.addLine(to: point)
+
+    // 左侧呼出曲线
+    path.addCurve(
+      to: CGPoint(x: leftMinX, y: minY),
+      controlPoint1: CGPoint(
+        x: point.x,
+        y: minY + minY / 6),
+      controlPoint2: CGPoint(
+        x: leftMinX,
+        y: minY + minY / 3))
+
+    // 左上竖线
+    point = CGPoint(x: leftMinX, y: cornerRadius)
+    path.addLine(to: point)
+
+    // 左上圆角
+    path.addArc(
+      withCenter: CGPoint(x: leftMinX + cornerRadius, y: cornerRadius),
+      radius: cornerRadius,
+      startAngle: CGFloat.pi,
+      endAngle: CGFloat.pi / 2 * 3,
+      clockwise: true)
+
+    // 顶部横线
+    point = CGPoint(x: rightMaxX - cornerRadius, y: 0)
+    path.addLine(to: point)
+
+    // 右上圆角
+    point = CGPoint(x: rightMaxX - cornerRadius, y: 0 + cornerRadius)
+    path.addArc(
+      withCenter: point,
+      radius: cornerRadius,
+      startAngle: CGFloat.pi / 2 * 3,
+      endAngle: 0,
+      clockwise: true)
+
+    // 右上竖线
+    point = CGPoint(x: rightMaxX, y: minY)
+    path.addLine(to: point)
+
+    // 右侧曲线，与左侧曲线为对称
+    path.addCurve(
+      to: CGPoint(x: rightMinX, y: maxY - minY / 2),
+      controlPoint1: CGPoint(
+        x: point.x,
+        y: minY + minY / 3),
+      controlPoint2: CGPoint(
+        x: rightMinX,
+        y: minY + minY / 6))
+
+    path.close()
+    return path
+  }
 }

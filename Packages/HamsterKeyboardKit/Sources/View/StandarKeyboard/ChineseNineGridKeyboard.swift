@@ -58,7 +58,6 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     let container = UIView(frame: .zero)
     container.backgroundColor = .clear
     container.translatesAutoresizingMaskIntoConstraints = false
-
     container.addSubview(symbolsListView)
     NSLayoutConstraint.activate([
       symbolsListView.topAnchor.constraint(equalTo: container.topAnchor, constant: insets.top),
@@ -216,66 +215,73 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     for row in keyboardRows {
       for button in row {
         // 按键高度约束（高度包含 insets 部分）
-        var heightConstant = layoutConfig.rowHeight
-        if button.row == 2 && button.column + 1 == row.endIndex { // 第3行的最后一列是回车键，因为跨行，需要加2倍高度
-          heightConstant = layoutConfig.rowHeight * 2
+        let heightConstant = layoutConfig.rowHeight
+        if button.row == 2 && button.column + 1 == row.endIndex { // 第3行的最后一列是回车键，因为跨行，需要加2倍高度, 所以不添加高度约束
           returnButton = button
+        } else {
+          let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
+          buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
+          // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
+          buttonHeightConstraint.priority = UILayoutPriority(999)
+          dynamicHeightConstraints.append(buttonHeightConstraint)
         }
-        let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
-        buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
-        // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
-        buttonHeightConstraint.priority = UILayoutPriority(999)
-        dynamicHeightConstraints.append(buttonHeightConstraint)
 
         // 按键宽度约束
-        if button.row + 1 != keyboardRows.endIndex, button.column + 1 == row.endIndex { // 非最后一行的尾列
+        // 注意：最后一行的第一个按钮和每行最后一个按键(除最后一行)的宽度是固定的，其他按键的宽度是平分的
+        if (button.column == 0 && button.row + 1 == keyboardRows.endIndex) || (button.column + 1 == row.endIndex && button.row + 1 != keyboardRows.endIndex) {
           staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
-        } else if button.row + 1 == keyboardRows.endIndex { // 最后一行的按键宽度
-          if button.column == 0 {
-            staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
-            staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: edgeButtonWidth.percentageValue!))
-          } else if button.column + 1 == row.endIndex || button.column == 1 {
-            staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: lowerSystemButtonWidth.percentageValue!))
+        } else {
+          if button.row + 1 == keyboardRows.endIndex {
+            // 空格键不设置宽度约束
+            if button.column == 1 || button.column + 1 == row.endIndex {
+              staticConstraints.append(button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: lowerSystemButtonWidth.percentageValue!))
+            }
+          } else {
+            availableItems.append(button)
           }
-        } else {
-          availableItems.append(button)
         }
 
-        // 按键 leading
-        if button.column == 0, button.row + 1 == keyboardRows.endIndex {
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
-        } else if button.column == 0 {
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
-        } else {
-          let prevItem = keyboardRows[button.row][button.column - 1]
-          staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
-        }
-
-        // 按键 top
         if button.row == 0 {
+          // 首行添加按键相对视图的 top 约束
           staticConstraints.append(button.topAnchor.constraint(equalTo: topAnchor))
-        } else { // 其他行添加按键相对上一行按键的 top 约束
+        } else {
+          // 其他列添加相对上一行的符号约束
+          // 其他行添加按键相对上一行按键的 top 约束
           let prevRowItem = keyboardRows[button.row - 1][0]
           staticConstraints.append(button.topAnchor.constraint(equalTo: prevRowItem.bottomAnchor))
 
           // 最后一行的第一列添加相对划动符号列的 top 约束
           if button.column == 0, button.row + 1 == keyboardRows.endIndex {
             staticConstraints.append(button.topAnchor.constraint(equalTo: symbolsListContainerView.bottomAnchor))
+            staticConstraints.append(symbolsListContainerView.widthAnchor.constraint(equalTo: button.widthAnchor))
+          }
+
+          // 最后一行添加按键相对视图的 bottom 约束
+          // 倒数第二行最后一个回车键添加夸行约束
+          if (button.row + 1 == keyboardRows.endIndex) || (button.row + 2 == keyboardRows.endIndex && button.column + 1 == row.endIndex) {
+            staticConstraints.append(button.bottomAnchor.constraint(equalTo: bottomAnchor))
           }
         }
 
-        // 按键 bottom
-        if button.row + 1 == keyboardRows.endIndex {
-          staticConstraints.append(button.bottomAnchor.constraint(equalTo: bottomAnchor))
-        } else if button.row == 2, button.column + 1 == row.endIndex { // return 按键跨行特殊处理
-          staticConstraints.append(button.bottomAnchor.constraint(equalTo: bottomAnchor))
-        }
+        // 首列按键添加相对划动符号视图的 leading 约束
+        if button.column == 0, button.row + 1 == keyboardRows.endIndex {
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: leadingAnchor))
+        } else if button.column == 0 {
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: symbolsListContainerView.trailingAnchor))
+        } else {
+          // 其他列按键添加相对与前一个按键的 leading 约束
+          let prevItem = keyboardRows[button.row][button.column - 1]
+          staticConstraints.append(button.leadingAnchor.constraint(equalTo: prevItem.trailingAnchor))
 
-        // 按键 trailing
-        if button.column + 1 == row.endIndex, button.row + 1 != keyboardRows.endIndex {
-          staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
-        } else if button.column + 1 == row.endIndex, button.row + 1 == keyboardRows.endIndex, let returnButton = returnButton {
-          staticConstraints.append(button.trailingAnchor.constraint(equalTo: returnButton.leadingAnchor))
+          // 最后一列按键添加相对行的 trailing 约束
+          if button.column + 1 == row.endIndex {
+            // 最后一行最后一个键添加相对回车键的 traliing 约束
+            if button.row + 1 == keyboardRows.endIndex, let returnButton = returnButton {
+              staticConstraints.append(button.trailingAnchor.constraint(equalTo: returnButton.leadingAnchor))
+            } else {
+              staticConstraints.append(button.trailingAnchor.constraint(equalTo: trailingAnchor))
+            }
+          }
         }
       }
     }
@@ -289,9 +295,17 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     NSLayoutConstraint.activate(staticConstraints + dynamicHeightConstraints)
   }
 
-  override public func updateConstraints() {
-    super.updateConstraints()
+  override public func layoutSubviews() {
+    super.layoutSubviews()
 
+    // 样式调整
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      nonStanderStyle = appearance.nonStandardKeyboardStyle
+      symbolsListView.setStyle(nonStanderStyle)
+    }
+
+    // 行高调整
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
     isKeyboardFloating = keyboardContext.isKeyboardFloating
@@ -301,16 +315,6 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     let layoutConfig = layoutConfig
     dynamicHeightConstraints.forEach {
       $0.constant = layoutConfig.rowHeight
-    }
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    if userInterfaceStyle != keyboardContext.colorScheme {
-      userInterfaceStyle = keyboardContext.colorScheme
-      nonStanderStyle = appearance.nonStandardKeyboardStyle
-      symbolsListView.setStyle(nonStanderStyle)
     }
   }
 }

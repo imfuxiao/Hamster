@@ -49,6 +49,7 @@ public class KeyboardButtonContentView: NibLessView {
 
   private lazy var contentView: UIView = {
     let view = UIStackView(frame: .zero)
+    view.translatesAutoresizingMaskIntoConstraints = false
     view.axis = .horizontal
     view.alignment = .center
     view.distribution = .fill
@@ -111,7 +112,6 @@ public class KeyboardButtonContentView: NibLessView {
     view.alignment = .center
     view.distribution = .fillProportionally
     view.spacing = 0
-
     return view
   }()
 
@@ -141,13 +141,6 @@ public class KeyboardButtonContentView: NibLessView {
   func setupContentView() {
     constructViewHierarchy()
     activateViewConstraints()
-
-    // for test
-//    let view = UIView()
-//    view.backgroundColor = .red
-//    view.translatesAutoresizingMaskIntoConstraints = false
-//    addSubview(view)
-//    view.fillSuperview()
   }
 
   override public func setupAppearance() {
@@ -191,8 +184,6 @@ public class KeyboardButtonContentView: NibLessView {
   }
 
   override public func activateViewConstraints() {
-    contentView.translatesAutoresizingMaskIntoConstraints = false
-
     var contentConstraints = [
       contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
       contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: keyboardContext.keyboardType.isChineseNineGrid ? 0.8 : 0.6),

@@ -38,14 +38,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewDidLoad() {
     super.viewDidLoad()
-    setupInitialWidth()
-    setupLocaleObservation()
-    setupNextKeyboardBehavior()
+    // setupInitialWidth()
+    // setupLocaleObservation()
+    // setupNextKeyboardBehavior()
     setupKeyboardType()
-    KeyboardUrlOpener.shared.controller = self
-
-    setupRIME()
-    setupCombineRIMEInput()
+    // KeyboardUrlOpener.shared.controller = self
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -66,6 +63,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   override open func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 //    viewWillHandleDictationResult()
+
+    Task {
+      setupRIME()
+      setupCombineRIMEInput()
+    }
   }
 
   override open func viewDidLayoutSubviews() {
@@ -93,9 +95,8 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
    默认情况下，这将设置一个 "KeyboardRootView"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
    */
-  open func viewWillSetupKeyboard() {
-    view.subviews.forEach { $0.removeFromSuperview() }
 
+  private lazy var rootView = {
     // 设置键盘的View
     let keyboardRootView = KeyboardRootView(
       keyboardLayoutProvider: keyboardLayoutProvider,
@@ -105,15 +106,14 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       calloutContext: calloutContext,
       rimeContext: rimeContext
     )
+    return keyboardRootView
+  }()
 
-    view.addSubview(keyboardRootView)
-    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
-    view.addConstraints([
-      view.topAnchor.constraint(equalTo: keyboardRootView.topAnchor),
-      view.bottomAnchor.constraint(equalTo: keyboardRootView.bottomAnchor),
-      view.leadingAnchor.constraint(equalTo: keyboardRootView.leadingAnchor),
-      view.trailingAnchor.constraint(equalTo: keyboardRootView.trailingAnchor),
-    ])
+  open func viewWillSetupKeyboard() {
+    if rootView.superview == nil {
+      view.addSubview(rootView)
+      rootView.fillSuperview()
+    }
   }
 
   /**

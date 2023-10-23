@@ -6,7 +6,7 @@
 //  Copyright © 2021-2023 Daniel Saidi. All rights reserved.
 //
 
-import SwiftUI
+import UIKit
 
 /**
  This style can be applied to customize the appearance of an

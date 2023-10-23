@@ -69,7 +69,6 @@ let package = Package(
       ],
       linkerSettings: [
         .linkedLibrary("c++"),
-        .linkedFramework("CoreFoundation"),
       ]),
     .target(
       name: "RimeKit",

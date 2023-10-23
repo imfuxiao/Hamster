@@ -266,8 +266,8 @@ public class StanderSystemKeyboard: NibLessView {
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
-  override public func updateConstraints() {
-    super.updateConstraints()
+  override public func layoutSubviews() {
+    super.layoutSubviews()
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation

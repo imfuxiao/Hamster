@@ -6,8 +6,7 @@
 //  Copyright © 2021-2023 Daniel Saidi. All rights reserved.
 //
 
-import Foundation
-import SwiftUI
+import UIKit
 
 public extension KeyboardInputViewController {
   /**

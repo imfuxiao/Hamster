@@ -12,7 +12,7 @@ import UIKit
 
 /// 键盘键盘
 public class KeyboardButton: UIControl {
-  typealias ButtonBounds = CGRect
+  typealias ButtonBounds = CGSize
 
   // MARK: - Properties
 
@@ -47,13 +47,6 @@ public class KeyboardButton: UIControl {
   /// 呼出的上下文
   let calloutContext: KeyboardCalloutContext
 
-  /// 需要动态调整大小的约束
-  var topConstraints = [NSLayoutConstraint]()
-  var bottomConstraints = [NSLayoutConstraint]()
-  var leadingConstraints = [NSLayoutConstraint]()
-  var trailingConstraints = [NSLayoutConstraint]()
-  var underShadowViewConstraints = [NSLayoutConstraint]()
-
   /// 设备方向
   var interfaceOrientation: InterfaceOrientation
 
@@ -63,8 +56,7 @@ public class KeyboardButton: UIControl {
   /// 用来缓存是否需要重新计算 UnderShape
   var oldUnderShapeFrame: CGRect
 
-  /// 按键阴影路径缓存
-  var shadowPathCache = [ButtonBounds: UIBezierPath]()
+  var oldBounds: CGRect = .zero
 
   /// 按键 underPath 缓存
   var underPathCache = [ButtonBounds: UIBezierPath]()
@@ -122,35 +114,28 @@ public class KeyboardButton: UIControl {
 
   /// 按键内容视图
   lazy var buttonContentView: KeyboardButtonContentView = {
-    let insets = item.insets
     let contentView = KeyboardButtonContentView(
       item: item,
       style: buttonStyle,
       appearance: appearance,
       keyboardContext: keyboardContext,
       rimeContext: rimeContext)
-
-    contentView.translatesAutoresizingMaskIntoConstraints = false
     return contentView
   }()
 
-  // 按钮底部立体阴影视图
-  lazy var underShadowView: ShapeView = {
-    let view = ShapeView()
-//    view.layer.shouldRasterize = true
-//    view.layer.rasterizationScale = UIScreen.main.scale
-//    view.isOpaque = false
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+  // 按钮底部立体阴影
+  lazy var underShadowShape: CAShapeLayer = {
+    let layer = CAShapeLayer()
+    return layer
   }()
 
+  // 输入按键气泡
   lazy var inputCalloutView: InputCalloutView = {
     let view = InputCalloutView(
       calloutContext: calloutContext.input,
       keyboardContext: keyboardContext,
       style: inputCalloutStyle)
     view.isHidden = true
-    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -165,6 +150,11 @@ public class KeyboardButton: UIControl {
   /// 布局配置
   var layoutConfig: KeyboardLayoutConfiguration {
     return .standard(for: keyboardContext)
+  }
+
+  /// 按钮内容内距
+  var buttonContentInsets: UIEdgeInsets {
+    keyboardContext.isKeyboardFloating ? layoutConfig.buttonInsets : item.insets
   }
 
   /// input呼出样式
@@ -219,10 +209,6 @@ public class KeyboardButton: UIControl {
     super.init(frame: .zero)
 
     setupButtonContentView()
-    setupButtonContentConstraints()
-
-    setupUnderShadowView()
-    setupUnderShadowViewConstraints()
 
     combine()
   }
@@ -243,7 +229,7 @@ public class KeyboardButton: UIControl {
       .sink { [unowned self] in
         guard userInterfaceStyle != $0.userInterfaceStyle else { return }
         userInterfaceStyle = $0.userInterfaceStyle
-        setupAppearance()
+        updateButtonStyle(isPressed: isHighlighted)
       }
       .store(in: &subscriptions)
   }
@@ -252,121 +238,51 @@ public class KeyboardButton: UIControl {
 
   /// 设置按钮内容视图
   func setupButtonContentView() {
+    buttonContentView.layer.addSublayer(underShadowShape)
     addSubview(buttonContentView)
-  }
-
-  /// 设置按钮内容视图约束
-  func setupButtonContentConstraints() {
-    // 按钮内容约束
-    let insets = item.insets
-    buttonContentView.translatesAutoresizingMaskIntoConstraints = false
-
-    let topContentConstraint = buttonContentView.topAnchor.constraint(equalTo: topAnchor, constant: insets.top)
-    topContentConstraint.priority = .required
-    topContentConstraint.identifier = "\(row)-\(column)-top-content"
-
-    let bottomContentConstraint = bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor, constant: insets.bottom)
-    bottomContentConstraint.priority = .required
-    bottomContentConstraint.identifier = "\(row)-\(column)-bottom-content"
-
-    let leadingContentConstraint = buttonContentView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: insets.left)
-    leadingContentConstraint.priority = .required
-    bottomContentConstraint.identifier = "\(row)-\(column)-leading-content"
-
-    let trailingContentConstraint = trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor, constant: insets.right)
-    trailingContentConstraint.priority = .required
-    bottomContentConstraint.identifier = "\(row)-\(column)-trailing-content"
-
-    topConstraints.append(topContentConstraint)
-    bottomConstraints.append(bottomContentConstraint)
-    leadingConstraints.append(leadingContentConstraint)
-    trailingConstraints.append(trailingContentConstraint)
-
-    NSLayoutConstraint.activate(topConstraints + bottomConstraints + leadingConstraints + trailingConstraints)
-  }
-
-  /// 设置按钮底部阴影视图
-  func setupUnderShadowView() {
-    guard underShadowView.superview == nil else { return }
-    insertSubview(underShadowView, belowSubview: buttonContentView)
-  }
-
-  func setupUnderShadowViewConstraints() {
-    guard underShadowViewConstraints.isEmpty else { return }
-    // 底部阴影边框视图约束
-    self.underShadowViewConstraints = [
-      underShadowView.topAnchor.constraint(equalTo: buttonContentView.topAnchor),
-      underShadowView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor, constant: 1),
-      underShadowView.leadingAnchor.constraint(equalTo: buttonContentView.leadingAnchor),
-      underShadowView.trailingAnchor.constraint(equalTo: buttonContentView.trailingAnchor),
-    ]
-
-    NSLayoutConstraint.activate(underShadowViewConstraints)
-  }
-
-  /// 设置外观
-  func setupAppearance() {
-    /// spacer 类型不可见
-    alpha = isSpacer ? 0 : 1
-
-    buttonContentView.layer.cornerRadius = cornerRadius
-
-    // 按钮底部阴影边框
-    if oldUnderShapeFrame != self.underShadowView.frame, self.underShadowView.frame != .zero {
-      self.oldUnderShapeFrame = self.underShadowView.frame
-      underShadowView.shapeLayer.path = underPath.cgPath
-    }
-    updateButtonStyle(isPressed: isHighlighted)
-  }
-
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
   }
 
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    // 当添加到父视图后，添加 Input 按钮类型的 Callout 视图
-    setupInputCallout()
+    let insets = buttonContentInsets
 
-    setupAppearance()
-  }
+    if self.bounds != .zero, oldBounds != self.bounds {
+      oldBounds = self.bounds
 
-  /// 设置 inputCallout 视图
-  /// 注意: InputCallout 视图是定义在父视图中，因为 button 之间会有遮盖
-  func setupInputCallout() {
-    guard keyboardContext.displayButtonBubbles else { return }
-    guard inputCalloutView.superview == nil else { return }
-    guard let superview = superview else { return }
-    guard !superview.subviews.contains(inputCalloutView) else { return }
-    superview.addSubview(inputCalloutView)
-    NSLayoutConstraint.activate([
-      inputCalloutView.widthAnchor.constraint(equalTo: buttonContentView.widthAnchor, multiplier: 2),
-      inputCalloutView.heightAnchor.constraint(equalTo: buttonContentView.heightAnchor, multiplier: 2),
-      inputCalloutView.centerXAnchor.constraint(equalTo: buttonContentView.centerXAnchor),
-      inputCalloutView.bottomAnchor.constraint(equalTo: buttonContentView.bottomAnchor),
-    ])
-  }
+      CATransaction.begin()
+      CATransaction.setDisableActions(true)
 
-  override public func updateConstraints() {
-    super.updateConstraints()
+      /// spacer 类型不可见
+      alpha = isSpacer ? 0 : 1
 
-    updateButtonContentViewConstraints()
-  }
+      let bounds = oldBounds.inset(by: insets)
+      buttonContentView.frame = bounds
+      let style = buttonStyle
+      if let cornerRadius = style.cornerRadius {
+        underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
+        underShadowShape.fillColor = style.shadow?.color.cgColor
+        buttonContentView.layer.cornerRadius = cornerRadius
+      }
 
-  /// 更新按钮内容视图的内距
-  func updateButtonContentViewConstraints() {
-    guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
-    interfaceOrientation = keyboardContext.interfaceOrientation
-    isKeyboardFloating = keyboardContext.isKeyboardFloating
+      CATransaction.commit()
+    }
 
-    let insets = keyboardContext.isKeyboardFloating && !keyboardContext.keyboardType.isCustom ? layoutConfig.buttonInsets : item.insets
-    Logger.statistics.debug("\(self.row)-\(self.column) updateSubviewConstraints(): top: \(insets.top), bottom: \(insets.bottom), leading: \(insets.left), trailing: \(insets.right)")
-
-    topConstraints.forEach { $0.constant = insets.top }
-    bottomConstraints.forEach { $0.constant = insets.bottom }
-    leadingConstraints.forEach { $0.constant = insets.left }
-    trailingConstraints.forEach { $0.constant = insets.right }
+    // 按键气泡
+    // 注意: InputCallout 视图是定义在父视图中，因为 button 之间会有遮盖
+    if keyboardContext.displayButtonBubbles {
+      if let superview = superview, inputCalloutView.superview == nil {
+        inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
+        superview.addSubview(inputCalloutView)
+        NSLayoutConstraint.activate([
+          inputCalloutView.centerXAnchor.constraint(equalTo: centerXAnchor),
+          inputCalloutView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
+          inputCalloutView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 2, constant: -insets.left * 2 - insets.right * 2),
+          inputCalloutView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2, constant: -insets.top * 2 - insets.bottom * 2),
+        ])
+      }
+    }
+    updateButtonStyle(isPressed: isHighlighted)
   }
 
   /// 根据按下状态更新当前按钮样式
@@ -377,9 +293,6 @@ public class KeyboardButton: UIControl {
     // 更新按钮内容的样式
     buttonContentView.style = style
 
-    // 按键底部深色样式
-    underShadowView.shapeLayer.fillColor = (style.shadow?.color ?? UIColor.clear).cgColor
-
     // 按钮样式
     buttonContentView.backgroundColor = style.backgroundColor
     if let color = style.border?.color {
@@ -388,11 +301,11 @@ public class KeyboardButton: UIControl {
     }
 
     if isPressed {
-      underShadowView.shapeLayer.opacity = 0
+      underShadowShape.opacity = 0
       // TODO: 按键气泡重新调整
       showInputCallout()
     } else {
-      underShadowView.shapeLayer.opacity = 1
+      underShadowShape.opacity = 1
       hideInputCallout()
     }
   }
@@ -429,49 +342,21 @@ extension KeyboardButton {
 // MARK: - background view style
 
 extension KeyboardButton {
-  var cornerRadius: CGFloat {
-    buttonStyle.cornerRadius ?? .zero
-  }
-
-  /// 按钮阴影路径
-  var shadowPath: UIBezierPath {
-    // 缓存 Path
-//    if let path = shadowPathCache[frame] {
-//      return path
-//    }
-    let shadowSize = buttonStyle.shadow?.size ?? 1
-    let rect = CGRect(
-      x: 0,
-      y: underShadowView.bounds.height,
-      width: underShadowView.bounds.width,
-      height: shadowSize)
-    let path = UIBezierPath(
-      roundedRect: rect,
-      cornerRadius: shadowSize)
-//    shadowPathCache[frame] = path
-    return path
-  }
-
   /// 按钮底部深色样式路径
-  var underPath: UIBezierPath {
+  func calculatorUnderPath(bounds: CGSize, cornerRadius: CGFloat) -> UIBezierPath {
     // 缓存 PATH
-//    if let path = underPathCache[frame] {
-//      return path
-//    }
-
-    let underPath = CAShapeLayer.underPath(size: underShadowView.frame.size, cornerRadius: cornerRadius)
-
-//    underPathCache[frame] = underPath
-
+    if let path = underPathCache[bounds] {
+      return path
+    }
+    let underPath = CAShapeLayer.underPath(size: bounds, cornerRadius: cornerRadius)
+    underPathCache[bounds] = underPath
     return underPath
   }
 }
 
-extension CGRect: Hashable {
+extension CGSize: Hashable {
   public func hash(into hasher: inout Hasher) {
-    hasher.combine(origin.x)
-    hasher.combine(origin.y)
-    hasher.combine(size.width)
-    hasher.combine(size.height)
+    hasher.combine(width)
+    hasher.combine(height)
   }
 }
