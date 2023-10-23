@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
 
     // 通过快捷方式打开
     if let shortItem = connectionOptions.shortcutItem,
-       let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle)
+       let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle),
+       shortItemType != .none
     {
       HamsterAppDependencyContainer.shared.mainViewModel.navigationToRIME()
       HamsterAppDependencyContainer.shared.mainViewModel.execShortcutCommand(shortItemType)
@@ -56,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     mainViewController.navigationController?.popViewController(animated: false)
 
     // 通过快捷方式打开
-    if let shortItemType = ShortcutItemType(rawValue: shortcutItem.localizedTitle) {
+    if let shortItemType = ShortcutItemType(rawValue: shortcutItem.localizedTitle), shortItemType != .none {
       HamsterAppDependencyContainer.shared.mainViewModel.navigationToRIME()
       HamsterAppDependencyContainer.shared.mainViewModel.execShortcutCommand(shortItemType)
     }
