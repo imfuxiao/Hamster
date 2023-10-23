@@ -61,7 +61,7 @@ public class CandidateWordsCollectionView: UICollectionView {
       let section = NSCollectionLayoutSection(group: group)
       // 控制水平方向 item 之间间距
       // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
-      section.interGroupSpacing = 0
+      section.interGroupSpacing = 8
       section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
       // 控制垂直方向距拼写区的间距
       // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去

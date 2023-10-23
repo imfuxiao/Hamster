@@ -18,7 +18,7 @@ toolbar:
   # 工具栏总高度
   heightOfToolbar: 50
   # 拼写区高度(剩余高度由候选文字占用)
-  heightOfCodingArea: 15
+  heightOfCodingArea: 10
   # 拼写区字体大小
   codingAreaFontSize: 12
   # 候选文字字体大小

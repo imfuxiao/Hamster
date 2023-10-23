@@ -63,6 +63,7 @@ public class CandidateBarView: NibLessView {
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
       rimeContext: rimeContext)
+    view.backgroundColor = .clearInteractable
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
