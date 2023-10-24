@@ -64,17 +64,17 @@ class CandidateWordCell: UICollectionViewCell {
     containerView.addSubview(textLabel)
     containerView.addSubview(secondaryLabel)
     NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 3),
+      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
       containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
       containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -1),
 
-      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 5),
-      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5),
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 5),
+      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2),
+      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2),
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
 
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -5),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
       secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
     ])
   }
