@@ -55,7 +55,7 @@ public struct Keyboard: Codable, Hashable {
     try container.encode(self.name, forKey: .name)
     try container.encode(self.rows, forKey: .rows)
     if let rowHeight = self.rowHeight {
-      try container.encode(String(Double(rowHeight)), forKey: .rowHeight)
+      try container.encode(rowHeight, forKey: .rowHeight)
     }
     if let buttonInsets = self.buttonInsets {
       try container.encode(buttonInsets.yamlString, forKey: .buttonInsets)
