@@ -646,9 +646,9 @@ keyboards:
               landscape: percentage(0.195)
   - name: "大千注音"
     buttonInsets: left(2),right(2),top(4),bottom(4)
+    rowHeight: 43.2
     rows:
-      - rowHeight: 43.2
-        keys:
+      - keys:
           - action: character(1)
             label: "ㄅ"
             swipe:
@@ -715,8 +715,7 @@ keyboards:
               - direction: up
                 action: character(-)
                 display: true
-      - rowHeight: 43.2
-        keys:
+      - keys:
           - action: characterMargin(q)
             width: available
           - action: character(q)
@@ -741,8 +740,7 @@ keyboards:
             label: "ㄣ"
           - action: characterMargin(p)
             width: available
-      - rowHeight: 43.2
-        keys:
+      - keys:
           - action: characterMargin(a)
             width: available
           - action: character(a)
@@ -767,8 +765,7 @@ keyboards:
             label: "ㄤ"
           - action: characterMargin(;)
             width: available
-      - rowHeight: 43.2
-        keys:
+      - keys:
           - action: character(z)
             label: "ㄈ"
           - action: character(x)
