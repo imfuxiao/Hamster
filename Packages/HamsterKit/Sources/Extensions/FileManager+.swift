@@ -168,14 +168,24 @@ public extension FileManager {
       throw "读取Zip文件异常"
     }
 
-    // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
-    guard let _ = archive.filter({ $0.path.contains("schema.yaml") }).first else {
-      throw "Zip文件未包含输入方案文件"
+    // 解压缩文件，已存在文件先删除在解压
+    for entry in archive {
+      let destinationEntryURL = dst.appendingPathComponent(entry.path)
+      if fileExists(atPath: destinationEntryURL.path) {
+        try removeItem(at: destinationEntryURL)
+      }
+      _ = try archive.extract(entry, to: destinationEntryURL, skipCRC32: true)
     }
 
+    // 不在判断是否包含 schema 文件
+    // 查找解压的文件夹里有没有名字包含schema.yaml 的文件
+    // guard let _ = archive.filter({ $0.path.contains("schema.yaml") }).first else {
+    //  throw "Zip文件未包含输入方案文件"
+    // }
+
     // 解压前先删除原Rime目录
-    try removeItem(at: dst)
-    try unzipItem(at: tempURL, to: dst)
+    // try removeItem(at: dst)
+    // try unzipItem(at: tempURL, to: dst)
   }
 }
 
