@@ -22,7 +22,7 @@ toolbar:
   # 拼写区字体大小
   codingAreaFontSize: 12
   # 候选文字字体大小
-  candidateWordFontSize: 20
+  candidateWordFontSize: 18
   # 候选文字备注信息字体大小。
   # 对应 rime 候选字的 comment 信息
   candidateCommentFontSize: 12
