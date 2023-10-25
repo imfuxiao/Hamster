@@ -75,9 +75,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
-      let backColor = hamsterColor.backColor
       return NonStandardKeyboardStyle(
-        backgroundColor: backColor,
+        backgroundColor: hamsterColor.buttonBackColor,
         pressedBackgroundColor: pressedBackgroundColor,
         foregroundColor: hamsterColor.buttonFrontColor,
         pressedForegroundColor: foregroundColor,
