@@ -44,6 +44,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
         Task {
           await HamsterAppDependencyContainer.shared.inputSchemaViewModel.importZipFile(fileURL: url)
         }
+        return
+      }
+
+      // url.query(): 获取 `URL` 查询参数
+      // url.lastPathComponent 获取 `URL` 中 `/a/b` 中最后一个 b
+      let components = url.lastPathComponent
+      if let subView = SettingsSubView(rawValue: components) {
+        HamsterAppDependencyContainer.shared.mainViewModel.navigation(subView)
       }
     }
   }

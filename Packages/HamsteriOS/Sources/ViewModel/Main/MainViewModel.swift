@@ -28,4 +28,8 @@ public class MainViewModel: ObservableObject {
   public func execShortcutCommand(_ shortItemType: ShortcutItemType) {
     shortcutItemType = shortItemType
   }
+
+  public func navigation(_ subView: SettingsSubView) {
+    self.subView = subView
+  }
 }

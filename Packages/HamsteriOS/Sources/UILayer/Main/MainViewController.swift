@@ -159,9 +159,16 @@ extension MainViewController {
       presentAppleCloudViewController()
     case .about:
       presentAboutViewController()
+    case .main:
+      presentMainViewController()
     default:
       return
     }
+  }
+
+  func presentMainViewController() {
+    secondaryNavigationViewController.popToRootViewController(animated: false)
+    show(.primary)
   }
 
   func presentInputSchemaViewController() {

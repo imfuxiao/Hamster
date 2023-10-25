@@ -8,7 +8,7 @@
 import Foundation
 
 /// 主页设置子页面
-public enum SettingsSubView {
+public enum SettingsSubView: String {
   /// 输入方案页面
   case inputSchema
   
@@ -38,7 +38,11 @@ public enum SettingsSubView {
   
   /// 关于页面
   case about
-  
+
+  /// 主页面
+  case main
+
+
   /// 空页面
   case none
 }
