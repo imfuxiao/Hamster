@@ -17,15 +17,17 @@ class CandidateWordCell: UICollectionViewCell {
   private var showComment: Bool = false
   private var style: CandidateBarStyle? = nil
 
-  private var candidateWidthConstraint: NSLayoutConstraint?
+  private var textLabelCenterXContainer: NSLayoutConstraint?
 
   public lazy var textLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
 //    label.adjustsFontSizeToFitWidth = true
-//    label.minimumScaleFactor = 0.5
-//    label.lineBreakMode = .byClipping
+//    label.minimumScaleFactor = 0.8
+    label.lineBreakMode = .byTruncatingTail
+//    label.setContentHuggingPriority(.defaultLow, for: .horizontal)
+    label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     return label
   }()
 
@@ -34,14 +36,64 @@ class CandidateWordCell: UICollectionViewCell {
     label.textAlignment = .center
     label.numberOfLines = 1
 //    label.adjustsFontSizeToFitWidth = true
-//    label.minimumScaleFactor = 0.5
+//    label.minimumScaleFactor = 0.8
 //    label.lineBreakMode = .byClipping
+    label.lineBreakMode = .byTruncatingTail
+//    label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     return label
   }()
 
+//  private lazy var containerView: UIView = {
+//    let stackView = UIStackView(arrangedSubviews: [textLabel, secondaryLabel])
+//    stackView.axis = .horizontal
+//    stackView.alignment = .firstBaseline
+//    stackView.distribution = .fill
+//    stackView.spacing = 0
+//
+//    let centerView = UIStackView(arrangedSubviews: [stackView])
+//    centerView.axis = .horizontal
+//    centerView.alignment = .center
+//    centerView.distribution = .equalSpacing
+//    centerView.spacing = 0
+  ////    centerView.isLayoutMarginsRelativeArrangement = true
+  ////    centerView.layoutMargins = .horizontal(8, vertical: 6)
+//    return centerView
+//  }()
+
   private lazy var containerView: UIView = {
-    let view = UIView(frame: .zero)
-    return view
+    let containerView = UIView(frame: .zero)
+
+    containerView.addSubview(textLabel)
+    containerView.addSubview(secondaryLabel)
+
+    containerView.translatesAutoresizingMaskIntoConstraints = false
+    textLabel.translatesAutoresizingMaskIntoConstraints = false
+    secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
+
+    textLabelCenterXContainer = textLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
+    textLabelCenterXContainer?.priority = .required
+
+    NSLayoutConstraint.activate([
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
+      secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -6),
+
+      textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+      secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
+
+      textLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 1),
+      secondaryLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 1),
+
+      textLabelCenterXContainer!,
+    ])
+
+    let stackView = UIStackView(arrangedSubviews: [containerView])
+    stackView.axis = .horizontal
+    stackView.alignment = .center
+    stackView.distribution = .fill
+    stackView.spacing = 0
+    return stackView
   }()
 
   override init(frame: CGRect) {
@@ -56,26 +108,21 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   func setupView() {
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    textLabel.translatesAutoresizingMaskIntoConstraints = false
-    secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
-
+//    containerView.translatesAutoresizingMaskIntoConstraints = false
+//    contentView.addSubview(containerView)
+//    NSLayoutConstraint.activate([
+//      containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+//      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+//      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//    ])
     contentView.addSubview(containerView)
-    containerView.addSubview(textLabel)
-    containerView.addSubview(secondaryLabel)
+    containerView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 6),
-      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -1),
-
-      textLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 2),
-      textLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -2),
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 8),
-
-      secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -8),
-      secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
+      containerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+      containerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      containerView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+      containerView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
     ])
   }
 
@@ -114,6 +161,8 @@ class CandidateWordCell: UICollectionViewCell {
     } else {
       secondaryLabel.text = ""
     }
+
+    textLabelCenterXContainer?.isActive = secondaryLabel.text?.isEmpty ?? true
 
     if let style = style {
       textLabel.font = style.candidateTextFont

@@ -171,11 +171,11 @@ public class CandidateBarView: NibLessView {
 
     let phoneticAreaLeadingConstraint = phoneticArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left)
     phoneticAreaLeadingConstraint.identifier = "phoneticAreaLeadingConstraint"
-    phoneticAreaLeadingConstraint.priority = .defaultHigh
+    phoneticAreaLeadingConstraint.priority = .required
 
     let candidatesAreaLeadingConstraint = candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left)
     candidatesAreaLeadingConstraint.identifier = "candidatesAreaLeadingConstraint"
-    candidatesAreaLeadingConstraint.priority = .defaultHigh
+    candidatesAreaLeadingConstraint.priority = .required
 
     /// 内嵌模式
     if keyboardContext.enableEmbeddedInputMode {
