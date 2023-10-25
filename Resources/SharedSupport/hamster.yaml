@@ -32,7 +32,7 @@ toolbar:
   displayCommentOfCandidateWord: false
 
 # 键盘相关配置
-Keyboard:
+keyboard:
   # 使用键盘类型:
   # chinese: 中文26键
   # chineseNineGrid: 中文九宫格
