@@ -855,6 +855,10 @@ private extension KeyboardInputViewController {
         }
       }
 
+      if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
+        await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+      }
+
       await rimeContext.start(hasFullAccess: hasFullAccess)
       let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)

@@ -12,6 +12,9 @@ import RimeKit
 
 /// RIME 运行时上下文
 public actor RimeContext: ObservableObject {
+  /// 最大候选词数量
+  public private(set) var maximumNumberOfCandidateWords: Int = 100
+
   /// rime 输入方案列表
   @Published @MainActor
   public private(set) var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
@@ -79,6 +82,10 @@ public actor RimeContext: ObservableObject {
   public var hotKeys = ["f4"]
 
   public init() {}
+
+  func setMaximumNumberOfCandidateWords(_ count: Int) {
+    self.maximumNumberOfCandidateWords = count
+  }
 }
 
 // MARK: methods
@@ -509,7 +516,7 @@ public extension RimeContext {
     let context = Rime.shared.context()
     let userInputText = context.composition?.preedit ?? ""
     let commitText = Rime.shared.getCommitText()
-    let candidates = self.candidateListLimit()
+    let candidates = self.candidateListLimit(maximumNumberOfCandidateWords)
 
     Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
 
