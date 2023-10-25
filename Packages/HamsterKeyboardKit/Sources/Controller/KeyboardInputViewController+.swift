@@ -195,7 +195,7 @@ public extension KeyboardInputViewController {
       let beforeInput = self.textDocumentProxy.documentContextBeforeInput ?? ""
       let afterInput = self.textDocumentProxy.documentContextAfterInput ?? ""
       // 光标可以居中的符号，成对删除
-      let symbols = self.hamsterConfiguration?.Keyboard?.symbolsOfCursorBack ?? []
+      let symbols = self.hamsterConfiguration?.keyboard?.symbolsOfCursorBack ?? []
       if symbols.contains(String(beforeInput.suffix(1) + afterInput.prefix(1))) {
         self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
         self.textDocumentProxy.deleteBackward(times: 2)

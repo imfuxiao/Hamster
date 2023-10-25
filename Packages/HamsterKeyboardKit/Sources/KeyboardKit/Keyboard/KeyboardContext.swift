@@ -534,55 +534,55 @@ private extension UIInputViewController {
 public extension KeyboardContext {
   /// 用户设置的键盘类型
   var selectKeyboard: KeyboardType {
-    hamsterConfig?.Keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
+    hamsterConfig?.keyboard?.useKeyboardType?.keyboardType ?? .chinese(.lowercased)
   }
 
   /// 是否启用分号键
   var displaySemicolonButton: Bool {
-    hamsterConfig?.Keyboard?.displaySemicolonButton ?? false
+    hamsterConfig?.keyboard?.displaySemicolonButton ?? false
   }
 
   /// 是否启用分类符号按键
   var displayClassifySymbolButton: Bool {
-    hamsterConfig?.Keyboard?.displayClassifySymbolButton ?? true
+    hamsterConfig?.keyboard?.displayClassifySymbolButton ?? true
   }
 
   /// 是否启用中英切换键
   var displayChineseEnglishSwitchButton: Bool {
-    hamsterConfig?.Keyboard?.displayChineseEnglishSwitchButton ?? true
+    hamsterConfig?.keyboard?.displayChineseEnglishSwitchButton ?? true
   }
 
   /// 空格左侧自定义按键
   var displaySpaceLeftButton: Bool {
-    hamsterConfig?.Keyboard?.displaySpaceLeftButton ?? false
+    hamsterConfig?.keyboard?.displaySpaceLeftButton ?? false
   }
 
   var spaceLeftButtonProcessByRIME: Bool {
-    hamsterConfig?.Keyboard?.spaceLeftButtonProcessByRIME ?? true
+    hamsterConfig?.keyboard?.spaceLeftButtonProcessByRIME ?? true
   }
 
   /// 空格左侧按键键值
   var keyValueOfSpaceLeftButton: String {
-    hamsterConfig?.Keyboard?.keyValueOfSpaceLeftButton ?? ""
+    hamsterConfig?.keyboard?.keyValueOfSpaceLeftButton ?? ""
   }
 
   /// 空格右侧自定义按键
   var displaySpaceRightButton: Bool {
-    hamsterConfig?.Keyboard?.displaySpaceRightButton ?? false
+    hamsterConfig?.keyboard?.displaySpaceRightButton ?? false
   }
 
   var spaceRightButtonProcessByRIME: Bool {
-    hamsterConfig?.Keyboard?.spaceRightButtonProcessByRIME ?? true
+    hamsterConfig?.keyboard?.spaceRightButtonProcessByRIME ?? true
   }
 
   /// 空格右侧按键键值
   var keyValueOfSpaceRightButton: String {
-    hamsterConfig?.Keyboard?.keyValueOfSpaceRightButton ?? ""
+    hamsterConfig?.keyboard?.keyValueOfSpaceRightButton ?? ""
   }
 
   /// 中英切换键是否位于空格左侧
   var chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool {
-    hamsterConfig?.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? true
+    hamsterConfig?.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? true
   }
 
   /// 是否开启工具栏
@@ -592,7 +592,7 @@ public extension KeyboardContext {
 
   /// 是否开启按键气泡
   var displayButtonBubbles: Bool {
-    (hamsterConfig?.Keyboard?.displayButtonBubbles ?? false) && keyboardType.displayButtonBubbles
+    (hamsterConfig?.keyboard?.displayButtonBubbles ?? false) && keyboardType.displayButtonBubbles
   }
 
   /// 工具栏应用图标按钮
@@ -607,12 +607,12 @@ public extension KeyboardContext {
 
   /// 数字九宫格符号列表
   var symbolsOfNumericNineGridKeyboard: [String] {
-    hamsterConfig?.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
+    hamsterConfig?.keyboard?.symbolsOfGridOfNumericKeyboard ?? []
   }
 
   /// 中文九宫格符号
   var symbolsOfChineseNineGridKeyboard: [String] {
-    hamsterConfig?.Keyboard?.symbolsOfChineseNineGridKeyboard ?? []
+    hamsterConfig?.keyboard?.symbolsOfChineseNineGridKeyboard ?? []
   }
 
   /// 工具栏高度
@@ -627,7 +627,7 @@ public extension KeyboardContext {
 
   /// 数字九宫格符号是否直接上屏
   var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
-    hamsterConfig?.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+    hamsterConfig?.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
   }
 
   /// 分类符号键盘状态
@@ -647,12 +647,12 @@ public extension KeyboardContext {
 
   /// 上划显示在左侧
   var upSwipeOnLeft: Bool {
-    hamsterConfig?.Keyboard?.upSwipeOnLeft ?? true
+    hamsterConfig?.keyboard?.upSwipeOnLeft ?? true
   }
 
   /// 划动上下布局
   var swipeLabelUpAndDownLayout: Bool {
-    hamsterConfig?.Keyboard?.swipeLabelUpAndDownLayout ?? false
+    hamsterConfig?.keyboard?.swipeLabelUpAndDownLayout ?? false
   }
 
   /// 自定义键盘
@@ -662,17 +662,17 @@ public extension KeyboardContext {
 
   /// 是否启用内嵌输入模式
   var enableEmbeddedInputMode: Bool {
-    hamsterConfig?.Keyboard?.enableEmbeddedInputMode ?? false
+    hamsterConfig?.keyboard?.enableEmbeddedInputMode ?? false
   }
 
   /// Shift 状态锁定
   var lockShiftState: Bool {
-    hamsterConfig?.Keyboard?.lockShiftState ?? true
+    hamsterConfig?.keyboard?.lockShiftState ?? true
   }
 
   /// 光标回退
   func cursorBackOfSymbols(key: String) -> Bool {
-    if hamsterConfig?.Keyboard?.symbolsOfCursorBack?.contains(key) ?? false {
+    if hamsterConfig?.keyboard?.symbolsOfCursorBack?.contains(key) ?? false {
       return true
     }
     return false
@@ -680,7 +680,7 @@ public extension KeyboardContext {
 
   /// 成对上屏符号
   func getPairSymbols(_ key: String) -> String {
-    if let pairValue = hamsterConfig?.Keyboard?.pairsOfSymbols?.first(where: { $0.hasPrefix(key) }) {
+    if let pairValue = hamsterConfig?.keyboard?.pairsOfSymbols?.first(where: { $0.hasPrefix(key) }) {
       return pairValue
     }
     return key
@@ -688,7 +688,7 @@ public extension KeyboardContext {
 
   /// 返回主键盘
   func returnToPrimaryKeyboardOfSymbols(key: String) -> Bool {
-    hamsterConfig?.Keyboard?.symbolsOfReturnToMainKeyboard?.contains(key) ?? false
+    hamsterConfig?.keyboard?.symbolsOfReturnToMainKeyboard?.contains(key) ?? false
   }
 
   /// 划动阈值
@@ -708,28 +708,28 @@ public extension KeyboardContext {
 
   // 是否启用空格加载文本
   var enableLoadingTextForSpaceButton: Bool {
-    hamsterConfig?.Keyboard?.enableLoadingTextForSpaceButton ?? false
+    hamsterConfig?.keyboard?.enableLoadingTextForSpaceButton ?? false
   }
 
   // 空格按钮加载文本
   var loadingTextForSpaceButton: String {
-    hamsterConfig?.Keyboard?.loadingTextForSpaceButton ?? ""
+    hamsterConfig?.keyboard?.loadingTextForSpaceButton ?? ""
   }
 
   // 空格按钮长显文本
   var labelTextForSpaceButton: String {
-    hamsterConfig?.Keyboard?.labelTextForSpaceButton ?? ""
+    hamsterConfig?.keyboard?.labelTextForSpaceButton ?? ""
   }
 
   // 空格按钮长显为当前输入方案
   // 当开启此选项后，labelForSpaceButton 设置的值无效
   var showCurrentInputSchemaNameForSpaceButton: Bool {
-    hamsterConfig?.Keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
+    hamsterConfig?.keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
   }
 
   // 空格按钮加载文字显示当前输入方案
   // 当开启此选项后， loadingTextForSpaceButton 设置的值无效
   var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool {
-    hamsterConfig?.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
+    hamsterConfig?.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
   }
 }

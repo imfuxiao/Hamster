@@ -149,7 +149,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
   /// 仓输入法配色
   open func hamsterColor() -> HamsterKeyboardColor? {
-    guard keyboardContext.hamsterConfig?.Keyboard?.enableColorSchema ?? false else { return nil }
+    guard keyboardContext.hamsterConfig?.keyboard?.enableColorSchema ?? false else { return nil }
 
     // 配色缓存
     if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] {
@@ -158,12 +158,12 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
     var schemaName: String? = nil
     if keyboardContext.hasDarkColorScheme {
-      schemaName = keyboardContext.hamsterConfig?.Keyboard?.useColorSchemaForDark
+      schemaName = keyboardContext.hamsterConfig?.keyboard?.useColorSchemaForDark
     } else {
-      schemaName = keyboardContext.hamsterConfig?.Keyboard?.useColorSchemaForLight
+      schemaName = keyboardContext.hamsterConfig?.keyboard?.useColorSchemaForLight
     }
 
-    guard let schema = keyboardContext.hamsterConfig?.Keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
+    guard let schema = keyboardContext.hamsterConfig?.keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
 
     let hamsterColor = HamsterKeyboardColor(colorSchema: schema, userInterfaceStyle: keyboardContext.colorScheme)
     self.cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] = hamsterColor

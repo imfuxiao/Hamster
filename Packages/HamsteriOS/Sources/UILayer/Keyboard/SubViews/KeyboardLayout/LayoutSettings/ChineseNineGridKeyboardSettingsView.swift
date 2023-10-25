@@ -25,7 +25,7 @@ class ChineseNineGridKeyboardSettingsView: NibLessView {
       guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
         throw "未找到系统默认配置"
       }
-      guard let defaultPairsOfSymbols = defaultConfiguration.Keyboard?.symbolsOfChineseNineGridKeyboard else {
+      guard let defaultPairsOfSymbols = defaultConfiguration.keyboard?.symbolsOfChineseNineGridKeyboard else {
         throw "未找到默认值"
       }
       keyboardSettingsViewModel.symbolsOfChineseNineGridKeyboard = defaultPairsOfSymbols

@@ -14,28 +14,28 @@ class KeyboardColorViewModel {
 
   public var enableColorSchema: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableColorSchema ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableColorSchema = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableColorSchema = newValue
     }
   }
 
   public var useColorSchemaForLight: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchemaForLight ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForLight ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchemaForLight = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForLight = newValue
     }
   }
 
   public var useColorSchemaForDark: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchemaForDark ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForDark ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useColorSchemaForDark = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForDark = newValue
     }
   }
 
@@ -46,7 +46,7 @@ class KeyboardColorViewModel {
   }
 
   public var keyboardColorListForLight: [HamsterKeyboardColor] {
-    if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
+    if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.keyboard?.colorSchemas, !colorSchemas.isEmpty {
       return colorSchemas
         .sorted()
         .compactMap {
@@ -57,7 +57,7 @@ class KeyboardColorViewModel {
   }
 
   public var keyboardColorListForDark: [HamsterKeyboardColor] {
-    if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.Keyboard?.colorSchemas, !colorSchemas.isEmpty {
+    if let colorSchemas = HamsterAppDependencyContainer.shared.configuration.keyboard?.colorSchemas, !colorSchemas.isEmpty {
       return colorSchemas
         .sorted()
         .compactMap {

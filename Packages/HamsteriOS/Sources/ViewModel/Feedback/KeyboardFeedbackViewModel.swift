@@ -17,19 +17,19 @@ public class KeyboardFeedbackViewModel {
 
   public var enableKeySounds: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableKeySounds ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableKeySounds ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableKeySounds = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableKeySounds = newValue
     }
   }
 
   public var enableHapticFeedback: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableHapticFeedback ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableHapticFeedback = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableHapticFeedback = newValue
     }
   }
 
@@ -40,10 +40,10 @@ public class KeyboardFeedbackViewModel {
 
   public var hapticFeedbackIntensity: Int {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.hapticFeedbackIntensity ?? 2
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.hapticFeedbackIntensity ?? 2
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.hapticFeedbackIntensity = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.hapticFeedbackIntensity = newValue
     }
   }
 

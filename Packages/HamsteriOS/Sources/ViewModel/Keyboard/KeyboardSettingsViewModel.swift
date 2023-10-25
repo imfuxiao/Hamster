@@ -38,118 +38,118 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   public var displayButtonBubbles: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayButtonBubbles ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayButtonBubbles = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayButtonBubbles = newValue
     }
   }
 
   public var upSwipeOnLeft: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.upSwipeOnLeft ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.upSwipeOnLeft = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.upSwipeOnLeft = newValue
     }
   }
 
   public var swipeLabelUpAndDownLayout: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.swipeLabelUpAndDownLayout ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownLayout ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.swipeLabelUpAndDownLayout = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownLayout = newValue
     }
   }
 
   public var enableEmbeddedInputMode: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableEmbeddedInputMode ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableEmbeddedInputMode = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableEmbeddedInputMode = newValue
     }
   }
 
   public var lockShiftState: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.lockShiftState ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.lockShiftState = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.lockShiftState = newValue
     }
   }
 
   public var displaySpaceLeftButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceLeftButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceLeftButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceLeftButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceLeftButton = newValue
     }
   }
 
   public var spaceLeftButtonProcessByRIME: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceLeftButtonProcessByRIME ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceLeftButtonProcessByRIME ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceLeftButtonProcessByRIME = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceLeftButtonProcessByRIME = newValue
     }
   }
 
   public var keyValueOfSpaceLeftButton: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceLeftButton ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceLeftButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceLeftButton = newValue
     }
   }
 
   public var displaySpaceRightButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceRightButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySpaceRightButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceRightButton = newValue
     }
   }
 
   public var spaceRightButtonProcessByRIME: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceRightButtonProcessByRIME ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceRightButtonProcessByRIME ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.spaceRightButtonProcessByRIME = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceRightButtonProcessByRIME = newValue
     }
   }
 
   public var keyValueOfSpaceRightButton: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceRightButton ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceRightButton ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.keyValueOfSpaceRightButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceRightButton = newValue
     }
   }
 
   public var displayChineseEnglishSwitchButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayChineseEnglishSwitchButton ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayChineseEnglishSwitchButton ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayChineseEnglishSwitchButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayChineseEnglishSwitchButton = newValue
     }
   }
 
   public var chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = newValue
     }
   }
 
@@ -164,46 +164,46 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   public var displaySemicolonButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displaySemicolonButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton = newValue
     }
   }
 
   public var displayClassifySymbolButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayClassifySymbolButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.displayClassifySymbolButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayClassifySymbolButton = newValue
     }
   }
 
   public var enableNineGridOfNumericKeyboard: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableNineGridOfNumericKeyboard ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableNineGridOfNumericKeyboard = newValue
     }
   }
 
   public var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
     }
   }
 
   public var enableSymbolKeyboard: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableSymbolKeyboard ?? true
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableSymbolKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableSymbolKeyboard = newValue
     }
   }
 
@@ -299,76 +299,76 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   public var symbolsOfGridOfNumericKeyboard: [String] {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfGridOfNumericKeyboard ?? []
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfGridOfNumericKeyboard ?? []
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfGridOfNumericKeyboard = newValue
     }
   }
 
   public var pairsOfSymbols: [String] {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.pairsOfSymbols ?? []
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.pairsOfSymbols ?? []
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.pairsOfSymbols = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.pairsOfSymbols = newValue
     }
   }
 
   public var symbolsOfCursorBack: [String] {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfCursorBack ?? []
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfCursorBack ?? []
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfCursorBack = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfCursorBack = newValue
     }
   }
 
   public var symbolsOfReturnToMainKeyboard: [String] {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfReturnToMainKeyboard ?? []
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfReturnToMainKeyboard ?? []
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfReturnToMainKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfReturnToMainKeyboard = newValue
     }
   }
 
   public var symbolsOfChineseNineGridKeyboard: [String] {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfChineseNineGridKeyboard ?? []
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfChineseNineGridKeyboard ?? []
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.symbolsOfChineseNineGridKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfChineseNineGridKeyboard = newValue
     }
   }
 
   // 是否启用空格加载文本
   public var enableLoadingTextForSpaceButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableLoadingTextForSpaceButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableLoadingTextForSpaceButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.enableLoadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableLoadingTextForSpaceButton = newValue
     }
   }
 
   // 空格按钮加载文本
   public var loadingTextForSpaceButton: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.loadingTextForSpaceButton ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.loadingTextForSpaceButton ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.loadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.loadingTextForSpaceButton = newValue
     }
   }
 
   // 空格按钮长显文本
   public var labelTextForSpaceButton: String {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.labelTextForSpaceButton ?? ""
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.labelTextForSpaceButton ?? ""
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.labelTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.labelTextForSpaceButton = newValue
     }
   }
 
@@ -376,10 +376,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   // 当开启此选项后，labelForSpaceButton 设置的值无效
   public var showCurrentInputSchemaNameForSpaceButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameForSpaceButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameForSpaceButton = newValue
     }
   }
 
@@ -387,10 +387,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   // 当开启此选项后， loadingTextForSpaceButton 设置的值无效
   public var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = newValue
     }
   }
 
@@ -404,17 +404,17 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   /// 选择键盘类型
   public var useKeyboardType: KeyboardType? {
     get {
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType?.keyboardType
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useKeyboardType?.keyboardType
     }
     set {
       guard let keyboardType = newValue else { return }
       if case .custom(let named, _) = keyboardType {
         if !named.isEmpty {
-          HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = keyboardType.yamlString
+          HamsterAppDependencyContainer.shared.configuration.keyboard?.useKeyboardType = keyboardType.yamlString
         }
         return
       }
-      HamsterAppDependencyContainer.shared.configuration.Keyboard?.useKeyboardType = keyboardType.yamlString
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.useKeyboardType = keyboardType.yamlString
     }
   }
 
@@ -848,7 +848,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
           throw "获取系统默认配置失败"
         }
-        if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.Keyboard?.symbolsOfGridOfNumericKeyboard {
+        if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard {
           self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
           resetSignSubject.send(true)
           ProgressHUD.showSuccess("重置成功")

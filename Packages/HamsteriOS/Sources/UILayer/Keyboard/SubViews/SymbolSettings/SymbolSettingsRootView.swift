@@ -49,7 +49,7 @@ class SymbolSettingsRootView: NibLessView {
       guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
         throw "未找到系统默认配置"
       }
-      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.pairsOfSymbols else {
+      guard let defaultOfSymbols = defaultConfiguration.keyboard?.pairsOfSymbols else {
         throw "未找到默认值"
       }
       keyboardSettingsViewModel.pairsOfSymbols = defaultOfSymbols
@@ -69,7 +69,7 @@ class SymbolSettingsRootView: NibLessView {
       guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
         throw "未找到系统默认配置"
       }
-      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.symbolsOfCursorBack else {
+      guard let defaultOfSymbols = defaultConfiguration.keyboard?.symbolsOfCursorBack else {
         throw "未找到默认值"
       }
       keyboardSettingsViewModel.symbolsOfCursorBack = defaultOfSymbols
@@ -89,7 +89,7 @@ class SymbolSettingsRootView: NibLessView {
       guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
         throw "未找到系统默认配置"
       }
-      guard let defaultOfSymbols = defaultConfiguration.Keyboard?.symbolsOfReturnToMainKeyboard else {
+      guard let defaultOfSymbols = defaultConfiguration.keyboard?.symbolsOfReturnToMainKeyboard else {
         throw "未找到默认值"
       }
       keyboardSettingsViewModel.symbolsOfReturnToMainKeyboard = defaultOfSymbols

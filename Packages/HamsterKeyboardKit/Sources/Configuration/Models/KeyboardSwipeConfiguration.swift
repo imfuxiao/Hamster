@@ -39,6 +39,11 @@ public struct KeyboardSwipe: Codable, Hashable {
   public var keyboardType: KeyboardType?
   public var keys: [Key]?
 
+  public init(keyboardType: KeyboardType, keys: [Key]) {
+    self.keyboardType = keyboardType
+    self.keys = keys
+  }
+
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     if let keyboardType = try container.decodeIfPresent(String.self, forKey: .keyboardType),
