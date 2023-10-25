@@ -34,9 +34,9 @@ class SymbolCell: UICollectionViewListCell {
     label.textAlignment = .center
     label.lineBreakMode = .byTruncatingTail
     label.numberOfLines = 1
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.2
-    label.text = " "
+//    label.adjustsFontSizeToFitWidth = true
+//    label.minimumScaleFactor = 0.2
+    label.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
@@ -87,9 +87,9 @@ class SymbolCell: UICollectionViewListCell {
     super.updateConfiguration(using: state)
 
     symbolLabel.text = state.symbol
-    symbolLabel.font = UIFont.systemFont(ofSize: 16)
-    symbolLabel.textAlignment = .center
-    symbolLabel.adjustsFontSizeToFitWidth = true
+    // symbolLabel.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+    // symbolLabel.textAlignment = .center
+    // symbolLabel.adjustsFontSizeToFitWidth = true
 
     var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
 
@@ -103,5 +103,9 @@ class SymbolCell: UICollectionViewListCell {
     }
 
     self.backgroundConfiguration = backgroundConfig
+  }
+
+  override func prepareForReuse() {
+    symbolLabel.text = ""
   }
 }
