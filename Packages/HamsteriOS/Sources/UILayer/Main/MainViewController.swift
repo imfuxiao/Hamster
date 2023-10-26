@@ -100,14 +100,14 @@ extension MainViewController {
     super.viewDidLoad()
 
     /// 动态控制导航
-    mainViewModel.$subView
+    mainViewModel.subViewPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         self.navigationResponse(to: $0)
       }
       .store(in: &subscriptions)
 
-    mainViewModel.$shortcutItemType
+    mainViewModel.shortcutItemTypePublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] type in
         Task {

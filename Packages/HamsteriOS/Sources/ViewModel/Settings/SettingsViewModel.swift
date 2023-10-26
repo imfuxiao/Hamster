@@ -50,7 +50,7 @@ public class SettingsViewModel: ObservableObject {
           text: "输入方案设置",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .inputSchema
+            self.mainViewModel.subViewSubject.send(.inputSchema)
           }
         ),
         .init(
@@ -58,7 +58,7 @@ public class SettingsViewModel: ObservableObject {
           text: "输入方案上传",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .uploadInputSchema
+            self.mainViewModel.subViewSubject.send(.uploadInputSchema)
           }
         ),
         .init(
@@ -66,7 +66,7 @@ public class SettingsViewModel: ObservableObject {
           text: "方案文件管理",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .finder
+            self.mainViewModel.subViewSubject.send(.finder)
           }
         ),
       ]),
@@ -76,7 +76,7 @@ public class SettingsViewModel: ObservableObject {
           text: "键盘设置",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .keyboardSettings
+            self.mainViewModel.subViewSubject.send(.keyboardSettings)
           }
         ),
         .init(
@@ -85,7 +85,7 @@ public class SettingsViewModel: ObservableObject {
           accessoryType: .disclosureIndicator,
           navigationLinkLabel: { [unowned self] in enableColorSchema ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .colorSchema
+            self.mainViewModel.subViewSubject.send(.colorSchema)
           }
         ),
         .init(
@@ -93,7 +93,7 @@ public class SettingsViewModel: ObservableObject {
           text: "按键音与震动",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .feedback
+            self.mainViewModel.subViewSubject.send(.feedback)
           }
         ),
       ]),
@@ -104,7 +104,7 @@ public class SettingsViewModel: ObservableObject {
           accessoryType: .disclosureIndicator,
           navigationLinkLabel: { [unowned self] in enableAppleCloud ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .iCloud
+            self.mainViewModel.subViewSubject.send(.iCloud)
           }
         ),
         .init(
@@ -112,7 +112,7 @@ public class SettingsViewModel: ObservableObject {
           text: "软件备份",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .backup
+            self.mainViewModel.subViewSubject.send(.backup)
           }
         ),
       ]),
@@ -122,7 +122,7 @@ public class SettingsViewModel: ObservableObject {
           text: "RIME",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .rime
+            self.mainViewModel.subViewSubject.send(.rime)
           }
         ),
       ]),
@@ -132,7 +132,7 @@ public class SettingsViewModel: ObservableObject {
           text: "关于",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
-            self.mainViewModel.subView = .about
+            self.mainViewModel.subViewSubject.send(.about)
           }
         ),
       ]),
