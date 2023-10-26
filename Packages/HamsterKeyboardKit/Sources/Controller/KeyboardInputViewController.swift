@@ -881,10 +881,12 @@ private extension KeyboardInputViewController {
   func setupCombineRIMEInput() async {
     await rimeContext.$userInputKey
       .receive(on: DispatchQueue.main)
-      .sink { [weak self] inpuText in
+      .sink { [weak self] inputText in
         guard let self = self else { return }
 
+        // 获取与清空在一起，防止重复上屏
         let commitText = self.rimeContext.commitText
+        self.rimeContext.resetCommitText()
 
         // 写入上屏文字
         if !commitText.isEmpty {
@@ -893,7 +895,6 @@ private extension KeyboardInputViewController {
           // 写入 userInputKey
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
             self.insertTextPatch(commitText)
-            self.rimeContext.resetCommitText()
           }
         }
 
@@ -907,7 +908,7 @@ private extension KeyboardInputViewController {
             self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
             return
           }
-          self.textDocumentProxy.setMarkedText(inpuText, selectedRange: NSMakeRange(inpuText.utf8.count, 0))
+          self.textDocumentProxy.setMarkedText(inputText, selectedRange: NSMakeRange(inputText.utf8.count, 0))
         }
       }
       .store(in: &cancellables)
