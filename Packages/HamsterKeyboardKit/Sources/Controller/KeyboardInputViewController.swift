@@ -536,10 +536,10 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     }
 
     // 字母输入模式，不经过 rime 引擎
-    if rimeContext.asciiMode {
-      textDocumentProxy.insertText(text)
-      return
-    }
+    // if rimeContext.asciiMode {
+    //  textDocumentProxy.insertText(text)
+    //  return
+    // }
 
     // rime 引擎处理
     Task {

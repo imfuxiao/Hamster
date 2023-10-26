@@ -15,6 +15,7 @@ class SpaceContentView: NibLessView {
   private let item: KeyboardLayoutItem
   private var spaceText: String
   private var subscriptions = Set<AnyCancellable>()
+  private var asciiState: Bool
 
   public var style: KeyboardButtonStyle {
     didSet {
@@ -85,6 +86,7 @@ class SpaceContentView: NibLessView {
     self.item = item
     self.style = style
     self.spaceText = spaceText
+    self.asciiState = rimeContext.asciiMode
 
     super.init(frame: .zero)
 
@@ -122,6 +124,20 @@ class SpaceContentView: NibLessView {
   }
 
   func combine() {
+    Task {
+      await rimeContext.$asciiMode
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] in
+          guard let self = self else { return }
+          guard self.asciiState != $0 else { return }
+          self.asciiState = $0
+          loadingLabel.text = self.asciiState == false ? "中" : "英"
+          self.textView.alpha = 0
+          self.loadingLabel.alpha = 1
+          loadingAnimate()
+        }
+        .store(in: &subscriptions)
+    }
     Task {
       await rimeContext.$currentSchema
         .receive(on: DispatchQueue.main)
