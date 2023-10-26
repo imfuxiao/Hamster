@@ -103,7 +103,7 @@ keyboard:
   lockForSymbolKeyboard: false
 
   # 是否启用空格加载文本
-  enableLoadingTextForSpaceButton: false
+  enableLoadingTextForSpaceButton: true
 
   # 空格按钮加载文本
   loadingTextForSpaceButton: ""
