@@ -6,7 +6,7 @@
 //
 import XCTest
 
-@testable import HamsterKeyboard
+@testable import HamsterKeyboardKit
 
 final class StringExtensionTests: XCTestCase {
   func testIsCapitalized() throws {

@@ -5,7 +5,7 @@
 //  Created by morse on 2023/8/14.
 //
 
-@testable import HamsterKeyboard
+@testable import HamsterKeyboardKit
 import XCTest
 
 final class CGFloatTest: XCTestCase {

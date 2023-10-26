@@ -43,6 +43,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // setupNextKeyboardBehavior()
     setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
+
+    Task {
+      await setupRIME()
+      await setupCombineRIMEInput()
+    }
   }
 
   override open func viewWillAppear(_ animated: Bool) {
@@ -63,11 +68,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   override open func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 //    viewWillHandleDictationResult()
-
-    Task {
-      await setupRIME()
-      await setupCombineRIMEInput()
-    }
   }
 
   override open func viewDidDisappear(_ animated: Bool) {
@@ -118,6 +118,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }()
 
   open func viewWillSetupKeyboard() {
+    let isPortrait = view.window?.screen.interfaceOrientation == .portrait
+    Logger.statistics.debug("isPortait: \(isPortrait == true ? "true" : "false")")
+    Logger.statistics.debug("window frame width: \(UIScreen.main.bounds.width)")
+    Logger.statistics.debug("view frame width: \(self.view.bounds.width)")
+
     if rootView.superview == nil {
       view.addSubview(rootView)
       rootView.fillSuperview()
@@ -805,6 +810,7 @@ private extension KeyboardInputViewController {
    */
   func setupInitialWidth() {
     view.frame.size.width = UIScreen.main.bounds.width
+    Logger.statistics.debug("view frame width: \(UIScreen.main.bounds.width)")
   }
 
   /**
@@ -840,8 +846,9 @@ private extension KeyboardInputViewController {
    */
   func setupRIME() async {
     // 异步 RIME 引擎启动
-    // guard !rimeContext.isRunning else { return }
-    // Logger.statistics.debug("setup rime engine")
+    guard !rimeContext.isRunning else { return }
+    Logger.statistics.debug("setup rime engine")
+
     // 检测是否需要覆盖 RIME 目录
     let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
 
@@ -874,7 +881,11 @@ private extension KeyboardInputViewController {
   }
 
   func shutdownRIME() async {
+    /// 停止引擎，触发自造词等数据落盘
     await rimeContext.shutdown()
+
+    /// 重新启动引擎
+    await rimeContext.start(hasFullAccess: hasFullAccess)
   }
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字

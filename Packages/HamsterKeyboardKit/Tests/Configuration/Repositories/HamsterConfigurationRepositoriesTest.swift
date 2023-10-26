@@ -27,7 +27,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     let config = HamsterConfiguration.preview
     let configRepositories = HamsterConfigurationRepositories.shared
     try configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
-    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    let tempConfig = try configRepositories.loadFromYAML(tempYamlPath)
     XCTAssertEqual(tempConfig, config)
   }
 
@@ -65,7 +65,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     let configRepositories = HamsterConfigurationRepositories.shared
     configRepositories.removeFromUserDefaults()
 
-    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    let tempConfig = try configRepositories.loadFromYAML(tempYamlPath)
     try configRepositories.saveToUserDefaults(tempConfig)
     let config = try configRepositories.loadFromUserDefaults()
     XCTAssertNotNil(config.swipe?.keyboardSwipe)
@@ -80,7 +80,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
       fatalError("can not generator hamster.yaml")
     }
     let configRepositories = HamsterConfigurationRepositories.shared
-    let tempConfig = try configRepositories.loadFromYAML(yamlPath: tempYamlPath)
+    let tempConfig = try configRepositories.loadFromYAML(tempYamlPath)
     print(tempConfig)
   }
 }

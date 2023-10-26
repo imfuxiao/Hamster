@@ -22,7 +22,7 @@ extension HamsterConfiguration {
       heightOfCodingArea: 15,
       codingAreaFontSize: 20, candidateWordFontSize: 25, candidateCommentFontSize: 18,
       displayIndexOfCandidateWord: true),
-    Keyboard: KeyboardConfiguration(
+    keyboard: KeyboardConfiguration(
       displayButtonBubbles: true,
       enableKeySounds: true,
       enableHapticFeedback: true,
@@ -46,7 +46,8 @@ extension HamsterConfiguration {
       enableSymbolKeyboard: true,
       lockForSymbolKeyboard: true,
       enableColorSchema: true,
-      useColorSchema: "solarized_light",
+      useColorSchemaForLight: "solarized_light",
+      useColorSchemaForDark: "solarized_light",
       colorSchemas: [
         .init(
           schemaName: "solarized_light",

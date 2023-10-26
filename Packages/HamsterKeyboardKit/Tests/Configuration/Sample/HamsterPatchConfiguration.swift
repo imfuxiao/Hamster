@@ -18,7 +18,7 @@ public extension HamsterPatchConfiguration {
       toolbar: KeyboardToolbarConfiguration(
         enableToolbar: false
       ),
-      Keyboard: KeyboardConfiguration(
+      keyboard: KeyboardConfiguration(
         displayButtonBubbles: false
       )
     )
