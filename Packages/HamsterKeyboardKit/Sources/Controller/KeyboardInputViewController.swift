@@ -65,8 +65,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 //    viewWillHandleDictationResult()
 
     Task {
-      setupRIME()
-      setupCombineRIMEInput()
+      await setupRIME()
+      await setupCombineRIMEInput()
+    }
+  }
+
+  override open func viewDidDisappear(_ animated: Bool) {
+    super.viewDidDisappear(animated)
+
+    Task {
+      await shutdownRIME()
     }
   }
 
@@ -830,77 +838,79 @@ private extension KeyboardInputViewController {
   /**
    RIME 引擎设置
    */
-  func setupRIME() {
+  func setupRIME() async {
     // 异步 RIME 引擎启动
-    Task {
-      // 检测是否需要覆盖 RIME 目录
-      let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
+    // guard !rimeContext.isRunning else { return }
+    // Logger.statistics.debug("setup rime engine")
+    // 检测是否需要覆盖 RIME 目录
+    let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
 
-      // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
-      if !hasFullAccess {
-        do {
-          try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
+    // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
+    if !hasFullAccess {
+      do {
+        try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
 
-          // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
-          UserDefaults.hamster.overrideRimeDirectory = false
-        } catch {
-          Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
-        }
-
-        // Sandbox 补充 default.custom.yaml 文件
-        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
-        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
-          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
-          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
-        }
+        // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
+        UserDefaults.hamster.overrideRimeDirectory = false
+      } catch {
+        Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
       }
 
-      if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
-        await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+      // Sandbox 补充 default.custom.yaml 文件
+      let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+      if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+        let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+        Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
       }
-
-      await rimeContext.start(hasFullAccess: hasFullAccess)
-      let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
-      await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
     }
+
+    if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
+      await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+    }
+
+    await rimeContext.start(hasFullAccess: hasFullAccess)
+    let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+    await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+  }
+
+  func shutdownRIME() async {
+    await rimeContext.shutdown()
   }
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
-  func setupCombineRIMEInput() {
-    Task {
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] inpuText in
-          guard let self = self else { return }
+  func setupCombineRIMEInput() async {
+    await rimeContext.$userInputKey
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] inpuText in
+        guard let self = self else { return }
 
-          let commitText = self.rimeContext.commitText
+        let commitText = self.rimeContext.commitText
 
-          // 写入上屏文字
-          if !commitText.isEmpty {
-            self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-
-            // 写入 userInputKey
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-              self.insertTextPatch(commitText)
-              self.rimeContext.resetCommitText()
-            }
-          }
-
-          // 非嵌入模式在 CandidateWordsView.swift 中处理，直接输入 Label 中
-          guard self.keyboardContext.enableEmbeddedInputMode else { return }
+        // 写入上屏文字
+        if !commitText.isEmpty {
+          self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
 
           // 写入 userInputKey
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-            if self.keyboardContext.keyboardType.isChineseNineGrid {
-              let t9UserInputKey = self.rimeContext.t9UserInputKey
-              self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
-              return
-            }
-            self.textDocumentProxy.setMarkedText(inpuText, selectedRange: NSMakeRange(inpuText.utf8.count, 0))
+            self.insertTextPatch(commitText)
+            self.rimeContext.resetCommitText()
           }
         }
-        .store(in: &cancellables)
-    }
+
+        // 非嵌入模式在 CandidateWordsView.swift 中处理，直接输入 Label 中
+        guard self.keyboardContext.enableEmbeddedInputMode else { return }
+
+        // 写入 userInputKey
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+          if self.keyboardContext.keyboardType.isChineseNineGrid {
+            let t9UserInputKey = self.rimeContext.t9UserInputKey
+            self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
+            return
+          }
+          self.textDocumentProxy.setMarkedText(inpuText, selectedRange: NSMakeRange(inpuText.utf8.count, 0))
+        }
+      }
+      .store(in: &cancellables)
   }
 
   /// 在 ``textDocumentProxy`` 的文本发生变化后，尝试更改为首选键盘类型

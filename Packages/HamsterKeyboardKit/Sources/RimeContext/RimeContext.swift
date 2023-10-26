@@ -164,6 +164,32 @@ public extension RimeContext {
   /// RIME 启动
   /// 注意：仅用于键盘扩展调用
   func start(hasFullAccess: Bool) async {
+    // RIME 输入方案切换后同步状态
+    Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
+      guard let self = self else { return }
+      Task {
+        let currentSchema = await self.currentSchema
+        let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
+        guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
+        // 从当前全部方案列表中获取
+        guard let changeSchema = await self.schemas.first(where: { $0.schemaId == schemaID }) else { return }
+        await self.setCurrentSchema(changeSchema)
+        Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
+      }
+    })
+
+    // RIME 中英文状态切换同步
+    Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
+      guard let self = self else { return }
+      guard mode.hasSuffix("ascii_mode") else { return }
+      Task {
+        let mode = !mode.hasPrefix("!")
+        await self.setAsciiMode(mode)
+        Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
+      }
+    })
+
+    // 启动
     Rime.shared.start(Rime.createTraits(
       sharedSupportDir: FileManager.appGroupSharedSupportDirectoryURL.path,
       userDataDir: hasFullAccess ? FileManager.appGroupUserDataDirectoryURL.path : FileManager.sandboxUserDataDirectory.path
@@ -183,30 +209,12 @@ public extension RimeContext {
       self.hotKeys = hotKeys
     }
     Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
+  }
 
-    // RIME 输入方案切换后同步状态
-    Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
-      guard let self = self else { return }
-      Task {
-        let currentSchema = await self.currentSchema
-        let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
-        guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
-        guard let changeSchema = await self.selectSchemas.first(where: { $0.schemaId == schemaID }) else { return }
-        await self.setCurrentSchema(changeSchema)
-        Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
-      }
-    })
-
-    // RIME 中英文状态切换同步
-    Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
-      guard let self = self else { return }
-      guard mode.hasSuffix("ascii_mode") else { return }
-      Task {
-        let mode = !mode.hasPrefix("!")
-        await self.setAsciiMode(mode)
-        Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
-      }
-    })
+  /// RIME 关闭
+  /// 注意：仅用于键盘扩展调用
+  func shutdown() {
+    Rime.shared.shutdown()
   }
 
   /// RIME 部署
@@ -375,6 +383,11 @@ public extension RimeContext {
     // 部署后将方案copy至AppGroup下供keyboard使用
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
+  }
+
+  @MainActor
+  var isRunning: Bool {
+    Rime.shared.isRunning()
   }
 }
 
