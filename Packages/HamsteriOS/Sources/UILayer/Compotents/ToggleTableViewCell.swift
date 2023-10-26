@@ -21,6 +21,7 @@ class ToggleTableViewCell: NibLessTableViewCell {
 
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
+    label.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()

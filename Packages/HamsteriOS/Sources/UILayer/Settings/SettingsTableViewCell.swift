@@ -34,7 +34,9 @@ public class SettingTableViewCell: NibLessTableViewCell {
 
     var config = UIListContentConfiguration.valueCell()
     config.text = state.settingItemModel?.text
+    config.textProperties.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
     config.secondaryText = state.settingItemModel?.navigationLinkLabel()
+    config.secondaryTextProperties.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
     config.image = state.settingItemModel?.icon
     if let type = state.settingItemModel?.accessoryType {
       accessoryType = type
