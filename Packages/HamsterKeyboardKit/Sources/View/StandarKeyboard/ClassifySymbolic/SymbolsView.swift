@@ -31,6 +31,7 @@ class SymbolsView: UICollectionView {
 
     super.init(frame: .zero, collectionViewLayout: layout)
 
+    self.alwaysBounceVertical = true
     self.delegate = self
     self.diffableDataSource = makeDataSource()
 

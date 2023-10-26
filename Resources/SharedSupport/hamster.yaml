@@ -628,11 +628,12 @@ keyboards:
             width: available
           - action: backspace
             width: percentage(0.13)
+            swipe:
+              - direction: up
+                action: shortCommand(#重输)
       - keys:
-          - action: keyboardType(alphabetic)
-            width: percentage(0.13)
           - action: keyboardType(numericNineGrid)
-            width: percentage(0.13)
+            width: percentage(0.19)
           - action: space
             width: available
             label:
@@ -640,10 +641,15 @@ keyboards:
               text: "空格"
           - action: character(,)
             label: "，"
+            swipe:
+              - direction: up
+                action: character(.)
+                label: "。"
+                display: true
+          - action: keyboardType(alphabetic)
+            width: percentage(0.13)
           - action: enter
-            width:
-              portrait: percentage(0.25)
-              landscape: percentage(0.195)
+            width: percentage(0.19)
   - name: "大千注音"
     buttonInsets: left(2),right(2),top(4),bottom(4)
     rowHeight: 43.2
@@ -787,9 +793,10 @@ keyboards:
           - action: character(/)
             label: "ㄥ"
           - action: backspace
+            swipe:
+              - direction: up
+                action: shortCommand(#重输)
       - keys:
-          - action: keyboardType(alphabetic)
-            width: percentage(0.13)
           - action: keyboardType(numericNineGrid)
             width: percentage(0.13)
           - action: keyboardType(classifySymbolic)
@@ -805,7 +812,7 @@ keyboards:
               - direction: up
                 action: character(。)
                 display: true
+          - action: keyboardType(alphabetic)
+            width: percentage(0.13)
           - action: enter
-            width:
-              portrait: percentage(0.25)
-              landscape: percentage(0.195)
+            width: percentage(0.19)

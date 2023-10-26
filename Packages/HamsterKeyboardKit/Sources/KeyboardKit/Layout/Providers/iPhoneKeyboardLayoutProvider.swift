@@ -182,10 +182,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
   ) -> KeyboardActions {
     var result = KeyboardActions()
 
-    // 自定义键盘：返回主键盘
-    if (context.selectKeyboard.isCustom || context.selectKeyboard.isChineseNineGrid) && context.keyboardType.isAlphabetic {
-      result.append(.keyboardType(context.selectKeyboard))
-    }
+    result.append(.keyboardType(.classifySymbolic))
 
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
 
@@ -194,10 +191,14 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
 
     result.append(.space)
 
-    // 英文键盘：返回主键盘
-    if context.selectKeyboard.isChinesePrimaryKeyboard && context.keyboardType.isAlphabetic {
-      result.append(.keyboardType(context.selectKeyboard))
-    }
+    // 自定义键盘：返回主键盘
+    result.append(.keyboardType(context.selectKeyboard))
+//    if (context.selectKeyboard.isCustom || context.selectKeyboard.isChineseNineGrid) && context.keyboardType.isAlphabetic {}
+//
+//    // 英文键盘：返回主键盘
+//    if context.selectKeyboard.isChinesePrimaryKeyboard && context.keyboardType.isAlphabetic {
+//      result.append(.keyboardType(context.selectKeyboard))
+//    }
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.symbol(.init(char: "@")))

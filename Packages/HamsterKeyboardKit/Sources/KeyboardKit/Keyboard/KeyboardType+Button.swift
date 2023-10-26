@@ -48,7 +48,7 @@ public extension KeyboardType {
     case .chineseNumeric: return "123"
     case .symbolic: return "#+="
     case .chineseSymbolic: return "#+="
-    case .custom: return "自"
+    case .custom: return "中"
     default: return nil
 //    case .alphabetic: return KKL10n.keyboardTypeAlphabetic.text(for: context)
 //    case .numeric: return KKL10n.keyboardTypeNumeric.text(for: context)
