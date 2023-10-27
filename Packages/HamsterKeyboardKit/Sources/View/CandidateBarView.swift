@@ -63,7 +63,7 @@ public class CandidateBarView: NibLessView {
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
       rimeContext: rimeContext)
-    view.backgroundColor = .clearInteractable
+    view.backgroundColor = .clear
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
@@ -89,7 +89,7 @@ public class CandidateBarView: NibLessView {
   lazy var controlStateView: UIView = {
     let view = UIView(frame: .zero)
 
-    view.backgroundColor = .clearInteractable
+    view.backgroundColor = .clear
     view.addSubview(stateImageView)
     view.addSubview(verticalLine)
 

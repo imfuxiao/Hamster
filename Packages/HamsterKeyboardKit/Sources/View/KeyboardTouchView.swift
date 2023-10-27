@@ -24,9 +24,6 @@ class KeyboardTouchView: UIView {
 
   override init(frame: CGRect = .zero) {
     super.init(frame: frame)
-
-    // 注意：如果不设置背景色，会导致透明区域的触摸无法响应
-    self.backgroundColor = .clearInteractable
     self.contentMode = .redraw
     self.isMultipleTouchEnabled = true
     self.isUserInteractionEnabled = true
@@ -48,8 +45,8 @@ class KeyboardTouchView: UIView {
 //    }
 //    guard bounds.contains(point) else { return nil}
 //    return findNearestView(point)
-////    Logger.statistics.debug("hitTest point: \(point.debugDescription), bounds: \(self.bounds.debugDescription)")
-////    return bounds.contains(point) ? self : nil
+  ////    Logger.statistics.debug("hitTest point: \(point.debugDescription), bounds: \(self.bounds.debugDescription)")
+  ////    return bounds.contains(point) ? self : nil
 //  }
 
 //

@@ -91,7 +91,7 @@ public class CandidateWordsCollectionView: UICollectionView {
     snapshot.appendItems([], toSection: 0)
     diffableDataSource.apply(snapshot, animatingDifferences: false)
 
-    self.backgroundColor = UIColor.clearInteractable
+    self.backgroundColor = UIColor.clear
     // 水平划动状态下不允许垂直划动
     self.showsHorizontalScrollIndicator = false
     self.alwaysBounceHorizontal = true
