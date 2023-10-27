@@ -330,15 +330,13 @@ public extension ChineseNineGridKeyboard {
     let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     // 当 symbol 非字母数字，顶码上屏
     if !symbol.isMatch(regex: "\\w.*") {
-      Task {
-        if await rimeContext.tryHandleInputCode(XK_space) {
-          let commitText = rimeContext.commitText
-          if !commitText.isEmpty {
-            actionHandler.handle(.release, on: .symbol(.init(char: commitText)))
-          }
+      if rimeContext.tryHandleInputCode(XK_space) {
+        let commitText = rimeContext.commitText
+        if !commitText.isEmpty {
+          actionHandler.handle(.release, on: .symbol(.init(char: commitText)))
         }
-        actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
       }
+      actionHandler.handle(.release, on: .symbol(.init(char: symbol)))
       collectionView.deselectItem(at: indexPath, animated: true)
       return
     }

@@ -25,6 +25,7 @@ class KeyboardToolbarView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
   private var style: CandidateBarStyle
   private var userInterfaceStyle: UIUserInterfaceStyle
+  private var oldBounds: CGRect = .zero
 
   /// 常用功能项: 仓输入法App
   lazy var iconButton: UIButton = {
@@ -60,7 +61,7 @@ class KeyboardToolbarView: NibLessView {
   // TODO: 常用功能栏
   lazy var commonFunctionBar: UIView = {
     let view = UIView(frame: .zero)
-    view.translatesAutoresizingMaskIntoConstraints = false
+//    view.translatesAutoresizingMaskIntoConstraints = false
 
     var constraints = [NSLayoutConstraint]()
     if keyboardContext.displayAppIconButton {
@@ -100,7 +101,6 @@ class KeyboardToolbarView: NibLessView {
       keyboardContext: keyboardContext,
       rimeContext: rimeContext
     )
-    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -124,6 +124,7 @@ class KeyboardToolbarView: NibLessView {
     constructViewHierarchy()
     activateViewConstraints()
     setupAppearance()
+
     commonFunctionBar.isHidden = false
     candidateBarView.isHidden = true
   }
@@ -134,17 +135,8 @@ class KeyboardToolbarView: NibLessView {
   }
 
   override func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      commonFunctionBar.topAnchor.constraint(equalTo: topAnchor),
-      commonFunctionBar.bottomAnchor.constraint(equalTo: bottomAnchor),
-      commonFunctionBar.leadingAnchor.constraint(equalTo: leadingAnchor),
-      commonFunctionBar.trailingAnchor.constraint(equalTo: trailingAnchor),
-
-      candidateBarView.topAnchor.constraint(equalTo: topAnchor),
-      candidateBarView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      candidateBarView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      candidateBarView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ])
+    commonFunctionBar.fillSuperview()
+    candidateBarView.fillSuperview()
   }
 
   override func setupAppearance() {
@@ -155,26 +147,15 @@ class KeyboardToolbarView: NibLessView {
     dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
   }
 
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    if userInterfaceStyle != keyboardContext.colorScheme {
-      userInterfaceStyle = keyboardContext.colorScheme
-      setupAppearance()
-    }
-  }
-
   func combine() {
-    Task {
-      await rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
-          let isEmpty = $0.isEmpty
-          self.candidateBarView.isHidden = isEmpty
-          self.commonFunctionBar.isHidden = !isEmpty
-        }
-        .store(in: &subscriptions)
-    }
+    rimeContext.$userInputKey
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        let isEmpty = $0.isEmpty
+        self.candidateBarView.isHidden = isEmpty
+        self.commonFunctionBar.isHidden = !isEmpty
+      }
+      .store(in: &subscriptions)
   }
 
   @objc func dismissKeyboardTouchDownAction() {

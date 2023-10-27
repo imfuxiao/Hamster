@@ -16,8 +16,6 @@ struct RimeSyncIntent: AppIntent {
 
   static var description = IntentDescription("仓输入法 - RIME 同步")
 
-  let rimeContext = HamsterAppDependencyContainer.shared.rimeContext
-
   static var openAppWhenRun: Bool {
     return false
   }
@@ -31,7 +29,7 @@ struct RimeSyncIntent: AppIntent {
       let hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
       // 先打开iCloud地址，防止Crash
       _ = URL.iCloudDocumentURL
-      try await rimeContext.syncRime(configuration: hamsterConfiguration)
+      try HamsterAppDependencyContainer.shared.rimeContext.syncRime(configuration: hamsterConfiguration)
       return .result(dialog: .init("RIME 同步完成"))
     } catch {
       Logger.statistics.error("RimeSyncIntent failed: \(error)")

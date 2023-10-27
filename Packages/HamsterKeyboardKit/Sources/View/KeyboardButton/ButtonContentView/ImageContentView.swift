@@ -9,44 +9,48 @@ import HamsterUIKit
 import UIKit
 
 class ImageContentView: NibLessView {
-//  private let scaleFactor: CGFloat
-  public let imageView: UIImageView
-  public var style: KeyboardButtonStyle {
-    didSet {
-      if let color = style.foregroundColor {
-        imageView.tintColor = color
-      } else {
-        imageView.tintColor = UIColor.label
-      }
-    }
-  }
+  private let imageView: UIImageView
+  private var style: KeyboardButtonStyle
+  private var oldBounds: CGRect = .zero
 
   init(style: KeyboardButtonStyle, image: UIImage? = nil, scaleFactor: CGFloat = .zero) {
     self.style = style
-    self.imageView = UIImageView(image: image)
+    self.imageView = UIImageView(frame: .zero)
     imageView.contentMode = .center
     imageView.contentScaleFactor = scaleFactor
+    imageView.tintColor = style.foregroundColor
+    imageView.image = image
 
     super.init(frame: .zero)
 
     setupImage()
+    setupAppearance()
   }
 
   func setupImage() {
     addSubview(imageView)
+  }
 
-    if let color = style.foregroundColor {
-      imageView.tintColor = color
-    } else {
-      imageView.tintColor = UIColor.label
-    }
+  override func setupAppearance() {
+    imageView.tintColor = style.foregroundColor ?? UIColor.label
+  }
 
-    imageView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-      imageView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor),
-      imageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor),
-    ])
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard self.bounds != .zero, self.bounds != oldBounds else { return }
+
+    self.oldBounds = self.bounds
+    imageView.frame = self.oldBounds
+  }
+
+  func setStyle(_ style: KeyboardButtonStyle) {
+    guard self.style != style else { return }
+    self.style = style
+    setupAppearance()
+  }
+
+  func setImage(_ image: UIImage) {
+    self.imageView.image = image
   }
 }

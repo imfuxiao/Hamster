@@ -285,6 +285,7 @@ public class KeyboardContext: ObservableObject {
     self.handleInputModeBuilder = { from, with in
       controller.handleInputModeList(from: from, with: with)
     }
+    needsInputModeSwitchKey = controller.needsInputModeSwitchKey
     sync(with: controller)
   }
 
@@ -470,9 +471,9 @@ extension KeyboardContext {
     if hasFullAccess != controller.hasFullAccess {
       hasFullAccess = controller.hasFullAccess
     }
-    if needsInputModeSwitchKey != controller.needsInputModeSwitchKey {
-      needsInputModeSwitchKey = controller.needsInputModeSwitchKey
-    }
+//    if needsInputModeSwitchKey != controller.needsInputModeSwitchKey {
+//      needsInputModeSwitchKey = controller.needsInputModeSwitchKey
+//    }
     if primaryLanguage != controller.primaryLanguage {
       primaryLanguage = controller.primaryLanguage
     }

@@ -44,10 +44,10 @@ public struct KeyboardFont: Codable, Equatable {
   ///
   /// 获取 font 对应的原生字体类型。
   var font: UIFont {
-    guard let weight = weight else {
-      return type.font
+    if let weight = weight {
+      return type.font.weight(weight.fontWeight)
     }
-    return type.font.weight(weight.fontWeight)
+    return type.font
   }
 }
 

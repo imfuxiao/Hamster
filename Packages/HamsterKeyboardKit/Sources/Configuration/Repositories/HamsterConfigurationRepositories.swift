@@ -63,7 +63,8 @@ public class HamsterConfigurationRepositories {
   }
 
   private func saveToUserDefaults(_ config: HamsterConfiguration, key: String) throws {
-    let data = try HamsterConfigurationRepositories.transform(YAMLEncoder().encode(config)).data(using: .utf8)
+//    let data = try HamsterConfigurationRepositories.transform(YAMLEncoder().encode(config)).data(using: .utf8)
+    let data = try PropertyListEncoder().encode(config)
     UserDefaults.hamster.setValue(data, forKey: key)
   }
 
@@ -72,14 +73,16 @@ public class HamsterConfigurationRepositories {
   /// 如果需要使用配置项的默认值，需要调用 loadFromUserDefaultsOnDefault() 方法
   public func loadFromUserDefaults() throws -> HamsterConfiguration {
     guard let data = UserDefaults.hamster.data(forKey: Self.hamsterConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
-    return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
+//    return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
+    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 从 UserDefaults 中获取应用默认配置
   /// 注意：这里是配置文件的原始值，用于还原某些已经被修改的配置项
   public func loadFromUserDefaultsOnDefault() throws -> HamsterConfiguration {
     guard let data = UserDefaults.hamster.data(forKey: Self.defaultHamsterConfigurationKey) else { throw "load default HamsterConfiguration from UserDefault is empty." }
-    return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
+    // return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
+    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 从 UserDefaults 中删除应用配置

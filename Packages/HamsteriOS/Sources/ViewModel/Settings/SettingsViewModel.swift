@@ -152,7 +152,7 @@ extension SettingsViewModel {
       _setupConfigurationForV1Update()
 
       // 部署 RIME
-      try await rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
+      try rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
 
       // 修改应用首次运行标志
       UserDefaults.hamster.isFirstRunning = false
@@ -180,7 +180,7 @@ extension SettingsViewModel {
     }
 
     // 部署 RIME
-    try await rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
+    try rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
 
     // 修改应用首次运行标志
     UserDefaults.hamster.isFirstRunning = false

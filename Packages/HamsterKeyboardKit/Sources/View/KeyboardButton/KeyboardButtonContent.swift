@@ -15,22 +15,10 @@ public class KeyboardButtonContentView: NibLessView {
   private let item: KeyboardLayoutItem
   private let action: KeyboardAction
   private let appearance: KeyboardAppearance
-  public var style: KeyboardButtonStyle {
-    didSet {
-      setupAppearance()
-      if action == .space {
-        spaceContentView.style = style
-      } else if let image = appearance.buttonImage(for: action) {
-        imageContentView.imageView.image = image
-        imageContentView.style = style
-      } else {
-        textContentView.style = style
-      }
-    }
-  }
-
+  private var style: KeyboardButtonStyle
   private let keyboardContext: KeyboardContext
   private let rimeContext: RimeContext
+  private var oldBounds: CGRect = .zero
 
   private lazy var spaceContentView: SpaceContentView = {
     let view = SpaceContentView(keyboardContext: keyboardContext, rimeContext: rimeContext, item: item, style: style, spaceText: buttonText)
@@ -38,7 +26,7 @@ public class KeyboardButtonContentView: NibLessView {
   }()
 
   private lazy var imageContentView: ImageContentView = {
-    let view = ImageContentView(style: style, scaleFactor: appearance.buttonImageScaleFactor(for: action))
+    let view = ImageContentView(style: style, image: appearance.buttonImage(for: action), scaleFactor: appearance.buttonImageScaleFactor(for: action))
     return view
   }()
 
@@ -48,19 +36,13 @@ public class KeyboardButtonContentView: NibLessView {
   }()
 
   private lazy var contentView: UIView = {
-    let view = UIStackView(frame: .zero)
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .fill
-    view.spacing = 0
-
+    let view: UIView
     if action == .space {
-      view.addArrangedSubview(spaceContentView)
+      view = spaceContentView
     } else if let image = appearance.buttonImage(for: action) {
-      view.addArrangedSubview(imageContentView)
+      view = imageContentView
     } else {
-      view.addArrangedSubview(textContentView)
+      view = textContentView
     }
     return view
   }()
@@ -68,58 +50,45 @@ public class KeyboardButtonContentView: NibLessView {
   /// 上划 Label
   private lazy var upSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.numberOfLines = 1
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    label.numberOfLines = 1
+    label.minimumScaleFactor = 0.9
     return label
-  }()
-
-  private lazy var upSwipeContainer: UIView = {
-    let view = UIStackView(arrangedSubviews: [upSwipeLabel])
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .fill
-    view.spacing = 0
-    return view
   }()
 
   /// 下划 Label
   private lazy var downSwipeLabel: UILabel = {
     let label = UILabel(frame: .zero)
+    label.numberOfLines = 1
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.5
-    label.numberOfLines = 1
+    label.minimumScaleFactor = 0.9
     return label
   }()
 
-  private lazy var downSwipeContainer: UIView = {
-    let view = UIStackView(arrangedSubviews: [downSwipeLabel])
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .fill
-    view.spacing = 0
-    return view
-  }()
+//  private lazy var swipeLeftAndRightContainer: UIStackView = {
+//    let view = UIStackView(arrangedSubviews: keyboardContext.upSwipeOnLeft ? [upSwipeLabel, downSwipeLabel] : [downSwipeLabel, upSwipeLabel])
+//    view.axis = .horizontal
+//    view.alignment = .center
+//    view.distribution = .fillProportionally
+//    view.spacing = 0
+//    return view
+//  }()
 
-  private lazy var swipeLeftAndRightContainer: UIStackView = {
-    let view = UIStackView(arrangedSubviews: keyboardContext.upSwipeOnLeft ? [upSwipeLabel, downSwipeLabel] : [downSwipeLabel, upSwipeLabel])
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.axis = .horizontal
-    view.alignment = .center
-    view.distribution = .fillProportionally
-    view.spacing = 0
-    return view
-  }()
-
+  /// 按钮显示文本
   var buttonText: String {
     if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.label.text, !buttonText.isEmpty {
       return buttonText
     }
     return appearance.buttonText(for: action) ?? ""
+  }
+
+  /// 是否需要显示划动文本控件
+  var needSwipeLabel: Bool {
+    guard !action.isSystemAction else { return false }
+    guard action != .space else { return false }
+    return action.isInputAction
   }
 
   init(item: KeyboardLayoutItem, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
@@ -140,89 +109,96 @@ public class KeyboardButtonContentView: NibLessView {
 
   func setupContentView() {
     constructViewHierarchy()
-    activateViewConstraints()
-  }
-
-  override public func setupAppearance() {
-    upSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    upSwipeLabel.textColor = style.swipeForegroundColor
-
-    downSwipeLabel.font = UIFont.systemFont(ofSize: UIFont.smallSystemFontSize)
-    downSwipeLabel.textColor = style.swipeForegroundColor
+    upSwipeLabel.font = style.swipeFont?.font
+    downSwipeLabel.font = style.swipeFont?.font
   }
 
   override public func constructViewHierarchy() {
     addSubview(contentView)
-    guard action.isInputAction && action != .space else { return }
 
-    if keyboardContext.swipeLabelUpAndDownLayout {
-      addSubview(upSwipeContainer)
-      addSubview(downSwipeContainer)
-      upSwipeLabel.text = " "
-      downSwipeLabel.text = " "
-      for swipe in item.swipes {
-        if swipe.display, swipe.direction == .up {
-          upSwipeLabel.text = swipe.labelText
-        }
+    guard needSwipeLabel else { return }
 
-        if swipe.display, swipe.direction == .down {
-          downSwipeLabel.text = swipe.labelText
-        }
+    for swipe in item.swipes {
+      if swipe.display, swipe.direction == .up {
+        upSwipeLabel.text = swipe.labelText
+        addSubview(upSwipeLabel)
       }
-    } else {
-      for swipe in item.swipes {
-        if swipe.display, swipe.direction == .up {
-          upSwipeLabel.text = swipe.labelText
-        }
 
-        if swipe.display, swipe.direction == .down {
-          downSwipeLabel.text = swipe.labelText
-        }
+      if swipe.display, swipe.direction == .down {
+        downSwipeLabel.text = swipe.labelText
+        addSubview(downSwipeLabel)
       }
-      addSubview(swipeLeftAndRightContainer)
     }
   }
 
-  override public func activateViewConstraints() {
-    var contentConstraints = [
-      contentView.centerXAnchor.constraint(equalTo: centerXAnchor),
-      contentView.widthAnchor.constraint(lessThanOrEqualTo: widthAnchor, multiplier: keyboardContext.keyboardType.isChineseNineGrid ? 0.8 : 0.6),
-    ]
+  override public func setupAppearance() {
+    upSwipeLabel.textColor = style.swipeForegroundColor
+    downSwipeLabel.textColor = style.swipeForegroundColor
+  }
 
-    if !action.isInputAction || action == .space {
-      contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
-      contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.9))
-      NSLayoutConstraint.activate(contentConstraints)
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard self.bounds != .zero, oldBounds != self.bounds else { return }
+    self.oldBounds = self.bounds
+
+    if !needSwipeLabel {
+      contentView.frame = self.oldBounds
+      return
+    }
+
+    guard downSwipeLabel.superview != nil || upSwipeLabel.superview != nil else {
+      contentView.frame = self.oldBounds
       return
     }
 
     // 划动上下布局
     if keyboardContext.swipeLabelUpAndDownLayout {
-      contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.7))
-      contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
-      NSLayoutConstraint.activate([
-        upSwipeContainer.topAnchor.constraint(equalTo: topAnchor),
-        upSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-        upSwipeContainer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.9),
-        upSwipeContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
+      let swipeHeight = self.oldBounds.height * 0.3
+      upSwipeLabel.frame = CGRect(x: 0, y: -1, width: self.oldBounds.width, height: swipeHeight)
+      contentView.frame = CGRect(x: 0, y: swipeHeight, width: self.oldBounds.width, height: self.oldBounds.height - 2 * swipeHeight)
+      downSwipeLabel.frame = upSwipeLabel.frame.offsetBy(dx: 0, dy: upSwipeLabel.frame.height + contentView.frame.height + 1)
+    } else { // 划动上布局
+      let swipeHeight = self.oldBounds.height * 0.3
+      let halfWidth = self.oldBounds.width / 2
+      let swipeLabelFrame = CGRect(x: 0, y: 0, width: halfWidth, height: swipeHeight)
+      let leftFrame = swipeLabelFrame.offsetBy(dx: 0, dy: -1)
+      let rightFrame = swipeLabelFrame.offsetBy(dx: halfWidth, dy: -1)
+      let middleFrame = CGRect(origin: CGPoint(x: 0, y: -1), size: CGSize(width: self.oldBounds.width, height: swipeHeight))
+      let upSwipeLabelIsEmpty = upSwipeLabel.text?.isEmpty ?? true
+      let downSwipeLabelIsEmpty = downSwipeLabel.text?.isEmpty ?? true
+      let upSwipeOnLeft = keyboardContext.upSwipeOnLeft
 
-        downSwipeContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-        downSwipeContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-        downSwipeContainer.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.9),
-        downSwipeContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
-      ] + contentConstraints)
-      return
+      if !upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
+        if upSwipeOnLeft {
+          upSwipeLabel.frame = leftFrame
+          downSwipeLabel.frame = rightFrame
+        } else {
+          upSwipeLabel.frame = rightFrame
+          downSwipeLabel.frame = leftFrame
+        }
+      } else if !upSwipeLabelIsEmpty, downSwipeLabelIsEmpty {
+        upSwipeLabel.frame = middleFrame
+      } else if upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
+        downSwipeLabel.frame = middleFrame
+      }
+      contentView.frame = CGRect(x: 0, y: swipeHeight / 2 + 1, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight)
     }
+  }
 
-    // 划动左右布局
-    contentConstraints.append(contentView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8))
-    contentConstraints.append(contentView.centerYAnchor.constraint(equalTo: centerYAnchor))
-    NSLayoutConstraint.activate([
-      swipeLeftAndRightContainer.topAnchor.constraint(equalTo: topAnchor),
-      swipeLeftAndRightContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
-      swipeLeftAndRightContainer.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.2),
-      swipeLeftAndRightContainer.leadingAnchor.constraint(equalTo: leadingAnchor),
-      swipeLeftAndRightContainer.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ] + contentConstraints)
+  func setStyle(_ style: KeyboardButtonStyle) {
+    guard self.style != style else { return }
+    self.style = style
+
+    setupAppearance()
+    if action == .space {
+      spaceContentView.setStyle(style)
+    } else if let image = appearance.buttonImage(for: action) {
+      spaceContentView.setStyle(style)
+      imageContentView.setImage(image)
+      imageContentView.setStyle(style)
+    } else {
+      textContentView.setStyle(style)
+    }
   }
 }

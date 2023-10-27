@@ -131,7 +131,7 @@ public extension RimeViewModel {
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
     do {
-      try await rimeContext.deployment(configuration: hamsterConfiguration)
+      try rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
       if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserDataSupport.path) {
@@ -184,7 +184,7 @@ public extension RimeViewModel {
         }
       }
 
-      try await rimeContext.syncRime(configuration: hamsterConfiguration)
+      try rimeContext.syncRime(configuration: hamsterConfiguration)
       await ProgressHUD.showSuccess("同步成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime sync error: \(error)")
@@ -196,7 +196,7 @@ public extension RimeViewModel {
   func rimeRest() async {
     await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
     do {
-      try await rimeContext.restRime()
+      try rimeContext.restRime()
 
       // 重置应用配置
       HamsterAppDependencyContainer.shared.resetHamsterConfiguration()

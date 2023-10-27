@@ -78,9 +78,7 @@ public extension KeyboardInputViewController {
       return
     }
 
-    Task {
-      await rimeContext.switchTraditionalSimplifiedChinese(simplifiedModeKey)
-    }
+    rimeContext.switchTraditionalSimplifiedChinese(simplifiedModeKey)
   }
 
   func switchEnglishChinese() {
@@ -98,30 +96,22 @@ public extension KeyboardInputViewController {
     //    情况3. 首选候选字上屏, 并开启英文输入
     //    _ = self.candidateTextOnScreen()
 
-    Task {
-      await rimeContext.switchEnglishChinese()
-    }
+    rimeContext.switchEnglishChinese()
   }
 
   /// 首选候选字上屏
   func selectPrimaryCandidate() {
-    Task {
-      await rimeContext.selectCandidate(index: 0)
-    }
+    rimeContext.selectCandidate(index: 0)
   }
 
   /// 第二位候选字上屏
   func selectSecondaryCandidate() {
-    Task {
-      await rimeContext.selectCandidate(index: 1)
-    }
+    rimeContext.selectCandidate(index: 1)
   }
 
   /// 第三位候选字上屏
   func selectTertiaryCandidate() {
-    Task {
-      await rimeContext.selectCandidate(index: 2)
-    }
+    rimeContext.selectCandidate(index: 2)
   }
 
   /// 光标移动句首
@@ -148,16 +138,12 @@ public extension KeyboardInputViewController {
 
   /// 切换最近的一次输入方案
   func switchLastInputSchema() {
-    Task {
-      await rimeContext.switchLatestInputSchema()
-    }
+    rimeContext.switchLatestInputSchema()
   }
 
   /// RIME Switcher
   func rimeSwitcher() {
-    Task {
-      await rimeContext.switcher()
-    }
+    rimeContext.switcher()
   }
 
   /// 剪切命令

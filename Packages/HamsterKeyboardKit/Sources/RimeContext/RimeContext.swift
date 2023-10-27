@@ -11,12 +11,12 @@ import OSLog
 import RimeKit
 
 /// RIME 运行时上下文
-public actor RimeContext: ObservableObject {
+public class RimeContext: ObservableObject {
   /// 最大候选词数量
   public private(set) var maximumNumberOfCandidateWords: Int = 100
 
   /// rime 输入方案列表
-  @Published @MainActor
+  @Published
   public private(set) var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
     didSet {
       UserDefaults.hamster.schemas = self.schemas
@@ -24,7 +24,7 @@ public actor RimeContext: ObservableObject {
   }
 
   /// rime 用户选择方案列表
-  @Published @MainActor
+  @Published
   public private(set) var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
     didSet {
       UserDefaults.hamster.selectSchemas = self.selectSchemas.sorted()
@@ -32,7 +32,7 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 当前输入方案
-  @MainActor @Published
+  @Published
   public var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
     didSet {
       // 如果没有完全访问权限，UserDefaults.hamster 会保存失败
@@ -41,7 +41,6 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 上次使用输入方案
-  @MainActor
   public var latestSchema: RimeSchema? = UserDefaults.hamster.latestSchema {
     didSet {
       UserDefaults.hamster.currentSchema = currentSchema
@@ -49,15 +48,13 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 用户输入键值
-  @Published @MainActor
+  @Published
   public var userInputKey: String = ""
 
   /// 待上屏文字
-  @MainActor
   public private(set) var commitText: String = ""
 
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
-  @MainActor
   public var t9UserInputKey: String {
     guard !userInputKey.isEmpty else { return "" }
     guard let firstCandidate = suggestions.first else { return userInputKey }
@@ -66,15 +63,14 @@ public actor RimeContext: ObservableObject {
   }
 
   /// 用户选择的候选拼音
-  @MainActor
   public var selectPinyinList: [String] = []
 
   /// 字母模式
-  @Published @MainActor
+  @Published
   public var asciiMode: Bool = false
 
   /// 候选字
-  @Published @MainActor
+  @Published
   public var suggestions: [CandidateSuggestion] = []
 
   /// switcher hotkeys
@@ -92,7 +88,6 @@ public actor RimeContext: ObservableObject {
 
 public extension RimeContext {
   /// RIME Context 状态重置
-  @MainActor
   func reset() {
     self.userInputKey = ""
     self.selectPinyinList.removeAll(keepingCapacity: false)
@@ -100,14 +95,12 @@ public extension RimeContext {
     Rime.shared.cleanComposition()
   }
 
-  @MainActor
   func resetCommitText() {
     self.commitText = ""
   }
 
   /// 选择输入方案后重置当前输入方案
   /// 注意：仅限内部调用
-  @MainActor
   private func resetCurrentSchema() {
     // 默认当前方案为输入方案中的第一个输入方案
     // 注意：当前方案可能为空，所以不能用 contains() 判断
@@ -120,7 +113,6 @@ public extension RimeContext {
 
   /// 选择输入方案后重置
   /// 注意：仅限内部调用
-  @MainActor
   private func resetLatestSchema() {
     // 默认最近一个输入方案为方案输入列表中的第二位
     let schemas = selectSchemas
@@ -134,46 +126,42 @@ public extension RimeContext {
     Logger.statistics.debug("latest schema: \(self.latestSchema?.schemaId ?? "") \(self.latestSchema?.schemaName ?? "")")
   }
 
-  @MainActor
-  func appendSelectSchema(_ schema: RimeSchema) async {
+  func appendSelectSchema(_ schema: RimeSchema) {
     self.selectSchemas.append(schema)
     self.selectSchemas.sort()
     resetCurrentSchema()
     resetLatestSchema()
   }
 
-  @MainActor
-  func removeSelectSchema(_ schema: RimeSchema) async {
+  func removeSelectSchema(_ schema: RimeSchema) {
     self.selectSchemas.removeAll(where: { $0 == schema })
     self.selectSchemas.sort()
     resetCurrentSchema()
     resetLatestSchema()
   }
 
-  @MainActor
-  func setCurrentSchema(_ schema: RimeSchema?) async {
+  func setCurrentSchema(_ schema: RimeSchema?) {
     self.latestSchema = self.currentSchema
     self.currentSchema = schema
   }
 
-  @MainActor
-  func setAsciiMode(_ model: Bool) async {
+  func setAsciiMode(_ model: Bool) {
     self.asciiMode = model
   }
 
   /// RIME 启动
   /// 注意：仅用于键盘扩展调用
-  func start(hasFullAccess: Bool) async {
+  func start(hasFullAccess: Bool) {
     // RIME 输入方案切换后同步状态
     Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
       guard let self = self else { return }
       Task {
-        let currentSchema = await self.currentSchema
+        let currentSchema = self.currentSchema
         let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
         guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
         // 从当前全部方案列表中获取
-        guard let changeSchema = await self.schemas.first(where: { $0.schemaId == schemaID }) else { return }
-        await self.setCurrentSchema(changeSchema)
+        guard let changeSchema = self.schemas.first(where: { $0.schemaId == schemaID }) else { return }
+        self.setCurrentSchema(changeSchema)
         Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
       }
     })
@@ -184,7 +172,7 @@ public extension RimeContext {
       guard mode.hasSuffix("ascii_mode") else { return }
       Task {
         let mode = !mode.hasPrefix("!")
-        await self.setAsciiMode(mode)
+        self.setAsciiMode(mode)
         Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
       }
     })
@@ -196,19 +184,20 @@ public extension RimeContext {
     ))
 
     // 设置初始输入方案
-    await setupRimeInputSchema()
+    setupRimeInputSchema()
 
     // 中英状态同步
-    // await setAsciiMode(Rime.shared.isAsciiMode())
+    setAsciiMode(Rime.shared.isAsciiMode())
 
+    // TODO: Rime.shared.getHotkeys() 读取 yaml 影响加载
     // 加载Switcher切换键
-    let hotKeys = Rime.shared.getHotkeys()
-      .split(separator: ",")
-      .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
-    if !hotKeys.isEmpty {
-      self.hotKeys = hotKeys
-    }
-    Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
+    // let hotKeys = Rime.shared.getHotkeys()
+    //   .split(separator: ",")
+    //   .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+    // if !hotKeys.isEmpty {
+    //   self.hotKeys = hotKeys
+    // }
+    // Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
   }
 
   /// RIME 关闭
@@ -219,7 +208,7 @@ public extension RimeContext {
 
   /// RIME 部署
   /// 注意：仅可用于主 App 调用
-  func deployment(configuration: HamsterConfiguration) async throws {
+  func deployment(configuration: HamsterConfiguration) throws {
     // 如果开启 iCloud，则先将 iCloud 下文件增量复制到 Sandbox
     if let enableAppleCloud = configuration.general?.enableAppleCloud, enableAppleCloud == true {
       let regex = configuration.general?.regexOnCopyFile ?? []
@@ -258,7 +247,7 @@ public extension RimeContext {
     Rime.shared.shutdown()
 
     // 当用户选择输入方案如果不为空时，则取与输入方案列表的交集
-    var selectSchemas = await self.selectSchemas
+    var selectSchemas = self.selectSchemas
     if !selectSchemas.isEmpty {
       // 取交集
       let intersection = Set(schemas).intersection(selectSchemas)
@@ -276,12 +265,10 @@ public extension RimeContext {
     }
 
     /// 切换 Main 线程 修改 @MainActor 标记的属性值
-    await MainActor.run { [selectSchemas] in
-      self.schemas = schemas
-      self.selectSchemas = selectSchemas
-      resetCurrentSchema()
-      resetLatestSchema()
-    }
+    self.schemas = schemas
+    self.selectSchemas = selectSchemas
+    resetCurrentSchema()
+    resetLatestSchema()
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true
@@ -293,7 +280,7 @@ public extension RimeContext {
 
   /// RIME 同步
   /// 注意：仅可用于主 App 调用
-  func syncRime(configuration: HamsterConfiguration) async throws {
+  func syncRime(configuration: HamsterConfiguration) throws {
     // 检测文件目录是否存在不存在，新建
     try FileManager.createDirectory(override: false, dst: FileManager.sandboxSharedSupportDirectory)
     try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
@@ -329,7 +316,7 @@ public extension RimeContext {
 
   /// RIME 重置
   /// 注意：仅可用于主 App 调用
-  func restRime() async throws {
+  func restRime() throws {
     // 重置输入方案目录
     do {
       try FileManager.initSandboxSharedSupportDirectory(override: true)
@@ -350,7 +337,7 @@ public extension RimeContext {
     Rime.shared.shutdown()
 
     // 当用户选择输入方案如果不为空时，则取与输入方案列表的交集
-    var selectSchemas = await self.selectSchemas
+    var selectSchemas = self.selectSchemas
     if !selectSchemas.isEmpty {
       // 取交集
       let intersection = Set(schemas).intersection(selectSchemas)
@@ -368,9 +355,7 @@ public extension RimeContext {
     }
 
     /// 切换 Main 线程 修改 @MainActor 标记的属性值
-    await MainActor.run { [selectSchemas] in
-      guard !schemas.isEmpty else { return }
-
+    if !schemas.isEmpty {
       self.schemas = schemas
       self.selectSchemas = selectSchemas
       resetCurrentSchema()
@@ -385,7 +370,6 @@ public extension RimeContext {
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
   }
 
-  @MainActor
   var isRunning: Bool {
     Rime.shared.isRunning()
   }
@@ -395,8 +379,7 @@ public extension RimeContext {
 
 public extension RimeContext {
   /// 设置用户输入方案
-  @MainActor
-  func setupRimeInputSchema() async {
+  func setupRimeInputSchema() {
     let schema: RimeSchema
     if let currentSchema = currentSchema {
       schema = currentSchema
@@ -412,8 +395,7 @@ public extension RimeContext {
   }
 
   /// 切换最近一次输入方案
-  @MainActor
-  func switchLatestInputSchema() async {
+  func switchLatestInputSchema() {
     let latestSchema: RimeSchema
     if let schema = self.latestSchema {
       latestSchema = schema
@@ -436,24 +418,24 @@ public extension RimeContext {
   }
 
   /// 触发 RIME 的 switcher
-  func switcher() async {
+  func switcher() {
     guard !hotKeys.isEmpty else { return }
     let hotkey = hotKeys[0] // 取第一个
     let hotKeyCode = RimeContext.hotKeyCodeMapping[hotkey, default: XK_F4]
     let hotKeyModifier = RimeContext.hotKeyCodeModifiersMapping[hotkey, default: Int32(0)]
     Logger.statistics.info("rimeSwitcher hotkey = \(hotkey), hotkeyCode = \(hotKeyCode), modifier = \(hotKeyModifier)")
     _ = Rime.shared.inputKeyCode(hotKeyCode, modifier: hotKeyModifier)
-    await syncContext()
+    syncContext()
   }
 
   /// 根据索引选择候选字
-  func selectCandidate(index: Int) async {
+  func selectCandidate(index: Int) {
     _ = Rime.shared.selectCandidate(index: index)
-    await syncContext()
+    syncContext()
   }
 
   // 同步中文简繁状态
-  func syncTraditionalSimplifiedChineseMode(simplifiedModeKey: String) async {
+  func syncTraditionalSimplifiedChineseMode(simplifiedModeKey: String) {
     // 获取运行时状态
     let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
 
@@ -483,8 +465,7 @@ public extension RimeContext {
   }
 
   /// 中英切换
-  @MainActor
-  func switchEnglishChinese() async {
+  func switchEnglishChinese() {
     self.reset()
     self.asciiMode.toggle()
     let handled = Rime.shared.asciiMode(self.asciiMode)
@@ -498,14 +479,14 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入文字
    */
-  func tryHandleInputText(_ text: String) async -> Bool {
+  func tryHandleInputText(_ text: String) -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKey(text)
 
     // 处理失败则返回 inputText
     guard handled else { return false }
 
-    await self.syncContext()
+    self.syncContext()
 
     return true
   }
@@ -513,19 +494,19 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入编码
    */
-  func tryHandleInputCode(_ code: Int32) async -> Bool {
+  func tryHandleInputCode(_ code: Int32) -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKeyCode(code)
     // 处理失败则返回 inputText
     guard handled else { return false }
 
-    await self.syncContext()
+    self.syncContext()
 
     return true
   }
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
-  func syncContext() async {
+  func syncContext() {
     let context = Rime.shared.context()
     let userInputText = context.composition?.preedit ?? ""
     let commitText = Rime.shared.getCommitText()
@@ -541,16 +522,14 @@ public extension RimeContext {
 
     // 如果输入状态不是待组字阶段, 则重置输入法
     if !status.isComposing {
-      await MainActor.run { self.commitText = commitText }
-      await self.reset()
+      self.commitText = commitText
+      self.reset()
       return
     }
 
-    await MainActor.run {
-      self.commitText = commitText
-      self.userInputKey = userInputText
-      self.suggestions = candidates
-    }
+    self.commitText = commitText
+    self.userInputKey = userInputText
+    self.suggestions = candidates
   }
 
   func candidateListLimit(_ count: Int = 100) -> [CandidateSuggestion] {
@@ -570,9 +549,9 @@ public extension RimeContext {
     return result
   }
 
-  func deleteBackward() async {
+  func deleteBackward() {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
-    await self.syncContext()
+    self.syncContext()
   }
 
   /// 删除用户输入，且不需要同步 RIME 上下文
@@ -624,7 +603,6 @@ public extension RimeContext {
 
 public extension RimeContext {
   /// 获取拼音候选列表
-  @MainActor
   func getPinyinCandidates(userInputKey: String, selectPinyin: [String]) -> [String] {
     guard !userInputKey.isEmpty else { return [] }
 

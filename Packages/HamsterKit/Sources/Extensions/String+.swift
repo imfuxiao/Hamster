@@ -15,6 +15,10 @@ extension String: LocalizedError {
 }
 
 public extension String {
+  var containsChineseCharacters: Bool {
+    return self.range(of: "\\p{Han}", options: .regularExpression) != nil
+  }
+
   func isMatch(regex: String) -> Bool {
     if #available(iOS 16, *) {
       guard let r = try? Regex(regex) else { return false }

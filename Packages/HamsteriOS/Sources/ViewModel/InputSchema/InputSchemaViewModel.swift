@@ -50,14 +50,14 @@ extension InputSchemaViewModel {
 
   /// 选择 InputSchema
   func checkboxForInputSchema(_ schema: RimeSchema) async throws {
-    let selectSchemas = await rimeContext.selectSchemas
+    let selectSchemas = rimeContext.selectSchemas
     if !selectSchemas.contains(schema) {
-      await rimeContext.appendSelectSchema(schema)
+      rimeContext.appendSelectSchema(schema)
     } else {
       if selectSchemas.count == 1 {
         throw "需要保留至少一个输入方案。"
       }
-      await rimeContext.removeSelectSchema(schema)
+      rimeContext.removeSelectSchema(schema)
     }
     reloadTableStateSubject.send(true)
   }
@@ -75,7 +75,7 @@ extension InputSchemaViewModel {
       var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
       await ProgressHUD.show("方案部署中……", interaction: false)
-      try await rimeContext.deployment(configuration: hamsterConfiguration)
+      try rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
       if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserDataSupport.path) {

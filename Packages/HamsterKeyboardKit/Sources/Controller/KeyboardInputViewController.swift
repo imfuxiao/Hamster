@@ -34,7 +34,24 @@ import UIKit
  您可能会注意到，KeyboardKit 自己的视图使用初始化器参数而非环境对象。这是有意为之，以便更好地传达每个视图的依赖关系。
  */
 open class KeyboardInputViewController: UIInputViewController, KeyboardController {
+  private lazy var rootView = {
+    // 设置键盘的View
+    let keyboardRootView = KeyboardRootView(
+      keyboardLayoutProvider: keyboardLayoutProvider,
+      appearance: keyboardAppearance,
+      actionHandler: keyboardActionHandler,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
+    return keyboardRootView
+  }()
+
   // MARK: - View Controller Lifecycle ViewController 生命周期
+
+  override open func loadView() {
+    view = rootView
+  }
 
   override open func viewDidLoad() {
     super.viewDidLoad()
@@ -44,15 +61,15 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
 
-    Task {
-      await setupRIME()
-      await setupCombineRIMEInput()
+    DispatchQueue.global(qos: .background).async { [unowned self] in
+      setupRIME()
+      setupCombineRIMEInput()
     }
   }
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    viewWillSetupKeyboard()
+    // viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
     // fix: 屏幕边缘按键触摸延迟
@@ -73,9 +90,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   override open func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
 
-    Task {
-      await shutdownRIME()
-    }
+    shutdownRIME()
   }
 
   override open func viewDidLayoutSubviews() {
@@ -104,25 +119,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    默认情况下，这将设置一个 "KeyboardRootView"（系统键盘）作为主视图，但你可以覆盖它以使用自定义视图。
    */
 
-  private lazy var rootView = {
-    // 设置键盘的View
-    let keyboardRootView = KeyboardRootView(
-      keyboardLayoutProvider: keyboardLayoutProvider,
-      appearance: keyboardAppearance,
-      actionHandler: keyboardActionHandler,
-      keyboardContext: keyboardContext,
-      calloutContext: calloutContext,
-      rimeContext: rimeContext
-    )
-    return keyboardRootView
-  }()
-
   open func viewWillSetupKeyboard() {
-    let isPortrait = view.window?.screen.interfaceOrientation == .portrait
-    Logger.statistics.debug("isPortait: \(isPortrait == true ? "true" : "false")")
-    Logger.statistics.debug("window frame width: \(UIScreen.main.bounds.width)")
-    Logger.statistics.debug("view frame width: \(self.view.bounds.width)")
-
     if rootView.superview == nil {
       view.addSubview(rootView)
       rootView.fillSuperview()
@@ -498,22 +495,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
           }
         }
 
-        Task {
-          _ = rimeContext.selectPinyinList.popLast()
-          await rimeContext.syncContext()
-        }
+        _ = rimeContext.selectPinyinList.popLast()
+        rimeContext.syncContext()
       } else {
-        Task {
-          await rimeContext.deleteBackward()
-        }
+        rimeContext.deleteBackward()
       }
       return
     }
 
     // 非九宫格处理
-    Task {
-      await rimeContext.deleteBackward()
-    }
+    rimeContext.deleteBackward()
   }
 
   open func deleteBackward(times: Int) {
@@ -555,13 +546,11 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // }
 
     // rime 引擎处理
-    Task {
-      let handled = await rimeContext.tryHandleInputText(text)
-      if !handled {
-        Logger.statistics.error("try handle input text: \(text), handle false")
-        insertTextPatch(text)
-        return
-      }
+    let handled = rimeContext.tryHandleInputText(text)
+    if !handled {
+      Logger.statistics.error("try handle input text: \(text), handle false")
+      insertTextPatch(text)
+      return
     }
   }
 
@@ -610,11 +599,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func insertRimeKeyCode(_ keyCode: Int32) {
-    Task {
-      guard await rimeContext.tryHandleInputCode(keyCode) else {
-        tryHandleSpecificCode(keyCode)
-        return
-      }
+    guard rimeContext.tryHandleInputCode(keyCode) else {
+      tryHandleSpecificCode(keyCode)
+      return
     }
   }
 
@@ -844,7 +831,7 @@ private extension KeyboardInputViewController {
   /**
    RIME 引擎设置
    */
-  func setupRIME() async {
+  func setupRIME() {
     // 异步 RIME 引擎启动
     guard !rimeContext.isRunning else { return }
     Logger.statistics.debug("setup rime engine")
@@ -872,25 +859,25 @@ private extension KeyboardInputViewController {
     }
 
     if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
-      await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+      rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
     }
 
-    await rimeContext.start(hasFullAccess: hasFullAccess)
+    rimeContext.start(hasFullAccess: hasFullAccess)
     let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
-    await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+    rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
   }
 
-  func shutdownRIME() async {
+  func shutdownRIME() {
     /// 停止引擎，触发自造词等数据落盘
-    await rimeContext.shutdown()
+    rimeContext.shutdown()
 
     /// 重新启动引擎
-    await rimeContext.start(hasFullAccess: hasFullAccess)
+    rimeContext.start(hasFullAccess: hasFullAccess)
   }
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
-  func setupCombineRIMEInput() async {
-    await rimeContext.$userInputKey
+  func setupCombineRIMEInput() {
+    rimeContext.$userInputKey
       .receive(on: DispatchQueue.main)
       .sink { [weak self] inputText in
         guard let self = self else { return }

@@ -93,6 +93,11 @@ public protocol KeyboardAppearance: AnyObject {
   func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle
 
   /**
+   在给定的 `isPressed` 状态下，用于特定 `key` 的按键样式。
+   */
+  func buttonStyle(for key: Key, isPressed: Bool) -> KeyboardButtonStyle
+
+  /**
    The button text to use for a certain `action`, if any.
 
    用于特定 `action` 的按键文本（如果有）。

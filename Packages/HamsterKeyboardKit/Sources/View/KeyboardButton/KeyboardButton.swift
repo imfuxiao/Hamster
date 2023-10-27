@@ -58,9 +58,6 @@ public class KeyboardButton: UIControl {
 
   var oldBounds: CGRect = .zero
 
-  /// 按键 underPath 缓存
-  var underPathCache = [ButtonBounds: UIBezierPath]()
-
   // MARK: - touch state
 
   // 按钮按下状态
@@ -135,7 +132,6 @@ public class KeyboardButton: UIControl {
       calloutContext: calloutContext.input,
       keyboardContext: keyboardContext,
       style: inputCalloutStyle)
-    view.isHidden = true
     return view
   }()
 
@@ -144,7 +140,10 @@ public class KeyboardButton: UIControl {
   /// 按钮样式
   /// 注意：action 与 是否按下的状态 isPressed 决定按钮样式
   var buttonStyle: KeyboardButtonStyle {
-    appearance.buttonStyle(for: item.action, isPressed: isHighlighted)
+    if keyboardContext.keyboardType.isCustom, let key = item.key {
+      return appearance.buttonStyle(for: key, isPressed: isHighlighted)
+    }
+    return appearance.buttonStyle(for: item.action, isPressed: isHighlighted)
   }
 
   /// 布局配置
@@ -209,7 +208,6 @@ public class KeyboardButton: UIControl {
     super.init(frame: .zero)
 
     setupButtonContentView()
-
     combine()
   }
 
@@ -218,8 +216,13 @@ public class KeyboardButton: UIControl {
     fatalError("init(coder:) has not been implemented")
   }
 
-  deinit {
-    repeatTimer.stop()
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    if window == nil {
+      // TODO: 有概率不停止运行
+      repeatTimer.stop()
+    }
   }
 
   func combine() {
@@ -240,6 +243,7 @@ public class KeyboardButton: UIControl {
   func setupButtonContentView() {
     buttonContentView.layer.addSublayer(underShadowShape)
     addSubview(buttonContentView)
+    updateButtonStyle(isPressed: isHighlighted)
   }
 
   override public func layoutSubviews() {
@@ -253,8 +257,9 @@ public class KeyboardButton: UIControl {
       CATransaction.begin()
       CATransaction.setDisableActions(true)
 
-      /// spacer 类型不可见
-      alpha = isSpacer ? 0 : 1
+      // spacer 类型不可见
+      // alpha = isSpacer ? 0 : 1
+      isHidden = isSpacer ? true : false
 
       let bounds = oldBounds.inset(by: insets)
       buttonContentView.frame = bounds
@@ -264,34 +269,17 @@ public class KeyboardButton: UIControl {
         underShadowShape.fillColor = style.shadow?.color.cgColor
         buttonContentView.layer.cornerRadius = cornerRadius
       }
-
       CATransaction.commit()
     }
-
-    // 按键气泡
-    // 注意: InputCallout 视图是定义在父视图中，因为 button 之间会有遮盖
-    if keyboardContext.displayButtonBubbles {
-      if let superview = superview, inputCalloutView.superview == nil {
-        inputCalloutView.translatesAutoresizingMaskIntoConstraints = false
-        superview.addSubview(inputCalloutView)
-        NSLayoutConstraint.activate([
-          inputCalloutView.centerXAnchor.constraint(equalTo: centerXAnchor),
-          inputCalloutView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -insets.bottom),
-          inputCalloutView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 2, constant: -insets.left * 2 - insets.right * 2),
-          inputCalloutView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 2, constant: -insets.top * 2 - insets.bottom * 2),
-        ])
-      }
-    }
-    updateButtonStyle(isPressed: isHighlighted)
   }
 
   /// 根据按下状态更新当前按钮样式
   func updateButtonStyle(isPressed: Bool) {
     // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
-    let style = appearance.buttonStyle(for: item.action, isPressed: isPressed)
+    let style = buttonStyle
 
     // 更新按钮内容的样式
-    buttonContentView.style = style
+    buttonContentView.setStyle(style)
 
     // 按钮样式
     buttonContentView.backgroundColor = style.backgroundColor
@@ -302,11 +290,10 @@ public class KeyboardButton: UIControl {
 
     if isPressed {
       underShadowShape.opacity = 0
-      // TODO: 按键气泡重新调整
-      showInputCallout()
+      addInputCallout()
     } else {
       underShadowShape.opacity = 1
-      hideInputCallout()
+      removeInputCallout()
     }
   }
 
@@ -321,35 +308,44 @@ public class KeyboardButton: UIControl {
 // MARK: - Input Callout
 
 extension KeyboardButton {
-  func showInputCallout() {
+  /// 添加 input 按键气泡
+  func addInputCallout() {
     guard keyboardContext.displayButtonBubbles else { return }
     // 屏幕横向无按键气泡
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
     guard action.showKeyBubble else { return }
-    inputCalloutView.isHidden = false
+    guard inputCalloutView.superview == nil else { return }
+
     inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
-    inputCalloutView.updateStyle()
+
+    let insets = buttonContentInsets
+    inputCalloutView.frame = self.frame.inset(by: insets)
+    self.superview?.addSubview(inputCalloutView)
+    inputCalloutView.setNeedsLayout()
   }
 
-  func hideInputCallout() {
-    guard keyboardContext.displayButtonBubbles else { return }
-    // 屏幕横向无按键气泡
-    guard keyboardContext.interfaceOrientation.isPortrait else { return }
-    inputCalloutView.isHidden = true
+  /// 删除 input 按键气泡
+  func removeInputCallout() {
+    if inputCalloutView.superview != nil {
+      inputCalloutView.removeFromSuperview()
+    }
   }
 }
 
 // MARK: - background view style
 
 extension KeyboardButton {
+  /// 按键 underPath 缓存
+  static var underPathCache = [ButtonBounds: UIBezierPath]()
+
   /// 按钮底部深色样式路径
   func calculatorUnderPath(bounds: CGSize, cornerRadius: CGFloat) -> UIBezierPath {
     // 缓存 PATH
-    if let path = underPathCache[bounds] {
+    if let path = Self.underPathCache[bounds] {
       return path
     }
     let underPath = CAShapeLayer.underPath(size: bounds, cornerRadius: cornerRadius)
-    underPathCache[bounds] = underPath
+    Self.underPathCache[bounds] = underPath
     return underPath
   }
 }

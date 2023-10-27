@@ -17,12 +17,7 @@ import UIKit
 public class TextContentView: NibLessView {
   private let keyboardContext: KeyboardContext
   private let item: KeyboardLayoutItem
-  public var style: KeyboardButtonStyle {
-    didSet {
-      label.font = style.font?.font
-      label.textColor = style.foregroundColor
-    }
-  }
+  private var style: KeyboardButtonStyle
 
   /// 文本内容
   private var text: String
@@ -30,15 +25,13 @@ public class TextContentView: NibLessView {
   /// 是否为输入类型操作
   private let isInputAction: Bool
 
+  private var oldBounds: CGRect = .zero
+
   /// 按键 Label
   private lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
-    label.lineBreakMode = .byTruncatingTail
     label.numberOfLines = 1
-    label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.2
-    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -58,28 +51,35 @@ public class TextContentView: NibLessView {
     super.init(frame: .zero)
 
     setupTextView()
+    setupAppearance()
   }
 
   func setupTextView() {
-    constructViewHierarchy()
-    activateViewConstraints()
-
+    addSubview(label)
     label.text = text
+  }
+
+  override public func setupAppearance() {
     label.font = style.font?.font
     label.textColor = style.foregroundColor
   }
 
-  override public func constructViewHierarchy() {
-    addSubview(label)
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard self.bounds != .zero, oldBounds != self.bounds else { return }
+    self.oldBounds = self.bounds
+    self.label.frame = self.oldBounds
+    if useOffset {
+      self.label.frame = self.label.frame.offsetBy(dx: 0, dy: -1)
+      self.frame = self.frame.offsetBy(dx: 0, dy: -1)
+    }
   }
 
-  override public func activateViewConstraints() {
-    NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: centerXAnchor),
-      label.centerYAnchor.constraint(equalTo: centerYAnchor, constant: useOffset ? -2 : 0),
-      label.widthAnchor.constraint(equalTo: widthAnchor),
-      label.heightAnchor.constraint(equalTo: heightAnchor),
-    ])
+  func setStyle(_ style: KeyboardButtonStyle) {
+    guard self.style != style else { return }
+    self.style = style
+    setupAppearance()
   }
 
   func setTextValue(_ text: String) {

@@ -17,8 +17,6 @@ struct RimeDeployIntent: AppIntent {
 
   static var description = IntentDescription("仓输入法 - RIME 重新部署")
 
-  let rimeContext = HamsterAppDependencyContainer.shared.rimeContext
-
   func perform() async throws -> some ReturnsValue & ProvidesDialog {
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
     do {
@@ -42,7 +40,7 @@ struct RimeDeployIntent: AppIntent {
         }
       }
 
-      try await rimeContext.deployment(configuration: hamsterConfiguration)
+      try HamsterAppDependencyContainer.shared.rimeContext.deployment(configuration: hamsterConfiguration)
 
       // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
       if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserDataSupport.path) {

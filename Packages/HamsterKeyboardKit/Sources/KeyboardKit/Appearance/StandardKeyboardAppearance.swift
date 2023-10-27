@@ -58,7 +58,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 应用于整个键盘的背景样式。
   open var backgroundStyle: KeyboardBackgroundStyle {
     var style = KeyboardBackgroundStyle.standard
-    style.backgroundColor = .clearInteractable
+    style.backgroundColor = UIColor.white.withAlphaComponent(0.001)
 
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
@@ -244,6 +244,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 在给定的 `isPressed` 状态下，用于特定 `action` 的按键样式。
   open func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
+    let swipeFont = KeyboardFont(.system(size: 8))
+
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
       return KeyboardButtonStyle(
@@ -251,16 +253,49 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed, hamsterColor: hamsterColor),
         swipeForegroundColor: buttonSwipeForegroundColor(for: action, hamsterColor: hamsterColor),
         font: buttonFont(for: action, hamsterColor: hamsterColor),
+        swipeFont: swipeFont,
         cornerRadius: buttonCornerRadius(for: action, hamsterColor: hamsterColor),
         border: buttonBorderStyle(for: action, hamsterColor: hamsterColor),
         shadow: buttonShadowStyle(for: action, hamsterColor: hamsterColor)
       )
     }
+
     return KeyboardButtonStyle(
       backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed),
       foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed),
       swipeForegroundColor: UIColor.secondaryLabel,
       font: buttonFont(for: action),
+      swipeFont: swipeFont,
+      cornerRadius: buttonCornerRadius(for: action),
+      border: buttonBorderStyle(for: action),
+      shadow: buttonShadowStyle(for: action)
+    )
+  }
+
+  open func buttonStyle(for key: Key, isPressed: Bool) -> KeyboardButtonStyle {
+    let swipeFont = KeyboardFont(.system(size: 8))
+    let action = key.action
+
+    // 开启键盘配色
+    if let hamsterColor = hamsterColor() {
+      return KeyboardButtonStyle(
+        backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed, hamsterColor: hamsterColor),
+        foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed, hamsterColor: hamsterColor),
+        swipeForegroundColor: buttonSwipeForegroundColor(for: action, hamsterColor: hamsterColor),
+        font: buttonFont(for: key, hamsterColor: hamsterColor),
+        swipeFont: swipeFont,
+        cornerRadius: buttonCornerRadius(for: action, hamsterColor: hamsterColor),
+        border: buttonBorderStyle(for: action, hamsterColor: hamsterColor),
+        shadow: buttonShadowStyle(for: action, hamsterColor: hamsterColor)
+      )
+    }
+
+    return KeyboardButtonStyle(
+      backgroundColor: buttonBackgroundColor(for: action, isPressed: isPressed),
+      foregroundColor: buttonForegroundColor(for: action, isPressed: isPressed),
+      swipeForegroundColor: UIColor.secondaryLabel,
+      font: buttonFont(for: key),
+      swipeFont: swipeFont,
       cornerRadius: buttonCornerRadius(for: action),
       border: buttonBorderStyle(for: action),
       shadow: buttonShadowStyle(for: action)
@@ -378,11 +413,25 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     return font.weight(weight)
   }
 
+  open func buttonFont(for key: Key) -> KeyboardFont {
+    let size = buttonFontSize(for: key)
+    let font = KeyboardFont.system(size: size)
+    guard let weight = buttonFontWeight(for: key) else { return font }
+    return font.weight(weight)
+  }
+
   // TODO: 自定义配置字体
   open func buttonFont(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> KeyboardFont {
     let size = buttonFontSize(for: action)
     let font = KeyboardFont.system(size: size)
     guard let weight = buttonFontWeight(for: action) else { return font }
+    return font.weight(weight)
+  }
+
+  open func buttonFont(for key: Key, hamsterColor: HamsterKeyboardColor) -> KeyboardFont {
+    let size = buttonFontSize(for: key)
+    let font = KeyboardFont.system(size: size)
+    guard let weight = buttonFontWeight(for: key) else { return font }
     return font.weight(weight)
   }
 
@@ -397,6 +446,26 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       return 16
     }
     let text = buttonText(for: action) ?? ""
+    if action.isInputAction && text.isLowercased { return 26 }
+    if action.isSystemAction || action.isPrimaryAction { return 16 }
+    return 23
+  }
+
+  open func buttonFontSize(for key: Key) -> CGFloat {
+    let action = key.action
+
+    if action.isShortCommand {
+      return 18
+    }
+
+    if let override = buttonFontSizePadOverride(for: action) { return override }
+    if buttonImage(for: action) != nil { return 20 }
+    if let override = buttonFontSizeActionOverride(for: action) { return override }
+    if action == .returnLastKeyboard || action == .cleanSpellingArea {
+      return 16
+    }
+    let text = key.labelText
+    if action.isInputAction && text.containsChineseCharacters { return 18 }
     if action.isInputAction && text.isLowercased { return 26 }
     if action.isSystemAction || action.isPrimaryAction { return 16 }
     return 23
@@ -445,6 +514,21 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     switch action {
     case .backspace: return .regular
     case .character(let char): return char.isLowercased ? .light : nil
+    case .symbol(let symbol): return symbol.char.isLowercased ? .light : nil
+    default: return buttonImage(for: action) != nil ? .light : nil
+    }
+  }
+
+  open func buttonFontWeight(for key: Key) -> KeyboardFontWeight? {
+    let action = key.action
+    let text = key.labelText
+    if text.containsChineseCharacters {
+      return .regular
+    }
+    switch action {
+    case .backspace: return .regular
+    case .character(let char): return char.isLowercased ? .light : nil
+    case .symbol(let symbol): return symbol.char.isLowercased ? .light : nil
     default: return buttonImage(for: action) != nil ? .light : nil
     }
   }

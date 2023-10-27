@@ -40,6 +40,9 @@ public struct KeyboardButtonStyle: Equatable {
    */
   public var font: KeyboardFont?
 
+  /// 按键上划动显示的字体
+  public var swipeFont: KeyboardFont?
+
   /**
    The corner radius to apply to the button.
 
@@ -157,6 +160,7 @@ public struct KeyboardButtonStyle: Equatable {
     foregroundColor: UIColor? = nil,
     swipeForegroundColor: UIColor? = nil,
     font: KeyboardFont? = nil,
+    swipeFont: KeyboardFont? = nil,
     cornerRadius: CGFloat? = nil,
     border: KeyboardButtonBorderStyle? = nil,
     shadow: KeyboardButtonShadowStyle? = nil,
@@ -166,6 +170,7 @@ public struct KeyboardButtonStyle: Equatable {
     self.foregroundColor = foregroundColor
     self.swipeForegroundColor = swipeForegroundColor
     self.font = font
+    self.swipeFont = swipeFont
     self.cornerRadius = cornerRadius
     self.borderColor = border?.color
     self.borderSize = border?.size

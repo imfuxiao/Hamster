@@ -226,11 +226,21 @@ class KeyboardRootView: NibLessView {
 
     super.init(frame: .zero)
 
+    // Test
+//    let view = UIView()
+//    view.frame = CGRect(origin: .zero, size: CGSize(width: 100, height: 100))
+//    view.backgroundColor = .yellow
+//    addSubview(view)
+
     constructViewHierarchy()
     activateViewConstraints()
     setupAppearance()
 
     combine()
+  }
+
+  override func setupAppearance() {
+    backgroundColor = appearance.backgroundStyle.backgroundColor
   }
 
   // MARK: - Layout
@@ -264,10 +274,6 @@ class KeyboardRootView: NibLessView {
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
-  }
-
-  override func setupAppearance() {
-    backgroundColor = appearance.backgroundStyle.backgroundColor
   }
 
   /// 工具栏静态约束（不会发生变动）

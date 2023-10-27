@@ -16,13 +16,8 @@ class SpaceContentView: NibLessView {
   private var spaceText: String
   private var subscriptions = Set<AnyCancellable>()
   private var asciiState: Bool
-
-  public var style: KeyboardButtonStyle {
-    didSet {
-      loadingLabel.textColor = style.foregroundColor
-      textView.style = style
-    }
-  }
+  private var style: KeyboardButtonStyle
+  private var oldBounds: CGRect = .zero
 
   private lazy var loadingLabel: UILabel = {
     let label = UILabel(frame: .zero)
@@ -91,7 +86,6 @@ class SpaceContentView: NibLessView {
     super.init(frame: .zero)
 
     setupView()
-
     combine()
   }
 
@@ -99,18 +93,37 @@ class SpaceContentView: NibLessView {
     /// 数字键盘不显示加载文字
     if !isShowLoadingText {
       addSubview(textView)
-      textView.fillSuperview()
       return
     }
 
+    loadingLabel.textColor = style.foregroundColor
     loadingLabel.font = style.font?.font
     loadingLabel.alpha = showLoadingTextAlphaValue
     addSubview(loadingLabel)
-    loadingLabel.fillSuperview()
 
     textView.alpha = showTextViewAlphaValue
     addSubview(textView)
-    textView.fillSuperview()
+  }
+
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    guard self.bounds != .zero, self.bounds != oldBounds else { return }
+
+    self.oldBounds = self.bounds
+    loadingLabel.frame = oldBounds
+    textView.frame = oldBounds
+  }
+
+  override func setupAppearance() {
+    loadingLabel.textColor = style.foregroundColor
+    textView.setStyle(style)
+  }
+
+  func setStyle(_ style: KeyboardButtonStyle) {
+    guard self.style != style else { return }
+    self.style = style
+    setupAppearance()
   }
 
   var showLoadingTextAlphaValue: CGFloat {
@@ -124,43 +137,40 @@ class SpaceContentView: NibLessView {
   }
 
   func combine() {
-    Task {
-      await rimeContext.$asciiMode
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] in
-          guard let self = self else { return }
-          guard self.asciiState != $0 else { return }
-          self.asciiState = $0
-          loadingLabel.text = self.asciiState == false ? "中" : "英"
-          self.textView.alpha = 0
-          self.loadingLabel.alpha = 1
-          loadingAnimate()
-        }
-        .store(in: &subscriptions)
-    }
-    Task {
-      await rimeContext.$currentSchema
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] in
-          guard let self = self else { return }
-          guard let schema = $0 else { return }
-          guard !keyboardContext.keyboardType.isNumber else { return }
+    rimeContext.$asciiMode
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
+        guard self.asciiState != $0 else { return }
+        self.asciiState = $0
+        loadingLabel.text = self.asciiState == false ? "中" : "英"
+        self.textView.alpha = 0
+        self.loadingLabel.alpha = 1
+        loadingAnimate()
+      }
+      .store(in: &subscriptions)
 
-          if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
-            if loadingLabel.text != schema.schemaName {
-              loadingLabel.text = schema.schemaName
-              self.textView.alpha = 0
-              self.loadingLabel.alpha = 1
-              loadingAnimate()
-            }
-          }
+    rimeContext.$currentSchema
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
+        guard let schema = $0 else { return }
+        guard !keyboardContext.keyboardType.isNumber else { return }
 
-          if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-            textView.setTextValue(schema.schemaName)
+        if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
+          if loadingLabel.text != schema.schemaName {
+            loadingLabel.text = schema.schemaName
+            self.textView.alpha = 0
+            self.loadingLabel.alpha = 1
+            loadingAnimate()
           }
         }
-        .store(in: &subscriptions)
-    }
+
+        if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
+          textView.setTextValue(schema.schemaName)
+        }
+      }
+      .store(in: &subscriptions)
   }
 
   override func didMoveToWindow() {

@@ -136,27 +136,25 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 
   func combine() {
-    Task {
-      await self.rimeContext.$suggestions
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] candidates in
-          guard let self = self else { return }
+    self.rimeContext.$suggestions
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] candidates in
+        guard let self = self else { return }
 
-          Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
+        Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
 
-          var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-          snapshot.appendSections([0])
-          snapshot.appendItems(candidates, toSection: 0)
-          diffableDataSource.apply(snapshot, animatingDifferences: false)
-          if !candidates.isEmpty {
-            let invalidateContext = self.collectionViewLayout.invalidationContext(forBoundsChange: self.bounds)
-            self.collectionViewLayout.invalidateLayout(with: invalidateContext)
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(candidates, toSection: 0)
+        diffableDataSource.apply(snapshot, animatingDifferences: false)
+        if !candidates.isEmpty {
+          let invalidateContext = self.collectionViewLayout.invalidationContext(forBoundsChange: self.bounds)
+          self.collectionViewLayout.invalidateLayout(with: invalidateContext)
 
-            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
-          }
+          self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
         }
-        .store(in: &subscriptions)
-    }
+      }
+      .store(in: &subscriptions)
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)
@@ -199,12 +197,10 @@ public class CandidateWordsCollectionView: UICollectionView {
 
 extension CandidateWordsCollectionView: UICollectionViewDelegate {
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    Task {
-      // 用于触发反馈
-      actionHandler.handle(.press, on: .none)
-      await self.rimeContext.selectCandidate(index: indexPath.item)
-      keyboardContext.candidatesViewState = .collapse
-    }
+    // 用于触发反馈
+    actionHandler.handle(.press, on: .none)
+    self.rimeContext.selectCandidate(index: indexPath.item)
+    keyboardContext.candidatesViewState = .collapse
   }
 
   public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {

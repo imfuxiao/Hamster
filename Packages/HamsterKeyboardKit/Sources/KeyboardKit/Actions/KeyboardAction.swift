@@ -256,7 +256,14 @@ public extension KeyboardAction {
     default: return false
     }
   }
-    
+
+  var isShortCommand: Bool {
+    switch self {
+    case .shortCommand: return true
+    default: return false
+    }
+  }
+
   /**
    Whether or not the action is a primary action.
    
