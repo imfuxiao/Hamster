@@ -141,7 +141,13 @@ public struct Key: Codable, Hashable {
     } else if let width = try? container.decode(KeyWidth.self, forKey: .width) {
       self.width = width
     } else {
-      self.width = .input
+      // 占位键如果没有设置宽度，则为 available, 其他类型默认为 input 类型宽度
+      if self.action.isSpacer {
+        self.width = .available
+        self.label = .empty
+      } else {
+        self.width = .input
+      }
     }
 
     if let label = try? container.decode(String.self, forKey: .label) {
@@ -162,12 +168,6 @@ public struct Key: Codable, Hashable {
       self.swipe = swipe
     } else {
       self.swipe = []
-    }
-
-    // 占位键重置属性
-    if self.action.isSpacer {
-      self.width = .available
-      self.label = .empty
     }
   }
 
