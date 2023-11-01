@@ -80,7 +80,7 @@ extension InputSchemaRootView: UITableViewDelegate {
         let schema = inputSchemaViewModel.rimeContext.schemas[indexPath.row]
         try await inputSchemaViewModel.checkboxForInputSchema(schema)
       } catch {
-        ProgressHUD.showError(error.localizedDescription, delay: 1.5)
+        ProgressHUD.failed(error.localizedDescription, delay: 1.5)
       }
     }
   }

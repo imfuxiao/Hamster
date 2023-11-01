@@ -23,12 +23,38 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
     return view
   }()
 
-  private lazy var swipeListView: SwipeListView = {
-    let view = SwipeListView(
-      loadDataSource: {
-        $0.apply(keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource())
+  public lazy var diffableDataSource: UICollectionViewDiffableDataSource<Int, Key> = {
+    let cellRegistration = UICollectionView.CellRegistration<SwipeSettingsCell, Key> { cell, _, item in
+      cell.updateWithKey(item)
+    }
+
+    return UICollectionViewDiffableDataSource(collectionView: swipeListView) { collectionView, indexPath, item in
+      collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+    }
+  }()
+
+  public lazy var collectionLayout: UICollectionViewLayout = {
+    var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
+    configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+      guard let self = self else { return UISwipeActionsConfiguration(actions: []) }
+
+      let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, completion in
+        var keys = self.keyboardSettingsViewModel.chineseStanderSystemKeyboardSwipeList
+        guard keys.count > indexPath.item else { return }
+        keys.remove(at: indexPath.item)
+        self.keyboardSettingsViewModel.chineseStanderSystemKeyboardSwipeList = keys
+        self.reloadSwipeList()
+        completion(true)
       }
-    )
+
+      return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+    return layout
+  }()
+
+  private lazy var swipeListView: SwipeListView = {
+    let view = SwipeListView(frame: .zero, collectionViewLayout: collectionLayout)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.delegate = self
     return view
@@ -83,7 +109,7 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
     var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
     snapshot.appendSections([0])
     snapshot.appendItems(items, toSection: 0)
-    swipeListView.diffableDataSource.apply(snapshot)
+    diffableDataSource.apply(snapshot)
   }
 }
 
@@ -91,7 +117,7 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
 
 extension ChineseStanderSystemKeyboardSwipeSettingsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let key = swipeListView.diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    let key = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     keyboardSettingsViewModel.keySwipeSettingsActionSubject.send((key, .chinese(.lowercased)))
     collectionView.deselectItem(at: indexPath, animated: false)
   }
@@ -104,16 +130,16 @@ extension ChineseStanderSystemKeyboardSwipeSettingsView: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     if searchText.isEmpty {
       let snapshot = keyboardSettingsViewModel.initChineseStanderSystemKeyboardSwipeDataSource()
-      swipeListView.diffableDataSource.apply(snapshot)
+      diffableDataSource.apply(snapshot)
       return
     }
-    let items = swipeListView.diffableDataSource.snapshot(for: 0)
+    let items = diffableDataSource.snapshot(for: 0)
       .items
       .filter { $0.action.labelText.uppercased().contains(searchText.uppercased()) }
 
     var snapshot = NSDiffableDataSourceSnapshot<Int, Key>()
     snapshot.appendSections([0])
     snapshot.appendItems(items, toSection: 0)
-    swipeListView.diffableDataSource.apply(snapshot)
+    diffableDataSource.apply(snapshot)
   }
 }

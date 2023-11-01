@@ -42,17 +42,27 @@ public class SettingsRootView: NibLessView {
     // 注意：后续的动态变化将在 combine() 方法中，通过观测 UserDefaults.favoriteButtonSubject 值完成
     let favoriteButtons = UserDefaults.standard.getFavoriteButtons()
     if !favoriteButtons.isEmpty {
-      let favoriteButtonSectionItems = favoriteButtons.compactMap {
-        if let item = rimeViewModel.favoriteButtonSettings[$0] {
-          return item
-        } else if let item = backupViewModel.favoriteButtonSettings[$0] {
+      let favoriteButtonSectionItems = favoriteButtons
+        .compactMap {
+          if let item = rimeViewModel.favoriteButtonSettings[$0] {
+            return item
+          } else if let item = backupViewModel.favoriteButtonSettings[$0] {
+            return item
+          }
+          return nil
+        }
+        .map { [unowned self] item in
+          var item = item
+          let buttonAction = item.buttonAction
+          item.buttonAction = {
+            try? await buttonAction?()
+            self.tableView.reloadData()
+          }
           return item
         }
-        return nil
-      }
 
-      let sectionsContaintFavoriteButtons = settingsViewModel.sections[0].items[0].type == .button
-      if sectionsContaintFavoriteButtons {
+      let sectionsContainerFavoriteButtons = settingsViewModel.sections[0].items[0].type == .button
+      if sectionsContainerFavoriteButtons {
         settingsViewModel.sections[0].items = favoriteButtonSectionItems
       } else {
         settingsViewModel.sections = [SettingSectionModel(items: favoriteButtonSectionItems)] + settingsViewModel.sections
@@ -84,11 +94,11 @@ public class SettingsRootView: NibLessView {
       .sink { [unowned self] favoriteButtons in
         // 注意: 这里使用了集合的第一个元素类型收来判断是否已经存在收藏按钮 section
         // 因为收藏按钮始终添加在第 0 个 section
-        let sectionsContaintFavoriteButtons = settingsViewModel.sections[0].items[0].type == .button
+        let sectionsContainerFavoriteButtons = settingsViewModel.sections[0].items[0].type == .button
 
         // 收藏按钮为空，但集合中却包含，则删除
         if favoriteButtons.isEmpty {
-          if sectionsContaintFavoriteButtons {
+          if sectionsContainerFavoriteButtons {
             settingsViewModel.sections.remove(at: 0)
             tableView.reloadData()
           }
@@ -104,7 +114,7 @@ public class SettingsRootView: NibLessView {
           return nil
         }
 
-        if sectionsContaintFavoriteButtons {
+        if sectionsContainerFavoriteButtons {
           settingsViewModel.sections[0].items = favoriteButtonSectionItems
         } else {
           settingsViewModel.sections = [SettingSectionModel(items: favoriteButtonSectionItems)] + settingsViewModel.sections

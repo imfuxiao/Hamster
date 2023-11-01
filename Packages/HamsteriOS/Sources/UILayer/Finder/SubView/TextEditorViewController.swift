@@ -99,11 +99,11 @@ extension TextEditorViewController {
     let fileContent = textView.text
     do {
       try fileContent.write(toFile: fileURL.path, atomically: true, encoding: .utf8)
-      ProgressHUD.showSuccess("保存成功")
+      ProgressHUD.success("保存成功")
       navigationController?.popViewController(animated: true)
     } catch {
       Logger.statistics.debug("TextEditorView save error: \(error.localizedDescription)")
-      ProgressHUD.showError("保存失败", delay: 1.5)
+      ProgressHUD.failed("保存失败", delay: 1.5)
     }
   }
 }

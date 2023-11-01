@@ -76,11 +76,13 @@ public class ButtonTableViewCell: NibLessTableViewCell {
   }
 
   @objc func buttonHandled() {
-    do {
-      try settingItem.buttonAction?()
-    } catch {
-      Logger.statistics.error("\(#file) error: \(error)")
-      ProgressHUD.showError("操作异常：\(error.localizedDescription)", delay: 1.5)
+    Task {
+      do {
+        try await settingItem.buttonAction?()
+      } catch {
+        Logger.statistics.error("\(#file) error: \(error)")
+        ProgressHUD.failed("操作异常：\(error.localizedDescription)", delay: 1.5)
+      }
     }
   }
 }

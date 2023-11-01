@@ -26,7 +26,7 @@ public struct SettingItemModel: Hashable, Identifiable {
   public var textFieldShouldBeginEditing: Bool
   public var textHandled: ((String) -> Void)?
   public var shouldBeginEditing: ((UITextField) -> Bool)?
-  public var buttonAction: (() throws -> Void)?
+  public var buttonAction: (() async throws -> Void)?
   public var favoriteButton: FavoriteButton?
   public var favoriteButtonHandler: (() -> Void)?
   public var pullDownMenuActionsBuilder: (() -> [UIAction])?
@@ -48,7 +48,7 @@ public struct SettingItemModel: Hashable, Identifiable {
     textFieldShouldBeginEditing: Bool = true,
     textHandled: ((String) -> Void)? = nil,
     shouldBeginEditing: ((UITextField) -> Bool)? = nil,
-    buttonAction: (() throws -> Void)? = nil,
+    buttonAction: (() async throws -> Void)? = nil,
     favoriteButton: FavoriteButton? = nil,
     favoriteButtonHandler: (() -> Void)? = nil,
     pullDownMenuActionsBuilder: (() -> [UIAction])? = nil

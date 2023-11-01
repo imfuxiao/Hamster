@@ -38,7 +38,7 @@ class AddKeySwipeViewController: NibLessViewController {
         if option == .character || option == .symbol {
           alertText(alertTitle: "字符", submitTitle: "保存", submitCallback: { textField in
             guard let char = textField.text, !char.isEmpty else {
-              ProgressHUD.showError("字符不能为空")
+              ProgressHUD.failed("字符不能为空")
               return
             }
             let action: KeyboardAction = option == .character ? .character(char) : .symbol(Symbol(char: char))
@@ -74,7 +74,7 @@ class AddKeySwipeViewController: NibLessViewController {
                 }
 
                 guard let keyboardTypeOption = keyboardTypeOption.keyboardType else {
-                  ProgressHUD.showError("无对应的键盘类型")
+                  ProgressHUD.failed("无对应的键盘类型")
                   return
                 }
 

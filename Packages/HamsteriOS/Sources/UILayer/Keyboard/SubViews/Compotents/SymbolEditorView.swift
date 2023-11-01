@@ -168,7 +168,7 @@ extension SymbolEditorView {
     if lastSymbol.isEmpty, !symbols.isEmpty {
       let indexPath = IndexPath(row: symbols.count - 1, section: 0)
       if let cell = tableView.cellForRow(at: indexPath), let textCell = cell as? TextFieldTableViewCell {
-        ProgressHUD.showAdded("我在这", interaction: false, delay: 1)
+        ProgressHUD.added("我在这", interaction: false, delay: 1)
         textCell.textField.becomeFirstResponder()
       }
       return
@@ -198,9 +198,9 @@ extension SymbolEditorView {
   @objc func restSymbols() {
     do {
       try restButtonAction?()
-      ProgressHUD.showSucceed("重置成功", interaction: false, delay: 1.5)
+      ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
     } catch {
-      ProgressHUD.showError("重置失败", interaction: false, delay: 1.5)
+      ProgressHUD.failed("重置失败", interaction: false, delay: 1.5)
     }
   }
 }

@@ -38,7 +38,7 @@ public class AboutViewModel: ObservableObject {
       }
     case .copy:
       UIPasteboard.general.string = cellInfo.secondaryText
-      ProgressHUD.showSuccess("复制成功", interaction: false, delay: 1.5)
+      ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
     default:
       break
     }

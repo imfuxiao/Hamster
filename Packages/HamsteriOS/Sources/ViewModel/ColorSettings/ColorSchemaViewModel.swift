@@ -18,6 +18,7 @@ class KeyboardColorViewModel {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableColorSchema = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableColorSchema = newValue
     }
   }
 
@@ -27,6 +28,7 @@ class KeyboardColorViewModel {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForLight = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.useColorSchemaForLight = newValue
     }
   }
 
@@ -36,6 +38,7 @@ class KeyboardColorViewModel {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.useColorSchemaForDark = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.useColorSchemaForDark = newValue
     }
   }
 

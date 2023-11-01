@@ -119,7 +119,7 @@ extension UploadInputSchemaRootView: UITableViewDelegate {
     if indexPath.section == 0, indexPath.row == 0 {
       if let ip = UIDevice.current.getAddress() {
         UIPasteboard.general.string = "http://\(ip)"
-        ProgressHUD.showSuccess("复制成功", delay: 1.5)
+        ProgressHUD.success("复制成功", delay: 1.5)
       }
     }
     tableView.deselectRow(at: indexPath, animated: true)

@@ -42,6 +42,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displayButtonBubbles = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displayButtonBubbles = newValue
     }
   }
 
@@ -51,6 +52,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.upSwipeOnLeft = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.upSwipeOnLeft = newValue
     }
   }
 
@@ -60,6 +62,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownLayout = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.swipeLabelUpAndDownLayout = newValue
     }
   }
 
@@ -69,6 +72,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableEmbeddedInputMode = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableEmbeddedInputMode = newValue
     }
   }
 
@@ -78,6 +82,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.lockShiftState = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.lockShiftState = newValue
     }
   }
 
@@ -87,6 +92,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceLeftButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displaySpaceLeftButton = newValue
     }
   }
 
@@ -96,6 +102,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceLeftButtonProcessByRIME = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.spaceLeftButtonProcessByRIME = newValue
     }
   }
 
@@ -105,6 +112,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceLeftButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.keyValueOfSpaceLeftButton = newValue
     }
   }
 
@@ -114,6 +122,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceRightButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displaySpaceRightButton = newValue
     }
   }
 
@@ -123,6 +132,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.spaceRightButtonProcessByRIME = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.spaceRightButtonProcessByRIME = newValue
     }
   }
 
@@ -132,6 +142,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceRightButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.keyValueOfSpaceRightButton = newValue
     }
   }
 
@@ -141,6 +152,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displayChineseEnglishSwitchButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displayChineseEnglishSwitchButton = newValue
     }
   }
 
@@ -150,6 +162,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = newValue
     }
   }
 
@@ -159,6 +172,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.enableToolbar = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.enableToolbar = newValue
     }
   }
 
@@ -168,6 +182,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displaySemicolonButton = newValue
     }
   }
 
@@ -177,6 +192,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displayClassifySymbolButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.displayClassifySymbolButton = newValue
     }
   }
 
@@ -186,6 +202,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableNineGridOfNumericKeyboard = newValue
     }
   }
 
@@ -195,6 +212,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
     }
   }
 
@@ -204,6 +222,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableSymbolKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableSymbolKeyboard = newValue
     }
   }
 
@@ -213,6 +232,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.candidateWordFontSize = newValue
     }
   }
 
@@ -222,6 +242,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfToolbar = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.heightOfToolbar = newValue
     }
   }
 
@@ -231,6 +252,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfCodingArea = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.heightOfCodingArea = newValue
     }
   }
 
@@ -240,6 +262,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.codingAreaFontSize = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.codingAreaFontSize = newValue
     }
   }
 
@@ -249,6 +272,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.candidateCommentFontSize = newValue
     }
   }
 
@@ -258,6 +282,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.displayAppIconButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.displayAppIconButton = newValue
     }
   }
 
@@ -267,6 +292,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.displayKeyboardDismissButton = newValue
     }
   }
 
@@ -276,6 +302,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.displayIndexOfCandidateWord = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.displayIndexOfCandidateWord = newValue
     }
   }
 
@@ -285,6 +312,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.displayCommentOfCandidateWord = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.displayCommentOfCandidateWord = newValue
     }
   }
 
@@ -294,6 +322,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.rime?.maximumNumberOfCandidateWords = newValue
     }
   }
 
@@ -303,6 +332,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard = newValue
     }
   }
 
@@ -312,6 +342,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.pairsOfSymbols = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.pairsOfSymbols = newValue
     }
   }
 
@@ -321,6 +352,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfCursorBack = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.symbolsOfCursorBack = newValue
     }
   }
 
@@ -330,6 +362,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfReturnToMainKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.symbolsOfReturnToMainKeyboard = newValue
     }
   }
 
@@ -339,6 +372,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.symbolsOfChineseNineGridKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.symbolsOfChineseNineGridKeyboard = newValue
     }
   }
 
@@ -349,6 +383,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableLoadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableLoadingTextForSpaceButton = newValue
     }
   }
 
@@ -359,6 +394,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.loadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.loadingTextForSpaceButton = newValue
     }
   }
 
@@ -369,6 +405,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.labelTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.labelTextForSpaceButton = newValue
     }
   }
 
@@ -380,6 +417,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.showCurrentInputSchemaNameForSpaceButton = newValue
     }
   }
 
@@ -391,14 +429,32 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = newValue
     }
   }
 
   /// 中文标准键盘默认划动选项
   public var chineseStanderSystemKeyboardSwipeList: [Key] {
-    HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
-      .first(where: { $0.keyboardType?.isChinesePrimaryKeyboard ?? false })?
-      .keys ?? []
+    get {
+      HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?
+        .first(where: { $0.keyboardType?.isChinesePrimaryKeyboard ?? false })?
+        .keys ?? []
+    }
+    set {
+      if let index = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?.firstIndex(where: { $0.keyboardType?.isChinesePrimaryKeyboard ?? false }) {
+        HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe![index] = .init(keyboardType: .chinese(.lowercased), keys: newValue)
+        HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.keyboardSwipe = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe
+      } else {
+        if var keyboardSwipe = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe {
+          keyboardSwipe.append(.init(keyboardType: .chinese(.lowercased), keys: newValue))
+          HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = keyboardSwipe
+          HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.keyboardSwipe = keyboardSwipe
+        } else {
+          HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = [.init(keyboardType: .chinese(.lowercased), keys: newValue)]
+          HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.keyboardSwipe = [.init(keyboardType: .chinese(.lowercased), keys: newValue)]
+        }
+      }
+    }
   }
 
   /// 选择键盘类型
@@ -411,10 +467,12 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       if case .custom(let named, _) = keyboardType {
         if !named.isEmpty {
           HamsterAppDependencyContainer.shared.configuration.keyboard?.useKeyboardType = keyboardType.yamlString
+          HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.useKeyboardType = keyboardType.yamlString
         }
         return
       }
       HamsterAppDependencyContainer.shared.configuration.keyboard?.useKeyboardType = keyboardType.yamlString
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.useKeyboardType = keyboardType.yamlString
     }
   }
 
@@ -851,7 +909,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard {
           self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
           resetSignSubject.send(true)
-          ProgressHUD.showSuccess("重置成功")
+          await ProgressHUD.success("重置成功")
         }
       })
   ]
@@ -1063,7 +1121,7 @@ extension KeyboardSettingsViewModel {
   /// 导入自定义键盘布局
   public func importCustomizeKeyboardLayout(fileURL: URL) async {
     Logger.statistics.debug("importCustomizeKeyboardLayout fileName: \(fileURL.path)")
-    await ProgressHUD.show("导入中……", interaction: false)
+    await ProgressHUD.animate("导入中……", interaction: false)
     // 检测是否为iCloudURL, 需要特殊处理
     var needAccessingSecurity = false
     if fileURL.path.contains("com~apple~CloudDocs") || fileURL.path.contains("iCloud~dev~fuxiao~app~hamsterapp") {
@@ -1071,7 +1129,7 @@ extension KeyboardSettingsViewModel {
       // iCloud中的URL须添加安全访问资源语句，否则会异常：Operation not permitted
       // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
       if !fileURL.startAccessingSecurityScopedResource() {
-        await ProgressHUD.showError("导入文件读取受限，无法加载文件", interaction: false, delay: 1.5)
+        await ProgressHUD.failed("导入文件读取受限，无法加载文件", interaction: false, delay: 1.5)
         return
       }
     }
@@ -1096,12 +1154,13 @@ extension KeyboardSettingsViewModel {
         }
 
       HamsterAppDependencyContainer.shared.configuration.keyboards = originalKeyboards + keyboards.keyboards
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboards = originalKeyboards + keyboards.keyboards
 
-      await ProgressHUD.showSuccess("导入成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("导入成功", interaction: false, delay: 1.5)
       reloadRootViewSubject.send(true)
     } catch {
       Logger.statistics.error("importCustomizeKeyboardLayout error: \(error)")
-      await ProgressHUD.showError("自定义键盘配置文件加载失败", interaction: false, delay: 1.5)
+      await ProgressHUD.failed("自定义键盘配置文件加载失败", interaction: false, delay: 1.5)
       return
     }
   }
@@ -1112,10 +1171,11 @@ extension KeyboardSettingsViewModel {
     if let index = keyboards.firstIndex(where: { $0.type == keyboardType }) {
       keyboards.remove(at: index)
       HamsterAppDependencyContainer.shared.configuration.keyboards = keyboards
-      ProgressHUD.showSuccess("删除成功", interaction: false, delay: 1.5)
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboards = keyboards
+      ProgressHUD.success("删除成功", interaction: false, delay: 1.5)
       reloadRootViewSubject.send(true)
     } else {
-      ProgressHUD.showFailed("未找到此键盘", interaction: false, delay: 1.5)
+      ProgressHUD.failed("未找到此键盘", interaction: false, delay: 1.5)
     }
   }
 }
@@ -1207,7 +1267,7 @@ extension KeyboardSettingsViewModel {
               .map { direction in
                 UIAction(title: direction.labelText) { _ in
                   if let _ = key.swipe.first(where: { swipe in swipe.direction == direction }) {
-                    ProgressHUD.showError("划动方向:\(direction.labelText) 配置已存在")
+                    ProgressHUD.failed("划动方向:\(direction.labelText) 配置已存在")
                     return
                   }
                   setDirection(direction)
@@ -1281,7 +1341,7 @@ extension KeyboardSettingsViewModel {
                 // 删除原先的滑动方向配置
                 key.swipe.removeAll(where: { $0.direction == swipe.direction })
                 guard !key.swipe.contains(where: { $0.direction == direction }) else {
-                  ProgressHUD.showError("划动方向：\(direction.labelText) 已存在。")
+                  ProgressHUD.failed("划动方向：\(direction.labelText) 已存在。")
                   return
                 }
                 swipe.direction = direction
@@ -1373,6 +1433,7 @@ extension KeyboardSettingsViewModel {
       keyboardSwipe.removeAll(where: { $0.keyboardType == keyboardType })
       keyboardSwipe.append(keyboard)
       HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = keyboardSwipe
+      HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.keyboardSwipe = keyboardSwipe
     }
   }
 
@@ -1389,6 +1450,7 @@ extension KeyboardSettingsViewModel {
       keyboardSwipe.removeAll(where: { $0.keyboardType == keyboardType })
       keyboardSwipe.append(keyboard)
       HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe = keyboardSwipe
+      HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.keyboardSwipe = keyboardSwipe
     }
   }
 

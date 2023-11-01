@@ -208,7 +208,7 @@ public extension RimeContext {
 
   /// RIME 部署
   /// 注意：仅可用于主 App 调用
-  func deployment(configuration: HamsterConfiguration) throws {
+  func deployment(configuration: inout HamsterConfiguration) throws {
     // 如果开启 iCloud，则先将 iCloud 下文件增量复制到 Sandbox
     if let enableAppleCloud = configuration.general?.enableAppleCloud, enableAppleCloud == true {
       let regex = configuration.general?.regexOnCopyFile ?? []
@@ -264,11 +264,38 @@ public extension RimeContext {
       }
     }
 
-    /// 切换 Main 线程 修改 @MainActor 标记的属性值
     self.schemas = schemas
     self.selectSchemas = selectSchemas
     resetCurrentSchema()
     resetLatestSchema()
+
+    // 读取 SharedSupport/hamster.yaml 配置文件，如果存在
+    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnSandboxSharedSupport.path) {
+      configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
+    }
+
+    // 读取 Rime/hamster.yaml 配置文件，如果存在，则 merge 不同属性，已 Rime/hamster.yaml 内容为主
+    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserData.path) {
+      let config = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserData)
+      configuration = try configuration.merge(with: config, uniquingKeysWith: { _, configValue in configValue })
+    }
+
+    // 读取 Rime/hamster.custom.yaml 配置文件，如果存在，并对相异的配置做 merge 合并，已 Rime/hamster.custom.yaml 文件为主
+    if FileManager.default.fileExists(atPath: FileManager.hamsterPatchConfigFileOnUserData.path) {
+      let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserData)
+      if let patch = patchConfiguration.patch {
+        configuration = try configuration.merge(
+          with: patch,
+          uniquingKeysWith: { _, patchValue in patchValue }
+        )
+      }
+    }
+
+    // 读取 Rime/hamster.app.yaml 配置文件, 如果存在，并对相异的配置做 merge 合并，已 Rime/hamster.app.yaml 文件为主
+    if FileManager.default.fileExists(atPath: FileManager.hamsterAppConfigFileOnUserData.path) {
+      let appConfig = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData)
+      configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
+    }
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true
@@ -361,6 +388,7 @@ public extension RimeContext {
       resetCurrentSchema()
       resetLatestSchema()
     }
+
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true

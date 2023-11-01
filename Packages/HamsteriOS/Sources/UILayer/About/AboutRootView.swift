@@ -122,7 +122,7 @@ class AboutRootView: NibLessView {
 
   @objc func copyAppVersion() {
     UIPasteboard.general.string = AppInfo.appVersion
-    ProgressHUD.showSuccess("复制成功", interaction: false, delay: 1.5)
+    ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
   }
 }
 

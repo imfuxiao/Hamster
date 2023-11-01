@@ -66,7 +66,7 @@ extension InputSchemaViewModel {
   public func importZipFile(fileURL: URL) async {
     Logger.statistics.debug("file.fileName: \(fileURL.path)")
 
-    await ProgressHUD.show("方案导入中……", interaction: false)
+    await ProgressHUD.animate("方案导入中……", interaction: false)
     do {
       // 检测 Rime 目录是否存在
       try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
@@ -74,31 +74,15 @@ extension InputSchemaViewModel {
 
       var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
-      await ProgressHUD.show("方案部署中……", interaction: false)
-      try rimeContext.deployment(configuration: hamsterConfiguration)
+      await ProgressHUD.success("方案部署中……", interaction: false)
+      try rimeContext.deployment(configuration: &hamsterConfiguration)
 
-      // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
-      if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserDataSupport.path) {
-        hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
-      }
-
-      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，
-      // 并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
-      if FileManager.default.fileExists(atPath: FileManager.hamsterPatchConfigFileOnUserDataSupport.path) {
-        let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
-        if let configuration = patchConfiguration.patch {
-          hamsterConfiguration = try hamsterConfiguration.merge(
-            with: configuration,
-            uniquingKeysWith: { _, patchValue in patchValue }
-          )
-        }
-      }
 
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       // 发布
       reloadTableStateSubject.send(true)
-      await ProgressHUD.showSuccess("导入成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("导入成功", interaction: false, delay: 1.5)
     } catch {
       await ProgressHUD.dismiss()
       Logger.statistics.debug("zip \(error)")

@@ -82,11 +82,11 @@ class AddKeySwipeRootView: NibLessView {
       },
       saveHandle: { [unowned self] in
         if let _ = key.swipe.first(where: { swipe in swipe.direction == keySwipe.direction }) {
-          ProgressHUD.showError("划动方向:\(keySwipe.direction.labelText) 配置已存在")
+          ProgressHUD.failed("划动方向:\(keySwipe.direction.labelText) 配置已存在")
           return
         }
         if keySwipe.action == .none {
-          ProgressHUD.showError("划动Action不能为空")
+          ProgressHUD.failed("划动Action不能为空")
           return
         }
 

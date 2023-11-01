@@ -100,7 +100,7 @@ class KeySwipeSettingsViewController: NibLessViewController {
                 }
 
                 guard let keyboardTypeOption = keyboardTypeOption.keyboardType else {
-                  ProgressHUD.showError("无对应的键盘类型")
+                  ProgressHUD.failed("无对应的键盘类型")
                   return
                 }
 

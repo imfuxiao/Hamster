@@ -43,7 +43,7 @@ public extension SettingsViewController {
       do {
         try await self.settingsViewModel.loadAppData()
       } catch {
-        ProgressHUD.showError("导入数据异常", interaction: false, delay: 2)
+        ProgressHUD.failed("导入数据异常", interaction: false, delay: 2)
         Logger.statistics.error("load app data error: \(error)")
       }
     }

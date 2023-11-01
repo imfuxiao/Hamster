@@ -31,6 +31,48 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
 
   /// 内置键盘滑动配置
   public var keyboardSwipe: [KeyboardSwipe]?
+
+  public init(xAxleSwipeSensitivity: Int? = nil, yAxleSwipeSensitivity: Int? = nil, spaceSwipeSensitivity: Int? = nil, distanceThreshold: Int? = nil, tangentThreshold: CGFloat? = nil, longPressDelay: Double? = nil, keyboardSwipe: [KeyboardSwipe]? = nil) {
+    self.xAxleSwipeSensitivity = xAxleSwipeSensitivity
+    self.yAxleSwipeSensitivity = yAxleSwipeSensitivity
+    self.spaceSwipeSensitivity = spaceSwipeSensitivity
+    self.distanceThreshold = distanceThreshold
+    self.tangentThreshold = tangentThreshold
+    self.longPressDelay = longPressDelay
+    self.keyboardSwipe = keyboardSwipe
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.xAxleSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .xAxleSwipeSensitivity)
+    self.yAxleSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .yAxleSwipeSensitivity)
+    self.spaceSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .spaceSwipeSensitivity)
+    self.distanceThreshold = try container.decodeIfPresent(Int.self, forKey: .distanceThreshold)
+    self.tangentThreshold = try container.decodeIfPresent(CGFloat.self, forKey: .tangentThreshold)
+    self.longPressDelay = try container.decodeIfPresent(Double.self, forKey: .longPressDelay)
+    self.keyboardSwipe = try container.decodeIfPresent([KeyboardSwipe].self, forKey: .keyboardSwipe)
+  }
+
+  enum CodingKeys: CodingKey {
+    case xAxleSwipeSensitivity
+    case yAxleSwipeSensitivity
+    case spaceSwipeSensitivity
+    case distanceThreshold
+    case tangentThreshold
+    case longPressDelay
+    case keyboardSwipe
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(self.xAxleSwipeSensitivity, forKey: .xAxleSwipeSensitivity)
+    try container.encodeIfPresent(self.yAxleSwipeSensitivity, forKey: .yAxleSwipeSensitivity)
+    try container.encodeIfPresent(self.spaceSwipeSensitivity, forKey: .spaceSwipeSensitivity)
+    try container.encodeIfPresent(self.distanceThreshold, forKey: .distanceThreshold)
+    try container.encodeIfPresent(self.tangentThreshold, forKey: .tangentThreshold)
+    try container.encodeIfPresent(self.longPressDelay, forKey: .longPressDelay)
+    try container.encodeIfPresent(self.keyboardSwipe, forKey: .keyboardSwipe)
+  }
 }
 
 /// 内置键盘滑动配置

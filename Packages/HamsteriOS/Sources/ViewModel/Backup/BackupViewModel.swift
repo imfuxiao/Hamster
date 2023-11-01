@@ -17,7 +17,7 @@ public class BackupViewModel {
   lazy var settingItem = SettingItemModel(
     text: "软件备份",
     buttonAction: { [unowned self] in
-      Task { await backup() }
+      await backup()
     },
     favoriteButton: .appBackup
   )
@@ -48,26 +48,26 @@ public class BackupViewModel {
     self.fileBrowserViewModel = fileBrowserViewModel
   }
 
-  func loadBackupFiles() async {
-    backupFiles = await fileBrowserViewModel.currentPathFiles().filter { $0.url.pathExtension.lowercased() == "zip" }
+  func loadBackupFiles() {
+    backupFiles = fileBrowserViewModel.currentPathFiles().filter { $0.url.pathExtension.lowercased() == "zip" }
   }
 
   /// 备份应用
   func backup() async {
-    await ProgressHUD.show("软件备份中，请等待……", interaction: false)
+    await ProgressHUD.animate("软件备份中，请等待……", interaction: false)
     do {
-      try await makeBackup()
-      await loadBackupFiles()
-      await ProgressHUD.showSuccess("备份成功", interaction: false, delay: 1.5)
+      try makeBackup()
+      loadBackupFiles()
+      await ProgressHUD.success("备份成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("App backup error: \(error.localizedDescription)")
-      await ProgressHUD.showError("备份失败")
+      await ProgressHUD.failed("备份失败")
     }
   }
 
   /// 应用恢复
   func restore(fileInfo: FileInfo) async {
-    await ProgressHUD.show("恢复中，请等待……", interaction: false)
+    await ProgressHUD.animate("恢复中，请等待……", interaction: false)
     let selectRestoreFileURL = fileInfo.url
     do {
       // 解压zip
@@ -80,10 +80,10 @@ public class BackupViewModel {
       // 恢复输入方案
       try FileManager.copyDirectory(override: true, src: FileManager.tempSharedSupportDirectory, dst: FileManager.sandboxSharedSupportDirectory)
       try FileManager.copyDirectory(override: true, src: FileManager.tempUserDataDirectory, dst: FileManager.sandboxUserDataDirectory)
-      await ProgressHUD.showSuccess("恢复成功, 请重新部署。", delay: 1.5)
+      await ProgressHUD.success("恢复成功, 请重新部署。", delay: 1.5)
     } catch {
       Logger.statistics.error("App restore error: \(error.localizedDescription)")
-      await ProgressHUD.showError("恢复失败")
+      await ProgressHUD.failed("恢复失败")
     }
   }
 
@@ -98,11 +98,7 @@ public class BackupViewModel {
   }
 
   /// 创建备份文件
-  private func makeBackup() async throws {
-    // 生成当前配置的文件
-    let configuration = HamsterAppDependencyContainer.shared.configuration
-    try HamsterConfigurationRepositories.shared.savePatchToYAML(config: configuration, yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
-
+  private func makeBackup() throws {
     // 创建备份临时文件夹
     try FileManager.createDirectory(override: true, dst: FileManager.tempBackupDirectory)
 

@@ -11,6 +11,24 @@ import UIKit
 
 public struct Keyboards: Codable, Hashable {
   public var keyboards: [Keyboard]
+
+  public init(keyboards: [Keyboard]) {
+    self.keyboards = keyboards
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.keyboards = try container.decode([Keyboard].self, forKey: .keyboards)
+  }
+
+  enum CodingKeys: CodingKey {
+    case keyboards
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.keyboards, forKey: .keyboards)
+  }
 }
 
 /// 自定义键盘类型
@@ -31,6 +49,14 @@ public struct Keyboard: Codable, Hashable {
   public var buttonInsets: UIEdgeInsets? = nil
 
   public var rows: [Row]
+
+  public init(name: String, type: KeyboardType, rowHeight: CGFloat? = nil, buttonInsets: UIEdgeInsets? = nil, rows: [Row]) {
+    self.name = name
+    self.type = type
+    self.rowHeight = rowHeight
+    self.buttonInsets = buttonInsets
+    self.rows = rows
+  }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -70,6 +96,11 @@ public struct Row: Codable, Hashable {
   public var rowHeight: CGFloat?
 
   public var keys: [Key]
+
+  public init(rowHeight: CGFloat? = nil, keys: [Key]) {
+    self.rowHeight = rowHeight
+    self.keys = keys
+  }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)

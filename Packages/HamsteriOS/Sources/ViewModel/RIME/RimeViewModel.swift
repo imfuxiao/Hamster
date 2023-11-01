@@ -28,6 +28,7 @@ public class RimeViewModel {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.rime?.keyValueOfSwitchSimplifiedAndTraditional = newValue
     }
   }
 
@@ -39,6 +40,7 @@ public class RimeViewModel {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.rime?.overrideDictFiles = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.rime?.overrideDictFiles = newValue
     }
   }
 
@@ -69,10 +71,8 @@ public class RimeViewModel {
     text: "重新部署",
     type: .button,
     buttonAction: { [unowned self] in
-      Task {
-        await rimeDeploy()
-        reloadTableSubject.send(true)
-      }
+      await rimeDeploy()
+      reloadTableSubject.send(true)
     },
     favoriteButton: .rimeDeploy
   )
@@ -81,9 +81,7 @@ public class RimeViewModel {
     text: "RIME同步",
     type: .button,
     buttonAction: { [unowned self] in
-      Task {
-        await rimeSync()
-      }
+      await rimeSync()
     },
     favoriteButton: .rimeSync
   )
@@ -126,43 +124,24 @@ public class RimeViewModel {
 public extension RimeViewModel {
   /// RIME 部署
   func rimeDeploy() async {
-    await ProgressHUD.show("RIME部署中, 请稍候……", interaction: false)
-
+    await ProgressHUD.animate("RIME部署中, 请稍候……", AnimationType.circleRotateChase, interaction: false)
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
-
     do {
-      try rimeContext.deployment(configuration: hamsterConfiguration)
-
-      // 读取 Rime 目录下 hamster.yaml 配置文件，如果存在
-      if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserDataSupport.path) {
-        hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserDataSupport)
-      }
-
-      // 读取 Rime 目录下 hamster.custom.yaml 配置文件(如果存在)，
-      // 并对相异的配置做 merge 合并（已 hamster.custom.yaml 文件为主）
-      if FileManager.default.fileExists(atPath: FileManager.hamsterPatchConfigFileOnUserDataSupport.path) {
-        let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserDataSupport)
-        if let configuration = patchConfiguration.patch {
-          hamsterConfiguration = try hamsterConfiguration.merge(
-            with: configuration,
-            uniquingKeysWith: { _, patchValue in patchValue }
-          )
-        }
-      }
+      try rimeContext.deployment(configuration: &hamsterConfiguration)
 
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
-      await ProgressHUD.showSuccess("部署成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("部署成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime deploy error: \(error)")
-      await ProgressHUD.showError("部署失败:\(error.localizedDescription)", interaction: false, delay: 1.5)
+      await ProgressHUD.failed("部署失败:\(error.localizedDescription)", interaction: false, delay: 1.5)
     }
   }
 
   /// RIME 同步
   func rimeSync() async {
     do {
-      await ProgressHUD.show("RIME同步中, 请稍候……", interaction: false)
+      await ProgressHUD.animate("RIME同步中, 请稍候……", interaction: false)
 
       let hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
@@ -185,16 +164,16 @@ public extension RimeViewModel {
       }
 
       try rimeContext.syncRime(configuration: hamsterConfiguration)
-      await ProgressHUD.showSuccess("同步成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("同步成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime sync error: \(error)")
-      await ProgressHUD.showError("同步失败:\(error.localizedDescription)", interaction: false, delay: 3)
+      await ProgressHUD.failed("同步失败:\(error.localizedDescription)", interaction: false, delay: 3)
     }
   }
 
   /// Rime重置
   func rimeRest() async {
-    await ProgressHUD.show("RIME重置中, 请稍候……", interaction: false)
+    await ProgressHUD.animate("RIME重置中, 请稍候……", interaction: false)
     do {
       try rimeContext.restRime()
 
@@ -205,13 +184,23 @@ public extension RimeViewModel {
       let hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
+      HamsterAppDependencyContainer.shared.applicationConfiguration = HamsterConfiguration(
+        general: GeneralConfiguration(),
+        toolbar: KeyboardToolbarConfiguration(),
+        keyboard: KeyboardConfiguration(),
+        rime: RimeConfiguration(),
+        swipe: KeyboardSwipeConfiguration(),
+        keyboards: nil
+      )
+      try? FileManager.default.removeItem(atPath: FileManager.hamsterAppConfigFileOnUserData.path)
+
       /// 在另存一份用于应用配置还原
       try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
 
-      await ProgressHUD.showSuccess("重置成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rimeRest() error: \(error)")
-      await ProgressHUD.showError("重置失败", interaction: false, delay: 1.5)
+      await ProgressHUD.failed("重置失败", interaction: false, delay: 1.5)
     }
   }
 }

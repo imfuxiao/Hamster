@@ -18,4 +18,26 @@ public struct GeneralConfiguration: Codable, Hashable {
   /// 1. iCloud 功能中，拷贝应用文件至 iCloud
   /// 2. 当开启 iCloud 功能后，在 RIME 每次部署时，拷贝 iCloud 中文件至应用沙盒目录
   public var regexOnCopyFile: [String]?
+
+  public init(enableAppleCloud: Bool? = nil, regexOnCopyFile: [String]? = nil) {
+    self.enableAppleCloud = enableAppleCloud
+    self.regexOnCopyFile = regexOnCopyFile
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.enableAppleCloud = try container.decodeIfPresent(Bool.self, forKey: .enableAppleCloud)
+    self.regexOnCopyFile = try container.decodeIfPresent([String].self, forKey: .regexOnCopyFile)
+  }
+
+  enum CodingKeys: CodingKey {
+    case enableAppleCloud
+    case regexOnCopyFile
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(self.enableAppleCloud, forKey: .enableAppleCloud)
+    try container.encodeIfPresent(self.regexOnCopyFile, forKey: .regexOnCopyFile)
+  }
 }

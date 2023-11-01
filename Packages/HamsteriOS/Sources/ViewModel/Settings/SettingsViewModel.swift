@@ -29,6 +29,7 @@ public class SettingsViewModel: ObservableObject {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.enableColorSchema = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableColorSchema = newValue
     }
   }
 
@@ -38,6 +39,7 @@ public class SettingsViewModel: ObservableObject {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.general?.enableAppleCloud = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.general?.enableAppleCloud = newValue
     }
   }
 
@@ -146,13 +148,19 @@ extension SettingsViewModel {
   func loadAppData() async throws {
     // PATCH: 仓1.0版本处理
     if let v1FirstRunning = UserDefaults.hamster._firstRunningForV1, v1FirstRunning == false {
-      await ProgressHUD.show("迁移仓输入法1.0配置中……", interaction: false)
+      await ProgressHUD.animate("迁移 1.0 配置中……", interaction: false)
+
+      var appConfig = HamsterAppDependencyContainer.shared.applicationConfiguration
 
       // 读取 1.0 配置参数
-      _setupConfigurationForV1Update()
+      _setupConfigurationForV1Update(configuration: &appConfig)
+
+      // merge 1.0 配置参数
+      var configuration = HamsterAppDependencyContainer.shared.configuration
+      configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, appConfig in appConfig })
 
       // 部署 RIME
-      try rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
+      try rimeContext.deployment(configuration: &configuration)
 
       // 修改应用首次运行标志
       UserDefaults.hamster.isFirstRunning = false
@@ -160,7 +168,10 @@ extension SettingsViewModel {
       /// 删除 V1 标识
       UserDefaults.hamster._removeFirstRunningForV1()
 
-      await ProgressHUD.showSucceed("迁移完成", interaction: false, delay: 1.5)
+      HamsterAppDependencyContainer.shared.configuration = configuration
+      HamsterAppDependencyContainer.shared.applicationConfiguration = appConfig
+
+      await ProgressHUD.success("迁移完成", interaction: false, delay: 1.5)
       return
     }
 
@@ -168,7 +179,7 @@ extension SettingsViewModel {
     guard UserDefaults.hamster.isFirstRunning else { return }
 
     // 判断是否首次运行
-    await ProgressHUD.show("初次启动，需要编译输入方案，请耐心等待……", interaction: false)
+    await ProgressHUD.animate("初次启动，需要编译输入方案，请耐心等待……", interaction: false)
 
     // 首次启动始化输入方案目录
     do {
@@ -179,91 +190,95 @@ extension SettingsViewModel {
       throw error
     }
 
+    var configuration = HamsterAppDependencyContainer.shared.configuration
+
     // 部署 RIME
-    try rimeContext.deployment(configuration: HamsterAppDependencyContainer.shared.configuration)
+    try rimeContext.deployment(configuration: &configuration)
 
     // 修改应用首次运行标志
     UserDefaults.hamster.isFirstRunning = false
 
-    await ProgressHUD.showSucceed("部署完成", interaction: false, delay: 1.5)
+    HamsterAppDependencyContainer.shared.configuration = configuration
+
+    await ProgressHUD.success("部署完成", interaction: false, delay: 1.5)
   }
 
   /// 仓1.0迁移配置参数
-  private func _setupConfigurationForV1Update() {
+  private func _setupConfigurationForV1Update(configuration: inout HamsterConfiguration) {
     if let _showKeyPressBubble = UserDefaults.hamster._showKeyPressBubble {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayButtonBubbles = _showKeyPressBubble
+      configuration.keyboard?.displayButtonBubbles = _showKeyPressBubble
     }
 
     if let _enableKeyboardFeedbackSound = UserDefaults.hamster._enableKeyboardFeedbackSound {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableKeySounds = _enableKeyboardFeedbackSound
+      configuration.keyboard?.enableKeySounds = _enableKeyboardFeedbackSound
     }
 
     if let _enableKeyboardFeedbackHaptic = UserDefaults.hamster._enableKeyboardFeedbackHaptic {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableHapticFeedback = _enableKeyboardFeedbackHaptic
+      configuration.keyboard?.enableHapticFeedback = _enableKeyboardFeedbackHaptic
     }
 
     if let _showKeyboardDismissButton = UserDefaults.hamster._showKeyboardDismissButton {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.displayKeyboardDismissButton = _showKeyboardDismissButton
+      configuration.toolbar?.displayKeyboardDismissButton = _showKeyboardDismissButton
     }
 
     if let _showSemicolonButton = UserDefaults.hamster._showSemicolonButton {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton = _showSemicolonButton
+      configuration.keyboard?.displaySemicolonButton = _showSemicolonButton
     }
 
     if let _showSpaceLeftButton = UserDefaults.hamster._showSpaceLeftButton {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceLeftButton = _showSpaceLeftButton
+      configuration.keyboard?.displaySpaceLeftButton = _showSpaceLeftButton
     }
 
     if let _spaceLeftButtonValue = UserDefaults.hamster._spaceLeftButtonValue {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceLeftButton = _spaceLeftButtonValue
+      configuration.keyboard?.keyValueOfSpaceLeftButton = _spaceLeftButtonValue
     }
 
     if let _showSpaceRightButton = UserDefaults.hamster._showSpaceRightButton {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySpaceRightButton = _showSpaceRightButton
+      configuration.keyboard?.displaySpaceRightButton = _showSpaceRightButton
     }
 
     if let _spaceRightButtonValue = UserDefaults.hamster._spaceRightButtonValue {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.keyValueOfSpaceRightButton = _spaceRightButtonValue
+      configuration.keyboard?.keyValueOfSpaceRightButton = _spaceRightButtonValue
     }
 
     if let _showSpaceRightSwitchLanguageButton = UserDefaults.hamster._showSpaceRightSwitchLanguageButton {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.displayChineseEnglishSwitchButton = _showSpaceRightSwitchLanguageButton
+      configuration.keyboard?.displayChineseEnglishSwitchButton = _showSpaceRightSwitchLanguageButton
     }
 
     if let _switchLanguageButtonInSpaceLeft = UserDefaults.hamster._switchLanguageButtonInSpaceLeft {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = _switchLanguageButtonInSpaceLeft
+      configuration.keyboard?.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = _switchLanguageButtonInSpaceLeft
     }
 
     if let _rimeMaxCandidateSize = UserDefaults.hamster._rimeMaxCandidateSize {
-      HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords = _rimeMaxCandidateSize
+      configuration.rime?.maximumNumberOfCandidateWords = _rimeMaxCandidateSize
     }
 
     if let _rimeCandidateTitleFontSize = UserDefaults.hamster._rimeCandidateTitleFontSize {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize = _rimeCandidateTitleFontSize
+      configuration.toolbar?.candidateWordFontSize = _rimeCandidateTitleFontSize
     }
 
     if let _rimeCandidateCommentFontSize = UserDefaults.hamster._rimeCandidateCommentFontSize {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateCommentFontSize = _rimeCandidateCommentFontSize
+      configuration.toolbar?.candidateCommentFontSize = _rimeCandidateCommentFontSize
     }
 
     if let _candidateBarHeight = UserDefaults.hamster._candidateBarHeight {
-      HamsterAppDependencyContainer.shared.configuration.toolbar?.heightOfToolbar = _candidateBarHeight
+      configuration.toolbar?.heightOfToolbar = _candidateBarHeight
     }
 
     if let _rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamster._rimeSimplifiedAndTraditionalSwitcherKey {
-      HamsterAppDependencyContainer.shared.configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional = _rimeSimplifiedAndTraditionalSwitcherKey
+      configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional = _rimeSimplifiedAndTraditionalSwitcherKey
     }
 
     if let _enableInputEmbeddedMode = UserDefaults.hamster._enableInputEmbeddedMode {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableEmbeddedInputMode = _enableInputEmbeddedMode
+      configuration.keyboard?.enableEmbeddedInputMode = _enableInputEmbeddedMode
     }
 
     if let _enableKeyboardAutomaticallyLowercase = UserDefaults.hamster._enableKeyboardAutomaticallyLowercase {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.lockShiftState = !_enableKeyboardAutomaticallyLowercase
+      configuration.keyboard?.lockShiftState = !_enableKeyboardAutomaticallyLowercase
     }
 
     if let _rimeSimplifiedAndTraditionalSwitcherKey = UserDefaults.hamster._rimeSimplifiedAndTraditionalSwitcherKey {
-      HamsterAppDependencyContainer.shared.configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional = _rimeSimplifiedAndTraditionalSwitcherKey
+      configuration.rime?.keyValueOfSwitchSimplifiedAndTraditional = _rimeSimplifiedAndTraditionalSwitcherKey
     }
 
     if let _keyboardSwipeGestureSymbol = UserDefaults.hamster._keyboardSwipeGestureSymbol {
@@ -312,10 +327,10 @@ extension SettingsViewModel {
       }
 
       let keys = keySwipeMap.map { key, value in Key(action: key, swipe: value) }
-      if let index = HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?.firstIndex(where: { $0.keyboardType?.isChinese ?? false }) {
-        HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?[index] = KeyboardSwipe(keyboardType: .chinese(.lowercased), keys: keys)
+      if let index = configuration.swipe?.keyboardSwipe?.firstIndex(where: { $0.keyboardType?.isChinese ?? false }) {
+        configuration.swipe?.keyboardSwipe?[index] = KeyboardSwipe(keyboardType: .chinese(.lowercased), keys: keys)
       } else {
-        HamsterAppDependencyContainer.shared.configuration.swipe?.keyboardSwipe?.append(KeyboardSwipe(keyboardType: .chinese(.lowercased), keys: keys))
+        configuration.swipe?.keyboardSwipe?.append(KeyboardSwipe(keyboardType: .chinese(.lowercased), keys: keys))
       }
     }
   }

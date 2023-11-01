@@ -58,7 +58,7 @@ open class HamsterAppDependencyContainer {
         do {
           Logger.statistics.debug("hamster configuration didSet")
           try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
-          try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, yamlPath: FileManager.hamsterConfigFileOnUserDataSupport)
+          try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, yamlPath: FileManager.hamsterConfigFileOnBuild)
         } catch {
           Logger.statistics.error("hamster configuration didSet error: \(error.localizedDescription)")
         }
@@ -66,10 +66,34 @@ open class HamsterAppDependencyContainer {
     }
   }
 
-  // 应用默认配置
-  // 注意：
-  // 1. 此配置用于还原系统默认配置
-  // 2. 计算属性
+  /// 在 app 内设置的的配置项
+  /// 用于在重新部署时，覆盖 hamster.custom.yaml 配置
+  /// 配置优先级：应用UI操作配置(Rime/hamster.app.yaml) > Rime/hamster.custom.yaml > Rime/hamster.yaml > 默认配置(SharedSupport/hamster.yaml)
+  public var applicationConfiguration: HamsterConfiguration = {
+    do {
+      return try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData)
+    } catch {
+      return HamsterConfiguration(
+        general: GeneralConfiguration(),
+        toolbar: KeyboardToolbarConfiguration(),
+        keyboard: KeyboardConfiguration(),
+        rime: RimeConfiguration(),
+        swipe: KeyboardSwipeConfiguration(),
+        keyboards: nil
+      )
+    }
+  }() {
+    didSet {
+      do {
+        try HamsterConfigurationRepositories.shared.saveToYAML(config: applicationConfiguration, yamlPath: FileManager.hamsterAppConfigFileOnUserData)
+      } catch {
+        Logger.statistics.error("hamster app configuration set error: \(error.localizedDescription)")
+      }
+    }
+  }
+
+  // 应用默认配置（计算属性）
+  // 注意：此配置用于还原系统默认配置
   public var defaultConfiguration: HamsterConfiguration? {
     do {
       return try HamsterConfigurationRepositories.shared.loadFromUserDefaultsOnDefault()
@@ -85,22 +109,20 @@ open class HamsterAppDependencyContainer {
     self.mainViewModel = MainViewModel()
 
     // 判断应用是否首次运行
-    // 注意 UserDefaults.hamster.isFirstRunning 标志位在 SettingsViewModel 的 loadAppData() 方法内重置
+    // 注意: 首次运行标志（UserDefaults.hamster.isFirstRunning）在 SettingsViewModel 的 loadAppData() 方法内重置
     if UserDefaults.hamster.isFirstRunning {
       do {
         // 首次运行解压 zip 文件（包含应用内置输入方案及配置文件）
         try FileManager.initSandboxSharedSupportDirectory(override: true)
 
-        // 读取 Hamster.yaml, 生成应用全局配置
+        // 读取 SharedSupport/hamster.yaml, 生成默认应用配置
         let hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
-
-        // 保存应用配置
-        try HamsterConfigurationRepositories.shared.saveToUserDefaults(hamsterConfiguration)
 
         // 作为应用的默认配置，可从默认值中恢复
         try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
 
         self.configuration = hamsterConfiguration
+
       } catch {
         self.configuration = HamsterConfiguration()
         Logger.statistics.error("init SharedSupport error: \(error.localizedDescription)")

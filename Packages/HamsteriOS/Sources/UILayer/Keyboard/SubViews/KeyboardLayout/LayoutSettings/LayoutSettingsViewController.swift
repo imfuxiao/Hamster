@@ -68,7 +68,7 @@ class LayoutSettingsViewController: NibLessViewController {
                       let key = Key(action: action)
                       let keyboardType: KeyboardType = .chinese(.lowercased)
                       guard !self.keyboardSettingsViewModel.swipeKeyExists(key, keyboardType: keyboardType) else {
-                        ProgressHUD.showError("\(action.yamlString)已经存在")
+                        ProgressHUD.failed("\(action.yamlString)已经存在")
                         return
                       }
                       self.keyboardSettingsViewModel.saveKeySwipe(key, keyboardType: keyboardType)

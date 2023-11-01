@@ -307,13 +307,24 @@ public extension FileManager {
   }
 
   /// Sandbox/Rime/hamster.yaml 文件
-  static var hamsterConfigFileOnUserDataSupport: URL {
+  static var hamsterConfigFileOnUserData: URL {
     sandboxUserDataDirectory.appendingPathComponent("hamster.yaml")
   }
 
   /// Sandbox/Rime/hamster.custom.yaml 文件
-  static var hamsterPatchConfigFileOnUserDataSupport: URL {
+  static var hamsterPatchConfigFileOnUserData: URL {
     sandboxUserDataDirectory.appendingPathComponent("hamster.custom.yaml")
+  }
+
+  /// Sandbox/Rime/hamster.app.yaml 文件
+  /// 用于存储应用配置
+  static var hamsterAppConfigFileOnUserData: URL {
+    sandboxUserDataDirectory.appendingPathComponent("hamster.app.yaml")
+  }
+
+  /// Sandbox/Rime/build/hamster.yaml 文件
+  static var hamsterConfigFileOnBuild: URL {
+    sandboxUserDataDirectory.appendingPathComponent("/build/hamster.yaml")
   }
 
   // 沙盒 Document 目录下 ShareSupport 目录

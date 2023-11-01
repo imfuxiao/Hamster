@@ -18,6 +18,7 @@ class KeyboardLayoutRootView: NibLessView {
     let layout = UICollectionViewCompositionalLayout { _, layoutEnvironment in
       var configuration = UICollectionLayoutListConfiguration(appearance: .insetGrouped)
       configuration.footerMode = .supplementary
+
       configuration.trailingSwipeActionsConfigurationProvider = { [unowned self] indexPath in
         let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
         let action: UIContextualAction
@@ -37,6 +38,7 @@ class KeyboardLayoutRootView: NibLessView {
         }
         return UISwipeActionsConfiguration(actions: [action])
       }
+
       let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: layoutEnvironment)
       return section
     }

@@ -33,21 +33,17 @@ public class FileBrowserViewModel {
   init(rootURL: URL) {
     self.rootURL = rootURL
 
-    Task {
-      await self.files = currentPathFiles()
-    }
+    self.files = currentPathFiles()
 
     $pathStack
       .receive(on: DispatchQueue.global())
       .sink { [unowned self] _ in
-        Task {
-          await self.files = currentPathFiles()
-        }
+        self.files = currentPathFiles()
       }
       .store(in: &subscriptions)
   }
 
-  func currentPathFiles() async -> [FileInfo] {
+  func currentPathFiles() -> [FileInfo] {
     do {
       let urls = try FileManager.default.contentsOfDirectory(
         at: rootURL.appendingPathComponent(pathStack.joined(separator: "/")),
@@ -90,8 +86,6 @@ public class FileBrowserViewModel {
 
   func deleteFile(fileInfo: FileInfo) {
     try? FileManager.default.removeItem(at: fileInfo.url)
-    Task {
-      files = await currentPathFiles()
-    }
+    files = currentPathFiles()
   }
 }

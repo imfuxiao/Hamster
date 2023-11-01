@@ -50,7 +50,7 @@ class AppleCloudRootView: NibLessView {
 
   @objc func copyRegex() {
     UIPasteboard.general.string = Self.clipboardOnCopyToCloudFilterRegexRemark
-    ProgressHUD.showSuccess("复制成功", delay: 1.5)
+    ProgressHUD.success("复制成功", delay: 1.5)
   }
 }
 

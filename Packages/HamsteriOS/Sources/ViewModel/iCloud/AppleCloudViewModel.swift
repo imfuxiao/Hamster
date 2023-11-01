@@ -20,6 +20,7 @@ public class AppleCloudViewModel: ObservableObject {
     }
     set {
       HamsterAppDependencyContainer.shared.configuration.general?.regexOnCopyFile = (newValue.split(separator: ",").map { String($0) })
+      HamsterAppDependencyContainer.shared.applicationConfiguration.general?.regexOnCopyFile = (newValue.split(separator: ",").map { String($0) })
     }
   }
 
@@ -57,14 +58,14 @@ public class AppleCloudViewModel: ObservableObject {
 
   func copyFileToiCloud() async {
     do {
-      await ProgressHUD.show("拷贝中……", interaction: false)
+      await ProgressHUD.animate("拷贝中……", interaction: false)
       let regexList = regexOnCopyFile.split(separator: ",").map { String($0) }
       try FileManager.copySandboxSharedSupportDirectoryToAppleCloud(regexList)
       try FileManager.copySandboxUserDataDirectoryToAppleCloud(regexList)
-      await ProgressHUD.showSuccess("拷贝成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success("拷贝成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("apple cloud copy to iCloud error: \(error)")
-      await ProgressHUD.showError("拷贝失败: \(error.localizedDescription)", interaction: false, delay: 1.5)
+      await ProgressHUD.failed("拷贝失败: \(error.localizedDescription)", interaction: false, delay: 1.5)
     }
   }
 }

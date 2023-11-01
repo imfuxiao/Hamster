@@ -105,18 +105,18 @@ public class FinderViewModel: ObservableObject {
 
   /// 拷贝 AppGroup 下词库文件至应用沙盒目录
   public func copyAppGroupDictFileToAppDocument() async throws {
-    await ProgressHUD.show("拷贝中……", interaction: true)
+    await ProgressHUD.animate("拷贝中……", interaction: true)
     do {
       try FileManager.copyAppGroupUserDict(regexOnCopyAppGroupDictFile)
     } catch {
       throw error
     }
-    await ProgressHUD.showSuccess("拷贝词库成功", delay: 1.5)
+    await ProgressHUD.success("拷贝词库成功", delay: 1.5)
   }
 
   /// 使用键盘文件覆盖应用沙盒文件
   public func overrideAppDocument() async throws {
-    await ProgressHUD.show("覆盖中……", interaction: true)
+    await ProgressHUD.animate("覆盖中……", interaction: true)
     do {
       // 使用AppGroup下文件覆盖应用Sandbox下文件
       try FileManager.syncAppGroupSharedSupportDirectoryToSandbox(override: true)
@@ -124,6 +124,6 @@ public class FinderViewModel: ObservableObject {
     } catch {
       throw error
     }
-    await ProgressHUD.showSuccess("完成", delay: 1.5)
+    await ProgressHUD.success("完成", delay: 1.5)
   }
 }
