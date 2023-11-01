@@ -88,12 +88,12 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
 
     /// 行高度优先
     if let height = keyboardRow.rowHeight {
-      return KeyboardLayoutItemSize(width: width, height: height)
+      return KeyboardLayoutItemSize(width: width, height: context.interfaceOrientation.isPortrait ? height.portrait : height.landscape)
     }
 
     /// 键盘配置全局高度次优先
     if let height = keyboard.rowHeight {
-      return KeyboardLayoutItemSize(width: width, height: height)
+      return KeyboardLayoutItemSize(width: width, height: context.interfaceOrientation.isPortrait ? height.portrait : height.landscape)
     }
 
     /// 如果都没有配置，则取系统默认高度

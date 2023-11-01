@@ -28,7 +28,7 @@ public class KeyboardButton: UIControl {
 
   /// 对应布局的 item，存储按键的 action 信息
   /// 注意：item中尺寸信息在自动布局中不在使用了，这些信息在 SwiftUI 布局中使用
-  let item: KeyboardLayoutItem
+  var item: KeyboardLayoutItem
 
   /// 按键对应的操作
   let action: KeyboardAction

@@ -109,18 +109,18 @@ class KeyboardRootView: NibLessView {
 
   /// 自定义键盘
   /// 注意：计算属性， 在 primaryKeyboardView 闭包中按需创建
-  private var customizeKeyboardView: CustomizeKeyboard {
-    let view = CustomizeKeyboard(
-      keyboardLayoutProvider: keyboardLayoutProvider,
-      actionHandler: actionHandler,
-      appearance: appearance,
-      keyboardContext: keyboardContext,
-      calloutContext: calloutContext,
-      rimeContext: rimeContext
-    )
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }
+//  private var customizeKeyboardView: CustomizeKeyboard {
+//    let view = CustomizeKeyboard(
+//      keyboardLayoutProvider: keyboardLayoutProvider,
+//      actionHandler: actionHandler,
+//      appearance: appearance,
+//      keyboardContext: keyboardContext,
+//      calloutContext: calloutContext,
+//      rimeContext: rimeContext
+//    )
+//    view.translatesAutoresizingMaskIntoConstraints = false
+//    return view
+//  }
 
   /// 数字九宫格键盘
   /// 注意：计算属性
@@ -170,12 +170,12 @@ class KeyboardRootView: NibLessView {
   private lazy var primaryKeyboardView: UIView = {
     let view: UIView
     switch keyboardContext.selectKeyboard {
-    case .chinese:
+    case .chinese, .custom:
       view = standerSystemKeyboard
     case .chineseNineGrid:
       view = chineseNineGridKeyboardView
-    case .custom:
-      view = customizeKeyboardView
+//    case .custom:
+//      view = customizeKeyboardView
     default:
       view = UIView(frame: .zero)
     }
@@ -444,12 +444,12 @@ class KeyboardRootView: NibLessView {
       tempKeyboardView = classifySymbolicKeyboardView
     case .emojis:
       tempKeyboardView = emojisKeyboardView
-    case .alphabetic, .numeric, .symbolic, .chinese, .chineseNumeric, .chineseSymbolic:
+    case .alphabetic, .numeric, .symbolic, .chinese, .chineseNumeric, .chineseSymbolic, .custom:
       tempKeyboardView = standerSystemKeyboard
     case .chineseNineGrid:
       tempKeyboardView = chineseNineGridKeyboardView
-    case .custom:
-      tempKeyboardView = customizeKeyboardView
+//    case .custom:
+//      tempKeyboardView = customizeKeyboardView
     default:
       // 注意：非临时键盘类型外的类型直接 return
       Logger.statistics.error("keyboardType: \(keyboardType.yamlString) not match tempKeyboardType")

@@ -42,7 +42,7 @@ public struct Keyboard: Codable, Hashable {
 
   /// 键盘行高度
   /// 如果为 nil, 则使用系统标准键盘行高度
-  public var rowHeight: CGFloat? = nil
+  public var rowHeight: RowHeight? = nil
 
   /// 按钮 insets
   /// 如果为 nil, 则使用系统标准按钮 insets
@@ -50,7 +50,7 @@ public struct Keyboard: Codable, Hashable {
 
   public var rows: [Row]
 
-  public init(name: String, type: KeyboardType, rowHeight: CGFloat? = nil, buttonInsets: UIEdgeInsets? = nil, rows: [Row]) {
+  public init(name: String, type: KeyboardType, rowHeight: RowHeight? = nil, buttonInsets: UIEdgeInsets? = nil, rows: [Row]) {
     self.name = name
     self.type = type
     self.rowHeight = rowHeight
@@ -63,7 +63,13 @@ public struct Keyboard: Codable, Hashable {
     self.name = try container.decode(String.self, forKey: .name)
     self.type = .custom(named: self.name)
     self.rows = try container.decode([Row].self, forKey: .rows)
-    self.rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight)
+
+    if let rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight) {
+      self.rowHeight = RowHeight(portrait: rowHeight, landscape: rowHeight)
+    } else if let rowHeight = try? container.decodeIfPresent(RowHeight.self, forKey: .rowHeight) {
+      self.rowHeight = rowHeight
+    }
+
     if let buttonInsets = try? container.decode(String.self, forKey: .buttonInsets), let insets = UIEdgeInsets.parser(buttonInsets) {
       self.buttonInsets = insets
     }
@@ -93,18 +99,24 @@ public struct Keyboard: Codable, Hashable {
 public struct Row: Codable, Hashable {
   /// 键盘行高度
   /// 如果为 nil, 则使用系统标准键盘行高度
-  public var rowHeight: CGFloat?
+  public var rowHeight: RowHeight?
 
   public var keys: [Key]
 
-  public init(rowHeight: CGFloat? = nil, keys: [Key]) {
+  public init(rowHeight: RowHeight? = nil, keys: [Key]) {
     self.rowHeight = rowHeight
     self.keys = keys
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight)
+
+    if let rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight) {
+      self.rowHeight = RowHeight(portrait: rowHeight, landscape: rowHeight)
+    } else if let rowHeight = try? container.decodeIfPresent(RowHeight.self, forKey: .rowHeight) {
+      self.rowHeight = rowHeight
+    }
+
     self.keys = try container.decode([Key].self, forKey: .keys)
   }
 
@@ -349,6 +361,37 @@ public struct KeySwipe: Codable, Hashable {
     // guard display else { return nil }
     if !label.text.isEmpty { return label.text }
     return action.labelText
+  }
+}
+
+/// 行高
+public struct RowHeight: Codable, Hashable {
+  /// 屏幕纵向高度
+  public var portrait: CGFloat
+
+  /// 屏幕横向高度
+  public var landscape: CGFloat
+
+  public init(portrait: CGFloat, landscape: CGFloat) {
+    self.portrait = portrait
+    self.landscape = landscape
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.portrait = try container.decode(CGFloat.self, forKey: .portrait)
+    self.landscape = try container.decode(CGFloat.self, forKey: .landscape)
+  }
+
+  enum CodingKeys: CodingKey {
+    case portrait
+    case landscape
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encode(self.portrait, forKey: .portrait)
+    try container.encode(self.landscape, forKey: .landscape)
   }
 }
 
