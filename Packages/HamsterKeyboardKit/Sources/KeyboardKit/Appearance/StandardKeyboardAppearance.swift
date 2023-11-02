@@ -464,6 +464,11 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       return 20
     }
 
+    // patch: 自定义键盘中 symbol 类型且 char 非单个字母的情况，比如 .com / http 等
+    if action.isSymbol && key.labelText.count > 1 {
+      return 14
+    }
+
     if let override = buttonFontSizePadOverride(for: action) { return override }
     if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }

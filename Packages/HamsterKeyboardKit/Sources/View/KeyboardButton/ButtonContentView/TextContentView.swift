@@ -38,7 +38,7 @@ public class TextContentView: NibLessView {
   /// 是否使用偏移
   /// 即在Y轴向上偏移
   var useOffset: Bool {
-    isInputAction && text.isLowercased
+    isInputAction && text.count == 1 && text.isLowercased
   }
 
   init(keyboardContext: KeyboardContext, item: KeyboardLayoutItem, style: KeyboardButtonStyle, text: String, isInputAction: Bool) {

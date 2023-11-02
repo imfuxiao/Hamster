@@ -32,10 +32,6 @@ public class KeyboardButtonContentView: NibLessView {
 
   private lazy var textContentView: TextContentView = {
     let view = TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
-    if action.isSymbol {
-      view.label.adjustsFontSizeToFitWidth = true
-      view.label.minimumScaleFactor = 0.5
-    }
     return view
   }()
 
@@ -199,6 +195,12 @@ public class KeyboardButtonContentView: NibLessView {
       let downSwipeLabelIsEmpty = downSwipeLabel.text?.isEmpty ?? true
       let upSwipeOnLeft = keyboardContext.upSwipeOnLeft
 
+      upSwipeLabel.adjustsFontSizeToFitWidth = true
+      upSwipeLabel.minimumScaleFactor = 0.5
+
+      downSwipeLabel.adjustsFontSizeToFitWidth = true
+      downSwipeLabel.minimumScaleFactor = 0.5
+
       if !upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
         if upSwipeOnLeft {
           upSwipeLabel.frame = leftFrame
@@ -212,7 +214,7 @@ public class KeyboardButtonContentView: NibLessView {
       } else if upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
         downSwipeLabel.frame = middleFrame
       }
-      contentView.frame = CGRect(x: 0, y: swipeHeight / 2, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight + 3)
+      contentView.frame = CGRect(x: 0, y: swipeHeight / 2 - 1.5, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight + 3)
     }
   }
 
