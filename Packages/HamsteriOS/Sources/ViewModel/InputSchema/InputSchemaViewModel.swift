@@ -66,7 +66,7 @@ extension InputSchemaViewModel {
   public func importZipFile(fileURL: URL) async {
     Logger.statistics.debug("file.fileName: \(fileURL.path)")
 
-    await ProgressHUD.animate("方案导入中……", interaction: false)
+    await ProgressHUD.animate("方案导入中……", AnimationType.circleRotateChase, interaction: false)
     do {
       // 检测 Rime 目录是否存在
       try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
@@ -74,9 +74,8 @@ extension InputSchemaViewModel {
 
       var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
-      await ProgressHUD.success("方案部署中……", interaction: false)
+      await ProgressHUD.animate("方案部署中……", interaction: false)
       try rimeContext.deployment(configuration: &hamsterConfiguration)
-
 
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
@@ -84,9 +83,8 @@ extension InputSchemaViewModel {
       reloadTableStateSubject.send(true)
       await ProgressHUD.success("导入成功", interaction: false, delay: 1.5)
     } catch {
-      await ProgressHUD.dismiss()
       Logger.statistics.debug("zip \(error)")
-      errorMessageSubject.send(ErrorMessage(title: "导入Zip文件", message: "导入失败, \(error.localizedDescription)"))
+      await ProgressHUD.failed("导入Zip文件失败, \(error.localizedDescription)")
     }
   }
 }
