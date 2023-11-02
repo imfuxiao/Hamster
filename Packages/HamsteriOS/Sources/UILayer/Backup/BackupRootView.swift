@@ -48,9 +48,7 @@ extension BackupRootView {
     super.didMoveToWindow()
 
     if let _ = window {
-      Task {
-        await backupViewModel.loadBackupFiles()
-      }
+      backupViewModel.loadBackupFiles()
     }
   }
 }

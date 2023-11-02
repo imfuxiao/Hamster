@@ -12,11 +12,17 @@ public struct KeyboardConfiguration: Codable, Hashable {
   /// 使用键盘类型
   public var useKeyboardType: String?
 
+  /// 关闭划动显示文本
+  public var disableSwipeLabel: Bool?
+
   /// 上划显示在左侧
   public var upSwipeOnLeft: Bool?
 
   /// 划动上下布局 or 左右布局
   public var swipeLabelUpAndDownLayout: Bool?
+
+  /// 上下显示划动文本不规则布局
+  public var swipeLabelUpAndDownIrregularLayout: Bool?
 
   /// 显示按键气泡
   /// true: 显示 false: 不显示
@@ -131,11 +137,56 @@ public struct KeyboardConfiguration: Codable, Hashable {
   // 当开启此选项后， loadingTextForSpaceButton 设置的值无效
   public var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool?
 
+  public init(useKeyboardType: String? = nil, disableSwipeLabel: Bool? = nil, upSwipeOnLeft: Bool? = nil, swipeLabelUpAndDownLayout: Bool? = nil, swipeLabelUpAndDownIrregularLayout: Bool? = nil, displayButtonBubbles: Bool? = nil, enableKeySounds: Bool? = nil, enableHapticFeedback: Bool? = nil, hapticFeedbackIntensity: Int? = nil, displaySemicolonButton: Bool? = nil, displayClassifySymbolButton: Bool? = nil, displaySpaceLeftButton: Bool? = nil, spaceLeftButtonProcessByRIME: Bool? = nil, keyValueOfSpaceLeftButton: String? = nil, displaySpaceRightButton: Bool? = nil, spaceRightButtonProcessByRIME: Bool? = nil, keyValueOfSpaceRightButton: String? = nil, displayChineseEnglishSwitchButton: Bool? = nil, chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool? = nil, enableNineGridOfNumericKeyboard: Bool? = nil, enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool? = nil, symbolsOfGridOfNumericKeyboard: [String]? = nil, lockShiftState: Bool? = nil, enableEmbeddedInputMode: Bool? = nil, widthOfOneHandedKeyboard: Int? = nil, symbolsOfCursorBack: [String]? = nil, symbolsOfReturnToMainKeyboard: [String]? = nil, symbolsOfChineseNineGridKeyboard: [String]? = nil, pairsOfSymbols: [String]? = nil, enableSymbolKeyboard: Bool? = nil, lockForSymbolKeyboard: Bool? = nil, enableColorSchema: Bool? = nil, useColorSchemaForLight: String? = nil, useColorSchemaForDark: String? = nil, colorSchemas: [KeyboardColorSchema]? = nil, enableLoadingTextForSpaceButton: Bool? = nil, loadingTextForSpaceButton: String? = nil, labelTextForSpaceButton: String? = nil, showCurrentInputSchemaNameForSpaceButton: Bool? = nil, showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool? = nil) {
+    self.useKeyboardType = useKeyboardType
+    self.disableSwipeLabel = disableSwipeLabel
+    self.upSwipeOnLeft = upSwipeOnLeft
+    self.swipeLabelUpAndDownLayout = swipeLabelUpAndDownLayout
+    self.swipeLabelUpAndDownIrregularLayout = swipeLabelUpAndDownIrregularLayout
+    self.displayButtonBubbles = displayButtonBubbles
+    self.enableKeySounds = enableKeySounds
+    self.enableHapticFeedback = enableHapticFeedback
+    self.hapticFeedbackIntensity = hapticFeedbackIntensity
+    self.displaySemicolonButton = displaySemicolonButton
+    self.displayClassifySymbolButton = displayClassifySymbolButton
+    self.displaySpaceLeftButton = displaySpaceLeftButton
+    self.spaceLeftButtonProcessByRIME = spaceLeftButtonProcessByRIME
+    self.keyValueOfSpaceLeftButton = keyValueOfSpaceLeftButton
+    self.displaySpaceRightButton = displaySpaceRightButton
+    self.spaceRightButtonProcessByRIME = spaceRightButtonProcessByRIME
+    self.keyValueOfSpaceRightButton = keyValueOfSpaceRightButton
+    self.displayChineseEnglishSwitchButton = displayChineseEnglishSwitchButton
+    self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = chineseEnglishSwitchButtonIsOnLeftOfSpaceButton
+    self.enableNineGridOfNumericKeyboard = enableNineGridOfNumericKeyboard
+    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = enterDirectlyOnScreenByNineGridOfNumericKeyboard
+    self.symbolsOfGridOfNumericKeyboard = symbolsOfGridOfNumericKeyboard
+    self.lockShiftState = lockShiftState
+    self.enableEmbeddedInputMode = enableEmbeddedInputMode
+    self.widthOfOneHandedKeyboard = widthOfOneHandedKeyboard
+    self.symbolsOfCursorBack = symbolsOfCursorBack
+    self.symbolsOfReturnToMainKeyboard = symbolsOfReturnToMainKeyboard
+    self.symbolsOfChineseNineGridKeyboard = symbolsOfChineseNineGridKeyboard
+    self.pairsOfSymbols = pairsOfSymbols
+    self.enableSymbolKeyboard = enableSymbolKeyboard
+    self.lockForSymbolKeyboard = lockForSymbolKeyboard
+    self.enableColorSchema = enableColorSchema
+    self.useColorSchemaForLight = useColorSchemaForLight
+    self.useColorSchemaForDark = useColorSchemaForDark
+    self.colorSchemas = colorSchemas
+    self.enableLoadingTextForSpaceButton = enableLoadingTextForSpaceButton
+    self.loadingTextForSpaceButton = loadingTextForSpaceButton
+    self.labelTextForSpaceButton = labelTextForSpaceButton
+    self.showCurrentInputSchemaNameForSpaceButton = showCurrentInputSchemaNameForSpaceButton
+    self.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = showCurrentInputSchemaNameOnLoadingTextForSpaceButton
+  }
+
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     self.useKeyboardType = try container.decodeIfPresent(String.self, forKey: .useKeyboardType)
+    self.disableSwipeLabel = try container.decodeIfPresent(Bool.self, forKey: .disableSwipeLabel)
     self.upSwipeOnLeft = try container.decodeIfPresent(Bool.self, forKey: .upSwipeOnLeft)
     self.swipeLabelUpAndDownLayout = try container.decodeIfPresent(Bool.self, forKey: .swipeLabelUpAndDownLayout)
+    self.swipeLabelUpAndDownIrregularLayout = try container.decodeIfPresent(Bool.self, forKey: .swipeLabelUpAndDownIrregularLayout)
     self.displayButtonBubbles = try container.decodeIfPresent(Bool.self, forKey: .displayButtonBubbles)
     self.enableKeySounds = try container.decodeIfPresent(Bool.self, forKey: .enableKeySounds)
     self.enableHapticFeedback = try container.decodeIfPresent(Bool.self, forKey: .enableHapticFeedback)
@@ -175,8 +226,10 @@ public struct KeyboardConfiguration: Codable, Hashable {
 
   enum CodingKeys: CodingKey {
     case useKeyboardType
+    case disableSwipeLabel
     case upSwipeOnLeft
     case swipeLabelUpAndDownLayout
+    case swipeLabelUpAndDownIrregularLayout
     case displayButtonBubbles
     case enableKeySounds
     case enableHapticFeedback
@@ -217,8 +270,10 @@ public struct KeyboardConfiguration: Codable, Hashable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encodeIfPresent(self.useKeyboardType, forKey: .useKeyboardType)
+    try container.encodeIfPresent(self.disableSwipeLabel, forKey: .disableSwipeLabel)
     try container.encodeIfPresent(self.upSwipeOnLeft, forKey: .upSwipeOnLeft)
     try container.encodeIfPresent(self.swipeLabelUpAndDownLayout, forKey: .swipeLabelUpAndDownLayout)
+    try container.encodeIfPresent(self.swipeLabelUpAndDownIrregularLayout, forKey: .swipeLabelUpAndDownIrregularLayout)
     try container.encodeIfPresent(self.displayButtonBubbles, forKey: .displayButtonBubbles)
     try container.encodeIfPresent(self.enableKeySounds, forKey: .enableKeySounds)
     try container.encodeIfPresent(self.enableHapticFeedback, forKey: .enableHapticFeedback)
@@ -254,46 +309,5 @@ public struct KeyboardConfiguration: Codable, Hashable {
     try container.encodeIfPresent(self.labelTextForSpaceButton, forKey: .labelTextForSpaceButton)
     try container.encodeIfPresent(self.showCurrentInputSchemaNameForSpaceButton, forKey: .showCurrentInputSchemaNameForSpaceButton)
     try container.encodeIfPresent(self.showCurrentInputSchemaNameOnLoadingTextForSpaceButton, forKey: .showCurrentInputSchemaNameOnLoadingTextForSpaceButton)
-  }
-
-  public init(useKeyboardType: String? = nil, upSwipeOnLeft: Bool? = nil, swipeLabelUpAndDownLayout: Bool? = nil, displayButtonBubbles: Bool? = nil, enableKeySounds: Bool? = nil, enableHapticFeedback: Bool? = nil, hapticFeedbackIntensity: Int? = nil, displaySemicolonButton: Bool? = nil, displayClassifySymbolButton: Bool? = nil, displaySpaceLeftButton: Bool? = nil, spaceLeftButtonProcessByRIME: Bool? = nil, keyValueOfSpaceLeftButton: String? = nil, displaySpaceRightButton: Bool? = nil, spaceRightButtonProcessByRIME: Bool? = nil, keyValueOfSpaceRightButton: String? = nil, displayChineseEnglishSwitchButton: Bool? = nil, chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool? = nil, enableNineGridOfNumericKeyboard: Bool? = nil, enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool? = nil, symbolsOfGridOfNumericKeyboard: [String]? = nil, lockShiftState: Bool? = nil, enableEmbeddedInputMode: Bool? = nil, widthOfOneHandedKeyboard: Int? = nil, symbolsOfCursorBack: [String]? = nil, symbolsOfReturnToMainKeyboard: [String]? = nil, symbolsOfChineseNineGridKeyboard: [String]? = nil, pairsOfSymbols: [String]? = nil, enableSymbolKeyboard: Bool? = nil, lockForSymbolKeyboard: Bool? = nil, enableColorSchema: Bool? = nil, useColorSchemaForLight: String? = nil, useColorSchemaForDark: String? = nil, colorSchemas: [KeyboardColorSchema]? = nil, enableLoadingTextForSpaceButton: Bool? = nil, loadingTextForSpaceButton: String? = nil, labelTextForSpaceButton: String? = nil, showCurrentInputSchemaNameForSpaceButton: Bool? = nil, showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool? = nil) {
-    self.useKeyboardType = useKeyboardType
-    self.upSwipeOnLeft = upSwipeOnLeft
-    self.swipeLabelUpAndDownLayout = swipeLabelUpAndDownLayout
-    self.displayButtonBubbles = displayButtonBubbles
-    self.enableKeySounds = enableKeySounds
-    self.enableHapticFeedback = enableHapticFeedback
-    self.hapticFeedbackIntensity = hapticFeedbackIntensity
-    self.displaySemicolonButton = displaySemicolonButton
-    self.displayClassifySymbolButton = displayClassifySymbolButton
-    self.displaySpaceLeftButton = displaySpaceLeftButton
-    self.spaceLeftButtonProcessByRIME = spaceLeftButtonProcessByRIME
-    self.keyValueOfSpaceLeftButton = keyValueOfSpaceLeftButton
-    self.displaySpaceRightButton = displaySpaceRightButton
-    self.spaceRightButtonProcessByRIME = spaceRightButtonProcessByRIME
-    self.keyValueOfSpaceRightButton = keyValueOfSpaceRightButton
-    self.displayChineseEnglishSwitchButton = displayChineseEnglishSwitchButton
-    self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = chineseEnglishSwitchButtonIsOnLeftOfSpaceButton
-    self.enableNineGridOfNumericKeyboard = enableNineGridOfNumericKeyboard
-    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = enterDirectlyOnScreenByNineGridOfNumericKeyboard
-    self.symbolsOfGridOfNumericKeyboard = symbolsOfGridOfNumericKeyboard
-    self.lockShiftState = lockShiftState
-    self.enableEmbeddedInputMode = enableEmbeddedInputMode
-    self.widthOfOneHandedKeyboard = widthOfOneHandedKeyboard
-    self.symbolsOfCursorBack = symbolsOfCursorBack
-    self.symbolsOfReturnToMainKeyboard = symbolsOfReturnToMainKeyboard
-    self.symbolsOfChineseNineGridKeyboard = symbolsOfChineseNineGridKeyboard
-    self.pairsOfSymbols = pairsOfSymbols
-    self.enableSymbolKeyboard = enableSymbolKeyboard
-    self.lockForSymbolKeyboard = lockForSymbolKeyboard
-    self.enableColorSchema = enableColorSchema
-    self.useColorSchemaForLight = useColorSchemaForLight
-    self.useColorSchemaForDark = useColorSchemaForDark
-    self.colorSchemas = colorSchemas
-    self.enableLoadingTextForSpaceButton = enableLoadingTextForSpaceButton
-    self.loadingTextForSpaceButton = loadingTextForSpaceButton
-    self.labelTextForSpaceButton = labelTextForSpaceButton
-    self.showCurrentInputSchemaNameForSpaceButton = showCurrentInputSchemaNameForSpaceButton
-    self.showCurrentInputSchemaNameOnLoadingTextForSpaceButton = showCurrentInputSchemaNameOnLoadingTextForSpaceButton
   }
 }

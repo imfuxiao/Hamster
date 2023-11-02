@@ -56,6 +56,26 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var disableSwipeLabel: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.disableSwipeLabel ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.disableSwipeLabel = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.disableSwipeLabel = newValue
+    }
+  }
+
+  public var swipeLabelUpAndDownIrregularLayout: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownIrregularLayout ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownIrregularLayout = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.swipeLabelUpAndDownIrregularLayout = newValue
+    }
+  }
+
   public var swipeLabelUpAndDownLayout: Bool {
     get {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.swipeLabelUpAndDownLayout ?? false
@@ -635,6 +655,18 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
+      footer: "关闭后，按键上不在显示划动文本。",
+      items: [
+        .init(
+          text: "关闭划动显示文本",
+          type: .toggle,
+          toggleValue: { [unowned self] in disableSwipeLabel },
+          toggleHandled: { [unowned self] in
+            disableSwipeLabel = $0
+          })
+      ]),
+
+    .init(
       footer: "关闭后，上下滑动全部显示时，右侧为显示上划，左侧显示下划。",
       items: [
         .init(
@@ -655,6 +687,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
           toggleHandled: { [unowned self] in
             swipeLabelUpAndDownLayout = $0
+          }),
+        .init(
+          text: "上下显示不规则布局",
+          type: .toggle,
+          toggleValue: { [unowned self] in swipeLabelUpAndDownIrregularLayout },
+          toggleHandled: { [unowned self] in
+            swipeLabelUpAndDownIrregularLayout = $0
           })
       ]),
 

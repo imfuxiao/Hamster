@@ -646,6 +646,11 @@ public extension KeyboardContext {
     hamsterConfig?.swipe?.keyboardSwipe ?? []
   }
 
+  /// 关闭划动显示文本
+  var disableSwipeLabel: Bool {
+    hamsterConfig?.keyboard?.disableSwipeLabel ?? false
+  }
+
   /// 上划显示在左侧
   var upSwipeOnLeft: Bool {
     hamsterConfig?.keyboard?.upSwipeOnLeft ?? true
@@ -654,6 +659,11 @@ public extension KeyboardContext {
   /// 划动上下布局
   var swipeLabelUpAndDownLayout: Bool {
     hamsterConfig?.keyboard?.swipeLabelUpAndDownLayout ?? false
+  }
+
+  /// 划动上下不规则布局
+  var swipeLabelUpAndDownIrregularLayout: Bool {
+    hamsterConfig?.keyboard?.swipeLabelUpAndDownIrregularLayout ?? false
   }
 
   /// 自定义键盘
