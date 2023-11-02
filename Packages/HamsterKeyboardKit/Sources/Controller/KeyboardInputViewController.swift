@@ -43,15 +43,13 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // setupNextKeyboardBehavior()
     setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
-
     setupCombineRIMEInput()
-    DispatchQueue.main.async { [unowned self] in
-      setupRIME()
-    }
   }
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    Logger.statistics.debug("KeyboardInputViewController: viewWillAppear()")
+    setupRIME()
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
@@ -70,15 +68,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 //    viewWillHandleDictationResult()
   }
 
-  override open func viewDidDisappear(_ animated: Bool) {
-    super.viewDidDisappear(animated)
-
-    shutdownRIME()
-  }
-
   override open func viewDidLayoutSubviews() {
-    Logger.statistics.debug("KeyboardInputViewController: viewDidLayoutSubviews()")
     super.viewDidLayoutSubviews()
+    Logger.statistics.debug("KeyboardInputViewController: viewDidLayoutSubviews()")
     keyboardContext.syncAfterLayout(with: self)
   }
 
@@ -826,7 +818,11 @@ private extension KeyboardInputViewController {
    */
   func setupRIME() {
     // 异步 RIME 引擎启动
-    guard !rimeContext.isRunning else { return }
+    if rimeContext.isRunning {
+      Logger.statistics.debug("shutdown rime engine")
+      shutdownRIME()
+    }
+
     Logger.statistics.debug("setup rime engine")
 
     // 检测是否需要覆盖 RIME 目录
