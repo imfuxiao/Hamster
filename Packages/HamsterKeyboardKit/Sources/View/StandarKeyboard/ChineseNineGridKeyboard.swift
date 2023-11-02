@@ -327,6 +327,7 @@ public extension ChineseNineGridKeyboard {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     // 当 symbol 非字母数字，顶码上屏
     if !symbol.isMatch(regex: "\\w.*") {

@@ -45,7 +45,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // KeyboardUrlOpener.shared.controller = self
 
     setupCombineRIMEInput()
-    DispatchQueue.global(qos: .background).async { [unowned self] in
+    DispatchQueue.main.async { [unowned self] in
       setupRIME()
     }
   }

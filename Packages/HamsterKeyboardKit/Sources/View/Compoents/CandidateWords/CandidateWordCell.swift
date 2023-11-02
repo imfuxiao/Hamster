@@ -192,6 +192,13 @@ class CandidateWordCell: UICollectionViewCell {
     return state
   }
 
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    textLabel.text = ""
+    secondaryLabel.text = ""
+  }
+
   /// 返回具有并排值文本的列表单元格的默认配置。
   private func contentConfiguration() -> UIListContentConfiguration {
     .valueCell()

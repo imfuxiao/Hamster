@@ -107,6 +107,7 @@ extension SymbolsView: UICollectionViewDelegate {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     collectionView.deselectItem(at: indexPath, animated: true)
     if !keyboardContext.classifySymbolKeyboardLockState {

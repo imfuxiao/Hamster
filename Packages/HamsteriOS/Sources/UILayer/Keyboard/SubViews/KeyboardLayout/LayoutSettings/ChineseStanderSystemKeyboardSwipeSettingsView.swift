@@ -117,6 +117,7 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
 
 extension ChineseStanderSystemKeyboardSwipeSettingsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let key = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     keyboardSettingsViewModel.keySwipeSettingsActionSubject.send((key, .chinese(.lowercased)))
     collectionView.deselectItem(at: indexPath, animated: false)

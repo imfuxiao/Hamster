@@ -147,11 +147,18 @@ public class CandidateWordsCollectionView: UICollectionView {
         snapshot.appendSections([0])
         snapshot.appendItems(candidates, toSection: 0)
         diffableDataSource.apply(snapshot, animatingDifferences: false)
-        if !candidates.isEmpty {
-          let invalidateContext = self.collectionViewLayout.invalidationContext(forBoundsChange: self.bounds)
-          self.collectionViewLayout.invalidateLayout(with: invalidateContext)
 
-          self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .left, animated: false)
+        if !candidates.isEmpty {
+          if candidatesViewState.isCollapse() {
+            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
+          } else {
+            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+          }
+          return
+        }
+
+        if !candidatesViewState.isCollapse() {
+          self.keyboardContext.candidatesViewState = .collapse
         }
       }
       .store(in: &subscriptions)
@@ -197,10 +204,10 @@ public class CandidateWordsCollectionView: UICollectionView {
 
 extension CandidateWordsCollectionView: UICollectionViewDelegate {
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     // 用于触发反馈
     actionHandler.handle(.press, on: .none)
     self.rimeContext.selectCandidate(index: indexPath.item)
-    keyboardContext.candidatesViewState = .collapse
   }
 
   public func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {

@@ -60,6 +60,7 @@ extension CustomKeyboardSettingsView {
 
 extension CustomKeyboardSettingsView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let keyboardType = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     keyboardSettingsViewModel.useKeyboardType = keyboardType
   }

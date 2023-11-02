@@ -272,6 +272,7 @@ public extension NumericNineGridKeyboard {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let char = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     if keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard {
       actionHandler.handle(.release, on: .symbol(.init(char: char)))

@@ -93,6 +93,7 @@ class ClassifyView: UICollectionView {
 
 extension ClassifyView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let item = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     viewModel.currentCategory = item
     collectionView.scrollToItem(at: indexPath, at: .centeredVertically, animated: true)
