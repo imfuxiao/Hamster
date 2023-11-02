@@ -39,7 +39,7 @@ public class KeyboardButtonContentView: NibLessView {
     let view: UIView
     if action == .space {
       view = spaceContentView
-    } else if let image = appearance.buttonImage(for: action) {
+    } else if let image = appearance.buttonImage(for: action), item.key?.label.text.isEmpty ?? true { // 自定义键盘可以为 backspace/shift 设置文本显示
       view = imageContentView
     } else {
       view = textContentView
