@@ -34,24 +34,7 @@ import UIKit
  您可能会注意到，KeyboardKit 自己的视图使用初始化器参数而非环境对象。这是有意为之，以便更好地传达每个视图的依赖关系。
  */
 open class KeyboardInputViewController: UIInputViewController, KeyboardController {
-  private lazy var rootView = {
-    // 设置键盘的View
-    let keyboardRootView = KeyboardRootView(
-      keyboardLayoutProvider: keyboardLayoutProvider,
-      appearance: keyboardAppearance,
-      actionHandler: keyboardActionHandler,
-      keyboardContext: keyboardContext,
-      calloutContext: calloutContext,
-      rimeContext: rimeContext
-    )
-    return keyboardRootView
-  }()
-
   // MARK: - View Controller Lifecycle ViewController 生命周期
-
-//  override open func loadView() {
-//    view = rootView
-//  }
 
   override open func viewDidLoad() {
     super.viewDidLoad()
@@ -61,9 +44,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
 
+    setupCombineRIMEInput()
     DispatchQueue.global(qos: .background).async { [unowned self] in
       setupRIME()
-      setupCombineRIMEInput()
     }
   }
 
@@ -120,10 +103,20 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    */
 
   open func viewWillSetupKeyboard() {
-    if rootView.superview == nil {
-      view.addSubview(rootView)
-      rootView.fillSuperview()
-    }
+    view.subviews.forEach { $0.removeFromSuperview() }
+
+    // 设置键盘的View
+    let keyboardRootView = KeyboardRootView(
+      keyboardLayoutProvider: keyboardLayoutProvider,
+      appearance: keyboardAppearance,
+      actionHandler: keyboardActionHandler,
+      keyboardContext: keyboardContext,
+      calloutContext: calloutContext,
+      rimeContext: rimeContext
+    )
+
+    view.addSubview(keyboardRootView)
+    keyboardRootView.fillSuperview()
   }
 
   /**
@@ -872,7 +865,7 @@ private extension KeyboardInputViewController {
     rimeContext.shutdown()
 
     /// 重新启动引擎
-    rimeContext.start(hasFullAccess: hasFullAccess)
+    /// rimeContext.start(hasFullAccess: hasFullAccess)
   }
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字

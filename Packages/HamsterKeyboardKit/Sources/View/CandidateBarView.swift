@@ -186,23 +186,21 @@ public class CandidateBarView: NibLessView {
   }
 
   func combine() {
-    Task {
-      // 检测是否启用内嵌编码
-      guard !keyboardContext.enableEmbeddedInputMode else { return }
-      rimeContext.$userInputKey
-        .receive(on: DispatchQueue.main)
-        .sink { [weak self] inputKeys in
-          guard let self = self else { return }
-          if self.keyboardContext.keyboardType.isChineseNineGrid {
-            // Debug
-            // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
-            self.phoneticLabel.text = self.rimeContext.t9UserInputKey
-          } else {
-            self.phoneticLabel.text = inputKeys
-          }
+    rimeContext.$userInputKey
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] inputKeys in
+        guard let self = self else { return }
+        // 检测是否启用内嵌编码
+        guard !keyboardContext.enableEmbeddedInputMode else { return }
+        if self.keyboardContext.keyboardType.isChineseNineGrid {
+          // Debug
+          // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
+          self.phoneticLabel.text = self.rimeContext.t9UserInputKey
+        } else {
+          self.phoneticLabel.text = inputKeys
         }
-        .store(in: &subscriptions)
-    }
+      }
+      .store(in: &subscriptions)
   }
 
   @objc func changeState() {

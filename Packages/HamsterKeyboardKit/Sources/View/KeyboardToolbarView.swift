@@ -124,24 +124,18 @@ class KeyboardToolbarView: NibLessView {
     constructViewHierarchy()
     activateViewConstraints()
     setupAppearance()
-
-    commonFunctionBar.isHidden = false
-    candidateBarView.isHidden = true
   }
 
   override func constructViewHierarchy() {
     addSubview(commonFunctionBar)
-    addSubview(candidateBarView)
   }
 
   override func activateViewConstraints() {
     commonFunctionBar.fillSuperview()
-    candidateBarView.fillSuperview()
   }
 
   override func setupAppearance() {
     self.style = appearance.candidateBarStyle
-    candidateBarView.setStyle(style)
     // TODO: 工具栏其他 view 更新 style
     iconButton.tintColor = style.toolbarButtonFrontColor
     dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
@@ -152,8 +146,13 @@ class KeyboardToolbarView: NibLessView {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         let isEmpty = $0.isEmpty
-        self.candidateBarView.isHidden = isEmpty
         self.commonFunctionBar.isHidden = !isEmpty
+        self.candidateBarView.isHidden = isEmpty
+        if self.candidateBarView.superview == nil {
+          candidateBarView.setStyle(self.style)
+          addSubview(candidateBarView)
+          candidateBarView.fillSuperview()
+        }
       }
       .store(in: &subscriptions)
   }
