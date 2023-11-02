@@ -339,7 +339,15 @@ public extension KeyboardAction {
     default: return false
     }
   }
-  
+
+  var isSymbol: Bool {
+    switch self {
+    case .symbolOfDark: return true
+    case .symbol: return true
+    default: return false
+    }
+  }
+
   var isSymbolOfDarkAction: Bool {
     switch self {
     case .symbolOfDark: return true

@@ -32,6 +32,10 @@ public class KeyboardButtonContentView: NibLessView {
 
   private lazy var textContentView: TextContentView = {
     let view = TextContentView(keyboardContext: keyboardContext, item: item, style: style, text: buttonText, isInputAction: action.isInputAction)
+    if action.isSymbol {
+      view.label.adjustsFontSizeToFitWidth = true
+      view.label.minimumScaleFactor = 0.5
+    }
     return view
   }()
 
