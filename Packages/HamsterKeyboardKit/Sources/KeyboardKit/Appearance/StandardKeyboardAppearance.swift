@@ -439,6 +439,9 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 用于特定操作的字体大小。
   open func buttonFontSize(for action: KeyboardAction) -> CGFloat {
+    if action.isShortCommand {
+      return 18
+    }
     if let override = buttonFontSizePadOverride(for: action) { return override }
     if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
@@ -455,7 +458,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     let action = key.action
 
     if action.isShortCommand {
-      return 18
+      if key.labelText.containsChineseCharacters {
+        return 14
+      }
+      return 20
     }
 
     if let override = buttonFontSizePadOverride(for: action) { return override }
@@ -466,7 +472,9 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
     let text = key.labelText
     if action.isInputAction && text.containsChineseCharacters { return 18 }
-    if action.isInputAction && text.isLowercased { return 26 }
+    if action.isInputAction && text.isLowercased {
+      return 26
+    }
     if action.isSystemAction || action.isPrimaryAction { return 16 }
     return 23
   }

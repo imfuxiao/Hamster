@@ -28,7 +28,7 @@ public class TextContentView: NibLessView {
   private var oldBounds: CGRect = .zero
 
   /// 按键 Label
-  private lazy var label: UILabel = {
+  public lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
     label.numberOfLines = 1
