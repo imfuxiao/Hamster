@@ -208,7 +208,6 @@ public class KeyboardButton: UIControl {
     super.init(frame: .zero)
 
     setupButtonContentView()
-    combine()
   }
 
   @available(*, unavailable)
@@ -225,18 +224,6 @@ public class KeyboardButton: UIControl {
     }
   }
 
-  func combine() {
-    // 系统外观发生变化，键盘颜色随亦随之变化
-    keyboardContext.$traitCollection
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        guard userInterfaceStyle != $0.userInterfaceStyle else { return }
-        userInterfaceStyle = $0.userInterfaceStyle
-        updateButtonStyle(isPressed: isHighlighted)
-      }
-      .store(in: &subscriptions)
-  }
-
   // MARK: - Layout Functions
 
   /// 设置按钮内容视图
@@ -249,14 +236,13 @@ public class KeyboardButton: UIControl {
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    let insets = buttonContentInsets
-
     if self.bounds != .zero, oldBounds != self.bounds {
       oldBounds = self.bounds
 
       CATransaction.begin()
       CATransaction.setDisableActions(true)
 
+      let insets = buttonContentInsets
       // spacer 类型不可见
       // alpha = isSpacer ? 0 : 1
       isHidden = isSpacer ? true : false
@@ -270,6 +256,11 @@ public class KeyboardButton: UIControl {
         buttonContentView.layer.cornerRadius = cornerRadius
       }
       CATransaction.commit()
+    }
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      updateButtonStyle(isPressed: isHighlighted)
     }
   }
 

@@ -37,6 +37,9 @@ public class StanderSystemKeyboard: NibLessView {
   /// 动态视图约束，在键盘方向发生变化后需要更新约束
   private var dynamicConstraints: [NSLayoutConstraint] = []
 
+  // 当前外观
+  var userInterfaceStyle: UIUserInterfaceStyle
+
   // 屏幕方向
   private var interfaceOrientation: InterfaceOrientation
 
@@ -104,6 +107,7 @@ public class StanderSystemKeyboard: NibLessView {
     self.inputCalloutContext = calloutContext?.input ?? .disabled
     self.interfaceOrientation = keyboardContext.interfaceOrientation
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
+    self.userInterfaceStyle = keyboardContext.colorScheme
 
     super.init(frame: .zero)
 
@@ -267,6 +271,11 @@ public class StanderSystemKeyboard: NibLessView {
 
   override public func layoutSubviews() {
     super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      subviews.forEach { $0.setNeedsLayout() }
+    }
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation

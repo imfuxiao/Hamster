@@ -126,6 +126,16 @@ class KeyboardToolbarView: NibLessView {
     setupAppearance()
   }
 
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      setupAppearance()
+      candidateBarView.setStyle(self.style)
+    }
+  }
+
   override func constructViewHierarchy() {
     addSubview(commonFunctionBar)
   }
