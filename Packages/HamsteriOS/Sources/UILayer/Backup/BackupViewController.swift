@@ -53,7 +53,7 @@ class BackupViewController: NibLessViewController {
         } catch {
           presentError(error: ErrorMessage(title: "删除文件", message: "删除失败"))
         }
-        await self.backupViewModel.loadBackupFiles()
+        self.backupViewModel.loadBackupFiles()
       }
     }))
     alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
@@ -70,7 +70,7 @@ class BackupViewController: NibLessViewController {
         let newFileName = textFields[0].text ?? ""
         guard !newFileName.isEmpty else { return }
         try await self.backupViewModel.renameBackupFile(at: selectFile.url, newFileName: newFileName)
-        await self.backupViewModel.loadBackupFiles()
+        self.backupViewModel.loadBackupFiles()
       }
     }))
     alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
