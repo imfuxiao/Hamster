@@ -210,7 +210,7 @@ public class KeyboardButtonContentView: NibLessView {
       } else if upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
         downSwipeLabel.frame = middleFrame
       }
-      contentView.frame = CGRect(x: 0, y: swipeHeight / 2 + 1, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight)
+      contentView.frame = CGRect(x: 0, y: swipeHeight / 2, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight + 3)
     }
   }
 
