@@ -146,7 +146,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
         snapshot.appendSections([0])
         snapshot.appendItems(candidates, toSection: 0)
-        diffableDataSource.apply(snapshot, animatingDifferences: false)
+        diffableDataSource.applySnapshotUsingReloadData(snapshot)
 
         if !candidates.isEmpty {
           if candidatesViewState.isCollapse() {
@@ -180,7 +180,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         self.alwaysBounceHorizontal = true
         self.alwaysBounceVertical = false
         self.contentOffset = .zero
-        self.reloadDiffableDataSource()
+        // self.reloadDiffableDataSource()
       }
     } else {
       setCollectionViewLayout(verticalLayout, animated: false) { [weak self] _ in
@@ -188,7 +188,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         self.alwaysBounceHorizontal = false
         self.alwaysBounceVertical = true
         self.contentOffset = .zero
-        self.reloadDiffableDataSource()
+        // self.reloadDiffableDataSource()
       }
     }
   }
