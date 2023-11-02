@@ -165,7 +165,9 @@ public class KeyboardButtonContentView: NibLessView {
         upSwipeLabel.adjustsFontSizeToFitWidth = true
         upSwipeLabel.minimumScaleFactor = 0.6
 
-        contentView.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width / 3 * 2, height: self.oldBounds.height * 0.75)
+        contentView.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width / 3 * 2 + 3, height: self.oldBounds.height * 0.75)
+        textContentView.label.adjustsFontSizeToFitWidth = true
+        textContentView.label.minimumScaleFactor = 0.88
 
         downSwipeLabel.frame = CGRect(x: 0, y: self.oldBounds.height * 0.75 - 2, width: self.oldBounds.width, height: self.oldBounds.height * 0.3)
         upSwipeLabel.adjustsFontSizeToFitWidth = true
