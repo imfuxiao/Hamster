@@ -49,9 +49,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   // MARK: - View Controller Lifecycle ViewController 生命周期
 
-  override open func loadView() {
-    view = rootView
-  }
+//  override open func loadView() {
+//    view = rootView
+//  }
 
   override open func viewDidLoad() {
     super.viewDidLoad()
@@ -69,7 +69,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    // viewWillSetupKeyboard()
+    viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
     // fix: 屏幕边缘按键触摸延迟
