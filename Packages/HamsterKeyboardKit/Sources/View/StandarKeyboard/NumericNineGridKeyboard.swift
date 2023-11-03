@@ -234,8 +234,14 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     NSLayoutConstraint.activate(staticConstraints + dynamicConstraints)
   }
 
-  override public func updateConstraints() {
-    super.updateConstraints()
+  override public func layoutSubviews() {
+    super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      nonStandardStyle = appearance.nonStandardKeyboardStyle
+      symbolsListView.setStyle(nonStandardStyle)
+    }
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
@@ -246,16 +252,6 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     let layoutConfig = layoutConfig
     dynamicConstraints.forEach {
       $0.constant = layoutConfig.rowHeight
-    }
-  }
-
-  override public func layoutSubviews() {
-    super.layoutSubviews()
-
-    if userInterfaceStyle != keyboardContext.colorScheme {
-      userInterfaceStyle = keyboardContext.colorScheme
-      nonStandardStyle = appearance.nonStandardKeyboardStyle
-      symbolsListView.setStyle(nonStandardStyle)
     }
   }
 }

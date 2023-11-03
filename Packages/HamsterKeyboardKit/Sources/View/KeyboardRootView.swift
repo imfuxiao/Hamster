@@ -344,7 +344,7 @@ class KeyboardRootView: NibLessView {
       .sink { [unowned self] in
         guard $0 != self.interfaceOrientation else { return }
         self.interfaceOrientation = $0
-        self.primaryKeyboardView.setNeedsUpdateConstraints()
+        self.primaryKeyboardView.setNeedsLayout()
       }
       .store(in: &subscriptions)
 
@@ -354,8 +354,7 @@ class KeyboardRootView: NibLessView {
       .sink { [unowned self] in
         guard self.isKeyboardFloating != $0 else { return }
         self.isKeyboardFloating = $0
-        self.primaryKeyboardView.subviews.forEach { $0.setNeedsUpdateConstraints() }
-        self.primaryKeyboardView.setNeedsUpdateConstraints()
+        self.primaryKeyboardView.setNeedsLayout()
       }
       .store(in: &subscriptions)
 
@@ -404,7 +403,7 @@ class KeyboardRootView: NibLessView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    Logger.statistics.debug("KeyboardRootView: layoutSubviews()")
+    // Logger.statistics.debug("KeyboardRootView: layoutSubviews()")
 
     // 检测候选栏状态是否发生变化
     guard candidateViewState != keyboardContext.candidatesViewState else { return }

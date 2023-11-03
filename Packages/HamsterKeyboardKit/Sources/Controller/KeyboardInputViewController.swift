@@ -70,12 +70,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    Logger.statistics.debug("KeyboardInputViewController: viewDidLayoutSubviews()")
+    // Logger.statistics.debug("KeyboardInputViewController: viewDidLayoutSubviews()")
     keyboardContext.syncAfterLayout(with: self)
   }
 
   override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    Logger.statistics.info("controller traitCollectionDidChange()")
+    // Logger.statistics.info("controller traitCollectionDidChange()")
     super.traitCollectionDidChange(previousTraitCollection)
     viewWillSyncWithContext()
   }

@@ -205,16 +205,13 @@ public class StanderSystemKeyboard: NibLessView {
         }
 
         // 按键高度约束（高度包含 insets 部分）
-        if button.column == 0 {
-          let heightConstant = button.item.size.height
-          let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
-          // TODO: .required 会导致日志打印约束错误，但是改为 .defaultHigh 后，高度约束不起作用，会导致显示的高度有问题
-          buttonHeightConstraint.priority = UILayoutPriority(999)
-          buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
-          dynamicConstraints.append(buttonHeightConstraint)
-        } else {
-          staticConstraints.append(button.heightAnchor.constraint(equalTo: row[0].heightAnchor, multiplier: 1.0))
-        }
+        let heightConstant = button.item.size.height
+        let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
+        // TODO: .required 会导致日志打印约束错误，但是改为 .defaultHigh 后，高度约束不起作用，会导致显示的高度有问题
+        buttonHeightConstraint.priority = UILayoutPriority(999)
+        buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
+        dynamicConstraints.append(buttonHeightConstraint)
+        // Logger.statistics.debug("keyboard layoutSubviews(): row: \(button.row), column: \(button.column), rowHeight: \(heightConstant)")
 
         // 按键宽度约束
         // 注意：.available 类型宽度在行遍历结束后添加
@@ -283,22 +280,24 @@ public class StanderSystemKeyboard: NibLessView {
 
     // 是否重新计算自动布局标志
     var resetConstraints = false
+
+    // 约束索引
+    var dynamicConstraintsIndex = 0
     for (rowIndex, row) in layout.itemRows.enumerated() {
       for (columnIndex, item) in row.enumerated() {
-        let oldItem = keyboardRows[rowIndex][columnIndex].item
-
         // 检测按键宽度是否发生变化, 如果发生变化，则重新计算自动布局
+        let oldItem = keyboardRows[rowIndex][columnIndex].item
         resetConstraints = oldItem.size.width != item.size.width
-        keyboardRows[rowIndex][columnIndex].item = item
-      }
 
-      // 动态变更行高度，如果不存在宽度变化的问题，则只需改变动态高度约束中的高度
-      if !resetConstraints {
-        let rowHeight = layoutConfig.rowHeight
-        if rowIndex < dynamicConstraints.count {
-          Logger.statistics.debug("Custom keyboard layoutSubviews(): row: \(rowIndex), rowHeight: \(rowHeight)")
-          dynamicConstraints[rowIndex].constant = rowHeight
+        keyboardRows[rowIndex][columnIndex].item = item
+
+        // 动态变更行高度，如果不存在宽度变化的问题，则只需改变动态高度约束中的高度
+        if dynamicConstraintsIndex < dynamicConstraints.count {
+          let rowHeight = item.size.height
+          // Logger.statistics.debug("Custom keyboard layoutSubviews(): row: \(rowIndex), column: \(columnIndex), rowHeight: \(rowHeight)")
+          dynamicConstraints[dynamicConstraintsIndex].constant = rowHeight
         }
+        dynamicConstraintsIndex += 1
       }
     }
 

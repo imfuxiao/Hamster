@@ -121,8 +121,16 @@ class ClassifySymbolicKeyboard: NibLessView {
     ])
   }
 
-  override func updateConstraints() {
-    super.updateConstraints()
+  override func layoutSubviews() {
+    super.layoutSubviews()
+
+    if userInterfaceStyle != keyboardContext.colorScheme {
+      userInterfaceStyle = keyboardContext.colorScheme
+      style = appearance.nonStandardKeyboardStyle
+      classifyView.setStyle(style)
+      symbolsView.setStyle(style)
+      bottomRow.setStyle(style)
+    }
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
     interfaceOrientation = keyboardContext.interfaceOrientation
@@ -136,18 +144,6 @@ class ClassifySymbolicKeyboard: NibLessView {
     let symbolViewHeight = layoutConfig.rowHeight * 3
     classifyViewHeightConstraint?.constant = symbolViewHeight
     bottomRowViewHeightConstraint?.constant = layoutConfig.rowHeight
-  }
-
-  override func layoutSubviews() {
-    super.layoutSubviews()
-
-    if userInterfaceStyle != keyboardContext.colorScheme {
-      userInterfaceStyle = keyboardContext.colorScheme
-      style = appearance.nonStandardKeyboardStyle
-      classifyView.setStyle(style)
-      symbolsView.setStyle(style)
-      bottomRow.setStyle(style)
-    }
   }
 
   func createClassifyViewWidthConstraint() -> NSLayoutConstraint {

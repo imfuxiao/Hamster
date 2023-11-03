@@ -151,11 +151,6 @@ public class KeyboardButton: UIControl {
     return .standard(for: keyboardContext)
   }
 
-  /// 按钮内容内距
-  var buttonContentInsets: UIEdgeInsets {
-    keyboardContext.isKeyboardFloating ? layoutConfig.buttonInsets : item.insets
-  }
-
   /// input呼出样式
   var inputCalloutStyle: KeyboardInputCalloutStyle {
     var style = appearance.inputCalloutStyle
@@ -239,23 +234,26 @@ public class KeyboardButton: UIControl {
     if self.bounds != .zero, oldBounds != self.bounds {
       oldBounds = self.bounds
 
-      CATransaction.begin()
-      CATransaction.setDisableActions(true)
+//      CATransaction.begin()
+//      CATransaction.setDisableActions(true)
 
-      let insets = buttonContentInsets
+      let insets = item.insets
+      // Logger.statistics.debug("button layoutSubviews(): row: \(self.row), column: \(self.column), rowHeight: \(insets.yamlString)")
+
       // spacer 类型不可见
       // alpha = isSpacer ? 0 : 1
       isHidden = isSpacer ? true : false
 
       let bounds = oldBounds.inset(by: insets)
       buttonContentView.frame = bounds
+      // Logger.statistics.debug("button content row: \(self.row), column: \(self.column), frame: \(bounds.width) \(bounds.height)")
       let style = buttonStyle
       if let cornerRadius = style.cornerRadius {
         underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
         underShadowShape.fillColor = style.shadow?.color.cgColor
         buttonContentView.layer.cornerRadius = cornerRadius
       }
-      CATransaction.commit()
+//      CATransaction.commit()
     }
 
     if userInterfaceStyle != keyboardContext.colorScheme {
@@ -309,7 +307,7 @@ extension KeyboardButton {
 
     inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
 
-    let insets = buttonContentInsets
+    let insets = item.insets
     inputCalloutView.frame = self.frame.inset(by: insets)
     self.superview?.addSubview(inputCalloutView)
     inputCalloutView.setNeedsLayout()

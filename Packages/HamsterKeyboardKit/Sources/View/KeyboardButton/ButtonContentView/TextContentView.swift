@@ -31,6 +31,8 @@ public class TextContentView: NibLessView {
   public lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
     label.textAlignment = .center
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     return label
   }()
@@ -69,7 +71,7 @@ public class TextContentView: NibLessView {
 
     guard self.bounds != .zero, oldBounds != self.bounds else { return }
     self.oldBounds = self.bounds
-    self.label.frame = self.oldBounds.inset(by: UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2))
+    self.label.frame = self.oldBounds.inset(by: UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1))
     if useOffset {
       self.label.frame = self.label.frame.offsetBy(dx: 0, dy: -1)
       self.frame = self.frame.offsetBy(dx: 0, dy: -1)
