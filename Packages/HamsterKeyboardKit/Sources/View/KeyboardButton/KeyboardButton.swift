@@ -225,7 +225,21 @@ public class KeyboardButton: UIControl {
   func setupButtonContentView() {
     buttonContentView.layer.addSublayer(underShadowShape)
     addSubview(buttonContentView)
-    updateButtonStyle(isPressed: isHighlighted)
+
+    // 不能调用，推迟 inputCallout 的创建时间
+    // updateButtonStyle(isPressed: isHighlighted)
+    // 初始状态样式
+    let style = buttonStyle
+
+    // 更新按钮内容的样式
+    buttonContentView.setStyle(style)
+
+    // 按钮样式
+    buttonContentView.backgroundColor = style.backgroundColor
+    if let color = style.border?.color {
+      buttonContentView.layer.borderColor = color.cgColor
+      buttonContentView.layer.borderWidth = style.border?.size ?? 1
+    }
   }
 
   override public func layoutSubviews() {
