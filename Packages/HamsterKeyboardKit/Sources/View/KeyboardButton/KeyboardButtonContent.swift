@@ -53,7 +53,7 @@ public class KeyboardButtonContentView: NibLessView {
     label.numberOfLines = 1
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.9
+    label.minimumScaleFactor = 0.5
     return label
   }()
 
@@ -63,7 +63,7 @@ public class KeyboardButtonContentView: NibLessView {
     label.numberOfLines = 1
     label.textAlignment = .center
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.9
+    label.minimumScaleFactor = 0.5
     return label
   }()
 
@@ -158,31 +158,23 @@ public class KeyboardButtonContentView: NibLessView {
       if keyboardContext.swipeLabelUpAndDownIrregularLayout {
         upSwipeLabel.frame = CGRect(x: self.oldBounds.width / 3 * 2 - 2, y: 0, width: self.oldBounds.width / 3, height: self.oldBounds.height * 0.75 / 2)
         upSwipeLabel.textAlignment = .left
-        upSwipeLabel.adjustsFontSizeToFitWidth = true
-        upSwipeLabel.minimumScaleFactor = 0.6
 
         contentView.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width / 3 * 2 + 3, height: self.oldBounds.height * 0.75)
         textContentView.label.adjustsFontSizeToFitWidth = true
         textContentView.label.minimumScaleFactor = 0.88
 
         downSwipeLabel.frame = CGRect(x: 0, y: self.oldBounds.height * 0.75 - 2, width: self.oldBounds.width, height: self.oldBounds.height * 0.3)
-        upSwipeLabel.adjustsFontSizeToFitWidth = true
-        upSwipeLabel.minimumScaleFactor = 0.5
       } else {
         // 标准上下布局
         let swipeHeight = self.oldBounds.height * 0.18
 
         upSwipeLabel.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width, height: swipeHeight)
-        upSwipeLabel.adjustsFontSizeToFitWidth = true
-        upSwipeLabel.minimumScaleFactor = 0.5
 
         contentView.frame = CGRect(x: 0, y: swipeHeight - 1, width: self.oldBounds.width, height: self.oldBounds.height * 0.66)
         textContentView.label.adjustsFontSizeToFitWidth = true
         textContentView.label.minimumScaleFactor = 0.85
 
         downSwipeLabel.frame = upSwipeLabel.frame.offsetBy(dx: 0, dy: upSwipeLabel.frame.height + contentView.frame.height - 1)
-        downSwipeLabel.adjustsFontSizeToFitWidth = true
-        downSwipeLabel.minimumScaleFactor = 0.5
       }
     } else { // 划动上布局
       let swipeHeight = self.oldBounds.height * 0.3
@@ -194,12 +186,6 @@ public class KeyboardButtonContentView: NibLessView {
       let upSwipeLabelIsEmpty = upSwipeLabel.text?.isEmpty ?? true
       let downSwipeLabelIsEmpty = downSwipeLabel.text?.isEmpty ?? true
       let upSwipeOnLeft = keyboardContext.upSwipeOnLeft
-
-      upSwipeLabel.adjustsFontSizeToFitWidth = true
-      upSwipeLabel.minimumScaleFactor = 0.5
-
-      downSwipeLabel.adjustsFontSizeToFitWidth = true
-      downSwipeLabel.minimumScaleFactor = 0.5
 
       if !upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
         if upSwipeOnLeft {
@@ -214,7 +200,10 @@ public class KeyboardButtonContentView: NibLessView {
       } else if upSwipeLabelIsEmpty, !downSwipeLabelIsEmpty {
         downSwipeLabel.frame = middleFrame
       }
+
       contentView.frame = CGRect(x: 0, y: swipeHeight / 2 - 1.5, width: self.oldBounds.width, height: self.oldBounds.height - swipeHeight + 3)
+      textContentView.label.adjustsFontSizeToFitWidth = true
+      textContentView.label.minimumScaleFactor = 0.85
     }
   }
 
