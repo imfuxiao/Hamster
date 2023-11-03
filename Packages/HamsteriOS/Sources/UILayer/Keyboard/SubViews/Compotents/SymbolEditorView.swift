@@ -18,11 +18,7 @@ public class SymbolEditorView: NibLessView {
 
   private let headerTitle: String
   private let getSymbols: () -> [String]
-  private var symbols: [String] {
-    didSet {
-      symbolsDidSet(symbols)
-    }
-  }
+  private var symbols: [String]
 
   private let symbolsDidSet: ([String]) -> Void
   private var symbolTableIsEditingPublished: AnyPublisher<Bool, Never>
@@ -188,6 +184,7 @@ extension SymbolEditorView {
           } else {
             self.symbols[indexPath.row] = $0
           }
+          self.symbolsDidSet(self.symbols)
           self.tableView.reloadData()
         }
       ))
@@ -223,6 +220,7 @@ extension SymbolEditorView: UITableViewDataSource {
         } else {
           self.symbols[indexPath.row] = $0
         }
+        self.symbolsDidSet(self.symbols)
         self.tableView.reloadData()
       }
     ))
