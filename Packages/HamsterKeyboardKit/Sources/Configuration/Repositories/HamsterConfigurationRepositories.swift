@@ -68,29 +68,30 @@ public class HamsterConfigurationRepositories {
   }
 
   private func saveToUserDefaults(_ config: HamsterConfiguration, key: String) throws {
-    let data = try PropertyListEncoder().encode(config)
+    let data = try JSONEncoder().encode(config)
     UserDefaults.hamster.setValue(data, forKey: key)
   }
 
+  private func loadConfigFromUserDefaults(key: String) throws -> HamsterConfiguration {
+    guard let data = UserDefaults.hamster.data(forKey: key) else { throw "load HamsterConfiguration from UserDefault is empty." }
+    return try JSONDecoder().decode(HamsterConfiguration.self, from: data)
+  }
+
   public func loadAppConfigurationFromUserDefaults() throws -> HamsterConfiguration {
-    guard let data = UserDefaults.hamster.data(forKey: Self.hamsterAppConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
-    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
+    try loadConfigFromUserDefaults(key: Self.hamsterAppConfigurationKey)
   }
 
   /// 从 UserDefaults 中获取应用配置
   /// 注意：这里的配置项是应用当前最新的配置选项，可能会在用户变更某些配置时被修改
   /// 如果需要使用配置项的默认值，需要调用 loadFromUserDefaultsOnDefault() 方法
   public func loadFromUserDefaults() throws -> HamsterConfiguration {
-    guard let data = UserDefaults.hamster.data(forKey: Self.hamsterConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
-    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
+    try loadConfigFromUserDefaults(key: Self.hamsterConfigurationKey)
   }
 
   /// 从 UserDefaults 中获取应用默认配置
   /// 注意：这里是配置文件的原始值，用于还原某些已经被修改的配置项
   public func loadFromUserDefaultsOnDefault() throws -> HamsterConfiguration {
-    guard let data = UserDefaults.hamster.data(forKey: Self.defaultHamsterConfigurationKey) else { throw "load default HamsterConfiguration from UserDefault is empty." }
-    // return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
-    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
+    try loadConfigFromUserDefaults(key: Self.defaultHamsterConfigurationKey)
   }
 
   /// 从 UserDefaults 中删除应用配置

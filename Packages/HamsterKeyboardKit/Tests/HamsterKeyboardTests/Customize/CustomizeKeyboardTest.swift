@@ -34,7 +34,7 @@ final class CustomizeKeyboardTest: XCTestCase {
     let keyboards = try YAMLDecoder().decode(Keyboards.self, from: data)
 
     data = try PropertyListEncoder().encode(keyboards)
-    let otherKeyboards = try PropertyListDecoder().decode(Keyboards.self, from: data)
+    let otherKeyboards = try JSONDecoder().decode(Keyboards.self, from: data)
 
     XCTAssertEqual(keyboards, otherKeyboards)
   }

@@ -38,18 +38,20 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewDidLoad() {
     super.viewDidLoad()
+    setupRIME()
+
     // setupInitialWidth()
     // setupLocaleObservation()
     // setupNextKeyboardBehavior()
     setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
+
     setupCombineRIMEInput()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     Logger.statistics.debug("KeyboardInputViewController: viewWillAppear()")
-    setupRIME()
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
@@ -386,23 +388,18 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   /**
    RIME 引擎上下文
    */
-  public lazy var rimeContext = RimeContext()
+  public let rimeContext = RimeContext()
 
   /**
    Hamster 应用配置
    */
-  private var configCache: HamsterConfiguration?
-  public var hamsterConfiguration: HamsterConfiguration? {
-    if let config = configCache {
-      return config
-    }
+  public var hamsterConfiguration: HamsterConfiguration? = {
     if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
-      configCache = config
       return config
     }
     Logger.statistics.error("load HamsterConfiguration from UserDefaults error.")
-    return nil
-  }
+    return HamsterConfiguration()
+  }()
 
   // MARK: - Text And Selection, Implementations UITextInputDelegate
 
@@ -808,9 +805,26 @@ private extension KeyboardInputViewController {
     NextKeyboardController.shared = self
   }
 
+  var needNumberKeyboard: Bool {
+    switch textDocumentProxy.keyboardType {
+    case .numbersAndPunctuation, .numberPad, .phonePad, .decimalPad, .asciiCapableNumberPad: return true
+    default: return false
+    }
+  }
+
   /// 设置键盘类型
   func setupKeyboardType() {
-    keyboardContext.setKeyboardType(keyboardContext.selectKeyboard)
+    if needNumberKeyboard {
+      keyboardContext.setKeyboardType(.numericNineGrid)
+      return
+    }
+
+    if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
+      keyboardContext.setKeyboardType(selectKeyboard)
+      return
+    }
+
+    keyboardContext.keyboardType = .chinese(.lowercased)
   }
 
   /**

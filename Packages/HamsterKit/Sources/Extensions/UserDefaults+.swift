@@ -224,14 +224,14 @@ public extension UserDefaults {
     get {
       // 对数组类型且为Struct值需要特殊处理
       if let data = data(forKey: Self.schemasForKey) {
-        let array = try! PropertyListDecoder().decode([RimeSchema].self, from: data)
+        let array = try! JSONDecoder().decode([RimeSchema].self, from: data)
         return array
       } else {
         return []
       }
     }
     set {
-      if let data = try? PropertyListEncoder().encode(newValue) {
+      if let data = try? JSONEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.schemasForKey)
         Logger.statistics.debug("save schemas: \(newValue)")
       }
@@ -243,14 +243,14 @@ public extension UserDefaults {
     get {
       // 对数组类型且为Struct值需要特殊处理
       if let data = data(forKey: Self.selectSchemasForKey) {
-        let array = try! PropertyListDecoder().decode([RimeSchema].self, from: data)
+        let array = try! JSONDecoder().decode([RimeSchema].self, from: data)
         return array
       } else {
         return []
       }
     }
     set {
-      if let data = try? PropertyListEncoder().encode(newValue) {
+      if let data = try? JSONEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.selectSchemasForKey)
         Logger.statistics.debug("save selectSchemas: \(newValue)")
       }
@@ -262,13 +262,13 @@ public extension UserDefaults {
     get {
       // 对数组类型且为Struct值需要特殊处理
       if let data = data(forKey: Self.currentSchemaForKey) {
-        return try! PropertyListDecoder().decode(RimeSchema.self, from: data)
+        return try! JSONDecoder().decode(RimeSchema.self, from: data)
       } else {
         return nil
       }
     }
     set {
-      if let data = try? PropertyListEncoder().encode(newValue) {
+      if let data = try? JSONEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.currentSchemaForKey)
         Logger.statistics.debug("save currentSchema: \(data)")
       }
@@ -280,13 +280,13 @@ public extension UserDefaults {
     get {
       // 对数组类型且为Struct值需要特殊处理
       if let data = data(forKey: Self.latestSchemaForKey) {
-        return try! PropertyListDecoder().decode(RimeSchema.self, from: data)
+        return try! JSONDecoder().decode(RimeSchema.self, from: data)
       } else {
         return nil
       }
     }
     set {
-      if let data = try? PropertyListEncoder().encode(newValue) {
+      if let data = try? JSONEncoder().encode(newValue) {
         UserDefaults.hamster.set(data, forKey: Self.latestSchemaForKey)
         Logger.statistics.debug("save latestSchema: \(data)")
       }
