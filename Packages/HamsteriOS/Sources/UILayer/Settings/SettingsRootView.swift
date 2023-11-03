@@ -139,8 +139,11 @@ public extension SettingsRootView {
 
 extension SettingsRootView: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: false)
     let setting = settingsViewModel.sections[indexPath.section].items[indexPath.row]
-    setting.navigationAction?()
+    if setting.type == .navigation {
+      setting.navigationAction?()
+    }
   }
 
 //  public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {

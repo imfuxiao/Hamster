@@ -66,13 +66,14 @@ public class ButtonTableViewCell: NibLessTableViewCell {
 
   func setupButtonView() {
     contentView.addSubview(buttonView)
-    buttonView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      buttonView.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1.0),
-      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: buttonView.bottomAnchor, multiplier: 1.0),
-      buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-      buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-    ])
+    buttonView.fillSuperview()
+//    buttonView.translatesAutoresizingMaskIntoConstraints = false
+//    NSLayoutConstraint.activate([
+//      buttonView.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1.0),
+//      contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: buttonView.bottomAnchor, multiplier: 1.0),
+//      buttonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+//      buttonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+//    ])
   }
 
   @objc func buttonHandled() {
