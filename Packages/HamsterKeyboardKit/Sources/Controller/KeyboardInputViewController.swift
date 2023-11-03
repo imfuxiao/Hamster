@@ -817,43 +817,45 @@ private extension KeyboardInputViewController {
    RIME 引擎设置
    */
   func setupRIME() {
-    // 异步 RIME 引擎启动
-    if rimeContext.isRunning {
-      Logger.statistics.debug("shutdown rime engine")
-      shutdownRIME()
-    }
-
-    Logger.statistics.debug("setup rime engine")
-
-    // 检测是否需要覆盖 RIME 目录
-    let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
-
-    // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
-    if !hasFullAccess {
-      do {
-        try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
-
-        // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
-        UserDefaults.hamster.overrideRimeDirectory = false
-      } catch {
-        Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
+    Task {
+      // 异步 RIME 引擎启动
+      if rimeContext.isRunning {
+        Logger.statistics.debug("shutdown rime engine")
+        shutdownRIME()
       }
 
-      // Sandbox 补充 default.custom.yaml 文件
-      let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
-      if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
-        let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
-        Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+      Logger.statistics.debug("setup rime engine")
+
+      // 检测是否需要覆盖 RIME 目录
+      let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
+
+      // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
+      if !hasFullAccess {
+        do {
+          try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
+
+          // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
+          UserDefaults.hamster.overrideRimeDirectory = false
+        } catch {
+          Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
+        }
+
+        // Sandbox 补充 default.custom.yaml 文件
+        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+        }
       }
-    }
 
-    if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
-      rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
-    }
+      if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
+        rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+      }
 
-    rimeContext.start(hasFullAccess: hasFullAccess)
-    let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
-    rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+      rimeContext.start(hasFullAccess: hasFullAccess)
+      let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+      rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+    }
   }
 
   func shutdownRIME() {
