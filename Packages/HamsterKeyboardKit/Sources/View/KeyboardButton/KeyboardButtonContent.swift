@@ -156,8 +156,8 @@ public class KeyboardButtonContentView: NibLessView {
     if keyboardContext.swipeLabelUpAndDownLayout {
       // TODO: 不规则上下布局
       if keyboardContext.swipeLabelUpAndDownIrregularLayout {
-        upSwipeLabel.frame = CGRect(x: self.oldBounds.width / 3 * 2 - 2, y: 0, width: self.oldBounds.width / 3, height: self.oldBounds.height * 0.75 / 2)
-        upSwipeLabel.textAlignment = .left
+        upSwipeLabel.frame = CGRect(x: self.oldBounds.width / 3 * 2, y: 2, width: self.oldBounds.width / 3, height: self.oldBounds.height * 0.75 / 2)
+        upSwipeLabel.textAlignment = .center
 
         contentView.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width / 3 * 2 + 3, height: self.oldBounds.height * 0.75)
         textContentView.label.adjustsFontSizeToFitWidth = true
