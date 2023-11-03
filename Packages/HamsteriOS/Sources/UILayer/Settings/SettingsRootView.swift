@@ -7,6 +7,7 @@
 
 import Combine
 import HamsterUIKit
+import ProgressHUD
 import UIKit
 
 public class SettingsRootView: NibLessView {
@@ -37,37 +38,6 @@ public class SettingsRootView: NibLessView {
     self.backupViewModel = backupViewModel
 
     super.init(frame: frame)
-
-    // 检测是否有收藏按钮，如果有则添加到初始化数据 settingsViewModel.sections 中
-    // 注意：后续的动态变化将在 combine() 方法中，通过观测 UserDefaults.favoriteButtonSubject 值完成
-    let favoriteButtons = UserDefaults.standard.getFavoriteButtons()
-    if !favoriteButtons.isEmpty {
-      let favoriteButtonSectionItems = favoriteButtons
-        .compactMap {
-          if let item = rimeViewModel.favoriteButtonSettings[$0] {
-            return item
-          } else if let item = backupViewModel.favoriteButtonSettings[$0] {
-            return item
-          }
-          return nil
-        }
-        .map { [unowned self] item in
-          var item = item
-          let buttonAction = item.buttonAction
-          item.buttonAction = {
-            try? await buttonAction?()
-            self.tableView.reloadData()
-          }
-          return item
-        }
-
-      let sectionsContainerFavoriteButtons = settingsViewModel.sections[0].items[0].type == .button
-      if sectionsContainerFavoriteButtons {
-        settingsViewModel.sections[0].items = favoriteButtonSectionItems
-      } else {
-        settingsViewModel.sections = [SettingSectionModel(items: favoriteButtonSectionItems)] + settingsViewModel.sections
-      }
-    }
 
     setupView()
     combine()
@@ -105,15 +75,7 @@ public class SettingsRootView: NibLessView {
           return
         }
 
-        let favoriteButtonSectionItems = favoriteButtons.compactMap {
-          if let item = rimeViewModel.favoriteButtonSettings[$0] {
-            return item
-          } else if let item = backupViewModel.favoriteButtonSettings[$0] {
-            return item
-          }
-          return nil
-        }
-
+        let favoriteButtonSectionItems = settingsViewModel.getFavoriteButtons(buttons: favoriteButtons)
         if sectionsContainerFavoriteButtons {
           settingsViewModel.sections[0].items = favoriteButtonSectionItems
         } else {
@@ -132,6 +94,7 @@ public extension SettingsRootView {
     super.didMoveToWindow()
 
     if let _ = window {
+      settingsViewModel.reloadFavoriteButton()
       tableView.reloadData()
     }
   }

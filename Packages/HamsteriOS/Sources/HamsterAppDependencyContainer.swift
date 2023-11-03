@@ -25,7 +25,8 @@ open class HamsterAppDependencyContainer {
   public lazy var settingsViewModel: SettingsViewModel = {
     let vm = SettingsViewModel(
       mainViewModel: mainViewModel,
-      rimeContext: rimeContext
+      rimeViewModel: rimeViewModel,
+      backupViewModel: backupViewModel
     )
     return vm
   }()

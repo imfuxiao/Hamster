@@ -942,13 +942,15 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       textTintColor: .systemRed,
       type: .button,
       buttonAction: { [unowned self] in
-        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-          throw "获取系统默认配置失败"
-        }
-        if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard {
-          self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
-          resetSignSubject.send(true)
-          await ProgressHUD.success("重置成功")
+        Task {
+          guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
+            throw "获取系统默认配置失败"
+          }
+          if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard {
+            self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
+            resetSignSubject.send(true)
+            await ProgressHUD.success("重置成功")
+          }
         }
       })
   ]

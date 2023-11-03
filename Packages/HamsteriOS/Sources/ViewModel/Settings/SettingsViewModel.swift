@@ -16,11 +16,13 @@ import UIKit
 public class SettingsViewModel: ObservableObject {
   private var cancelable = Set<AnyCancellable>()
   private unowned let mainViewModel: MainViewModel
-  private let rimeContext: RimeContext
+  private let rimeViewModel: RimeViewModel
+  private let backupViewModel: BackupViewModel
 
-  init(mainViewModel: MainViewModel, rimeContext: RimeContext) {
+  init(mainViewModel: MainViewModel, rimeViewModel: RimeViewModel, backupViewModel: BackupViewModel) {
     self.mainViewModel = mainViewModel
-    self.rimeContext = rimeContext
+    self.rimeViewModel = rimeViewModel
+    self.backupViewModel = backupViewModel
   }
 
   public var enableColorSchema: Bool {
@@ -41,6 +43,54 @@ public class SettingsViewModel: ObservableObject {
       HamsterAppDependencyContainer.shared.configuration.general?.enableAppleCloud = newValue
       HamsterAppDependencyContainer.shared.applicationConfiguration.general?.enableAppleCloud = newValue
     }
+  }
+
+  func reloadFavoriteButton() {
+    let favoriteButtonSettings = getFavoriteButtons(buttons: UserDefaults.standard.getFavoriteButtons())
+    let sectionsContainerFavoriteButtons = sections[0].items[0].type == .button
+    if sectionsContainerFavoriteButtons {
+      sections[0].items = favoriteButtonSettings
+    } else {
+      sections = [SettingSectionModel(items: favoriteButtonSettings)] + sections
+    }
+  }
+
+  func getFavoriteButtons(buttons: [FavoriteButton]) -> [SettingItemModel] {
+    // 检测是否有收藏按钮，如果有则添加到初始化数据 settingsViewModel.sections 中
+    // 注意：后续的动态变化将在 combine() 方法中，通过观测 UserDefaults.favoriteButtonSubject 值完成
+    guard !buttons.isEmpty else { return [] }
+    return buttons
+      .compactMap {
+        switch $0 {
+        case .rimeDeploy: return SettingItemModel(
+            text: "重新部署",
+            type: .button,
+            buttonAction: { [weak self] in
+              guard let self = self else { return }
+              await rimeViewModel.rimeDeploy()
+            },
+            favoriteButton: .rimeDeploy
+          )
+        case .rimeSync: return SettingItemModel(
+            text: "RIME同步",
+            type: .button,
+            buttonAction: { [weak self] in
+              guard let self = self else { return }
+              await rimeViewModel.rimeSync()
+            },
+            favoriteButton: .rimeSync
+          )
+        case .appBackup: return SettingItemModel(
+            text: "应用备份",
+            type: .button,
+            buttonAction: { [weak self] in
+              guard let self = self else { return }
+              await backupViewModel.backup()
+            },
+            favoriteButton: .rimeSync
+          )
+        }
+      }
   }
 
   /// 设置选项
@@ -160,7 +210,7 @@ extension SettingsViewModel {
       configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, appConfig in appConfig })
 
       // 部署 RIME
-      try rimeContext.deployment(configuration: &configuration)
+      try rimeViewModel.rimeContext.deployment(configuration: &configuration)
 
       // 修改应用首次运行标志
       UserDefaults.hamster.isFirstRunning = false
@@ -193,7 +243,7 @@ extension SettingsViewModel {
     var configuration = HamsterAppDependencyContainer.shared.configuration
 
     // 部署 RIME
-    try rimeContext.deployment(configuration: &configuration)
+    try rimeViewModel.rimeContext.deployment(configuration: &configuration)
 
     // 修改应用首次运行标志
     UserDefaults.hamster.isFirstRunning = false

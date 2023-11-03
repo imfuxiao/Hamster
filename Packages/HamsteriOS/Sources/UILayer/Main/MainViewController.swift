@@ -167,67 +167,55 @@ extension MainViewController {
   }
 
   func presentMainViewController() {
-    secondaryNavigationViewController.popToRootViewController(animated: false)
-    show(.primary)
+    primaryNavigationViewController.popToRootViewController(animated: false)
   }
 
   func presentInputSchemaViewController() {
-    secondaryNavigationViewController.viewControllers = [inputSchemaViewController]
-    setViewController(inputSchemaViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(inputSchemaViewController)
   }
 
   func presentFinderViewController() {
-    secondaryNavigationViewController.viewControllers = [finderViewController]
-    setViewController(finderViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(finderViewController)
   }
 
   func presentUploadInputSchemaViewController() {
-    secondaryNavigationViewController.viewControllers = [uploadInputSchemaViewController]
-    setViewController(uploadInputSchemaViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(uploadInputSchemaViewController)
   }
 
   func presentKeyboardSettingsViewController() {
-    secondaryNavigationViewController.viewControllers = [keyboardSettingsViewController]
-    setViewController(keyboardSettingsViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(keyboardSettingsViewController)
   }
 
   func presentKeyboardColorViewController() {
-    secondaryNavigationViewController.viewControllers = [keyboardColorViewController]
-    setViewController(keyboardColorViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(keyboardColorViewController)
   }
 
   func presentKeyboardFeedbackViewController() {
-    secondaryNavigationViewController.viewControllers = [keyboardFeedbackViewController]
-    setViewController(keyboardFeedbackViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(keyboardFeedbackViewController)
   }
 
   func presentRimeViewController() {
-    secondaryNavigationViewController.viewControllers = [rimeViewController]
-    setViewController(rimeViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(rimeViewController)
   }
 
   func presentBackupViewController() {
-    secondaryNavigationViewController.viewControllers = [backupViewController]
-    setViewController(backupViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(backupViewController)
   }
 
   func presentAppleCloudViewController() {
-    secondaryNavigationViewController.viewControllers = [iCloudViewController]
-    setViewController(iCloudViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(iCloudViewController)
   }
 
   func presentAboutViewController() {
-    secondaryNavigationViewController.viewControllers = [aboutViewController]
-    setViewController(aboutViewController, for: .secondary)
-    show(.secondary)
+    presentViewController(aboutViewController)
+  }
+
+  private func presentViewController(_ vc: UIViewController) {
+    primaryNavigationViewController.popToRootViewController(animated: false)
+    if isCollapsed {
+      primaryNavigationViewController.pushViewController(vc, animated: true)
+      return
+    }
+    secondaryNavigationViewController.viewControllers = [vc]
   }
 }

@@ -14,10 +14,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
 
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = HamsterAppDependencyContainer.shared.makeRootController()
-    self.window = window
-    window.makeKeyAndVisible()
+
+    if window == nil {
+      let window = UIWindow(windowScene: windowScene)
+      window.rootViewController = HamsterAppDependencyContainer.shared.makeRootController()
+      self.window = window
+      window.makeKeyAndVisible()
+    }
 
     // 通过快捷方式打开
     if let shortItem = connectionOptions.shortcutItem,
@@ -32,10 +35,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
   // 通过URL打开App
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
     guard let windowScene = (scene as? UIWindowScene) else { return }
-    let window = UIWindow(windowScene: windowScene)
-    window.rootViewController = HamsterAppDependencyContainer.shared.makeRootController()
-    self.window = window
-    window.makeKeyAndVisible()
+
+    if window == nil {
+      let window = UIWindow(windowScene: windowScene)
+      window.rootViewController = HamsterAppDependencyContainer.shared.makeRootController()
+      self.window = window
+      window.makeKeyAndVisible()
+    }
 
     /// 外部导入 zip 文件
     if let url = URLContexts.first?.url {

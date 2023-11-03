@@ -14,7 +14,7 @@ import ProgressHUD
 import UIKit
 
 public class RimeViewModel {
-  private let rimeContext: RimeContext
+  public let rimeContext: RimeContext
 
   private let rimeRestSubject = PassthroughSubject<() ->Void, Never>()
   public var rimeRestPublished: AnyPublisher<()->Void, Never> {
@@ -62,54 +62,41 @@ public class RimeViewModel {
         overrideDictFiles = $0
       }
     ),
-    rimeDeployModel,
-    rimeSyncModel,
-    rimeRestModel,
-  ]
-
-  lazy var rimeDeployModel: SettingItemModel = .init(
-    text: "重新部署",
-    type: .button,
-    buttonAction: { [unowned self] in
-      await rimeDeploy()
-      reloadTableSubject.send(true)
-    },
-    favoriteButton: .rimeDeploy
-  )
-
-  lazy var rimeSyncModel: SettingItemModel = .init(
-    text: "RIME同步",
-    type: .button,
-    buttonAction: { [unowned self] in
-      await rimeSync()
-    },
-    favoriteButton: .rimeSync
-  )
-
-  lazy var rimeRestModel: SettingItemModel = .init(
-    text: "RIME重置",
-    textTintColor: .systemRed,
-    type: .button,
-    buttonAction: { [unowned self] in
-      rimeRestSubject.send { [unowned self] in
+    .init(
+      text: "重新部署",
+      type: .button,
+      buttonAction: { [unowned self] in
         Task {
-          await rimeRest()
+          await rimeDeploy()
           reloadTableSubject.send(true)
         }
+      },
+      favoriteButton: .rimeDeploy
+    ),
+    .init(
+      text: "RIME同步",
+      type: .button,
+      buttonAction: { [unowned self] in
+        Task {
+          await rimeSync()
+        }
+      },
+      favoriteButton: .rimeSync
+    ),
+    .init(
+      text: "RIME重置",
+      textTintColor: .systemRed,
+      type: .button,
+      buttonAction: { [unowned self] in
+        rimeRestSubject.send { [unowned self] in
+          Task {
+            await rimeRest()
+            reloadTableSubject.send(true)
+          }
+        }
       }
-    },
-    favoriteButton: .rimeRest
-  )
-
-  /// 收藏按钮模型映射
-  lazy var favoriteButtonSettings: [FavoriteButton: SettingItemModel] = {
-    let map: [FavoriteButton: SettingItemModel] = [
-      .rimeDeploy: rimeDeployModel,
-      .rimeSync: rimeSyncModel,
-      .rimeRest: rimeRestModel,
-    ]
-    return map
-  }()
+    ),
+  ]
 
   private var reloadTableSubject = PassthroughSubject<Bool, Never>()
   public var reloadTablePublished: AnyPublisher<Bool, Never> {
