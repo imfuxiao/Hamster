@@ -318,6 +318,7 @@ public extension FileManager {
 
   /// Sandbox/Rime/hamster.app.yaml 文件
   /// 用于存储应用配置
+  /// 注意：此文件已废弃，应用操作产生的配置存储在 UserDefaults 中
   static var hamsterAppConfigFileOnUserData: URL {
     sandboxUserDataDirectory.appendingPathComponent("hamster.app.yaml")
   }

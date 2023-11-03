@@ -192,7 +192,6 @@ public extension RimeViewModel {
         swipe: KeyboardSwipeConfiguration(),
         keyboards: nil
       )
-      try? FileManager.default.removeItem(atPath: FileManager.hamsterAppConfigFileOnUserData.path)
 
       /// 在另存一份用于应用配置还原
       try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)

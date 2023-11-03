@@ -68,24 +68,23 @@ open class HamsterAppDependencyContainer {
 
   /// 在 app 内设置的的配置项
   /// 用于在重新部署时，覆盖 hamster.custom.yaml 配置
-  /// 配置优先级：应用UI操作配置(Rime/hamster.app.yaml) > Rime/hamster.custom.yaml > Rime/hamster.yaml > 默认配置(SharedSupport/hamster.yaml)
+  /// 配置优先级：应用UI操作配置（存储在 UserDefaults 中） > Rime/hamster.custom.yaml > Rime/hamster.yaml > 默认配置(SharedSupport/hamster.yaml)
   public var applicationConfiguration: HamsterConfiguration = {
-    do {
-      return try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData)
-    } catch {
-      return HamsterConfiguration(
-        general: GeneralConfiguration(),
-        toolbar: KeyboardToolbarConfiguration(),
-        keyboard: KeyboardConfiguration(),
-        rime: RimeConfiguration(),
-        swipe: KeyboardSwipeConfiguration(),
-        keyboards: nil
-      )
+    if let config = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults() {
+      return config
     }
+    return HamsterConfiguration(
+      general: GeneralConfiguration(),
+      toolbar: KeyboardToolbarConfiguration(),
+      keyboard: KeyboardConfiguration(),
+      rime: RimeConfiguration(),
+      swipe: KeyboardSwipeConfiguration(),
+      keyboards: nil
+    )
   }() {
     didSet {
       do {
-        try HamsterConfigurationRepositories.shared.saveToYAML(config: applicationConfiguration, yamlPath: FileManager.hamsterAppConfigFileOnUserData)
+        try HamsterConfigurationRepositories.shared.saveAppConfigurationToUserDefaults(applicationConfiguration)
       } catch {
         Logger.statistics.error("hamster app configuration set error: \(error.localizedDescription)")
       }
@@ -107,6 +106,14 @@ open class HamsterAppDependencyContainer {
     // 创建 long-lived 属性
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
+
+    // PATCH: 删除 Rime/hamster.app.yaml 文件，将文件保存在 UserDefault 中
+    if FileManager.default.fileExists(atPath: FileManager.hamsterAppConfigFileOnUserData.path) {
+      if let appConfiguration = try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData) {
+        try? HamsterConfigurationRepositories.shared.saveAppConfigurationToUserDefaults(appConfiguration)
+        try? FileManager.default.removeItem(at: FileManager.hamsterAppConfigFileOnUserData)
+      }
+    }
 
     // 判断应用是否首次运行
     // 注意: 首次运行标志（UserDefaults.hamster.isFirstRunning）在 SettingsViewModel 的 loadAppData() 方法内重置

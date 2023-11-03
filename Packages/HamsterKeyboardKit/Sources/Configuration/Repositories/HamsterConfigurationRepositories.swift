@@ -62,10 +62,19 @@ public class HamsterConfigurationRepositories {
     try saveToUserDefaults(config, key: Self.defaultHamsterConfigurationKey)
   }
 
+  /// 在 UserDefaults 中保存 UI 界面中操作的配置
+  public func saveAppConfigurationToUserDefaults(_ config: HamsterConfiguration) throws {
+    try saveToUserDefaults(config, key: Self.hamsterAppConfigurationKey)
+  }
+
   private func saveToUserDefaults(_ config: HamsterConfiguration, key: String) throws {
-//    let data = try HamsterConfigurationRepositories.transform(YAMLEncoder().encode(config)).data(using: .utf8)
     let data = try PropertyListEncoder().encode(config)
     UserDefaults.hamster.setValue(data, forKey: key)
+  }
+
+  public func loadAppConfigurationFromUserDefaults() throws -> HamsterConfiguration {
+    guard let data = UserDefaults.hamster.data(forKey: Self.hamsterAppConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
+    return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   /// 从 UserDefaults 中获取应用配置
@@ -73,7 +82,6 @@ public class HamsterConfigurationRepositories {
   /// 如果需要使用配置项的默认值，需要调用 loadFromUserDefaultsOnDefault() 方法
   public func loadFromUserDefaults() throws -> HamsterConfiguration {
     guard let data = UserDefaults.hamster.data(forKey: Self.hamsterConfigurationKey) else { throw "load HamsterConfiguration from UserDefault is empty." }
-//    return try YAMLDecoder().decode(HamsterConfiguration.self, from: data)
     return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
@@ -98,6 +106,8 @@ public class HamsterConfigurationRepositories {
 }
 
 extension HamsterConfigurationRepositories {
+  /// UI操作生成的配置
+  private static let hamsterAppConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterAppConfig"
   /// 应用配置key
   private static let hamsterConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterConfig"
   /// 默认应用配置key

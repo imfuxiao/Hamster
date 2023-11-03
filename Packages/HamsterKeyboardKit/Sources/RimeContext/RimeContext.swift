@@ -291,9 +291,8 @@ public extension RimeContext {
       }
     }
 
-    // 读取 Rime/hamster.app.yaml 配置文件, 如果存在，并对相异的配置做 merge 合并，已 Rime/hamster.app.yaml 文件为主
-    if FileManager.default.fileExists(atPath: FileManager.hamsterAppConfigFileOnUserData.path) {
-      let appConfig = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData)
+    // 读取 UI 操作产生的配置（存储在 UserDefaults 中）, 如果存在，并对相异的配置做 merge 合并。
+    if let appConfig = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults() {
       configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
     }
 
@@ -388,7 +387,6 @@ public extension RimeContext {
       resetCurrentSchema()
       resetLatestSchema()
     }
-
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true
