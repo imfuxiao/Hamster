@@ -115,10 +115,7 @@ public extension KeyboardButton {
     if touch.phase != .cancelled {
       // 轻扫手势不触发 release
       if let swipeGestureHandle = swipeGestureHandle {
-        // 当空格滑动激活时，不触发划动手势
-        if let actionHandler = actionHandler as? StandardKeyboardActionHandler, !actionHandler.isSpaceDragGestureActive {
-          swipeGestureHandle()
-        }
+        swipeGestureHandle()
         self.swipeGestureHandle = nil
       } else {
         // 判断手势区域是否超出当前 bounds
@@ -158,36 +155,32 @@ public extension KeyboardButton {
     let currentPoint = touch.location(in: self)
     lastDragLocation = currentPoint
 
-    // 识别 swipe 并取消长按限制
-    // if let touchBeginTimestamp = touchBeginTimestamp, touch.timestamp - touchBeginTimestamp < longPressDelay {
-    if let _ = touchBeginTimestamp {
-      let distanceThreshold: CGFloat = keyboardContext.distanceThreshold // 划动距离的阈值
-      let tangentThreshold: CGFloat = keyboardContext.tangentThreshold // 划动角度正切阈值
+    let distanceThreshold: CGFloat = keyboardContext.distanceThreshold // 划动距离的阈值
+    let tangentThreshold: CGFloat = keyboardContext.tangentThreshold // 划动角度正切阈值
 
-      let distanceY = currentPoint.y - startLocation.y
-      let distanceX = currentPoint.x - startLocation.x
+    let distanceY = currentPoint.y - startLocation.y
+    let distanceX = currentPoint.x - startLocation.x
 
-      // 两点距离
-      let distance = sqrt(pow(distanceY, 2) + pow(distanceX, 2))
+    // 两点距离
+    let distance = sqrt(pow(distanceY, 2) + pow(distanceX, 2))
 
-      // 轻扫的距离必须符合阈值要求
-      if distance >= distanceThreshold {
-        Logger.statistics.debug("current point: \(currentPoint.debugDescription)")
-        Logger.statistics.debug("start point: \(startLocation.debugDescription)")
+    // 轻扫的距离必须符合阈值要求
+    if distance >= distanceThreshold {
+      // Logger.statistics.debug("current point: \(currentPoint.debugDescription)")
+      // Logger.statistics.debug("start point: \(startLocation.debugDescription)")
 
-        // 划动方向
-        let direction: SwipeDirection? = SwipeDirection.direction(distanceX: distanceX, distanceY: distanceY, tangentThreshold: tangentThreshold)
-        if let direction = direction {
+      // 检测如果当前处在空格划动状态下，则不触发划动手势
+      if let actionHandler = actionHandler as? StandardKeyboardActionHandler, !actionHandler.isSpaceDragGestureActive {
+        // 获取划动方向
+        if let direction = SwipeDirection.direction(distanceX: distanceX, distanceY: distanceY, tangentThreshold: tangentThreshold) {
           swipeGestureHandle = { [unowned self] in
             swipeAction(direction: direction)
           }
+          return
         }
       }
-    } else {
-      swipeGestureHandle = nil
     }
-
-    // TODO: 更新呼出选择位置
+    swipeGestureHandle = nil
     dragAction(start: startLocation, current: currentPoint)
   }
 
