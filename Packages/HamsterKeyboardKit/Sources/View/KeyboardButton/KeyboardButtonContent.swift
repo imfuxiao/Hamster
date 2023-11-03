@@ -109,8 +109,8 @@ public class KeyboardButtonContentView: NibLessView {
 
   func setupContentView() {
     constructViewHierarchy()
-    upSwipeLabel.font = style.swipeFont?.font
-    downSwipeLabel.font = style.swipeFont?.font
+    upSwipeLabel.font = style.swipeFont
+    downSwipeLabel.font = style.swipeFont
   }
 
   override public func constructViewHierarchy() {

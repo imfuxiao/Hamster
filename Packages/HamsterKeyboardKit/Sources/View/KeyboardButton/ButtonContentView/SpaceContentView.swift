@@ -97,7 +97,7 @@ class SpaceContentView: NibLessView {
     }
 
     loadingLabel.textColor = style.foregroundColor
-    loadingLabel.font = style.font?.font
+    loadingLabel.font = style.font
     loadingLabel.alpha = showLoadingTextAlphaValue
     addSubview(loadingLabel)
 
@@ -150,7 +150,7 @@ class SpaceContentView: NibLessView {
       }
       .store(in: &subscriptions)
 
-    rimeContext.$currentSchema
+    rimeContext.currentSchemaPublished
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
         guard let self = self else { return }

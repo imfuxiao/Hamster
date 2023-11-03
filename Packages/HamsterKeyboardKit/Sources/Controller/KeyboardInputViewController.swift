@@ -814,7 +814,7 @@ private extension KeyboardInputViewController {
 
   /// 设置键盘类型
   func setupKeyboardType() {
-    Task {
+    DispatchQueue.global(qos: .default).async { [unowned self] in
       if needNumberKeyboard {
         keyboardContext.setKeyboardType(.numericNineGrid)
         return
@@ -868,7 +868,8 @@ private extension KeyboardInputViewController {
         rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
       }
 
-      rimeContext.start(hasFullAccess: hasFullAccess)
+      await rimeContext.start(hasFullAccess: hasFullAccess)
+
       let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
     }
@@ -884,7 +885,7 @@ private extension KeyboardInputViewController {
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
   func setupCombineRIMEInput() {
-    rimeContext.$userInputKey
+    rimeContext.userInputKeyPublished
       .receive(on: DispatchQueue.main)
       .sink { [weak self] inputText in
         guard let self = self else { return }

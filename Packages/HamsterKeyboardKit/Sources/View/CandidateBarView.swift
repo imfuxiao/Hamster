@@ -186,7 +186,7 @@ public class CandidateBarView: NibLessView {
   }
 
   func combine() {
-    rimeContext.$userInputKey
+    rimeContext.userInputKeyPublished
       .receive(on: DispatchQueue.main)
       .sink { [weak self] inputKeys in
         guard let self = self else { return }

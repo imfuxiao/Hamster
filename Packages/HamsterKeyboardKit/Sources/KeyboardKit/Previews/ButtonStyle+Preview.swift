@@ -4,6 +4,7 @@
 //
 //  Created by morse on 2023/8/10.
 //
+import UIKit
 
 extension KeyboardButtonBorderStyle {
   /**
@@ -58,7 +59,7 @@ extension KeyboardButtonStyle {
   static let preview1 = KeyboardButtonStyle(
     backgroundColor: .yellow,
     foregroundColor: .white,
-    font: .body,
+    font: UIFont.preferredFont(forTextStyle: .body),
     cornerRadius: 20,
     border: .previewStyle1,
     shadow: .previewStyle1
@@ -72,7 +73,7 @@ extension KeyboardButtonStyle {
   static let preview2 = KeyboardButtonStyle(
     backgroundColor: .purple,
     foregroundColor: .yellow,
-    font: .headline,
+    font: UIFont.preferredFont(forTextStyle: .headline),
     cornerRadius: 10,
     border: .previewStyle2,
     shadow: .previewStyle2

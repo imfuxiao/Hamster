@@ -62,7 +62,7 @@ public class TextContentView: NibLessView {
   }
 
   override public func setupAppearance() {
-    label.font = style.font?.font
+    label.font = style.font
     label.textColor = style.foregroundColor
   }
 

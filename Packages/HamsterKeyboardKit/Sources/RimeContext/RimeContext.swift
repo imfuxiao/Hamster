@@ -5,6 +5,7 @@
 //  Created by morse on 2023/6/30.
 //
 
+import Combine
 import Foundation
 import HamsterKit
 import OSLog
@@ -16,40 +17,51 @@ public class RimeContext: ObservableObject {
   public private(set) var maximumNumberOfCandidateWords: Int = 100
 
   /// rime 输入方案列表
-  @Published
-  public private(set) var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
+  public private(set) lazy var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
     didSet {
       UserDefaults.hamster.schemas = self.schemas
     }
   }
 
   /// rime 用户选择方案列表
-  @Published
-  public private(set) var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
+  public private(set) lazy var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
     didSet {
       UserDefaults.hamster.selectSchemas = self.selectSchemas.sorted()
     }
   }
 
   /// 当前输入方案
-  @Published
-  public var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
+  public lazy var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
     didSet {
+      currentSchemaSubject.send(currentSchema)
       // 如果没有完全访问权限，UserDefaults.hamster 会保存失败
       UserDefaults.hamster.currentSchema = currentSchema
     }
   }
 
+  public lazy var currentSchemaSubject = PassthroughSubject<RimeSchema?, Never>()
+  public var currentSchemaPublished: AnyPublisher<RimeSchema?, Never> {
+    currentSchemaSubject.eraseToAnyPublisher()
+  }
+
   /// 上次使用输入方案
-  public var latestSchema: RimeSchema? = UserDefaults.hamster.latestSchema {
+  public lazy var latestSchema: RimeSchema? = UserDefaults.hamster.latestSchema {
     didSet {
       UserDefaults.hamster.currentSchema = currentSchema
     }
   }
 
   /// 用户输入键值
-  @Published
-  public var userInputKey: String = ""
+  public var userInputKey: String = "" {
+    didSet {
+      userInputKeySubject.send(userInputKey)
+    }
+  }
+
+  public let userInputKeySubject = PassthroughSubject<String, Never>()
+  public var userInputKeyPublished: AnyPublisher<String, Never> {
+    userInputKeySubject.eraseToAnyPublisher()
+  }
 
   /// 待上屏文字
   public private(set) var commitText: String = ""
@@ -151,7 +163,7 @@ public extension RimeContext {
 
   /// RIME 启动
   /// 注意：仅用于键盘扩展调用
-  func start(hasFullAccess: Bool) {
+  func start(hasFullAccess: Bool) async {
     // RIME 输入方案切换后同步状态
     Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
       guard let self = self else { return }

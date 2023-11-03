@@ -244,7 +244,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   ///
   /// 在给定的 `isPressed` 状态下，用于特定 `action` 的按键样式。
   open func buttonStyle(for action: KeyboardAction, isPressed: Bool) -> KeyboardButtonStyle {
-    let swipeFont = KeyboardFont(.system(size: 8))
+    let swipeFont = UIFont.systemFont(ofSize: 8)
 
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
@@ -266,14 +266,15 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       swipeForegroundColor: UIColor.secondaryLabel,
       font: buttonFont(for: action),
       swipeFont: swipeFont,
-      cornerRadius: buttonCornerRadius(for: action),
+      // cornerRadius: buttonCornerRadius(for: action),
+      cornerRadius: 5,
       border: buttonBorderStyle(for: action),
       shadow: buttonShadowStyle(for: action)
     )
   }
 
   open func buttonStyle(for key: Key, isPressed: Bool) -> KeyboardButtonStyle {
-    let swipeFont = KeyboardFont(.system(size: 8))
+    let swipeFont = UIFont.systemFont(ofSize: 8)
     let action = key.action
 
     // 开启键盘配色
@@ -406,33 +407,29 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// The font to use for a certain action.
   ///
   /// 用于特定操作的字体。
-  open func buttonFont(for action: KeyboardAction) -> KeyboardFont {
+  open func buttonFont(for action: KeyboardAction) -> UIFont {
     let size = buttonFontSize(for: action)
-    let font = KeyboardFont.system(size: size)
-    guard let weight = buttonFontWeight(for: action) else { return font }
-    return font.weight(weight)
+    guard let weight = buttonFontWeight(for: action) else { return UIFont.systemFont(ofSize: size) }
+    return UIFont.systemFont(ofSize: size, weight: weight)
   }
 
-  open func buttonFont(for key: Key) -> KeyboardFont {
+  open func buttonFont(for key: Key) -> UIFont {
     let size = buttonFontSize(for: key)
-    let font = KeyboardFont.system(size: size)
-    guard let weight = buttonFontWeight(for: key) else { return font }
-    return font.weight(weight)
+    guard let weight = buttonFontWeight(for: key) else { return UIFont.systemFont(ofSize: size) }
+    return UIFont.systemFont(ofSize: size, weight: weight)
   }
 
   // TODO: 自定义配置字体
-  open func buttonFont(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> KeyboardFont {
+  open func buttonFont(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> UIFont {
     let size = buttonFontSize(for: action)
-    let font = KeyboardFont.system(size: size)
-    guard let weight = buttonFontWeight(for: action) else { return font }
-    return font.weight(weight)
+    guard let weight = buttonFontWeight(for: action) else { return UIFont.systemFont(ofSize: size) }
+    return UIFont.systemFont(ofSize: size, weight: weight)
   }
 
-  open func buttonFont(for key: Key, hamsterColor: HamsterKeyboardColor) -> KeyboardFont {
+  open func buttonFont(for key: Key, hamsterColor: HamsterKeyboardColor) -> UIFont {
     let size = buttonFontSize(for: key)
-    let font = KeyboardFont.system(size: size)
-    guard let weight = buttonFontWeight(for: key) else { return font }
-    return font.weight(weight)
+    guard let weight = buttonFontWeight(for: key) else { return UIFont.systemFont(ofSize: size) }
+    return UIFont.systemFont(ofSize: size, weight: weight)
   }
 
   /// The font size to use for a certain action.
@@ -523,7 +520,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// The font weight to use for a certain action.
   ///
   /// 用于特定操作的字体粗细。
-  open func buttonFontWeight(for action: KeyboardAction) -> KeyboardFontWeight? {
+  open func buttonFontWeight(for action: KeyboardAction) -> UIFont.Weight? {
     switch action {
     case .backspace: return .regular
     case .character(let char): return char.isLowercased ? .light : nil
@@ -532,7 +529,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
   }
 
-  open func buttonFontWeight(for key: Key) -> KeyboardFontWeight? {
+  open func buttonFontWeight(for key: Key) -> UIFont.Weight? {
     let action = key.action
     let text = key.labelText
     if text.containsChineseCharacters {
