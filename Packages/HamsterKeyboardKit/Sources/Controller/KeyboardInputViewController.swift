@@ -388,12 +388,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   /**
    RIME 引擎上下文
    */
-  public let rimeContext = RimeContext()
+  public lazy var rimeContext = RimeContext()
 
   /**
    Hamster 应用配置
    */
-  public var hamsterConfiguration: HamsterConfiguration? = {
+  public lazy var hamsterConfiguration: HamsterConfiguration? = {
     if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
       return config
     }
@@ -814,17 +814,19 @@ private extension KeyboardInputViewController {
 
   /// 设置键盘类型
   func setupKeyboardType() {
-    if needNumberKeyboard {
-      keyboardContext.setKeyboardType(.numericNineGrid)
-      return
-    }
+    Task {
+      if needNumberKeyboard {
+        keyboardContext.setKeyboardType(.numericNineGrid)
+        return
+      }
 
-    if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
-      keyboardContext.setKeyboardType(selectKeyboard)
-      return
-    }
+      if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
+        keyboardContext.setKeyboardType(selectKeyboard)
+        return
+      }
 
-    keyboardContext.keyboardType = .chinese(.lowercased)
+      keyboardContext.keyboardType = .chinese(.lowercased)
+    }
   }
 
   /**
