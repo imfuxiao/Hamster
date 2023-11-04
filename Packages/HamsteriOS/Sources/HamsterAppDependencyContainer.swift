@@ -108,11 +108,25 @@ open class HamsterAppDependencyContainer {
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
 
-    // PATCH: 删除 Rime/hamster.app.yaml 文件，将文件保存在 UserDefault 中
-    if FileManager.default.fileExists(atPath: FileManager.hamsterAppConfigFileOnUserData.path) {
-      if let appConfiguration = try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterAppConfigFileOnUserData) {
-        try? HamsterConfigurationRepositories.shared.saveAppConfigurationToUserDefaults(appConfiguration)
-        try? FileManager.default.removeItem(at: FileManager.hamsterAppConfigFileOnUserData)
+    // PATCH: 仓 65 版本变更存储格式 PropertyList 改为 JSON
+    let patch2_65 = UserDefaults.standard.object(forKey: UserDefaults.patch_2_65)
+    if patch2_65 == nil, !UserDefaults.hamster.isFirstRunning, let bundleVersion = Double((Bundle.main.infoDictionary ?? [:])["CFBundleVersion"] as? String ?? "0"), bundleVersion <= 65 {
+      // PList 加载
+      let loadConfigFromUserDefaults = { (key: String) throws -> HamsterConfiguration in
+        guard let data = UserDefaults.hamster.data(forKey: key) else { throw "load HamsterConfiguration from UserDefault is empty." }
+        return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
+      }
+
+      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.defaultHamsterConfigurationKey) {
+        try? HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(config)
+      }
+
+      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.hamsterAppConfigurationKey) {
+        try? HamsterConfigurationRepositories.shared.saveAppConfigurationToUserDefaults(config)
+      }
+
+      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.hamsterConfigurationKey) {
+        try? HamsterConfigurationRepositories.shared.saveToUserDefaults(config)
       }
     }
 

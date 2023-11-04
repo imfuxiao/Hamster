@@ -106,13 +106,13 @@ public class HamsterConfigurationRepositories {
   }
 }
 
-extension HamsterConfigurationRepositories {
+public extension HamsterConfigurationRepositories {
   /// UI操作生成的配置
-  private static let hamsterAppConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterAppConfig"
+  static let hamsterAppConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterAppConfig"
   /// 应用配置key
-  private static let hamsterConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterConfig"
+  static let hamsterConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.hamsterConfig"
   /// 默认应用配置key
-  private static let defaultHamsterConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.defaultHamsterConfig"
+  static let defaultHamsterConfigurationKey = "com.ihsiao.apps.Hamster.configuration.keys.defaultHamsterConfig"
 
   /// 将 str 中的中文 unicode 编码 \uXXXX 转化为人类可读的
   static func transform(_ str: String) throws -> String {
