@@ -223,8 +223,7 @@ public extension UserDefaults {
   var schemas: [RimeSchema] {
     get {
       // 对数组类型且为Struct值需要特殊处理
-      if let data = data(forKey: Self.schemasForKey) {
-        let array = try! JSONDecoder().decode([RimeSchema].self, from: data)
+      if let data = data(forKey: Self.schemasForKey), let array = try? JSONDecoder().decode([RimeSchema].self, from: data) {
         return array
       } else {
         return []
@@ -242,8 +241,7 @@ public extension UserDefaults {
   var selectSchemas: [RimeSchema] {
     get {
       // 对数组类型且为Struct值需要特殊处理
-      if let data = data(forKey: Self.selectSchemasForKey) {
-        let array = try! JSONDecoder().decode([RimeSchema].self, from: data)
+      if let data = data(forKey: Self.selectSchemasForKey), let array = try? JSONDecoder().decode([RimeSchema].self, from: data) {
         return array
       } else {
         return []
@@ -261,8 +259,8 @@ public extension UserDefaults {
   var currentSchema: RimeSchema? {
     get {
       // 对数组类型且为Struct值需要特殊处理
-      if let data = data(forKey: Self.currentSchemaForKey) {
-        return try! JSONDecoder().decode(RimeSchema.self, from: data)
+      if let data = data(forKey: Self.currentSchemaForKey), let schema = try? JSONDecoder().decode(RimeSchema.self, from: data) {
+        return schema
       } else {
         return nil
       }
@@ -279,8 +277,8 @@ public extension UserDefaults {
   var latestSchema: RimeSchema? {
     get {
       // 对数组类型且为Struct值需要特殊处理
-      if let data = data(forKey: Self.latestSchemaForKey) {
-        return try! JSONDecoder().decode(RimeSchema.self, from: data)
+      if let data = data(forKey: Self.latestSchemaForKey), let schema = try? JSONDecoder().decode(RimeSchema.self, from: data) {
+        return schema
       } else {
         return nil
       }
@@ -346,4 +344,7 @@ extension UserDefaults {
   private static let selectSchemasForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.selectSchemas"
   private static let currentSchemaForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.currentSchema"
   private static let latestSchemaForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.latestSchemaForKey"
+
+  // MARK: - 补丁
+  public static let patch_2_65 = "com.ihsiao.apps.Hamster.patchState.2.0.0-65"
 }
