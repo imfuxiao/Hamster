@@ -84,18 +84,29 @@ public class SettingsRootView: NibLessView {
         tableView.reloadData()
       }
       .store(in: &subscriptions)
+
+    settingsViewModel.tableReloadPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] _ in
+        tableReload()
+      }
+      .store(in: &subscriptions)
   }
 }
 
 // MARK: override UIView
 
 public extension SettingsRootView {
+  func tableReload() {
+    settingsViewModel.reloadFavoriteButton()
+    tableView.reloadData()
+  }
+
   override func didMoveToWindow() {
     super.didMoveToWindow()
 
     if let _ = window {
-      settingsViewModel.reloadFavoriteButton()
-      tableView.reloadData()
+      tableReload()
     }
   }
 }

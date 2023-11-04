@@ -45,6 +45,11 @@ public class SettingsViewModel: ObservableObject {
     }
   }
 
+  var tableReloadSubject = PassthroughSubject<Bool, Never>()
+  var tableReloadPublished: AnyPublisher<Bool, Never> {
+    tableReloadSubject.eraseToAnyPublisher()
+  }
+
   func reloadFavoriteButton() {
     let favoriteButtonSettings = getFavoriteButtons(buttons: UserDefaults.standard.getFavoriteButtons())
     guard !favoriteButtonSettings.isEmpty else { return }
@@ -70,6 +75,7 @@ public class SettingsViewModel: ObservableObject {
             buttonAction: { [weak self] in
               guard let self = self else { return }
               await rimeViewModel.rimeDeploy()
+              tableReloadSubject.send(true)
             },
             favoriteButton: .rimeDeploy
           )
