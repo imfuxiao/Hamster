@@ -264,6 +264,13 @@ public extension KeyboardAction {
     }
   }
 
+  var isCustomKeyboard: Bool {
+    switch self {
+    case .keyboardType(let type): return type.isCustom
+    default: return false
+    }
+  }
+
   /**
    Whether or not the action is a primary action.
    
