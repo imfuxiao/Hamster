@@ -113,6 +113,7 @@ public class SymbolEditorView: NibLessView {
     self.reloadDataPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] _ in
+        self.symbols = getSymbols()
         self.tableView.reloadData()
       }
       .store(in: &subscriptions)
@@ -257,6 +258,7 @@ extension SymbolEditorView: UITableViewDelegate {
   public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
       symbols.remove(at: indexPath.row)
+      self.symbolsDidSet(self.symbols)
       tableView.deleteRows(at: [indexPath], with: .automatic)
     }
   }
