@@ -47,6 +47,8 @@ public class SettingsViewModel: ObservableObject {
 
   func reloadFavoriteButton() {
     let favoriteButtonSettings = getFavoriteButtons(buttons: UserDefaults.standard.getFavoriteButtons())
+    guard !favoriteButtonSettings.isEmpty else { return }
+
     let sectionsContainerFavoriteButtons = sections[0].items[0].type == .button
     if sectionsContainerFavoriteButtons {
       sections[0].items = favoriteButtonSettings
@@ -222,6 +224,21 @@ extension SettingsViewModel {
       HamsterAppDependencyContainer.shared.applicationConfiguration = appConfig
 
       await ProgressHUD.success("迁移完成", interaction: false, delay: 1.5)
+      return
+    }
+
+    // PATCH: 仓 65 版本之后需要重新部署
+    let patch2_65 = UserDefaults.standard.object(forKey: UserDefaults.patch_2_65)
+    if patch2_65 == nil, !UserDefaults.hamster.isFirstRunning, let bundleVersion = Double((Bundle.main.infoDictionary ?? [:])["CFBundleVersion"] as? String ?? "0"), bundleVersion <= 65 {
+      await ProgressHUD.animate("版本补丁中……", interaction: false)
+      var configuration = HamsterAppDependencyContainer.shared.configuration
+
+      // 部署 RIME
+      try rimeViewModel.rimeContext.deployment(configuration: &configuration)
+      HamsterAppDependencyContainer.shared.configuration = configuration
+
+      UserDefaults.standard.setValue(true, forKey: UserDefaults.patch_2_65)
+      await ProgressHUD.success("补丁成功", interaction: false, delay: 1.5)
       return
     }
 

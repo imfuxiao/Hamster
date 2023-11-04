@@ -16,7 +16,7 @@ extension UserDefaults {
 
   func getFavoriteButtons() -> [FavoriteButton] {
     let favoritesButtons = (object(forKey: Self.favoriteButtonKey) as? [String]) ?? [String]()
-    return favoritesButtons.map { FavoriteButton(rawValue: $0)! }
+    return favoritesButtons.compactMap { FavoriteButton(rawValue: $0) }
   }
 
   func setFavoriteButton(button: FavoriteButton) {
