@@ -246,6 +246,7 @@ extension SymbolEditorView: UITableViewDelegate {
 
   public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
     symbols.swapAt(sourceIndexPath.row, destinationIndexPath.row)
+    self.symbolsDidSet(self.symbols)
   }
 
   public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
