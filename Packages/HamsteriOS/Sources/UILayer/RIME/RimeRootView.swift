@@ -54,6 +54,14 @@ public class RimeRootView: NibLessView {
     tableView.fillSuperview()
   }
 
+  override public func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    if let _ = window {
+      tableView.reloadData()
+    }
+  }
+
   @objc func copySyncConfig() {
     UIPasteboard.general.string = Self.rimeSyncConfigSample
     ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
