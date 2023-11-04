@@ -11,5 +11,5 @@ import Foundation
 protocol FrequentSymbolProvider: SymbolProvider {
   func registerSymbol(_ symbol: Symbol)
 
-  func rest()
+  func reset()
 }

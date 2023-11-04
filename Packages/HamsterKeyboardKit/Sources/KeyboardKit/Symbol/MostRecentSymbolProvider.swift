@@ -6,8 +6,9 @@
 //
 
 import Foundation
+import HamsterKit
 
-class MostRecentSymbolProvider: FrequentSymbolProvider {
+public class MostRecentSymbolProvider: FrequentSymbolProvider {
   public init(
     maxCount: Int = 30,
     defaults: UserDefaults = .hamster
@@ -18,7 +19,7 @@ class MostRecentSymbolProvider: FrequentSymbolProvider {
   
   private let defaults: UserDefaults
   private let maxCount: Int
-  private let key = "com.ihsiao.app.hamster.keyboard.mostRecentSymbolProvider.symbol"
+  public static let key = "com.ihsiao.app.hamster.keyboard.mostRecentSymbolProvider.symbol"
   private static let common = ["，", "。", "？", "！"]
   
   var symbols: [Symbol] {
@@ -26,7 +27,7 @@ class MostRecentSymbolProvider: FrequentSymbolProvider {
   }
   
   var symbolChars: [String] {
-    defaults.stringArray(forKey: key) ?? Self.common
+    defaults.stringArray(forKey: Self.key) ?? Self.common
   }
   
   func registerSymbol(_ symbol: Symbol) {
@@ -34,10 +35,10 @@ class MostRecentSymbolProvider: FrequentSymbolProvider {
     symbols.insert(symbol, at: 0)
     let result = Array(symbols.prefix(maxCount))
     let chars = result.map { $0.char }
-    defaults.set(chars, forKey: key)
+    defaults.set(chars, forKey: Self.key)
   }
   
-  func rest() {
-    defaults.set(Self.common, forKey: key)
+  public func reset() {
+    defaults.set(Self.common, forKey: Self.key)
   }
 }

@@ -738,7 +738,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
             self.subViewSubject.send(.symbols)
           }),
         .init(
-          text: "符号键盘",
+          text: "分类符号键盘",
           accessoryType: .disclosureIndicator,
           type: .navigation,
           // navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
@@ -957,7 +957,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   lazy var symbolKeyboardSettings: [SettingItemModel] = [
     //    .init(
-//      text: "启用符号键盘",
+//      text: "启用分类符号键盘",
 //      type: .toggle,
 //      toggleValue: enableSymbolKeyboard,
 //      toggleHandled: { [unowned self] in
@@ -968,10 +968,8 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       textTintColor: .systemRed,
       type: .button,
       buttonAction: { [unowned self] in
-        guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-          throw "获取系统默认配置失败"
-        }
-        // TODO: 常用符号重置
+        MostRecentSymbolProvider().reset()
+        await ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
       })
   ]
 
