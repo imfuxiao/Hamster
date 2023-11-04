@@ -91,9 +91,14 @@ extension KeyboardSettingsRootView: UITableViewDataSource {
       guard let cell = cell as? ButtonTableViewCell else { return cell }
       cell.updateWithSettingItem(setting)
       return cell
-    case .PullDown:
+    case .pullDown:
       let cell = tableView.dequeueReusableCell(withIdentifier: PullDownMenuCell.identifier, for: indexPath)
       guard let cell = cell as? PullDownMenuCell else { return cell }
+      cell.updateWithSettingItem(setting)
+      return cell
+    case .settings:
+      let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? SettingTableViewCell else { return cell }
       cell.updateWithSettingItem(setting)
       return cell
     }

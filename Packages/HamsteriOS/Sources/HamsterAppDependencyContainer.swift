@@ -52,7 +52,6 @@ open class HamsterAppDependencyContainer {
   }()
 
   /// 应用配置
-  /// 注意：应用首次启动时需要先将配置从配置文件中加载到 UserDefault 中
   public var configuration: HamsterConfiguration {
     didSet {
       Task {
@@ -164,6 +163,22 @@ open class HamsterAppDependencyContainer {
         self.configuration = HamsterConfiguration()
       }
     }
+  }
+
+  /// 重置应用配置
+  public func resetAppConfiguration() {
+    // 删除 UserDefaults 中的 UI 操作配置
+    HamsterConfigurationRepositories.shared.resetAppConfiguration()
+    let configuration = HamsterConfigurationRepositories.shared.loadConfiguration()
+    HamsterAppDependencyContainer.shared.configuration = configuration
+    HamsterAppDependencyContainer.shared.applicationConfiguration = HamsterConfiguration(
+      general: GeneralConfiguration(),
+      toolbar: KeyboardToolbarConfiguration(),
+      keyboard: KeyboardConfiguration(),
+      rime: RimeConfiguration(),
+      swipe: KeyboardSwipeConfiguration(),
+      keyboards: nil
+    )
   }
 
   /// 重置应用配置

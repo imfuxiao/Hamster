@@ -281,32 +281,7 @@ public extension RimeContext {
     resetCurrentSchema()
     resetLatestSchema()
 
-    // 读取 SharedSupport/hamster.yaml 配置文件，如果存在
-    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnSandboxSharedSupport.path) {
-      configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
-    }
-
-    // 读取 Rime/hamster.yaml 配置文件，如果存在，则 merge 不同属性，已 Rime/hamster.yaml 内容为主
-    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserData.path) {
-      let config = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserData)
-      configuration = try configuration.merge(with: config, uniquingKeysWith: { _, configValue in configValue })
-    }
-
-    // 读取 Rime/hamster.custom.yaml 配置文件，如果存在，并对相异的配置做 merge 合并，已 Rime/hamster.custom.yaml 文件为主
-    if FileManager.default.fileExists(atPath: FileManager.hamsterPatchConfigFileOnUserData.path) {
-      let patchConfiguration = try HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserData)
-      if let patch = patchConfiguration.patch {
-        configuration = try configuration.merge(
-          with: patch,
-          uniquingKeysWith: { _, patchValue in patchValue }
-        )
-      }
-    }
-
-    // 读取 UI 操作产生的配置（存储在 UserDefaults 中）, 如果存在，并对相异的配置做 merge 合并。
-    if let appConfig = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults() {
-      configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
-    }
+    configuration = HamsterConfigurationRepositories.shared.loadConfiguration()
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true

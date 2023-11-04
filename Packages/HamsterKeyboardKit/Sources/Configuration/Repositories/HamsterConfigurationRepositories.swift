@@ -99,8 +99,53 @@ public class HamsterConfigurationRepositories {
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
   }
 
+  /// 按优先级dc
+  public func loadConfiguration() -> HamsterConfiguration {
+    var configuration = HamsterConfiguration()
+
+    // 读取 SharedSupport/hamster.yaml 配置文件，如果存在
+    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnSandboxSharedSupport.path) {
+      if let defaultConfiguration = try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport) {
+        configuration = defaultConfiguration
+      }
+    }
+
+    // 读取 Rime/hamster.yaml 配置文件，如果存在，则 merge 不同属性，已 Rime/hamster.yaml 内容为主
+    if FileManager.default.fileExists(atPath: FileManager.hamsterConfigFileOnUserData.path) {
+      if let config = try? HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnUserData),
+         let config = try? configuration.merge(with: config, uniquingKeysWith: { _, configValue in configValue })
+      {
+        configuration = config
+      }
+    }
+
+    // 读取 Rime/hamster.custom.yaml 配置文件，如果存在，并对相异的配置做 merge 合并，已 Rime/hamster.custom.yaml 文件为主
+    if FileManager.default.fileExists(atPath: FileManager.hamsterPatchConfigFileOnUserData.path) {
+      if let patchConfiguration = try? HamsterConfigurationRepositories.shared.loadPatchFromYAML(yamlPath: FileManager.hamsterPatchConfigFileOnUserData) {
+        if let patch = patchConfiguration.patch, let config = try? configuration.merge(with: patch, uniquingKeysWith: { _, patchValue in patchValue }) {
+          configuration = config
+        }
+      }
+    }
+
+    // 读取 UI 操作产生的配置（存储在 UserDefaults 中, 如果存在，并对相异的配置做 merge 合并。
+    if let appConfig = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults(),
+       let config = try? configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
+    {
+      configuration = config
+    }
+
+    return configuration
+  }
+
+  /// 清空 UI 交互生成的配置
+  public func resetAppConfiguration() {
+    UserDefaults.hamster.removeObject(forKey: Self.hamsterAppConfigurationKey)
+  }
+
   /// 清空应用配置（包含默认的应用配置）
   public func resetConfiguration() {
+    UserDefaults.hamster.removeObject(forKey: Self.hamsterAppConfigurationKey)
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
     UserDefaults.hamster.removeObject(forKey: Self.defaultHamsterConfigurationKey)
   }

@@ -13,5 +13,10 @@ public enum SettingType: Hashable, Equatable {
   case toggle
   case textField
   case button
-  case PullDown
+
+  // 下拉选项 cell
+  case pullDown
+
+  // 设置文本
+  case settings
 }

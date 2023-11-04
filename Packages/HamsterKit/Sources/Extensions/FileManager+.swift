@@ -323,6 +323,11 @@ public extension FileManager {
     sandboxUserDataDirectory.appendingPathComponent("hamster.app.yaml")
   }
 
+  /// Sandbox/Rime/hamster.all.yaml 文件
+  static var hamsterAllConfigFileOnUserData: URL {
+    sandboxUserDataDirectory.appendingPathComponent("hamster.all.yaml")
+  }
+
   /// Sandbox/Rime/build/hamster.yaml 文件
   static var hamsterConfigFileOnBuild: URL {
     sandboxUserDataDirectory.appendingPathComponent("/build/hamster.yaml")

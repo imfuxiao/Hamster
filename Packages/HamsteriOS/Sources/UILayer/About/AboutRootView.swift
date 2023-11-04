@@ -74,7 +74,8 @@ class AboutRootView: NibLessView {
 
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    tableView.register(AboutTableViewCell.self, forCellReuseIdentifier: AboutTableViewCell.identifier)
+    tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
+    tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     return tableView
   }()
 
@@ -128,26 +129,47 @@ class AboutRootView: NibLessView {
 
 extension AboutRootView: UITableViewDelegate {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let cellInfo = aboutViewModel.cellInfos[indexPath.row]
-    if cellInfo.cellType == .navigation {
-      cellInfo.navigationAction?()
-      return
-    }
-    aboutViewModel.tapAction(cellInfo: cellInfo)
     tableView.deselectRow(at: indexPath, animated: false)
+    guard let _ = tableView.cellForRow(at: indexPath) else { return }
+    let settings = aboutViewModel.settingItems[indexPath.section].items[indexPath.row]
+    if settings.type == .navigation {
+      settings.navigationAction?()
+    } else {
+      Task {
+        try? await settings.buttonAction?()
+      }
+    }
   }
 }
 
 extension AboutRootView: UITableViewDataSource {
+  func numberOfSections(in tableView: UITableView) -> Int {
+    return aboutViewModel.settingItems.count
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return aboutViewModel.cellInfos.count
+    return aboutViewModel.settingItems[section].items.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: AboutTableViewCell.identifier, for: indexPath)
-    if let cell = cell as? AboutTableViewCell {
-      cell.aboutInfo = aboutViewModel.cellInfos[indexPath.row]
+    let setting = aboutViewModel.settingItems[indexPath.section].items[indexPath.row]
+
+    if setting.type == .button {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
+      if let cell = cell as? ButtonTableViewCell {
+        cell.updateWithSettingItem(setting)
+      }
+      return cell
+    }
+
+    let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
+    if let cell = cell as? SettingTableViewCell {
+      cell.updateWithSettingItem(setting)
     }
     return cell
+  }
+
+  func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    aboutViewModel.settingItems[section].footer
   }
 }

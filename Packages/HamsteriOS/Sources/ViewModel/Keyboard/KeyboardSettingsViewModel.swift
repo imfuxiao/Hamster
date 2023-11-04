@@ -1301,7 +1301,7 @@ extension KeyboardSettingsViewModel {
       SettingSectionModel(items: [
         .init(
           text: "划动方向",
-          type: .PullDown,
+          type: .pullDown,
           textValue: { keySwipe.direction.labelText },
           pullDownMenuActionsBuilder: {
             KeySwipe.Direction.allCases
@@ -1317,7 +1317,7 @@ extension KeyboardSettingsViewModel {
           }),
         .init(
           text: "划动操作",
-          type: .PullDown,
+          type: .pullDown,
           textValue: { keySwipe.action.yamlString },
           pullDownMenuActionsBuilder: {
             KeyboardActionOption.allCases
@@ -1373,7 +1373,7 @@ extension KeyboardSettingsViewModel {
         items: [
           .init(
             text: "划动方向",
-            type: .PullDown,
+            type: .pullDown,
             textValue: { swipe.direction.labelText },
             pullDownMenuActionsBuilder: {
               let setupDirection = { [unowned self] (direction: KeySwipe.Direction) in
@@ -1402,7 +1402,7 @@ extension KeyboardSettingsViewModel {
             }),
           .init(
             text: "划动操作",
-            type: .PullDown,
+            type: .pullDown,
             textValue: { swipe.action.yamlString },
             pullDownMenuActionsBuilder: {
               let setupAction = { [unowned self] (option: KeyboardActionOption) in
