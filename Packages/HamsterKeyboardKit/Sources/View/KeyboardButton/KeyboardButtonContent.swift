@@ -152,29 +152,44 @@ public class KeyboardButtonContentView: NibLessView {
 //      return
 //    }
 
+    let showUpSwipeLabel = upSwipeLabel.superview != nil
+    let showDownSwipeLabel = downSwipeLabel.superview != nil
+
     // 划动上下布局
     if keyboardContext.swipeLabelUpAndDownLayout {
       // TODO: 不规则上下布局
       if keyboardContext.swipeLabelUpAndDownIrregularLayout {
-        upSwipeLabel.frame = CGRect(x: self.oldBounds.width / 3 * 2, y: 2, width: self.oldBounds.width / 3, height: self.oldBounds.height * 0.75 / 2)
-        upSwipeLabel.textAlignment = .center
+        if showUpSwipeLabel {
+          upSwipeLabel.frame = CGRect(x: self.oldBounds.width / 3 * 2, y: 2, width: self.oldBounds.width / 3, height: self.oldBounds.height * 0.75 / 2)
+          upSwipeLabel.textAlignment = .center
+        }
 
-        contentView.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width / 3 * 2 + 3, height: self.oldBounds.height * 0.75)
+        let contentWidth = self.oldBounds.width / 3 * 2 + 3
+        contentView.frame = CGRect(x: 0, y: 0, width: contentWidth, height: self.oldBounds.height * 0.75)
         textContentView.label.adjustsFontSizeToFitWidth = true
         textContentView.label.minimumScaleFactor = 0.88
+        if !showUpSwipeLabel {
+          textContentView.label.minimumScaleFactor = 0.5
+        }
 
-        downSwipeLabel.frame = CGRect(x: 0, y: self.oldBounds.height * 0.75 - 2, width: self.oldBounds.width, height: self.oldBounds.height * 0.3)
+        if showDownSwipeLabel {
+          downSwipeLabel.frame = CGRect(x: 0, y: self.oldBounds.height * 0.75 - 2, width: self.oldBounds.width, height: self.oldBounds.height * 0.3)
+        }
       } else {
         // 标准上下布局
         let swipeHeight = self.oldBounds.height * 0.18
 
-        upSwipeLabel.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width, height: swipeHeight)
+        if showUpSwipeLabel {
+          upSwipeLabel.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width, height: swipeHeight)
+        }
 
         contentView.frame = CGRect(x: 0, y: swipeHeight - 1, width: self.oldBounds.width, height: self.oldBounds.height * 0.66)
         textContentView.label.adjustsFontSizeToFitWidth = true
         textContentView.label.minimumScaleFactor = 0.85
 
-        downSwipeLabel.frame = upSwipeLabel.frame.offsetBy(dx: 0, dy: upSwipeLabel.frame.height + contentView.frame.height - 1)
+        if showDownSwipeLabel {
+          downSwipeLabel.frame = upSwipeLabel.frame.offsetBy(dx: 0, dy: upSwipeLabel.frame.height + contentView.frame.height - 1)
+        }
       }
     } else { // 划动上布局
       let swipeHeight = self.oldBounds.height * 0.3
