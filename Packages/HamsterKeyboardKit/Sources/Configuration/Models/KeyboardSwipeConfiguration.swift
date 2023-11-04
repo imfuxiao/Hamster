@@ -9,14 +9,8 @@ import Foundation
 
 /// 键盘划动配置
 public struct KeyboardSwipeConfiguration: Codable, Hashable {
-  /// x 轴划动灵敏度
-  public var xAxleSwipeSensitivity: Int?
-
-  /// y 轴划动灵敏度
-  public var yAxleSwipeSensitivity: Int?
-
-  /// 空格移动光标划动灵敏度
-  public var spaceSwipeSensitivity: Int?
+  // 空格移动光标的灵敏度，指移动多个个点，光标移动一位。
+  public var spaceDragSensitivity: Int?
 
   /// 划动距离阈值，当划动的距离大于或等于此值时，才会识别为一次划动
   public var distanceThreshold: Int?
@@ -32,10 +26,8 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
   /// 内置键盘滑动配置
   public var keyboardSwipe: [KeyboardSwipe]?
 
-  public init(xAxleSwipeSensitivity: Int? = nil, yAxleSwipeSensitivity: Int? = nil, spaceSwipeSensitivity: Int? = nil, distanceThreshold: Int? = nil, tangentThreshold: CGFloat? = nil, longPressDelay: Double? = nil, keyboardSwipe: [KeyboardSwipe]? = nil) {
-    self.xAxleSwipeSensitivity = xAxleSwipeSensitivity
-    self.yAxleSwipeSensitivity = yAxleSwipeSensitivity
-    self.spaceSwipeSensitivity = spaceSwipeSensitivity
+  public init(spaceDragSensitivity: Int? = nil, distanceThreshold: Int? = nil, tangentThreshold: CGFloat? = nil, longPressDelay: Double? = nil, keyboardSwipe: [KeyboardSwipe]? = nil) {
+    self.spaceDragSensitivity = spaceDragSensitivity
     self.distanceThreshold = distanceThreshold
     self.tangentThreshold = tangentThreshold
     self.longPressDelay = longPressDelay
@@ -44,9 +36,7 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
-    self.xAxleSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .xAxleSwipeSensitivity)
-    self.yAxleSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .yAxleSwipeSensitivity)
-    self.spaceSwipeSensitivity = try container.decodeIfPresent(Int.self, forKey: .spaceSwipeSensitivity)
+    self.spaceDragSensitivity = try container.decodeIfPresent(Int.self, forKey: .spaceDragSensitivity)
     self.distanceThreshold = try container.decodeIfPresent(Int.self, forKey: .distanceThreshold)
     self.tangentThreshold = try container.decodeIfPresent(CGFloat.self, forKey: .tangentThreshold)
     self.longPressDelay = try container.decodeIfPresent(Double.self, forKey: .longPressDelay)
@@ -54,9 +44,7 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
   }
 
   enum CodingKeys: CodingKey {
-    case xAxleSwipeSensitivity
-    case yAxleSwipeSensitivity
-    case spaceSwipeSensitivity
+    case spaceDragSensitivity
     case distanceThreshold
     case tangentThreshold
     case longPressDelay
@@ -65,9 +53,7 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
 
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
-    try container.encodeIfPresent(self.xAxleSwipeSensitivity, forKey: .xAxleSwipeSensitivity)
-    try container.encodeIfPresent(self.yAxleSwipeSensitivity, forKey: .yAxleSwipeSensitivity)
-    try container.encodeIfPresent(self.spaceSwipeSensitivity, forKey: .spaceSwipeSensitivity)
+    try container.encodeIfPresent(self.spaceDragSensitivity, forKey: .spaceDragSensitivity)
     try container.encodeIfPresent(self.distanceThreshold, forKey: .distanceThreshold)
     try container.encodeIfPresent(self.tangentThreshold, forKey: .tangentThreshold)
     try container.encodeIfPresent(self.longPressDelay, forKey: .longPressDelay)

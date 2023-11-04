@@ -330,7 +330,10 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
    您可以用自定义实现来替代它。
    */
-  public lazy var keyboardActionHandler: KeyboardActionHandler = StandardKeyboardActionHandler(inputViewController: self) {
+  public lazy var keyboardActionHandler: KeyboardActionHandler = StandardKeyboardActionHandler(
+    inputViewController: self,
+    spaceDragSensitivity: .custom(points: hamsterConfiguration?.swipe?.spaceDragSensitivity ?? 5)
+  ) {
     didSet { refreshProperties() }
   }
 

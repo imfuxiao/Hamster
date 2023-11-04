@@ -182,11 +182,12 @@ rime:
 
 # 划动相关配置
 swipe:
-  xAxleSwipeSensitivity: 20
-  yAxleSwipeSensitivity: 30
-  spaceSwipeSensitivity: 50
+  # 指空格移动多个 point，光标移动一位。所以数字越小越灵敏
+  spaceDragSensitivity: 5
+
   # 划动距离阈值，当划动的距离大于或等于此值时，才会识别为一次划动
   distanceThreshold: 20
+
   # 此值是正切角度的阈值，用来限制上下左右划动时的角度，如果太大容易误触
   # 默认为 15 度的正切值，即上下左右划的的角度不能超过 15 度
   # tan(10º) ≈ 0.176, tan(15º) ≈ 0.268, tan(30º) ≈ 0.577, tan(45º) = 1, tan(60º) ≈ 1.732
