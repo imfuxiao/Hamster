@@ -38,20 +38,18 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewDidLoad() {
     super.viewDidLoad()
-    setupRIME()
-
     // setupInitialWidth()
     // setupLocaleObservation()
     // setupNextKeyboardBehavior()
-    setupKeyboardType()
     // KeyboardUrlOpener.shared.controller = self
-
     setupCombineRIMEInput()
   }
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     Logger.statistics.debug("KeyboardInputViewController: viewWillAppear()")
+    setupRIME()
+    setupKeyboardType()
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
@@ -80,6 +78,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     // Logger.statistics.info("controller traitCollectionDidChange()")
     super.traitCollectionDidChange(previousTraitCollection)
     viewWillSyncWithContext()
+  }
+
+  override open func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+
+    shutdownRIME()
   }
 
   // MARK: - Keyboard View Controller Lifecycle
@@ -817,31 +821,29 @@ private extension KeyboardInputViewController {
 
   /// 设置键盘类型
   func setupKeyboardType() {
-    DispatchQueue.global(qos: .default).async { [unowned self] in
-      if needNumberKeyboard {
-        keyboardContext.setKeyboardType(.numericNineGrid)
-        return
-      }
-
-      if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
-        keyboardContext.setKeyboardType(selectKeyboard)
-        return
-      }
-
-      keyboardContext.keyboardType = .chinese(.lowercased)
+    if needNumberKeyboard {
+      keyboardContext.keyboardType = .numericNineGrid
+      return
     }
+
+    if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
+      keyboardContext.keyboardType = selectKeyboard
+      return
+    }
+
+    keyboardContext.keyboardType = .chinese(.lowercased)
   }
 
   /**
    RIME 引擎设置
    */
   func setupRIME() {
+    // 异步 RIME 引擎启动
     Task {
-      // 异步 RIME 引擎启动
-      if rimeContext.isRunning {
-        Logger.statistics.debug("shutdown rime engine")
-        shutdownRIME()
-      }
+//      if rimeContext.isRunning {
+//        Logger.statistics.debug("shutdown rime engine")
+//        shutdownRIME()
+//      }
 
       Logger.statistics.debug("setup rime engine")
 
@@ -860,11 +862,11 @@ private extension KeyboardInputViewController {
         }
 
         // Sandbox 补充 default.custom.yaml 文件
-        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
-        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
-          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
-          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
-        }
+//        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+//        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+//          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+//          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+//        }
       }
 
       if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
