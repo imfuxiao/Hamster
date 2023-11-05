@@ -19,4 +19,6 @@ public enum SettingType: Hashable, Equatable {
 
   // 设置文本
   case settings
+
+  case step
 }

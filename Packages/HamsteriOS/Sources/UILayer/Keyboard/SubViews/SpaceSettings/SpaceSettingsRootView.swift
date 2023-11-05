@@ -19,6 +19,7 @@ class SpaceSettingsRootView: NibLessView {
     tableView.allowsSelection = false
     tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
+    tableView.register(StepperTableViewCell.self, forCellReuseIdentifier: StepperTableViewCell.identifier)
     return tableView
   }()
 
@@ -59,9 +60,17 @@ extension SpaceSettingsRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let settingItem = keyboardSettingsViewModel.spaceSettings[indexPath.section].items[indexPath.row]
+
     if settingItem.type == .textField {
       let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? TextFieldTableViewCell else { return cell }
+      cell.updateWithSettingItem(settingItem)
+      return cell
+    }
+
+    if settingItem.type == .step {
+      let cell = tableView.dequeueReusableCell(withIdentifier: StepperTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? StepperTableViewCell else { return cell }
       cell.updateWithSettingItem(settingItem)
       return cell
     }
@@ -89,6 +98,6 @@ extension SpaceSettingsRootView: UITableViewDataSource, UITableViewDelegate {
     if section == 2 {
       return "1. 启用后，方案名称会覆盖长显文本。\n2. 以上两个选项对自定义键盘也适用。"
     }
-    return nil
+    return keyboardSettingsViewModel.spaceSettings[section].footer
   }
 }

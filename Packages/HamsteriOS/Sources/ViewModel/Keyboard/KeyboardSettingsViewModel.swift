@@ -336,6 +336,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var spaceDragSensitivity: Int {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.swipe?.spaceDragSensitivity ?? 5
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.swipe?.spaceDragSensitivity = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.swipe?.spaceDragSensitivity = newValue
+    }
+  }
+
   public var maximumNumberOfCandidateWords: Int {
     get {
       HamsterAppDependencyContainer.shared.configuration.rime?.maximumNumberOfCandidateWords ?? 100
@@ -831,95 +841,102 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ])
   ]
 
-  /// 工具栏设置选项
-  lazy var toolbarSteppers: [StepperModel] = [
-    .init(
-      text: "候选字最大数量",
-      value: Double(maximumNumberOfCandidateWords),
-      minValue: 50,
-      maxValue: 500,
-      stepValue: 50,
-      valueChangeHandled: { [unowned self] in
-        maximumNumberOfCandidateWords = Int($0)
-      }),
-    .init(
-      text: "候选字体大小",
-      value: Double(candidateWordFontSize),
-      minValue: 10,
-      maxValue: 30,
-      stepValue: 1,
-      valueChangeHandled: { [unowned self] in
-        candidateWordFontSize = Int($0)
-      }),
-    .init(
-      text: "候选备注字体大小",
-      value: Double(candidateCommentFontSize),
-      minValue: 5,
-      maxValue: 30,
-      stepValue: 1,
-      valueChangeHandled: { [unowned self] in
-        candidateCommentFontSize = Int($0)
-      }),
-    .init(
-      text: "工具栏高度",
-      value: Double(heightOfToolbar),
-      minValue: 30,
-      maxValue: 80,
-      stepValue: 1,
-      valueChangeHandled: { [unowned self] in
-        heightOfToolbar = Int($0)
-      }),
-    .init(
-      text: "编码区高度",
-      value: Double(heightOfCodingArea),
-      minValue: 5,
-      maxValue: 20,
-      stepValue: 1,
-      valueChangeHandled: { [unowned self] in
-        heightOfCodingArea = Int($0)
-      }),
-    .init(
-      text: "编码区字体大小",
-      value: Double(codingAreaFontSize),
-      minValue: 5,
-      maxValue: 20,
-      stepValue: 1,
-      valueChangeHandled: { [unowned self] in
-        codingAreaFontSize = Int($0)
-      })
-  ]
+  lazy var toolbarSettings: [SettingSectionModel] = [
+    .init(items: [
+      .init(
+        text: "启用候选工具栏",
+        toggleValue: { [unowned self] in enableToolbar },
+        toggleHandled: { [unowned self] in
+          enableToolbar = $0
+        }),
+      .init(
+        text: "显示应用图标",
+        toggleValue: { [unowned self] in displayAppIconButton },
+        toggleHandled: { [unowned self] in
+          displayAppIconButton = $0
+        }),
+      .init(
+        text: "显示键盘收起图标",
+        toggleValue: { [unowned self] in displayKeyboardDismissButton },
+        toggleHandled: { [unowned self] in
+          displayKeyboardDismissButton = $0
+        }),
+      .init(
+        text: "显示候选项索引",
+        toggleValue: { [unowned self] in displayIndexOfCandidateWord },
+        toggleHandled: { [unowned self] in
+          displayIndexOfCandidateWord = $0
+        }),
+      .init(
+        text: "显示候选文字 Comment",
+        toggleValue: { [unowned self] in displayCommentOfCandidateWord },
+        toggleHandled: { [unowned self] in
+          displayCommentOfCandidateWord = $0
+        })
+    ]),
 
-  lazy var toolbarToggles: [SettingItemModel] = [
-    .init(
-      text: "启用候选工具栏",
-      toggleValue: { [unowned self] in enableToolbar },
-      toggleHandled: { [unowned self] in
-        enableToolbar = $0
-      }),
-    .init(
-      text: "显示应用图标",
-      toggleValue: { [unowned self] in displayAppIconButton },
-      toggleHandled: { [unowned self] in
-        displayAppIconButton = $0
-      }),
-    .init(
-      text: "显示键盘收起图标",
-      toggleValue: { [unowned self] in displayKeyboardDismissButton },
-      toggleHandled: { [unowned self] in
-        displayKeyboardDismissButton = $0
-      }),
-    .init(
-      text: "显示候选项索引",
-      toggleValue: { [unowned self] in displayIndexOfCandidateWord },
-      toggleHandled: { [unowned self] in
-        displayIndexOfCandidateWord = $0
-      }),
-    .init(
-      text: "显示候选文字 Comment",
-      toggleValue: { [unowned self] in displayCommentOfCandidateWord },
-      toggleHandled: { [unowned self] in
-        displayCommentOfCandidateWord = $0
-      })
+    .init(items: [
+      .init(
+        text: "候选字最大数量",
+        type: .step,
+        textValue: { [unowned self] in String(maximumNumberOfCandidateWords) },
+        minValue: 50,
+        maxValue: 500,
+        stepValue: 50,
+        valueChangeHandled: { [unowned self] in
+          maximumNumberOfCandidateWords = Int($0)
+        }),
+      .init(
+        text: "候选字体大小",
+        type: .step,
+        textValue: { [unowned self] in String(candidateWordFontSize) },
+        minValue: 10,
+        maxValue: 30,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          candidateWordFontSize = Int($0)
+        }),
+      .init(
+        text: "候选备注字体大小",
+        type: .step,
+        textValue: { [unowned self] in String(candidateCommentFontSize) },
+        minValue: 5,
+        maxValue: 30,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          candidateCommentFontSize = Int($0)
+        }),
+      .init(
+        text: "工具栏高度",
+        type: .step,
+        textValue: { [unowned self] in String(heightOfToolbar) },
+        minValue: 30,
+        maxValue: 80,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          heightOfToolbar = Int($0)
+        }),
+      .init(
+        text: "编码区高度",
+        type: .step,
+        textValue: { [unowned self] in String(heightOfCodingArea) },
+        minValue: 5,
+        maxValue: 20,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          heightOfCodingArea = Int($0)
+        }),
+      .init(
+        text: "编码区字体大小",
+        type: .step,
+        textValue: { [unowned self] in String(codingAreaFontSize) },
+        minValue: 5,
+        maxValue: 20,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          codingAreaFontSize = Int($0)
+        })
+    ])
   ]
 
   lazy var numberNineGridSettings: [SettingItemModel] = [
@@ -1009,15 +1026,6 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           enableLoadingTextForSpaceButton = $0
         }),
       .init(
-        text: "长显显示输入方案名",
-        type: .toggle,
-        toggleValue: { [unowned self] in
-          showCurrentInputSchemaNameForSpaceButton
-        },
-        toggleHandled: { [unowned self] in
-          showCurrentInputSchemaNameForSpaceButton = $0
-        }),
-      .init(
         text: "加载文字显示输入方案名",
         type: .toggle,
         toggleValue: { [unowned self] in
@@ -1025,8 +1033,31 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         },
         toggleHandled: { [unowned self] in
           showCurrentInputSchemaNameOnLoadingTextForSpaceButton = $0
+        }),
+      .init(
+        text: "长显显示输入方案名",
+        type: .toggle,
+        toggleValue: { [unowned self] in
+          showCurrentInputSchemaNameForSpaceButton
+        },
+        toggleHandled: { [unowned self] in
+          showCurrentInputSchemaNameForSpaceButton = $0
         })
-    ])
+    ]),
+    .init(
+      footer: "空格移动光标的灵敏度指: 手指在屏幕移动多少个点，光标移动一位，所以数值越小，光标移动越快。",
+      items: [
+        .init(
+          text: "移动光标灵敏度",
+          type: .step,
+          textValue: { [unowned self] in String(spaceDragSensitivity) },
+          minValue: 1,
+          maxValue: 100,
+          stepValue: 1,
+          valueChangeHandled: { [unowned self] in
+            spaceDragSensitivity = Int($0)
+          })
+      ])
   ]
 
   // MARK: - Initialization

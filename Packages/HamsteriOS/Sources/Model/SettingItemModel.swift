@@ -31,6 +31,13 @@ public struct SettingItemModel: Hashable, Identifiable {
   public var favoriteButtonHandler: (() -> Void)?
   public var pullDownMenuActionsBuilder: (() -> [UIAction])?
 
+  // step属性
+  // step 当前 value 显示，请使用 textValue 设置
+  public var minValue: Double
+  public var maxValue: Double
+  public var stepValue: Double
+  public var valueChangeHandled: ((Double) -> Void)?
+
   init(
     icon: UIImage? = nil,
     iconBackgroundColor: UIColor? = nil,
@@ -51,7 +58,11 @@ public struct SettingItemModel: Hashable, Identifiable {
     buttonAction: (() async throws -> Void)? = nil,
     favoriteButton: FavoriteButton? = nil,
     favoriteButtonHandler: (() -> Void)? = nil,
-    pullDownMenuActionsBuilder: (() -> [UIAction])? = nil
+    pullDownMenuActionsBuilder: (() -> [UIAction])? = nil,
+    minValue: Double = 0,
+    maxValue: Double = 0,
+    stepValue: Double = 1,
+    valueChangeHandled: ((Double) -> Void)? = nil
   ) {
     self.icon = icon
     self.iconBackgroundColor = iconBackgroundColor
@@ -74,6 +85,10 @@ public struct SettingItemModel: Hashable, Identifiable {
     self.favoriteButton = favoriteButton
     self.favoriteButtonHandler = favoriteButtonHandler
     self.pullDownMenuActionsBuilder = pullDownMenuActionsBuilder
+    self.minValue = minValue
+    self.maxValue = maxValue
+    self.stepValue = stepValue
+    self.valueChangeHandled = valueChangeHandled
   }
 }
 

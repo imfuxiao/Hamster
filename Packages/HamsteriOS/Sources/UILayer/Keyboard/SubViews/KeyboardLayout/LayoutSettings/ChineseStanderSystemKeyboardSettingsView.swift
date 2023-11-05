@@ -40,6 +40,7 @@ class ChineseStanderSystemKeyboardSettingsView: NibLessView {
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
     tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
     tableView.register(PullDownMenuCell.self, forCellReuseIdentifier: PullDownMenuCell.identifier)
+    tableView.register(StepperTableViewCell.self, forCellReuseIdentifier: StepperTableViewCell.identifier)
 
     tableView.dataSource = self
     tableView.delegate = self
@@ -149,6 +150,11 @@ extension ChineseStanderSystemKeyboardSettingsView: UITableViewDataSource {
       return cell
     case .settings:
       let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? SettingTableViewCell else { return cell }
+      cell.updateWithSettingItem(setting)
+      return cell
+    case .step:
+      let cell = tableView.dequeueReusableCell(withIdentifier: StepperTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? SettingTableViewCell else { return cell }
       cell.updateWithSettingItem(setting)
       return cell

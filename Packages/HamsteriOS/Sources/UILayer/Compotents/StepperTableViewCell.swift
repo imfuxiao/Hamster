@@ -13,16 +13,13 @@ class StepperTableViewCell: NibLessTableViewCell {
 
   // MARK: properties
 
-  public var stepperModel: StepperModel {
-    didSet {
-      label.text = stepperModel.text
-      valueLabel.text = String(Int(stepperModel.value))
-      stepper.minimumValue = stepperModel.minValue
-      stepper.maximumValue = stepperModel.maxValue
-      stepper.stepValue = stepperModel.stepValue
-      stepper.value = stepperModel.value
-    }
+  override var configurationState: UICellConfigurationState {
+    var state = super.configurationState
+    state.settingItemModel = self.settingItem
+    return state
   }
+
+  public var settingItem: SettingItemModel? = nil
 
   let label: UILabel = {
     let label = UILabel(frame: .zero)
@@ -62,8 +59,6 @@ class StepperTableViewCell: NibLessTableViewCell {
   // MARK: methods
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    self.stepperModel = StepperModel()
-
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
     setupStepView()
@@ -75,7 +70,40 @@ class StepperTableViewCell: NibLessTableViewCell {
   }
 
   @objc func changeValue(_ sender: UIStepper) {
-    stepperModel.valueChangeHandled(sender.value)
+    settingItem?.valueChangeHandled?(sender.value)
     valueLabel.text = String(Int(stepper.value))
+  }
+
+  func updateWithSettingItem(_ item: SettingItemModel) {
+    // guard settingItem != item else { return }
+    self.settingItem = item
+    setNeedsUpdateConfiguration()
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+
+    label.text = ""
+    valueLabel.text = ""
+  }
+
+  override func updateConfiguration(using state: UICellConfigurationState) {
+    super.updateConfiguration(using: state)
+
+    label.text = state.settingItemModel?.text
+    if let minValue = state.settingItemModel?.minValue {
+      stepper.minimumValue = minValue
+    }
+    if let maxValue = state.settingItemModel?.maxValue {
+      stepper.maximumValue = maxValue
+    }
+    if let stepValue = state.settingItemModel?.stepValue {
+      stepper.stepValue = stepValue
+    }
+
+    if let value = state.settingItemModel?.textValue?() {
+      valueLabel.text = value
+      stepper.value = Double(value) ?? 0
+    }
   }
 }

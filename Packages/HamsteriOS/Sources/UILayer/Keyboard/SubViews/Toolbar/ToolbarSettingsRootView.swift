@@ -14,8 +14,8 @@ class ToolbarSettingsRootView: NibLessView {
   let tableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.allowsSelection = false
-    tableView.register(StepperTableViewCell.self, forCellReuseIdentifier: StepperTableViewCell.identifier)
     tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
+    tableView.register(StepperTableViewCell.self, forCellReuseIdentifier: StepperTableViewCell.identifier)
     return tableView
   }()
 
@@ -45,28 +45,25 @@ class ToolbarSettingsRootView: NibLessView {
 
 extension ToolbarSettingsRootView: UITableViewDataSource, UITableViewDelegate {
   func numberOfSections(in tableView: UITableView) -> Int {
-    2
+    keyboardSettingsViewModel.toolbarSettings.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if section == 0 {
-      return keyboardSettingsViewModel.toolbarToggles.count
-    }
-    return keyboardSettingsViewModel.toolbarSteppers.count
+    keyboardSettingsViewModel.toolbarSettings[section].items.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if indexPath.section == 0 {
-      let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
-      guard let cell = cell as? ToggleTableViewCell else { return cell }
-      cell.settingItem = keyboardSettingsViewModel.toolbarToggles[indexPath.row]
+    let setting = keyboardSettingsViewModel.toolbarSettings[indexPath.section].items[indexPath.row]
+    if setting.type == .step {
+      let cell = tableView.dequeueReusableCell(withIdentifier: StepperTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? StepperTableViewCell else { return cell }
+      cell.updateWithSettingItem(setting)
       return cell
     }
 
-    let cell = tableView.dequeueReusableCell(withIdentifier: StepperTableViewCell.identifier, for: indexPath)
-    guard let cell = cell as? StepperTableViewCell else { return cell }
-    cell.stepperModel = keyboardSettingsViewModel.toolbarSteppers[indexPath.row]
-
+    let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+    guard let cell = cell as? ToggleTableViewCell else { return cell }
+    cell.updateWithSettingItem(setting)
     return cell
   }
 }
