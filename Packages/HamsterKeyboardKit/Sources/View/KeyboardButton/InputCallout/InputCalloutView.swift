@@ -11,7 +11,6 @@ public class InputCalloutView: ShapeView {
   private var calloutContext: InputCalloutContext
   private var keyboardContext: KeyboardContext
   private let style: KeyboardInputCalloutStyle
-  private var cacheCalloutPath = [CGSize: UIBezierPath]()
   private var popBounds: CGRect = .zero
   private var oldFrame: CGRect = .zero
 
@@ -42,14 +41,43 @@ public class InputCalloutView: ShapeView {
   }()
 
   public var calloutPath: UIBezierPath {
-    if let path = cacheCalloutPath[popBounds.size] {
+    if let superview = superview {
+      let superviewFrame = keyboardContext.enableToolbar
+        ? CGRect(
+          x: superview.frame.minX,
+          y: superview.frame.minX - keyboardContext.heightOfToolbar,
+          width: superview.frame.width,
+          height: superview.frame.height + keyboardContext.heightOfToolbar
+        )
+        : superview.frame
+
+      // 检测气泡左右点是否超出父视图范围
+      let leftTopPoint = CGPoint(x: frame.minX, y: frame.minY)
+      let rightTopPoint = CGPoint(x: frame.minX + frame.width, y: frame.minY)
+      let leftTopPointContainsSuperview = superviewFrame.contains(leftTopPoint)
+      let rightTopPointContainsSuperview = superviewFrame.contains(rightTopPoint)
+
+      if !leftTopPointContainsSuperview, rightTopPointContainsSuperview {
+        label.textAlignment = .right
+        trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.5).isActive = true
+      } else if leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
+        label.textAlignment = .left
+        label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.5).isActive = true
+      } else {
+        label.textAlignment = .center
+      }
+
+      let path = CAShapeLayer.inputCalloutPath(
+        size: popBounds.size,
+        cornerRadius: style.callout.buttonCornerRadius,
+        leftTopPointContainsSuperview: leftTopPointContainsSuperview,
+        rightTopPointContainsSuperview: rightTopPointContainsSuperview
+      )
+
       return path
     }
 
-    let path = CAShapeLayer.inputCalloutPath(size: popBounds.size, cornerRadius: style.callout.buttonCornerRadius)
-    cacheCalloutPath[popBounds.size] = path
-
-    return path
+    return UIBezierPath()
   }
 
   init(calloutContext: InputCalloutContext, keyboardContext: KeyboardContext, style: KeyboardInputCalloutStyle) {
@@ -66,7 +94,7 @@ public class InputCalloutView: ShapeView {
     addSubview(label)
     label.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: centerXAnchor),
+      label.widthAnchor.constraint(equalTo: widthAnchor),
       label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
     ])
 
@@ -80,17 +108,15 @@ public class InputCalloutView: ShapeView {
     guard self.superview != nil else { return }
     guard self.frame != .zero, oldFrame != self.frame else { return }
 
-
+    // 将 size 扩大两倍，作为气泡的基础大小
     popBounds = self.bounds
       .applying(CGAffineTransform(scaleX: 2, y: 2))
 
-    self.shapeLayer.zPosition = 1000
-
-    let origin = self.frame
+    // x 轴居中，y 轴底部对齐
+    let tempFrame = self.frame
       .applying(CGAffineTransform(translationX: -self.bounds.width / 2, y: -self.bounds.height))
-      .origin
 
-    self.frame = CGRect(origin: origin, size: popBounds.size)
+    self.frame = CGRect(origin: tempFrame.origin, size: popBounds.size)
     self.oldFrame = self.frame
 
     // callout 按钮 mask
@@ -102,6 +128,7 @@ public class InputCalloutView: ShapeView {
   }
 
   func setupAppearance() {
+    self.shapeLayer.zPosition = 1000
     let calloutStyle = style.callout
     backgroundColor = calloutStyle.backgroundColor
 

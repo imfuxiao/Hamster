@@ -99,16 +99,21 @@ public extension CAShapeLayer {
   ///
   /// @Parameter size 按键气泡尺寸
   /// @Parameter cornerRadius 圆角半径
-  static func inputCalloutPath(size: CGSize, cornerRadius: CGFloat) -> UIBezierPath {
+  static func inputCalloutPath(size: CGSize, cornerRadius: CGFloat, leftTopPointContainsSuperview: Bool, rightTopPointContainsSuperview: Bool) -> UIBezierPath {
     let path = UIBezierPath()
+
+    // 如果顶部左右都不包含，则不显示气泡
+    if !leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
+      return path
+    }
 
     let width = size.width / 4
 
     // 按键气泡沿 x 轴共4个点，已垂直平分线为中间点，左右两侧各两个点
-    let rightMaxX: CGFloat = size.width
-    let rightMinX: CGFloat = rightMaxX - width
+    let rightMaxX: CGFloat = rightTopPointContainsSuperview ? size.width : size.width - width
+    let rightMinX: CGFloat = rightTopPointContainsSuperview ?rightMaxX - width : rightMaxX
 
-    let leftMinX: CGFloat = 0
+    let leftMinX: CGFloat = leftTopPointContainsSuperview ? 0 : width
     let leftMaxX: CGFloat = width
 
     let minY = size.height / 2
@@ -140,19 +145,21 @@ public extension CAShapeLayer {
       endAngle: CGFloat.pi,
       clockwise: true)
 
-    // 左下竖线
-    point = CGPoint(x: leftMaxX, y: maxY - minY / 2)
-    path.addLine(to: point)
+    if leftTopPointContainsSuperview {
+      // 左下竖线
+      point = CGPoint(x: leftMaxX, y: maxY - minY / 2)
+      path.addLine(to: point)
 
-    // 左侧呼出曲线
-    path.addCurve(
-      to: CGPoint(x: leftMinX, y: minY),
-      controlPoint1: CGPoint(
-        x: point.x,
-        y: minY + minY / 6),
-      controlPoint2: CGPoint(
-        x: leftMinX,
-        y: minY + minY / 3))
+      // 左侧呼出曲线
+      path.addCurve(
+        to: CGPoint(x: leftMinX, y: minY),
+        controlPoint1: CGPoint(
+          x: point.x,
+          y: minY + minY / 6),
+        controlPoint2: CGPoint(
+          x: leftMinX,
+          y: minY + minY / 3))
+    }
 
     // 左上竖线
     point = CGPoint(x: leftMinX, y: cornerRadius)
@@ -179,19 +186,21 @@ public extension CAShapeLayer {
       endAngle: 0,
       clockwise: true)
 
-    // 右上竖线
-    point = CGPoint(x: rightMaxX, y: minY)
-    path.addLine(to: point)
+    if rightTopPointContainsSuperview {
+      // 右上竖线
+      point = CGPoint(x: rightMaxX, y: minY)
+      path.addLine(to: point)
 
-    // 右侧曲线，与左侧曲线为对称
-    path.addCurve(
-      to: CGPoint(x: rightMinX, y: maxY - minY / 2),
-      controlPoint1: CGPoint(
-        x: point.x,
-        y: minY + minY / 3),
-      controlPoint2: CGPoint(
-        x: rightMinX,
-        y: minY + minY / 6))
+      // 右侧曲线，与左侧曲线为对称
+      path.addCurve(
+        to: CGPoint(x: rightMinX, y: maxY - minY / 2),
+        controlPoint1: CGPoint(
+          x: point.x,
+          y: minY + minY / 3),
+        controlPoint2: CGPoint(
+          x: rightMinX,
+          y: minY + minY / 6))
+    }
 
     path.close()
     return path
