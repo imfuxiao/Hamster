@@ -461,8 +461,10 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       return 20
     }
 
-    if action.isCustomKeyboard, !key.label.text.isEmpty {
-      return 20
+    if action.isCustomKeyboard {
+      if key.label.text.count == 1 && !key.labelText.containsChineseCharacters {
+        return 20
+      }
     }
 
     // patch: 自定义键盘中 symbol 类型且 char 非单个字母的情况，比如 .com / http 等
