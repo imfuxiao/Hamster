@@ -107,21 +107,6 @@ class KeyboardRootView: NibLessView {
     return view
   }
 
-  /// 自定义键盘
-  /// 注意：计算属性， 在 primaryKeyboardView 闭包中按需创建
-//  private var customizeKeyboardView: CustomizeKeyboard {
-//    let view = CustomizeKeyboard(
-//      keyboardLayoutProvider: keyboardLayoutProvider,
-//      actionHandler: actionHandler,
-//      appearance: appearance,
-//      keyboardContext: keyboardContext,
-//      calloutContext: calloutContext,
-//      rimeContext: rimeContext
-//    )
-//    view.translatesAutoresizingMaskIntoConstraints = false
-//    return view
-//  }
-
   /// 数字九宫格键盘
   /// 注意：计算属性
   private var numericNineGridKeyboardView: UIView {
@@ -168,18 +153,10 @@ class KeyboardRootView: NibLessView {
 
   /// 主键盘
   private lazy var primaryKeyboardView: UIView = {
-    let view: UIView
-    switch keyboardContext.selectKeyboard {
-    case .chinese, .custom:
-      view = standerSystemKeyboard
-    case .chineseNineGrid:
-      view = chineseNineGridKeyboardView
-//    case .custom:
-//      view = customizeKeyboardView
-    default:
-      view = UIView(frame: .zero)
+    if let view = chooseKeyboard(keyboardType: keyboardContext.keyboardType) {
+      return view
     }
-    return view
+    return standerSystemKeyboard
   }()
 
   // MARK: - Initializations
@@ -447,8 +424,6 @@ class KeyboardRootView: NibLessView {
       tempKeyboardView = standerSystemKeyboard
     case .chineseNineGrid:
       tempKeyboardView = chineseNineGridKeyboardView
-//    case .custom:
-//      tempKeyboardView = customizeKeyboardView
     default:
       // 注意：非临时键盘类型外的类型直接 return
       Logger.statistics.error("keyboardType: \(keyboardType.yamlString) not match tempKeyboardType")

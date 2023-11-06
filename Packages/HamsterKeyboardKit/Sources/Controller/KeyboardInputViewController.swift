@@ -49,7 +49,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     super.viewWillAppear(animated)
     Logger.statistics.debug("KeyboardInputViewController: viewWillAppear()")
     setupRIME()
-    setupKeyboardType()
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
 
@@ -817,21 +816,6 @@ private extension KeyboardInputViewController {
     case .numbersAndPunctuation, .numberPad, .phonePad, .decimalPad, .asciiCapableNumberPad: return true
     default: return false
     }
-  }
-
-  /// 设置键盘类型
-  func setupKeyboardType() {
-    if needNumberKeyboard {
-      keyboardContext.keyboardType = .numericNineGrid
-      return
-    }
-
-    if let selectKeyboard = hamsterConfiguration?.keyboard?.useKeyboardType?.keyboardType {
-      keyboardContext.keyboardType = selectKeyboard
-      return
-    }
-
-    keyboardContext.keyboardType = .chinese(.lowercased)
   }
 
   /**

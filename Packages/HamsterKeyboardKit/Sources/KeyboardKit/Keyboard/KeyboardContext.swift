@@ -282,6 +282,9 @@ public class KeyboardContext: ObservableObject {
     self.init()
     guard let controller = controller else { return }
     self.hamsterConfig = controller.hamsterConfiguration
+    if let selectKeyboard = hamsterConfig?.keyboard?.useKeyboardType?.keyboardType {
+      self.keyboardType = selectKeyboard
+    }
     self.handleInputModeBuilder = { from, with in
       controller.handleInputModeList(from: from, with: with)
     }
