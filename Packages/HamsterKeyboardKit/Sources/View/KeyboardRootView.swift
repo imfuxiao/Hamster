@@ -336,7 +336,7 @@ class KeyboardRootView: NibLessView {
       .store(in: &subscriptions)
 
     // 跟踪键盘类型变化
-    keyboardContext.$keyboardType
+    keyboardContext.keyboardTypePublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         guard $0 != currentKeyboardType else { return }

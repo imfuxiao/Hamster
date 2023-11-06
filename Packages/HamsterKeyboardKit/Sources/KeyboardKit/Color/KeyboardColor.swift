@@ -60,8 +60,14 @@ public extension KeyboardColor {
   /**
    The color value.
    */
+  static var cacheColor = [String: UIColor]()
   var color: UIColor {
-    return UIColor(named: resourceName, in: Self.bundle, compatibleWith: .none)!
+    if let color = Self.cacheColor[resourceName] {
+      return color
+    }
+    let color = UIColor(named: resourceName, in: Self.bundle, compatibleWith: .none)!
+    Self.cacheColor[resourceName] = color
+    return color
   }
 
   /**

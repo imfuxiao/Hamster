@@ -193,9 +193,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
     let phoneticTextFont = UIFont.systemFont(ofSize: phoneticTextFontSize)
 
-    var candidateTextFont = KeyboardFont.title3.font
-    var candidateCommentFont = KeyboardFont.caption2.font
-
+    var candidateTextFont: UIFont?
+    var candidateCommentFont: UIFont?
     if let toolbarConfig = keyboardContext.hamsterConfig?.toolbar {
       if let candidateTextFontSize = toolbarConfig.candidateWordFontSize {
         candidateTextFont = UIFont.systemFont(ofSize: CGFloat(candidateTextFontSize))
@@ -215,8 +214,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         preferredCandidateBackgroundColor: hamsterColor.hilitedCandidateBackColor,
         candidateTextColor: hamsterColor.candidateTextColor,
         candidateCommentTextColor: hamsterColor.commentTextColor,
-        candidateTextFont: candidateTextFont,
-        candidateCommentFont: candidateCommentFont,
+        candidateTextFont: candidateTextFont ?? KeyboardFont.title3.font,
+        candidateCommentFont: candidateCommentFont ?? KeyboardFont.caption2.font,
         toolbarButtonFrontColor: hamsterColor.buttonFrontColor,
         toolbarButtonBackgroundColor: .clear,
         toolbarButtonPressedBackgroundColor: hamsterColor.buttonPressedBackColor
@@ -232,8 +231,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       preferredCandidateBackgroundColor: UIColor.standardButtonBackground(for: keyboardContext),
       candidateTextColor: foregroundColor,
       candidateCommentTextColor: foregroundColor,
-      candidateTextFont: candidateTextFont,
-      candidateCommentFont: candidateCommentFont,
+      candidateTextFont: candidateTextFont ?? KeyboardFont.title3.font,
+      candidateCommentFont: candidateCommentFont ?? KeyboardFont.caption2.font,
       toolbarButtonFrontColor: .secondaryLabel,
       toolbarButtonBackgroundColor: .clear,
       toolbarButtonPressedBackgroundColor: .secondarySystemFill
@@ -420,16 +419,32 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   }
 
   // TODO: 自定义配置字体
+  var cacheFont = [String: UIFont]()
+  func getCacheFont(size: CGFloat, weight: UIFont.Weight?) -> UIFont {
+    let key = "size:\(size),weight:\(weight?.rawValue ?? 0)"
+    if let value = cacheFont[key] {
+      return value
+    }
+    if let weight = weight {
+      let font = UIFont.systemFont(ofSize: size, weight: weight)
+      cacheFont[key] = font
+      return font
+    }
+    let font = UIFont.systemFont(ofSize: size)
+    cacheFont[key] = font
+    return font
+  }
+
   open func buttonFont(for action: KeyboardAction, hamsterColor: HamsterKeyboardColor) -> UIFont {
     let size = buttonFontSize(for: action)
-    guard let weight = buttonFontWeight(for: action) else { return UIFont.systemFont(ofSize: size) }
-    return UIFont.systemFont(ofSize: size, weight: weight)
+    guard let weight = buttonFontWeight(for: action) else { return getCacheFont(size: size, weight: nil) }
+    return getCacheFont(size: size, weight: weight)
   }
 
   open func buttonFont(for key: Key, hamsterColor: HamsterKeyboardColor) -> UIFont {
     let size = buttonFontSize(for: key)
-    guard let weight = buttonFontWeight(for: key) else { return UIFont.systemFont(ofSize: size) }
-    return UIFont.systemFont(ofSize: size, weight: weight)
+    guard let weight = buttonFontWeight(for: key) else { return getCacheFont(size: size, weight: nil) }
+    return getCacheFont(size: size, weight: weight)
   }
 
   /// The font size to use for a certain action.
@@ -437,10 +452,9 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 用于特定操作的字体大小。
   open func buttonFontSize(for action: KeyboardAction) -> CGFloat {
     if action.isShortCommand {
-      return 18
+      return 16
     }
     if let override = buttonFontSizePadOverride(for: action) { return override }
-    if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
     if action == .returnLastKeyboard || action == .cleanSpellingArea {
       return 16
@@ -455,16 +469,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     let action = key.action
 
     if action.isShortCommand {
-      if key.labelText.containsChineseCharacters {
-        return 14
-      }
-      return 20
-    }
-
-    if action.isCustomKeyboard {
-      if key.label.text.count == 1 && !key.labelText.containsChineseCharacters {
-        return 20
-      }
+      return 16
     }
 
     // patch: 自定义键盘中 symbol 类型且 char 非单个字母的情况，比如 .com / http 等
@@ -473,13 +478,11 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
 
     if let override = buttonFontSizePadOverride(for: action) { return override }
-    if buttonImage(for: action) != nil { return 20 }
     if let override = buttonFontSizeActionOverride(for: action) { return override }
     if action == .returnLastKeyboard || action == .cleanSpellingArea {
       return 16
     }
     let text = key.labelText
-    if action.isInputAction && text.containsChineseCharacters { return 18 }
     if action.isInputAction && text.isLowercased {
       return 26
     }
@@ -531,21 +534,19 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     case .backspace: return .regular
     case .character(let char): return char.isLowercased ? .light : nil
     case .symbol(let symbol): return symbol.char.isLowercased ? .light : nil
-    default: return buttonImage(for: action) != nil ? .light : nil
+    // default: return buttonImage(for: action) != nil ? .light : nil
+    default: return nil
     }
   }
 
   open func buttonFontWeight(for key: Key) -> UIFont.Weight? {
     let action = key.action
-    let text = key.labelText
-    if text.containsChineseCharacters {
-      return .regular
-    }
     switch action {
     case .backspace: return .regular
     case .character(let char): return char.isLowercased ? .light : nil
     case .symbol(let symbol): return symbol.char.isLowercased ? .light : nil
-    default: return buttonImage(for: action) != nil ? .light : nil
+    // default: return buttonImage(for: action) != nil ? .light : nil
+    default: return nil
     }
   }
 

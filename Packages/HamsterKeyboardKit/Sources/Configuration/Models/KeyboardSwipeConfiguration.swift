@@ -9,6 +9,8 @@ import Foundation
 
 /// 键盘划动配置
 public struct KeyboardSwipeConfiguration: Codable, Hashable {
+  public typealias KeySwipeMapping = [KeyboardAction: [KeySwipe]]
+
   // 空格移动光标的灵敏度，指移动多个个点，光标移动一位。
   public var spaceDragSensitivity: Int?
 
@@ -26,12 +28,16 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
   /// 内置键盘滑动配置
   public var keyboardSwipe: [KeyboardSwipe]?
 
+  /// 内置键盘滑动配置
+  public private(set) var keyboardSwipeMapping: [KeyboardType: KeySwipeMapping] = [:]
+
   public init(spaceDragSensitivity: Int? = nil, distanceThreshold: Int? = nil, tangentThreshold: CGFloat? = nil, longPressDelay: Double? = nil, keyboardSwipe: [KeyboardSwipe]? = nil) {
     self.spaceDragSensitivity = spaceDragSensitivity
     self.distanceThreshold = distanceThreshold
     self.tangentThreshold = tangentThreshold
     self.longPressDelay = longPressDelay
     self.keyboardSwipe = keyboardSwipe
+    self.keyboardSwipeMapping = keyboardSwipeToMap(keyboardSwipe)
   }
 
   public init(from decoder: Decoder) throws {
@@ -41,6 +47,7 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
     self.tangentThreshold = try container.decodeIfPresent(CGFloat.self, forKey: .tangentThreshold)
     self.longPressDelay = try container.decodeIfPresent(Double.self, forKey: .longPressDelay)
     self.keyboardSwipe = try container.decodeIfPresent([KeyboardSwipe].self, forKey: .keyboardSwipe)
+    self.keyboardSwipeMapping = keyboardSwipeToMap(keyboardSwipe)
   }
 
   enum CodingKeys: CodingKey {
@@ -58,6 +65,20 @@ public struct KeyboardSwipeConfiguration: Codable, Hashable {
     try container.encodeIfPresent(self.tangentThreshold, forKey: .tangentThreshold)
     try container.encodeIfPresent(self.longPressDelay, forKey: .longPressDelay)
     try container.encodeIfPresent(self.keyboardSwipe, forKey: .keyboardSwipe)
+  }
+
+  private func keyboardSwipeToMap(_ keyboardSwipe: [KeyboardSwipe]?) -> [KeyboardType: KeySwipeMapping] {
+    var result = [KeyboardType: KeySwipeMapping]()
+    for ks in keyboardSwipe ?? [] {
+      if let keyboardType = ks.keyboardType, let keys = ks.keys {
+        var keySwipeMap: KeySwipeMapping = [:]
+        for key in keys {
+          keySwipeMap[key.action] = key.swipe
+        }
+        result[keyboardType] = keySwipeMap
+      }
+    }
+    return result
   }
 }
 

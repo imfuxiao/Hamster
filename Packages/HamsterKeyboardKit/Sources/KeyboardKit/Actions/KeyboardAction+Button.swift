@@ -16,8 +16,7 @@ public extension KeyboardAction {
    该操作的标准按钮图像。
    */
   func standardButtonImage(for context: KeyboardContext) -> UIImage? {
-    if let image = standardButtonTextImageReplacement(for: context) { return image }
-
+    // if let image = standardButtonTextImageReplacement(for: context) { return image }
     switch self {
     case .backspace: return .keyboardBackspace
     case .command: return .keyboardCommand
@@ -64,7 +63,8 @@ public extension KeyboardAction {
     case .nextLocale: return context.locale.languageCode?.uppercased()
     case .primary(let type): return type.standardButtonText(for: context.locale)
     case .space:
-      return KKL10n.space.text(for: context)
+      // return KKL10n.space.text(for: context)
+      return "空格"
     case .returnLastKeyboard: return "返回"
     case .symbol(let symbol), .symbolOfDark(let symbol): return symbol.char
     case .chineseNineGrid(let symbol): return symbol.char

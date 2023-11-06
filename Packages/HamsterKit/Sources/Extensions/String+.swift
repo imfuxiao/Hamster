@@ -19,6 +19,19 @@ public extension String {
     return self.range(of: "\\p{Han}", options: .regularExpression) != nil
   }
 
+  // 低效率版本
+//  var containsChineseCharacters: Bool {
+//    var result = false
+//    for c in self {
+//      let cs = String(c)
+//      if let newCS = cs.applyingTransform(.mandarinToLatin, reverse: false), newCS != cs {
+//        result = true
+//        break
+//      }
+//    }
+//    return result
+//  }
+
   func isMatch(regex: String) -> Bool {
     if #available(iOS 16, *) {
       guard let r = try? Regex(regex) else { return false }

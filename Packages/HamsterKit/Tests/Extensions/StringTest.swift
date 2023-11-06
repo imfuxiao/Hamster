@@ -36,4 +36,11 @@ final class StringTest: XCTestCase {
 //    XCTAssertEqual("mi'gao", "mi GAM".t9ToPinyin(comment: "mi gao"))
     XCTAssertEqual("ni'g", "MG G".t9ToPinyin(comment: "ni G"))
   }
+
+  func testContainsChineseCharacters() throws {
+    XCTAssertTrue("x你".containsChineseCharacters)
+    XCTAssertTrue("你x".containsChineseCharacters)
+    XCTAssertTrue("你".containsChineseCharacters)
+    XCTAssertFalse("x".containsChineseCharacters)
+  }
 }

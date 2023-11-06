@@ -123,8 +123,16 @@ public class KeyboardContext: ObservableObject {
 
    当前使用的键盘类型。默认中文26键
    */
-  @Published
-  public var keyboardType = KeyboardType.chinese(.lowercased)
+  public var keyboardType = KeyboardType.chinese(.lowercased) {
+    didSet {
+      keyboardTypeSubject.send(keyboardType)
+    }
+  }
+
+  private let keyboardTypeSubject = PassthroughSubject<KeyboardType, Never>()
+  public var keyboardTypePublished: AnyPublisher<KeyboardType, Never> {
+    keyboardTypeSubject.eraseToAnyPublisher()
+  }
 
   /**
    The locale that is currently being used.
@@ -644,8 +652,8 @@ public extension KeyboardContext {
   }
 
   /// 内置键盘划动配置
-  var keyboardSwipe: [KeyboardSwipe] {
-    hamsterConfig?.swipe?.keyboardSwipe ?? []
+  var keyboardSwipe: [KeyboardType: [KeyboardAction: [KeySwipe]]] {
+    hamsterConfig?.swipe?.keyboardSwipeMapping ?? [:]
   }
 
   /// 关闭划动显示文本

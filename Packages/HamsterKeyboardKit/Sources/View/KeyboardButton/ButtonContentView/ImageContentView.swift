@@ -9,17 +9,21 @@ import HamsterUIKit
 import UIKit
 
 class ImageContentView: NibLessView {
-  private let imageView: UIImageView
   private var style: KeyboardButtonStyle
   private var oldBounds: CGRect = .zero
+  private let image: UIImage?
+  private let scaleFactor: CGFloat
+
+  private lazy var imageView: UIImageView = {
+    let imageView = UIImageView(frame: .zero)
+    imageView.image = image
+    return imageView
+  }()
 
   init(style: KeyboardButtonStyle, image: UIImage? = nil, scaleFactor: CGFloat = .zero) {
     self.style = style
-    self.imageView = UIImageView(frame: .zero)
-    imageView.contentMode = .center
-    imageView.contentScaleFactor = scaleFactor
-    imageView.tintColor = style.foregroundColor
-    imageView.image = image
+    self.image = image
+    self.scaleFactor = scaleFactor
 
     super.init(frame: .zero)
 
@@ -33,6 +37,7 @@ class ImageContentView: NibLessView {
 
   override func setupAppearance() {
     imageView.tintColor = style.foregroundColor ?? UIColor.label
+    imageView.contentScaleFactor = scaleFactor
   }
 
   override func layoutSubviews() {
@@ -41,7 +46,12 @@ class ImageContentView: NibLessView {
     guard self.bounds != .zero, self.bounds != oldBounds else { return }
 
     self.oldBounds = self.bounds
-    imageView.frame = self.oldBounds
+
+    let imageSize = CGSize(width: 25, height: 20)
+    let origin = CGPoint(
+      x: (oldBounds.width - imageSize.width) / 2,
+      y: (oldBounds.height - imageSize.height) / 2)
+    imageView.frame = CGRect(origin: origin, size: imageSize)
   }
 
   func setStyle(_ style: KeyboardButtonStyle) {

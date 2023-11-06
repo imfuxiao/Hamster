@@ -146,9 +146,12 @@ class KeyboardToolbarView: NibLessView {
 
   override func setupAppearance() {
     self.style = appearance.candidateBarStyle
-    // TODO: 工具栏其他 view 更新 style
-    iconButton.tintColor = style.toolbarButtonFrontColor
-    dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
+    if keyboardContext.displayAppIconButton {
+      iconButton.tintColor = style.toolbarButtonFrontColor
+    }
+    if keyboardContext.displayKeyboardDismissButton {
+      dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
+    }
   }
 
   func combine() {

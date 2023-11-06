@@ -88,22 +88,8 @@ public class ChineseNineGridLayoutProvider: KeyboardLayoutProvider {
   }
 
   open func itemSwipes(for action: KeyboardAction, row: Int, index: Int, context: KeyboardContext) -> [KeySwipe] {
-    if let keyboardSwipe = context.keyboardSwipe.first(where: { $0.keyboardType == context.keyboardType }) {
-      return keyboardSwipe.keys?
-        .first(where: {
-          // primary action 不比较具体里面的值
-          if action.isPrimaryAction, $0.action.isPrimaryAction {
-            return true
-          }
-          if case .chineseNineGrid(let s1) = $0.action, case .chineseNineGrid(let s2) = action {
-            return s1.char == s2.char
-          }
-          if case .symbol(let c1) = $0.action, case .symbol(let c2) = action {
-            return c1 == c2
-          }
-          return $0.action == action
-        })?
-        .swipe ?? []
+    if let swipe = context.keyboardSwipe[context.keyboardType]?[action] {
+      return swipe
     }
     return []
   }
