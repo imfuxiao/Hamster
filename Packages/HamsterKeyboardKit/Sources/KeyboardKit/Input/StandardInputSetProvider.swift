@@ -23,8 +23,8 @@ open class StandardInputSetProvider: InputSetProviderProxy {
    */
   public let keyboardContext: KeyboardContext
 
-  public let englishProvider = EnglishInputSetProvider()
-  public let chineseProvider = ChineseInputSetProvider()
+  public lazy var englishProvider = EnglishInputSetProvider()
+  public lazy var chineseProvider = ChineseInputSetProvider()
 
   /**
    Create a standard provider.

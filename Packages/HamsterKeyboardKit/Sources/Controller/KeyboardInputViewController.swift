@@ -249,9 +249,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    该属性用作键盘反馈（如音频和触觉反馈）的全局配置。
    */
   public lazy var keyboardFeedbackSettings: KeyboardFeedbackSettings = {
-    let enableAudio = hamsterConfiguration?.keyboard?.enableKeySounds ?? false
-    let enableHaptic = hamsterConfiguration?.keyboard?.enableHapticFeedback ?? false
-    let hapticFeedbackIntensity = hamsterConfiguration?.keyboard?.hapticFeedbackIntensity ?? 2
+    let enableAudio = keyboardContext.hamsterConfig?.keyboard?.enableKeySounds ?? false
+    let enableHaptic = keyboardContext.hamsterConfig?.keyboard?.enableHapticFeedback ?? false
+    let hapticFeedbackIntensity = keyboardContext.hamsterConfig?.keyboard?.hapticFeedbackIntensity ?? 2
     let hapticFeedback = HapticIntensity(rawValue: hapticFeedbackIntensity)?.hapticFeedback() ?? .mediumImpact
     return KeyboardFeedbackSettings(
       audioConfiguration: enableAudio ? .enabled : .noFeedback,
@@ -335,7 +335,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    */
   public lazy var keyboardActionHandler: KeyboardActionHandler = StandardKeyboardActionHandler(
     inputViewController: self,
-    spaceDragSensitivity: .custom(points: hamsterConfiguration?.swipe?.spaceDragSensitivity ?? 5)
+    spaceDragSensitivity: .custom(points: keyboardContext.hamsterConfig?.swipe?.spaceDragSensitivity ?? 5)
   ) {
     didSet { refreshProperties() }
   }
@@ -395,17 +395,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    RIME 引擎上下文
    */
   public lazy var rimeContext = RimeContext()
-
-  /**
-   Hamster 应用配置
-   */
-  public lazy var hamsterConfiguration: HamsterConfiguration? = {
-    if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
-      return config
-    }
-    Logger.statistics.error("load HamsterConfiguration from UserDefaults error.")
-    return HamsterConfiguration()
-  }()
 
   // MARK: - Text And Selection, Implementations UITextInputDelegate
 
@@ -823,7 +812,7 @@ private extension KeyboardInputViewController {
    */
   func setupRIME() {
     // 异步 RIME 引擎启动
-    Task {
+    Task.detached { [unowned self] in
 //      if rimeContext.isRunning {
 //        Logger.statistics.debug("shutdown rime engine")
 //        shutdownRIME()
@@ -835,7 +824,7 @@ private extension KeyboardInputViewController {
       let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
 
       // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
-      if !hasFullAccess {
+      if await !self.hasFullAccess {
         do {
           try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
 
@@ -853,14 +842,14 @@ private extension KeyboardInputViewController {
 //        }
       }
 
-      if let maximumNumberOfCandidateWords = hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
-        rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
+      if let maximumNumberOfCandidateWords = await keyboardContext.hamsterConfig?.rime?.maximumNumberOfCandidateWords {
+        await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
       }
 
       await rimeContext.start(hasFullAccess: hasFullAccess)
 
-      let simplifiedModeKey = hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
-      rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
+      let simplifiedModeKey = await keyboardContext.hamsterConfig?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+      await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
     }
   }
 

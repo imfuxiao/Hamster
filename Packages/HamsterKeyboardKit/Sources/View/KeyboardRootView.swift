@@ -292,7 +292,7 @@ class KeyboardRootView: NibLessView {
   func combine() {
     // 在开启工具栏的状态下，根据候选状态调节候选栏区域大小
     if keyboardContext.enableToolbar {
-      keyboardContext.candidatesViewStatePublished
+      keyboardContext.$candidatesViewState
         .receive(on: DispatchQueue.main)
         .sink { [unowned self] in
           guard candidateViewState != $0 else { return }

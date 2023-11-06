@@ -44,6 +44,11 @@ public class KeyboardContext: ObservableObject {
   public var autocapitalizationTypeOverride: KeyboardAutocapitalizationType?
 
   /**
+   Hamster 应用配置
+   */
+  public var hamsterConfiguration: HamsterConfiguration?
+
+  /**
    The device type that is currently used.
 
    当前使用的设备类型。
@@ -249,22 +254,11 @@ public class KeyboardContext: ObservableObject {
   /**
    仓输入法配置
    */
-  public var hamsterConfig: HamsterConfiguration? = nil {
-    didSet {
-      cacheHamsterKeyboardColor = nil
-    }
-  }
-
-  /// 输入法配色方案缓存
-  /// 为计算属性 `hamsterKeyboardColor` 提供缓存
-  private var cacheHamsterKeyboardColor: HamsterKeyboardColor?
+  public var hamsterConfig: HamsterConfiguration?
 
   /// 候选区域状态
   @Published
   public var candidatesViewState: CandidateBarView.State = .collapse
-  public var candidatesViewStatePublished: AnyPublisher<CandidateBarView.State, Never> {
-    $candidatesViewState.eraseToAnyPublisher()
-  }
 
   /**
    Create a context instance.
@@ -289,13 +283,18 @@ public class KeyboardContext: ObservableObject {
   ) {
     self.init()
     guard let controller = controller else { return }
-    self.hamsterConfig = controller.hamsterConfiguration
-    if let selectKeyboard = hamsterConfig?.keyboard?.useKeyboardType?.keyboardType {
-      self.keyboardType = selectKeyboard
+
+    if let config = try? HamsterConfigurationRepositories.shared.loadFromUserDefaults() {
+      self.hamsterConfig = config
+      if let selectKeyboard = config.keyboard?.useKeyboardType?.keyboardType {
+        self.keyboardType = selectKeyboard
+      }
     }
+
     self.handleInputModeBuilder = { from, with in
       controller.handleInputModeList(from: from, with: with)
     }
+
     sync(with: controller)
   }
 
@@ -475,9 +474,9 @@ extension KeyboardContext {
    将上下文与键盘输入视图控制器的当前状态同步。
    */
   func syncAfterAsync(with controller: KeyboardInputViewController) {
-    if hasDictationKey != controller.hasDictationKey {
-      hasDictationKey = controller.hasDictationKey
-    }
+//    if hasDictationKey != controller.hasDictationKey {
+//      hasDictationKey = controller.hasDictationKey
+//    }
     if hasFullAccess != controller.hasFullAccess {
       hasFullAccess = controller.hasFullAccess
     }

@@ -22,11 +22,32 @@ import UIKit
  */
 public protocol KeyboardImageReader {}
 
-extension UIImage: KeyboardImageReader {}
+extension UIImage: KeyboardImageReader {
+  static var cacheImage = [String: UIImage]()
+
+  static func getCacheImage(_ imageName: String) -> UIImage? {
+    if let image = UIImage.cacheImage[imageName] {
+      return image
+    }
+    if let image = UIImage(systemName: imageName) {
+      UIImage.cacheImage[imageName] = image
+      return image
+    }
+    return nil
+  }
+}
 
 public extension KeyboardImageReader {
-  static var keyboard: UIImage { .init(systemName: "keyboard")! }
-  static var keyboardBackspace: UIImage { .init(systemName: "delete.left")! }
+  static var keyboard: UIImage {
+    let imageName = "keyboard"
+    return UIImage.getCacheImage(imageName)!
+  }
+
+  static var keyboardBackspace: UIImage {
+    let imageName = "delete.left"
+    return UIImage.getCacheImage(imageName)!
+  }
+
   static var keyboardBackspaceRtl: UIImage { .init(systemName: "delete.right")! }
   static var keyboardCommand: UIImage { .init(systemName: "command")! }
   static var keyboardControl: UIImage { .init(systemName: "control")! }
@@ -46,9 +67,22 @@ public extension KeyboardImageReader {
   static var keyboardRedo: UIImage { .init(systemName: "arrow.uturn.right")! }
   static var keyboardRight: UIImage { .init(systemName: "arrow.right")! }
   static var keyboardSettings: UIImage { .init(systemName: "gearshape")! }
-  static var keyboardShiftCapslocked: UIImage { .init(systemName: "capslock.fill")! }
-  static var keyboardShiftLowercased: UIImage { .init(systemName: "shift")! }
-  static var keyboardShiftUppercased: UIImage { .init(systemName: "shift.fill")! }
+
+  static var keyboardShiftCapslocked: UIImage {
+    let imageName = "capslock.fill"
+    return UIImage.getCacheImage(imageName)!
+  }
+
+  static var keyboardShiftLowercased: UIImage {
+    let imageName = "shift"
+    return UIImage.getCacheImage(imageName)!
+  }
+
+  static var keyboardShiftUppercased: UIImage {
+    let imageName = "shift.fill"
+    return UIImage.getCacheImage(imageName)!
+  }
+
   static var keyboardTab: UIImage { .init(systemName: "arrow.right.to.line")! }
   static var keyboardUndo: UIImage { .init(systemName: "arrow.uturn.left")! }
   static var keyboardZeroWidthSpace: UIImage { .init(systemName: "circle.dotted")! }
