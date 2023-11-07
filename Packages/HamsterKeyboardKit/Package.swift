@@ -18,6 +18,7 @@ let package = Package(
     .package(path: "../HamsterKit"),
     .package(path: "../HamsterUIKit"),
     .package(path: "../RimeKit"),
+    .package(url: "https://github.com/michaeleisel/ZippyJSON.git", exact: "1.2.10"),
   ],
   targets: [
     .target(
@@ -26,6 +27,7 @@ let package = Package(
         "HamsterKit",
         "HamsterUIKit",
         "RimeKit",
+        "ZippyJSON",
       ],
       path: "Sources",
       resources: [.process("Resources")]),

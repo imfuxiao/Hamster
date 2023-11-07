@@ -28,6 +28,15 @@
       }
     },
     {
+      "identity" : "jjliso8601dateformatter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/JJLISO8601DateFormatter",
+      "state" : {
+        "revision" : "de422afd9a47b72703c30a81423c478337191390",
+        "version" : "0.1.6"
+      }
+    },
+    {
       "identity" : "leaf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/leaf.git",
@@ -232,6 +241,24 @@
       "state" : {
         "revision" : "43ec568034b3731101dbf7670765d671c30f54f3",
         "version" : "0.9.16"
+      }
+    },
+    {
+      "identity" : "zippyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/ZippyJSON.git",
+      "state" : {
+        "revision" : "c4ab804780b64979f19268619dfa563b6be58f7d",
+        "version" : "1.2.10"
+      }
+    },
+    {
+      "identity" : "zippyjsoncfamily",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/michaeleisel/ZippyJSONCFamily",
+      "state" : {
+        "revision" : "8abdd7a5e943afe68e7b03fdaa63b21c042a3893",
+        "version" : "1.2.9"
       }
     }
   ],

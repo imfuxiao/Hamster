@@ -8,6 +8,7 @@
 import Foundation
 import os
 import Yams
+import ZippyJSON
 
 /// Hamster 配置存储
 /// 单例
@@ -74,7 +75,8 @@ public class HamsterConfigurationRepositories {
 
   private func loadConfigFromUserDefaults(key: String) throws -> HamsterConfiguration {
     guard let data = UserDefaults.hamster.data(forKey: key) else { throw "load HamsterConfiguration from UserDefault is empty." }
-    return try JSONDecoder().decode(HamsterConfiguration.self, from: data)
+    // return try JSONDecoder().decode(HamsterConfiguration.self, from: data)
+    return try ZippyJSONDecoder().decode(HamsterConfiguration.self, from: data)
   }
 
   public func loadAppConfigurationFromUserDefaults() throws -> HamsterConfiguration {
