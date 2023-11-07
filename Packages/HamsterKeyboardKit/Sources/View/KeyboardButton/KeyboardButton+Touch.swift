@@ -24,7 +24,7 @@ public extension KeyboardButton {
   }
 
   override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if action == .nextKeyboard {
+    if item.action == .nextKeyboard {
       if let event = event {
         self.handleInputModeListFromView(from: self, with: event)
       }
@@ -38,7 +38,7 @@ public extension KeyboardButton {
   }
 
   override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if action == .nextKeyboard {
+    if item.action == .nextKeyboard {
       if let event = event {
         self.handleInputModeListFromView(from: self, with: event)
       }
@@ -52,7 +52,7 @@ public extension KeyboardButton {
   }
 
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if action == .nextKeyboard {
+    if item.action == .nextKeyboard {
       if let event = event {
         self.handleInputModeListFromView(from: self, with: event)
       }
@@ -66,7 +66,7 @@ public extension KeyboardButton {
   }
 
   override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if action == .nextKeyboard {
+    if item.action == .nextKeyboard {
       if let event = event {
         self.handleInputModeListFromView(from: self, with: event)
       }
@@ -106,7 +106,7 @@ public extension KeyboardButton {
       endAction()
 
       // action 手势结束后重置空格划动激活状态
-      if action == .space, let actionHandler = actionHandler as? StandardKeyboardActionHandler, actionHandler.isSpaceDragGestureActive {
+      if item.action == .space, let actionHandler = actionHandler as? StandardKeyboardActionHandler, actionHandler.isSpaceDragGestureActive {
         actionHandler.isSpaceDragGestureActive = false
       }
     }
@@ -230,34 +230,34 @@ public extension KeyboardButton {
 
   func pressAction() {
     Logger.statistics.debug("pressAction()")
-    actionHandler.handle(.press, on: action)
+    actionHandler.handle(.press, on: item.action)
   }
 
   func doubleTapAction() {
     Logger.statistics.debug("doubleTapAction()")
-    actionHandler.handle(.doubleTap, on: action)
+    actionHandler.handle(.doubleTap, on: item.action)
   }
 
   func longPressAction() {
     // 空格长按不需要应用 release
-    shouldApplyReleaseAction = shouldApplyReleaseAction && action != .space
+    shouldApplyReleaseAction = shouldApplyReleaseAction && item.action != .space
     Logger.statistics.debug("longPressAction()")
-    actionHandler.handle(.longPress, on: action)
+    actionHandler.handle(.longPress, on: item.action)
   }
 
   func releaseAction() {
     Logger.statistics.debug("releaseAction()")
-    actionHandler.handle(.release, on: action)
+    actionHandler.handle(.release, on: item.action)
   }
 
   func repeatAction() {
     Logger.statistics.debug("repeatAction()")
-    actionHandler.handle(.repeatPress, on: action)
+    actionHandler.handle(.repeatPress, on: item.action)
   }
 
   func dragAction(start: CGPoint, current: CGPoint) {
     Logger.statistics.debug("dragAction()")
-    actionHandler.handleDrag(on: action, from: start, to: current)
+    actionHandler.handleDrag(on: item.action, from: start, to: current)
   }
 
   func swipeAction(direction: SwipeDirection) {

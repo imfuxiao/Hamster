@@ -243,9 +243,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    该属性用作键盘反馈（如音频和触觉反馈）的全局配置。
    */
   public lazy var keyboardFeedbackSettings: KeyboardFeedbackSettings = {
-    let enableAudio = keyboardContext.hamsterConfig?.keyboard?.enableKeySounds ?? false
-    let enableHaptic = keyboardContext.hamsterConfig?.keyboard?.enableHapticFeedback ?? false
-    let hapticFeedbackIntensity = keyboardContext.hamsterConfig?.keyboard?.hapticFeedbackIntensity ?? 2
+    let enableAudio = keyboardContext.hamsterConfiguration?.keyboard?.enableKeySounds ?? false
+    let enableHaptic = keyboardContext.hamsterConfiguration?.keyboard?.enableHapticFeedback ?? false
+    let hapticFeedbackIntensity = keyboardContext.hamsterConfiguration?.keyboard?.hapticFeedbackIntensity ?? 2
     let hapticFeedback = HapticIntensity(rawValue: hapticFeedbackIntensity)?.hapticFeedback() ?? .mediumImpact
     return KeyboardFeedbackSettings(
       audioConfiguration: enableAudio ? .enabled : .noFeedback,
@@ -329,7 +329,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    */
   public lazy var keyboardActionHandler: KeyboardActionHandler = StandardKeyboardActionHandler(
     inputViewController: self,
-    spaceDragSensitivity: .custom(points: keyboardContext.hamsterConfig?.swipe?.spaceDragSensitivity ?? 5)
+    spaceDragSensitivity: .custom(points: keyboardContext.hamsterConfiguration?.swipe?.spaceDragSensitivity ?? 5)
   ) {
     didSet { refreshProperties() }
   }
@@ -837,13 +837,13 @@ private extension KeyboardInputViewController {
 //        }
       }
 
-      if let maximumNumberOfCandidateWords = await keyboardContext.hamsterConfig?.rime?.maximumNumberOfCandidateWords {
+      if let maximumNumberOfCandidateWords = await keyboardContext.hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
         await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
       }
 
       await rimeContext.start(hasFullAccess: hasFullAccess)
 
-      let simplifiedModeKey = await keyboardContext.hamsterConfig?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
+      let simplifiedModeKey = await keyboardContext.hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)
     }
   }

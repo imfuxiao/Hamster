@@ -114,7 +114,7 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   /// 构建数据源
   func makeDataSource() -> UICollectionViewDiffableDataSource<Int, CandidateSuggestion> {
-    let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
+    let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
     let showComment = toolbarConfig?.displayCommentOfCandidateWord
 
@@ -251,7 +251,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     let heightOfToolbar: CGFloat = keyboardContext.heightOfToolbar - heightOfCodingArea - 6
 
     let candidate = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    let toolbarConfig = keyboardContext.hamsterConfig?.toolbar
+    let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
 
     var candidateTextFont = KeyboardFont.title3.font
     var candidateCommentFont = KeyboardFont.caption2.font

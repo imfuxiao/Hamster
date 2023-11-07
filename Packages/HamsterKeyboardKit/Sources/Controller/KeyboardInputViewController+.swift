@@ -73,7 +73,7 @@ public extension KeyboardInputViewController {
   }
 
   func switchTraditionalSimplifiedChinese() {
-    guard let simplifiedModeKey = keyboardContext.hamsterConfig?.rime?.keyValueOfSwitchSimplifiedAndTraditional else {
+    guard let simplifiedModeKey = keyboardContext.hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional else {
       Logger.statistics.warning("cannot get keyValueOfSwitchSimplifiedAndTraditional")
       return
     }
@@ -181,7 +181,7 @@ public extension KeyboardInputViewController {
       let beforeInput = self.textDocumentProxy.documentContextBeforeInput ?? ""
       let afterInput = self.textDocumentProxy.documentContextAfterInput ?? ""
       // 光标可以居中的符号，成对删除
-      let symbols = self.keyboardContext.hamsterConfig?.keyboard?.symbolsOfCursorBack ?? []
+      let symbols = self.keyboardContext.hamsterConfiguration?.keyboard?.symbolsOfCursorBack ?? []
       if symbols.contains(String(beforeInput.suffix(1) + afterInput.prefix(1))) {
         self.textDocumentProxy.adjustTextPosition(byCharacterOffset: 1)
         self.textDocumentProxy.deleteBackward(times: 2)

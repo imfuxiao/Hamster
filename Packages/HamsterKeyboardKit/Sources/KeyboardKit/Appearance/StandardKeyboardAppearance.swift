@@ -149,7 +149,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
   /// 仓输入法配色
   open func hamsterColor() -> HamsterKeyboardColor? {
-    guard keyboardContext.hamsterConfig?.keyboard?.enableColorSchema ?? false else { return nil }
+    guard keyboardContext.hamsterConfiguration?.keyboard?.enableColorSchema ?? false else { return nil }
 
     // 配色缓存
     if let cacheHamsterKeyboardColor = cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] {
@@ -158,12 +158,12 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
     var schemaName: String? = nil
     if keyboardContext.hasDarkColorScheme {
-      schemaName = keyboardContext.hamsterConfig?.keyboard?.useColorSchemaForDark
+      schemaName = keyboardContext.hamsterConfiguration?.keyboard?.useColorSchemaForDark
     } else {
-      schemaName = keyboardContext.hamsterConfig?.keyboard?.useColorSchemaForLight
+      schemaName = keyboardContext.hamsterConfiguration?.keyboard?.useColorSchemaForLight
     }
 
-    guard let schema = keyboardContext.hamsterConfig?.keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
+    guard let schema = keyboardContext.hamsterConfiguration?.keyboard?.colorSchemas?.first(where: { $0.schemaName == schemaName }) else { return nil }
 
     let hamsterColor = HamsterKeyboardColor(colorSchema: schema, userInterfaceStyle: keyboardContext.colorScheme)
     self.cacheHamsterKeyboardColor[keyboardContext.traitCollection.userInterfaceStyle] = hamsterColor
@@ -188,14 +188,14 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 候选栏样式
   open var candidateBarStyle: CandidateBarStyle {
     var phoneticTextFontSize: CGFloat = phoneticTextFontSize
-    if let size = keyboardContext.hamsterConfig?.toolbar?.codingAreaFontSize {
+    if let size = keyboardContext.hamsterConfiguration?.toolbar?.codingAreaFontSize {
       phoneticTextFontSize = CGFloat(size)
     }
     let phoneticTextFont = UIFont.systemFont(ofSize: phoneticTextFontSize)
 
     var candidateTextFont: UIFont?
     var candidateCommentFont: UIFont?
-    if let toolbarConfig = keyboardContext.hamsterConfig?.toolbar {
+    if let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar {
       if let candidateTextFontSize = toolbarConfig.candidateWordFontSize {
         candidateTextFont = UIFont.systemFont(ofSize: CGFloat(candidateTextFontSize))
       }
@@ -615,6 +615,9 @@ extension KeyboardAction {
 
   /// 按键空闲状态的背景颜色
   func buttonBackgroundColorForIdleState(for context: KeyboardContext) -> UIColor {
+    if isPrimaryAction {
+      print("test")
+    }
     // 数字九宫格分类符号按键颜色调整
     if isClassifySymbolicOfLight {
       return .standardButtonBackground(for: context)

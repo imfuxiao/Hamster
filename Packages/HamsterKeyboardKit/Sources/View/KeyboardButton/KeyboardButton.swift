@@ -30,9 +30,6 @@ public class KeyboardButton: UIControl {
   /// 注意：item中尺寸信息在自动布局中不在使用了，这些信息在 SwiftUI 布局中使用
   var item: KeyboardLayoutItem
 
-  /// 按键对应的操作
-  let action: KeyboardAction
-
   /// 按键对应操作的处理类
   let actionHandler: KeyboardActionHandler
 
@@ -113,7 +110,7 @@ public class KeyboardButton: UIControl {
   lazy var buttonContentView: KeyboardButtonContentView = {
     let contentView = KeyboardButtonContentView(
       item: item,
-      style: buttonStyle,
+      style: normalButtonStyle,
       appearance: appearance,
       keyboardContext: keyboardContext,
       rimeContext: rimeContext)
@@ -139,12 +136,8 @@ public class KeyboardButton: UIControl {
 
   /// 按钮样式
   /// 注意：action 与 是否按下的状态 isPressed 决定按钮样式
-  var buttonStyle: KeyboardButtonStyle {
-    if keyboardContext.keyboardType.isCustom, let key = item.key {
-      return appearance.buttonStyle(for: key, isPressed: isHighlighted)
-    }
-    return appearance.buttonStyle(for: item.action, isPressed: isHighlighted)
-  }
+  lazy var normalButtonStyle: KeyboardButtonStyle = self.getButtonStyle(isPressed: false)
+  lazy var pressedButtonStyle: KeyboardButtonStyle = self.getButtonStyle(isPressed: true)
 
   /// 布局配置
   var layoutConfig: KeyboardLayoutConfiguration {
@@ -188,7 +181,6 @@ public class KeyboardButton: UIControl {
     self.row = row
     self.column = column
     self.item = item
-    self.action = item.action
     self.isSpacer = item.action.isSpacer
     self.actionHandler = actionHandler
     self.keyboardContext = keyboardContext
@@ -229,7 +221,7 @@ public class KeyboardButton: UIControl {
     // 不能调用，推迟 inputCallout 的创建时间
     // updateButtonStyle(isPressed: isHighlighted)
     // 初始状态样式
-    let style = buttonStyle
+    let style = normalButtonStyle
 
     // 更新按钮内容的样式
     buttonContentView.setStyle(style)
@@ -261,10 +253,9 @@ public class KeyboardButton: UIControl {
       let bounds = oldBounds.inset(by: insets)
       buttonContentView.frame = bounds
       // Logger.statistics.debug("button content row: \(self.row), column: \(self.column), frame: \(bounds.width) \(bounds.height)")
-      let style = buttonStyle
-      if let cornerRadius = style.cornerRadius {
+      if let cornerRadius = normalButtonStyle.cornerRadius {
         underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
-        underShadowShape.fillColor = style.shadow?.color.cgColor
+        underShadowShape.fillColor = normalButtonStyle.shadow?.color.cgColor
         buttonContentView.layer.cornerRadius = cornerRadius
       }
 //      CATransaction.commit()
@@ -272,6 +263,9 @@ public class KeyboardButton: UIControl {
 
     if userInterfaceStyle != keyboardContext.colorScheme {
       userInterfaceStyle = keyboardContext.colorScheme
+      // 系统颜色发生变化，重新获取按键样式
+      normalButtonStyle = getButtonStyle(isPressed: false)
+      pressedButtonStyle = getButtonStyle(isPressed: true)
       updateButtonStyle(isPressed: isHighlighted)
     }
   }
@@ -279,7 +273,7 @@ public class KeyboardButton: UIControl {
   /// 根据按下状态更新当前按钮样式
   func updateButtonStyle(isPressed: Bool) {
     // Logger.statistics.debug("updateButtonStyle(), isPressed: \(isPressed), isHighlighted: \(self.isHighlighted)")
-    let style = buttonStyle
+    let style = isPressed ? pressedButtonStyle : normalButtonStyle
 
     // 更新按钮内容的样式
     buttonContentView.setStyle(style)
@@ -300,6 +294,13 @@ public class KeyboardButton: UIControl {
     }
   }
 
+  func getButtonStyle(isPressed: Bool) -> KeyboardButtonStyle {
+    if keyboardContext.keyboardType.isCustom, let key = item.key {
+      return appearance.buttonStyle(for: key, isPressed: isPressed)
+    }
+    return appearance.buttonStyle(for: item.action, isPressed: isPressed)
+  }
+
   // MARK: debuger
 
   override public var debugDescription: String {
@@ -315,7 +316,7 @@ extension KeyboardButton {
     if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.label.text, !buttonText.isEmpty {
       return buttonText
     }
-    return appearance.buttonText(for: action) ?? ""
+    return appearance.buttonText(for: item.action) ?? ""
   }
 
   /// 添加 input 按键气泡
@@ -323,7 +324,7 @@ extension KeyboardButton {
     guard keyboardContext.displayButtonBubbles else { return }
     // 屏幕横向无按键气泡
     guard keyboardContext.interfaceOrientation.isPortrait else { return }
-    guard action.showKeyBubble else { return }
+    guard item.action.showKeyBubble else { return }
     guard inputCalloutView.superview == nil else { return }
 
     inputCalloutView.setText(buttonText)

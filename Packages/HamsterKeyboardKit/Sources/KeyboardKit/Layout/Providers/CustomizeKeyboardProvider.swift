@@ -24,11 +24,11 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
   public func keyboardLayout(for context: KeyboardContext) -> KeyboardLayout {
     // 非自定义键盘返回其他 provider
     guard case .custom(let name, let casing) = context.keyboardType else { return keyboardLayoutProvider.keyboardLayout(for: context) }
-    guard let keyboard = keyboards.first(where: { $0.name == name }) else {
+    guard var keyboard = keyboards.first(where: { $0.name == name }) else {
       Logger.statistics.error("not found custom keyboard. name: \(name)")
       return KeyboardLayout(itemRows: [])
     }
-    let actions = self.actions(keyboard: keyboard, casing: casing, context: context)
+    let actions = self.actions(keyboard: &keyboard, casing: casing, context: context)
     let items = self.items(for: actions, keyboard: keyboard, context: context)
     return KeyboardLayout(itemRows: items, customKeyboard: keyboard)
   }
@@ -40,29 +40,35 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
   /**
    获取自定义键盘 actions
    */
-  open func actions(keyboard: Keyboard, casing: KeyboardCase, context: KeyboardContext) -> KeyboardActionRows {
-    return keyboard.rows
-      .map {
-        $0.keys.map {
-          if $0.action.isShiftAction {
-            return .shift(currentCasing: casing)
-          }
-          if case .symbol(let symbol) = $0.action {
-            return .symbol(Symbol(char: casing.isUppercased ? symbol.char.uppercased() : symbol.char.lowercased()))
-          }
-          if case .character(let char) = $0.action {
-            return .character(casing.isUppercased ? char.uppercased() : char.lowercased())
-          }
-          if case .characterMargin(let char) = $0.action {
-            return .characterMargin(casing.isUppercased ? char.uppercased() : char.lowercased())
-          }
-          /// 将自定义 return 按钮还原为跟随系统环境变化
-          if $0.action == .primary(.return) {
-            return keyboardReturnAction(for: context)
-          }
-          return $0.action
+  open func actions(keyboard: inout Keyboard, casing: KeyboardCase, context: KeyboardContext) -> KeyboardActionRows {
+    var rows = KeyboardActionRows()
+    for (rowIndex, row) in keyboard.rows.enumerated() {
+      var actions = KeyboardActions()
+      for (keyIndex, var key) in row.keys.enumerated() {
+        if key.action.isShiftAction {
+          key.action = .shift(currentCasing: casing)
         }
+        if case .symbol(let symbol) = key.action {
+          key.action = .symbol(Symbol(char: casing.isUppercased ? symbol.char.uppercased() : symbol.char.lowercased()))
+        }
+        if case .character(let char) = key.action {
+          key.action = .character(casing.isUppercased ? char.uppercased() : char.lowercased())
+        }
+        if case .characterMargin(let char) = key.action {
+          key.action = .characterMargin(casing.isUppercased ? char.uppercased() : char.lowercased())
+        }
+
+        /// 将自定义 return 按钮还原为跟随系统环境变化
+        if key.action.isPrimaryAction {
+          key.action = keyboardReturnAction(for: context)
+        }
+
+        keyboard.rows[rowIndex].keys[keyIndex] = key
+        actions.append(key.action)
       }
+      rows.append(actions)
+    }
+    return rows
   }
 
   open func items(for actions: KeyboardActionRows, keyboard: Keyboard, context: KeyboardContext) -> KeyboardLayoutItemRows {
