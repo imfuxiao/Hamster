@@ -311,6 +311,13 @@ public class KeyboardButton: UIControl {
 // MARK: - Input Callout
 
 extension KeyboardButton {
+  var buttonText: String {
+    if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.label.text, !buttonText.isEmpty {
+      return buttonText
+    }
+    return appearance.buttonText(for: action) ?? ""
+  }
+
   /// 添加 input 按键气泡
   func addInputCallout() {
     guard keyboardContext.displayButtonBubbles else { return }
@@ -319,7 +326,7 @@ extension KeyboardButton {
     guard action.showKeyBubble else { return }
     guard inputCalloutView.superview == nil else { return }
 
-    inputCalloutView.label.text = item.key?.labelText ?? action.inputCalloutText?.uppercased()
+    inputCalloutView.setText(buttonText)
 
     let insets = item.insets
     inputCalloutView.frame = self.frame.inset(by: insets)

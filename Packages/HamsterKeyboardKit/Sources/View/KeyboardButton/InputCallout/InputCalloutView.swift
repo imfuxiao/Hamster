@@ -14,12 +14,11 @@ public class InputCalloutView: ShapeView {
   private var popBounds: CGRect = .zero
   private var oldFrame: CGRect = .zero
 
-  public let label: UILabel = {
+  private let label: UILabel = {
     let label = UILabel()
     label.textAlignment = .center
-    label.baselineAdjustment = UIBaselineAdjustment.alignCenters
     label.adjustsFontSizeToFitWidth = true
-    label.minimumScaleFactor = 0.2
+    label.minimumScaleFactor = 0.5
     label.numberOfLines = 1
     return label
   }()
@@ -58,13 +57,11 @@ public class InputCalloutView: ShapeView {
       let rightTopPointContainsSuperview = superviewFrame.contains(rightTopPoint)
 
       if !leftTopPointContainsSuperview, rightTopPointContainsSuperview {
-        label.textAlignment = .right
-        trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 1.5).isActive = true
+        label.frame = CGRect(x: popBounds.width / 4, y: 0, width: popBounds.width / 4 * 3, height: popBounds.height / 2)
       } else if leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
-        label.textAlignment = .left
-        label.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 1.5).isActive = true
+        label.frame = CGRect(x: 0, y: 0, width: popBounds.width / 4 * 3, height: popBounds.height / 2)
       } else {
-        label.textAlignment = .center
+        label.frame = CGRect(x: 0, y: 0, width: popBounds.width, height: popBounds.height / 2)
       }
 
       let path = CAShapeLayer.inputCalloutPath(
@@ -92,14 +89,12 @@ public class InputCalloutView: ShapeView {
 
   func setupView() {
     addSubview(label)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      label.widthAnchor.constraint(equalTo: widthAnchor),
-      label.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
-    ])
-
     shapeLayer.mask = maskShapeLayer
     shapeLayer.insertSublayer(boardLayer, at: 0)
+  }
+
+  func setText(_ text: String) {
+    label.text = text
   }
 
   override public func layoutSubviews() {
