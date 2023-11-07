@@ -64,9 +64,9 @@ extension SymbolKeyboardSettingsRootView: UITableViewDataSource, UITableViewDele
   }
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    if section == 0 {
-      return KeyboardSettingsViewModel.symbolKeyboardRemark
-    }
+//    if section == 0 {
+//      return KeyboardSettingsViewModel.symbolKeyboardRemark
+//    }
     return nil
   }
 }
