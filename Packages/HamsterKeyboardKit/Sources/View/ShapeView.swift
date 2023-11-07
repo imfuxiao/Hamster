@@ -102,11 +102,6 @@ public extension CAShapeLayer {
   static func inputCalloutPath(size: CGSize, cornerRadius: CGFloat, leftTopPointContainsSuperview: Bool, rightTopPointContainsSuperview: Bool) -> UIBezierPath {
     let path = UIBezierPath()
 
-    // 如果顶部左右都不包含，则不显示气泡
-    if !leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
-      return path
-    }
-
     let width = size.width / 4
 
     // 按键气泡沿 x 轴共4个点，已垂直平分线为中间点，左右两侧各两个点

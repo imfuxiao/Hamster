@@ -40,32 +40,50 @@ public class InputCalloutView: ShapeView {
   }()
 
   public var calloutPath: UIBezierPath {
-    if let superview = superview {
-      let superviewFrame = keyboardContext.enableToolbar
-        ? CGRect(
-          x: superview.frame.minX,
-          y: superview.frame.minX - keyboardContext.heightOfToolbar,
-          width: superview.frame.width,
-          height: superview.frame.height + keyboardContext.heightOfToolbar
-        )
-        : superview.frame
+    if let superview = superview, let rootView = superview.superview {
+      // 气泡左右两侧顶点
+      var leftTopPoint = superview.convert(CGPoint(x: frame.minX, y: frame.minY), to: rootView)
+      var rightTopPoint = superview.convert(CGPoint(x: frame.minX + frame.width, y: frame.minY), to: rootView)
 
       // 检测气泡左右点是否超出父视图范围
-      let leftTopPoint = CGPoint(x: frame.minX, y: frame.minY)
-      let rightTopPoint = CGPoint(x: frame.minX + frame.width, y: frame.minY)
-      let leftTopPointContainsSuperview = superviewFrame.contains(leftTopPoint)
-      let rightTopPointContainsSuperview = superviewFrame.contains(rightTopPoint)
+      var leftTopPointContainsSuperview = rootView.frame.contains(leftTopPoint)
+      var rightTopPointContainsSuperview = rootView.frame.contains(rightTopPoint)
 
-      if !leftTopPointContainsSuperview, rightTopPointContainsSuperview {
-        label.frame = CGRect(x: popBounds.width / 4, y: 0, width: popBounds.width / 4 * 3, height: popBounds.height / 2)
+      // 气泡尺寸
+      var popSize = popBounds.size
+
+      // 左右顶点都不在 rootView 时，尝试降低气泡高度
+      if !leftTopPointContainsSuperview && !rightTopPointContainsSuperview {
+        // 未开启工具栏，则首排不显示气泡
+        if !keyboardContext.enableToolbar {
+          return UIBezierPath()
+        }
+
+        let differenceHeight = rootView.frame.minY - leftTopPoint.y + 2
+
+        leftTopPoint.y = leftTopPoint.y + differenceHeight
+        rightTopPoint.y = rightTopPoint.y + differenceHeight
+        popSize.height = popSize.height - differenceHeight
+
+        // 注意：气泡 y 轴也需要降低
+        self.frame = self.frame.offsetBy(dx: 0, dy: differenceHeight)
+
+        leftTopPointContainsSuperview = rootView.frame.contains(leftTopPoint)
+        rightTopPointContainsSuperview = rootView.frame.contains(rightTopPoint)
+      }
+
+      if !leftTopPointContainsSuperview, !rightTopPointContainsSuperview { // 降低后如果仍然不在 rootView 范围内，则不显示气泡
+        return UIBezierPath()
+      } else if !leftTopPointContainsSuperview, rightTopPointContainsSuperview {
+        label.frame = CGRect(x: popSize.width / 4, y: 0, width: popSize.width / 4 * 3, height: popSize.height / 2)
       } else if leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
-        label.frame = CGRect(x: 0, y: 0, width: popBounds.width / 4 * 3, height: popBounds.height / 2)
+        label.frame = CGRect(x: 0, y: 0, width: popSize.width / 4 * 3, height: popSize.height / 2)
       } else {
-        label.frame = CGRect(x: 0, y: 0, width: popBounds.width, height: popBounds.height / 2)
+        label.frame = CGRect(x: 0, y: 0, width: popSize.width, height: popSize.height / 2)
       }
 
       let path = CAShapeLayer.inputCalloutPath(
-        size: popBounds.size,
+        size: popSize,
         cornerRadius: style.callout.buttonCornerRadius,
         leftTopPointContainsSuperview: leftTopPointContainsSuperview,
         rightTopPointContainsSuperview: rightTopPointContainsSuperview
@@ -100,12 +118,11 @@ public class InputCalloutView: ShapeView {
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    guard self.superview != nil else { return }
+    guard let _ = self.superview else { return }
     guard self.frame != .zero, oldFrame != self.frame else { return }
 
     // 将 size 扩大两倍，作为气泡的基础大小
-    popBounds = self.bounds
-      .applying(CGAffineTransform(scaleX: 2, y: 2))
+    popBounds = self.bounds.applying(CGAffineTransform(scaleX: 2, y: 2))
 
     // x 轴居中，y 轴底部对齐
     let tempFrame = self.frame
