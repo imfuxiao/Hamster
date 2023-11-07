@@ -79,12 +79,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     viewWillSyncWithContext()
   }
 
-  override open func viewWillDisappear(_ animated: Bool) {
-    super.viewWillDisappear(animated)
-
-    shutdownRIME()
-  }
-
   // MARK: - Keyboard View Controller Lifecycle
 
   /**
@@ -813,10 +807,11 @@ private extension KeyboardInputViewController {
   func setupRIME() {
     // 异步 RIME 引擎启动
     Task.detached { [unowned self] in
-//      if rimeContext.isRunning {
-//        Logger.statistics.debug("shutdown rime engine")
-//        shutdownRIME()
-//      }
+      if await rimeContext.isRunning {
+        Logger.statistics.debug("shutdown rime engine")
+        // 这里关闭引擎是为了使 RIME 内存中的自造词落盘。
+        await shutdownRIME()
+      }
 
       Logger.statistics.debug("setup rime engine")
 
