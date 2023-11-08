@@ -23,11 +23,13 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
   // MARK: properties
 
   let fileURL: URL
+  let enableEditorState: Bool
 
   // MARK: methods
 
-  init(fileURL: URL) {
+  init(fileURL: URL, enableEditorState: Bool = true) {
     self.fileURL = fileURL
+    self.enableEditorState = enableEditorState
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -86,8 +88,11 @@ extension TextEditorViewController {
 
     // navigation item
     // 添加导入按钮
-    let saveItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveFileContent))
-    navigationItem.rightBarButtonItem = saveItem
+    textView.isEditable = enableEditorState
+    if enableEditorState {
+      let saveItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveFileContent))
+      navigationItem.rightBarButtonItem = saveItem
+    }
   }
 }
 

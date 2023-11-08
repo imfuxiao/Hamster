@@ -20,7 +20,7 @@ public class RimeRootView: NibLessView {
     tableView.register(TextFieldTableViewCell.self, forCellReuseIdentifier: TextFieldTableViewCell.identifier)
     tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
     tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
-    tableView.allowsSelection = false
+    tableView.register(SettingTableViewCell.self, forCellReuseIdentifier: SettingTableViewCell.identifier)
     return tableView
   }()
 
@@ -63,7 +63,7 @@ public class RimeRootView: NibLessView {
   }
 
   @objc func copySyncConfig() {
-    UIPasteboard.general.string = Self.rimeSyncConfigSample
+    UIPasteboard.general.string = RimeViewModel.rimeSyncConfigSample
     ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
   }
 }
@@ -74,11 +74,11 @@ extension RimeRootView: UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 1
+    return rimeViewModel.settings[section].items.count
   }
 
   public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let settingItem = rimeViewModel.settings[indexPath.section]
+    let settingItem = rimeViewModel.settings[indexPath.section].items[indexPath.row]
     if settingItem.type == .textField {
       let cell = tableView.dequeueReusableCell(withIdentifier: TextFieldTableViewCell.identifier, for: indexPath)
       guard let cell = cell as? TextFieldTableViewCell else { return cell }
@@ -93,6 +93,13 @@ extension RimeRootView: UITableViewDataSource {
       return cell
     }
 
+    if settingItem.type == .navigation {
+      let cell = tableView.dequeueReusableCell(withIdentifier: SettingTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? SettingTableViewCell else { return cell }
+      cell.updateWithSettingItem(settingItem)
+      return cell
+    }
+
     let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? ToggleTableViewCell else { return cell }
     cell.updateWithSettingItem(settingItem)
@@ -100,51 +107,26 @@ extension RimeRootView: UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    if section == 0 {
-      return "简繁切换"
-    }
-    return nil
+    rimeViewModel.settings[section].title
   }
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    switch section {
-    case 0:
-      return TableFooterView(footer: Self.rimeSimplifiedAndTraditionalSwitcherKeyRemark)
-    case 1:
-      return TableFooterView(footer: Self.overrideRemark)
-    case 2:
-      return TableFooterView(footer: "注意：Rime 根目录下 hamster.yaml 与 hamster.custom.yaml 配置文件会覆盖当前应用配置。")
-    case 4:
-      let footer = TableFooterView(footer: Self.rimeSyncRemark)
+    guard let footer = rimeViewModel.settings[section].footer else { return nil }
+    let view = TableFooterView(footer: footer)
+    if section == 4 {
       let gesture = UITapGestureRecognizer(target: self, action: #selector(copySyncConfig))
-      footer.addGestureRecognizer(gesture)
-      return footer
-    default:
-      return nil
+      view.addGestureRecognizer(gesture)
     }
+    return view
   }
 }
 
-extension RimeRootView: UITableViewDelegate {}
-
-extension RimeRootView {
-  static let rimeSimplifiedAndTraditionalSwitcherKeyRemark = "配置文件中`switches`简繁转换选项的配置名称，仓用于中文简体与繁体之间快速切换。"
-  static let overrideRemark = "如果您未使用自造词功能，请保持保持默认开启状态。"
-
-  static let rimeSyncConfigSample = """
-  # id可以自定义，但不能其他终端定义的ID重复
-  installation_id: "hamster"
-  # 仓的iOS中iCloud前缀路径固定为：/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~hamsterapp/Documents
-  # iOS中的路径与MacOS及Windows的iCloud路径是不同的
-  sync_dir: "/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~hamsterapp/Documents/sync"
-  """
-
-  static let rimeSyncRemark = """
-  注意：
-  1. RIME同步自定义参数，需要手工添加至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；
-  2. 同步配置示例：(点击可复制)
-  ```
-  \(RimeRootView.rimeSyncConfigSample)
-  ```
-  """
+extension RimeRootView: UITableViewDelegate {
+  public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: false)
+    let settingItem = rimeViewModel.settings[indexPath.section].items[indexPath.row]
+    if settingItem.type == .navigation {
+      settingItem.navigationAction?()
+    }
+  }
 }

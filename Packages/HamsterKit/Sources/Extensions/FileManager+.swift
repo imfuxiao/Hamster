@@ -350,6 +350,11 @@ public extension FileManager {
     sandboxDirectory.appendingPathComponent("backups", isDirectory: true)
   }
 
+  // 沙盒 Document 目录下日志目录
+  static var sandboxRimeLogDirectory: URL {
+    sandboxDirectory.appendingPathComponent("RIMELogger", isDirectory: true)
+  }
+
   // 安装包ShareSupport资源目录
   static var appSharedSupportDirectory: URL {
     Bundle.main.bundleURL

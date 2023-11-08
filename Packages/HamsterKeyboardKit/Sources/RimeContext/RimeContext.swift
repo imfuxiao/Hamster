@@ -309,12 +309,12 @@ public extension RimeContext {
       }
     }
 
-    Rime.shared.shutdown()
-    Rime.shared.start(Rime.createTraits(
-      sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
-      userDataDir: FileManager.sandboxUserDataDirectory.path
-    ), maintenance: true, fullCheck: true)
-
+    if !isRunning {
+      Rime.shared.start(Rime.createTraits(
+        sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
+        userDataDir: FileManager.sandboxUserDataDirectory.path
+      ), maintenance: true, fullCheck: true)
+    }
     let handled = Rime.shared.API().syncUserData()
     Logger.statistics.info("RIME sync userData handled: \(handled)")
     Rime.shared.shutdown()

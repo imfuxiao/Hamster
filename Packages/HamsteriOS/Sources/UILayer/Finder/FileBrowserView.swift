@@ -45,6 +45,14 @@ class FileBrowserView: NibLessView {
       .store(in: &subscription)
   }
 
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+
+    if let _ = window {
+      self.fileBrowserViewModel.files = self.fileBrowserViewModel.currentPathFiles()
+    }
+  }
+
   override func constructViewHierarchy() {
     addSubview(tableView)
     tableView.dataSource = self
