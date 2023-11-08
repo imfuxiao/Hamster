@@ -98,44 +98,45 @@ public extension CAShapeLayer {
   /// 按键气泡路径
   ///
   /// @Parameter size 按键气泡尺寸
-  /// @Parameter cornerRadius 圆角半径
-  static func inputCalloutPath(size: CGSize, cornerRadius: CGFloat, leftTopPointContainsSuperview: Bool, rightTopPointContainsSuperview: Bool) -> UIBezierPath {
+  /// @Parameter cornerRadius 圆角半径, 用在 callout 的上部分
+  /// @Parameter buttonCornerRadius 圆角半径, 用在 callout 的下部分，与重叠的按键圆角保持一致
+  static func inputCalloutPath(popSize: CGSize, originButtonSize: CGSize, cornerRadius: CGFloat, buttonCornerRadius: CGFloat, leftTopPointContainsSuperview: Bool, rightTopPointContainsSuperview: Bool) -> UIBezierPath {
     let path = UIBezierPath()
 
-    let width = size.width / 4
+    let diffWidth = (popSize.width - originButtonSize.width) / 2
 
     // 按键气泡沿 x 轴共4个点，已垂直平分线为中间点，左右两侧各两个点
-    let rightMaxX: CGFloat = rightTopPointContainsSuperview ? size.width : size.width - width
-    let rightMinX: CGFloat = rightTopPointContainsSuperview ?rightMaxX - width : rightMaxX
+    let rightMinX: CGFloat = popSize.width - diffWidth
+    let rightMaxX: CGFloat = rightTopPointContainsSuperview ? popSize.width : rightMinX
 
-    let leftMinX: CGFloat = leftTopPointContainsSuperview ? 0 : width
-    let leftMaxX: CGFloat = width
+    let leftMinX: CGFloat = leftTopPointContainsSuperview ? 0 : diffWidth
+    let leftMaxX: CGFloat = diffWidth
 
-    let minY = size.height / 2
-    let maxY = size.height
+    let minY = popSize.height / 2
+    let maxY = popSize.height
 
     // 从按键右下圆角启始点开始
-    var point = CGPoint(x: rightMinX, y: maxY - cornerRadius)
+    var point = CGPoint(x: rightMinX, y: maxY - buttonCornerRadius)
     path.move(to: point)
 
     // 右下圆角(0度到90度，顺时针)
-    point = CGPoint(x: rightMinX - cornerRadius, y: maxY - cornerRadius)
+    point = CGPoint(x: rightMinX - buttonCornerRadius, y: maxY - buttonCornerRadius)
     path.addArc(
       withCenter: point,
-      radius: cornerRadius,
+      radius: buttonCornerRadius,
       startAngle: 0,
       endAngle: CGFloat.pi / 2,
       clockwise: true)
 
     // 底部横线
-    point = CGPoint(x: leftMaxX + cornerRadius, y: maxY)
+    point = CGPoint(x: leftMaxX + buttonCornerRadius, y: maxY)
     path.addLine(to: point)
 
     // 左下圆角
-    point = CGPoint(x: leftMaxX + cornerRadius, y: maxY - cornerRadius)
+    point = CGPoint(x: leftMaxX + buttonCornerRadius, y: maxY - buttonCornerRadius)
     path.addArc(
       withCenter: point,
-      radius: cornerRadius,
+      radius: buttonCornerRadius,
       startAngle: CGFloat.pi / 2,
       endAngle: CGFloat.pi,
       clockwise: true)

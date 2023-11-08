@@ -12,6 +12,7 @@ public class InputCalloutView: ShapeView {
   private var keyboardContext: KeyboardContext
   private let style: KeyboardInputCalloutStyle
   private var popBounds: CGRect = .zero
+  private var originButtonBounds: CGRect = .zero
   private var oldFrame: CGRect = .zero
 
   private let label: UILabel = {
@@ -72,19 +73,23 @@ public class InputCalloutView: ShapeView {
         rightTopPointContainsSuperview = rootView.frame.contains(rightTopPoint)
       }
 
-      if !leftTopPointContainsSuperview, !rightTopPointContainsSuperview { // 降低后如果仍然不在 rootView 范围内，则不显示气泡
+      if !leftTopPointContainsSuperview, !rightTopPointContainsSuperview { // 降低高度后，仍不在 rootView 范围内，则不显示气泡
         return UIBezierPath()
       } else if !leftTopPointContainsSuperview, rightTopPointContainsSuperview {
-        label.frame = CGRect(x: popSize.width / 4, y: 0, width: popSize.width / 4 * 3, height: popSize.height / 2)
+        let diffSize = (popSize.width - originButtonBounds.width) / 2
+        label.frame = CGRect(x: diffSize, y: 0, width: popSize.width - diffSize, height: popSize.height / 2)
       } else if leftTopPointContainsSuperview, !rightTopPointContainsSuperview {
-        label.frame = CGRect(x: 0, y: 0, width: popSize.width / 4 * 3, height: popSize.height / 2)
+        let diffSize = (popSize.width - originButtonBounds.width) / 2
+        label.frame = CGRect(x: 0, y: 0, width: popSize.width - diffSize, height: popSize.height / 2)
       } else {
         label.frame = CGRect(x: 0, y: 0, width: popSize.width, height: popSize.height / 2)
       }
 
       let path = CAShapeLayer.inputCalloutPath(
-        size: popSize,
-        cornerRadius: style.callout.buttonCornerRadius,
+        popSize: popSize,
+        originButtonSize: originButtonBounds.size,
+        cornerRadius: style.callout.cornerRadius,
+        buttonCornerRadius: style.callout.buttonCornerRadius,
         leftTopPointContainsSuperview: leftTopPointContainsSuperview,
         rightTopPointContainsSuperview: rightTopPointContainsSuperview
       )
@@ -122,11 +127,12 @@ public class InputCalloutView: ShapeView {
     guard self.frame != .zero, oldFrame != self.frame else { return }
 
     // 将 size 扩大两倍，作为气泡的基础大小
-    popBounds = self.bounds.applying(CGAffineTransform(scaleX: 2, y: 2))
+    originButtonBounds = self.bounds
+    popBounds = self.bounds.applying(CGAffineTransform(scaleX: 1.6, y: 2))
 
     // x 轴居中，y 轴底部对齐
     let tempFrame = self.frame
-      .applying(CGAffineTransform(translationX: -self.bounds.width / 2, y: -self.bounds.height))
+      .applying(CGAffineTransform(translationX: -(popBounds.width - self.bounds.width) / 2, y: -self.bounds.height))
 
     self.frame = CGRect(origin: tempFrame.origin, size: popBounds.size)
     self.oldFrame = self.frame

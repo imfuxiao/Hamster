@@ -317,10 +317,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
    应用于操作和输入呼出的呼出样式。
    */
   open var calloutStyle: KeyboardCalloutStyle {
-    var style = KeyboardCalloutStyle.standard
-    let button = buttonStyle(for: .character(""), isPressed: false)
-    style.buttonCornerRadius = button.cornerRadius ?? 5
-    return style
+    KeyboardCalloutStyle.standard
   }
 
   /// The style to apply to ``ActionCallout`` views.
