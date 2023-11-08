@@ -24,6 +24,7 @@
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0D672B429F1E0E7002D0439 /* SharedSupport.zip in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D672B329F1E066002D0439 /* SharedSupport.zip */; };
+		C0DA3F422AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DA3F412AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		C0C8B57E2A823BBF009972C1 /* HamsterKeyboardKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterKeyboardKit; path = Packages/HamsterKeyboardKit; sourceTree = "<group>"; };
 		C0C9041C2A56412200AF3F15 /* hamster.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = hamster.yaml; sourceTree = "<group>"; };
 		C0D672B329F1E066002D0439 /* SharedSupport.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = SharedSupport.zip; sourceTree = "<group>"; };
+		C0DA3F412AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployBackgroundIntent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			children = (
 				C01396F92AB499CA0043674A /* RimeSyncIntent.swift */,
 				C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */,
+				C0DA3F412AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift */,
 			);
 			path = Actions;
 			sourceTree = "<group>";
@@ -361,6 +364,7 @@
 			files = (
 				C01396FC2AB499D80043674A /* RimeSyncIntent.swift in Sources */,
 				C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */,
+				C0DA3F422AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift in Sources */,
 				C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */,
 				C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */,
 				C02C4D982AC105CA00FF91BA /* IntentProvider.swift in Sources */,

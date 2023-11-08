@@ -10,7 +10,6 @@ import HamsteriOS
 import HamsterKeyboardKit
 import HamsterKit
 import OSLog
-import SwiftUI
 
 @available(iOS 16.0, *)
 struct RimeDeployIntent: AppIntent {
