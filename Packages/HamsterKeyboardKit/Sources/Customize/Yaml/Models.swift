@@ -150,7 +150,7 @@ public struct Key: Codable, Hashable {
 
   /// 是否经过 RIME 引擎处理
   /// 可选，默认值为 true
-  // public var processByRIME: Bool
+  public var processByRIME: Bool
 
   /// 按键划动配置
   /// 可选
@@ -158,11 +158,11 @@ public struct Key: Codable, Hashable {
 
   // MARK: - Initialization
 
-  public init(action: KeyboardAction, width: KeyWidth = .input, label: KeyLabel = .empty, swipe: [KeySwipe] = []) {
+  public init(action: KeyboardAction, width: KeyWidth = .input, label: KeyLabel = .empty, processByRIME: Bool = true, swipe: [KeySwipe] = []) {
     self.action = action
     self.width = width
     self.label = label
-//    self.processByRIME = processByRIME
+    self.processByRIME = processByRIME
     self.swipe = swipe
   }
 
@@ -201,11 +201,11 @@ public struct Key: Codable, Hashable {
       self.label = .empty
     }
 
-//    if let processByRIME = try? container.decode(Bool.self, forKey: .processByRIME) {
-//      self.processByRIME = processByRIME
-//    } else {
-//      self.processByRIME = true
-//    }
+    if let processByRIME = try? container.decode(Bool.self, forKey: .processByRIME) {
+      self.processByRIME = processByRIME
+    } else {
+      self.processByRIME = true
+    }
 
     if let swipe = try? container.decode([KeySwipe].self, forKey: .swipe) {
       self.swipe = swipe
@@ -218,7 +218,7 @@ public struct Key: Codable, Hashable {
     case action
     case width
     case label
-//    case processByRIME
+    case processByRIME
     case swipe
   }
 
@@ -227,7 +227,7 @@ public struct Key: Codable, Hashable {
     try container.encode(self.action.yamlString, forKey: .action)
     try container.encode(self.width, forKey: .width)
     try container.encode(self.label, forKey: .label)
-//    try container.encode(self.processByRIME, forKey: .processByRIME)
+    try container.encode(self.processByRIME, forKey: .processByRIME)
     try container.encode(self.swipe, forKey: .swipe)
   }
 

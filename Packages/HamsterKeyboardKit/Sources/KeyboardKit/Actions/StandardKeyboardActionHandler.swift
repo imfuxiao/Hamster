@@ -169,6 +169,35 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
   }
 
   /**
+   处理 key 上的某个手势
+   */
+  open func handle(_ gesture: KeyboardGesture, on key: Key) {
+    let action = key.action
+
+    // 不能被取代 && 尝试处理取代Action
+    // 注意：是 if 不是 guard
+    if tryHandleReplacementAction(before: gesture, on: action) { return }
+    triggerFeedback(for: gesture, on: action)
+    tryUpdateSpaceDragState(for: gesture, on: action)
+    guard let gestureAction = self.action(for: gesture, on: key) else { return }
+    // tryRemoveAutocompleteInsertedSpace(before: gesture, on: action)
+    // tryApplyAutocompleteSuggestion(before: gesture, on: action)
+    gestureAction(keyboardController)
+    // tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
+    // tryEndSentence(after: gesture, on: action)
+    tryChangeKeyboardType(after: gesture, on: action)
+    tryRegisterEmoji(after: gesture, on: action)
+    tryRegisterSymbol(after: gesture, on: action)
+    // keyboardController?.performAutocomplete()
+    keyboardController?.performTextContextSync()
+  }
+
+  /// 处理 key 上的手势及动作
+  open func action(for gesture: KeyboardGesture, on key: Key) -> KeyboardAction.GestureAction? {
+    return key.action.standardAction(for: gesture, processByRIME: key.processByRIME)
+  }
+
+  /**
    Handle a drag gesture on a certain action.
 
    处理特定操作上的拖动手势。
@@ -191,7 +220,10 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
    您可以覆盖此函数，自定义操作的行为方式。默认情况下，使用标准动作。
    */
   open func action(for gesture: KeyboardGesture, on action: KeyboardAction) -> KeyboardAction.GestureAction? {
-    action.standardAction(for: gesture)
+    if keyboardContext.keyboardType.isAlphabetic {
+      return action.standardAction(for: gesture, processByRIME: false)
+    }
+    return action.standardAction(for: gesture)
   }
 
   /**

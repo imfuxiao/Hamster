@@ -56,10 +56,23 @@ public extension KeyboardAction {
     case .repeatPress: return standardRepeatAction
     case .swipeUp(let swipe), .swipeDown(let swipe), .swipeLeft(let swipe), .swipeRight(let swipe):
       if swipe.processByRIME { return standardReleaseAction }
-      return standerSwipeAction
+      return standardReleaseNoRimeAction
     }
   }
-    
+
+  func standardAction(for gesture: KeyboardGesture, processByRIME: Bool) -> GestureAction? {
+    switch gesture {
+    case .doubleTap: return standardDoubleTapAction
+    case .longPress: return standardLongPressAction
+    case .press: return standardPressAction
+    case .release: return processByRIME ? standardReleaseAction : standardReleaseNoRimeAction
+    case .repeatPress: return standardRepeatAction
+    case .swipeUp(let swipe), .swipeDown(let swipe), .swipeLeft(let swipe), .swipeRight(let swipe):
+      if swipe.processByRIME { return standardReleaseAction }
+      return standardReleaseNoRimeAction
+    }
+  }
+
   /**
    The action that by default should be triggered when the
    action is double tapped.
@@ -158,7 +171,7 @@ public extension KeyboardAction {
   
   /// 默认情况下，触发的操作
   /// 注意默认滑动操作不经过 RIME 引擎，如果需要经过 RIME 引擎处理，直接调用 standardReleaseAction
-  var standerSwipeAction: GestureAction? {
+  var standardReleaseNoRimeAction: GestureAction? {
     switch self {
     case .keyboardType(let type): return {
         let type = (type == .classifySymbolicOfLight) ? .classifySymbolic : type

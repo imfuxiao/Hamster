@@ -38,7 +38,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     context: KeyboardContext
   ) -> KeyboardActionRows {
     let characters = actionCharacters(for: inputs, context: context)
-    let actions = KeyboardActionRows(symbols: characters)
+    let actions = KeyboardActionRows(characters: characters)
     guard isExpectedActionSet(actions) else { return actions }
     var result = KeyboardActionRows()
     result.append(topLeadingActions(for: actions, context: context) + actions[0] + topTrailingActions(for: actions, context: context))

@@ -61,7 +61,12 @@ public protocol KeyboardActionHandler: AnyObject {
    处理某个操作上的某个手势。
    */
   func handle(_ gesture: KeyboardGesture, on action: KeyboardAction)
-    
+
+  /**
+   处理 Key 的上某个手势
+   */
+  func handle(_ gesture: KeyboardGesture, on key: Key)
+
   /**
    Handle a drag gesture on a certain action.
    

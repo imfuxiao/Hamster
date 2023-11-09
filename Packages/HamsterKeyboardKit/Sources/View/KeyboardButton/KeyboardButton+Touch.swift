@@ -247,7 +247,11 @@ public extension KeyboardButton {
 
   func releaseAction() {
     Logger.statistics.debug("releaseAction()")
-    actionHandler.handle(.release, on: item.action)
+    if let key = item.key {
+      actionHandler.handle(.release, on: key)
+    } else {
+      actionHandler.handle(.release, on: item.action)
+    }
   }
 
   func repeatAction() {
