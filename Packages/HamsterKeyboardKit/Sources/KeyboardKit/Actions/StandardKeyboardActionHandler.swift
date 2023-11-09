@@ -234,10 +234,8 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
    您可以覆盖此功能，自定义操作如何触发反馈。
    */
   open func shouldTriggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) -> Bool {
-//    if gesture == .press && self.action(for: .release, on: action) != nil { return true }
-//    if gesture != .release && self.action(for: gesture, on: action) != nil { return true }
     if gesture.isSwipe { return false }
-    if gesture == .press { return true }
+    if gesture == .press && self.action(for: .release, on: action) != nil { return true }
     if gesture != .release && self.action(for: gesture, on: action) != nil { return true }
     return false
   }

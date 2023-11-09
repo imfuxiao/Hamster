@@ -103,7 +103,7 @@ open class StandardKeyboardFeedbackHandler: KeyboardFeedbackHandler {
     if let custom = custom { return custom.feedback.trigger() }
     if action == .space && gesture == .longPress { return }
     if action == .backspace { return audioConfig.delete.trigger() }
-    if action.isInputAction || action == .none { return audioConfig.input.trigger() }
+    if action.isInputAction { return audioConfig.input.trigger() }
     if action.isSystemAction { return audioConfig.system.trigger() }
   }
     
@@ -119,6 +119,7 @@ open class StandardKeyboardFeedbackHandler: KeyboardFeedbackHandler {
    您可以覆盖此功能，自定义默认触觉反馈行为。
    */
   open func triggerHapticFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) {
+    guard action != .none else { return }
     let custom = hapticConfig.actions.first { $0.action == action && $0.gesture == gesture }
     if let custom = custom { return custom.feedback.trigger() }
     if action == .space && gesture == .longPress { return hapticConfig.longPressOnSpace.trigger() }

@@ -206,7 +206,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegate {
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     // 用于触发反馈
-    actionHandler.handle(.press, on: .none)
+    actionHandler.handle(.press, on: .character(""))
     self.rimeContext.selectCandidate(index: indexPath.item)
   }
 
