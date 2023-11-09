@@ -48,9 +48,6 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
         if key.action.isShiftAction {
           key.action = .shift(currentCasing: casing)
         }
-        if case .symbol(let symbol) = key.action {
-          key.action = .symbol(Symbol(char: casing.isUppercased ? symbol.char.uppercased() : symbol.char.lowercased()))
-        }
         if case .character(let char) = key.action {
           key.action = .character(casing.isUppercased ? char.uppercased() : char.lowercased())
         }
@@ -62,7 +59,6 @@ open class CustomizeKeyboardLayoutProvider: KeyboardLayoutProvider {
         if key.action.isPrimaryAction {
           key.action = keyboardReturnAction(for: context)
         }
-
         keyboard.rows[rowIndex].keys[keyIndex] = key
         actions.append(key.action)
       }
