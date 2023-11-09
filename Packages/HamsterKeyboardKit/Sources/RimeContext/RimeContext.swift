@@ -248,14 +248,13 @@ public extension RimeContext {
     try FileManager.createDirectory(override: false, dst: FileManager.sandboxSharedSupportDirectory)
     try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
 
-    Rime.shared.shutdown()
-    Rime.shared.start(Rime.createTraits(
-      sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
-      userDataDir: FileManager.sandboxUserDataDirectory.path
-    ), maintenance: true, fullCheck: true)
-
+    if !isRunning {
+      Rime.shared.start(Rime.createTraits(
+        sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
+        userDataDir: FileManager.sandboxUserDataDirectory.path
+      ), maintenance: true, fullCheck: true)
+    }
     let schemas = Rime.shared.getSchemas().sorted()
-
     Rime.shared.shutdown()
 
     // 当用户选择输入方案如果不为空时，则取与输入方案列表的交集
@@ -281,7 +280,7 @@ public extension RimeContext {
     resetCurrentSchema()
     resetLatestSchema()
 
-    configuration = HamsterConfigurationRepositories.shared.loadConfiguration()
+    configuration = try HamsterConfigurationRepositories.shared.loadConfiguration()
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true

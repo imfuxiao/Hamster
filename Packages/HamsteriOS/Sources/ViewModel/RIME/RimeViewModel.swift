@@ -243,7 +243,7 @@ public extension RimeViewModel {
       await ProgressHUD.success("部署成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime deploy error: \(error)")
-      await ProgressHUD.failed("部署失败", interaction: false, delay: 1.5)
+      await ProgressHUD.failed(error, interaction: false, delay: 5)
     }
   }
 
