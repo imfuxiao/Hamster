@@ -8,11 +8,33 @@
 import Foundation
 import os
 import XCTest
-import Yams
+import ZippyJSON
 
 @testable import HamsterKeyboardKit
 
 final class HamsterConfigurationRepositoriesTest: XCTestCase {
+  override func setUpWithError() throws {
+    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("Hamster.yaml")
+    if let data = HamsterConfiguration.sampleString.data(using: .utf8) {
+      FileManager.default.createFile(atPath: tempYamlPath.path, contents: data)
+    }
+    let configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(tempYamlPath)
+    try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
+  }
+
+  func testPerformanceOfLoadConfigurationFromUserDefaults() throws {
+    // self.measure(metrics: [XCTClockMetric()]) {
+    measure {
+      for _ in 0 ..< 1000 {
+        do {
+          let _ = try HamsterConfigurationRepositories.shared.loadFromUserDefaults()
+        } catch {
+          fatalError("load error")
+        }
+      }
+    }
+  }
+
   func testTransform() throws {
     let str = "\\u4f60\\u597d"
     let target = try HamsterConfigurationRepositories.transform(str)
@@ -29,27 +51,6 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     try configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
     let tempConfig = try configRepositories.loadFromYAML(tempYamlPath)
     XCTAssertEqual(tempConfig, config)
-  }
-
-  func testLoadPatchYaml() throws {
-    let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("hamster.custom.yaml")
-    Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
-
-    // 生成配置文件
-    try HamsterConfigurationRepositories.transform(
-      YAMLEncoder().encode(HamsterPatchConfiguration.preview)
-    )
-    .write(toFile: tempYamlPath.path, atomically: true, encoding: .utf8)
-
-    // 读取配置文件
-    let configRepositories = HamsterConfigurationRepositories.shared
-    let patchConfig = try configRepositories.loadPatchFromYAML(yamlPath: tempYamlPath)
-    Logger.statistics.debug("patchConfig: \(patchConfig)")
-
-    guard let patch = patchConfig.patch else { throw "patch can not found." }
-
-    let mergeConfiguration = try HamsterConfiguration.preview.merge(with: patch, uniquingKeysWith: { $1 })
-    Logger.statistics.debug("merge: \(mergeConfiguration)")
   }
 
   /// 测试保存至 UserDefaults
