@@ -108,6 +108,7 @@ extension FileBrowserView: UITableViewDelegate {
   }
 
   public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+    guard fileBrowserViewModel.enableEditorState else { return nil }
     let fileInfo = fileBrowserViewModel.files[indexPath.row]
 
     let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, _ in

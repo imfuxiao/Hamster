@@ -167,9 +167,8 @@ public class RimeViewModel {
 }
 
 public extension RimeViewModel {
-  typealias loggerFileCloseHandler = (FileHandle) -> Void
   /// RIME 日志记录
-  func rimeLogger() -> (FileHandle?, URL) {
+  private func rimeLogger() -> (FileHandle?, URL) {
     let fileName = DateFormatter.tempFileNameStyle.string(from: Date()) + ".log"
     let loggerDirectory = FileManager.sandboxRimeLogDirectory
 
@@ -200,7 +199,7 @@ public extension RimeViewModel {
   }
 
   /// 关闭 RIME Logger 日志
-  func closeRimeLogger(_ fileHandle: FileHandle?) {
+  private func closeRimeLogger(_ fileHandle: FileHandle?) {
     readStderrPipe.fileHandleForReading.readabilityHandler = { [unowned self] handle in
       let data = handle.availableData
       try? stdoutHandle.write(contentsOf: data)
@@ -231,9 +230,6 @@ public extension RimeViewModel {
   /// RIME 部署
   func rimeDeploy() async {
     let (fileHandle, filePath) = rimeLogger()
-    defer {
-      closeRimeLogger(fileHandle)
-    }
     await ProgressHUD.animate("RIME部署中, 请稍候……", AnimationType.circleRotateChase, interaction: false)
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
     do {
@@ -242,17 +238,16 @@ public extension RimeViewModel {
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
       await ProgressHUD.success("部署成功", interaction: false, delay: 1.5)
     } catch {
+      // try? FileHandle.standardError.write(contentsOf: error.localizedDescription.data(using: .utf8) ?? Data())
       Logger.statistics.error("rime deploy error: \(error)")
       await ProgressHUD.failed(error, interaction: false, delay: 5)
     }
+    closeRimeLogger(fileHandle)
   }
 
   /// RIME 同步
   func rimeSync() async {
     let (fileHandle, filePath) = rimeLogger()
-    defer {
-      closeRimeLogger(fileHandle)
-    }
     do {
       await ProgressHUD.animate("RIME同步中, 请稍候……", interaction: false)
 
@@ -283,6 +278,7 @@ public extension RimeViewModel {
       Logger.statistics.error("rime sync error: \(error)")
       await ProgressHUD.failed("同步失败:\(error.localizedDescription)", interaction: false, delay: 3)
     }
+    closeRimeLogger(fileHandle)
   }
 
   /// Rime重置

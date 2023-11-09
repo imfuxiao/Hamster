@@ -14,7 +14,7 @@ class RimeLoggerViewController: NibLessViewController {
   lazy var rimeLoggerFileBrowseView: FileBrowserView = {
     // 防止文件夹被删除而产生异常
     try? FileManager.createDirectory(override: false, dst: FileManager.sandboxRimeLogDirectory)
-    let fileBrowserViewModel = FileBrowserViewModel(rootURL: FileManager.sandboxRimeLogDirectory)
+    let fileBrowserViewModel = FileBrowserViewModel(rootURL: FileManager.sandboxRimeLogDirectory, enableEditorState: false)
     return FileBrowserView(finderViewModel: finderViewModel, fileBrowserViewModel: fileBrowserViewModel)
   }()
 

@@ -15,6 +15,7 @@ public class FileBrowserViewModel {
   // MARK: properties
 
   private let rootURL: URL
+  public let enableEditorState: Bool
 
   @Published
   public var pathStack: [String] = []
@@ -30,8 +31,9 @@ public class FileBrowserViewModel {
 
   // MARK: methods
 
-  init(rootURL: URL) {
+  init(rootURL: URL, enableEditorState: Bool = true) {
     self.rootURL = rootURL
+    self.enableEditorState = enableEditorState
 
     self.files = currentPathFiles()
 
