@@ -125,8 +125,9 @@ public class HamsterConfigurationRepositories {
     }
 
     // 读取 UI 操作产生的配置（存储在 UserDefaults 中, 如果存在，并对相异的配置做 merge 合并。
-    let appConfig = try HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults()
-    configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
+    if let appConfig = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults() {
+      configuration = try configuration.merge(with: appConfig, uniquingKeysWith: { _, buildValue in buildValue })
+    }
 
     return configuration
   }
