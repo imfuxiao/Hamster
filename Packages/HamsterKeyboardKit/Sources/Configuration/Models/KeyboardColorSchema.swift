@@ -76,26 +76,7 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
   /// 次选提示文字颜色: comment_text_color
   public var commentTextColor: String?
 
-  public init(
-    schemaName: String? = nil,
-    name: String? = nil,
-    author: String? = nil,
-    backColor: String? = nil,
-    buttonBackColor: String? = nil,
-    buttonPressedBackColor: String? = nil,
-    buttonFrontColor: String? = nil,
-    buttonPressedFrontColor: String? = nil,
-    buttonSwipeFrontColor: String? = nil,
-    borderColor: String? = nil,
-    textColor: String? = nil,
-    hilitedTextColor: String? = nil,
-    hilitedBackColor: String? = nil,
-    hilitedCandidateTextColor: String? = nil,
-    hilitedCandidateBackColor: String? = nil,
-    hilitedCommentTextColor: String? = nil,
-    candidateTextColor: String? = nil,
-    commentTextColor: String? = nil)
-  {
+  public init(schemaName: String? = nil, name: String? = nil, author: String? = nil, backColor: String? = nil, buttonBackColor: String? = nil, buttonPressedBackColor: String? = nil, buttonFrontColor: String? = nil, buttonPressedFrontColor: String? = nil, buttonSwipeFrontColor: String? = nil, cornerRadius: Int? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
     self.schemaName = schemaName
     self.name = name
     self.author = author
@@ -105,6 +86,7 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     self.buttonFrontColor = buttonFrontColor
     self.buttonPressedFrontColor = buttonPressedFrontColor
     self.buttonSwipeFrontColor = buttonSwipeFrontColor
+    self.cornerRadius = cornerRadius
     self.borderColor = borderColor
     self.textColor = textColor
     self.hilitedTextColor = hilitedTextColor
@@ -115,23 +97,45 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     self.candidateTextColor = candidateTextColor
     self.commentTextColor = commentTextColor
   }
-}
 
-extension KeyboardColorSchema {
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.schemaName = try container.decodeIfPresent(String.self, forKey: .schemaName)
+    self.name = try container.decodeIfPresent(String.self, forKey: .name)
+    self.author = try container.decodeIfPresent(String.self, forKey: .author)
+    self.backColor = try container.decodeIfPresent(String.self, forKey: .backColor)
+    self.buttonBackColor = try container.decodeIfPresent(String.self, forKey: .buttonBackColor)
+    self.buttonPressedBackColor = try container.decodeIfPresent(String.self, forKey: .buttonPressedBackColor)
+    self.buttonFrontColor = try container.decodeIfPresent(String.self, forKey: .buttonFrontColor)
+    self.buttonPressedFrontColor = try container.decodeIfPresent(String.self, forKey: .buttonPressedFrontColor)
+    self.buttonSwipeFrontColor = try container.decodeIfPresent(String.self, forKey: .buttonSwipeFrontColor)
+    self.cornerRadius = try container.decodeIfPresent(Int.self, forKey: .cornerRadius)
+    self.borderColor = try container.decodeIfPresent(String.self, forKey: .borderColor)
+    self.textColor = try container.decodeIfPresent(String.self, forKey: .textColor)
+    self.hilitedTextColor = try container.decodeIfPresent(String.self, forKey: .hilitedTextColor)
+    self.hilitedBackColor = try container.decodeIfPresent(String.self, forKey: .hilitedBackColor)
+    self.hilitedCandidateTextColor = try container.decodeIfPresent(String.self, forKey: .hilitedCandidateTextColor)
+    self.hilitedCandidateBackColor = try container.decodeIfPresent(String.self, forKey: .hilitedCandidateBackColor)
+    self.hilitedCommentTextColor = try container.decodeIfPresent(String.self, forKey: .hilitedCommentTextColor)
+    self.candidateTextColor = try container.decodeIfPresent(String.self, forKey: .candidateTextColor)
+    self.commentTextColor = try container.decodeIfPresent(String.self, forKey: .commentTextColor)
+  }
+
   enum CodingKeys: String, CodingKey {
+    case schemaName
     case name
     case author
-    case schemaName
     case backColor = "back_color"
     case buttonBackColor = "button_back_color"
     case buttonPressedBackColor = "button_pressed_back_color"
     case buttonFrontColor = "button_front_color"
     case buttonPressedFrontColor = "button_pressed_front_color"
     case buttonSwipeFrontColor = "button_swipe_front_color"
+    case cornerRadius = "corner_radius"
     case borderColor = "border_color"
     case textColor = "text_color"
-    case hilitedTextColor = "hilited_text_color"
-    case hilitedBackColor = "hilited_back_color"
+    case hilitedTextColor
+    case hilitedBackColor
     case hilitedCandidateTextColor = "hilited_candidate_text_color"
     case hilitedCandidateBackColor = "hilited_candidate_back_color"
     case hilitedCommentTextColor = "hilited_comment_text_color"
@@ -139,7 +143,32 @@ extension KeyboardColorSchema {
     case commentTextColor = "comment_text_color"
   }
 
-  public static func < (lhs: KeyboardColorSchema, rhs: KeyboardColorSchema) -> Bool {
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.container(keyedBy: CodingKeys.self)
+    try container.encodeIfPresent(self.schemaName, forKey: .schemaName)
+    try container.encodeIfPresent(self.name, forKey: .name)
+    try container.encodeIfPresent(self.author, forKey: .author)
+    try container.encodeIfPresent(self.backColor, forKey: .backColor)
+    try container.encodeIfPresent(self.buttonBackColor, forKey: .buttonBackColor)
+    try container.encodeIfPresent(self.buttonPressedBackColor, forKey: .buttonPressedBackColor)
+    try container.encodeIfPresent(self.buttonFrontColor, forKey: .buttonFrontColor)
+    try container.encodeIfPresent(self.buttonPressedFrontColor, forKey: .buttonPressedFrontColor)
+    try container.encodeIfPresent(self.buttonSwipeFrontColor, forKey: .buttonSwipeFrontColor)
+    try container.encodeIfPresent(self.cornerRadius, forKey: .cornerRadius)
+    try container.encodeIfPresent(self.borderColor, forKey: .borderColor)
+    try container.encodeIfPresent(self.textColor, forKey: .textColor)
+    try container.encodeIfPresent(self.hilitedTextColor, forKey: .hilitedTextColor)
+    try container.encodeIfPresent(self.hilitedBackColor, forKey: .hilitedBackColor)
+    try container.encodeIfPresent(self.hilitedCandidateTextColor, forKey: .hilitedCandidateTextColor)
+    try container.encodeIfPresent(self.hilitedCandidateBackColor, forKey: .hilitedCandidateBackColor)
+    try container.encodeIfPresent(self.hilitedCommentTextColor, forKey: .hilitedCommentTextColor)
+    try container.encodeIfPresent(self.candidateTextColor, forKey: .candidateTextColor)
+    try container.encodeIfPresent(self.commentTextColor, forKey: .commentTextColor)
+  }
+}
+
+public extension KeyboardColorSchema {
+  static func < (lhs: KeyboardColorSchema, rhs: KeyboardColorSchema) -> Bool {
     (lhs.schemaName ?? "") < (rhs.schemaName ?? "")
   }
 }

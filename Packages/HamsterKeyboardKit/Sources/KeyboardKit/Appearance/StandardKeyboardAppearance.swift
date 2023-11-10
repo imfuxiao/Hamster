@@ -82,7 +82,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         pressedForegroundColor: foregroundColor,
         borderColor: hamsterColor.borderColor,
         shadowColor: .standardButtonShadow,
-        cornerRadius: keyboardLayoutConfiguration.buttonCornerRadius
+        cornerRadius: hamsterColor.cornerRadius
       )
     }
 

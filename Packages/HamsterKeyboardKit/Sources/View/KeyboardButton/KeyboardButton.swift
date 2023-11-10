@@ -351,13 +351,18 @@ extension KeyboardButton {
 
   /// 按钮底部深色样式路径
   func calculatorUnderPath(bounds: CGSize, cornerRadius: CGFloat) -> UIBezierPath {
+    let key = add(bounds: bounds, cornerRadius: cornerRadius)
     // 缓存 PATH
-    if let path = Self.underPathCache[bounds] {
+    if let path = Self.underPathCache[key] {
       return path
     }
     let underPath = CAShapeLayer.underPath(size: bounds, cornerRadius: cornerRadius)
-    Self.underPathCache[bounds] = underPath
+    Self.underPathCache[key] = underPath
     return underPath
+  }
+
+  func add(bounds: CGSize, cornerRadius: CGFloat) -> CGSize {
+    CGSize(width: bounds.width + cornerRadius, height: bounds.height + cornerRadius)
   }
 }
 
