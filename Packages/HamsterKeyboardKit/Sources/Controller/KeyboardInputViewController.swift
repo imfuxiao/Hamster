@@ -928,13 +928,20 @@ private extension KeyboardInputViewController {
 
     // 检测光标是否需要回退
     if keyboardContext.cursorBackOfSymbols(key: text) {
-      // 检测是否有选中的文字，可以居中的光标将自动包裹选中的文本
-      if text.count == 2, let selectText = textDocumentProxy.selectedText {
-        textDocumentProxy.insertText("\(String(text.first!))\(selectText)\(String(text.last!))")
-      } else {
-        textDocumentProxy.insertText(text)
-        self.adjustTextPosition(byCharacterOffset: -1)
-      }
+        // 检测是否有选中的文字，可以居中的光标将自动包裹选中的文本
+        if text.count > 0 && text.count % 2 == 0 {
+            let selectText = textDocumentProxy.selectedText ?? ""
+            let halfLength = text.count / 2
+            let firstHalf = String(text.prefix(halfLength))
+            let secondHalf = String(text.suffix(halfLength))
+            textDocumentProxy.insertText("\(firstHalf)\(selectText)\(secondHalf)")
+            // 如果选中的文字为空，将光标挪到中间，否则不用移动
+            let offset = selectText.count == 0 ? halfLength : 0
+            self.adjustTextPosition(byCharacterOffset: -offset)
+        } else {
+            textDocumentProxy.insertText(text)
+            self.adjustTextPosition(byCharacterOffset: -1)
+        }
     } else {
       textDocumentProxy.insertText(text)
     }
