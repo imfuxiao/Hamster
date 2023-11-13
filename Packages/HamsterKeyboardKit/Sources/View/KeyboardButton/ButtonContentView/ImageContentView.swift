@@ -17,6 +17,7 @@ class ImageContentView: NibLessView {
   private lazy var imageView: UIImageView = {
     let imageView = UIImageView(frame: .zero)
     imageView.image = image
+    imageView.contentMode = .center
     return imageView
   }()
 
@@ -27,11 +28,11 @@ class ImageContentView: NibLessView {
 
     super.init(frame: .zero)
 
-    setupImage()
+    constructViewHierarchy()
     setupAppearance()
   }
 
-  func setupImage() {
+  override func constructViewHierarchy() {
     addSubview(imageView)
   }
 
@@ -44,14 +45,16 @@ class ImageContentView: NibLessView {
     super.layoutSubviews()
 
     guard self.bounds != .zero, self.bounds != oldBounds else { return }
-
     self.oldBounds = self.bounds
 
-    let imageSize = CGSize(width: 25, height: 20)
-    let origin = CGPoint(
-      x: (oldBounds.width - imageSize.width) / 2,
-      y: (oldBounds.height - imageSize.height) / 2)
-    imageView.frame = CGRect(origin: origin, size: imageSize)
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    if !imageView.constraints.isEmpty {
+      NSLayoutConstraint.deactivate(imageView.constraints)
+    }
+    NSLayoutConstraint.activate([
+      imageView.widthAnchor.constraint(equalToConstant: self.oldBounds.width),
+      imageView.heightAnchor.constraint(equalToConstant: self.oldBounds.height),
+    ])
   }
 
   func setStyle(_ style: KeyboardButtonStyle) {
@@ -62,5 +65,6 @@ class ImageContentView: NibLessView {
 
   func setImage(_ image: UIImage) {
     self.imageView.image = image
+    self.imageView.sizeToFit()
   }
 }
