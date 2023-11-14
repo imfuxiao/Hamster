@@ -303,6 +303,7 @@ public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
       userInterfaceStyle = keyboardContext.colorScheme
       nonStanderStyle = appearance.nonStandardKeyboardStyle
       symbolsListView.setStyle(nonStanderStyle)
+      keyboardRows.forEach { $0.forEach { $0.setNeedsLayout() }}
     }
 
     // 行高调整

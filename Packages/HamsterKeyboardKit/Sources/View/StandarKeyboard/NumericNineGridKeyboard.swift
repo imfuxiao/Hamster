@@ -241,6 +241,7 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
       userInterfaceStyle = keyboardContext.colorScheme
       nonStandardStyle = appearance.nonStandardKeyboardStyle
       symbolsListView.setStyle(nonStandardStyle)
+      keyboardRows.forEach { $0.forEach { $0.setNeedsLayout() }}
     }
 
     guard interfaceOrientation != keyboardContext.interfaceOrientation || isKeyboardFloating != keyboardContext.isKeyboardFloating else { return }
