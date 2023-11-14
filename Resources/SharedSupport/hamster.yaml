@@ -130,6 +130,9 @@ keyboard:
   # 暗色模式下配色
   useColorSchemaForDark: ""
 
+  # 中文26键显示大写字符
+  showUppercasedCharacterOnChineseKeyboard: true
+
   # 配色方案
   # 来源: https://github.com/rime/squirrel/blob/master/data/squirrel.yaml
   colorSchemas:

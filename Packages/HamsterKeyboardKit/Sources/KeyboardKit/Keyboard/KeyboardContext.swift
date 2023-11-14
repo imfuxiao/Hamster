@@ -753,6 +753,10 @@ public extension KeyboardContext {
   var showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool {
     hamsterConfiguration?.keyboard?.showCurrentInputSchemaNameOnLoadingTextForSpaceButton ?? false
   }
+
+  var showUppercasedCharacterOnChineseKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.showUppercasedCharacterOnChineseKeyboard ?? true
+  }
 }
 
 extension UIKeyboardType {

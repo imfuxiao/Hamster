@@ -196,6 +196,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var showUppercasedCharacterOnChineseKeyboard: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showUppercasedCharacterOnChineseKeyboard ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.showUppercasedCharacterOnChineseKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.showUppercasedCharacterOnChineseKeyboard = newValue
+    }
+  }
+
   public var displaySemicolonButton: Bool {
     get {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton ?? false
@@ -763,6 +773,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       footer: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧",
       items: [
+        .init(
+          text: "显示大写字母",
+          type: .toggle,
+          toggleValue: { [unowned self] in showUppercasedCharacterOnChineseKeyboard },
+          toggleHandled: { [unowned self] in
+            showUppercasedCharacterOnChineseKeyboard = $0
+          }),
         .init(
           text: "启用分号按键",
           type: .toggle,

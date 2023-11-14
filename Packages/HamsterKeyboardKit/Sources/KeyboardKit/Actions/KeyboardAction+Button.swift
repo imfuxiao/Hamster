@@ -53,7 +53,7 @@ public extension KeyboardAction {
     switch self {
     case .character(let char), .characterOfDark(let char):
       // 中文输入法显示大写
-      if context.keyboardType.isChinese {
+      if context.keyboardType.isChinese, context.showUppercasedCharacterOnChineseKeyboard {
         return char.uppercased()
       }
       return char
