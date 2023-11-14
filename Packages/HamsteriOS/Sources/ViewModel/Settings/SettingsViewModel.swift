@@ -221,7 +221,7 @@ extension SettingsViewModel {
       try rimeViewModel.rimeContext.deployment(configuration: &configuration)
 
       // 修改应用首次运行标志
-      UserDefaults.hamster.isFirstRunning = false
+      UserDefaults.standard.isFirstRunning = false
 
       /// 删除 V1 标识
       UserDefaults.hamster._removeFirstRunningForV1()
@@ -234,7 +234,7 @@ extension SettingsViewModel {
     }
 
     // 判断应用是否首次运行
-    guard UserDefaults.hamster.isFirstRunning else { return }
+    guard UserDefaults.standard.isFirstRunning else { return }
 
     // 判断是否首次运行
     await ProgressHUD.animate("初次启动，需要编译输入方案，请耐心等待……", interaction: false)
@@ -254,7 +254,7 @@ extension SettingsViewModel {
     try rimeViewModel.rimeContext.deployment(configuration: &configuration)
 
     // 修改应用首次运行标志
-    UserDefaults.hamster.isFirstRunning = false
+    UserDefaults.standard.isFirstRunning = false
 
     HamsterAppDependencyContainer.shared.configuration = configuration
 

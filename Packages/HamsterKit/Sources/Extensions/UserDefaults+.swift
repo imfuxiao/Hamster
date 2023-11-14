@@ -338,7 +338,7 @@ extension UserDefaults {
 
   // MARK: - 2.0 版本
 
-  private static let isFirstRunningOfKey = "com.ihsiao.apps.Hamster.UserDefaults.isFirstRunning"
+  public static let isFirstRunningOfKey = "com.ihsiao.apps.Hamster.UserDefaults.isFirstRunning"
   private static let overrideRimeDirectoryOfKey = "com.ihsiao.apps.Hamster.UserDefaults.overrideRimeDirectory"
   private static let schemasForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.schemas"
   private static let selectSchemasForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.selectSchemas"

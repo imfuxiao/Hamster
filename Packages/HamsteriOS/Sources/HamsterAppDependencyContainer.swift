@@ -107,31 +107,15 @@ open class HamsterAppDependencyContainer {
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
 
-    // PATCH: 仓 65 版本变更存储格式 PropertyList 改为 JSON
-    let patch2_65 = UserDefaults.standard.object(forKey: UserDefaults.patch_2_65)
-    if patch2_65 == nil, !UserDefaults.hamster.isFirstRunning, let bundleVersion = Double((Bundle.main.infoDictionary ?? [:])["CFBundleVersion"] as? String ?? "0"), bundleVersion <= 65 {
-      // PList 加载
-      let loadConfigFromUserDefaults = { (key: String) throws -> HamsterConfiguration in
-        guard let data = UserDefaults.hamster.data(forKey: key) else { throw "load HamsterConfiguration from UserDefault is empty." }
-        return try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
-      }
-
-      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.defaultHamsterConfigurationKey) {
-        try? HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(config)
-      }
-
-      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.hamsterAppConfigurationKey) {
-        try? HamsterConfigurationRepositories.shared.saveAppConfigurationToUserDefaults(config)
-      }
-
-      if let config = try? loadConfigFromUserDefaults(HamsterConfigurationRepositories.hamsterConfigurationKey) {
-        try? HamsterConfigurationRepositories.shared.saveToUserDefaults(config)
-      }
+    // PATCH: 将已安装的用户标志从 UserDefaults.hamster 迁移至 UserDefaults.standard
+    if UserDefaults.hamster.object(forKey: UserDefaults.isFirstRunningOfKey) != nil {
+      UserDefaults.standard.isFirstRunning = UserDefaults.hamster.isFirstRunning
+      UserDefaults.hamster.removeObject(forKey: UserDefaults.isFirstRunningOfKey)
     }
 
     // 判断应用是否首次运行
-    // 注意: 首次运行标志（UserDefaults.hamster.isFirstRunning）在 SettingsViewModel 的 loadAppData() 方法内重置
-    if UserDefaults.hamster.isFirstRunning {
+    // 注意: 首次运行标志（UserDefaults.standard.isFirstRunning）在 SettingsViewModel 的 loadAppData() 方法内重置
+    if UserDefaults.standard.isFirstRunning {
       do {
         // 首次运行解压 zip 文件（包含应用内置输入方案及配置文件）
         try FileManager.initSandboxSharedSupportDirectory(override: true)
