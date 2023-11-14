@@ -27,36 +27,36 @@ public extension KeyboardInputViewController {
       self.moveBeginOfSentence()
     case .endOfSentence:
       self.moveEndOfSentence()
-    case .selectInputSchema:
+//    case .selectInputSchema:
       // TODO: 方案切换视图
       // self.appSettings.keyboardStatus = .switchInputSchema
-      break
+//      break
     case .newLine:
       self.textDocumentProxy.insertText("\r")
     case .clearSpellingArea:
       self.rimeContext.reset()
-    case .selectColorSchema:
-      // TODO: 颜色方案切换
-      break
+//    case .selectColorSchema:
+//      // TODO: 颜色方案切换
+//      break
     case .switchLastInputSchema:
       self.switchLastInputSchema()
-    case .oneHandOnLeft:
-      // TODO: 左手单手模式切换
-      break
-    case .oneHandOnRight:
-      // TODO: 右手单手模式切换
-      break
+//    case .oneHandOnLeft:
+//      // TODO: 左手单手模式切换
+//      break
+//    case .oneHandOnRight:
+//      // TODO: 右手单手模式切换
+//      break
     case .rimeSwitcher:
       self.rimeSwitcher()
-    case .emojiKeyboard:
-      // TODO: 切换 emoji 键盘
-      break
-    case .symbolKeyboard:
-      // TODO: 切换符号键盘
-      break
-    case .numberKeyboard:
-      // TODO: 切换数字键盘
-      break
+//    case .emojiKeyboard:
+//      // TODO: 切换 emoji 键盘
+//      break
+//    case .symbolKeyboard:
+//      // TODO: 切换符号键盘
+//      break
+//    case .numberKeyboard:
+//      // TODO: 切换数字键盘
+//      break
     case .moveLeft:
       adjustTextPosition(byCharacterOffset: -1)
     case .moveRight:
