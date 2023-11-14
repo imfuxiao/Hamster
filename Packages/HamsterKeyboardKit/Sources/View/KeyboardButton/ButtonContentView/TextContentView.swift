@@ -72,10 +72,10 @@ public class TextContentView: NibLessView {
     guard self.bounds != .zero, oldBounds != self.bounds else { return }
     self.oldBounds = self.bounds
     self.label.frame = self.oldBounds.inset(by: UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1))
-    if useOffset {
-      self.label.frame = self.label.frame.offsetBy(dx: 0, dy: -1)
-      self.frame = self.frame.offsetBy(dx: 0, dy: -1)
-    }
+//    if useOffset {
+//      self.label.frame = self.label.frame.offsetBy(dx: 0, dy: -1)
+//      self.frame = self.frame.offsetBy(dx: 0, dy: -1)
+//    }
   }
 
   func setStyle(_ style: KeyboardButtonStyle) {

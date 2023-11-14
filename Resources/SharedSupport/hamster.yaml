@@ -214,32 +214,27 @@ swipe:
             - direction: up
               action: character(`)
               processByRIME: true
-              display: true
             - direction: down
               action: character(~)
               processByRIME: true
-              display: false
         - action: character(b)
           swipe:
             - direction: up
               action: symbol(《》)
             - direction: down
               action: character(。)
-              display: false
         - action: character(c)
           swipe:
             - direction: up
               action: character(.)
             - direction: down
               action: character(>)
-              display: false
         - action: character(d)
           swipe:
             - direction: up
               action: character(=)
             - direction: down
               action: character(+)
-              display: false
         - action: character(e)
           swipe:
             - direction: up
@@ -249,174 +244,148 @@ swipe:
             #   display: false
             - direction: down
               action: keyboardType(alphabetic)
-              display: false
         - action: character(f)
           swipe:
             - direction: up
               action: character([)
             - direction: down
               action: character({)
-              display: false
         - action: character(g)
           swipe:
             - direction: up
               action: character(])
             - direction: down
               action: character(})
-              display: false
         - action: character(h)
           swipe:
             - direction: up
               action: character(\)
             - direction: down
               action: character(|)
-              display: false
         - action: character(i)
           swipe:
             - direction: up
               action: character(8)
             - direction: down
               action: character(*)
-              display: false
         - action: character(j)
           swipe:
             - direction: up
               action: character(/)
             - direction: down
               action: character(?)
-              display: false
         - action: character(k)
           swipe:
             - direction: up
               action: character(;)
             - direction: down
               action: character(:)
-              display: false
         - action: character(l)
           swipe:
             - direction: up
               action: character(')
             - direction: down
               action: character(")
-              display: false
         - action: character(m)
           swipe:
             - direction: up
               action: shortCommand(#行尾)
             - direction: down
               action: character(、)
-              display: false
         - action: character(n)
           swipe:
             - direction: up
               action: symbol(『』)
             - direction: down
               action: character(、)
-              display: false
         - action: character(o)
           swipe:
             - direction: up
               action: character(9)
             - direction: down
               action: character(()
-              display: false
         - action: character(p)
           swipe:
             - direction: up
               action: character(0)
             - direction: down
               action: character())
-              display: false
         - action: character(q)
           swipe:
             - direction: up
               action: character(1)
             - direction: down
               action: character(!)
-              display: false
         - action: character(r)
           swipe:
             - direction: up
               action: character(4)
             - direction: down
               action: character($)
-              display: false
         - action: character(s)
           swipe:
             - direction: up
               action: character(-)
             - direction: down
               action: character(_)
-              display: false
         - action: character(t)
           swipe:
             - direction: up
               action: character(5)
             - direction: down
               action: character(%)
-              display: false
         - action: character(u)
           swipe:
             - direction: up
               action: character(7)
             - direction: down
               action: character(&)
-              display: false
         - action: character(v)
           swipe:
             - direction: up
               action: symbol(“”)
             - direction: down
               action: character(，)
-              display: false
         - action: character(w)
           swipe:
             - direction: up
               action: character(2)
             - direction: down
               action: character(@)
-              display: false
         - action: character(x)
           swipe:
             - direction: up
               action: character(,)
             - direction: down
               action: character(<)
-              display: false
         - action: character(y)
           swipe:
             - direction: up
               action: character(6)
             - direction: down
               action: character(^)
-              display: false
         - action: character(z)
           swipe:
             - direction: up
               action: shortCommand(#行首)
             - direction: down
               action: symbol(‘’)
-              display: false
         - action: space
           swipe:
             - direction: up
               action: shortCommand(#次选上屏)
-              display: false
         - action: enter
           swipe:
             - direction: up
               action: shortCommand(#换行)
-              display: false
         - action: backspace
           swipe:
             - direction: up
               action: shortCommand(#重输)
-              display: false
         - action: keyboardType(numericNineGrid)
           swipe:
             - direction: up
               action: shortCommand(#上个输入方案)
-              display: false
     # 中文九宫格滑动设置
     - keyboardType: chineseNineGrid
       keys:
@@ -424,47 +393,38 @@ swipe:
           swipe:
             - direction: up
               action: character(1)
-              display: true
         - action: chineseNineGrid(ABC)
           swipe:
             - direction: up
               action: character(2)
-              display: true
         - action: chineseNineGrid(DEF)
           swipe:
             - direction: up
               action: character(3)
-              display: true
         - action: chineseNineGrid(GHI)
           swipe:
             - direction: up
               action: character(4)
-              display: true
         - action: chineseNineGrid(JKL)
           swipe:
             - direction: up
               action: character(5)
-              display: true
         - action: chineseNineGrid(MNO)
           swipe:
             - direction: up
               action: character(6)
-              display: true
         - action: chineseNineGrid(PQRS)
           swipe:
             - direction: up
               action: character(7)
-              display: true
         - action: chineseNineGrid(TUV)
           swipe:
             - direction: up
               action: character(8)
-              display: true
         - action: chineseNineGrid(WXYZ)
           swipe:
             - direction: up
               action: character(9)
-              display: true
 # 自定义键盘布局
 # 布局文档说明文档：https://github.com/imfuxiao/Hamster/wiki/%E8%87%AA%E5%AE%9A%E4%B9%89%E9%94%AE%E7%9B%98%E5%B8%83%E5%B1%80
 keyboards:
