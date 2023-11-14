@@ -22,6 +22,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
       window.makeKeyAndVisible()
     }
 
+    /// 外部导入 zip 文件
+    if let url = connectionOptions.urlContexts.first?.url {
+      if url.pathExtension.lowercased() == "zip" {
+        Task {
+          HamsterAppDependencyContainer.shared.mainViewModel.navigationToInputSchema()
+          await HamsterAppDependencyContainer.shared.inputSchemaViewModel.importZipFile(fileURL: url)
+        }
+        return
+      }
+
+      // url.query(): 获取 `URL` 查询参数
+      // url.lastPathComponent 获取 `URL` 中 `/a/b` 中最后一个 b
+      let components = url.lastPathComponent
+      if let subView = SettingsSubView(rawValue: components) {
+        HamsterAppDependencyContainer.shared.mainViewModel.navigation(subView)
+      }
+    }
+
     // 通过快捷方式打开
     if let shortItem = connectionOptions.shortcutItem,
        let shortItemType = ShortcutItemType(rawValue: shortItem.localizedTitle),
@@ -46,8 +64,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UISceneDelegate {
     /// 外部导入 zip 文件
     if let url = URLContexts.first?.url {
       if url.pathExtension.lowercased() == "zip" {
-        HamsterAppDependencyContainer.shared.mainViewModel.navigationToInputSchema()
         Task {
+          HamsterAppDependencyContainer.shared.mainViewModel.navigationToInputSchema()
           await HamsterAppDependencyContainer.shared.inputSchemaViewModel.importZipFile(fileURL: url)
         }
         return
