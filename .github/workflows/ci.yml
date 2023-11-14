@@ -34,6 +34,9 @@ jobs:
       - name: Select Xcode
         run: sudo xcode-select -s "/Applications/Xcode_15.0.1.app"
 
+      - name: Generate l10n strings
+        run: make run-swiftgen && exit $(git status --porcelain "./Packages/HamsteriOS/swiftgen.yml" | wc -l)
+
       - name: Compile
         run: |
           xcodebuild archive -archivePath "Hamster" -scheme "Hamster" -sdk "iphoneos" -arch arm64 -configuration Release CODE_SIGNING_ALLOWED=NO

@@ -12,5 +12,5 @@ cleanSchema:
 	rm -rf .tmp Resources/SharedSupport/*.zip
 
 run-swiftgen:
-	xcrun --sdk macosx swift run --package-path "Packages/Tools" swiftgen config run -c "./Packages/HamsteriOS/Sources/swiftgen.yml"
+	xcrun --sdk macosx swift run --package-path "Packages/Tools" swiftgen config run -c "./Packages/HamsteriOS/swiftgen.yml"
 

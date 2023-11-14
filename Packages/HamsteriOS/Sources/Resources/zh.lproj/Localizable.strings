@@ -1,0 +1,32 @@
+"app.title" = "输入法设置";
+
+"load_app_data.migrating_v1_data" = "迁移 1.0 配置中……";
+"load_app_data.migrated" = "迁移完成";
+"load_app_data.initialize" = "初次启动，需要编译输入方案，请耐心等待……";
+"load_app_data.deployed" = "部署完成";
+"load_app_data.error" = "导入数据异常";
+
+"favbtn.redeploy" = "重新部署";
+"favbtn.sync" = "RIME同步";
+"favbtn.backup" = "应用备份";
+
+"solution.title" = "输入相关";
+"input_schema.title" = "输入方案设置";
+"input_schema.upload.title" = "Wi-Fi上传方案";
+"finder.title" = "文件管理";
+
+"k_b.section_title" = "键盘相关";
+"k_b.title" = "键盘设置";
+"color_scheme.title" = "键盘配色";
+"feedback.title" = "按键音与震动";
+
+"syncbackup.title" = "同步与备份";
+"i_cloud.title" = "iCloud同步";
+"backup.title" = "软件备份";
+
+"rime.title" = "RIME";
+"about.title" = "关于";
+
+"disabledLabel" = "禁用";
+"enabledLabel" = "启用";
+
