@@ -247,6 +247,10 @@ public class Rime: IRimeNotificationDelegate {
       .map { RimeSchema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
   }
 
+  public func selectRimeSchemas(_ schemas: [String]) -> Bool {
+    rimeAPI.selectRimeSchemas(schemas)
+  }
+
   public func getHotkeys() -> String {
     rimeAPI.getHotkeys()
   }

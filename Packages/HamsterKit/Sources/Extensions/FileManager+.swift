@@ -393,8 +393,7 @@ public extension FileManager {
     Logger.statistics.debug("unzip src: \(src), dst: \(dst)")
 
     // 解压缩输入方案zip文件
-    // 因为zip文件中已经包含了SharedSupport目录, 所以需要解压到appSharedSupportDirectory的上层目录
-    try fm.unzipItem(at: src, to: dst.deletingLastPathComponent())
+    try fm.unzipItem(at: src, to: dst)
   }
 
   // 初始化 AppGroup 共享目录下 UserData 目录资源
@@ -405,10 +404,17 @@ public extension FileManager {
   }
 
   // 初始化沙盒目录下 UserData 目录资源
-  static func initSandboxUserDataDirectory(override: Bool = false) throws {
+  static func initSandboxUserDataDirectory(override: Bool = false, unzip: Bool = false) throws {
     try FileManager.createDirectory(
       override: override, dst: sandboxUserDataDirectory
     )
+
+    if unzip {
+      let src = appSharedSupportDirectory.appendingPathComponent(HamsterConstants.userDataZipFile)
+
+      // 解压缩输入方案zip文件
+      try FileManager.default.unzipItem(at: src, to: sandboxUserDataDirectory)
+    }
   }
 
   /// 初始化沙盒目录下 Backup 目录

@@ -13,6 +13,7 @@ import UIKit
 class InputSchemaViewController: NibLessViewController {
   private let inputSchemaViewModel: InputSchemaViewModel
   private let documentPickerViewController: UIDocumentPickerViewController
+  private lazy var cloudInputSchemaViewController: CloudInputSchemaViewController = .init(inputSchemaViewModel: inputSchemaViewModel)
 
   private var subscriptions = Set<AnyCancellable>()
 
@@ -26,15 +27,17 @@ class InputSchemaViewController: NibLessViewController {
 
     // 导航栏导入按钮
     let importItem = UIBarButtonItem(systemItem: .add)
-    importItem.action = #selector(inputSchemaViewModel.openDocumentPicker)
-    importItem.target = inputSchemaViewModel
+    importItem.menu = inputSchemaViewModel.inputSchemaMenus()
     navigationItem.rightBarButtonItem = importItem
 
-    // 订阅 documentPicker 打开状态
     inputSchemaViewModel.presentDocumentPickerPublisher
       .receive(on: DispatchQueue.main)
-      .sink { _ in
-        self.presentZipDocument()
+      .sink {
+        switch $0 {
+        case .documentPicker: self.presentDocumentPicker()
+        case .downloadCloudInputSchema: self.presentCloudInputSchema()
+        default: return
+        }
       }
       .store(in: &subscriptions)
 
@@ -47,9 +50,14 @@ class InputSchemaViewController: NibLessViewController {
       .store(in: &subscriptions)
   }
 
-  func presentZipDocument() {
-    // Present the document picker.
+  /// Present the document picker.
+  func presentDocumentPicker() {
     present(documentPickerViewController, animated: true, completion: nil)
+  }
+
+  /// 云存储输入方案下载
+  func presentCloudInputSchema() {
+    navigationController?.pushViewController(cloudInputSchemaViewController, animated: true)
   }
 }
 

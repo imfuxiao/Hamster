@@ -86,8 +86,12 @@ public class RimeContext: ObservableObject {
   public var suggestions: [CandidateSuggestion] = []
 
   /// switcher hotkeys
-  /// 默认值为 F4，但 RIME 启动时会根据当前配置加载此值
-  public var hotKeys = ["f4"]
+  /// 默认值为 F4，但 RIME 重新部署时会根据当前配置加载此值
+  public var hotKeys = UserDefaults.hamster.hotKeys {
+    didSet {
+      UserDefaults.hamster.hotKeys = hotKeys
+    }
+  }
 
   public init() {}
 
@@ -200,16 +204,6 @@ public extension RimeContext {
 
     // 中英状态同步
     setAsciiMode(Rime.shared.isAsciiMode())
-
-    // TODO: Rime.shared.getHotkeys() 读取 yaml 影响加载
-    // 加载Switcher切换键
-    // let hotKeys = Rime.shared.getHotkeys()
-    //   .split(separator: ",")
-    //   .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
-    // if !hotKeys.isEmpty {
-    //   self.hotKeys = hotKeys
-    // }
-    // Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
   }
 
   /// RIME 关闭
@@ -254,7 +248,46 @@ public extension RimeContext {
         userDataDir: FileManager.sandboxUserDataDirectory.path
       ), maintenance: true, fullCheck: true)
     }
-    let schemas = Rime.shared.getSchemas().sorted()
+    // 此 API 根据用户配置的 scheme_list 参数获取列表，当方案不提供 schema_list 参数时，获取为空
+    var schemas = Rime.shared.getSchemas().sorted()
+    if schemas.isEmpty {
+      // 检测 default.custom.yaml 文件是否存在，后面解析 schema_list 需要存在此文件
+      let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
+      var createDefaultCustomFileHandle = false
+      if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
+        let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
+        Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+        createDefaultCustomFileHandle = handled
+      }
+
+      // 此 API 可获取全部方案列表，不经过 schema_list 参数
+      schemas = Rime.shared.getAvailableRimeSchemas().sorted()
+      // 只有新建 default.custom.yaml 文件才会写 schema_list 参数，方案如果已存在则不写，因为复写文件会导致文件中的注释信息丢失。
+      if createDefaultCustomFileHandle {
+        let result = Rime.shared.selectRimeSchemas(schemas.map { $0.schemaId })
+        if !result {
+          Logger.statistics.warning("rime set select rime schemas false")
+        } else {
+          // 写完 schema_list 参数后需要重新编译方案词库文件
+          Rime.shared.shutdown()
+          Rime.shared.start(Rime.createTraits(
+            sharedSupportDir: FileManager.sandboxSharedSupportDirectory.path,
+            userDataDir: FileManager.sandboxUserDataDirectory.path
+          ), maintenance: true, fullCheck: true)
+        }
+      }
+    }
+
+    // 提前在部署阶段加载 RimeSwitch hotKey, 此步骤放在键盘启动阶段会减慢启动速度
+    // 加载Switcher切换键
+    let hotKeys = Rime.shared.getHotkeys()
+      .split(separator: ",")
+      .map { $0.trimmingCharacters(in: .whitespaces).lowercased() }
+    if !hotKeys.isEmpty {
+      self.hotKeys = hotKeys
+    }
+    Logger.statistics.info("rime switcher hotkeys: \(hotKeys)")
+
     Rime.shared.shutdown()
 
     // 当用户选择输入方案如果不为空时，则取与输入方案列表的交集
@@ -332,7 +365,7 @@ public extension RimeContext {
     // 重置输入方案目录
     do {
       try FileManager.initSandboxSharedSupportDirectory(override: true)
-      try FileManager.initSandboxUserDataDirectory(override: true)
+      try FileManager.initSandboxUserDataDirectory(override: true, unzip: true)
     } catch {
       Logger.statistics.error("rime init file directory error: \(error.localizedDescription)")
       throw error

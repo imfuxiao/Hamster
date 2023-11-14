@@ -68,5 +68,7 @@
 	<true/>
 	<key>rimeVersion</key>
 	<string>1.9.0</string>
+	<key>com.apple.developer.icloud-container-environment</key>
+	<string>Production</string>
 </dict>
 </plist>

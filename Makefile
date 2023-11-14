@@ -1,4 +1,4 @@
-.PHONY: framework cleanFramework schema cleanSchema
+.PHONY: framework cleanFramework scheme cleanScheme
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir := $(dir $(mkfile_path))
@@ -6,7 +6,7 @@ framework:
 	bash ./librimeFramework.sh
 cleanFramework:
 	rm -rf Packages/RimeKit/Frameworks
-schema:
-	bash ./InputSchemaBuild.sh
-cleanSchema:
+scheme:
+	bash ./InputSchemeBuild.sh
+cleanScheme:
 	rm -rf Resources/SharedSupport/SharedSupport.zip 

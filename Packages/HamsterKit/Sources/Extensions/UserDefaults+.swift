@@ -290,6 +290,21 @@ public extension UserDefaults {
       }
     }
   }
+
+  /// RIME Switch key
+  var hotKeys: [String] {
+    get {
+      // 对数组类型且为Struct值需要特殊处理
+      if let keys = array(forKey: Self.hotKeys) as? [String] {
+        return keys
+      } else {
+        return ["f4"]
+      }
+    }
+    set {
+      set(newValue, forKey: Self.hotKeys)
+    }
+  }
 }
 
 extension UserDefaults {
@@ -344,7 +359,9 @@ extension UserDefaults {
   private static let selectSchemasForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.selectSchemas"
   private static let currentSchemaForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.currentSchema"
   private static let latestSchemaForKey = "com.ihsiao.apps.Hamster.UserDefault.keys.latestSchemaForKey"
+  private static let hotKeys = "com.ihsiao.apps.Hamster.UserDefault.keys.hotKeys"
 
   // MARK: - 补丁
+
   public static let patch_2_65 = "com.ihsiao.apps.Hamster.patchState.2.0.0-65"
 }

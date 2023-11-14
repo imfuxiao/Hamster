@@ -208,7 +208,7 @@ public extension RimeViewModel {
   }
 
   /// 检测 RIME Logger 日志是否存在异常
-  func checkRimeLogger(_ fileURL: URL) throws {
+  func checkRimeLogger(_ fileURL: URL) async {
     var errorLines = [String]()
     guard let fileHandle = try? FileHandle(forReadingFrom: fileURL) else { return }
     guard let data = try? fileHandle.readToEnd() else { return }
@@ -216,14 +216,13 @@ public extension RimeViewModel {
     let lines = str.split(separator: "\n").map { String($0) }
     for (index, line) in lines.enumerated() {
       if line.isMatch(regex: ".*[1-9] failure.*") {
-        errorLines.append("line \(index + 1):" + line)
+        errorLines.append("\(index + 1)")
       }
     }
     try? fileHandle.close()
 
     if !errorLines.isEmpty {
-      ProgressHUD.banner("日志:\(fileURL.lastPathComponent)", errorLines.joined(separator: "\n"), delay: 5)
-      throw "RIME 部署异常"
+      await ProgressHUD.banner("RIME日志存在异常", "请检查 \(fileURL.lastPathComponent)，第 \(errorLines.joined(separator: ",")) 行。", delay: 5)
     }
   }
 
@@ -234,7 +233,7 @@ public extension RimeViewModel {
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
     do {
       try rimeContext.deployment(configuration: &hamsterConfiguration)
-      try checkRimeLogger(filePath)
+      await checkRimeLogger(filePath)
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
       await ProgressHUD.success("部署成功", interaction: false, delay: 1.5)
     } catch {
@@ -272,7 +271,7 @@ public extension RimeViewModel {
       }
 
       try rimeContext.syncRime(configuration: hamsterConfiguration)
-      try checkRimeLogger(filePath)
+      await checkRimeLogger(filePath)
       await ProgressHUD.success("同步成功", interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime sync error: \(error)")

@@ -21,3 +21,6 @@ xcuserdata/
 *.xccheckout
 .history
 Frameworks/
+.HamsterInputSchemas/
+.tmp
+package/

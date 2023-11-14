@@ -32,6 +32,9 @@ public enum HamsterConstants {
   /// RIME 内置输入方案及配置zip包
   public static let inputSchemaZipFile = "SharedSupport.zip"
 
+  /// 仓内置方案 zip 包
+  public static let userDataZipFile = "rime-ice.zip"
+
   /// APP URL
   /// 注意: 此值需要与info.plist中的参数保持一致
   public static let appURL = "hamster://dev.fuxiao.app.hamster"
