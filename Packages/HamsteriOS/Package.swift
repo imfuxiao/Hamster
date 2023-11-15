@@ -38,7 +38,7 @@ let package = Package(
         "HamsterUIKit",
         "HamsterKit",
         "HamsterKeyboardKit",
-        "RimeKit",
+        .product(name: "RimeKit", package: "RimeKit"),
         "HamsterFileServer",
       ],
       path: "Sources",

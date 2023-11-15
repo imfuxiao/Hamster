@@ -1,6 +1,6 @@
 #import "irime_api.h"
-#import "rime_api.h"
-#import "rime_levers_api.h"
+#import "../C/rime_api.h"
+#import "../C/rime_levers_api.h"
 
 static id<IRimeNotificationDelegate> notificationDelegate = nil;
 

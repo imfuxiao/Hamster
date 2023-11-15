@@ -10,7 +10,6 @@ import HamsterKeyboardKit
 import HamsterKit
 import OSLog
 import ProgressHUD
-import RimeKit
 import UIKit
 
 public class SettingsViewModel: ObservableObject {

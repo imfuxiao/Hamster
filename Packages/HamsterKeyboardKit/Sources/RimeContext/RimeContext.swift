@@ -9,7 +9,12 @@ import Combine
 import Foundation
 import HamsterKit
 import OSLog
+
+//#if SBXLM
+//import SbxlmRimeKit
+//#else
 import RimeKit
+//#endif
 
 /// RIME 运行时上下文
 public class RimeContext: ObservableObject {

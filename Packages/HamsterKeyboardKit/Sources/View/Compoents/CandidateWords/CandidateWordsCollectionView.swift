@@ -8,7 +8,6 @@
 import Combine
 import HamsterKit
 import OSLog
-import RimeKit
 import UIKit
 
 /**

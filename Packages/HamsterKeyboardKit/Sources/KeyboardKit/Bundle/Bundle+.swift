@@ -9,22 +9,26 @@
 import Foundation
 
 extension Bundle {
-  /**
-   The name of the package bundle, which may change in new
-   Xcode versions.
-
-   软件包捆绑包的名称，在新的 Xcode 版本中可能会更改。
-
-   If the Xcode name convention changes, you can print the
-   path like this and look for the bundle name in the text:
-
-   如果 Xcode 名称约定发生变化，您可以像这样打印路径，并在文本中查找捆绑包名称：
-
-   ```
-   Bundle(for: BundleFinder.self).resourceURL?.deletingLastPathComponent().deletingLastPathComponent()
-   ```
-   */
+/**
+ The name of the package bundle, which may change in new
+ Xcode versions.
+ 
+ 软件包捆绑包的名称，在新的 Xcode 版本中可能会更改。
+ 
+ If the Xcode name convention changes, you can print the
+ path like this and look for the bundle name in the text:
+ 
+ 如果 Xcode 名称约定发生变化，您可以像这样打印路径，并在文本中查找捆绑包名称：
+ 
+ ```
+ Bundle(for: BundleFinder.self).resourceURL?.deletingLastPathComponent().deletingLastPathComponent()
+ ```
+ */
+//#if SBXLM
+//  static let HamsterKeyboardBundleName = "SbxlmKeyboardKit_SbxlmKeyboardKit"
+//#else
   static let HamsterKeyboardBundleName = "HamsterKeyboardKit_HamsterKeyboardKit"
+//#endif
 
   /**
    This bundle lets us use resources from HamsterKeyboard.

@@ -7,6 +7,7 @@
 import CloudKit
 import Combine
 import HamsterKeyboardKit
+import HamsterKit
 import HamsterUIKit
 import OSLog
 import ProgressHUD

@@ -7,7 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C00563BA2A86007A0040E711 /* HamsterKeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C00563B92A86007A0040E711 /* HamsterKeyboardKit */; };
+		C00C26B72B0698E300E92F89 /* HamsterKeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C00C26B62B0698E300E92F89 /* HamsterKeyboardKit */; };
+		C00C26C72B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BB2B069D6900E92F89 /* boost_filesystem.xcframework */; };
+		C00C26C82B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BB2B069D6900E92F89 /* boost_filesystem.xcframework */; };
+		C00C26C92B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BB2B069D6900E92F89 /* boost_filesystem.xcframework */; };
+		C00C26CA2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BC2B069D6900E92F89 /* boost_regex.xcframework */; };
+		C00C26CB2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BC2B069D6900E92F89 /* boost_regex.xcframework */; };
+		C00C26CC2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BC2B069D6900E92F89 /* boost_regex.xcframework */; };
+		C00C26CD2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BD2B069D6900E92F89 /* boost_system.xcframework */; };
+		C00C26CE2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BD2B069D6900E92F89 /* boost_system.xcframework */; };
+		C00C26CF2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BD2B069D6900E92F89 /* boost_system.xcframework */; };
+		C00C26D02B069D6A00E92F89 /* libglog.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BE2B069D6900E92F89 /* libglog.xcframework */; };
+		C00C26D12B069D6A00E92F89 /* libglog.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BE2B069D6900E92F89 /* libglog.xcframework */; };
+		C00C26D22B069D6A00E92F89 /* libglog.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BE2B069D6900E92F89 /* libglog.xcframework */; };
+		C00C26D32B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BF2B069D6900E92F89 /* libyaml-cpp.xcframework */; };
+		C00C26D42B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BF2B069D6900E92F89 /* libyaml-cpp.xcframework */; };
+		C00C26D52B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26BF2B069D6900E92F89 /* libyaml-cpp.xcframework */; };
+		C00C26D62B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C02B069D6A00E92F89 /* libleveldb.xcframework */; };
+		C00C26D72B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C02B069D6A00E92F89 /* libleveldb.xcframework */; };
+		C00C26D82B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C02B069D6A00E92F89 /* libleveldb.xcframework */; };
+		C00C26DB2B069D6A00E92F89 /* librime-sbxlm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C12B069D6A00E92F89 /* librime-sbxlm.xcframework */; };
+		C00C26DC2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C22B069D6A00E92F89 /* boost_atomic.xcframework */; };
+		C00C26DD2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C22B069D6A00E92F89 /* boost_atomic.xcframework */; };
+		C00C26DE2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C22B069D6A00E92F89 /* boost_atomic.xcframework */; };
+		C00C26DF2B069D6A00E92F89 /* libopencc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C32B069D6A00E92F89 /* libopencc.xcframework */; };
+		C00C26E02B069D6A00E92F89 /* libopencc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C32B069D6A00E92F89 /* libopencc.xcframework */; };
+		C00C26E12B069D6A00E92F89 /* libopencc.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C32B069D6A00E92F89 /* libopencc.xcframework */; };
+		C00C26E22B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C42B069D6A00E92F89 /* boost_locale.xcframework */; };
+		C00C26E32B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C42B069D6A00E92F89 /* boost_locale.xcframework */; };
+		C00C26E42B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C42B069D6A00E92F89 /* boost_locale.xcframework */; };
+		C00C26E52B069D6A00E92F89 /* libmarisa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C52B069D6A00E92F89 /* libmarisa.xcframework */; };
+		C00C26E62B069D6B00E92F89 /* libmarisa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C52B069D6A00E92F89 /* libmarisa.xcframework */; };
+		C00C26E72B069D6B00E92F89 /* libmarisa.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C52B069D6A00E92F89 /* libmarisa.xcframework */; };
+		C00C26E82B069D6B00E92F89 /* librime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C62B069D6A00E92F89 /* librime.xcframework */; };
+		C00C26E92B069D6B00E92F89 /* librime.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00C26C62B069D6A00E92F89 /* librime.xcframework */; };
+		C00C26EC2B069E0400E92F89 /* HamsterKeyboardKit in Frameworks */ = {isa = PBXBuildFile; productRef = C00C26EB2B069E0400E92F89 /* HamsterKeyboardKit */; };
 		C01396FC2AB499D80043674A /* RimeSyncIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01396F92AB499CA0043674A /* RimeSyncIntent.swift */; };
 		C01396FD2AB499D80043674A /* RimeDeployIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */; };
 		C02435B42A0490230080CFB4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
@@ -16,36 +50,47 @@
 		C03319DA2A2DFEBB00CE4950 /* AppDelegete.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */; };
 		C03319DC2A2DFEF700CE4950 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03319DB2A2DFEF700CE4950 /* SceneDelegate.swift */; };
 		C03319E22A2E1BEA00CE4950 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */; };
-		C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C03EC39A2B06491E00DB741E /* HamsterKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03E803C296D53650083E53A /* HamsterKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C03EC3A62B06670F00DB741E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C03EC3A82B06670F00DB741E /* InfoPlist.strings */; };
+		C03EC3BD2B066C1100DB741E /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03EC3BC2B066C1100DB741E /* KeyboardViewController.swift */; };
+		C03EC3C12B066C1100DB741E /* SbxlmKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C03EC3BA2B066C1100DB741E /* SbxlmKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C03EC3CC2B066D4100DB741E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C03EC3CE2B066D4100DB741E /* InfoPlist.strings */; };
+		C03EC3D32B066DDC00DB741E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
 		C053ADC32A5D503200EA7EEE /* HamsteriOS in Frameworks */ = {isa = PBXBuildFile; productRef = C053ADC22A5D503200EA7EEE /* HamsteriOS */; };
 		C09F6AF72A07FB3900F2EF18 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435932A0490220080CFB4 /* Assets.xcassets */; };
-		C09F6AF82A07FB4B00F2EF18 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C02435952A0490220080CFB4 /* Preview Assets.xcassets */; };
 		C0A602B32A185D88000DC924 /* HamsterKeyboardInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C000CA9D296EA72600EC5323 /* HamsterKeyboardInputViewController.swift */; };
 		C0C7EAEC29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
-		C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */; };
 		C0D672B429F1E0E7002D0439 /* SharedSupport.zip in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D672B329F1E066002D0439 /* SharedSupport.zip */; };
 		C0D856CC2B026FF6003DB275 /* rime-ice.zip in Copy Rime SharedSupport */ = {isa = PBXBuildFile; fileRef = C0D856CA2B026FDA003DB275 /* rime-ice.zip */; };
 		C0DA3F422AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DA3F412AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C03E8041296D53650083E53A /* PBXContainerItemProxy */ = {
+		C03EC39B2B06491E00DB741E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C03E801D296D4F4C0083E53A /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = C03E803B296D53650083E53A;
 			remoteInfo = HamsterKeyboard;
 		};
+		C03EC3BF2B066C1100DB741E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C03E801D296D4F4C0083E53A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C03EC3B92B066C1100DB741E;
+			remoteInfo = SbxlmKeyboard;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C03E8047296D53650083E53A /* Embed Foundation Extensions */ = {
+		C03EC39D2B06491E00DB741E /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				C03E8043296D53650083E53A /* HamsterKeyboard.appex in Embed Foundation Extensions */,
+				C03EC3C12B066C1100DB741E /* SbxlmKeyboard.appex in Embed Foundation Extensions */,
+				C03EC39A2B06491E00DB741E /* HamsterKeyboard.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,6 +112,18 @@
 /* Begin PBXFileReference section */
 		C000CA9D296EA72600EC5323 /* HamsterKeyboardInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HamsterKeyboardInputViewController.swift; sourceTree = "<group>"; };
 		C00749622ABAD48C00C5CD0A /* HamsterFileServer */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterFileServer; path = Packages/HamsterFileServer; sourceTree = "<group>"; };
+		C00C26BB2B069D6900E92F89 /* boost_filesystem.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_filesystem.xcframework; sourceTree = "<group>"; };
+		C00C26BC2B069D6900E92F89 /* boost_regex.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_regex.xcframework; sourceTree = "<group>"; };
+		C00C26BD2B069D6900E92F89 /* boost_system.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_system.xcframework; sourceTree = "<group>"; };
+		C00C26BE2B069D6900E92F89 /* libglog.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libglog.xcframework; sourceTree = "<group>"; };
+		C00C26BF2B069D6900E92F89 /* libyaml-cpp.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "libyaml-cpp.xcframework"; sourceTree = "<group>"; };
+		C00C26C02B069D6A00E92F89 /* libleveldb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libleveldb.xcframework; sourceTree = "<group>"; };
+		C00C26C12B069D6A00E92F89 /* librime-sbxlm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = "librime-sbxlm.xcframework"; sourceTree = "<group>"; };
+		C00C26C22B069D6A00E92F89 /* boost_atomic.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_atomic.xcframework; sourceTree = "<group>"; };
+		C00C26C32B069D6A00E92F89 /* libopencc.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libopencc.xcframework; sourceTree = "<group>"; };
+		C00C26C42B069D6A00E92F89 /* boost_locale.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = boost_locale.xcframework; sourceTree = "<group>"; };
+		C00C26C52B069D6A00E92F89 /* libmarisa.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = libmarisa.xcframework; sourceTree = "<group>"; };
+		C00C26C62B069D6A00E92F89 /* librime.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = librime.xcframework; sourceTree = "<group>"; };
 		C00E006C2A1B6AFD00180F81 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C01396F92AB499CA0043674A /* RimeSyncIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeSyncIntent.swift; sourceTree = "<group>"; };
 		C01396FA2AB499CA0043674A /* RimeDeployIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployIntent.swift; sourceTree = "<group>"; };
@@ -81,6 +138,20 @@
 		C03E8025296D4F4C0083E53A /* Hamster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hamster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E803C296D53650083E53A /* HamsterKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HamsterKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C03E8040296D53650083E53A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03EC3A72B06670F00DB741E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3A92B06671600DB741E /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C03EC3AA2B06671800DB741E /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3AB2B06671900DB741E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3AC2B06671A00DB741E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C03EC3BA2B066C1100DB741E /* SbxlmKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SbxlmKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C03EC3BC2B066C1100DB741E /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		C03EC3BE2B066C1100DB741E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C03EC3C52B066C4A00DB741E /* SbxlmKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SbxlmKeyboard.entitlements; sourceTree = "<group>"; };
+		C03EC3CD2B066D4100DB741E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3CF2B066D4300DB741E /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C03EC3D02B066D4400DB741E /* zh-HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-HK"; path = "zh-HK.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3D12B066D4500DB741E /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		C03EC3D22B066D4600DB741E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboard.entitlements; sourceTree = "<group>"; };
 		C08387F12A55897700EA8082 /* RimeKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = RimeKit; path = Packages/RimeKit; sourceTree = "<group>"; };
 		C08387F32A5589A400EA8082 /* HamsterUIKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterUIKit; path = Packages/HamsterUIKit; sourceTree = "<group>"; };
@@ -94,7 +165,6 @@
 		C0C8B57E2A823BBF009972C1 /* HamsterKeyboardKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = HamsterKeyboardKit; path = Packages/HamsterKeyboardKit; sourceTree = "<group>"; };
 		C0C9041C2A56412200AF3F15 /* hamster.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = hamster.yaml; sourceTree = "<group>"; };
 		C0D672B329F1E066002D0439 /* SharedSupport.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = SharedSupport.zip; sourceTree = "<group>"; };
-		C0D856C82B0213BF003DB275 /* HamsterKeyboardDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterKeyboardDebug.entitlements; sourceTree = "<group>"; };
 		C0D856C92B0213E5003DB275 /* HamsterDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HamsterDebug.entitlements; sourceTree = "<group>"; };
 		C0D856CA2B026FDA003DB275 /* rime-ice.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "rime-ice.zip"; sourceTree = "<group>"; };
 		C0DA3F412AFB5AE9003E74DA /* RimeDeployBackgroundIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RimeDeployBackgroundIntent.swift; sourceTree = "<group>"; };
@@ -105,7 +175,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C00C26C72B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */,
+				C00C26D62B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */,
+				C00C26D02B069D6A00E92F89 /* libglog.xcframework in Frameworks */,
+				C00C26D32B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */,
+				C00C26E52B069D6A00E92F89 /* libmarisa.xcframework in Frameworks */,
+				C00C26E22B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */,
 				C053ADC32A5D503200EA7EEE /* HamsteriOS in Frameworks */,
+				C00C26CD2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */,
+				C00C26DC2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */,
+				C00C26E82B069D6B00E92F89 /* librime.xcframework in Frameworks */,
+				C00C26CA2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */,
+				C00C26DF2B069D6A00E92F89 /* libopencc.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,18 +194,60 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C00563BA2A86007A0040E711 /* HamsterKeyboardKit in Frameworks */,
+				C00C26C82B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */,
+				C00C26D72B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */,
+				C00C26D12B069D6A00E92F89 /* libglog.xcframework in Frameworks */,
+				C00C26D42B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */,
+				C00C26E62B069D6B00E92F89 /* libmarisa.xcframework in Frameworks */,
+				C00C26E32B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */,
+				C00C26B72B0698E300E92F89 /* HamsterKeyboardKit in Frameworks */,
+				C00C26CE2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */,
+				C00C26DD2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */,
+				C00C26E92B069D6B00E92F89 /* librime.xcframework in Frameworks */,
+				C00C26CB2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */,
+				C00C26E02B069D6A00E92F89 /* libopencc.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03EC3B72B066C1100DB741E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C00C26C92B069D6A00E92F89 /* boost_filesystem.xcframework in Frameworks */,
+				C00C26D82B069D6A00E92F89 /* libleveldb.xcframework in Frameworks */,
+				C00C26D22B069D6A00E92F89 /* libglog.xcframework in Frameworks */,
+				C00C26EC2B069E0400E92F89 /* HamsterKeyboardKit in Frameworks */,
+				C00C26D52B069D6A00E92F89 /* libyaml-cpp.xcframework in Frameworks */,
+				C00C26E72B069D6B00E92F89 /* libmarisa.xcframework in Frameworks */,
+				C00C26E42B069D6A00E92F89 /* boost_locale.xcframework in Frameworks */,
+				C00C26CF2B069D6A00E92F89 /* boost_system.xcframework in Frameworks */,
+				C00C26DE2B069D6A00E92F89 /* boost_atomic.xcframework in Frameworks */,
+				C00C26CC2B069D6A00E92F89 /* boost_regex.xcframework in Frameworks */,
+				C00C26DB2B069D6A00E92F89 /* librime-sbxlm.xcframework in Frameworks */,
+				C00C26E12B069D6A00E92F89 /* libopencc.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C000CA98296EA48D00EC5323 /* Frameworks */ = {
+		C00C26BA2B069D3500E92F89 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C00C26C22B069D6A00E92F89 /* boost_atomic.xcframework */,
+				C00C26BB2B069D6900E92F89 /* boost_filesystem.xcframework */,
+				C00C26C42B069D6A00E92F89 /* boost_locale.xcframework */,
+				C00C26BC2B069D6900E92F89 /* boost_regex.xcframework */,
+				C00C26BD2B069D6900E92F89 /* boost_system.xcframework */,
+				C00C26BE2B069D6900E92F89 /* libglog.xcframework */,
+				C00C26C02B069D6A00E92F89 /* libleveldb.xcframework */,
+				C00C26C52B069D6A00E92F89 /* libmarisa.xcframework */,
+				C00C26C32B069D6A00E92F89 /* libopencc.xcframework */,
+				C00C26C12B069D6A00E92F89 /* librime-sbxlm.xcframework */,
+				C00C26C62B069D6A00E92F89 /* librime.xcframework */,
+				C00C26BF2B069D6900E92F89 /* libyaml-cpp.xcframework */,
 			);
-			name = Frameworks;
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 		C01396F62AB499CA0043674A /* Shortcuts */ = {
@@ -168,13 +291,14 @@
 		C03E801C296D4F4C0083E53A = {
 			isa = PBXGroup;
 			children = (
+				C00C26BA2B069D3500E92F89 /* Frameworks */,
 				C0C642812AC55E2E0084147F /* ci_scripts */,
 				C02435722A0490220080CFB4 /* Hamster */,
 				C03E803D296D53650083E53A /* HamsterKeyboard */,
+				C03EC3BB2B066C1100DB741E /* SbxlmKeyboard */,
 				C08387E82A55101A00EA8082 /* Packages */,
 				C071BECC2970108000E21FBC /* Resources */,
 				C03E8026296D4F4C0083E53A /* Products */,
-				C000CA98296EA48D00EC5323 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -183,6 +307,7 @@
 			children = (
 				C03E8025296D4F4C0083E53A /* Hamster.app */,
 				C03E803C296D53650083E53A /* HamsterKeyboard.appex */,
+				C03EC3BA2B066C1100DB741E /* SbxlmKeyboard.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -190,12 +315,23 @@
 		C03E803D296D53650083E53A /* HamsterKeyboard */ = {
 			isa = PBXGroup;
 			children = (
-				C0D856C82B0213BF003DB275 /* HamsterKeyboardDebug.entitlements */,
 				C071BECB2970072100E21FBC /* HamsterKeyboard.entitlements */,
 				C03E8040296D53650083E53A /* Info.plist */,
 				C000CA9D296EA72600EC5323 /* HamsterKeyboardInputViewController.swift */,
+				C03EC3A82B06670F00DB741E /* InfoPlist.strings */,
 			);
 			path = HamsterKeyboard;
+			sourceTree = "<group>";
+		};
+		C03EC3BB2B066C1100DB741E /* SbxlmKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				C03EC3C52B066C4A00DB741E /* SbxlmKeyboard.entitlements */,
+				C03EC3BC2B066C1100DB741E /* KeyboardViewController.swift */,
+				C03EC3BE2B066C1100DB741E /* Info.plist */,
+				C03EC3CE2B066D4100DB741E /* InfoPlist.strings */,
+			);
+			path = SbxlmKeyboard;
 			sourceTree = "<group>";
 		};
 		C071BECC2970108000E21FBC /* Resources */ = {
@@ -260,14 +396,15 @@
 			buildPhases = (
 				C03E8021296D4F4C0083E53A /* Sources */,
 				C03E8022296D4F4C0083E53A /* Frameworks */,
-				C03E8047296D53650083E53A /* Embed Foundation Extensions */,
 				C0AC2E61299F743E00BC494C /* Resources */,
 				C071BF712970126C00E21FBC /* Copy Rime SharedSupport */,
+				C03EC39D2B06491E00DB741E /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C03E8042296D53650083E53A /* PBXTargetDependency */,
+				C03EC39C2B06491E00DB741E /* PBXTargetDependency */,
+				C03EC3C02B066C1100DB741E /* PBXTargetDependency */,
 			);
 			name = Hamster;
 			packageProductDependencies = (
@@ -291,10 +428,30 @@
 			);
 			name = HamsterKeyboard;
 			packageProductDependencies = (
-				C00563B92A86007A0040E711 /* HamsterKeyboardKit */,
+				C00C26B62B0698E300E92F89 /* HamsterKeyboardKit */,
 			);
 			productName = HamsterKeyboard;
 			productReference = C03E803C296D53650083E53A /* HamsterKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C03EC3B92B066C1100DB741E /* SbxlmKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C03EC3C22B066C1100DB741E /* Build configuration list for PBXNativeTarget "SbxlmKeyboard" */;
+			buildPhases = (
+				C03EC3B62B066C1100DB741E /* Sources */,
+				C03EC3B72B066C1100DB741E /* Frameworks */,
+				C03EC3B82B066C1100DB741E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SbxlmKeyboard;
+			packageProductDependencies = (
+				C00C26EB2B069E0400E92F89 /* HamsterKeyboardKit */,
+			);
+			productName = SbxlmKeyboard;
+			productReference = C03EC3BA2B066C1100DB741E /* SbxlmKeyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -304,7 +461,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1430;
+				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					C03E8024296D4F4C0083E53A = {
@@ -313,6 +470,9 @@
 					C03E803B296D53650083E53A = {
 						CreatedOnToolsVersion = 14.2;
 						LastSwiftMigration = 1420;
+					};
+					C03EC3B92B066C1100DB741E = {
+						CreatedOnToolsVersion = 15.0.1;
 					};
 				};
 			};
@@ -337,6 +497,7 @@
 			targets = (
 				C03E8024296D4F4C0083E53A /* Hamster */,
 				C03E803B296D53650083E53A /* HamsterKeyboard */,
+				C03EC3B92B066C1100DB741E /* SbxlmKeyboard */,
 			);
 		};
 /* End PBXProject section */
@@ -346,9 +507,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C09F6AF82A07FB4B00F2EF18 /* Preview Assets.xcassets in Resources */,
 				C09F6AF72A07FB3900F2EF18 /* Assets.xcassets in Resources */,
-				C0C7EAED29E5A236008D4EE1 /* InfoPlist.strings in Resources */,
+				C03EC3A62B06670F00DB741E /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C03EC3B82B066C1100DB741E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03EC3D32B066DDC00DB741E /* Assets.xcassets in Resources */,
+				C03EC3CC2B066D4100DB741E /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,17 +556,54 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C03EC3B62B066C1100DB741E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C03EC3BD2B066C1100DB741E /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C03E8042296D53650083E53A /* PBXTargetDependency */ = {
+		C03EC39C2B06491E00DB741E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C03E803B296D53650083E53A /* HamsterKeyboard */;
-			targetProxy = C03E8041296D53650083E53A /* PBXContainerItemProxy */;
+			targetProxy = C03EC39B2B06491E00DB741E /* PBXContainerItemProxy */;
+		};
+		C03EC3C02B066C1100DB741E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C03EC3B92B066C1100DB741E /* SbxlmKeyboard */;
+			targetProxy = C03EC3BF2B066C1100DB741E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		C03EC3A82B06670F00DB741E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03EC3A72B06670F00DB741E /* zh-Hans */,
+				C03EC3A92B06671600DB741E /* zh */,
+				C03EC3AA2B06671800DB741E /* zh-HK */,
+				C03EC3AB2B06671900DB741E /* zh-Hant */,
+				C03EC3AC2B06671A00DB741E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C03EC3CE2B066D4100DB741E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C03EC3CD2B066D4100DB741E /* zh-Hans */,
+				C03EC3CF2B066D4300DB741E /* zh */,
+				C03EC3D02B066D4400DB741E /* zh-HK */,
+				C03EC3D12B066D4500DB741E /* zh-Hant */,
+				C03EC3D22B066D4600DB741E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		C0C7EAEF29E5A236008D4EE1 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -576,6 +782,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -619,6 +826,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_STYLE = "non-global";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -632,7 +840,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = HamsterKeyboard/HamsterKeyboardDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = HamsterKeyboard/HamsterKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = M4N6995A28;
@@ -647,11 +855,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 3.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -678,11 +887,75 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 3.0.0;
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.HamsterKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C03EC3C32B066C1100DB741E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SbxlmKeyboard/SbxlmKeyboard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M4N6995A28;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SbxlmKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SbxlmKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 3.0.0;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.SbxlmKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C03EC3C42B066C1100DB741E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SbxlmKeyboard/SbxlmKeyboard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M4N6995A28;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SbxlmKeyboard/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = SbxlmKeyboard;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 3.0.0;
+				OTHER_LDFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = dev.fuxiao.app.Hamster.SbxlmKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_STYLE = "non-global";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -719,10 +992,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		C03EC3C22B066C1100DB741E /* Build configuration list for PBXNativeTarget "SbxlmKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C03EC3C32B066C1100DB741E /* Debug */,
+				C03EC3C42B066C1100DB741E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C00563B92A86007A0040E711 /* HamsterKeyboardKit */ = {
+		C00C26B62B0698E300E92F89 /* HamsterKeyboardKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HamsterKeyboardKit;
+		};
+		C00C26EB2B069E0400E92F89 /* HamsterKeyboardKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = HamsterKeyboardKit;
 		};

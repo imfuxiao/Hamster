@@ -7,3 +7,7 @@
 编译好的 framework 在项目：https://github.com/imfuxiao/LibrimeKit 的 release 中。
 
 可在项目根路径下执行 `make framework` 下载。
+
+# 注意事项
+
+`SbxlmRimeKitObjC` 与 `SbxlmRimeKit` 均为软链接，是为了解决声笔输入使用改版的 `librime`, 即 `"librime-sbxlm`

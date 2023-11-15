@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import HamsterKit
 import os
 @_exported import RimeKitObjC
 
@@ -16,7 +17,6 @@ public class Rime: IRimeNotificationDelegate {
     category: "Rime"
   )
 
-  /// 单例
   public static let shared: Rime = .init()
 
   typealias DeployCallbackFunction = () -> Void

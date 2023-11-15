@@ -7,7 +7,6 @@
 
 import Foundation
 import OSLog
-import RimeKit
 import Yams
 
 /// UserDefault 扩展

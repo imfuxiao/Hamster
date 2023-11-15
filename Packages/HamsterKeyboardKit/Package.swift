@@ -10,9 +10,7 @@ let package = Package(
     .iOS(.v15),
   ],
   products: [
-    .library(
-      name: "HamsterKeyboardKit",
-      targets: ["HamsterKeyboardKit"]),
+    .library(name: "HamsterKeyboardKit", targets: ["HamsterKeyboardKit"]),
   ],
   dependencies: [
     .package(path: "../HamsterKit"),
@@ -26,13 +24,16 @@ let package = Package(
       dependencies: [
         "HamsterKit",
         "HamsterUIKit",
-        "RimeKit",
         "ZippyJSON",
+        "RimeKit",
       ],
       path: "Sources",
-      resources: [.process("Resources")]),
+      resources: [.process("Resources")]
+    ),
     .testTarget(
       name: "HamsterKeyboardKitTests",
       dependencies: ["HamsterKeyboardKit"],
-      path: "Tests"),
-  ])
+      path: "Tests"
+    ),
+  ]
+)
