@@ -41,7 +41,7 @@ public extension KeyboardType {
   func standardButtonText(for context: KeyboardContext) -> String? {
     switch self {
     case .chinese, .chineseNineGrid: return "中"
-    case .classifySymbolic, .classifySymbolicOfLight: return "符"
+    case .classifySymbolic, .classifySymbolicOfLight: return "#+="
     case .alphabetic: return "ABC"
     case .numeric: return "123"
     case .numericNineGrid: return "123"

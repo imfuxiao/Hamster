@@ -746,7 +746,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           text: "数字九宫格",
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          // navigationLinkLabel: { [unowned self] in enableNineGridOfNumericKeyboard ? "启用" : "禁用" },
+          navigationLinkLabel: { [unowned self] in enableNineGridOfNumericKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.numberNineGrid)
           }),
@@ -761,7 +761,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           text: "分类符号键盘",
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          // navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
+          navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.symbolKeyboard)
           })
@@ -957,13 +957,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   ]
 
   lazy var numberNineGridSettings: [SettingItemModel] = [
-    //    .init(
-//      text: "启用数字九宫格",
-//      type: .toggle,
-//      toggleValue: enableNineGridOfNumericKeyboard,
-//      toggleHandled: { [unowned self] in
-//        enableNineGridOfNumericKeyboard = $0
-//      }),
+    .init(
+      text: "启用数字九宫格",
+      type: .toggle,
+      toggleValue: { [unowned self] in enableNineGridOfNumericKeyboard },
+      toggleHandled: { [unowned self] in
+        enableNineGridOfNumericKeyboard = $0
+      }),
     .init(
       text: "符号是否直接上屏",
       type: .toggle,
@@ -990,13 +990,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   ]
 
   lazy var symbolKeyboardSettings: [SettingItemModel] = [
-    //    .init(
-//      text: "启用分类符号键盘",
-//      type: .toggle,
-//      toggleValue: enableSymbolKeyboard,
-//      toggleHandled: { [unowned self] in
-//        enableSymbolKeyboard = $0
-//      }),
+    .init(
+      text: "启用分类符号键盘",
+      type: .toggle,
+      toggleValue: { [unowned self] in enableSymbolKeyboard },
+      toggleHandled: { [unowned self] in
+        enableSymbolKeyboard = $0
+      }),
     .init(
       text: "常用符号 - 恢复默认值",
       textTintColor: .systemRed,

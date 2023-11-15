@@ -56,7 +56,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case .backspace: return lowerSystemButtonWidth(for: context)
     case .keyboardType(let type):
       /// 中文主键盘的最后一行第一个键
-      if row == 3 && index == 0 && actions[row].count == 3 && type.isNumber {
+      if row == 3 && actions[row].count == 3 {
         return largeBottomWidth(for: context)
       }
       if row == 3 && actions[row].count == 4 && type.isNumber {

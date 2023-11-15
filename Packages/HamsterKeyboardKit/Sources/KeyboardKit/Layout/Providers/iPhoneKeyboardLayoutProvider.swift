@@ -59,11 +59,11 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType(let type):
-      if row == 3 && index == 0 && actions[row].count == 3 && type.isNumber {
+    case .keyboardType:
+      if row == 3 && (actions[row].count == 3 || (actions[row].count == 4 && index == 0)) {
         return largeBottomWidth(for: context)
       }
-      if row == 3 && index == 0 && actions[row].count == 4 && type.isNumber {
+      if row == 3 && actions[row].count == 4 && index + 1 == actions.endIndex {
         return smallBottomWidth(for: context)
       }
       return bottomSystemButtonWidth(for: context)
@@ -181,9 +181,6 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     for context: KeyboardContext
   ) -> KeyboardActions {
     var result = KeyboardActions()
-
-    result.append(.keyboardType(.classifySymbolic))
-
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
 
     // 地球（系统输入法切换键）

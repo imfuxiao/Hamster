@@ -757,6 +757,14 @@ public extension KeyboardContext {
   var showUppercasedCharacterOnChineseKeyboard: Bool {
     hamsterConfiguration?.keyboard?.showUppercasedCharacterOnChineseKeyboard ?? true
   }
+
+  var enableNineGridOfNumericKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.enableNineGridOfNumericKeyboard ?? false
+  }
+
+  var enableClassifySymbolicKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.enableSymbolKeyboard ?? false
+  }
 }
 
 extension UIKeyboardType {
