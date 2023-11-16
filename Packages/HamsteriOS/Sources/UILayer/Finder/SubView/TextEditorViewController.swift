@@ -24,12 +24,14 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
 
   let fileURL: URL
   let enableEditorState: Bool
+  let isLineWrappingEnabled: Bool
 
   // MARK: methods
 
-  init(fileURL: URL, enableEditorState: Bool = true) {
+  init(fileURL: URL, enableEditorState: Bool = true, isLineWrappingEnabled: Bool = true) {
     self.fileURL = fileURL
     self.enableEditorState = enableEditorState
+    self.isLineWrappingEnabled = isLineWrappingEnabled
 
     super.init(nibName: nil, bundle: nil)
   }
@@ -42,8 +44,8 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
     // Highlight the selected line.
     textView.lineSelectionDisplayType = .line
     // Show a page guide after the 80th character.
-    textView.showPageGuide = true
-    textView.pageGuideColumn = 80
+    // textView.showPageGuide = true
+    // textView.pageGuideColumn = 80
     // Show all invisible characters.
     textView.showTabs = true
     textView.showSpaces = true
@@ -53,6 +55,8 @@ class TextEditorViewController: NibLessViewController, TextViewDelegate {
     textView.lineHeightMultiplier = 1.3
     // 设置委托
     textView.editorDelegate = self
+    // 是否换行
+    textView.isLineWrappingEnabled = isLineWrappingEnabled
     return textView
   }()
 }

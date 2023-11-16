@@ -51,7 +51,25 @@ public class FinderViewModel: ObservableObject {
     configuration.rime?.regexOnCopyAppGroupDictFile ?? ["^.*[.]userdb.*$", "^.*[.]txt$"]
   }
 
+  public var textEditorLineWrappingEnabled: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.general?.textEditorLineWrappingEnabled ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.general?.textEditorLineWrappingEnabled = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.general?.textEditorLineWrappingEnabled = newValue
+    }
+  }
+
   lazy var settingItems: [SettingItemModel] = [
+    .init(
+      text: "文本编辑器: 自动换行",
+      type: .toggle,
+      toggleValue: { [unowned self] in textEditorLineWrappingEnabled },
+      toggleHandled: { [unowned self] in
+        textEditorLineWrappingEnabled = $0
+      }
+    ),
     .init(
       text: "拷贝键盘词库文件至应用",
       buttonAction: { [unowned self] in

@@ -6,6 +6,8 @@ general:
 #    - ^.*build.*$
 #    - ^.*SharedSupport.*$
 #    - ^.*[.]bin$
+  # 内置文本编辑器参数: 是否自动换行
+  textEditorLineWrappingEnabled: true
 
 # 工具栏
 toolbar:

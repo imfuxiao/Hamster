@@ -32,7 +32,7 @@ class FinderViewController: NibLessViewController {
   func presentTextEditor(fileURL: URL) {
     // iOS15 版本后模式窗口有了新的方式 UISheetPresentationController
     // 模式窗口
-    let textVC = TextEditorViewController(fileURL: fileURL)
+    let textVC = TextEditorViewController(fileURL: fileURL, isLineWrappingEnabled: finderViewModel.textEditorLineWrappingEnabled)
     navigationController?.pushViewController(textVC, animated: true)
   }
 

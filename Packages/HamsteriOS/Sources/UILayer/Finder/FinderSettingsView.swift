@@ -14,9 +14,9 @@ class FinderSettingsView: NibLessView {
   lazy var settingTableView: UITableView = {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     tableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.identifier)
+    tableView.register(ToggleTableViewCell.self, forCellReuseIdentifier: ToggleTableViewCell.identifier)
     tableView.delegate = self
     tableView.dataSource = self
-    tableView.rowHeight = UITableView.automaticDimension
     return tableView
   }()
 
@@ -40,7 +40,7 @@ class FinderSettingsView: NibLessView {
 
 extension FinderSettingsView: UITableViewDataSource {
   func numberOfSections(in tableView: UITableView) -> Int {
-    2
+    finderViewModel.settingItems.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -48,17 +48,25 @@ extension FinderSettingsView: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-    if section == 0 {
+    if section == 1 {
       return "指后缀为“.txt”及文件夹名包含“.userdb”下的文件"
     }
     return nil
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let settingItem = finderViewModel.settingItems[indexPath.section]
+
+    if settingItem.type == .toggle {
+      let cell = tableView.dequeueReusableCell(withIdentifier: ToggleTableViewCell.identifier, for: indexPath)
+      guard let cell = cell as? ToggleTableViewCell else { return cell }
+      cell.updateWithSettingItem(settingItem)
+      return cell
+    }
+
     let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.identifier, for: indexPath)
     guard let cell = cell as? ButtonTableViewCell else { return cell }
-    guard indexPath.section < finderViewModel.settingItems.count else { return cell }
-    cell.updateWithSettingItem(finderViewModel.settingItems[indexPath.section])
+    cell.updateWithSettingItem(settingItem)
     return cell
   }
 }
