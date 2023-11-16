@@ -95,7 +95,7 @@ public class InputSchemaViewModel {
 // MARK: - CloudKit 方案管理
 
 extension InputSchemaViewModel {
-  private func callbackHandler(_ result: Result<(matchResults: [(CKRecord.ID, Result<CKRecord, Error>)], queryCursor: CKQueryOperation.Cursor?), Error>) {
+  private func callbackHandler(_ result: Result<(matchResults: [(CKRecord.ID, Result<CKRecord, Error>)], queryCursor: CKQueryOperation.Cursor?), Error>, appendState: Bool) {
     if case .failure(let failure) = result {
       Logger.statistics.error("\(failure.localizedDescription)")
       inputSchemasReloadSubject.send(Result.failure(failure))
@@ -103,7 +103,7 @@ extension InputSchemaViewModel {
     }
 
     if case .success(let success) = result {
-      var inputSchemas = self.inputSchemas
+      var inputSchemas = appendState ? self.inputSchemas : [InputSchemaInfo]()
       success.matchResults.forEach { id, result in
         if case .success(let record) = result {
           guard let title = record.value(forKey: "title") as? String else { return }
@@ -124,10 +124,8 @@ extension InputSchemaViewModel {
     Task {
       do {
         await ProgressHUD.animate("加载中……", AnimationType.circleRotateChase, interaction: false)
-        self.inputSchemas = []
-        self.inputSchemaQueryCursor = nil
         try await CloudKitHelper.shared.inputSchemaList(title) { [unowned self] result in
-          self.callbackHandler(result)
+          self.callbackHandler(result, appendState: false)
         }
       } catch {
         inputSchemasReloadSubject.send(Result.failure(error))
@@ -141,7 +139,7 @@ extension InputSchemaViewModel {
     Task {
       await ProgressHUD.animate("加载中……", AnimationType.circleRotateChase, interaction: false)
       try await CloudKitHelper.shared.inputSchemaListByCursor(cursor) { [unowned self] result in
-        self.callbackHandler(result)
+        self.callbackHandler(result, appendState: true)
       }
     }
   }
