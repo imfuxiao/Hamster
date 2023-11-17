@@ -135,6 +135,25 @@ public enum KeyboardType: Codable, Identifiable, Hashable {
    （白色）分类符号键盘
    */
   case classifySymbolicOfLight
+
+  public func hash(into hasher: inout Hasher) {
+    switch self {
+    case .alphabetic(let casing): hasher.combine("alphabetic(\(casing.rawValue))")
+    case .numeric: hasher.combine("numeric")
+    case .symbolic: hasher.combine("symbolic")
+    case .email: hasher.combine("email")
+    case .emojis: hasher.combine("emojis")
+    case .images: hasher.combine("images")
+    case .custom(let name, let casing): hasher.combine("custom(name:\(name), case:\(casing.rawValue))")
+    case .chinese(let casing): hasher.combine("chinese(\(casing.rawValue))")
+    case .chineseNumeric: hasher.combine("chineseNumeric")
+    case .chineseSymbolic: hasher.combine("chineseSymbolic")
+    case .chineseNineGrid: hasher.combine("chineseNineGrid")
+    case .numericNineGrid: hasher.combine("numericNineGrid")
+    case .classifySymbolic: hasher.combine("classifySymbolic")
+    case .classifySymbolicOfLight: hasher.combine("classifySymbolicOfLight")
+    }
+  }
 }
 
 public extension KeyboardType {

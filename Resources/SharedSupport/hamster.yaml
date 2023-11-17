@@ -176,7 +176,7 @@ keyboard:
 # RIME 引擎相关配置
 rime:
   maximumNumberOfCandidateWords: 100
-  keyValueOfSwitchSimplifiedAndTraditional: simplified
+  keyValueOfSwitchSimplifiedAndTraditional: traditionalization
   # RIME 重新部署时，是否覆盖词库文件
   # 如果使用自造词，需要改为 false, 否则部署时会覆盖键盘自造词文件
   overrideDictFiles: true

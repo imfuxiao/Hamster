@@ -10,11 +10,11 @@ import Foundation
 import HamsterKit
 import OSLog
 
-//#if SBXLM
-//import SbxlmRimeKit
-//#else
+// #if SBXLM
+// import SbxlmRimeKit
+// #else
 import RimeKit
-//#endif
+// #endif
 
 /// RIME 运行时上下文
 public class RimeContext: ObservableObject {
@@ -544,9 +544,9 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入编码
    */
-  func tryHandleInputCode(_ code: Int32) -> Bool {
+  func tryHandleInputCode(_ code: Int32, modifier: Int32 = 0) -> Bool {
     // 由rime处理全部符号
-    let handled = Rime.shared.inputKeyCode(code)
+    let handled = Rime.shared.inputKeyCode(code, modifier: modifier)
     // 处理失败则返回 inputText
     guard handled else { return false }
 
@@ -646,6 +646,174 @@ public extension RimeContext {
     "f4": Int32(0),
     "control+grave": RimeModifier.kControlMask,
     "control+shift+grave": RimeModifier.kControlMask | RimeModifier.kShiftMask,
+  ]
+
+  static let keyCodeMapping: [String: Int32] = [
+    "0": XK_0,
+    "1": XK_1,
+    "2": XK_2,
+    "3": XK_3,
+    "4": XK_4,
+    "5": XK_5,
+    "6": XK_6,
+    "7": XK_7,
+    "8": XK_8,
+    "9": XK_9,
+
+    "A": XK_A,
+    "B": XK_B,
+    "C": XK_C,
+    "D": XK_D,
+    "E": XK_E,
+    "F": XK_F,
+    "J": XK_J,
+    "H": XK_H,
+    "I": XK_I,
+    "G": XK_G,
+    "K": XK_K,
+    "L": XK_L,
+    "M": XK_M,
+    "N": XK_N,
+    "O": XK_O,
+    "P": XK_P,
+    "Q": XK_Q,
+    "R": XK_R,
+    "S": XK_S,
+    "T": XK_T,
+    "U": XK_U,
+    "V": XK_V,
+    "W": XK_W,
+    "X": XK_X,
+    "Y": XK_Y,
+    "Z": XK_Z,
+
+    "a": XK_a,
+    "b": XK_b,
+    "c": XK_c,
+    "d": XK_d,
+    "e": XK_e,
+    "f": XK_f,
+    "j": XK_j,
+    "h": XK_h,
+    "i": XK_i,
+    "g": XK_g,
+    "k": XK_k,
+    "l": XK_l,
+    "m": XK_m,
+    "n": XK_n,
+    "o": XK_o,
+    "p": XK_p,
+    "q": XK_q,
+    "r": XK_r,
+    "s": XK_s,
+    "t": XK_t,
+    "u": XK_u,
+    "v": XK_v,
+    "w": XK_w,
+    "x": XK_x,
+    "y": XK_y,
+    "z": XK_z,
+
+    "f1": XK_F1,
+    "F1": XK_F1,
+    "f2": XK_F2,
+    "F2": XK_F2,
+    "f3": XK_F3,
+    "F3": XK_F3,
+    "f4": XK_F4,
+    "F4": XK_F4,
+    "f5": XK_F5,
+    "F5": XK_F5,
+    "f6": XK_F6,
+    "F6": XK_F6,
+    "f7": XK_F7,
+    "F7": XK_F7,
+    "f8": XK_F8,
+    "F8": XK_F8,
+    "f9": XK_F9,
+    "F9": XK_F9,
+    "f10": XK_F10,
+    "F10": XK_F10,
+    "f11": XK_F11,
+    "F11": XK_F11,
+    "f12": XK_F12,
+    "F12": XK_F12,
+    "f13": XK_F13,
+    "F13": XK_F13,
+    "f14": XK_F14,
+    "F14": XK_F14,
+
+    "home": XK_Home,
+    "Home": XK_Home,
+    "pageup": XK_Page_Up,
+    "page_up": XK_Page_Up,
+    "pagedown": XK_Page_Down,
+    "page_down": XK_Page_Down,
+    "begin": XK_Begin,
+    "Begin": XK_Begin,
+    "end": XK_End,
+    "End": XK_End,
+    "left": XK_Left,
+    "Left": XK_Left,
+    "right": XK_Right,
+    "Right": XK_Right,
+    "up": XK_Up,
+    "Up": XK_Up,
+    "down": XK_Down,
+    "Down": XK_Down,
+    "tab": XK_Tab,
+    "Tab": XK_Tab,
+    "space": XK_space,
+    "Space": XK_space,
+    "return": XK_Return,
+    "Return": XK_Return,
+    "delete": XK_Delete,
+    "Delete": XK_Delete,
+    "backspace": XK_BackSpace,
+    "Backspace": XK_BackSpace,
+    "esc": XK_Escape,
+    "Esc": XK_Escape,
+    "ESC": XK_Escape,
+    // "enter": XK_KP_Enter, // 小键盘的 enter 键
+    "minus": XK_minus, // 减号 -
+    "-": XK_minus, // 减号 -
+    "equal": XK_equal, // 等号 =
+    "=": XK_equal, // 等号 =
+    "comma": XK_comma, // 逗号 ,
+    ",": XK_comma, // 逗号 ,
+    "period": XK_period, // 句号 .
+    ".": XK_period, // 句号 .
+    "semicolon": XK_semicolon, // 分号 ;
+    ";": XK_semicolon,
+
+    "grave": XK_grave, // 反引号 backtick quotes
+    "`": XK_grave,
+
+    "backslash": XK_backslash, // \
+    "\\": XK_backslash,
+
+    "bracketleft": XK_bracketleft, // [
+    "[": XK_bracketleft,
+
+    "bracketright": XK_bracketright, // ]
+    "]": XK_bracketright,
+
+    "apostrophe": XK_apostrophe, // ' 所有格符号, 单词内部的省略
+    "'": XK_apostrophe,
+  ]
+
+  static let modifierMapping: [String: Int32] = [
+    "shift": RimeModifier.kShiftMask,
+    "Shift": RimeModifier.kShiftMask,
+    "Control": RimeModifier.kControlMask,
+    "control": RimeModifier.kControlMask,
+    "ctrl": RimeModifier.kControlMask,
+    "alt": RimeModifier.kAltMask,
+    "Alt": RimeModifier.kAltMask,
+    "command": RimeModifier.kSuperMask,
+    "cmd": RimeModifier.kSuperMask,
+    "capslock": RimeModifier.kLockMask,
+    "cap": RimeModifier.kLockMask,
   ]
 }
 

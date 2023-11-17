@@ -27,14 +27,16 @@ class KeySwipeSettingsViewController: NibLessViewController {
 
     super.init()
 
+    combine()
+  }
+
+  func combine() {
     self.keyboardSettingsViewModel.reloadKeySwipeSettingViewPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         updateWithKey($0.0, for: $0.1)
       }
       .store(in: &subscriptions)
-
-
 
     self.keyboardSettingsViewModel.alertSwipeSettingDeleteConfirmPublished
       .receive(on: DispatchQueue.main)
@@ -62,9 +64,25 @@ class KeySwipeSettingsViewController: NibLessViewController {
         }
 
         if option == .shortCommand {
-          alertOptionSheet(alertTitle: "快捷指令修改", addAlertOptions: { optionMenu in
+          alertOptionSheet(alertTitle: "快捷指令修改", addAlertOptions: { [unowned self] optionMenu in
             ShortcutCommand.allCases.forEach { command in
-              let alertAction = UIAlertAction(title: command.rawValue, style: .default) { _ in
+
+              let alertAction = UIAlertAction(title: command.rawValue, style: .default) {[unowned self] _ in
+                if case .sendKeys = command {
+                  alertText(alertTitle: "sendKeys", submitTitle: "保存", submitCallback: { textField in
+                    guard let char = textField.text, !char.isEmpty else { return }
+                    var key = key
+                    var swipe = swipe
+                    swipe.action = .shortCommand(.sendKeys(char))
+                    guard let index = key.swipe.firstIndex(where: { $0.direction == swipe.direction }) else { return }
+                    key.swipe[index] = swipe
+                    self.keyboardSettingsViewModel.saveKeySwipe(key, keyboardType: keyboardType)
+                    // 更新页面
+                    self.updateWithKey(key, for: keyboardType)
+                  })
+                  return
+                }
+
                 var key = key
                 var swipe = swipe
                 swipe.action = .shortCommand(command)

@@ -573,10 +573,11 @@ public extension String {
       return .symbol(Symbol(char: value))
     case "shortCommand".lowercased():
       // 注意：value == "#繁简切换" 为补丁
-      guard !value.isEmpty, let command = ShortcutCommand(rawValue: value == "#繁简切换" ? "#简繁切换" : value) else {
+      guard !value.isEmpty else {
         Logger.statistics.error("\(self) keyboardAction type: \(type), value is empty")
         return nil
       }
+      let command = ShortcutCommand(rawValue: value == "#繁简切换" ? "#简繁切换" : value)
       return .shortCommand(command)
     case "chineseNineGrid".lowercased():
       guard !value.isEmpty else {

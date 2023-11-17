@@ -340,8 +340,8 @@ extension SettingsViewModel {
 
     if let _keyboardSwipeGestureSymbol = UserDefaults.hamster._keyboardSwipeGestureSymbol {
       let translateShortCommand = { (name: String) -> ShortcutCommand? in
-        if name.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("#"), let command = ShortcutCommand(rawValue: name) {
-          return command
+        if name.trimmingCharacters(in: .whitespacesAndNewlines).hasPrefix("#") {
+          return ShortcutCommand(rawValue: name)
         }
         return nil
       }
