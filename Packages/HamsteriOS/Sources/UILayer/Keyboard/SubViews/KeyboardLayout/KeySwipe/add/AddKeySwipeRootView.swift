@@ -81,6 +81,10 @@ class AddKeySwipeRootView: NibLessView {
         keySwipe.display = $0
         realod()
       },
+      setProcessByRIME: { [unowned self] in
+        keySwipe.processByRIME = $0
+        realod()
+      },
       saveHandle: { [unowned self] in
         if let _ = key.swipe.first(where: { swipe in swipe.direction == keySwipe.direction }) {
           ProgressHUD.failed("划动方向:\(keySwipe.direction.labelText) 配置已存在")

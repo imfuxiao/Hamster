@@ -346,6 +346,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var swipePaging: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.swipePaging ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.swipePaging = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.swipePaging = newValue
+    }
+  }
+
   public var spaceDragSensitivity: Int {
     get {
       HamsterAppDependencyContainer.shared.configuration.swipe?.spaceDragSensitivity ?? 5
@@ -889,6 +899,12 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         toggleValue: { [unowned self] in displayCommentOfCandidateWord },
         toggleHandled: { [unowned self] in
           displayCommentOfCandidateWord = $0
+        }),
+      .init(
+        text: "划动分页模式",
+        toggleValue: { [unowned self] in swipePaging },
+        toggleHandled: { [unowned self] in
+          swipePaging = $0
         })
     ]),
 
@@ -1333,6 +1349,7 @@ extension KeyboardSettingsViewModel {
     setActionOption: @escaping (KeyboardActionOption) -> Void,
     setLabelText: @escaping (String) -> Void,
     setShowLabel: @escaping (Bool) -> Void,
+    setProcessByRIME: @escaping (Bool) -> Void,
     saveHandle: @escaping () -> Void) -> [SettingSectionModel]
   {
     let swipeSettingItems = [
@@ -1372,6 +1389,13 @@ extension KeyboardSettingsViewModel {
                   setActionOption(action)
                 }
               }
+          }),
+        .init(
+          text: "是否经过 RIME 处理",
+          type: .toggle,
+          toggleValue: { keySwipe.processByRIME },
+          toggleHandled: { display in
+            setProcessByRIME(display)
           }),
         .init(
           text: "键盘显示文本",
@@ -1462,6 +1486,18 @@ extension KeyboardSettingsViewModel {
                     setupAction(action)
                   }
                 }
+            }),
+          .init(
+            text: "是否经过 RIME 处理",
+            type: .toggle,
+            toggleValue: { swipe.processByRIME },
+            toggleHandled: { value in
+              var key = key
+              var swipe = swipe
+              swipe.processByRIME = value
+              key.swipe.removeAll(where: { $0.direction == swipe.direction })
+              key.swipe.append(swipe)
+              self.saveKeySwipe(key, keyboardType: keyboardType)
             }),
           .init(
             text: "键盘显示文本",

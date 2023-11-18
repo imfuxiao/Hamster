@@ -21,6 +21,9 @@ public class RimeContext: ObservableObject {
   /// 最大候选词数量
   public private(set) var maximumNumberOfCandidateWords: Int = 100
 
+  /// 是否使用 IRimeContext 中分页信息
+  public private(set) var useContextPaging = false
+
   /// rime 输入方案列表
   public private(set) lazy var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
     didSet {
@@ -82,6 +85,9 @@ public class RimeContext: ObservableObject {
   @Published
   public var suggestions: [CandidateSuggestion] = []
 
+  @Published
+  public var rimeContext: IRimeContext = .init()
+
   /// 划动分页模式下，当前页码，从 0 开始
   public var pageIndex: Int = 0
 
@@ -102,6 +108,10 @@ public class RimeContext: ObservableObject {
 
   func setMaximumNumberOfCandidateWords(_ count: Int) {
     self.maximumNumberOfCandidateWords = count
+  }
+
+  func setUseContextPaging(_ state: Bool) {
+    self.useContextPaging = state
   }
 }
 
@@ -562,7 +572,10 @@ public extension RimeContext {
     let context = Rime.shared.context()
     let userInputText = context.composition?.preedit ?? ""
     let commitText = Rime.shared.getCommitText()
-    let candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
+    var candidates = [CandidateSuggestion]()
+    if !useContextPaging {
+      candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
+    }
 
     Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
 
@@ -582,6 +595,7 @@ public extension RimeContext {
     self.commitText = commitText
     self.userInputKey = userInputText
     self.suggestions = candidates
+    self.rimeContext = context
   }
 
   /// 分页：下一页
@@ -774,6 +788,10 @@ public extension RimeContext {
     "Left": XK_Left,
     "right": XK_Right,
     "Right": XK_Right,
+    "Prior": XK_Prior,
+    "prior": XK_Prior,
+    "Next": XK_Next,
+    "next": XK_Next,
     "up": XK_Up,
     "Up": XK_Up,
     "down": XK_Down,

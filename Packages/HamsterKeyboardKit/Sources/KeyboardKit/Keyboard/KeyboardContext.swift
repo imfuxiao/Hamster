@@ -686,6 +686,11 @@ public extension KeyboardContext {
     hamsterConfiguration?.keyboard?.enableEmbeddedInputMode ?? false
   }
 
+  /// 是否开启划动分页
+  var swipePaging: Bool {
+    hamsterConfiguration?.toolbar?.swipePaging ?? true
+  }
+
   /// Shift 状态锁定
   var lockShiftState: Bool {
     hamsterConfiguration?.keyboard?.lockShiftState ?? true

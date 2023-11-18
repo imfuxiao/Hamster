@@ -552,18 +552,16 @@ static RimeLeversApi *get_levers() {
       [composition setPreedit:preedit ? @(preedit) : @""];
       [context setComposition:composition];
 
-      // 这里为了性能考虑, 先屏蔽
-      // lables
-      //      if (ctx.select_labels) {
-      //        NSMutableArray *selectLabels = [NSMutableArray array];
-      //        for (int i = 0; i < ctx.menu.page_size; ++i) {
-      //          char *label_str = ctx.select_labels[i];
-      //          [selectLabels addObject:@(label_str)];
-      //        }
-      //        [context setLabels:[NSArray arrayWithArray:selectLabels]];
-      //      } else {
-      //        [context setLabels:@[]];
-      //      }
+      if (ctx.select_labels) {
+        NSMutableArray *selectLabels = [NSMutableArray array];
+        for (int i = 0; i < ctx.menu.page_size; ++i) {
+          char *label_str = ctx.select_labels[i];
+          [selectLabels addObject:@(label_str)];
+        }
+        [context setLabels:[NSArray arrayWithArray:selectLabels]];
+      } else {
+        [context setLabels:@[]];
+      }
 
       // menu
       IRimeMenu *menu = [[IRimeMenu alloc] init];
@@ -574,19 +572,19 @@ static RimeLeversApi *get_levers() {
       [menu setNumCandidates:ctx.menu.num_candidates];
       [menu setSelectKeys:ctx.menu.select_keys ? @(ctx.menu.select_keys) : @""];
 
-      // 分页不在使用context, 这里为了性能考虑, 先屏蔽
-      //      NSMutableArray<IRimeCandidate *> *candidates = [NSMutableArray
-      //      array]; for (int i = 0; i < ctx.menu.num_candidates; i++) {
-      //        IRimeCandidate *candidate = [[IRimeCandidate alloc] init];
-      //        [candidate setText:@(ctx.menu.candidates[i].text)];
-      //        [candidate setComment:ctx.menu.candidates[i].comment
-      //         ? @(ctx.menu.candidates[i].comment)
-      //                             : @""];
-      //        [candidates addObject:candidate];
-      //      }
-      //      [menu setCandidates:[NSArray arrayWithArray:candidates]];
+      NSMutableArray<IRimeCandidate *> *candidates = [NSMutableArray array];
+      for (int i = 0; i < ctx.menu.num_candidates; i++) {
+        IRimeCandidate *candidate = [[IRimeCandidate alloc] init];
+        [candidate setText:@(ctx.menu.candidates[i].text)];
+        [candidate setComment:ctx.menu.candidates[i].comment
+                                  ? @(ctx.menu.candidates[i].comment)
+                                  : @""];
+        [candidates addObject:candidate];
+      }
+      [menu setCandidates:[NSArray arrayWithArray:candidates]];
       [context setMenu:menu];
     }
+
     RimeFreeContext(&ctx);
   }
   return context;

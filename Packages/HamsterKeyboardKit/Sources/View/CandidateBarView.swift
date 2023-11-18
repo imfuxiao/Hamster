@@ -44,9 +44,21 @@ public class CandidateBarView: NibLessView {
     return label
   }()
 
-  /// 候选文字区域
+  /// 划动分页的候选文字区域
   lazy var candidatesArea: CandidateWordsCollectionView = {
     let view = CandidateWordsCollectionView(
+      style: style,
+      keyboardContext: keyboardContext,
+      actionHandler: actionHandler,
+      rimeContext: rimeContext)
+    view.backgroundColor = .clear
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
+  /// 手动分页的候选文字区域
+  lazy var candidatesPagingArea: CandidatesPagingCollectionView = {
+    let view = CandidatesPagingCollectionView(
       style: style,
       keyboardContext: keyboardContext,
       actionHandler: actionHandler,
@@ -130,8 +142,12 @@ public class CandidateBarView: NibLessView {
     if !keyboardContext.enableEmbeddedInputMode {
       addSubview(phoneticLabel)
     }
-    addSubview(candidatesArea)
-    addSubview(controlStateView)
+    if keyboardContext.swipePaging {
+      addSubview(candidatesArea)
+      addSubview(controlStateView)
+    } else {
+      addSubview(candidatesPagingArea)
+    }
   }
 
   /// 激活视图约束
@@ -139,37 +155,61 @@ public class CandidateBarView: NibLessView {
     let buttonInsets = layoutConfig.buttonInsets
     let codingAreaHeight: CGFloat = keyboardContext.heightOfCodingArea
     let controlStateHeight: CGFloat = keyboardContext.heightOfToolbar - (keyboardContext.enableEmbeddedInputMode ? 0 : codingAreaHeight)
+    let candidatesView = keyboardContext.swipePaging ? candidatesArea : candidatesPagingArea
 
     /// 内嵌模式
     if keyboardContext.enableEmbeddedInputMode {
-      NSLayoutConstraint.activate([
-        candidatesArea.topAnchor.constraint(equalTo: topAnchor),
-        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
+      if keyboardContext.swipePaging {
+        NSLayoutConstraint.activate([
+          candidatesView.topAnchor.constraint(equalTo: topAnchor),
+          candidatesView.bottomAnchor.constraint(equalTo: bottomAnchor),
+          candidatesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          candidatesView.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
 
-        controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
-        controlStateView.topAnchor.constraint(equalTo: topAnchor),
-        controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        controlStateView.heightAnchor.constraint(equalToConstant: controlStateHeight)
-      ])
+          controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
+          controlStateView.topAnchor.constraint(equalTo: topAnchor),
+          controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+          controlStateView.heightAnchor.constraint(equalToConstant: controlStateHeight)
+        ])
+      } else {
+        NSLayoutConstraint.activate([
+          candidatesView.topAnchor.constraint(equalTo: topAnchor),
+          candidatesView.bottomAnchor.constraint(equalTo: bottomAnchor),
+          candidatesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          candidatesView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right)
+        ])
+      }
     } else {
-      NSLayoutConstraint.activate([
-        phoneticLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        phoneticLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-        phoneticLabel.topAnchor.constraint(equalTo: topAnchor),
-        phoneticLabel.heightAnchor.constraint(equalToConstant: codingAreaHeight),
+      if keyboardContext.swipePaging {
+        NSLayoutConstraint.activate([
+          phoneticLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          phoneticLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+          phoneticLabel.topAnchor.constraint(equalTo: topAnchor),
+          phoneticLabel.heightAnchor.constraint(equalToConstant: codingAreaHeight),
 
-        candidatesArea.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor),
-        candidatesArea.bottomAnchor.constraint(equalTo: bottomAnchor),
-        candidatesArea.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
-        candidatesArea.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
+          candidatesView.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor),
+          candidatesView.bottomAnchor.constraint(equalTo: bottomAnchor),
+          candidatesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          candidatesView.trailingAnchor.constraint(equalTo: controlStateView.leadingAnchor),
 
-        controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
-        controlStateView.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor),
-        controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        controlStateView.heightAnchor.constraint(equalToConstant: controlStateHeight)
-      ])
+          controlStateView.heightAnchor.constraint(equalTo: controlStateView.widthAnchor, multiplier: 1.0),
+          controlStateView.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor),
+          controlStateView.trailingAnchor.constraint(equalTo: trailingAnchor),
+          controlStateView.heightAnchor.constraint(equalToConstant: controlStateHeight)
+        ])
+      } else {
+        NSLayoutConstraint.activate([
+          phoneticLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          phoneticLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+          phoneticLabel.topAnchor.constraint(equalTo: topAnchor),
+          phoneticLabel.heightAnchor.constraint(equalToConstant: codingAreaHeight),
+
+          candidatesView.topAnchor.constraint(equalTo: phoneticLabel.bottomAnchor),
+          candidatesView.bottomAnchor.constraint(equalTo: bottomAnchor),
+          candidatesView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: buttonInsets.left),
+          candidatesView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -buttonInsets.right)
+        ])
+      }
     }
   }
 
@@ -177,7 +217,12 @@ public class CandidateBarView: NibLessView {
     phoneticLabel.font = style.phoneticTextFont
     phoneticLabel.textColor = style.phoneticTextColor
     stateImageView.tintColor = style.candidateTextColor
-    candidatesArea.setupStyle(style)
+
+    if keyboardContext.swipePaging {
+      candidatesArea.setupStyle(style)
+    } else {
+      candidatesPagingArea.setupStyle(style)
+    }
   }
 
   func setStyle(_ style: CandidateBarStyle) {

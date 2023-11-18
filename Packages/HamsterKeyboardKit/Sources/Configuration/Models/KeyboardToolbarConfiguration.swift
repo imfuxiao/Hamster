@@ -42,7 +42,11 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
   /// 显示候选文字 Comment 信息
   public var displayCommentOfCandidateWord: Bool?
 
-  public init(enableToolbar: Bool? = nil, heightOfToolbar: Int? = nil, displayAppIconButton: Bool? = nil, displayKeyboardDismissButton: Bool? = nil, heightOfCodingArea: Int? = nil, codingAreaFontSize: Int? = nil, candidateWordFontSize: Int? = nil, candidateCommentFontSize: Int? = nil, displayIndexOfCandidateWord: Bool? = nil, displayCommentOfCandidateWord: Bool? = nil) {
+  /// 划动分页开关，默认为 true，
+  /// 关闭后为手动分页模式，即通过发送上一页/下一页按键，使 rime 翻页
+  public var swipePaging: Bool?
+
+  public init(enableToolbar: Bool? = nil, heightOfToolbar: Int? = nil, displayAppIconButton: Bool? = nil, displayKeyboardDismissButton: Bool? = nil, heightOfCodingArea: Int? = nil, codingAreaFontSize: Int? = nil, candidateWordFontSize: Int? = nil, candidateCommentFontSize: Int? = nil, displayIndexOfCandidateWord: Bool? = nil, displayCommentOfCandidateWord: Bool? = nil, swipePaging: Bool? = nil) {
     self.enableToolbar = enableToolbar
     self.heightOfToolbar = heightOfToolbar
     self.displayAppIconButton = displayAppIconButton
@@ -53,6 +57,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     self.candidateCommentFontSize = candidateCommentFontSize
     self.displayIndexOfCandidateWord = displayIndexOfCandidateWord
     self.displayCommentOfCandidateWord = displayCommentOfCandidateWord
+    self.swipePaging = swipePaging
   }
 
   public init(from decoder: Decoder) throws {
@@ -67,6 +72,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     self.candidateCommentFontSize = try container.decodeIfPresent(Int.self, forKey: .candidateCommentFontSize)
     self.displayIndexOfCandidateWord = try container.decodeIfPresent(Bool.self, forKey: .displayIndexOfCandidateWord)
     self.displayCommentOfCandidateWord = try container.decodeIfPresent(Bool.self, forKey: .displayCommentOfCandidateWord)
+    self.swipePaging = try container.decodeIfPresent(Bool.self, forKey: .swipePaging)
   }
 
   enum CodingKeys: CodingKey {
@@ -80,6 +86,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     case candidateCommentFontSize
     case displayIndexOfCandidateWord
     case displayCommentOfCandidateWord
+    case swipePaging
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -94,5 +101,6 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     try container.encodeIfPresent(self.candidateCommentFontSize, forKey: .candidateCommentFontSize)
     try container.encodeIfPresent(self.displayIndexOfCandidateWord, forKey: .displayIndexOfCandidateWord)
     try container.encodeIfPresent(self.displayCommentOfCandidateWord, forKey: .displayCommentOfCandidateWord)
+    try container.encodeIfPresent(self.swipePaging, forKey: .swipePaging)
   }
 }

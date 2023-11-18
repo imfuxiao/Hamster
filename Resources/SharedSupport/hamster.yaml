@@ -32,6 +32,9 @@ toolbar:
   displayIndexOfCandidateWord: false
   # 是否显示候选文字 Comment 信息
   displayCommentOfCandidateWord: false
+  # 划动分页开关，默认为 true，
+  # 关闭后为手动分页模式，即通过发送上一页/下一页按键，使 rime 翻页
+  swipePaging: true
 
 # 键盘相关配置
 keyboard:
