@@ -35,6 +35,9 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// 候选栏状态
   var candidatesViewState: CandidateBarView.State
 
+  /// 当前用户输入，用来判断滚动候选栏是否滚动到首个首选字
+  var currentUserInputKey: String = ""
+
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, CandidateSuggestion>! = nil
 
   init(
@@ -48,24 +51,6 @@ public class CandidateWordsCollectionView: UICollectionView {
     self.actionHandler = actionHandler
     self.rimeContext = rimeContext
     self.candidatesViewState = keyboardContext.candidatesViewState
-
-//    let heightOfToolbar = keyboardContext.heightOfToolbar
-//    let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
-//    self.horizontalLayout = {
-//      let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(30), heightDimension: .fractionalHeight(1.0))
-//      let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//      let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(30), heightDimension: .absolute(heightOfToolbar - heightOfCodingArea))
-//      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//      let section = NSCollectionLayoutSection(group: group)
-//      // 控制水平方向 item 之间间距
-//      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
-//      section.interGroupSpacing = 5
-//      section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-//      // 控制垂直方向距拼写区的间距
-//      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
-//      section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-//      return UICollectionViewCompositionalLayout(section: section)
-//    }()
 
     self.horizontalLayout = {
       let layout = AlignedCollectionViewFlowLayout(horizontalAlignment: .justified, verticalAlignment: .center)
@@ -136,8 +121,9 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   func combine() {
     self.rimeContext.$suggestions
+      .combineLatest(self.rimeContext.$userInputKey)
       .receive(on: DispatchQueue.main)
-      .sink { [weak self] candidates in
+      .sink { [weak self] candidates, userInputKey in
         guard let self = self else { return }
 
         Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
@@ -147,16 +133,19 @@ public class CandidateWordsCollectionView: UICollectionView {
         snapshot.appendItems(candidates, toSection: 0)
         diffableDataSource.applySnapshotUsingReloadData(snapshot)
 
-        if !candidates.isEmpty {
-          if candidatesViewState.isCollapse() {
-            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
-          } else {
-            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+        if currentUserInputKey != userInputKey {
+          currentUserInputKey = userInputKey
+          if !candidates.isEmpty {
+            if candidatesViewState.isCollapse() {
+              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
+            } else {
+              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+            }
+            return
           }
-          return
         }
 
-        if !candidatesViewState.isCollapse() {
+        if candidates.isEmpty {
           self.keyboardContext.candidatesViewState = .collapse
         }
       }
@@ -202,6 +191,13 @@ public class CandidateWordsCollectionView: UICollectionView {
 // MAKE: - UICollectionViewDelegate
 
 extension CandidateWordsCollectionView: UICollectionViewDelegate {
+  public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    let count = diffableDataSource.snapshot(for: indexPath.section).items.count
+    if indexPath.item + 1 == count {
+      rimeContext.nextPage()
+    }
+  }
+
   public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     // 用于触发反馈

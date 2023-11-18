@@ -155,7 +155,7 @@ class KeyboardToolbarView: NibLessView {
   }
 
   func combine() {
-    rimeContext.userInputKeyPublished
+    rimeContext.$userInputKey
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
         let isEmpty = $0.isEmpty

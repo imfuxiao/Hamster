@@ -57,16 +57,8 @@ public class RimeContext: ObservableObject {
   }
 
   /// 用户输入键值
-  public var userInputKey: String = "" {
-    didSet {
-      userInputKeySubject.send(userInputKey)
-    }
-  }
-
-  public let userInputKeySubject = PassthroughSubject<String, Never>()
-  public var userInputKeyPublished: AnyPublisher<String, Never> {
-    userInputKeySubject.eraseToAnyPublisher()
-  }
+  @Published
+  public var userInputKey: String = ""
 
   /// 待上屏文字
   public private(set) var commitText: String = ""
@@ -90,6 +82,14 @@ public class RimeContext: ObservableObject {
   @Published
   public var suggestions: [CandidateSuggestion] = []
 
+  /// 划动分页模式下，当前页码，从 0 开始
+  public var pageIndex: Int = 0
+
+  /// 根据页码计算首个候选文字索引
+  public var candidateIndex: Int {
+    pageIndex * maximumNumberOfCandidateWords
+  }
+
   /// switcher hotkeys
   /// 默认值为 F4，但 RIME 重新部署时会根据当前配置加载此值
   public var hotKeys = UserDefaults.hamster.hotKeys {
@@ -110,6 +110,7 @@ public class RimeContext: ObservableObject {
 public extension RimeContext {
   /// RIME Context 状态重置
   func reset() {
+    self.pageIndex = 0
     self.userInputKey = ""
     self.selectPinyinList.removeAll(keepingCapacity: false)
     self.suggestions.removeAll(keepingCapacity: false)
@@ -557,10 +558,11 @@ public extension RimeContext {
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
   func syncContext() {
+    self.pageIndex = 0
     let context = Rime.shared.context()
     let userInputText = context.composition?.preedit ?? ""
     let commitText = Rime.shared.getCommitText()
-    let candidates = self.candidateListLimit(maximumNumberOfCandidateWords)
+    let candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
 
     Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
 
@@ -582,11 +584,26 @@ public extension RimeContext {
     self.suggestions = candidates
   }
 
-  func candidateListLimit(_ count: Int = 100) -> [CandidateSuggestion] {
+  /// 分页：下一页
+  func nextPage() {
+    self.pageIndex += 1
+    let candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
+    if !candidates.isEmpty {
+      self.suggestions.append(contentsOf: candidates)
+    } else {
+      self.pageIndex -= 1
+    }
+  }
+
+  /// 获取候选列表
+  func candidateListLimit(index: Int, count: Int) -> [CandidateSuggestion] {
     // TODO: 最大候选文字数量
-    let candidates = Rime.shared.getCandidate(index: 0, count: count)
+    let candidates = Rime.shared.candidateListWithIndex(index: index, andCount: count)
     var result: [CandidateSuggestion] = []
+    // 候选文字首个索引
+    let candidateIndex = self.candidateIndex
     for (index, candidate) in candidates.enumerated() {
+      let index = candidateIndex + index
       let suggestion = CandidateSuggestion(
         index: index,
         text: candidate.text,

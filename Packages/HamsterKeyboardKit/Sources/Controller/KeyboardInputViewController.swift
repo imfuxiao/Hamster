@@ -858,7 +858,7 @@ private extension KeyboardInputViewController {
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
   func setupCombineRIMEInput() {
-    rimeContext.userInputKeyPublished
+    rimeContext.$userInputKey
       .receive(on: DispatchQueue.main)
       .sink { [weak self] inputText in
         guard let self = self else { return }

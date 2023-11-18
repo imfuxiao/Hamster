@@ -180,12 +180,12 @@ public class Rime: IRimeNotificationDelegate {
     return rimeAPI.selectCandidate(session, andIndex: Int32(index))
   }
 
-  // index: 指candidates索引, 从1开始
+  // index: 指candidates索引, 从0开始
   // count: 指每次获取的总数量
   // 注意: 举例每页10个候选字
-  // 第一页: index = 1, count = 10
-  // 第二页: index = 11, count = 10
-  // 第二页: index = 21, count = 10
+  // 第一页: index = 0, count = 10
+  // 第二页: index = 10, count = 10
+  // 第二页: index = 20, count = 10
   // 以此类推
   public func candidateListWithIndex(index: Int, andCount count: Int) -> [CandidateWord] {
     let candidates = rimeAPI.getCandidateWith(
