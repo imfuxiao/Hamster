@@ -1491,38 +1491,45 @@ extension KeyboardSettingsViewModel {
             text: "是否经过 RIME 处理",
             type: .toggle,
             toggleValue: { swipe.processByRIME },
-            toggleHandled: { value in
+            toggleHandled: { [unowned self] value in
               var key = key
               var swipe = swipe
               swipe.processByRIME = value
               key.swipe.removeAll(where: { $0.direction == swipe.direction })
               key.swipe.append(swipe)
               self.saveKeySwipe(key, keyboardType: keyboardType)
+              // 添加刷新表格操作
+              self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
             }),
           .init(
             text: "键盘显示文本",
             placeholder: "显示文本",
             type: .textField,
             textValue: { swipe.label.text },
-            textHandled: { labelText in
+            textHandled: { [unowned self] labelText in
               var key = key
               var swipe = swipe
               swipe.label = KeyLabel(loadingText: "", text: labelText)
               key.swipe.removeAll(where: { $0.direction == swipe.direction })
               key.swipe.append(swipe)
               self.saveKeySwipe(key, keyboardType: keyboardType)
+              // 添加刷新表格操作
+              self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
+
             }),
           .init(
             text: "是否显示文本",
             type: .toggle,
             toggleValue: { swipe.display },
-            toggleHandled: { display in
+            toggleHandled: { [unowned self] display in
               var key = key
               var swipe = swipe
               swipe.display = display
               key.swipe.removeAll(where: { $0.direction == swipe.direction })
               key.swipe.append(swipe)
               self.saveKeySwipe(key, keyboardType: keyboardType)
+              // 添加刷新表格操作
+              self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
             }),
           .init(
             text: "删除",
