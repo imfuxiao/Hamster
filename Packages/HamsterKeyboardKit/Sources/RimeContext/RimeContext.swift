@@ -574,7 +574,11 @@ public extension RimeContext {
     let commitText = Rime.shared.getCommitText()
     var candidates = [CandidateSuggestion]()
     if !useContextPaging {
-      candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
+      var highlightIndex = 0
+      if let menu = context.menu {
+        highlightIndex = Int(menu.pageSize * menu.pageNo + menu.highlightedCandidateIndex)
+      }
+      candidates = self.candidateListLimit(index: candidateIndex, highlightIndex: highlightIndex, count: maximumNumberOfCandidateWords)
     }
 
     Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
@@ -601,7 +605,11 @@ public extension RimeContext {
   /// 分页：下一页
   func nextPage() {
     self.pageIndex += 1
-    let candidates = self.candidateListLimit(index: candidateIndex, count: maximumNumberOfCandidateWords)
+    var highlightIndex = 0
+    if let menu = rimeContext.menu {
+      highlightIndex = Int(menu.pageSize * menu.pageNo + menu.highlightedCandidateIndex)
+    }
+    let candidates = self.candidateListLimit(index: candidateIndex, highlightIndex: highlightIndex, count: maximumNumberOfCandidateWords)
     if !candidates.isEmpty {
       self.suggestions.append(contentsOf: candidates)
     } else {
@@ -610,7 +618,7 @@ public extension RimeContext {
   }
 
   /// 获取候选列表
-  func candidateListLimit(index: Int, count: Int) -> [CandidateSuggestion] {
+  func candidateListLimit(index: Int, highlightIndex: Int, count: Int) -> [CandidateSuggestion] {
     // TODO: 最大候选文字数量
     let candidates = Rime.shared.candidateListWithIndex(index: index, andCount: count)
     var result: [CandidateSuggestion] = []
@@ -622,7 +630,7 @@ public extension RimeContext {
         index: index,
         text: candidate.text,
         title: candidate.text,
-        isAutocomplete: index == 0,
+        isAutocomplete: index == highlightIndex,
         subtitle: candidate.comment
       )
       result.append(suggestion)
