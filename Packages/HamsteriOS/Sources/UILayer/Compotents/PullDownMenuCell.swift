@@ -32,15 +32,13 @@ public class PullDownMenuCell: NibLessTableViewCell {
     valueButton.setTitleColor(.secondaryLabel, for: .normal)
     valueButton.contentHorizontalAlignment = .trailing
     valueButton.translatesAutoresizingMaskIntoConstraints = false
-    return valueButton
-  }()
+    valueButton.tintColor = .secondaryLabel
 
-  lazy var iconImageView: UIImageView = {
-    let view = UIImageView(image: UIImage(systemName: "chevron.down"))
-    view.contentMode = .scaleAspectFit
-    view.tintColor = UIColor.secondaryLabel
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
+    valueButton.configuration = UIButton.Configuration.plain()
+    valueButton.configuration?.image = UIImage(systemName: "chevron.down")
+    valueButton.configuration?.imagePlacement = .trailing
+
+    return valueButton
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,7 +50,6 @@ public class PullDownMenuCell: NibLessTableViewCell {
   func setupContentView() {
     contentView.addSubview(titleLabel)
     contentView.addSubview(valueButton)
-    contentView.addSubview(iconImageView)
 
     NSLayoutConstraint.activate([
       titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
@@ -62,11 +59,8 @@ public class PullDownMenuCell: NibLessTableViewCell {
       valueButton.topAnchor.constraint(equalToSystemSpacingBelow: contentView.topAnchor, multiplier: 1),
       contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: valueButton.bottomAnchor, multiplier: 1),
       valueButton.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: valueButton.trailingAnchor, multiplier: 1),
 
-      iconImageView.leadingAnchor.constraint(equalToSystemSpacingAfter: valueButton.trailingAnchor, multiplier: 1),
-      contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: iconImageView.trailingAnchor, multiplier: 1),
-      iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-      iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
     ])
   }
 
@@ -84,5 +78,4 @@ public class PullDownMenuCell: NibLessTableViewCell {
       valueButton.showsMenuAsPrimaryAction = true
     }
   }
-
 }
