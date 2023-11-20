@@ -5,7 +5,6 @@
 //  Created by morse on 2023/8/19.
 //
 
-import Combine
 import HamsterKit
 import HamsterUIKit
 import UIKit
@@ -22,7 +21,6 @@ class KeyboardToolbarView: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
-  private var subscriptions = Set<AnyCancellable>()
   private var style: CandidateBarStyle
   private var userInterfaceStyle: UIUserInterfaceStyle
   private var oldBounds: CGRect = .zero
@@ -155,19 +153,16 @@ class KeyboardToolbarView: NibLessView {
   }
 
   func combine() {
-    rimeContext.$userInputKey
-      .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
-        let isEmpty = $0.isEmpty
-        self.commonFunctionBar.isHidden = !isEmpty
-        self.candidateBarView.isHidden = isEmpty
-        if self.candidateBarView.superview == nil {
-          candidateBarView.setStyle(self.style)
-          addSubview(candidateBarView)
-          candidateBarView.fillSuperview()
-        }
+    rimeContext.registryHandleUserInputKeyChanged { [unowned self] in
+      let isEmpty = $0.isEmpty
+      self.commonFunctionBar.isHidden = !isEmpty
+      self.candidateBarView.isHidden = isEmpty
+      if self.candidateBarView.superview == nil {
+        candidateBarView.setStyle(self.style)
+        addSubview(candidateBarView)
+        candidateBarView.fillSuperview()
       }
-      .store(in: &subscriptions)
+    }
   }
 
   @objc func dismissKeyboardTouchDownAction() {

@@ -5,7 +5,6 @@
 //  Created by morse on 2023/9/5.
 //
 
-import Combine
 import HamsterUIKit
 import UIKit
 
@@ -15,7 +14,6 @@ class ClassifySymbolicKeyboard: NibLessView {
   private let actionHandler: KeyboardActionHandler
   private let appearance: KeyboardAppearance
   private let layoutProvider: KeyboardLayoutProvider
-  private var subscriptions = Set<AnyCancellable>()
   private var classifyViewHeightConstraint: NSLayoutConstraint?
   private var bottomRowViewHeightConstraint: NSLayoutConstraint?
   private var classifyViewWidthConstraint: NSLayoutConstraint?

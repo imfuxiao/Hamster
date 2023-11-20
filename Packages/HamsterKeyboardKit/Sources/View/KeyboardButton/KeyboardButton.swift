@@ -5,7 +5,6 @@
 //  Created by morse on 2023/8/6.
 //
 
-import Combine
 import HamsterKit
 import OSLog
 import UIKit
@@ -101,8 +100,6 @@ public class KeyboardButton: UIControl {
   let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
 
   var userInterfaceStyle: UIUserInterfaceStyle
-
-  private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - subview
 

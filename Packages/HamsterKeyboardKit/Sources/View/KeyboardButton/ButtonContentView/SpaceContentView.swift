@@ -5,7 +5,6 @@
 //  Created by morse on 2023/8/10.
 //
 
-import Combine
 import HamsterUIKit
 import UIKit
 
@@ -14,7 +13,6 @@ class SpaceContentView: NibLessView {
   private let rimeContext: RimeContext
   private let item: KeyboardLayoutItem
   private var spaceText: String
-  private var subscriptions = Set<AnyCancellable>()
   private var asciiState: Bool
   private var style: KeyboardButtonStyle
   private var oldBounds: CGRect = .zero
@@ -137,40 +135,34 @@ class SpaceContentView: NibLessView {
   }
 
   func combine() {
-    rimeContext.$asciiMode
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        guard let self = self else { return }
-        guard self.asciiState != $0 else { return }
-        self.asciiState = $0
-        loadingLabel.text = self.asciiState == false ? "中" : "英"
-        self.textView.alpha = 0
-        self.loadingLabel.alpha = 1
-        loadingAnimate()
-      }
-      .store(in: &subscriptions)
+    rimeContext.registryHandleAsciiModeChanged { [weak self] in
+      guard let self = self else { return }
+      guard self.asciiState != $0 else { return }
+      self.asciiState = $0
+      loadingLabel.text = self.asciiState == false ? "中" : "英"
+      self.textView.alpha = 0
+      self.loadingLabel.alpha = 1
+      loadingAnimate()
+    }
 
-    rimeContext.currentSchemaPublished
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        guard let self = self else { return }
-        guard let schema = $0 else { return }
-        guard !keyboardContext.keyboardType.isNumber else { return }
+    rimeContext.registryHandleCurrentSchemaChanged { [weak self] in
+      guard let self = self else { return }
+      guard let schema = $0 else { return }
+      guard !keyboardContext.keyboardType.isNumber else { return }
 
-        if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
-          if loadingLabel.text != schema.schemaName {
-            loadingLabel.text = schema.schemaName
-            self.textView.alpha = 0
-            self.loadingLabel.alpha = 1
-            loadingAnimate()
-          }
-        }
-
-        if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-          textView.setTextValue(schema.schemaName)
+      if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
+        if loadingLabel.text != schema.schemaName {
+          loadingLabel.text = schema.schemaName
+          self.textView.alpha = 0
+          self.loadingLabel.alpha = 1
+          loadingAnimate()
         }
       }
-      .store(in: &subscriptions)
+
+      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
+        textView.setTextValue(schema.schemaName)
+      }
+    }
   }
 
   override func didMoveToWindow() {

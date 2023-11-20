@@ -5,19 +5,25 @@
 //  Created by morse on 2023/6/30.
 //
 
-import Combine
 import Foundation
 import HamsterKit
 import OSLog
-
-// #if SBXLM
-// import SbxlmRimeKit
-// #else
 import RimeKit
-// #endif
 
 /// RIME 运行时上下文
-public class RimeContext: ObservableObject {
+public class RimeContext {
+  typealias HandleAsciiModeChanged = (Bool) -> Void
+  typealias HandleCurrentSchemaChanged = (RimeSchema?) -> Void
+  typealias HandleUserInputKeyChanged = (String) -> Void
+  typealias HandleSuggestionsChanged = ([CandidateSuggestion]) -> Void
+  typealias HandleRimeContextChanged = (IRimeContext) -> Void
+
+  private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
+  private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
+  private lazy var registryHandleUserInputKeyChanged = [HandleUserInputKeyChanged]()
+  private lazy var registryHandleSuggestionsChanged = [HandleSuggestionsChanged]()
+  private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
+
   /// 最大候选词数量
   public private(set) var maximumNumberOfCandidateWords: Int = 100
 
@@ -41,15 +47,12 @@ public class RimeContext: ObservableObject {
   /// 当前输入方案
   public lazy var currentSchema: RimeSchema? = UserDefaults.hamster.currentSchema {
     didSet {
-      currentSchemaSubject.send(currentSchema)
-      // 如果没有完全访问权限，UserDefaults.hamster 会保存失败
+      // 注意：如果没有完全访问权限，UserDefaults.hamster 会保存失败
       UserDefaults.hamster.currentSchema = currentSchema
+      registryHandleCurrentSchemaChanged.forEach { handle in
+        handle(currentSchema)
+      }
     }
-  }
-
-  public lazy var currentSchemaSubject = PassthroughSubject<RimeSchema?, Never>()
-  public var currentSchemaPublished: AnyPublisher<RimeSchema?, Never> {
-    currentSchemaSubject.eraseToAnyPublisher()
   }
 
   /// 上次使用输入方案
@@ -60,8 +63,13 @@ public class RimeContext: ObservableObject {
   }
 
   /// 用户输入键值
-  @Published
-  public var userInputKey: String = ""
+  public var userInputKey: String = "" {
+    didSet {
+      registryHandleUserInputKeyChanged.forEach { handle in
+        handle(userInputKey)
+      }
+    }
+  }
 
   /// 待上屏文字
   public private(set) var commitText: String = ""
@@ -78,15 +86,30 @@ public class RimeContext: ObservableObject {
   public var selectPinyinList: [String] = []
 
   /// 字母模式
-  @Published
-  public var asciiMode: Bool = false
+  public var asciiMode: Bool = false {
+    didSet {
+      registryHandleAsciiModeChanged.forEach { handle in
+        handle(asciiMode)
+      }
+    }
+  }
 
   /// 候选字
-  @Published
-  public var suggestions: [CandidateSuggestion] = []
+  public var suggestions: [CandidateSuggestion] = [] {
+    didSet {
+      registryHandleSuggestionsChanged.forEach { handle in
+        handle(suggestions)
+      }
+    }
+  }
 
-  @Published
-  public var rimeContext: IRimeContext = .init()
+  public var rimeContext: IRimeContext = .init() {
+    didSet {
+      registryHandleRimeContextChanged.forEach { handle in
+        handle(rimeContext)
+      }
+    }
+  }
 
   /// 划动分页模式下，当前页码，从 0 开始
   public var pageIndex: Int = 0
@@ -112,6 +135,26 @@ public class RimeContext: ObservableObject {
 
   func setUseContextPaging(_ state: Bool) {
     self.useContextPaging = state
+  }
+
+  func registryHandleAsciiModeChanged(_ handle: @escaping HandleAsciiModeChanged) {
+    self.registryHandleAsciiModeChanged.append(handle)
+  }
+
+  func registryHandleCurrentSchemaChanged(_ handle: @escaping HandleCurrentSchemaChanged) {
+    self.registryHandleCurrentSchemaChanged.append(handle)
+  }
+
+  func registryHandleUserInputKeyChanged(_ handle: @escaping HandleUserInputKeyChanged) {
+    self.registryHandleUserInputKeyChanged.append(handle)
+  }
+
+  func registryHandleSuggestionsChanged(_ handle: @escaping HandleSuggestionsChanged) {
+    self.registryHandleSuggestionsChanged.append(handle)
+  }
+
+  func registryHandleRimeContextChanged(_ handle: @escaping HandleRimeContextChanged) {
+    self.registryHandleRimeContextChanged.append(handle)
   }
 }
 

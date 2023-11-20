@@ -6,7 +6,6 @@
 //  Copyright © 2018-2023 Daniel Saidi. All rights reserved.
 //
 
-import Combine
 import HamsterKit
 import OSLog
 import UIKit
@@ -130,7 +129,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   // MARK: - Combine
 
-  var cancellables = Set<AnyCancellable>()
+  // var cancellables = Set<AnyCancellable>()
 
   // MARK: - Properties
 
@@ -777,12 +776,12 @@ private extension KeyboardInputViewController {
    设置本地化观测，以处理基于本地化的更改。
    */
   func setupLocaleObservation() {
-    keyboardContext.$locale.sink { [weak self] in
-      guard let self = self else { return }
-      let locale = $0
-      self.primaryLanguage = locale.identifier
-      self.autocompleteProvider.locale = locale
-    }.store(in: &cancellables)
+//    keyboardContext.$locale.sink { [weak self] in
+//      guard let self = self else { return }
+//      let locale = $0
+//      self.primaryLanguage = locale.identifier
+//      self.autocompleteProvider.locale = locale
+//    }.store(in: &cancellables)
   }
 
   /**
@@ -862,39 +861,36 @@ private extension KeyboardInputViewController {
 
   /// Combine 观测 RIME 引擎中的用户输入及上屏文字
   func setupCombineRIMEInput() {
-    rimeContext.$userInputKey
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] inputText in
-        guard let self = self else { return }
+    rimeContext.registryHandleUserInputKeyChanged { [weak self] inputText in
+      guard let self = self else { return }
 
-        // 获取与清空在一起，防止重复上屏
-        let commitText = self.rimeContext.commitText
-        self.rimeContext.resetCommitText()
+      // 获取与清空在一起，防止重复上屏
+      let commitText = self.rimeContext.commitText
+      self.rimeContext.resetCommitText()
 
-        // 写入上屏文字
-        if !commitText.isEmpty {
-          self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
-
-          // 写入 userInputKey
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-            self.insertTextPatch(commitText)
-          }
-        }
-
-        // 非嵌入模式在 CandidateWordsView.swift 中处理，直接输入 Label 中
-        guard self.keyboardContext.enableEmbeddedInputMode else { return }
+      // 写入上屏文字
+      if !commitText.isEmpty {
+        self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))
 
         // 写入 userInputKey
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
-          if self.keyboardContext.keyboardType.isChineseNineGrid {
-            let t9UserInputKey = self.rimeContext.t9UserInputKey
-            self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
-            return
-          }
-          self.textDocumentProxy.setMarkedText(inputText, selectedRange: NSMakeRange(inputText.utf8.count, 0))
+          self.insertTextPatch(commitText)
         }
       }
-      .store(in: &cancellables)
+
+      // 非嵌入模式在 CandidateWordsView.swift 中处理，直接输入 Label 中
+      guard self.keyboardContext.enableEmbeddedInputMode else { return }
+
+      // 写入 userInputKey
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+        if self.keyboardContext.keyboardType.isChineseNineGrid {
+          let t9UserInputKey = self.rimeContext.t9UserInputKey
+          self.textDocumentProxy.setMarkedText(t9UserInputKey, selectedRange: NSMakeRange(t9UserInputKey.utf8.count, 0))
+          return
+        }
+        self.textDocumentProxy.setMarkedText(inputText, selectedRange: NSMakeRange(inputText.utf8.count, 0))
+      }
+    }
   }
 
   /// 在 ``textDocumentProxy`` 的文本发生变化后，尝试更改为首选键盘类型

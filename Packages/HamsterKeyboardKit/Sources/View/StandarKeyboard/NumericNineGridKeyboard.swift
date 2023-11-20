@@ -5,7 +5,6 @@
 //  Created by morse on 2023/9/5.
 //
 
-import Combine
 import HamsterKit
 import HamsterUIKit
 import UIKit
@@ -66,9 +65,6 @@ public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
     ])
     return container
   }()
-
-  // combine
-  private var subscriptions = Set<AnyCancellable>()
 
   /// 缓存所有按键视图
   private var keyboardRows: [[KeyboardButton]] = []

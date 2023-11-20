@@ -5,7 +5,6 @@
 //  Created by morse on 2023/11/18.
 //
 
-import Combine
 import HamsterKit
 import OSLog
 import UIKit
@@ -24,9 +23,6 @@ class CandidatesPagingCollectionView: UICollectionView {
 
   /// 水平滚动方向布局
   let horizontalLayout: UICollectionViewLayout
-
-  /// Combine
-  var subscriptions = Set<AnyCancellable>()
 
   /// 候选栏状态
   var candidatesViewState: CandidateBarView.State
@@ -129,32 +125,29 @@ class CandidatesPagingCollectionView: UICollectionView {
   }
 
   func combine() {
-    self.rimeContext.$rimeContext
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] context in
-        guard let self = self else { return }
-        guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
-        guard let pageCandidates = context.menu?.candidates else { return }
-        let label = context.labels ?? Array<String>.init(repeating: "", count: pageCandidates.count)
-        var candidates = [CandidateSuggestion]()
-        for (index, candidate) in pageCandidates.enumerated() {
-          let suggestion = CandidateSuggestion(
-            index: index,
-            label: index < label.count ? label[index] : "",
-            text: candidate.text,
-            title: candidate.text,
-            isAutocomplete: index == highlightedIndex,
-            subtitle: candidate.comment
-          )
-          candidates.append(suggestion)
-        }
-
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(candidates, toSection: 0)
-        diffableDataSource.applySnapshotUsingReloadData(snapshot)
+    rimeContext.registryHandleRimeContextChanged { [weak self] context in
+      guard let self = self else { return }
+      guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
+      guard let pageCandidates = context.menu?.candidates else { return }
+      let label = context.labels ?? Array<String>.init(repeating: "", count: pageCandidates.count)
+      var candidates = [CandidateSuggestion]()
+      for (index, candidate) in pageCandidates.enumerated() {
+        let suggestion = CandidateSuggestion(
+          index: index,
+          label: index < label.count ? label[index] : "",
+          text: candidate.text,
+          title: candidate.text,
+          isAutocomplete: index == highlightedIndex,
+          subtitle: candidate.comment
+        )
+        candidates.append(suggestion)
       }
-      .store(in: &subscriptions)
+
+      var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
+      snapshot.appendSections([0])
+      snapshot.appendItems(candidates, toSection: 0)
+      diffableDataSource.applySnapshotUsingReloadData(snapshot)
+    }
   }
 
   func reloadDiffableDataSource() {

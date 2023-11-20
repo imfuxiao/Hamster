@@ -5,7 +5,6 @@
 //  Created by morse on 2023/9/5.
 //
 
-import Combine
 import UIKit
 
 /// 符号分类显示视图
@@ -14,7 +13,6 @@ class ClassifyView: UICollectionView {
   private let keyboardContext: KeyboardContext
   private let viewModel: ClassifySymbolicViewModel
   private var diffableDataSource: UICollectionViewDiffableDataSource<Int, SymbolCategory>!
-  private var subscriptions = Set<AnyCancellable>()
 
   init(style: NonStandardKeyboardStyle, keyboardContext: KeyboardContext, viewModel: ClassifySymbolicViewModel) {
     self.keyboardContext = keyboardContext

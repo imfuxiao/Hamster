@@ -5,7 +5,6 @@
 //  Created by morse on 2023/8/10.
 //
 
-import Combine
 import HamsterKit
 import HamsterUIKit
 import OSLog
@@ -45,8 +44,6 @@ public class StanderSystemKeyboard: NibLessView {
 
   // 键盘是否浮动
   private var isKeyboardFloating: Bool
-
-  private var subscriptions = Set<AnyCancellable>()
 
   // MARK: - 计算属性
 

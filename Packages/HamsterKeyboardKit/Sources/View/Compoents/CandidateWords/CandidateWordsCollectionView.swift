@@ -120,36 +120,32 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 
   func combine() {
-    self.rimeContext.$suggestions
-      .combineLatest(self.rimeContext.$userInputKey)
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] candidates, userInputKey in
-        guard let self = self else { return }
+    self.rimeContext.registryHandleSuggestionsChanged { [weak self] candidates in
+      guard let self = self else { return }
 
-        Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
+      Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
 
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-        snapshot.appendSections([0])
-        snapshot.appendItems(candidates, toSection: 0)
-        diffableDataSource.applySnapshotUsingReloadData(snapshot)
+      var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
+      snapshot.appendSections([0])
+      snapshot.appendItems(candidates, toSection: 0)
+      diffableDataSource.applySnapshotUsingReloadData(snapshot)
 
-        if currentUserInputKey != userInputKey {
-          currentUserInputKey = userInputKey
-          if !candidates.isEmpty {
-            if candidatesViewState.isCollapse() {
-              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
-            } else {
-              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
-            }
-            return
+      if currentUserInputKey != rimeContext.userInputKey {
+        currentUserInputKey = rimeContext.userInputKey
+        if !candidates.isEmpty {
+          if candidatesViewState.isCollapse() {
+            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
+          } else {
+            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
           }
-        }
-
-        if candidates.isEmpty {
-          self.keyboardContext.candidatesViewState = .collapse
+          return
         }
       }
-      .store(in: &subscriptions)
+
+      if candidates.isEmpty {
+        self.keyboardContext.candidatesViewState = .collapse
+      }
+    }
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)
