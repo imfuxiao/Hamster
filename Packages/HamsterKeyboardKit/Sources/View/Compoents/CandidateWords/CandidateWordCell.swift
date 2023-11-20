@@ -147,11 +147,10 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
-    // TODO: 字体大小可配置
-    let index = state.candidateSuggestion?.index
-    let title = state.candidateSuggestion?.title
+    let title = state.candidateSuggestion?.title ?? ""
+    let index = state.candidateSuggestion?.showIndexLabel ?? ""
     if showIndex {
-      textLabel.text = index == nil ? title : "\(index! + 1). \(title ?? "")"
+      textLabel.text = index.isEmpty ? title : "\(index) \(title)"
     } else {
       textLabel.text = title
     }

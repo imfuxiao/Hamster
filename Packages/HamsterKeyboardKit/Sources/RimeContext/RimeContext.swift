@@ -628,6 +628,7 @@ public extension RimeContext {
       let index = candidateIndex + index
       let suggestion = CandidateSuggestion(
         index: index,
+        label: "",
         text: candidate.text,
         title: candidate.text,
         isAutocomplete: index == highlightIndex,

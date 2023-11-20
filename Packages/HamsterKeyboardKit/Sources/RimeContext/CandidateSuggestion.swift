@@ -14,6 +14,9 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
   /// 候选文字索引
   public var index: Int
 
+  /// 索引 label
+  public var label: String
+
   /// 应该发送至 documentProxy 的文本。
   public var text: String
 
@@ -36,6 +39,7 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
 
   public init(
     index: Int,
+    label: String,
     text: String,
     title: String? = nil,
     isAutocomplete: Bool = false,
@@ -44,12 +48,20 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
     additionalInfo: [String: Any] = [:]
   ) {
     self.index = index
+    self.label = label
     self.text = text
     self.title = title ?? text
     self.isAutocomplete = isAutocomplete
     self.isUnknown = isUnknown
     self.subtitle = subtitle
     self.additionalInfo = additionalInfo
+  }
+
+  var showIndexLabel: String {
+    if !label.isEmpty {
+      return label
+    }
+    return "\(index + 1)"
   }
 }
 

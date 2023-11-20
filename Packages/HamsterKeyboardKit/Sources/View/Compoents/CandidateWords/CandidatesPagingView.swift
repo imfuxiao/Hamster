@@ -135,12 +135,12 @@ class CandidatesPagingCollectionView: UICollectionView {
         guard let self = self else { return }
         guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
         guard let pageCandidates = context.menu?.candidates else { return }
-
+        let label = context.labels ?? Array<String>.init(repeating: "", count: pageCandidates.count)
         var candidates = [CandidateSuggestion]()
         for (index, candidate) in pageCandidates.enumerated() {
-          let index = index
           let suggestion = CandidateSuggestion(
             index: index,
+            label: index < label.count ? label[index] : "",
             text: candidate.text,
             title: candidate.text,
             isAutocomplete: index == highlightedIndex,
@@ -239,8 +239,14 @@ extension CandidatesPagingCollectionView: UICollectionViewDelegateFlowLayout {
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
     let maxWidth: CGFloat = UIScreen.main.bounds.width - ((self.window?.screen.interfaceOrientation == .portrait) ? 60 : 220)
 
-    let index = candidate.index
-    let titleText = showIndex ? "\(index + 1). \(candidate.title)" : candidate.title
+    let showIndexLabel: String = {
+      if candidate.label.isEmpty {
+        return "\(candidate.index + 1)"
+      }
+      return candidate.label
+    }()
+
+    let titleText = showIndex ? "\(showIndexLabel). \(candidate.title)" : candidate.title
     // 60 是下拉箭头按键的宽度，垂直滑动的 label 在超出宽度时，文字折叠
     let targetWidth: CGFloat = maxWidth - (isVerticalLayout ? 60 : 0)
 

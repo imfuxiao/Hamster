@@ -267,8 +267,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
     let maxWidth: CGFloat = UIScreen.main.bounds.width - ((self.window?.screen.interfaceOrientation == .portrait) ? 60 : 220)
 
-    let index = candidate.index
-    let titleText = showIndex ? "\(index + 1). \(candidate.title)" : candidate.title
+    let titleText = showIndex ? "\(candidate.showIndexLabel) \(candidate.title)" : candidate.title
     // 60 是下拉箭头按键的宽度，垂直滑动的 label 在超出宽度时，文字折叠
     let targetWidth: CGFloat = maxWidth - (isVerticalLayout ? 60 : 0)
 
