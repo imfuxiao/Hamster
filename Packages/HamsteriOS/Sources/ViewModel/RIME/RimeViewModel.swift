@@ -302,6 +302,11 @@ public extension RimeViewModel {
         keyboards: nil
       )
 
+      // TODO: 内置雾凇方案，将默认选择方案改为雾凇拼音
+      let rimeSchema = RimeSchema(schemaId: "rime_ice", schemaName: "雾凇拼音")
+      rimeContext.selectSchemas = [rimeSchema]
+      rimeContext.currentSchema = rimeSchema
+
       /// 在另存一份用于应用配置还原
       try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
 

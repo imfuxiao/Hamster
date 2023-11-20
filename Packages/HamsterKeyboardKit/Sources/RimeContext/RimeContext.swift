@@ -38,7 +38,7 @@ public class RimeContext {
   }
 
   /// rime 用户选择方案列表
-  public private(set) lazy var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
+  public lazy var selectSchemas: [RimeSchema] = UserDefaults.hamster.selectSchemas {
     didSet {
       UserDefaults.hamster.selectSchemas = self.selectSchemas.sorted()
     }
