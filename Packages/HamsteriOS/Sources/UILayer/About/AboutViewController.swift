@@ -32,7 +32,7 @@ class AboutViewController: NibLessViewController, UIDocumentPickerDelegate {
   }
 
   override func loadView() {
-    title = "关于"
+    title = L10n.About.title
     view = AboutRootView(aboutViewModel: aboutViewModel)
   }
 
@@ -49,9 +49,9 @@ class AboutViewController: NibLessViewController, UIDocumentPickerDelegate {
     aboutViewModel.restUISettingsPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] callback in
-        self.alertConfirm(alertTitle: "重置 UI 设置", message: "确认重置 UI 交互生成的设置吗？", confirmTitle: "确定", confirmCallback: {
+        self.alertConfirm(alertTitle: L10n.About.Reset.title, message: L10n.About.Reset.message, confirmTitle: L10n.About.Reset.confirm, confirmCallback: {
           callback()
-          ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
+          ProgressHUD.success(L10n.resetSuccessfully, interaction: false, delay: 1.5)
         })
       }
       .store(in: &subscriptions)

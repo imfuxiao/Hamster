@@ -10,15 +10,57 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// 复制成功
+  public static let copySuccessfully = L10n.tr("Localizable", "copy_successfully", fallback: "复制成功")
   /// 禁用
   public static let disabledLabel = L10n.tr("Localizable", "disabledLabel", fallback: "禁用")
   /// 启用
   public static let enabledLabel = L10n.tr("Localizable", "enabledLabel", fallback: "启用")
+  /// 重置成功
+  public static let resetSuccessfully = L10n.tr("Localizable", "reset_successfully", fallback: "重置成功")
   public enum About {
+    /// 联系邮箱
+    public static let email = L10n.tr("Localizable", "about.email", fallback: "联系邮箱")
+    /// 许可证
+    public static let license = L10n.tr("Localizable", "about.license", fallback: "许可证")
+    /// RIME版本
+    public static let rimeVersion = L10n.tr("Localizable", "about.rime_version", fallback: "RIME版本")
+    /// 开源地址
+    public static let source = L10n.tr("Localizable", "about.source", fallback: "开源地址")
     /// 关于
     public static let title = L10n.tr("Localizable", "about.title", fallback: "关于")
+    public enum Export {
+      /// 导出 UI 设置失败
+      public static let error = L10n.tr("Localizable", "about.export.error", fallback: "导出 UI 设置失败")
+      /// 导出的通过界面修改的配置项。
+      /// 注意：不包新增/修改配置文件中的设置。
+      public static let footer = L10n.tr("Localizable", "about.export.footer", fallback: "导出的通过界面修改的配置项。\n注意：不包新增/修改配置文件中的设置。")
+      /// 导出界面设置
+      public static let text = L10n.tr("Localizable", "about.export.text", fallback: "导出界面设置")
+    }
+    public enum Oss {
+      /// 使用开源库列表
+      public static let list = L10n.tr("Localizable", "about.oss.list", fallback: "使用开源库列表")
+      /// 使用开源列表
+      public static let title = L10n.tr("Localizable", "about.oss.title", fallback: "使用开源列表")
+    }
+    public enum Reset {
+      /// 确定
+      public static let confirm = L10n.tr("Localizable", "about.reset.confirm", fallback: "确定")
+      /// 重置通过界面修改的配置项。
+      /// 注意：不包含新增/修改配置文件中的配置项。
+      public static let footer = L10n.tr("Localizable", "about.reset.footer", fallback: "重置通过界面修改的配置项。\n注意：不包含新增/修改配置文件中的配置项。")
+      /// 确认重置 UI 交互生成的设置吗？
+      public static let message = L10n.tr("Localizable", "about.reset.message", fallback: "确认重置 UI 交互生成的设置吗？")
+      /// 重置界面设置
+      public static let text = L10n.tr("Localizable", "about.reset.text", fallback: "重置界面设置")
+      /// 重置 UI 设置
+      public static let title = L10n.tr("Localizable", "about.reset.title", fallback: "重置 UI 设置")
+    }
   }
   public enum App {
+    /// 仓输入法
+    public static let name = L10n.tr("Localizable", "app.name", fallback: "仓输入法")
     /// 输入法设置
     public static let title = L10n.tr("Localizable", "app.title", fallback: "输入法设置")
   }

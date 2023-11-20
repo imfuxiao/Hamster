@@ -1,4 +1,5 @@
 "app.title" = "输入法设置";
+"app.name" = "仓输入法";
 
 "load_app_data.migrating_v1_data" = "迁移 1.0 配置中……";
 "load_app_data.migrated" = "迁移完成";
@@ -25,8 +26,27 @@
 "backup.title" = "软件备份";
 
 "rime.title" = "RIME";
-"about.title" = "关于";
 
+"about.title" = "关于";
+"about.rime_version" = "RIME版本";
+"about.license" = "许可证";
+"about.email" = "联系邮箱";
+"about.source" = "开源地址";
+"about.oss.list" = "使用开源库列表";
+"about.oss.title" = "使用开源列表";
+
+"about.reset.text" = "重置界面设置";
+"about.reset.footer" = "重置通过界面修改的配置项。\n注意：不包含新增/修改配置文件中的配置项。";
+"about.reset.title" = "重置 UI 设置";
+"about.reset.message" = "确认重置 UI 交互生成的设置吗？";
+"about.reset.confirm" = "确定";
+
+"about.export.footer" = "导出的通过界面修改的配置项。\n注意：不包新增/修改配置文件中的设置。";
+"about.export.text" = "导出界面设置";
+"about.export.error" = "导出 UI 设置失败";
+
+"copy_successfully" = "复制成功";
 "disabledLabel" = "禁用";
 "enabledLabel" = "启用";
+"reset_successfully" = "重置成功";
 

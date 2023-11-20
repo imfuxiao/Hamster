@@ -1,4 +1,5 @@
 "app.title" = "輸入法設定";
+"app.name" = "倉輸入法";
 
 "load_app_data.migrating_v1_data" = "遷移 1.0 組態中……";
 "load_app_data.migrated" = "遷移完成";
@@ -25,8 +26,27 @@
 "backup.title" = "軟體備份";
 
 "rime.title" = "RIME";
-"about.title" = "關於";
 
+"about.title" = "關於";
+"about.rime_version" = "RIME版本";
+"about.license" = "授權條款";
+"about.email" = "聯絡信箱";
+"about.source" = "開源儲存庫";
+"about.oss.list" = "使用開源庫列表";
+"about.oss.title" = "使用開源列表";
+
+"about.reset.text" = "重置界面設定";
+"about.reset.footer" = "重置通過界面修改的設定值。\n注意：不包含新增/修改設定檔中的設定值。";
+"about.reset.title" = "重置 UI 設定";
+"about.reset.message" = "確定重置 UI 互動產生的設定嗎？";
+"about.reset.confirm" = "確定";
+
+"about.export.footer" = "匯出通過界面修改的設定值。\n注意：不包新增/修改設定檔中的設定值。";
+"about.export.text" = "匯出界面設定";
+"about.export.error" = "匯出 UI 設定失敗";
+
+"copy_successfully" = "複製成功";
 "disabledLabel" = "關閉";
 "enabledLabel" = "開啟";
+"reset_successfully" = "重置成功";
 
