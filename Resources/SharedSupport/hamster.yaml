@@ -138,6 +138,9 @@ keyboard:
   # 中文26键显示大写字符
   showUppercasedCharacterOnChineseKeyboard: true
 
+  # 按键下方边框
+  enableButtonUnderBorder: true
+
   # 配色方案
   # 来源: https://github.com/rime/squirrel/blob/master/data/squirrel.yaml
   colorSchemas:

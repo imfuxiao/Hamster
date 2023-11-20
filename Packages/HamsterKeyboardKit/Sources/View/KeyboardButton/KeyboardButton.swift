@@ -100,6 +100,7 @@ public class KeyboardButton: UIControl {
   let repeatDelay: TimeInterval = GestureButtonDefaults.repeatDelay
 
   var userInterfaceStyle: UIUserInterfaceStyle
+  private var enableButtonUnderBorder: Bool
 
   // MARK: - subview
 
@@ -188,6 +189,7 @@ public class KeyboardButton: UIControl {
     self.userInterfaceStyle = keyboardContext.colorScheme
     self.isKeyboardFloating = keyboardContext.isKeyboardFloating
     self.oldUnderShapeFrame = .zero
+    self.enableButtonUnderBorder = keyboardContext.enableButtonUnderBorder
 
     super.init(frame: .zero)
 
@@ -212,7 +214,9 @@ public class KeyboardButton: UIControl {
 
   /// 设置按钮内容视图
   func setupButtonContentView() {
-    buttonContentView.layer.addSublayer(underShadowShape)
+    if enableButtonUnderBorder {
+      buttonContentView.layer.addSublayer(underShadowShape)
+    }
     addSubview(buttonContentView)
 
     // 不能调用，推迟 inputCallout 的创建时间
@@ -251,9 +255,11 @@ public class KeyboardButton: UIControl {
       buttonContentView.frame = bounds
       // Logger.statistics.debug("button content row: \(self.row), column: \(self.column), frame: \(bounds.width) \(bounds.height)")
       if let cornerRadius = normalButtonStyle.cornerRadius {
-        underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
-        underShadowShape.fillColor = normalButtonStyle.shadow?.color.cgColor
         buttonContentView.layer.cornerRadius = cornerRadius
+        if enableButtonUnderBorder {
+          underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
+          underShadowShape.fillColor = normalButtonStyle.shadow?.color.cgColor
+        }
       }
 //      CATransaction.commit()
     }
@@ -283,10 +289,14 @@ public class KeyboardButton: UIControl {
     }
 
     if isPressed {
-      underShadowShape.opacity = 0
+      if enableButtonUnderBorder {
+        underShadowShape.opacity = 0
+      }
       addInputCallout()
     } else {
-      underShadowShape.opacity = 1
+      if enableButtonUnderBorder {
+        underShadowShape.opacity = 1
+      }
       removeInputCallout()
     }
   }

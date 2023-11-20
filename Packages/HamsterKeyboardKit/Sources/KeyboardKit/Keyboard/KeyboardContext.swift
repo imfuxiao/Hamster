@@ -770,6 +770,10 @@ public extension KeyboardContext {
   var enableClassifySymbolicKeyboard: Bool {
     hamsterConfiguration?.keyboard?.enableSymbolKeyboard ?? false
   }
+  
+  var enableButtonUnderBorder: Bool {
+    hamsterConfiguration?.keyboard?.enableButtonUnderBorder ?? true
+  }
 }
 
 extension UIKeyboardType {

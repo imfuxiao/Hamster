@@ -206,6 +206,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var enableButtonUnderBorder: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableButtonUnderBorder ?? true
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.enableButtonUnderBorder = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enableButtonUnderBorder = newValue
+    }
+  }
+
   public var displaySemicolonButton: Bool {
     get {
       HamsterAppDependencyContainer.shared.configuration.keyboard?.displaySemicolonButton ?? false
@@ -651,6 +661,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           toggleValue: { [unowned self] in displayButtonBubbles },
           toggleHandled: { [unowned self] in
             displayButtonBubbles = $0
+          }),
+        .init(
+          text: "显示按键底部边框",
+          type: .toggle,
+          toggleValue: { [unowned self] in enableButtonUnderBorder },
+          toggleHandled: { [unowned self] in
+            enableButtonUnderBorder = $0
           }),
         .init(
           text: "Shift状态锁定",
