@@ -193,7 +193,7 @@ public class Rime: IRimeNotificationDelegate {
     )
     if candidates != nil {
       return candidates!.map {
-        CandidateWord(text: $0.text, comment: $0.comment)
+        CandidateWord(text: $0.text ?? "", comment: $0.comment ?? "")
       }
     }
     return []
