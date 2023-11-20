@@ -90,10 +90,15 @@ mkdir -p Resources/SharedSupport
 
 # 内置方案雾凇
 input_scheme_name=rime-ice
+
 rm -rf $OUTPUT/.$input_scheme_name && \
   git clone --depth 1 https://github.com/iDvel/$input_scheme_name $OUTPUT/.$input_scheme_name && (
     cd $OUTPUT/.$input_scheme_name
+    # 提前编译
+    # export DYLD_FALLBACK_LIBRARY_PATH=$DYLD_FALLBACK_LIBRARY_PATH:$WORK/.deps/dist/lib
+    # $WORK/.deps/dist/bin/rime_deployer --build .
     zip -r $input_scheme_name.zip ./*
   ) && \
   cp -R $OUTPUT/.$input_scheme_name/*.zip Resources/SharedSupport/
+
 

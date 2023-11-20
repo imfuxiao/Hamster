@@ -6,7 +6,7 @@ framework:
 	bash ./librimeFramework.sh
 cleanFramework:
 	rm -rf Packages/RimeKit/Frameworks
-scheme:
-	bash ./InputSchemeBuild.sh
-cleanScheme:
+schema:
+	bash ./InputSchemaBuild.sh
+cleanSchema:
 	rm -rf Resources/SharedSupport/SharedSupport.zip 
