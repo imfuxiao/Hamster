@@ -22,73 +22,39 @@ import UIKit
  */
 public protocol KeyboardImageReader {}
 
-extension UIImage: KeyboardImageReader {
-  static var cacheImage = [String: UIImage]()
+public class HamsterUIImage: KeyboardImageReader {
+  public static let shared = HamsterUIImage()
+  private init() {}
+  public lazy var keyboard: UIImage = .init(systemName: "keyboard")!
+  public lazy var keyboardBackspace: UIImage = .init(systemName: "delete.left")!
+  public lazy var keyboardBackspaceRtl: UIImage = .init(systemName: "delete.right")!
+  public lazy var keyboardCommand: UIImage = .init(systemName: "command")!
+  public lazy var keyboardControl: UIImage = .init(systemName: "control")!
+  public lazy var keyboardDictation: UIImage = .init(systemName: "mic")!
+  public lazy var keyboardDismiss: UIImage = .init(systemName: "keyboard.chevron.compact.down")!
+  public lazy var keyboardEmail: UIImage = .init(systemName: "envelope")!
+  public lazy var keyboardEmoji: UIImage = .asset("keyboardEmoji")!
+  public lazy var keyboardStateChinese: UIImage = .asset("chineseState")!
+  public lazy var keyboardStateEnglish: UIImage = .asset("englishState")!
+  public lazy var keyboardEmojiSymbol: UIImage = .init(systemName: "face.smiling")!
+  public lazy var keyboardGlobe: UIImage = .init(systemName: "globe")!
+  public lazy var keyboardImages: UIImage = .init(systemName: "photo")!
+  public lazy var keyboardLeft: UIImage = .init(systemName: "arrow.left")!
+  public lazy var keyboardNewline: UIImage = .init(systemName: "arrow.turn.down.left")!
+  public lazy var keyboardNewlineRtl: UIImage = .init(systemName: "arrow.turn.down.right")!
+  public lazy var keyboardOption: UIImage = .init(systemName: "option")!
+  public lazy var keyboardRedo: UIImage = .init(systemName: "arrow.uturn.right")!
+  public lazy var keyboardRight: UIImage = .init(systemName: "arrow.right")!
+  public lazy var keyboardSettings: UIImage = .init(systemName: "gearshape")!
+  public lazy var keyboardShiftCapslocked: UIImage = .init(systemName: "capslock.fill")!
+  public lazy var keyboardShiftLowercased: UIImage = .init(systemName: "shift")!
+  public lazy var keyboardShiftUppercased: UIImage = .init(systemName: "shift.fill")!
+  public lazy var keyboardTab: UIImage = .init(systemName: "arrow.right.to.line")!
+  public lazy var keyboardUndo: UIImage = .init(systemName: "arrow.uturn.left")!
+  public lazy var keyboardZeroWidthSpace: UIImage = .init(systemName: "circle.dotted")!
 
-  static func getCacheImage(_ imageName: String) -> UIImage? {
-    if let image = UIImage.cacheImage[imageName] {
-      return image
-    }
-    if let image = UIImage(systemName: imageName) {
-      UIImage.cacheImage[imageName] = image
-      return image
-    }
-    return nil
-  }
-}
-
-public extension KeyboardImageReader {
-  static var keyboard: UIImage {
-    let imageName = "keyboard"
-    return UIImage.getCacheImage(imageName)!
-  }
-
-  static var keyboardBackspace: UIImage {
-    let imageName = "delete.left"
-    return UIImage.getCacheImage(imageName)!
-  }
-
-  static var keyboardBackspaceRtl: UIImage { .init(systemName: "delete.right")! }
-  static var keyboardCommand: UIImage { .init(systemName: "command")! }
-  static var keyboardControl: UIImage { .init(systemName: "control")! }
-  static var keyboardDictation: UIImage { .init(systemName: "mic")! }
-  static var keyboardDismiss: UIImage { .init(systemName: "keyboard.chevron.compact.down")! }
-  static var keyboardEmail: UIImage { .init(systemName: "envelope")! }
-  static var keyboardEmoji: UIImage { .asset("keyboardEmoji")! }
-  static var keyboardStateChinese: UIImage { .asset("chineseState")! }
-  static var keyboardStateEnglish: UIImage { .asset("englishState")! }
-  static var keyboardEmojiSymbol: UIImage { .init(systemName: "face.smiling")! }
-  static var keyboardGlobe: UIImage { .init(systemName: "globe")! }
-  static var keyboardImages: UIImage { .init(systemName: "photo")! }
-  static var keyboardLeft: UIImage { .init(systemName: "arrow.left")! }
-  static var keyboardNewline: UIImage { .init(systemName: "arrow.turn.down.left")! }
-  static var keyboardNewlineRtl: UIImage { .init(systemName: "arrow.turn.down.right")! }
-  static var keyboardOption: UIImage { .init(systemName: "option")! }
-  static var keyboardRedo: UIImage { .init(systemName: "arrow.uturn.right")! }
-  static var keyboardRight: UIImage { .init(systemName: "arrow.right")! }
-  static var keyboardSettings: UIImage { .init(systemName: "gearshape")! }
-
-  static var keyboardShiftCapslocked: UIImage {
-    let imageName = "capslock.fill"
-    return UIImage.getCacheImage(imageName)!
-  }
-
-  static var keyboardShiftLowercased: UIImage {
-    let imageName = "shift"
-    return UIImage.getCacheImage(imageName)!
-  }
-
-  static var keyboardShiftUppercased: UIImage {
-    let imageName = "shift.fill"
-    return UIImage.getCacheImage(imageName)!
-  }
-
-  static var keyboardTab: UIImage { .init(systemName: "arrow.right.to.line")! }
-  static var keyboardUndo: UIImage { .init(systemName: "arrow.uturn.left")! }
-  static var keyboardZeroWidthSpace: UIImage { .init(systemName: "circle.dotted")! }
-
-  static func keyboardNewline(for locale: Locale) -> UIImage {
-    locale.isLeftToRight ? .keyboardNewline : .keyboardNewlineRtl
+  public func keyboardNewline(for locale: Locale) -> UIImage {
+    locale.isLeftToRight ? self.keyboardNewline : self.keyboardNewlineRtl
   }
 }
 

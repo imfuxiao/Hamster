@@ -18,28 +18,28 @@ public extension KeyboardAction {
   func standardButtonImage(for context: KeyboardContext) -> UIImage? {
     // if let image = standardButtonTextImageReplacement(for: context) { return image }
     switch self {
-    case .backspace: return .keyboardBackspace
-    case .command: return .keyboardCommand
-    case .control: return .keyboardControl
-    case .dictation: return .keyboardDictation
-    case .dismissKeyboard: return .keyboardDismiss
+    case .backspace: return HamsterUIImage.shared.keyboardBackspace
+    case .command: return HamsterUIImage.shared.keyboardCommand
+    case .control: return HamsterUIImage.shared.keyboardControl
+    case .dictation: return HamsterUIImage.shared.keyboardDictation
+    case .dismissKeyboard: return HamsterUIImage.shared.keyboardDismiss
     case .image(_, let imageName, _): return UIImage(named: imageName)
     case .keyboardType(let type):
       if context.keyboardType.isNumber || context.keyboardType.isSymbol {
         return nil
       }
       return type.standardButtonImage
-    case .moveCursorBackward: return .keyboardLeft
-    case .moveCursorForward: return .keyboardRight
-    case .nextKeyboard: return .keyboardGlobe
-    case .option: return .keyboardOption
+    case .moveCursorBackward: return HamsterUIImage.shared.keyboardLeft
+    case .moveCursorForward: return HamsterUIImage.shared.keyboardRight
+    case .nextKeyboard: return HamsterUIImage.shared.keyboardGlobe
+    case .option: return HamsterUIImage.shared.keyboardOption
     case .primary(let type): return type.standardButtonImage(for: context.locale)
-    case .settings: return .keyboardSettings
+    case .settings: return HamsterUIImage.shared.keyboardSettings
     case .shift(let currentCasing):
       return currentCasing.standardButtonImage
     case .systemImage(_, let imageName, _): return UIImage(systemName: imageName)
-    case .systemSettings: return .keyboardSettings
-    case .tab: return .keyboardTab
+    case .systemSettings: return HamsterUIImage.shared.keyboardSettings
+    case .tab: return HamsterUIImage.shared.keyboardTab
     default: return nil
     }
   }
@@ -82,7 +82,7 @@ public extension KeyboardAction {
    */
   func standardButtonTextImageReplacement(for context: KeyboardContext) -> UIImage? {
     switch standardButtonText(for: context) {
-    case "↵", "↳": return .keyboardNewline(for: context.locale)
+    case "↵", "↳": return HamsterUIImage.shared.keyboardNewline(for: context.locale)
     default: return nil
     }
   }

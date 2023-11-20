@@ -43,7 +43,7 @@ public struct KeyboardButtonShadowStyle: Equatable {
      - size: The size of the shadow, by default `1`.
    */
   public init(
-    color: UIColor = .standardButtonShadow,
+    color: UIColor = HamsterUIColor.shared.standardButtonShadow,
     size: CGFloat = 1
   ) {
     self.color = color

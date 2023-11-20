@@ -112,7 +112,7 @@ public struct KeyboardButtonStyle: Equatable {
   public var shadowSize: CGFloat? {
     didSet {
       guard shadowSize != nil, shadowColor == nil else { return }
-      shadowColor = .standardButtonShadow
+      shadowColor = HamsterUIColor.shared.standardButtonShadow
     }
   }
 

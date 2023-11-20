@@ -16,21 +16,21 @@ public extension KeyboardType {
    */
   var standardButtonImage: UIImage? {
     switch self {
-    case .email: return .keyboardEmail
-    case .emojis: return .keyboardEmoji
-    case .images: return .keyboardImages
-    case .alphabetic: return .keyboardStateChinese
-    case .chinese: return .keyboardStateEnglish
+    case .email: return HamsterUIImage.shared.keyboardEmail
+    case .emojis: return HamsterUIImage.shared.keyboardEmoji
+    case .images: return HamsterUIImage.shared.keyboardImages
+    case .alphabetic: return HamsterUIImage.shared.keyboardStateChinese
+    case .chinese: return HamsterUIImage.shared.keyboardStateEnglish
     default: return nil
     }
   }
 
   var chineseImage: UIImage {
-    .keyboardStateChinese
+    HamsterUIImage.shared.keyboardStateChinese
   }
 
   var englishImage: UIImage {
-    .keyboardStateEnglish
+    HamsterUIImage.shared.keyboardStateEnglish
   }
 
   /**

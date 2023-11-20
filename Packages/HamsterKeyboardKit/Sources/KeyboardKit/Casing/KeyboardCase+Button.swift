@@ -16,10 +16,10 @@ public extension KeyboardCase {
    */
   var standardButtonImage: UIImage {
     switch self {
-    case .auto: return .keyboardShiftLowercased
-    case .capsLocked: return .keyboardShiftCapslocked
-    case .lowercased: return .keyboardShiftLowercased
-    case .uppercased: return .keyboardShiftUppercased
+    case .auto: return HamsterUIImage.shared.keyboardShiftLowercased
+    case .capsLocked: return HamsterUIImage.shared.keyboardShiftCapslocked
+    case .lowercased: return HamsterUIImage.shared.keyboardShiftLowercased
+    case .uppercased: return HamsterUIImage.shared.keyboardShiftUppercased
     }
   }
 }

@@ -132,7 +132,7 @@ public extension KeyboardReturnKeyType {
    */
   func standardButtonImage(for locale: Locale) -> UIImage? {
     switch self {
-    case .newLine: return .keyboardNewline(for: locale)
+    case .newLine: return HamsterUIImage.shared.keyboardNewline(for: locale)
     default: return nil
     }
   }

@@ -45,15 +45,15 @@ public struct HamsterKeyboardColor: Equatable {
     colorSchema schema: KeyboardColorSchema = KeyboardColorSchema(),
     userInterfaceStyle: UIUserInterfaceStyle
   ) {
-    let foregroundColor = UIColor.standardButtonForeground(for: userInterfaceStyle)
-    let backgroundColor = UIColor.standardButtonBackground(for: userInterfaceStyle)
+    let foregroundColor = HamsterUIColor.shared.standardButtonForeground(for: userInterfaceStyle)
+    let backgroundColor = HamsterUIColor.shared.standardButtonBackground(for: userInterfaceStyle)
 
     self.schemaName = schema.schemaName ?? ""
     self.name = schema.name ?? ""
     self.author = schema.author ?? ""
-    self.backColor = schema.backColor?.bgrColor ?? .clearInteractable
+    self.backColor = schema.backColor?.bgrColor ?? HamsterUIColor.shared.clearInteractable
     self.buttonBackColor = schema.buttonBackColor?.bgrColor ?? backgroundColor
-    self.buttonPressedBackColor = schema.buttonPressedBackColor?.bgrColor ?? .standardDarkButtonBackground(for: userInterfaceStyle)
+    self.buttonPressedBackColor = schema.buttonPressedBackColor?.bgrColor ?? HamsterUIColor.shared.standardDarkButtonBackground(for: userInterfaceStyle)
     self.buttonFrontColor = schema.buttonFrontColor?.bgrColor ?? foregroundColor
     self.buttonPressedFrontColor = schema.buttonPressedFrontColor?.bgrColor ?? foregroundColor
     self.buttonSwipeFrontColor = schema.buttonSwipeFrontColor?.bgrColor ?? .secondaryLabel

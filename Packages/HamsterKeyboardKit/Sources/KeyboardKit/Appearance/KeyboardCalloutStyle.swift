@@ -121,7 +121,7 @@ public struct KeyboardCalloutStyle: Equatable {
      - textColor: The text color to use in the callout, by default `.primary`.
    */
   public init(
-    backgroundColor: UIColor = .standardButtonBackground,
+    backgroundColor: UIColor = HamsterUIColor.shared.standardButtonBackground,
     borderColor: UIColor = UIColor.black.withAlphaComponent(0.5),
     buttonCornerRadius: CGFloat = 5,
     buttonInset: UIEdgeInsets = .zero,

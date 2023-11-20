@@ -43,6 +43,9 @@ import UIKit
  如果只返回新样式，所有按钮都会受到影响。有时这是你想要的，但大多数情况下可能不是。
  */
 open class StandardKeyboardAppearance: KeyboardAppearance {
+  private lazy var hamsterUIColor = HamsterUIColor.shared
+  private lazy var hamsterUIImage = HamsterUIImage.shared
+
   /// 输入法配色方案缓存
   private var cacheHamsterKeyboardColor: [UIUserInterfaceStyle: HamsterKeyboardColor?] = [:]
 
@@ -70,8 +73,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
 
   /// 非标准键盘样式
   open var nonStandardKeyboardStyle: NonStandardKeyboardStyle {
-    let pressedBackgroundColor: UIColor = keyboardContext.hasDarkColorScheme ? .standardButtonBackground(for: keyboardContext) : .white
-    let foregroundColor = UIColor.standardButtonForeground(for: keyboardContext)
+    let pressedBackgroundColor: UIColor = keyboardContext.hasDarkColorScheme ? hamsterUIColor.standardButtonBackground(for: keyboardContext) : .white
+    let foregroundColor = hamsterUIColor.standardButtonForeground(for: keyboardContext)
 
     // 开启键盘配色
     if let hamsterColor = hamsterColor() {
@@ -81,19 +84,19 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         foregroundColor: hamsterColor.buttonFrontColor,
         pressedForegroundColor: foregroundColor,
         borderColor: hamsterColor.borderColor,
-        shadowColor: .standardButtonShadow,
+        shadowColor: hamsterUIColor.standardButtonShadow,
         cornerRadius: hamsterColor.cornerRadius
       )
     }
 
-    let backColor = UIColor.standardDarkButtonBackground(for: keyboardContext)
+    let backColor = hamsterUIColor.standardDarkButtonBackground(for: keyboardContext)
     return NonStandardKeyboardStyle(
       backgroundColor: backColor,
       pressedBackgroundColor: pressedBackgroundColor,
       foregroundColor: foregroundColor,
       pressedForegroundColor: foregroundColor,
       borderColor: .clear,
-      shadowColor: .standardButtonShadow,
+      shadowColor: hamsterUIColor.standardButtonShadow,
       cornerRadius: keyboardLayoutConfiguration.buttonCornerRadius
     )
   }
@@ -177,7 +180,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       return hamsterColor.backColor
     }
 
-    return .clearInteractable
+    return hamsterUIColor.clearInteractable
   }
 
   /// 默认拼写区文字大小
@@ -222,13 +225,13 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       )
     }
 
-    let foregroundColor = UIColor.standardButtonForeground(for: keyboardContext)
+    let foregroundColor = hamsterUIColor.standardButtonForeground(for: keyboardContext)
     return CandidateBarStyle(
       phoneticTextColor: foregroundColor,
       phoneticTextFont: phoneticTextFont,
       preferredCandidateTextColor: foregroundColor,
       preferredCandidateCommentTextColor: foregroundColor,
-      preferredCandidateBackgroundColor: UIColor.standardButtonBackground(for: keyboardContext),
+      preferredCandidateBackgroundColor: hamsterUIColor.standardButtonBackground(for: keyboardContext),
       candidateTextColor: foregroundColor,
       candidateCommentTextColor: foregroundColor,
       candidateTextFont: candidateTextFont ?? KeyboardFont.title3.font,
@@ -590,9 +593,9 @@ extension KeyboardAction {
   var buttonBackgroundColorForAllStates: UIColor? {
     switch self {
     case .none: return .clear
-    case .characterMargin: return .clearInteractable
-    case .emoji: return .clearInteractable
-    case .emojiCategory: return .clearInteractable
+    case .characterMargin: return HamsterUIColor.shared.clearInteractable
+    case .emoji: return HamsterUIColor.shared.clearInteractable
+    case .emojiCategory: return HamsterUIColor.shared.clearInteractable
     default: return nil
     }
   }
@@ -617,37 +620,37 @@ extension KeyboardAction {
     }
     // 数字九宫格分类符号按键颜色调整
     if isClassifySymbolicOfLight {
-      return .standardButtonBackground(for: context)
+      return HamsterUIColor.shared.standardButtonBackground(for: context)
     }
     if isUppercasedShiftAction { return buttonBackgroundColorForPressedState(for: context) }
     if isSystemAction || isSymbolOfDarkAction || isCharacterOfDarkAction || isCleanSpellingArea {
-      return .standardDarkButtonBackground(for: context)
+      return HamsterUIColor.shared.standardDarkButtonBackground(for: context)
     }
     if isPrimaryAction { return UIColor.systemBlue }
-    if isUppercasedShiftAction { return .standardButtonBackground(for: context) }
-    return .standardButtonBackground(for: context)
+    if isUppercasedShiftAction { return HamsterUIColor.shared.standardButtonBackground(for: context) }
+    return HamsterUIColor.shared.standardButtonBackground(for: context)
   }
 
   /// 按键按下状态的背景颜色
   func buttonBackgroundColorForPressedState(for context: KeyboardContext) -> UIColor {
     // 数字九宫格分类符号按键颜色调整
     if isClassifySymbolicOfLight {
-      return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white
+      return context.hasDarkColorScheme ? HamsterUIColor.shared.standardButtonBackground(for: context) : .white
     }
 
     if isSystemAction || isSymbolOfDarkAction || isCharacterOfDarkAction || isCleanSpellingArea {
-      return context.hasDarkColorScheme ? .standardButtonBackground(for: context) : .white
+      return context.hasDarkColorScheme ? HamsterUIColor.shared.standardButtonBackground(for: context) : .white
     }
-    if isPrimaryAction { return context.hasDarkColorScheme ? .standardDarkButtonBackground(for: context) : .white }
-    if isUppercasedShiftAction { return .standardDarkButtonBackground(for: context) }
-    return .standardDarkButtonBackground(for: context)
+    if isPrimaryAction { return context.hasDarkColorScheme ? HamsterUIColor.shared.standardDarkButtonBackground(for: context) : .white }
+    if isUppercasedShiftAction { return HamsterUIColor.shared.standardDarkButtonBackground(for: context) }
+    return HamsterUIColor.shared.standardDarkButtonBackground(for: context)
   }
 
   /// 全部状态下按键的前景色
   var buttonForegroundColorForAllStates: UIColor? {
     switch self {
     case .none: return .clear
-    case .characterMargin: return .clearInteractable
+    case .characterMargin: return HamsterUIColor.shared.clearInteractable
     default: return nil
     }
   }
@@ -672,7 +675,7 @@ extension KeyboardAction {
 
   /// 空闲状态下按键的前景色
   func buttonForegroundColorForIdleState(for context: KeyboardContext) -> UIColor {
-    let standard = UIColor.standardButtonForeground(for: context)
+    let standard = HamsterUIColor.shared.standardButtonForeground(for: context)
     if isSystemAction { return standard }
     if isPrimaryAction { return .white }
     return standard
@@ -680,7 +683,7 @@ extension KeyboardAction {
 
   /// 按下状态下按键的前景色
   func buttonForegroundColorForPressedState(for context: KeyboardContext) -> UIColor {
-    let standard = UIColor.standardButtonForeground(for: context)
+    let standard = HamsterUIColor.shared.standardButtonForeground(for: context)
     if isSystemAction { return standard }
     if isPrimaryAction { return context.hasDarkColorScheme ? .white : standard }
     return standard
