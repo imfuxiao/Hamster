@@ -44,7 +44,7 @@ class ImageContentView: NibLessView {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    guard self.bounds != .zero, self.bounds != oldBounds else { return }
+    guard self.bounds != oldBounds else { return }
     self.oldBounds = self.bounds
 
     imageView.translatesAutoresizingMaskIntoConstraints = false

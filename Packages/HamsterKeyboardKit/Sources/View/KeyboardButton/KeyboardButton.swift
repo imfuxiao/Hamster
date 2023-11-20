@@ -193,6 +193,8 @@ public class KeyboardButton: UIControl {
 
     super.init(frame: .zero)
 
+    self.isHidden = isSpacer ? true : false
+
     setupButtonContentView()
   }
 
@@ -237,19 +239,23 @@ public class KeyboardButton: UIControl {
 
   override public func layoutSubviews() {
     super.layoutSubviews()
+    guard isHidden == false else { return }
 
-    if self.bounds != .zero, oldBounds != self.bounds {
+    if oldBounds != self.bounds {
       oldBounds = self.bounds
+
+      // 宽度为 0 时，不在计算 frame
+      if oldBounds.width == .zero {
+        underShadowShape.path = .none
+        buttonContentView.frame = .zero
+        return
+      }
 
 //      CATransaction.begin()
 //      CATransaction.setDisableActions(true)
 
       let insets = item.insets
       // Logger.statistics.debug("button layoutSubviews(): row: \(self.row), column: \(self.column), rowHeight: \(insets.yamlString)")
-
-      // spacer 类型不可见
-      // alpha = isSpacer ? 0 : 1
-      isHidden = isSpacer ? true : false
 
       let bounds = oldBounds.inset(by: insets)
       buttonContentView.frame = bounds

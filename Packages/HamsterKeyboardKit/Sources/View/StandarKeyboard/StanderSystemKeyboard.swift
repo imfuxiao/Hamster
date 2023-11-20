@@ -164,10 +164,12 @@ public class StanderSystemKeyboard: NibLessView {
         constraint = button.widthAnchor.constraint(equalTo: firstInputButton.widthAnchor)
       }
     case .inputPercentage(let percent):
+      let percent = CGFloat.rounded(percent)
       if let firstInputButton = inputAnchorButton {
         constraint = button.widthAnchor.constraint(equalTo: firstInputButton.widthAnchor, multiplier: percent)
       }
     case .percentage(let percent):
+      let percent = CGFloat.rounded(percent)
       constraint = button.widthAnchor.constraint(equalTo: widthAnchor, multiplier: percent)
     case .points(let points):
       constraint = button.widthAnchor.constraint(equalToConstant: points)

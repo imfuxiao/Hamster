@@ -248,9 +248,6 @@ public class KeyboardContext: ObservableObject {
   @Published
   public var traitCollection = UITraitCollection()
 
-  /// 是否首次加载空格
-  public var firstLoadingSpace = true
-
   /// 候选区域状态
   @Published
   public var candidatesViewState: CandidateBarView.State = .collapse

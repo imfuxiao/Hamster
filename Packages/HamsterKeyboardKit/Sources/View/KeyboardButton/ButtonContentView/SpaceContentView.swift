@@ -16,6 +16,8 @@ class SpaceContentView: NibLessView {
   private var asciiState: Bool
   private var style: KeyboardButtonStyle
   private var oldBounds: CGRect = .zero
+  /// 是否首次加载空格
+  private var firstLoadingSpace = true
 
   private lazy var loadingLabel: UILabel = {
     let label = UILabel(frame: .zero)
@@ -106,8 +108,7 @@ class SpaceContentView: NibLessView {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    guard self.bounds != .zero, self.bounds != oldBounds else { return }
-
+    guard self.bounds != oldBounds else { return }
     self.oldBounds = self.bounds
     loadingLabel.frame = oldBounds
     textView.frame = oldBounds
@@ -125,12 +126,12 @@ class SpaceContentView: NibLessView {
   }
 
   var showLoadingTextAlphaValue: CGFloat {
-    guard keyboardContext.firstLoadingSpace else { return 0 }
+    guard firstLoadingSpace else { return 0 }
     return isShowLoadingText ? 1 : 0
   }
 
   var showTextViewAlphaValue: CGFloat {
-    guard keyboardContext.firstLoadingSpace else { return 1 }
+    guard firstLoadingSpace else { return 1 }
     return isShowLoadingText ? 0 : 1
   }
 
@@ -169,8 +170,8 @@ class SpaceContentView: NibLessView {
     super.didMoveToWindow()
 
     guard let _ = window else { return }
-    if keyboardContext.firstLoadingSpace {
-      self.keyboardContext.firstLoadingSpace = false
+    if firstLoadingSpace {
+      self.firstLoadingSpace = false
       if isShowLoadingText {
         loadingAnimate()
       }

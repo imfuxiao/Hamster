@@ -139,18 +139,20 @@ public class KeyboardButtonContentView: NibLessView {
   override public func layoutSubviews() {
     super.layoutSubviews()
 
-    guard self.bounds != .zero, oldBounds != self.bounds else { return }
+    guard oldBounds != self.bounds else { return }
     self.oldBounds = self.bounds
+
+    if oldBounds.width == .zero {
+      upSwipeLabel.frame = .zero
+      downSwipeLabel.frame = .zero
+      contentView.frame = .zero
+      return
+    }
 
     if keyboardContext.disableSwipeLabel || !needSwipeLabel {
       contentView.frame = self.oldBounds
       return
     }
-
-//    guard downSwipeLabel.superview != nil || upSwipeLabel.superview != nil else {
-//      contentView.frame = self.oldBounds
-//      return
-//    }
 
     let showUpSwipeLabel = upSwipeLabel.superview != nil
     let showDownSwipeLabel = downSwipeLabel.superview != nil
@@ -225,6 +227,8 @@ public class KeyboardButtonContentView: NibLessView {
   func setStyle(_ style: KeyboardButtonStyle) {
     guard self.style != style else { return }
     self.style = style
+
+    guard oldBounds.width != .zero else { return }
 
     setupAppearance()
     if action == .space {
