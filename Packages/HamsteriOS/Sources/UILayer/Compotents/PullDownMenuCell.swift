@@ -24,6 +24,7 @@ public class PullDownMenuCell: NibLessTableViewCell {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     return label
   }()
 
@@ -37,6 +38,8 @@ public class PullDownMenuCell: NibLessTableViewCell {
     valueButton.configuration = UIButton.Configuration.plain()
     valueButton.configuration?.image = UIImage(systemName: "chevron.down")
     valueButton.configuration?.imagePlacement = .trailing
+
+    valueButton.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
     return valueButton
   }()

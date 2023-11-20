@@ -1296,8 +1296,8 @@ extension KeyboardSettingsViewModel {
 
     var option: String {
       switch self {
-      case .character: "字符（由 RIME 处理）"
-      case .symbol: "符号字符（不由 RIME 处理）"
+      case .character: "字符"
+      case .symbol: "符号"
       case .shortCommand: "快捷指令"
       case .keyboardType: "切换键盘"
       }
@@ -1313,7 +1313,7 @@ extension KeyboardSettingsViewModel {
     case chineseNineGrid
     case numericNineGrid
     case custom
-    case emojis
+//    case emojis
 
     var option: String {
       switch self {
@@ -1323,7 +1323,7 @@ extension KeyboardSettingsViewModel {
       case .chineseNineGrid: "中文九宫格键盘"
       case .numericNineGrid: "数字九宫格键盘"
       case .custom: "自定义键盘"
-      case .emojis: "Emojis键盘"
+//      case .emojis: "Emojis键盘"
       }
     }
 
@@ -1334,7 +1334,7 @@ extension KeyboardSettingsViewModel {
       case .classifySymbolic: return .classifySymbolic
       case .chineseNineGrid: return .chineseNumeric
       case .numericNineGrid: return .numericNineGrid
-      case .emojis: return .emojis
+//      case .emojis: return .emojis
       default:
         return nil
       }

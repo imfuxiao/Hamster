@@ -50,7 +50,9 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     textField.rightViewMode = .always
     textField.clearButtonMode = .whileEditing
     textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.textAlignment = .left
     textField.delegate = self
+    textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     return textField
   }()
 
@@ -58,6 +60,7 @@ class TextFieldTableViewCell: NibLessTableViewCell, UITextFieldDelegate {
     let label = UILabel(frame: .zero)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     return label
   }()
 
