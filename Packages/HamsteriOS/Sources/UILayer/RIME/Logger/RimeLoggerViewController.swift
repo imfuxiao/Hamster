@@ -25,6 +25,6 @@ class RimeLoggerViewController: NibLessViewController {
 
   override func loadView() {
     view = rimeLoggerFileBrowseView
-    title = "RIME 日志"
+    title = L10n.Rime.Logger.text
   }
 }

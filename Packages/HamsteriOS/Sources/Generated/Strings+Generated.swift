@@ -121,6 +121,89 @@ public enum L10n {
   public enum Rime {
     /// RIME
     public static let title = L10n.tr("Localizable", "rime.title", fallback: "RIME")
+    public enum Deploy {
+      /// RIME部署中, 请稍候……
+      public static let deploying = L10n.tr("Localizable", "rime.deploy.deploying", fallback: "RIME部署中, 请稍候……")
+      /// 部署成功
+      public static let success = L10n.tr("Localizable", "rime.deploy.success", fallback: "部署成功")
+      /// 重新部署
+      public static let text = L10n.tr("Localizable", "rime.deploy.text", fallback: "重新部署")
+    }
+    public enum Logger {
+      /// 请检查 %@，第 %@ 行。
+      public static func bannerMessage(_ p1: Any, _ p2: Any) -> String {
+        return L10n.tr("Localizable", "rime.logger.banner_message", String(describing: p1), String(describing: p2), fallback: "请检查 %@，第 %@ 行。")
+      }
+      /// RIME日志存在异常
+      public static let bannerTitle = L10n.tr("Localizable", "rime.logger.banner_title", fallback: "RIME日志存在异常")
+      /// RIME 部署异常
+      public static let error = L10n.tr("Localizable", "rime.logger.error", fallback: "RIME 部署异常")
+      /// RIME 日志
+      public static let text = L10n.tr("Localizable", "rime.logger.text", fallback: "RIME 日志")
+    }
+    public enum OverrideDict {
+      /// 如果您未使用自造词功能，请保持保持默认开启状态。
+      public static let footer = L10n.tr("Localizable", "rime.override_dict.footer", fallback: "如果您未使用自造词功能，请保持保持默认开启状态。")
+      /// 部署时覆盖键盘词库文件
+      public static let text = L10n.tr("Localizable", "rime.override_dict.text", fallback: "部署时覆盖键盘词库文件")
+    }
+    public enum Reset {
+      /// 重置
+      public static let alertConfirm = L10n.tr("Localizable", "rime.reset.alert_confirm", fallback: "重置")
+      /// 重置会恢复到初始安装状态，是否确认重置？
+      public static let alertMessage = L10n.tr("Localizable", "rime.reset.alert_message", fallback: "重置会恢复到初始安装状态，是否确认重置？")
+      /// RIME 重置
+      public static let alertTitle = L10n.tr("Localizable", "rime.reset.alert_title", fallback: "RIME 重置")
+      /// 重置失败
+      public static let failed = L10n.tr("Localizable", "rime.reset.failed", fallback: "重置失败")
+      /// RIME重置中, 请稍候……
+      public static let reseting = L10n.tr("Localizable", "rime.reset.reseting", fallback: "RIME重置中, 请稍候……")
+      /// 重置成功
+      public static let success = L10n.tr("Localizable", "rime.reset.success", fallback: "重置成功")
+      /// RIME重置
+      public static let text = L10n.tr("Localizable", "rime.reset.text", fallback: "RIME重置")
+    }
+    public enum SimpTradSwtich {
+      /// 配置文件中`switches`简繁转换选项的配置名称，仓用于中文简体与繁体之间快速切换。
+      public static let footer = L10n.tr("Localizable", "rime.simp_trad_swtich.footer", fallback: "配置文件中`switches`简繁转换选项的配置名称，仓用于中文简体与繁体之间快速切换。")
+      /// 简繁切换键值
+      public static let placeholder = L10n.tr("Localizable", "rime.simp_trad_swtich.placeholder", fallback: "简繁切换键值")
+      /// 简繁切换
+      public static let title = L10n.tr("Localizable", "rime.simp_trad_swtich.title", fallback: "简繁切换")
+    }
+    public enum Sync {
+      /// 同步失败:%@
+      public static func failed(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "rime.sync.failed", String(describing: p1), fallback: "同步失败:%@")
+      }
+      /// 注意：
+      /// 1. RIME同步自定义参数，需要手工添加至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；
+      /// 2. 同步配置示例：(点击可复制)
+      /// ```
+      /// %@
+      /// ```
+      public static func footer(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "rime.sync.footer", String(describing: p1), fallback: "注意：\n1. RIME同步自定义参数，需要手工添加至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；\n2. 同步配置示例：(点击可复制)\n```\n%@\n```")
+      }
+      /// 同步成功
+      public static let success = L10n.tr("Localizable", "rime.sync.success", fallback: "同步成功")
+      /// RIME同步中, 请稍候……
+      public static let syncing = L10n.tr("Localizable", "rime.sync.syncing", fallback: "RIME同步中, 请稍候……")
+      /// RIME同步
+      public static let text = L10n.tr("Localizable", "rime.sync.text", fallback: "RIME同步")
+      /// 同步地址无写入权限：%@
+      public static func writeError(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "rime.sync.write_error", String(describing: p1), fallback: "同步地址无写入权限：%@")
+      }
+      public enum SampleConfig {
+        /// id可以自定义，但不能其他终端定义的ID重复
+        public static let comment1 = L10n.tr("Localizable", "rime.sync.sample_config.comment1", fallback: "id可以自定义，但不能其他终端定义的ID重复")
+        /// 仓的iOS中iCloud前缀路径固定为：
+        public static let comment2 = L10n.tr("Localizable", "rime.sync.sample_config.comment2", fallback: "仓的iOS中iCloud前缀路径固定为：")
+        /// iOS中的路径与MacOS及Windows的iCloud路径是不同的
+        public static let comment3 = L10n.tr("Localizable", "rime.sync.sample_config.comment3", fallback: "iOS中的路径与MacOS及Windows的iCloud路径是不同的")
+      }
+    }
   }
   public enum Solution {
     /// 输入相关

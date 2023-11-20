@@ -40,7 +40,7 @@ public class RimeViewController: NibLessViewController {
     self.rimeViewModel.rimeRestPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] rest in
-        alertConfirm(alertTitle: "RIME 重置", message: "重置会恢复到初始安装状态，是否确认重置？", confirmTitle: "重置", confirmCallback: {
+        alertConfirm(alertTitle: L10n.Rime.Reset.alertTitle, message: L10n.Rime.Reset.alertMessage, confirmTitle: L10n.Rime.Reset.alertConfirm, confirmCallback: {
           rest()
         })
       }
@@ -52,7 +52,7 @@ public class RimeViewController: NibLessViewController {
 
 public extension RimeViewController {
   override func loadView() {
-    title = "RIME"
+    title = L10n.Rime.title
     view = RimeRootView(rimeViewModel: rimeViewModel)
   }
 

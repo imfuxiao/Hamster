@@ -63,49 +63,49 @@ public class RimeViewModel {
 
   lazy var settings: [SettingSectionModel] = [
     .init(
-      title: "简繁切换",
-      footer: "配置文件中`switches`简繁转换选项的配置名称，仓用于中文简体与繁体之间快速切换。",
+      title: L10n.Rime.SimpTradSwtich.title,
+      footer: L10n.Rime.SimpTradSwtich.footer,
       items: [
         .init(
           icon: UIImage(systemName: "square.and.pencil"),
-          placeholder: "简繁切换键值",
+          placeholder: L10n.Rime.SimpTradSwtich.placeholder,
           type: .textField,
           textValue: { [unowned self] in keyValueOfSwitchSimplifiedAndTraditional },
           textHandled: { [unowned self] in
             keyValueOfSwitchSimplifiedAndTraditional = $0
           }
-        ),
+        )
       ]
     ),
     .init(
-      footer: "如果您未使用自造词功能，请保持保持默认开启状态。",
+      footer: L10n.Rime.OverrideDict.footer,
       items: [
         .init(
-          text: "部署时覆盖键盘词库文件",
+          text: L10n.Rime.OverrideDict.text,
           type: .toggle,
           toggleValue: { [unowned self] in overrideDictFiles },
           toggleHandled: { [unowned self] in
             overrideDictFiles = $0
           }
-        ),
+        )
       ]
     ),
     .init(
       items: [
         .init(
-          text: "RIME 日志",
+          text: L10n.Rime.Logger.text,
           accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationAction: { [unowned self] in
             openRimeLoggerViewSubject.send(true)
           }
-        ),
+        )
       ]
     ),
     .init(
       items: [
         .init(
-          text: "重新部署",
+          text: L10n.Rime.Deploy.text,
           type: .button,
           buttonAction: { [unowned self] in
             Task {
@@ -114,21 +114,14 @@ public class RimeViewModel {
             }
           },
           favoriteButton: .rimeDeploy
-        ),
+        )
       ]
     ),
     .init(
-      footer: """
-      注意：
-      1. RIME同步自定义参数，需要手工添加至Rime目录下的`installation.yaml`文件中(如果没有，需要则自行创建)；
-      2. 同步配置示例：(点击可复制)
-      ```
-      \(Self.rimeSyncConfigSample)
-      ```
-      """,
+      footer: L10n.Rime.Sync.footer(Self.rimeSyncConfigSample),
       items: [
         .init(
-          text: "RIME同步",
+          text: L10n.Rime.Sync.text,
           type: .button,
           buttonAction: { [unowned self] in
             Task {
@@ -136,12 +129,12 @@ public class RimeViewModel {
             }
           },
           favoriteButton: .rimeSync
-        ),
+        )
       ]
     ),
     .init(items: [
       .init(
-        text: "RIME重置",
+        text: L10n.Rime.Reset.text,
         textTintColor: .systemRed,
         type: .button,
         buttonAction: { [unowned self] in
@@ -152,8 +145,8 @@ public class RimeViewModel {
             }
           }
         }
-      ),
-    ]),
+      )
+    ])
   ]
 
   private var reloadTableSubject = PassthroughSubject<Bool, Never>()
@@ -222,20 +215,20 @@ public extension RimeViewModel {
     try? fileHandle.close()
 
     if !errorLines.isEmpty {
-      await ProgressHUD.banner("RIME日志存在异常", "请检查 \(fileURL.lastPathComponent)，第 \(errorLines.joined(separator: ",")) 行。", delay: 5)
+      await ProgressHUD.banner(L10n.Rime.Logger.bannerTitle, L10n.Rime.Logger.bannerMessage(fileURL.lastPathComponent, errorLines.joined(separator: ",")), delay: 5)
     }
   }
 
   /// RIME 部署
   func rimeDeploy() async {
     let (fileHandle, filePath) = rimeLogger()
-    await ProgressHUD.animate("RIME部署中, 请稍候……", AnimationType.circleRotateChase, interaction: false)
+    await ProgressHUD.animate(L10n.Rime.Deploy.deploying, AnimationType.circleRotateChase, interaction: false)
     var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
     do {
       try rimeContext.deployment(configuration: &hamsterConfiguration)
       await checkRimeLogger(filePath)
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
-      await ProgressHUD.success("部署成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.Rime.Deploy.success, interaction: false, delay: 1.5)
     } catch {
       // try? FileHandle.standardError.write(contentsOf: error.localizedDescription.data(using: .utf8) ?? Data())
       Logger.statistics.error("rime deploy error: \(error)")
@@ -248,7 +241,7 @@ public extension RimeViewModel {
   func rimeSync() async {
     let (fileHandle, filePath) = rimeLogger()
     do {
-      await ProgressHUD.animate("RIME同步中, 请稍候……", interaction: false)
+      await ProgressHUD.animate(L10n.Rime.Sync.syncing, interaction: false)
 
       let hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
@@ -261,28 +254,28 @@ public extension RimeViewModel {
           do {
             try FileManager.default.createDirectory(atPath: syncDir, withIntermediateDirectories: true)
           } catch {
-            throw "同步地址无写入权限：\(syncDir)"
+            throw L10n.Rime.Sync.writeError(syncDir)
           }
         } else {
           if !FileManager.default.isWritableFile(atPath: syncDir) {
-            throw "同步地址无写入权限：\(syncDir)"
+            throw L10n.Rime.Sync.writeError(syncDir)
           }
         }
       }
 
       try rimeContext.syncRime(configuration: hamsterConfiguration)
       await checkRimeLogger(filePath)
-      await ProgressHUD.success("同步成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.Rime.Sync.success, interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rime sync error: \(error)")
-      await ProgressHUD.failed("同步失败:\(error.localizedDescription)", interaction: false, delay: 3)
+      await ProgressHUD.failed(L10n.Rime.Sync.failed(error.localizedDescription), interaction: false, delay: 3)
     }
     closeRimeLogger(fileHandle)
   }
 
   /// Rime重置
   func rimeRest() async {
-    await ProgressHUD.animate("RIME重置中, 请稍候……", interaction: false)
+    await ProgressHUD.animate(L10n.Rime.Reset.reseting, interaction: false)
     do {
       try rimeContext.restRime()
 
@@ -322,20 +315,20 @@ public extension RimeViewModel {
       /// 在另存一份用于应用配置还原
       try HamsterConfigurationRepositories.shared.saveToUserDefaultsOnDefault(hamsterConfiguration)
 
-      await ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.Rime.Reset.success, interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("rimeRest() error: \(error)")
-      await ProgressHUD.failed("重置失败", interaction: false, delay: 3)
+      await ProgressHUD.failed(L10n.Rime.Reset.failed, interaction: false, delay: 3)
     }
   }
 }
 
 public extension RimeViewModel {
   static let rimeSyncConfigSample = """
-  # id可以自定义，但不能其他终端定义的ID重复
+  # \(L10n.Rime.Sync.SampleConfig.comment1)
   installation_id: "hamster"
-  # 仓的iOS中iCloud前缀路径固定为：/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~hamsterapp/Documents
-  # iOS中的路径与MacOS及Windows的iCloud路径是不同的
+  # \(L10n.Rime.Sync.SampleConfig.comment2)/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~hamsterapp/Documents
+  # \(L10n.Rime.Sync.SampleConfig.comment3)
   sync_dir: "/private/var/mobile/Library/Mobile Documents/iCloud~dev~fuxiao~app~hamsterapp/Documents/sync"
   """
 }

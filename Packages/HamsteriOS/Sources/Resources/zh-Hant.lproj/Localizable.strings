@@ -26,6 +26,39 @@
 "backup.title" = "軟體備份";
 
 "rime.title" = "RIME";
+"rime.simp_trad_swtich.title" = "簡繁切換";
+"rime.simp_trad_swtich.footer" = "組態檔案中`switches`簡繁轉換選項的設定名稱，倉用於中文簡體與繁體之間快速切換。";
+"rime.simp_trad_swtich.placeholder" = "簡繁切換鍵值";
+"rime.override_dict.footer" = "如果您未使用自造词功能，請保持預設開啟狀態。";
+"rime.override_dict.text" = "部署時覆蓋鍵盤詞庫檔";
+"rime.logger.text" = "RIME 記錄檔";
+"rime.logger.banner_title" = "RIME記錄檔存在異常";
+"rime.logger.banner_message" = "請檢查 %@，第 %@ 行。";
+"rime.logger.error" = "RIME 部署異常";
+"rime.deploy.text" = "重新部署";
+"rime.deploy.deploying" = "RIME部署中, 請稍候……";
+"rime.deploy.success" = "部署成功";
+"rime.sync.text" = "RIME同步";
+"rime.sync.footer" = "注意：\
+1. RIME同步自定義參數，需要手工添加至Rime目錄下的`installation.yaml`檔案中(如果沒有，則需要自行建立)；\
+2. 同步設定範例：(點擊可複製)\
+```\
+%@\
+```";
+"rime.sync.syncing" = "RIME同步中, 請稍候……";
+"rime.sync.write_error" = "同步地址無寫入權限：%@";
+"rime.sync.success" = "同步成功";
+"rime.sync.failed" = "同步失敗:%@";
+"rime.sync.sample_config.comment1" = "id可以自定，但不能和其他终端定義的ID重複";
+"rime.sync.sample_config.comment2" = "倉的iOS中iCloud前綴路徑固定為：";
+"rime.sync.sample_config.comment3" = "iOS中的路徑與MacOS及Windows的iCloud路徑是不同的";
+"rime.reset.text" = "RIME重置";
+"rime.reset.reseting" = "RIME重置中, 請稍候……";
+"rime.reset.success" = "重置成功";
+"rime.reset.failed" = "重置失敗";
+"rime.reset.alert_title" = "RIME 重置";
+"rime.reset.alert_message" = "重置會恢復到初始安裝狀態，是否確認重置？";
+"rime.reset.alert_confirm" = "重置";
 
 "about.title" = "關於";
 "about.rime_version" = "RIME版本";

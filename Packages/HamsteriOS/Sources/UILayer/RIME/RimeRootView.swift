@@ -64,7 +64,7 @@ public class RimeRootView: NibLessView {
 
   @objc func copySyncConfig() {
     UIPasteboard.general.string = RimeViewModel.rimeSyncConfigSample
-    ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
+    ProgressHUD.success(L10n.copySuccessfully, interaction: false, delay: 1.5)
   }
 }
 
