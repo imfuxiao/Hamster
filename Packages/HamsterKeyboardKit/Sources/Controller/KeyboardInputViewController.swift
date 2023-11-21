@@ -491,8 +491,15 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       // fix: 内嵌模式问题
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) { [weak self] in
         guard let self = self else { return }
-        if let firstCandidate = self.rimeContext.suggestions.first {
-          self.textDocumentProxy.insertText(firstCandidate.text)
+        // 顶码上屏
+        if keyboardContext.swipePaging {
+          if let firstCandidate = self.rimeContext.suggestions.first {
+            self.textDocumentProxy.insertText(firstCandidate.text)
+          }
+        } else {
+          if let commit = self.rimeContext.rimeContext.commitTextPreview {
+            self.textDocumentProxy.insertText(commit)
+          }
         }
         self.rimeContext.reset()
         self.insertTextPatch(symbol.char)
