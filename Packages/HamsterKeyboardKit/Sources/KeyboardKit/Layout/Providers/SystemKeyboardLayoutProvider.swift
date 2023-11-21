@@ -188,7 +188,13 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
       }
       return context.keyboardType
     }()
-    if let swipe = context.keyboardSwipe[keyboardTypeKey]?[action] {
+    let actionKey: KeyboardAction = {
+      if case .character(let char) = action {
+        return .character(char.lowercased())
+      }
+      return action
+    }()
+    if let swipe = context.keyboardSwipe[keyboardTypeKey]?[actionKey] {
       return swipe
     }
     return []
