@@ -242,12 +242,12 @@ extension InputSchemaViewModel {
   func inputSchemaMenus() -> UIMenu {
     let barButtonMenu = UIMenu(title: "", children: [
       UIAction(
-        title: "本地导入",
+        title: "导入方案",
         image: UIImage(systemName: "square.and.arrow.down"),
         handler: { [unowned self] _ in self.presentDocumentPickerSubject.send(.documentPicker) }
       ),
       UIAction(
-        title: "开源方案下载",
+        title: "方案下载",
         image: UIImage(systemName: "icloud.and.arrow.down"),
         handler: { [unowned self] _ in self.presentDocumentPickerSubject.send(.downloadCloudInputSchema) }
       ),

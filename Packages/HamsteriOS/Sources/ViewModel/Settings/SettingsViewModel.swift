@@ -113,8 +113,8 @@ public class SettingsViewModel: ObservableObject {
           }
         ),
         .init(
-          icon: UIImage(systemName: "network")!,
-          text: "输入方案上传",
+          icon: UIImage(systemName: "wifi")!,
+          text: "Wi-Fi上传方案",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
             self.mainViewModel.subViewSubject.send(.uploadInputSchema)
@@ -122,7 +122,7 @@ public class SettingsViewModel: ObservableObject {
         ),
         .init(
           icon: UIImage(systemName: "folder")!,
-          text: "方案文件管理",
+          text: "文件管理",
           accessoryType: .disclosureIndicator,
           navigationAction: { [unowned self] in
             self.mainViewModel.subViewSubject.send(.finder)

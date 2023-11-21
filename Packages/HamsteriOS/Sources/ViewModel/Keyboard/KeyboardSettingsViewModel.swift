@@ -702,22 +702,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
-      footer: "关闭后，按键上不在显示划动文本。",
+      footer: "关闭后，按键右上侧为显示上划文本，左上侧显示下划文本。",
       items: [
         .init(
-          text: "关闭划动显示文本",
-          type: .toggle,
-          toggleValue: { [unowned self] in disableSwipeLabel },
-          toggleHandled: { [unowned self] in
-            disableSwipeLabel = $0
-          })
-      ]),
-
-    .init(
-      footer: "关闭后，上下滑动全部显示时，右侧为显示上划，左侧显示下划。",
-      items: [
-        .init(
-          text: "左侧显示上划",
+          text: "上划显示位置-左上侧",
           type: .toggle,
           toggleValue: { [unowned self] in upSwipeOnLeft },
           toggleHandled: { [unowned self] in
@@ -726,21 +714,33 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
-      footer: "默认关闭状态下，在按键上方显示上下划动符号（如果存在），开启状态下，按键上方显示上划，下方显示下划。",
+      footer: "开启后，按键上方显示上划，下方显示下划。",
       items: [
         .init(
-          text: "按键上下方显示划动",
+          text: "划动文本上下显示",
           type: .toggle,
           toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
           toggleHandled: { [unowned self] in
             swipeLabelUpAndDownLayout = $0
           }),
         .init(
-          text: "上下显示不规则布局",
+          text: "不规则显示划动文本",
           type: .toggle,
           toggleValue: { [unowned self] in swipeLabelUpAndDownIrregularLayout },
           toggleHandled: { [unowned self] in
             swipeLabelUpAndDownIrregularLayout = $0
+          })
+      ]),
+
+    .init(
+      // footer: "关闭后，按键不在显示划动文本。",
+      items: [
+        .init(
+          text: "划动文本显示关闭",
+          type: .toggle,
+          toggleValue: { [unowned self] in disableSwipeLabel },
+          toggleHandled: { [unowned self] in
+            disableSwipeLabel = $0
           })
       ]),
 
