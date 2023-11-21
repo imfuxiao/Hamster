@@ -176,7 +176,8 @@ public extension KeyboardButton {
           // 获取划动方向
           if let direction = SwipeDirection.direction(distanceX: distanceX, distanceY: distanceY, tangentThreshold: tangentThreshold) {
             // 生成划动手势处理函数，函数会在 touch 释放时触发
-            swipeGestureHandle = { [unowned self] in
+            swipeGestureHandle = { [weak self] in
+              guard let self = self else { return }
               swipeAction(direction: direction)
             }
             return

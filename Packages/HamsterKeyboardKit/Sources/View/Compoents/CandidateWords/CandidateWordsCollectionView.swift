@@ -90,7 +90,8 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 
   func combine() {
-    self.rimeContext.registryHandleSuggestionsChanged { [unowned self] candidates in
+    self.rimeContext.registryHandleSuggestionsChanged { [weak self] candidates in
+      guard let self = self else { return }
       Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
       self.candidates = candidates
       self.reloadData()
@@ -115,7 +116,8 @@ public class CandidateWordsCollectionView: UICollectionView {
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] state in
+      .sink { [weak self] state in
+        guard let self = self else { return }
         guard self.candidatesViewState != state else { return }
         self.candidatesViewState = state
         changeLayout(state)

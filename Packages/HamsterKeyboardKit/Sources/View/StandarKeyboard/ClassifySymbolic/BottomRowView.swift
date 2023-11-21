@@ -76,7 +76,8 @@ class BottomRowView: NibLessView {
   func combine() {
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] _ in
+      .sink { [weak self] _ in
+        guard let self = self else { return }
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)

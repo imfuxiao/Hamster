@@ -153,7 +153,8 @@ class KeyboardToolbarView: NibLessView {
   }
 
   func combine() {
-    rimeContext.registryHandleUserInputKeyChanged { [unowned self] in
+    rimeContext.registryHandleUserInputKeyChanged { [weak self] in
+      guard let self = self else { return }
       let isEmpty = $0.isEmpty
       self.commonFunctionBar.isHidden = !isEmpty
       self.candidateBarView.isHidden = isEmpty

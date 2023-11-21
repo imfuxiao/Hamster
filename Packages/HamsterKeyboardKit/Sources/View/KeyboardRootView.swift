@@ -294,7 +294,8 @@ class KeyboardRootView: NibLessView {
     if keyboardContext.enableToolbar {
       keyboardContext.$candidatesViewState
         .receive(on: DispatchQueue.main)
-        .sink { [unowned self] in
+        .sink { [weak self] in
+          guard let self = self else { return }
           guard candidateViewState != $0 else { return }
           setNeedsLayout()
         }
@@ -304,7 +305,8 @@ class KeyboardRootView: NibLessView {
     // 跟踪 UIUserInterfaceStyle 变化
     keyboardContext.$traitCollection
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
+      .sink { [weak self] in
+        guard let self = self else { return }
         guard userInterfaceStyle != $0.userInterfaceStyle else { return }
         userInterfaceStyle = $0.userInterfaceStyle
         setupAppearance()
@@ -318,7 +320,8 @@ class KeyboardRootView: NibLessView {
     // 屏幕方向改变调整按键高度及按键内距
     keyboardContext.$interfaceOrientation
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
+      .sink { [weak self] in
+        guard let self = self else { return }
         guard $0 != self.interfaceOrientation else { return }
         self.interfaceOrientation = $0
         self.primaryKeyboardView.setNeedsLayout()
@@ -328,7 +331,8 @@ class KeyboardRootView: NibLessView {
     // iPad 浮动模式开启
     keyboardContext.$isKeyboardFloating
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
+      .sink { [weak self] in
+        guard let self = self else { return }
         guard self.isKeyboardFloating != $0 else { return }
         self.isKeyboardFloating = $0
         self.primaryKeyboardView.setNeedsLayout()
@@ -338,7 +342,8 @@ class KeyboardRootView: NibLessView {
     // 跟踪键盘类型变化
     keyboardContext.keyboardTypePublished
       .receive(on: DispatchQueue.main)
-      .sink { [unowned self] in
+      .sink { [weak self] in
+        guard let self = self else { return }
         guard $0 != currentKeyboardType else { return }
         currentKeyboardType = $0
 
