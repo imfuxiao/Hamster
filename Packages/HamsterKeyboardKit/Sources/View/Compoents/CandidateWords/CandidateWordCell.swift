@@ -11,6 +11,7 @@ import UIKit
  候选文字单元格
  */
 class CandidateWordCell: UICollectionViewCell {
+  public static let identifier = "CandidateWordCell"
   private var candidateSuggestion: CandidateSuggestion? = nil
   private var showIndex: Bool = false
   private var showComment: Bool = false
@@ -22,11 +23,9 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
-//    label.adjustsFontSizeToFitWidth = true
-//    label.minimumScaleFactor = 0.8
     label.lineBreakMode = .byTruncatingTail
-//    label.setContentHuggingPriority(.defaultLow, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
@@ -34,49 +33,25 @@ class CandidateWordCell: UICollectionViewCell {
     let label = UILabel()
     label.textAlignment = .center
     label.numberOfLines = 1
-//    label.adjustsFontSizeToFitWidth = true
-//    label.minimumScaleFactor = 0.8
-//    label.lineBreakMode = .byClipping
     label.lineBreakMode = .byTruncatingTail
-//    label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+    label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()
 
-//  private lazy var containerView: UIView = {
-//    let stackView = UIStackView(arrangedSubviews: [textLabel, secondaryLabel])
-//    stackView.axis = .horizontal
-//    stackView.alignment = .firstBaseline
-//    stackView.distribution = .fill
-//    stackView.spacing = 0
-//
-//    let centerView = UIStackView(arrangedSubviews: [stackView])
-//    centerView.axis = .horizontal
-//    centerView.alignment = .center
-//    centerView.distribution = .equalSpacing
-//    centerView.spacing = 0
-  ////    centerView.isLayoutMarginsRelativeArrangement = true
-  ////    centerView.layoutMargins = .horizontal(8, vertical: 6)
-//    return centerView
-//  }()
-
-  private lazy var containerView: UIView = {
+  private lazy var labelContainerView: UIView = {
     let containerView = UIView(frame: .zero)
-
+    containerView.translatesAutoresizingMaskIntoConstraints = false
     containerView.addSubview(textLabel)
     containerView.addSubview(secondaryLabel)
-
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    textLabel.translatesAutoresizingMaskIntoConstraints = false
-    secondaryLabel.translatesAutoresizingMaskIntoConstraints = false
 
     textLabelCenterXContainer = textLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
     textLabelCenterXContainer?.priority = .required
 
     NSLayoutConstraint.activate([
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0),
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -6),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -0),
 
       textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
       secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
@@ -87,7 +62,11 @@ class CandidateWordCell: UICollectionViewCell {
       textLabelCenterXContainer!,
     ])
 
-    let stackView = UIStackView(arrangedSubviews: [containerView])
+    return containerView
+  }()
+
+  private lazy var containerView: UIStackView = {
+    let stackView = UIStackView(arrangedSubviews: [labelContainerView])
     stackView.axis = .horizontal
     stackView.alignment = .center
     stackView.distribution = .fill
@@ -107,14 +86,6 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   func setupView() {
-//    containerView.translatesAutoresizingMaskIntoConstraints = false
-//    contentView.addSubview(containerView)
-//    NSLayoutConstraint.activate([
-//      containerView.topAnchor.constraint(equalTo: contentView.topAnchor),
-//      containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-//      containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-//      containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-//    ])
     contentView.addSubview(containerView)
     containerView.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate([

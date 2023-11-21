@@ -38,7 +38,7 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// 当前用户输入，用来判断滚动候选栏是否滚动到首个首选字
   var currentUserInputKey: String = ""
 
-  private var diffableDataSource: UICollectionViewDiffableDataSource<Int, CandidateSuggestion>! = nil
+  private var candidates: [CandidateSuggestion]?
 
   init(
     style: CandidateBarStyle,
@@ -67,13 +67,8 @@ public class CandidateWordsCollectionView: UICollectionView {
     super.init(frame: .zero, collectionViewLayout: horizontalLayout)
 
     self.delegate = self
-    self.diffableDataSource = makeDataSource()
-
-    // init data
-    var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-    snapshot.appendSections([0])
-    snapshot.appendItems([], toSection: 0)
-    diffableDataSource.apply(snapshot, animatingDifferences: false)
+    self.dataSource = self
+    self.register(CandidateWordCell.self, forCellWithReuseIdentifier: CandidateWordCell.identifier)
 
     self.backgroundColor = UIColor.clear
     // 水平划动状态下不允许垂直划动
@@ -91,49 +86,18 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   func setupStyle(_ style: CandidateBarStyle) {
     self.style = style
-
-    // 重新加载数据
-    reloadDiffableDataSource()
-  }
-
-  /// 构建数据源
-  func makeDataSource() -> UICollectionViewDiffableDataSource<Int, CandidateSuggestion> {
-    let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
-    let showIndex = toolbarConfig?.displayIndexOfCandidateWord
-    let showComment = toolbarConfig?.displayCommentOfCandidateWord
-
-    let candidateWordCellRegistration = UICollectionView.CellRegistration<CandidateWordCell, CandidateSuggestion>
-    { [unowned self] cell, _, candidateSuggestion in
-      cell.updateWithCandidateSuggestion(
-        candidateSuggestion,
-        style: style,
-        showIndex: showIndex,
-        showComment: showComment
-      )
-    }
-
-    let dataSource = UICollectionViewDiffableDataSource<Int, CandidateSuggestion>(collectionView: self) { collectionView, indexPath, candidateSuggestion in
-      collectionView.dequeueConfiguredReusableCell(using: candidateWordCellRegistration, for: indexPath, item: candidateSuggestion)
-    }
-
-    return dataSource
+    self.reloadData()
   }
 
   func combine() {
-    self.rimeContext.registryHandleSuggestionsChanged { [weak self] candidates in
-      guard let self = self else { return }
-
+    self.rimeContext.registryHandleSuggestionsChanged { [unowned self] candidates in
       Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
-
-      var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-      snapshot.appendSections([0])
-      snapshot.appendItems(candidates, toSection: 0)
-      diffableDataSource.applySnapshotUsingReloadData(snapshot)
-
-      if currentUserInputKey != rimeContext.userInputKey {
-        currentUserInputKey = rimeContext.userInputKey
+      self.candidates = candidates
+      self.reloadData()
+      if self.currentUserInputKey != self.rimeContext.userInputKey {
+        self.currentUserInputKey = self.rimeContext.userInputKey
         if !candidates.isEmpty {
-          if candidatesViewState.isCollapse() {
+          if self.candidatesViewState.isCollapse() {
             self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
           } else {
             self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
@@ -142,8 +106,10 @@ public class CandidateWordsCollectionView: UICollectionView {
         }
       }
 
-      if candidates.isEmpty {
+      if candidates.isEmpty, self.candidatesViewState != .collapse {
+        self.candidatesViewState = .collapse
         self.keyboardContext.candidatesViewState = .collapse
+        changeLayout(.collapse)
       }
     }
 
@@ -159,37 +125,49 @@ public class CandidateWordsCollectionView: UICollectionView {
 
   func changeLayout(_ state: CandidateBarView.State) {
     if state.isCollapse() {
-      setCollectionViewLayout(horizontalLayout, animated: false) { [weak self] _ in
-        guard let self = self else { return }
+      setCollectionViewLayout(self.horizontalLayout, animated: false) { [unowned self] _ in
         self.alwaysBounceHorizontal = true
         self.alwaysBounceVertical = false
         self.contentOffset = .zero
-        // self.reloadDiffableDataSource()
       }
     } else {
-      setCollectionViewLayout(verticalLayout, animated: false) { [weak self] _ in
-        guard let self = self else { return }
+      setCollectionViewLayout(self.verticalLayout, animated: false) { [unowned self] _ in
         self.alwaysBounceHorizontal = false
         self.alwaysBounceVertical = true
         self.contentOffset = .zero
-        // self.reloadDiffableDataSource()
       }
     }
   }
+}
 
-  func reloadDiffableDataSource() {
-    var snapshot = self.diffableDataSource.snapshot()
-    snapshot.reloadSections([0])
-    self.diffableDataSource.apply(snapshot, animatingDifferences: false)
+// MARK: - UICollectionViewDataSource
+
+extension CandidateWordsCollectionView: UICollectionViewDataSource {
+  public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    candidates?.count ?? 0
+  }
+
+  public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
+    let showIndex = toolbarConfig?.displayIndexOfCandidateWord
+    let showComment = toolbarConfig?.displayCommentOfCandidateWord
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CandidateWordCell.identifier, for: indexPath)
+    if let cell = cell as? CandidateWordCell, let candidate = candidates?[indexPath.item] {
+      cell.updateWithCandidateSuggestion(candidate, style: style, showIndex: showIndex, showComment: showComment)
+    }
+    return cell
   }
 }
 
 // MAKE: - UICollectionViewDelegate
 
 extension CandidateWordsCollectionView: UICollectionViewDelegate {
-  public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    let count = diffableDataSource.snapshot(for: indexPath.section).items.count
-    if indexPath.item + 1 == count {
+  /// 向下划动到达阈值时获取下一页数据
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let threshold: CGFloat = 50.0
+    let contentOffset = scrollView.contentOffset.y
+    let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+    if (maximumOffset - contentOffset <= threshold) && (maximumOffset - contentOffset != -5.0) {
       rimeContext.nextPage()
     }
   }
@@ -241,24 +219,16 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
     let heightOfToolbar: CGFloat = keyboardContext.heightOfToolbar - heightOfCodingArea - 6
 
-    let candidate = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
+    guard let candidate = self.candidates?[indexPath.item] else { return .zero }
     let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
 
-    var candidateTextFont = KeyboardFont.title3.font
-    var candidateCommentFont = KeyboardFont.caption2.font
-
-    if let titleFontSize = toolbarConfig?.candidateWordFontSize {
-      candidateTextFont = UIFont.systemFont(ofSize: CGFloat(titleFontSize))
-    }
-    if let subtileFontSize = toolbarConfig?.candidateCommentFontSize {
-      candidateCommentFont = UIFont.systemFont(ofSize: CGFloat(subtileFontSize))
-    }
-
+    let candidateTextFont = style.candidateTextFont
+    let candidateCommentFont = style.candidateCommentFont
     let showComment = toolbarConfig?.displayCommentOfCandidateWord ?? false
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord ?? false
 
-    // 垂直布局时，为 cell 内容增加左右间距
-    let intrinsicHorizontalMargin: CGFloat = isVerticalLayout ? 20 : 12
+    // 为 cell 内容增加左右间距
+    let intrinsicHorizontalMargin: CGFloat = 12
 
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
     let maxWidth: CGFloat = UIScreen.main.bounds.width - ((self.window?.screen.interfaceOrientation == .portrait) ? 60 : 220)

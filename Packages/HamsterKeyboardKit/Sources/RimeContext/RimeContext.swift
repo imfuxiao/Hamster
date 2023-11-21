@@ -75,6 +75,7 @@ public class RimeContext {
   public private(set) var commitText: String = ""
 
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
+  @MainActor
   public var t9UserInputKey: String {
     guard !userInputKey.isEmpty else { return "" }
     guard let firstCandidate = suggestions.first else { return userInputKey }
@@ -86,6 +87,7 @@ public class RimeContext {
   public var selectPinyinList: [String] = []
 
   /// 字母模式
+  @MainActor
   public var asciiMode: Bool = false {
     didSet {
       registryHandleAsciiModeChanged.forEach { handle in
@@ -95,6 +97,7 @@ public class RimeContext {
   }
 
   /// 候选字
+  @MainActor
   public var suggestions: [CandidateSuggestion] = [] {
     didSet {
       registryHandleSuggestionsChanged.forEach { handle in
@@ -162,6 +165,7 @@ public class RimeContext {
 
 public extension RimeContext {
   /// RIME Context 状态重置
+  @MainActor
   func reset() {
     self.pageIndex = 0
     self.userInputKey = ""
@@ -220,6 +224,7 @@ public extension RimeContext {
     self.currentSchema = schema
   }
 
+  @MainActor
   func setAsciiMode(_ model: Bool) {
     self.asciiMode = model
   }
@@ -247,7 +252,7 @@ public extension RimeContext {
       guard mode.hasSuffix("ascii_mode") else { return }
       Task {
         let mode = !mode.hasPrefix("!")
-        self.setAsciiMode(mode)
+        await self.setAsciiMode(mode)
         Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
       }
     })
@@ -262,7 +267,7 @@ public extension RimeContext {
     setupRimeInputSchema()
 
     // 中英状态同步
-    setAsciiMode(Rime.shared.isAsciiMode())
+    await setAsciiMode(Rime.shared.isAsciiMode())
   }
 
   /// RIME 关闭
@@ -499,6 +504,7 @@ public extension RimeContext {
   }
 
   /// 切换最近一次输入方案
+  @MainActor
   func switchLatestInputSchema() {
     let latestSchema: RimeSchema
     if let schema = self.latestSchema {
@@ -522,6 +528,7 @@ public extension RimeContext {
   }
 
   /// 触发 RIME 的 switcher
+  @MainActor
   func switcher() {
     guard !hotKeys.isEmpty else { return }
     let hotkey = hotKeys[0] // 取第一个
@@ -533,6 +540,7 @@ public extension RimeContext {
   }
 
   /// 根据索引选择候选字
+  @MainActor
   func selectCandidate(index: Int) {
     _ = Rime.shared.selectCandidate(index: index)
     syncContext()
@@ -569,6 +577,7 @@ public extension RimeContext {
   }
 
   /// 中英切换
+  @MainActor
   func switchEnglishChinese() {
     self.reset()
     self.asciiMode.toggle()
@@ -583,6 +592,7 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入文字
    */
+  @MainActor
   func tryHandleInputText(_ text: String) -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKey(text)
@@ -598,6 +608,7 @@ public extension RimeContext {
   /**
    RIME引擎尝试处理输入编码
    */
+  @MainActor
   func tryHandleInputCode(_ code: Int32, modifier: Int32 = 0) -> Bool {
     // 由rime处理全部符号
     let handled = Rime.shared.inputKeyCode(code, modifier: modifier)
@@ -610,6 +621,7 @@ public extension RimeContext {
   }
 
   /// 同步context: 主要是获取当前引擎提供的候选文字, 同时更新rime published属性 userInputKey
+  @MainActor
   func syncContext() {
     self.pageIndex = 0
     let context = Rime.shared.context()
@@ -646,6 +658,7 @@ public extension RimeContext {
   }
 
   /// 分页：下一页
+  @MainActor
   func nextPage() {
     self.pageIndex += 1
     var highlightIndex = 0
@@ -682,6 +695,7 @@ public extension RimeContext {
     return result
   }
 
+  @MainActor
   func deleteBackward() {
     _ = Rime.shared.inputKeyCode(XK_BackSpace)
     self.syncContext()
