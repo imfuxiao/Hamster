@@ -101,7 +101,7 @@ public class HamsterConfigurationRepositories {
     UserDefaults.hamster.removeObject(forKey: Self.hamsterConfigurationKey)
   }
 
-  /// 按优先级dc
+  /// 按优先级读取配置文件
   public func loadConfiguration() throws -> HamsterConfiguration {
     var configuration = HamsterConfiguration()
 

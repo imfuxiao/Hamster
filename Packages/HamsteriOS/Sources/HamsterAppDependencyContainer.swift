@@ -151,18 +151,19 @@ open class HamsterAppDependencyContainer {
 
   /// 重置应用配置
   public func resetAppConfiguration() {
+    HamsterConfigurationRepositories.shared.resetAppConfiguration()
+    HamsterAppDependencyContainer.shared.applicationConfiguration = HamsterConfiguration(
+      general: GeneralConfiguration(),
+      toolbar: KeyboardToolbarConfiguration(),
+      keyboard: KeyboardConfiguration(),
+      rime: RimeConfiguration(),
+      swipe: KeyboardSwipeConfiguration(),
+      keyboards: nil
+    )
+
     // 删除 UserDefaults 中的 UI 操作配置
     if let configuration = try? HamsterConfigurationRepositories.shared.loadConfiguration() {
-      HamsterConfigurationRepositories.shared.resetAppConfiguration()
       HamsterAppDependencyContainer.shared.configuration = configuration
-      HamsterAppDependencyContainer.shared.applicationConfiguration = HamsterConfiguration(
-        general: GeneralConfiguration(),
-        toolbar: KeyboardToolbarConfiguration(),
-        keyboard: KeyboardConfiguration(),
-        rime: RimeConfiguration(),
-        swipe: KeyboardSwipeConfiguration(),
-        keyboards: nil
-      )
     }
   }
 
