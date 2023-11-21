@@ -37,6 +37,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
 
   /// 空格拖动手势的激活位置
   private var spaceDragActivationLocation: CGPoint?
+  private var rimeContext: RimeContext
 
   // MARK: - Initialization
 
@@ -70,6 +71,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
       keyboardFeedbackHandler: ivc.keyboardFeedbackHandler,
       spaceDragSensitivity: spaceDragSensitivity
     )
+    self.rimeContext = ivc.rimeContext
   }
 
   /**
@@ -89,6 +91,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
   public init(
     keyboardController: KeyboardController,
     keyboardContext: KeyboardContext,
+    rimeContext: RimeContext,
     keyboardBehavior: KeyboardBehavior,
     keyboardFeedbackHandler: KeyboardFeedbackHandler,
     autocompleteContext: AutocompleteContext,
@@ -100,6 +103,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     self.autocompleteContext = autocompleteContext
     self.keyboardBehavior = keyboardBehavior
     self.keyboardContext = keyboardContext
+    self.rimeContext = rimeContext
     self.keyboardFeedbackHandler = keyboardFeedbackHandler
     self.spaceDragGestureHandler = spaceDragGestureHandler ?? Self.dragGestureHandler(
       keyboardController: keyboardController,
@@ -266,6 +270,10 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
    您可以覆盖此功能，自定义操作如何触发反馈。
    */
   open func shouldTriggerFeedback(for gesture: KeyboardGesture, on action: KeyboardAction) -> Bool {
+    // 注意：是重复手势状态下，光标前无内容时，或用户无代上屏文字时，不触发反馈
+    if gesture == .repeatPress && action == .backspace {
+      return !rimeContext.userInputKey.isEmpty || keyboardContext.textDocumentProxy.documentContextBeforeInput != nil
+    }
     if gesture.isSwipe { return false }
     if gesture == .press && self.action(for: .release, on: action) != nil { return true }
     if gesture != .release && self.action(for: gesture, on: action) != nil { return true }
