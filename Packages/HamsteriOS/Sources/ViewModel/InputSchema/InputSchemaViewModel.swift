@@ -304,6 +304,7 @@ extension InputSchemaViewModel {
       Logger.statistics.debug("zip \(error)")
       await ProgressHUD.failed("导入Zip文件失败, \(error.localizedDescription)")
     }
+    try? FileManager.default.removeItem(at: fileURL)
   }
 }
 
