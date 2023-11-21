@@ -408,8 +408,8 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
   /// 用于特定操作的字体。
   open func buttonFont(for action: KeyboardAction) -> UIFont {
     let size = buttonFontSize(for: action)
-    guard let weight = buttonFontWeight(for: action) else { return UIFont.systemFont(ofSize: size) }
-    return UIFont.systemFont(ofSize: size, weight: weight)
+    guard let weight = buttonFontWeight(for: action) else { return getCacheFont(size: size, weight: nil) }
+    return getCacheFont(size: size, weight: weight)
   }
 
   open func buttonFont(for key: Key) -> UIFont {
@@ -418,7 +418,7 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     return UIFont.systemFont(ofSize: size, weight: weight)
   }
 
-  // TODO: 自定义配置字体
+  // TODO: 暂不支持自定义字体
   var cacheFont = [String: UIFont]()
   func getCacheFont(size: CGFloat, weight: UIFont.Weight?) -> UIFont {
     let key = "size:\(size),weight:\(weight?.rawValue ?? 0)"
