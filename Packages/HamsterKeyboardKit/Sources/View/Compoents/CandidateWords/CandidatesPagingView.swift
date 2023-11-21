@@ -129,12 +129,13 @@ class CandidatesPagingCollectionView: UICollectionView {
       guard let self = self else { return }
       guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
       guard let pageCandidates = context.menu?.candidates else { return }
-      let label = context.labels ?? Array<String>.init(repeating: "", count: pageCandidates.count)
+      let labels = context.labels ?? [String]()
+      let selectKeys = (context.menu?.selectKeys ?? "").map { String($0) }
       var candidates = [CandidateSuggestion]()
       for (index, candidate) in pageCandidates.enumerated() {
         let suggestion = CandidateSuggestion(
           index: index,
-          label: index < label.count ? label[index] : "",
+          label: indexLabel(index, labels: labels, selectKeys: selectKeys),
           text: candidate.text,
           title: candidate.text,
           isAutocomplete: index == highlightedIndex,
@@ -148,6 +149,18 @@ class CandidatesPagingCollectionView: UICollectionView {
       snapshot.appendItems(candidates, toSection: 0)
       diffableDataSource.applySnapshotUsingReloadData(snapshot)
     }
+  }
+
+  /// 显示 index 对应的 label
+  /// 优先级：labels > selectKeys > index
+  func indexLabel(_ index: Int, labels: [String], selectKeys: [String]) -> String {
+    if index < labels.count, !labels[index].isEmpty {
+      return labels[index]
+    }
+    if index < selectKeys.count, !selectKeys[index].isEmpty {
+      return selectKeys[index]
+    }
+    return "\(index + 1)"
   }
 
   func reloadDiffableDataSource() {
