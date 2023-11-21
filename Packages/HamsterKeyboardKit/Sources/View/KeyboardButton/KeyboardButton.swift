@@ -245,7 +245,7 @@ public class KeyboardButton: UIControl {
       oldBounds = self.bounds
 
       // 宽度为 0 时，不在计算 frame
-      if oldBounds.width == .zero {
+      if oldBounds.width == .zero || oldBounds.height == .zero {
         underShadowShape.path = .none
         buttonContentView.frame = .zero
         return

@@ -142,7 +142,7 @@ public class KeyboardButtonContentView: NibLessView {
     guard oldBounds != self.bounds else { return }
     self.oldBounds = self.bounds
 
-    if oldBounds.width == .zero {
+    if oldBounds.width == .zero || oldBounds.height == .zero {
       upSwipeLabel.frame = .zero
       downSwipeLabel.frame = .zero
       contentView.frame = .zero

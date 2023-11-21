@@ -72,7 +72,7 @@ public class TextContentView: NibLessView {
     guard oldBounds != self.bounds else { return }
     self.oldBounds = self.bounds
 
-    if oldBounds.width == .zero {
+    if oldBounds.width == .zero || oldBounds.height == .zero {
       self.label.frame = .zero
       return
     }
