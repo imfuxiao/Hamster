@@ -59,7 +59,7 @@ public class CandidateWordsCollectionView: UICollectionView {
     }()
 
     self.verticalLayout = {
-      let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .justified, verticalAlignment: .center)
+      let layout = SeparatorCollectionViewFlowLayout()
       layout.scrollDirection = .vertical
       return layout
     }()

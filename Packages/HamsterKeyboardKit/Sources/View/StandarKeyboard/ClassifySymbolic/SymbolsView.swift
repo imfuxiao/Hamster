@@ -24,7 +24,7 @@ class SymbolsView: UICollectionView {
     self.viewModel = viewModel
 
     let layout = {
-      let layout = SeparatorCollectionViewFlowLayout(horizontalAlignment: .justified, verticalAlignment: .center)
+      let layout = SeparatorCollectionViewFlowLayout()
       layout.scrollDirection = .vertical
       return layout
     }()

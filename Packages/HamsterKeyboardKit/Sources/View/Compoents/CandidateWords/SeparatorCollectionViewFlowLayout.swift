@@ -11,42 +11,76 @@ import UIKit
 // https://gist.github.com/tomaskraina/1eb291e4717f14ad6e0f8e60ffe9b7d3
 // https://stackoverflow.com/questions/28691408/uicollectionview-custom-line-separators
 
-public class SeparatorCollectionViewFlowLayout: AlignedCollectionViewFlowLayout {
+public class SeparatorCollectionViewFlowLayout: UICollectionViewFlowLayout {
   private var indexPathsToInsert: [IndexPath] = []
   private var indexPathsToDelete: [IndexPath] = []
-  
+
   // MARK: - Lifecycle
-  
-  override init(horizontalAlignment: HorizontalAlignment = .justified, verticalAlignment: VerticalAlignment = .center) {
-    super.init(horizontalAlignment: horizontalAlignment, verticalAlignment: verticalAlignment)
-    
+
+  override init() {
+    super.init()
     setup()
   }
-  
+
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     setup()
   }
-  
+
   // 检索指定矩形中所有单元格和视图的布局属性。
   override public func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
     guard let layoutAttributesArray = super.layoutAttributesForElements(in: rect) else { return nil }
-      
+
+    var rows = [[UICollectionViewLayoutAttributes]]()
+    var row = [UICollectionViewLayoutAttributes]()
+    var rowIndex = 0
+    var colIndex = 0
+
     var decorationAttributes: [UICollectionViewLayoutAttributes] = []
-    for layoutAttributes in layoutAttributesArray {
+    for (index, layoutAttributes) in layoutAttributesArray.enumerated() {
       let indexPath = layoutAttributes.indexPath
       if let separatorAttributes = layoutAttributesForDecorationView(ofKind: CollectionSeparatorView.reusableIdentifier, at: indexPath) {
         if rect.intersects(separatorAttributes.frame) {
           decorationAttributes.append(separatorAttributes)
         }
       }
+
+      if index != 0, layoutAttributes.frame.origin.x == 0 {
+        rows.append(row)
+        row = [UICollectionViewLayoutAttributes]()
+        rowIndex += 1
+        colIndex = 0
+      }
+
+      row.append(layoutAttributes)
+      colIndex += 1
     }
-      
+
+    // 添加最后一行
+    rows.append(row)
+
+    // 修改最后一行 cell 的位置，与上一行保持一致
+    if rows.count > 1, let lastRow = rows.last {
+      let previousRow = rows[rowIndex - 1]
+      for (cellIndex, layoutAttributes) in lastRow.enumerated() {
+        guard cellIndex != 0 else { continue }
+        guard cellIndex < previousRow.count else { break }
+
+        let previousCell = previousRow[cellIndex - 1]
+        let width = layoutAttributes.frame.width
+        if width == previousCell.frame.width && width == previousRow[cellIndex].frame.width {
+          layoutAttributes.frame = CGRect(
+            origin: CGPoint(x: previousRow[cellIndex].frame.minX, y: layoutAttributes.frame.minY),
+            size: layoutAttributes.size)
+        }
+      }
+    }
+
     let allAttributes = layoutAttributesArray + decorationAttributes
 
     return allAttributes
   }
-  
+
   // 检索指定装饰视图的布局属性。
   override public func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
     guard let cellAttributes = layoutAttributesForItem(at: indexPath) else {
@@ -70,52 +104,49 @@ public class SeparatorCollectionViewFlowLayout: AlignedCollectionViewFlowLayout 
     }
     return layoutAttributesForMyDecoratinoView(at: indexPath, for: cellAttributes.frame, state: .final)
   }
-  
+
   // MARK: - privates
-  
+
   private enum State {
     case initial
     case normal
     case final
   }
-  
+
   private func setup() {
     register(CollectionSeparatorView.self, forDecorationViewOfKind: CollectionSeparatorView.reusableIdentifier)
   }
-  
+
   private func createAttributesForMyDecoration(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes {
     return UICollectionViewLayoutAttributes(forDecorationViewOfKind: CollectionSeparatorView.reusableIdentifier, with: indexPath)
   }
-  
+
   private func layoutAttributesForMyDecoratinoView(at indexPath: IndexPath, for cellFrame: CGRect, state: State) -> UICollectionViewLayoutAttributes? {
     guard let rect = collectionView?.bounds else {
       return nil
     }
-      
+
     // 除第一行之外的每一行添加分隔符
-    guard indexPath.item > 0 else {
-      return nil
-    }
-      
+    guard indexPath.item > 0 else { return nil }
+
     let separatorAttributes = createAttributesForMyDecoration(at: indexPath)
     separatorAttributes.alpha = 1.0
     separatorAttributes.isHidden = false
-      
+
     let firstCellInRow = cellFrame.origin.x < cellFrame.width
     if firstCellInRow {
       // horizontal line
       // 注意: 因为设置行间距, y轴需要减去行间距的一半
-      // separatorAttributes.frame = CGRect(x: rect.minX, y: cellFrame.origin.y - 10, width: rect.width, height: 1)
-      separatorAttributes.frame = CGRect(x: rect.minX, y: cellFrame.origin.y, width: rect.width, height: 1)
+      separatorAttributes.frame = CGRect(x: rect.minX, y: cellFrame.origin.y - 1, width: rect.width, height: 1)
       separatorAttributes.zIndex = 1000
-          
+
     } else {
       // 屏蔽纵向线, 纵向线也有bug
       // vertical line
       // separatorAttributes.frame = CGRect(x: cellFrame.origin.x, y: cellFrame.origin.y, width: 1, height: rect.height)
       // separatorAttributes.zIndex = 1000
     }
-      
+
     // Sync the decorator animation with the cell animation in order to avoid blinkining
     switch state {
     case .normal:
@@ -123,7 +154,7 @@ public class SeparatorCollectionViewFlowLayout: AlignedCollectionViewFlowLayout 
     default:
       separatorAttributes.alpha = 0.1
     }
-      
+
     return separatorAttributes
   }
 }
