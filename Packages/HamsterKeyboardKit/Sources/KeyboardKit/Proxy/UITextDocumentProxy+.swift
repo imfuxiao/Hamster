@@ -242,8 +242,17 @@ public extension UITextDocumentProxy {
    向后删除一定范围内的内容。
    */
   func deleteBackward(range: DeleteBackwardRange) {
-    guard let text = deleteBackwardText(for: range) else { return deleteBackward() }
-    deleteBackward(times: text.count)
+    let count = deleteBackwardCount(for: range)
+    deleteBackward(times: count)
+  }
+
+  /// 给定范围 `range`，向后删除
+  func deleteBackwardCount(for range: DeleteBackwardRange) -> Int {
+    switch range {
+    case .character: return 1
+    case .sentence: return 4
+    case .word: return 2
+    }
   }
 
   /**
