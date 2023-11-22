@@ -158,11 +158,11 @@ public class KeyboardButton: UIControl {
     return style
   }
 
-  override public var isHighlighted: Bool {
-    didSet {
-      updateButtonStyle(isPressed: isHighlighted)
-    }
-  }
+//  override public var isHighlighted: Bool {
+//    didSet {
+//      updateButtonStyle(isPressed: isHighlighted)
+//    }
+//  }
 
   // MARK: - Initializations
 
@@ -194,6 +194,9 @@ public class KeyboardButton: UIControl {
     super.init(frame: .zero)
 
     self.isHidden = isSpacer ? true : false
+    if item.action == .nextKeyboard {
+      self.addTarget(self, action: #selector(handleInputModeListFromView(from: with:)), for: .allEvents)
+    }
 
     setupButtonContentView()
   }

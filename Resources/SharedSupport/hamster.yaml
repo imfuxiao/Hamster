@@ -2,10 +2,10 @@
 general:
   enableAppleCloud: false
   regexOnCopyFile:
-#    - ^.*[.]userdb.*$
-#    - ^.*build.*$
-#    - ^.*SharedSupport.*$
-#    - ^.*[.]bin$
+  #    - ^.*[.]userdb.*$
+  #    - ^.*build.*$
+  #    - ^.*SharedSupport.*$
+  #    - ^.*[.]bin$
   # 内置文本编辑器参数: 是否自动换行
   textEditorLineWrappingEnabled: true
 
@@ -202,7 +202,7 @@ rime:
 # 划动相关配置
 swipe:
   # 指空格移动多个 point，光标移动一位。所以数字越小越灵敏
-  spaceDragSensitivity: 5
+  spaceDragSensitivity: 10
 
   # 划动距离阈值，当划动的距离大于或等于此值时，才会识别为一次划动
   distanceThreshold: 20
@@ -389,6 +389,8 @@ swipe:
         - action: backspace
           swipe:
             - direction: up
+              action: shortCommand(#重输)
+            - direction: left
               action: shortCommand(#重输)
         - action: keyboardType(numericNineGrid)
           swipe:

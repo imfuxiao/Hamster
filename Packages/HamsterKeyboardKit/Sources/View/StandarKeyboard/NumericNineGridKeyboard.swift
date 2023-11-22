@@ -10,7 +10,7 @@ import HamsterUIKit
 import UIKit
 
 /// 数字九宫格键盘
-public class NumericNineGridKeyboard: NibLessView, UICollectionViewDelegate {
+public class NumericNineGridKeyboard: KeyboardTouchView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: NumericNineGridKeyboardLayoutProvider

@@ -13,7 +13,7 @@ import UIKit
 /**
  标准系统键盘
  */
-public class StanderSystemKeyboard: NibLessView {
+public class StanderSystemKeyboard: KeyboardTouchView {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: KeyboardLayoutProvider
@@ -113,6 +113,7 @@ public class StanderSystemKeyboard: NibLessView {
 
   func setupKeyboardView() {
     backgroundColor = .clear
+    contentMode = .redraw
 
     constructViewHierarchy()
     activateViewConstraints()

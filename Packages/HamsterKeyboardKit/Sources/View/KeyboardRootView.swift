@@ -218,6 +218,7 @@ class KeyboardRootView: NibLessView {
 
   override func setupAppearance() {
     backgroundColor = appearance.backgroundStyle.backgroundColor
+    contentMode = .redraw
   }
 
   // MARK: - Layout

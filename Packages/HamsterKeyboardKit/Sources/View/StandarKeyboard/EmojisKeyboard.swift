@@ -8,6 +8,6 @@
 import UIKit
 
 /// Emojis 表情键盘
-class EmojisKeyboard: UIView {
+class EmojisKeyboard: KeyboardTouchView {
   
 }

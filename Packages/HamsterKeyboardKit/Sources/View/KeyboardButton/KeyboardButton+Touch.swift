@@ -15,73 +15,10 @@ public extension KeyboardButton {
     keyboardContext.handleInputModeListFromView(from: from, with: with)
   }
 
-  // TODO: 如果开启划动输入则统一在 TouchView 处理手势
-  // 注意： inputMargin 不可见的按钮也需要触发，所以必须重载 hitTest 方法
-  override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    guard bounds.contains(point) else { return nil }
-    Logger.statistics.debug("\(self.row)-\(self.column) button hitTest, bounds: \(self.bounds.debugDescription), point: \(point.debugDescription)")
-    return self
-  }
-
-  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if item.action == .nextKeyboard {
-      if let event = event {
-        self.handleInputModeListFromView(from: self, with: event)
-      }
-      return
-    }
-    isHighlighted = true
-    for touch in touches {
-      Logger.statistics.debug("\(self.row)-\(self.column) button touchesBegan")
-      tryHandlePress(touch)
-    }
-  }
-
-  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if item.action == .nextKeyboard {
-      if let event = event {
-        self.handleInputModeListFromView(from: self, with: event)
-      }
-      return
-    }
-    isHighlighted = true
-    for touch in touches {
-      Logger.statistics.debug("\(self.row)-\(self.column) button touchesMoved")
-      tryHandleDrag(touch)
-    }
-  }
-
-  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if item.action == .nextKeyboard {
-      if let event = event {
-        self.handleInputModeListFromView(from: self, with: event)
-      }
-      return
-    }
-    for touch in touches {
-      Logger.statistics.debug("\(self.row)-\(self.column) button touchesEnded")
-      tryHandleRelease(touch)
-    }
-    isHighlighted = false
-  }
-
-  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-    if item.action == .nextKeyboard {
-      if let event = event {
-        self.handleInputModeListFromView(from: self, with: event)
-      }
-      return
-    }
-    for touch in touches {
-      Logger.statistics.debug("\(self.row)-\(self.column) button touchesCancelled")
-      tryHandleRelease(touch)
-    }
-    isHighlighted = false
-  }
-
-  func tryHandlePress(_ touch: UITouch) {
+  func tryHandlePress(_ touch: UITouch, event: UIEvent?) {
     guard !isPressed else { return }
     isPressed = true
+    updateButtonStyle(isPressed: true)
     pressAction()
     if touch.tapCount > 1 {
       doubleTapAction()
@@ -92,10 +29,10 @@ public extension KeyboardButton {
     tryTriggerRepeatAfterDelay()
   }
 
-  func tryHandleRelease(_ touch: UITouch) {
+  func tryHandleRelease(_ touch: UITouch, event: UIEvent?) {
     guard isPressed else { return }
     isPressed = false
-    isHighlighted = false
+    updateButtonStyle(isPressed: false)
     touchBeginTimestamp = nil
     dragStartLocation = nil
     longPressDate = nil
@@ -129,6 +66,23 @@ public extension KeyboardButton {
     }
   }
 
+  func tryHandleCancel() {
+    isPressed = false
+    updateButtonStyle(isPressed: false)
+    touchBeginTimestamp = nil
+    dragStartLocation = nil
+    longPressDate = nil
+    repeatDate = nil
+    repeatTimer.stop()
+    self.swipeGestureHandle = nil
+    endAction()
+
+    // action 手势结束后重置空格划动激活状态
+    if item.action == .space, let actionHandler = actionHandler as? StandardKeyboardActionHandler, actionHandler.isSpaceDragGestureActive {
+      actionHandler.isSpaceDragGestureActive = false
+    }
+  }
+
   func tryTriggerLongPressAfterDelay() {
     let date = Date.now
     longPressDate = date
@@ -149,7 +103,7 @@ public extension KeyboardButton {
     }
   }
 
-  func tryHandleDrag(_ touch: UITouch) {
+  func tryHandleDrag(_ touch: UITouch, event: UIEvent?) {
     // dragStartLocation 在 touchesBegan 阶段设置值，在 touchesEnd/touchesCancel 阶段取消值
     guard let startLocation = dragStartLocation else { return }
     let currentPoint = touch.location(in: self)

@@ -12,7 +12,7 @@ import OSLog
 import UIKit
 
 /// 中文九宫格键盘
-public class ChineseNineGridKeyboard: NibLessView, UICollectionViewDelegate {
+public class ChineseNineGridKeyboard: KeyboardTouchView, UICollectionViewDelegate {
   // MARK: - Properties
 
   private let keyboardLayoutProvider: ChineseNineGridLayoutProvider
