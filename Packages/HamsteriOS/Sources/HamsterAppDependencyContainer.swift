@@ -58,7 +58,15 @@ open class HamsterAppDependencyContainer {
         do {
           Logger.statistics.debug("hamster configuration didSet")
           try HamsterConfigurationRepositories.shared.saveToUserDefaults(configuration)
-          try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, yamlPath: FileManager.hamsterConfigFileOnBuild)
+          // try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: FileManager.hamsterConfigFileOnBuild)
+//          try HamsterConfigurationRepositories.shared.saveToJSON(
+//            config: configuration,
+//            path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.json")
+//          )
+          try HamsterConfigurationRepositories.shared.saveToPropertyList(
+            config: configuration,
+            path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.plist")
+          )
         } catch {
           Logger.statistics.error("hamster configuration didSet error: \(error.localizedDescription)")
         }
@@ -107,12 +115,6 @@ open class HamsterAppDependencyContainer {
     self.rimeContext = RimeContext()
     self.mainViewModel = MainViewModel()
 
-    // PATCH: 将已安装的用户标志从 UserDefaults.hamster 迁移至 UserDefaults.standard
-    if UserDefaults.hamster.object(forKey: UserDefaults.isFirstRunningOfKey) != nil {
-      UserDefaults.standard.isFirstRunning = UserDefaults.hamster.isFirstRunning
-      UserDefaults.hamster.removeObject(forKey: UserDefaults.isFirstRunningOfKey)
-    }
-
     // 判断应用是否首次运行
     // 注意: 首次运行标志（UserDefaults.standard.isFirstRunning）在 SettingsViewModel 的 loadAppData() 方法内重置
     if UserDefaults.standard.isFirstRunning {
@@ -138,6 +140,14 @@ open class HamsterAppDependencyContainer {
     // 非首次启动从 UserDefault 文件中加载
     do {
       self.configuration = try HamsterConfigurationRepositories.shared.loadFromUserDefaults()
+
+      // PATCH
+      if !FileManager.default.fileExists(atPath: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.plist").path) {
+        try HamsterConfigurationRepositories.shared.saveToPropertyList(
+          config: configuration,
+          path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.plist")
+        )
+      }
     } catch {
       Logger.statistics.error("load configuration from UserDefault error: \(error.localizedDescription)")
       // 如果从 UserDefaults 加载失败，则尝试从配置文件中加载一次

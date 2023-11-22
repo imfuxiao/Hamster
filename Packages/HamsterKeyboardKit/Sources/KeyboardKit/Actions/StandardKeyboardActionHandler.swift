@@ -22,8 +22,8 @@ import UIKit
 open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
   // MARK: - Properties
 
+  /// The controller to which this handler applies.
   public weak var keyboardController: KeyboardController?
-
   public let autocompleteContext: AutocompleteContext
   public let keyboardBehavior: KeyboardBehavior
   public let keyboardContext: KeyboardContext
@@ -49,68 +49,29 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
 
    - Parameters:
      - inputViewController: The view controller to use.
-     - spaceDragGestureHandler: A custom space drag gesture handler to use, if any.
-                                要使用的自定义空格拖动手势处理程序（如果有）。
-     - spaceDragSensitivity: The space drag sensitivity to use, by default ``SpaceDragSensitivity/medium``.
-                              要使用的空格拖动灵敏度，默认为 ``SpaceDragSensitivity/medium``.
-   */
-  public init(
-    inputViewController ivc: KeyboardInputViewController,
-    spaceDragGestureHandler: DragGestureHandler? = nil,
-    spaceDragSensitivity: SpaceDragSensitivity = .medium
-  ) {
-    weak var controller = ivc
-    self.keyboardController = controller
-    self.autocompleteContext = ivc.autocompleteContext
-    self.keyboardBehavior = ivc.keyboardBehavior
-    self.keyboardContext = ivc.keyboardContext
-    self.keyboardFeedbackHandler = ivc.keyboardFeedbackHandler
-    self.spaceDragGestureHandler = spaceDragGestureHandler ?? Self.dragGestureHandler(
-      keyboardController: ivc,
-      keyboardContext: ivc.keyboardContext,
-      keyboardFeedbackHandler: ivc.keyboardFeedbackHandler,
-      spaceDragSensitivity: spaceDragSensitivity
-    )
-    self.rimeContext = ivc.rimeContext
-  }
-
-  /**
-   Create a standard keyboard action handler.
-
-   创建标准键盘操作处理程序。
-
-   - Parameters:
-     - keyboardController: The keyboard controller to use.
      - keyboardContext: The keyboard context to use.
      - keyboardBehavior: The keyboard behavior to use.
      - keyboardFeedbackHandler: The keyboard feedback handler to use.
      - autocompleteContext: The autocomplete context to use.
-     - spaceDragGestureHandler: A custom space drag gesture handler, if any.
-     - spaceDragSensitivity: The space drag sensitivity to use, by default ``SpaceDragSensitivity/medium``.
+     - spaceDragGestureHandler: A custom space drag gesture handler to use, if any.
    */
   public init(
-    keyboardController: KeyboardController,
+    controller: KeyboardController?,
     keyboardContext: KeyboardContext,
     rimeContext: RimeContext,
     keyboardBehavior: KeyboardBehavior,
-    keyboardFeedbackHandler: KeyboardFeedbackHandler,
     autocompleteContext: AutocompleteContext,
-    spaceDragGestureHandler: DragGestureHandler? = nil,
-    spaceDragSensitivity: SpaceDragSensitivity = .medium
+    keyboardFeedbackHandler: KeyboardFeedbackHandler,
+    spaceDragGestureHandler: DragGestureHandler
   ) {
-    weak var controller = keyboardController
-    self.keyboardController = controller
-    self.autocompleteContext = autocompleteContext
-    self.keyboardBehavior = keyboardBehavior
+    weak var weakController = controller
+    self.keyboardController = weakController
     self.keyboardContext = keyboardContext
-    self.rimeContext = rimeContext
+    self.keyboardBehavior = keyboardBehavior
+    self.autocompleteContext = autocompleteContext
     self.keyboardFeedbackHandler = keyboardFeedbackHandler
-    self.spaceDragGestureHandler = spaceDragGestureHandler ?? Self.dragGestureHandler(
-      keyboardController: keyboardController,
-      keyboardContext: keyboardContext,
-      keyboardFeedbackHandler: keyboardFeedbackHandler,
-      spaceDragSensitivity: spaceDragSensitivity
-    )
+    self.spaceDragGestureHandler = spaceDragGestureHandler
+    self.rimeContext = rimeContext
   }
 
   // MARK: - Implementation KeyboardActionHandler Protocol

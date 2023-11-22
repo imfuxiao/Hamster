@@ -77,7 +77,7 @@ public class AboutViewModel: ObservableObject {
           let appConfig = HamsterAppDependencyContainer.shared.applicationConfiguration
           let url = FileManager.hamsterAppConfigFileOnUserData
           do {
-            try HamsterConfigurationRepositories.shared.saveToYAML(config: appConfig, yamlPath: url)
+            try HamsterConfigurationRepositories.shared.saveToYAML(config: appConfig, path: url)
             exportConfigurationSubject.send(url)
           } catch {
             await ProgressHUD.failed("导出 UI 设置失败")

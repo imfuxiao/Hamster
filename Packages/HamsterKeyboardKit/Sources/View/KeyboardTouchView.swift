@@ -31,7 +31,6 @@ public class KeyboardTouchView: NibLessView {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    self.contentMode = .redraw
     self.isMultipleTouchEnabled = true
     self.isUserInteractionEnabled = true
   }

@@ -148,12 +148,11 @@ class SpaceContentView: NibLessView {
 
     rimeContext.registryHandleCurrentSchemaChanged { [weak self] in
       guard let self = self else { return }
-      guard let schema = $0 else { return }
       guard !keyboardContext.keyboardType.isNumber else { return }
 
       if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
-        if loadingLabel.text != schema.schemaName {
-          loadingLabel.text = schema.schemaName
+        if loadingLabel.text != rimeContext.currentSchema?.schemaName {
+          loadingLabel.text = rimeContext.currentSchema?.schemaName
           self.textView.alpha = 0
           self.loadingLabel.alpha = 1
           loadingAnimate()
@@ -161,7 +160,7 @@ class SpaceContentView: NibLessView {
       }
 
       if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-        textView.setTextValue(schema.schemaName)
+        textView.setTextValue(rimeContext.currentSchema?.schemaName ?? "")
       }
     }
   }

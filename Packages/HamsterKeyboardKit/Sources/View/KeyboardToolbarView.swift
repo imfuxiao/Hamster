@@ -59,35 +59,7 @@ class KeyboardToolbarView: NibLessView {
   // TODO: 常用功能栏
   lazy var commonFunctionBar: UIView = {
     let view = UIView(frame: .zero)
-//    view.translatesAutoresizingMaskIntoConstraints = false
-
-    var constraints = [NSLayoutConstraint]()
-    if keyboardContext.displayAppIconButton {
-      view.addSubview(iconButton)
-      constraints.append(contentsOf: [
-        iconButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        iconButton.heightAnchor.constraint(equalTo: iconButton.widthAnchor),
-        iconButton.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor),
-        view.bottomAnchor.constraint(greaterThanOrEqualTo: iconButton.bottomAnchor),
-        iconButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      ])
-    }
-
-    if keyboardContext.displayKeyboardDismissButton {
-      view.addSubview(dismissKeyboardButton)
-      constraints.append(contentsOf: [
-        dismissKeyboardButton.heightAnchor.constraint(equalTo: dismissKeyboardButton.widthAnchor),
-        dismissKeyboardButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        dismissKeyboardButton.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor),
-        view.bottomAnchor.constraint(greaterThanOrEqualTo: dismissKeyboardButton.bottomAnchor),
-        dismissKeyboardButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      ])
-    }
-
-    if !constraints.isEmpty {
-      NSLayoutConstraint.activate(constraints)
-    }
-
+    view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()
 
@@ -136,10 +108,43 @@ class KeyboardToolbarView: NibLessView {
 
   override func constructViewHierarchy() {
     addSubview(commonFunctionBar)
+    if keyboardContext.displayAppIconButton {
+      commonFunctionBar.addSubview(iconButton)
+    }
+    if keyboardContext.displayKeyboardDismissButton {
+      commonFunctionBar.addSubview(dismissKeyboardButton)
+    }
   }
 
   override func activateViewConstraints() {
-    commonFunctionBar.fillSuperview()
+    var constraints: [NSLayoutConstraint] = [
+      commonFunctionBar.topAnchor.constraint(equalTo: topAnchor),
+      commonFunctionBar.bottomAnchor.constraint(equalTo: bottomAnchor),
+      commonFunctionBar.leadingAnchor.constraint(equalTo: leadingAnchor),
+      commonFunctionBar.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+
+    if keyboardContext.displayAppIconButton {
+      constraints.append(contentsOf: [
+        iconButton.leadingAnchor.constraint(equalTo: commonFunctionBar.leadingAnchor),
+        iconButton.heightAnchor.constraint(equalTo: iconButton.widthAnchor),
+        iconButton.topAnchor.constraint(lessThanOrEqualTo: commonFunctionBar.topAnchor),
+        commonFunctionBar.bottomAnchor.constraint(greaterThanOrEqualTo: iconButton.bottomAnchor),
+        iconButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+      ])
+    }
+
+    if keyboardContext.displayKeyboardDismissButton {
+      constraints.append(contentsOf: [
+        dismissKeyboardButton.heightAnchor.constraint(equalTo: dismissKeyboardButton.widthAnchor),
+        dismissKeyboardButton.trailingAnchor.constraint(equalTo: commonFunctionBar.trailingAnchor),
+        dismissKeyboardButton.topAnchor.constraint(lessThanOrEqualTo: commonFunctionBar.topAnchor),
+        commonFunctionBar.bottomAnchor.constraint(greaterThanOrEqualTo: dismissKeyboardButton.bottomAnchor),
+        dismissKeyboardButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+      ])
+    }
+
+    NSLayoutConstraint.activate(constraints)
   }
 
   override func setupAppearance() {

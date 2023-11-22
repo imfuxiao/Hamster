@@ -111,12 +111,19 @@ public class StanderSystemKeyboard: KeyboardTouchView {
     setupKeyboardView()
   }
 
-  func setupKeyboardView() {
-    backgroundColor = .clear
-    contentMode = .redraw
+  deinit {
+    subviews.forEach { $0.removeFromSuperview() }
+  }
 
+  func setupKeyboardView() {
     constructViewHierarchy()
     activateViewConstraints()
+    setupAppearance()
+  }
+
+  override public func setupAppearance() {
+    backgroundColor = .clear
+    contentMode = .redraw
   }
 
   // MARK: Layout
@@ -182,15 +189,6 @@ public class StanderSystemKeyboard: KeyboardTouchView {
 
   /// 激活视图约束
   override public func activateViewConstraints() {
-    // TODO: 需要将按键添加至 touchView, 统一处理
-    // touchView.translatesAutoresizingMaskIntoConstraints = false
-    // staticConstraints.append(contentsOf: [
-    //  touchView.topAnchor.constraint(equalTo: topAnchor),
-    //  touchView.bottomAnchor.constraint(equalTo: bottomAnchor),
-    //  touchView.leadingAnchor.constraint(equalTo: leadingAnchor),
-    //  touchView.trailingAnchor.constraint(equalTo: trailingAnchor),
-    // ])
-
     // 暂存同一行中 available 宽度类型按键集合
     var availableItems = [KeyboardButton]()
 
@@ -208,7 +206,7 @@ public class StanderSystemKeyboard: KeyboardTouchView {
         let heightConstant = button.item.size.height
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: heightConstant)
         // TODO: .required 会导致日志打印约束错误，但是改为 .defaultHigh 后，高度约束不起作用，会导致显示的高度有问题
-        buttonHeightConstraint.priority = UILayoutPriority(999)
+        buttonHeightConstraint.priority = .defaultHigh
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
         dynamicConstraints.append(buttonHeightConstraint)
         // Logger.statistics.debug("keyboard layoutSubviews(): row: \(button.row), column: \(button.column), rowHeight: \(heightConstant)")

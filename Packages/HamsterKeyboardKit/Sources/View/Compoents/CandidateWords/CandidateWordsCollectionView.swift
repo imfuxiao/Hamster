@@ -38,8 +38,6 @@ public class CandidateWordsCollectionView: UICollectionView {
   /// 当前用户输入，用来判断滚动候选栏是否滚动到首个首选字
   var currentUserInputKey: String = ""
 
-  private var candidates: [CandidateSuggestion]?
-
   init(
     style: CandidateBarStyle,
     keyboardContext: KeyboardContext,
@@ -90,14 +88,12 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 
   func combine() {
-    self.rimeContext.registryHandleSuggestionsChanged { [weak self] candidates in
+    self.rimeContext.registryHandleSuggestionsChanged { [weak self] in
       guard let self = self else { return }
-      Logger.statistics.debug("self.rimeContext.$suggestions: \(candidates.count)")
-      self.candidates = candidates
       self.reloadData()
       if self.currentUserInputKey != self.rimeContext.userInputKey {
         self.currentUserInputKey = self.rimeContext.userInputKey
-        if !candidates.isEmpty {
+        if !rimeContext.suggestions.isEmpty {
           if self.candidatesViewState.isCollapse() {
             self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
           } else {
@@ -107,7 +103,7 @@ public class CandidateWordsCollectionView: UICollectionView {
         }
       }
 
-      if candidates.isEmpty, self.candidatesViewState != .collapse {
+      if rimeContext.suggestions.isEmpty, self.candidatesViewState != .collapse {
         self.candidatesViewState = .collapse
         self.keyboardContext.candidatesViewState = .collapse
         changeLayout(.collapse)
@@ -146,7 +142,7 @@ public class CandidateWordsCollectionView: UICollectionView {
 
 extension CandidateWordsCollectionView: UICollectionViewDataSource {
   public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    candidates?.count ?? 0
+    rimeContext.suggestions.count
   }
 
   public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -154,7 +150,8 @@ extension CandidateWordsCollectionView: UICollectionViewDataSource {
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord
     let showComment = toolbarConfig?.displayCommentOfCandidateWord
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CandidateWordCell.identifier, for: indexPath)
-    if let cell = cell as? CandidateWordCell, let candidate = candidates?[indexPath.item] {
+    if let cell = cell as? CandidateWordCell, indexPath.item < rimeContext.suggestions.count {
+      let candidate = rimeContext.suggestions[indexPath.item]
       cell.updateWithCandidateSuggestion(candidate, style: style, showIndex: showIndex, showComment: showComment)
     }
     return cell
@@ -174,7 +171,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegate {
 //    }
 //  }
   public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    if indexPath.item + 1 >= (candidates?.count ?? 1) {
+    if indexPath.item + 1 >= rimeContext.suggestions.count {
       rimeContext.nextPage()
     }
   }
@@ -226,7 +223,8 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
     let heightOfToolbar: CGFloat = keyboardContext.heightOfToolbar - heightOfCodingArea - 6
 
-    guard let candidate = self.candidates?[indexPath.item] else { return .zero }
+    guard indexPath.item < rimeContext.suggestions.count else { return .zero }
+    let candidate = rimeContext.suggestions[indexPath.item]
     let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
 
     let candidateTextFont = style.candidateTextFont

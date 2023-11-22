@@ -171,7 +171,7 @@ public class NumericNineGridKeyboard: KeyboardTouchView, UICollectionViewDelegat
         let buttonHeightConstraint = button.heightAnchor.constraint(equalToConstant: layoutConfig.rowHeight)
         buttonHeightConstraint.identifier = "\(button.row)-\(button.column)-button-height"
         // 注意：必须设置高度约束的优先级，Autolayout 会根据此约束自动更新根视图的高度，否则会与系统自动添加的约束冲突，会有错误日志输出。
-        buttonHeightConstraint.priority = UILayoutPriority(999)
+        buttonHeightConstraint.priority = .defaultHigh
         dynamicConstraints.append(buttonHeightConstraint)
 
         // 按键宽度约束

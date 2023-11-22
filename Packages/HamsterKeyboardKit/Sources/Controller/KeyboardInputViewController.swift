@@ -46,7 +46,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
   override open func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    Logger.statistics.debug("KeyboardInputViewController: viewWillAppear()")
     setupRIME()
     viewWillSetupKeyboard()
     viewWillSyncWithContext()
@@ -78,6 +77,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
     viewWillSyncWithContext()
   }
 
+  /// 内存回收
+//  override open func didReceiveMemoryWarning() {
+//    shutdownRIME()
+//    setupRIME()
+//  }
+
   // MARK: - Keyboard View Controller Lifecycle
 
   /**
@@ -93,9 +98,6 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    */
 
   open func viewWillSetupKeyboard() {
-    view.subviews.forEach { $0.removeFromSuperview() }
-
-    // 设置键盘的View
     let keyboardRootView = KeyboardRootView(
       keyboardLayoutProvider: keyboardLayoutProvider,
       appearance: keyboardAppearance,
@@ -105,8 +107,19 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       rimeContext: rimeContext
     )
 
+    // 设置键盘的View
+    keyboardRootView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(keyboardRootView)
-    keyboardRootView.fillSuperview()
+    NSLayoutConstraint.activate([
+      keyboardRootView.topAnchor.constraint(equalTo: view.topAnchor),
+      keyboardRootView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      keyboardRootView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      keyboardRootView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    ])
+  }
+
+  deinit {
+    view.subviews.forEach { $0.removeFromSuperview() }
   }
 
   /**
@@ -157,7 +170,8 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    要使用的 document proxy，可以是原生的文本输入代理，也可以是 ``textInputProxy``（如果设置为自定义值）。
    */
   override open var textDocumentProxy: UITextDocumentProxy {
-    textInputProxy ?? mainTextDocumentProxy
+//    textInputProxy ?? mainTextDocumentProxy
+    mainTextDocumentProxy
   }
 
   /**
@@ -170,9 +184,9 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
    设置该属性可使 ``textDocumentProxy`` 返回自定义代理，而不是原始代理。
    */
-  public var textInputProxy: TextInputProxy? {
-    didSet { viewWillSyncWithContext() }
-  }
+//  public var textInputProxy: TextInputProxy? {
+//    didSet { viewWillSyncWithContext() }
+//  }
 
   // MARK: - Observables
 
@@ -327,8 +341,21 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
    您可以用自定义实现来替代它。
    */
   public lazy var keyboardActionHandler: KeyboardActionHandler = StandardKeyboardActionHandler(
-    inputViewController: self,
-    spaceDragSensitivity: .custom(points: keyboardContext.hamsterConfiguration?.swipe?.spaceDragSensitivity ?? 5)
+    controller: self,
+    keyboardContext: keyboardContext,
+    rimeContext: rimeContext,
+    keyboardBehavior: keyboardBehavior,
+    autocompleteContext: autocompleteContext,
+    keyboardFeedbackHandler: keyboardFeedbackHandler,
+    spaceDragGestureHandler: SpaceCursorDragGestureHandler(
+      feedbackHandler: keyboardFeedbackHandler,
+      sensitivity: .custom(points: keyboardContext.hamsterConfiguration?.swipe?.spaceDragSensitivity ?? 5),
+      action: { [weak self] in
+        guard let self = self else { return }
+        let offset = self.textDocumentProxy.spaceDragOffset(for: $0)
+        self.adjustTextPosition(byCharacterOffset: offset ?? $0)
+      }
+    )
   ) {
     didSet { refreshProperties() }
   }
@@ -497,7 +524,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
             self.textDocumentProxy.insertText(firstCandidate.text)
           }
         } else {
-          if let commit = self.rimeContext.rimeContext.commitTextPreview {
+          if let commit = self.rimeContext.rimeContext?.commitTextPreview {
             self.textDocumentProxy.insertText(commit)
           }
         }
@@ -813,35 +840,28 @@ private extension KeyboardInputViewController {
   func setupRIME() {
     // 异步 RIME 引擎启动
     Task.detached { [unowned self] in
-      if await rimeContext.isRunning {
-        Logger.statistics.debug("shutdown rime engine")
-        // 这里关闭引擎是为了使 RIME 内存中的自造词落盘。
-        await shutdownRIME()
-      }
-
-      Logger.statistics.debug("setup rime engine")
+//      if await rimeContext.isRunning {
+//        Logger.statistics.debug("shutdown rime engine")
+//        // 这里关闭引擎是为了使 RIME 内存中的自造词落盘。
+//        await shutdownRIME()
+//      }
 
       // 检测是否需要覆盖 RIME 目录
-      let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
+      // let overrideRimeDirectory = UserDefaults.hamster.overrideRimeDirectory
 
       // 检测对 appGroup 路径下是否有写入权限，如果没有写入权限，则需要将 appGroup 下文件复制到键盘的 Sandbox 路径下
-      if await !self.hasFullAccess {
-        do {
-          try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
-
-          // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
-          UserDefaults.hamster.overrideRimeDirectory = false
-        } catch {
-          Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
-        }
-
-        // Sandbox 补充 default.custom.yaml 文件
-//        let defaultCustomFilePath = FileManager.sandboxUserDataDefaultCustomYaml.path
-//        if !FileManager.default.fileExists(atPath: defaultCustomFilePath) {
-//          let handled = FileManager.default.createFile(atPath: defaultCustomFilePath, contents: nil)
-//          Logger.statistics.debug("create file \(defaultCustomFilePath), handled: \(handled)")
+//      if await !self.hasFullAccess {
+//        do {
+//          try FileManager.syncAppGroupUserDataDirectoryToSandbox(override: overrideRimeDirectory)
+//
+//          // 注意：如果没有开启键盘完全访问权限，则无权对 UserDefaults.hamster 写入
+//          UserDefaults.hamster.overrideRimeDirectory = false
+//        } catch {
+//          Logger.statistics.error("FileManager.syncAppGroupUserDataDirectoryToSandbox(override: \(overrideRimeDirectory)) error: \(error.localizedDescription)")
 //        }
-      }
+//      }
+
+      guard await !rimeContext.isRunning else { return }
 
       if let maximumNumberOfCandidateWords = await keyboardContext.hamsterConfiguration?.rime?.maximumNumberOfCandidateWords {
         await rimeContext.setMaximumNumberOfCandidateWords(maximumNumberOfCandidateWords)
@@ -851,7 +871,7 @@ private extension KeyboardInputViewController {
         await rimeContext.setUseContextPaging(swipePaging == false)
       }
 
-      await rimeContext.start(hasFullAccess: hasFullAccess)
+      await rimeContext.start(hasFullAccess: true)
 
       let simplifiedModeKey = await keyboardContext.hamsterConfiguration?.rime?.keyValueOfSwitchSimplifiedAndTraditional ?? ""
       await rimeContext.syncTraditionalSimplifiedChineseMode(simplifiedModeKey: simplifiedModeKey)

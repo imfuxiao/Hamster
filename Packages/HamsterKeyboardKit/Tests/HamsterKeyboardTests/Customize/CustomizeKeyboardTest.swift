@@ -7,11 +7,32 @@
 
 @testable import HamsterKeyboardKit
 
+import Foundation
 import XCTest
 import Yams
+import ZippyJSON
 
 final class CustomizeKeyboardTest: XCTestCase {
-  override func setUpWithError() throws {}
+  let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("test.yaml")
+  let testYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("testHamster.yaml")
+  let testJSONPath = FileManager.default.temporaryDirectory.appendingPathComponent("testHamster.json")
+  let testPlistPath = FileManager.default.temporaryDirectory.appendingPathComponent("testHamster.plist")
+
+  override func setUpWithError() throws {
+    try? FileManager.default.removeItem(at: tempYamlPath)
+    try? FileManager.default.removeItem(at: testYamlPath)
+    try? FileManager.default.removeItem(at: testJSONPath)
+    try? FileManager.default.removeItem(at: testPlistPath)
+
+    if let data: Data = HamsterConfiguration.sampleString.data(using: .utf8) {
+      FileManager.default.createFile(atPath: tempYamlPath.path, contents: data)
+    }
+
+    let configuration = try HamsterConfigurationRepositories.shared.loadFromYAML(tempYamlPath)
+    try HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: testYamlPath)
+    try HamsterConfigurationRepositories.shared.saveToJSON(config: configuration, path: testJSONPath)
+    try HamsterConfigurationRepositories.shared.saveToPropertyList(config: configuration, path: testPlistPath)
+  }
 
   override func tearDownWithError() throws {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
@@ -57,6 +78,38 @@ final class CustomizeKeyboardTest: XCTestCase {
 
     XCTAssertNil("chinese(".attributeParse())
     XCTAssertNil("chinese)".attributeParse())
+  }
+
+  func testPerformanceDecodeYaml() throws {
+    self.measure {
+      do {
+        let _ = try HamsterConfigurationRepositories.shared.loadFromYAML(testYamlPath)
+      } catch {
+        fatalError(error.localizedDescription)
+      }
+    }
+  }
+
+  func testPerformanceDecodeJSON() throws {
+    self.measure {
+      do {
+        let data = try Data(contentsOf: testJSONPath)
+        let _ = try ZippyJSONDecoder().decode(HamsterConfiguration.self, from: data)
+      } catch {
+        fatalError(error.localizedDescription)
+      }
+    }
+  }
+
+  func testPerformanceDecodePlist() throws {
+    self.measure {
+      do {
+        let data = try Data(contentsOf: testPlistPath)
+        let _ = try PropertyListDecoder().decode(HamsterConfiguration.self, from: data)
+      } catch {
+        fatalError(error.localizedDescription)
+      }
+    }
   }
 
   func testPerformanceExample() throws {

@@ -13,10 +13,10 @@ import RimeKit
 /// RIME 运行时上下文
 public class RimeContext {
   typealias HandleAsciiModeChanged = (Bool) -> Void
-  typealias HandleCurrentSchemaChanged = (RimeSchema?) -> Void
+  typealias HandleCurrentSchemaChanged = () -> Void
   typealias HandleUserInputKeyChanged = (String) -> Void
-  typealias HandleSuggestionsChanged = ([CandidateSuggestion]) -> Void
-  typealias HandleRimeContextChanged = (IRimeContext) -> Void
+  typealias HandleSuggestionsChanged = () -> Void
+  typealias HandleRimeContextChanged = () -> Void
 
   private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
   private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
@@ -25,10 +25,10 @@ public class RimeContext {
   private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
 
   /// 最大候选词数量
-  public private(set) var maximumNumberOfCandidateWords: Int = 100
+  public private(set) lazy var maximumNumberOfCandidateWords: Int = 100
 
   /// 是否使用 IRimeContext 中分页信息
-  public private(set) var useContextPaging = false
+  public private(set) lazy var useContextPaging = false
 
   /// rime 输入方案列表
   public private(set) lazy var schemas: [RimeSchema] = UserDefaults.hamster.schemas {
@@ -50,7 +50,7 @@ public class RimeContext {
       // 注意：如果没有完全访问权限，UserDefaults.hamster 会保存失败
       UserDefaults.hamster.currentSchema = currentSchema
       registryHandleCurrentSchemaChanged.forEach { handle in
-        handle(currentSchema)
+        handle()
       }
     }
   }
@@ -63,7 +63,7 @@ public class RimeContext {
   }
 
   /// 用户输入键值
-  public var userInputKey: String = "" {
+  public lazy var userInputKey: String = "" {
     didSet {
       registryHandleUserInputKeyChanged.forEach { handle in
         handle(userInputKey)
@@ -72,7 +72,7 @@ public class RimeContext {
   }
 
   /// 待上屏文字
-  public private(set) var commitText: String = ""
+  public private(set) lazy var commitText: String = ""
 
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
   @MainActor
@@ -84,11 +84,11 @@ public class RimeContext {
   }
 
   /// 用户选择的候选拼音
-  public var selectPinyinList: [String] = []
+  public lazy var selectPinyinList: [String] = []
 
   /// 字母模式
   @MainActor
-  public var asciiMode: Bool = false {
+  public lazy var asciiMode: Bool = false {
     didSet {
       registryHandleAsciiModeChanged.forEach { handle in
         handle(asciiMode)
@@ -98,24 +98,24 @@ public class RimeContext {
 
   /// 候选字
   @MainActor
-  public var suggestions: [CandidateSuggestion] = [] {
+  public lazy var suggestions: [CandidateSuggestion] = [] {
     didSet {
       registryHandleSuggestionsChanged.forEach { handle in
-        handle(suggestions)
+        handle()
       }
     }
   }
 
-  public var rimeContext: IRimeContext = .init() {
+  public lazy var rimeContext: IRimeContext? = nil {
     didSet {
       registryHandleRimeContextChanged.forEach { handle in
-        handle(rimeContext)
+        handle()
       }
     }
   }
 
   /// 划动分页模式下，当前页码，从 0 开始
-  public var pageIndex: Int = 0
+  public lazy var pageIndex: Int = 0
 
   /// 根据页码计算首个候选文字索引
   public var candidateIndex: Int {
@@ -124,7 +124,7 @@ public class RimeContext {
 
   /// switcher hotkeys
   /// 默认值为 F4，但 RIME 重新部署时会根据当前配置加载此值
-  public var hotKeys = UserDefaults.hamster.hotKeys {
+  public lazy var hotKeys = UserDefaults.hamster.hotKeys {
     didSet {
       UserDefaults.hamster.hotKeys = hotKeys
     }
@@ -378,6 +378,17 @@ public extension RimeContext {
     resetLatestSchema()
 
     configuration = try HamsterConfigurationRepositories.shared.loadConfiguration()
+
+    // 保存配置至 build/hamster.yaml
+    // try? HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: FileManager.hamsterConfigFileOnBuild)
+//    try? HamsterConfigurationRepositories.shared.saveToJSON(
+//      config: configuration,
+//      path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.json")
+//    )
+    try? HamsterConfigurationRepositories.shared.saveToPropertyList(
+      config: configuration,
+      path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.plist")
+    )
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true
@@ -636,7 +647,7 @@ public extension RimeContext {
       candidates = self.candidateListLimit(index: candidateIndex, highlightIndex: highlightIndex, count: maximumNumberOfCandidateWords)
     }
 
-    Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
+    // Logger.statistics.debug("syncContext: userInputText = \(userInputText), commitText = \(commitText)")
 
     // 查看输入法状态
     let status = Rime.shared.status()
@@ -662,7 +673,7 @@ public extension RimeContext {
   func nextPage() {
     self.pageIndex += 1
     var highlightIndex = 0
-    if let menu = rimeContext.menu {
+    if let menu = rimeContext?.menu {
       highlightIndex = Int(menu.pageSize * menu.pageNo + menu.highlightedCandidateIndex)
     }
     let candidates = self.candidateListLimit(index: candidateIndex, highlightIndex: highlightIndex, count: maximumNumberOfCandidateWords)

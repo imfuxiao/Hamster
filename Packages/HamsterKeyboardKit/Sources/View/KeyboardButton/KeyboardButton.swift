@@ -206,31 +206,18 @@ public class KeyboardButton: UIControl {
     fatalError("init(coder:) has not been implemented")
   }
 
-  override public func didMoveToWindow() {
-    super.didMoveToWindow()
-
-    if window == nil {
-      // TODO: 有概率不停止运行
-      repeatTimer.stop()
-    }
+  deinit {
+    RepeatGestureTimer.shared.stop()
   }
 
   // MARK: - Layout Functions
 
   /// 设置按钮内容视图
   func setupButtonContentView() {
-    if enableButtonUnderBorder {
-      buttonContentView.layer.addSublayer(underShadowShape)
-    }
     addSubview(buttonContentView)
 
-    // 不能调用，推迟 inputCallout 的创建时间
-    // updateButtonStyle(isPressed: isHighlighted)
     // 初始状态样式
     let style = normalButtonStyle
-
-    // 更新按钮内容的样式
-    buttonContentView.setStyle(style)
 
     // 按钮样式
     buttonContentView.backgroundColor = style.backgroundColor
@@ -249,13 +236,15 @@ public class KeyboardButton: UIControl {
 
       // 宽度为 0 时，不在计算 frame
       if oldBounds.width == .zero || oldBounds.height == .zero {
-        underShadowShape.path = .none
+        if enableButtonUnderBorder {
+          underShadowShape.path = .none
+        }
         buttonContentView.frame = .zero
         return
       }
 
-//      CATransaction.begin()
-//      CATransaction.setDisableActions(true)
+      CATransaction.begin()
+      CATransaction.setDisableActions(true)
 
       let insets = item.insets
       // Logger.statistics.debug("button layoutSubviews(): row: \(self.row), column: \(self.column), rowHeight: \(insets.yamlString)")
@@ -266,11 +255,12 @@ public class KeyboardButton: UIControl {
       if let cornerRadius = normalButtonStyle.cornerRadius {
         buttonContentView.layer.cornerRadius = cornerRadius
         if enableButtonUnderBorder {
+          buttonContentView.layer.addSublayer(underShadowShape)
           underShadowShape.path = calculatorUnderPath(bounds: CGSize(width: bounds.width, height: bounds.height + 1), cornerRadius: cornerRadius).cgPath
           underShadowShape.fillColor = normalButtonStyle.shadow?.color.cgColor
         }
       }
-//      CATransaction.commit()
+      CATransaction.commit()
     }
 
     if userInterfaceStyle != keyboardContext.colorScheme {

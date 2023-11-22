@@ -125,8 +125,9 @@ class CandidatesPagingCollectionView: UICollectionView {
   }
 
   func combine() {
-    rimeContext.registryHandleRimeContextChanged { [weak self] context in
+    rimeContext.registryHandleRimeContextChanged { [weak self] in
       guard let self = self else { return }
+      guard let context = self.rimeContext.rimeContext else { return }
       guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
       guard let pageCandidates = context.menu?.candidates else { return }
       let labels = context.labels ?? [String]()

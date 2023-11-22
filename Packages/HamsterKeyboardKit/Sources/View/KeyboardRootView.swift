@@ -216,6 +216,10 @@ class KeyboardRootView: NibLessView {
     combine()
   }
 
+  deinit {
+    subviews.forEach { $0.removeFromSuperview() }
+  }
+
   override func setupAppearance() {
     backgroundColor = appearance.backgroundStyle.backgroundColor
     contentMode = .redraw

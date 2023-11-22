@@ -66,7 +66,7 @@ public class HamsterUIColor: KeyboardColorReader {
 
    浅色键盘按键的标准背景色。
    */
-  public private(set) lazy var standardButtonBackground: UIColor = HamsterUIColor.color(for: .standardButtonBackground)
+  public private(set) lazy var standardButtonBackground: UIColor = color(for: .standardButtonBackground)
 
   /**
    The standard background color of light keyboard buttons
@@ -74,7 +74,7 @@ public class HamsterUIColor: KeyboardColorReader {
 
    当考虑到 iOS 暗色模式 bug 时，浅色键盘按钮的标准背景颜色。
    */
-  public private(set) lazy var standardButtonBackgroundForColorSchemeBug: UIColor = HamsterUIColor.color(for: .standardButtonBackgroundForColorSchemeBug)
+  public private(set) lazy var standardButtonBackgroundForColorSchemeBug: UIColor = color(for: .standardButtonBackgroundForColorSchemeBug)
 
   /**
    The standard background color of light keyboard buttons
@@ -82,14 +82,14 @@ public class HamsterUIColor: KeyboardColorReader {
 
    深色键盘外观中, 浅色键盘按钮的标准背景色。
    */
-  public private(set) lazy var standardButtonBackgroundForDarkAppearance: UIColor = HamsterUIColor.color(for: .standardButtonBackgroundForDarkAppearance)
+  public private(set) lazy var standardButtonBackgroundForDarkAppearance: UIColor = color(for: .standardButtonBackgroundForDarkAppearance)
 
   /**
    The standard foreground color of light keyboard buttons.
 
    浅色键盘按钮的标准前景色。
    */
-  public private(set) lazy var standardButtonForeground: UIColor = HamsterUIColor.color(for: .standardButtonForeground)
+  public private(set) lazy var standardButtonForeground: UIColor = color(for: .standardButtonForeground)
 
   /**
    The standard foreground color of light keyboard buttons
@@ -97,14 +97,14 @@ public class HamsterUIColor: KeyboardColorReader {
 
    深色键盘外观中浅色键盘按钮的标准前景色。
    */
-  public private(set) lazy var standardButtonForegroundForDarkAppearance: UIColor = HamsterUIColor.color(for: .standardButtonForegroundForDarkAppearance)
+  public private(set) lazy var standardButtonForegroundForDarkAppearance: UIColor = color(for: .standardButtonForegroundForDarkAppearance)
 
   /**
    The standard shadow color of keyboard buttons.
 
    键盘按钮的标准阴影颜色。
    */
-  public private(set) lazy var standardButtonShadow: UIColor = HamsterUIColor.color(for: .standardButtonShadow)
+  public private(set) lazy var standardButtonShadow: UIColor = color(for: .standardButtonShadow)
 
   /**
    The standard background color of a dark keyboard button.
@@ -120,7 +120,7 @@ public class HamsterUIColor: KeyboardColorReader {
 
    当考虑到 iOS 暗色模式错误时，暗色键盘按钮的标准背景颜色。
    */
-  public private(set) lazy var standardDarkButtonBackgroundForColorSchemeBug: UIColor = HamsterUIColor.color(for: .standardDarkButtonBackgroundForColorSchemeBug)
+  public private(set) lazy var standardDarkButtonBackgroundForColorSchemeBug: UIColor = color(for: .standardDarkButtonBackgroundForColorSchemeBug)
 
   /**
    The standard background color of a dark keyboard button
@@ -128,14 +128,14 @@ public class HamsterUIColor: KeyboardColorReader {
 
    深色键盘外观中深色键盘按钮的标准背景色。
    */
-  public private(set) lazy var standardDarkButtonBackgroundForDarkAppearance: UIColor = HamsterUIColor.color(for: .standardDarkButtonBackgroundForDarkAppearance)
+  public private(set) lazy var standardDarkButtonBackgroundForDarkAppearance: UIColor = color(for: .standardDarkButtonBackgroundForDarkAppearance)
 
   /**
    The standard foreground color of a dark keyboard button.
 
    深色键盘按钮的标准前景色。
    */
-  public private(set) lazy var standardDarkButtonForeground: UIColor = HamsterUIColor.color(for: .standardButtonForeground)
+  public private(set) lazy var standardDarkButtonForeground: UIColor = color(for: .standardButtonForeground)
 
   /**
    The standard foreground color of a dark keyboard button
@@ -143,14 +143,14 @@ public class HamsterUIColor: KeyboardColorReader {
 
    深色键盘外观中深色键盘按钮的标准前景色。
    */
-  public private(set) lazy var standardDarkButtonForegroundForDarkAppearance: UIColor = HamsterUIColor.color(for: .standardButtonForegroundForDarkAppearance)
+  public private(set) lazy var standardDarkButtonForegroundForDarkAppearance: UIColor = color(for: .standardButtonForegroundForDarkAppearance)
 
   /**
    The standard keyboard background color.
 
    标准键盘背景色。
    */
-  public private(set) lazy var standardKeyboardBackground: UIColor = HamsterUIColor.color(for: .standardKeyboardBackground)
+  public private(set) lazy var standardKeyboardBackground: UIColor = color(for: .standardKeyboardBackground)
 
   /**
    The standard keyboard background color in dark keyboard
@@ -158,7 +158,7 @@ public class HamsterUIColor: KeyboardColorReader {
 
    深色键盘外观中的标准键盘背景色。
    */
-  public private(set) lazy var standardKeyboardBackgroundForDarkAppearance: UIColor = HamsterUIColor.color(for: .standardKeyboardBackgroundForDarkAppearance)
+  public private(set) lazy var standardKeyboardBackgroundForDarkAppearance: UIColor = color(for: .standardKeyboardBackgroundForDarkAppearance)
 
   // MARK: - Functions
 
@@ -218,10 +218,8 @@ public class HamsterUIColor: KeyboardColorReader {
   public func standardDarkButtonForeground(for context: KeyboardContext) -> UIColor {
     context.hasDarkColorScheme ? self.standardDarkButtonForegroundForDarkAppearance : self.standardDarkButtonForeground
   }
-}
 
-private extension KeyboardColorReader {
-  static func color(for color: KeyboardColor) -> UIColor {
+  func color(for color: KeyboardColor) -> UIColor {
     color.color
   }
 }

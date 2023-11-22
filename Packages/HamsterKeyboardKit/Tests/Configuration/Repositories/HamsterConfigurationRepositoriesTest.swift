@@ -48,7 +48,7 @@ final class HamsterConfigurationRepositoriesTest: XCTestCase {
     Logger.statistics.debug("tempYamlPath: \(tempYamlPath.path)")
     let config = HamsterConfiguration.preview
     let configRepositories = HamsterConfigurationRepositories.shared
-    try configRepositories.saveToYAML(config: config, yamlPath: tempYamlPath)
+    try configRepositories.saveToYAML(config: config, path: tempYamlPath)
     let tempConfig = try configRepositories.loadFromYAML(tempYamlPath)
     XCTAssertEqual(tempConfig, config)
   }

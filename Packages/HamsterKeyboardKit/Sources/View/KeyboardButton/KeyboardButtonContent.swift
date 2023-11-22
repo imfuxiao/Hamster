@@ -67,15 +67,6 @@ public class KeyboardButtonContentView: NibLessView {
     return label
   }()
 
-//  private lazy var swipeLeftAndRightContainer: UIStackView = {
-//    let view = UIStackView(arrangedSubviews: keyboardContext.upSwipeOnLeft ? [upSwipeLabel, downSwipeLabel] : [downSwipeLabel, upSwipeLabel])
-//    view.axis = .horizontal
-//    view.alignment = .center
-//    view.distribution = .fillProportionally
-//    view.spacing = 0
-//    return view
-//  }()
-
   /// 按钮显示文本
   var buttonText: String {
     if keyboardContext.keyboardType.isCustom, let buttonText = item.key?.label.text, !buttonText.isEmpty {

@@ -70,9 +70,40 @@ public struct Keyboard: Codable, Hashable {
       self.rowHeight = rowHeight
     }
 
-    if let buttonInsets = try? container.decode(String.self, forKey: .buttonInsets), let insets = UIEdgeInsets.parser(buttonInsets) {
+    if let buttonInsets = try? container.decode(String.self, forKey: .buttonInsets), let insets = self.parserUIEdgeInsets(buttonInsets) {
       self.buttonInsets = insets
     }
+  }
+
+  /// 将字符串转为 UIEdgeInsets
+  /// 字符串支持两种格式
+  /// 格式1: 纯数字
+  /// 格式2: left(1),right(3),top(4),bottom(6)
+  /// 格式 2 可以选择只配置单个方向，其余方向如果没有值则为0，方向顺序不限制，但表达式必须是：方向(值)
+  func parserUIEdgeInsets(_ str: String) -> UIEdgeInsets? {
+    if let value = Double(str) {
+      return UIEdgeInsets.all(CGFloat(value))
+    }
+
+    let attributes = str
+      .split(separator: ",")
+      .compactMap { String($0).attributeParse() }
+
+    guard !attributes.isEmpty else { return nil }
+
+    var insets = UIEdgeInsets.zero
+    for (edge, value) in attributes {
+      guard let value = Double(value) else { continue }
+      let v = CGFloat(value)
+      switch edge {
+      case "left": insets.left = v
+      case "right": insets.right = v
+      case "top": insets.top = v
+      case "bottom": insets.bottom = v
+      default: continue
+      }
+    }
+    return insets
   }
 
   public enum CodingKeys: CodingKey {
@@ -746,37 +777,6 @@ extension UIEdgeInsets: Hashable {
     hasher.combine(self.left)
     hasher.combine(self.bottom)
     hasher.combine(self.right)
-  }
-
-  /// 将字符串转为 UIEdgeInsets
-  /// 字符串支持两种格式
-  /// 格式1: 纯数字
-  /// 格式2: left(1),right(3),top(4),bottom(6)
-  /// 格式 2 可以选择只配置单个方向，其余方向如果没有值则为0，方向顺序不限制，但表达式必须是：方向(值)
-  static func parser(_ str: String) -> UIEdgeInsets? {
-    if let value = Double(str) {
-      return UIEdgeInsets.all(CGFloat(value))
-    }
-
-    let attributes = str
-      .split(separator: ",")
-      .compactMap { String($0).attributeParse() }
-
-    guard !attributes.isEmpty else { return nil }
-
-    var insets = UIEdgeInsets.zero
-    for (edge, value) in attributes {
-      guard let value = Double(value) else { continue }
-      let v = CGFloat(value)
-      switch edge {
-      case "left": insets.left = v
-      case "right": insets.right = v
-      case "top": insets.top = v
-      case "bottom": insets.bottom = v
-      default: continue
-      }
-    }
-    return insets
   }
 
   /// 输出 yaml 中配置格式

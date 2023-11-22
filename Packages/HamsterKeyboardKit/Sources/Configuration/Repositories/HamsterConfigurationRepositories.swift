@@ -40,9 +40,21 @@ public class HamsterConfigurationRepositories {
   }
 
   /// 保存配置至 yaml 文件中
-  public func saveToYAML(config: HamsterConfiguration, yamlPath path: URL) throws {
+  public func saveToYAML(config: HamsterConfiguration, path: URL) throws {
     let str = try Self.transform(YAMLEncoder().encode(config))
     try str.write(to: path, atomically: true, encoding: .utf8)
+  }
+
+  public func saveToPropertyList(config: HamsterConfiguration, path: URL) throws {
+    let data = try PropertyListEncoder().encode(config)
+    try? FileManager.default.removeItem(at: path)
+    FileManager.default.createFile(atPath: path.path, contents: data)
+  }
+
+  public func saveToJSON(config: HamsterConfiguration, path: URL) throws {
+    let data = try JSONEncoder().encode(config)
+    try? FileManager.default.removeItem(at: path)
+    FileManager.default.createFile(atPath: path.path, contents: data)
   }
 
   /// 保存配置补丁文件

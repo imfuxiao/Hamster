@@ -333,6 +333,11 @@ public extension FileManager {
     sandboxUserDataDirectory.appendingPathComponent("/build/hamster.yaml")
   }
 
+  /// AppGroup/Rime/build/hamster.yaml 文件
+  static var hamsterConfigFileOnAppGroupBuild: URL {
+    appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.yaml")
+  }
+
   // 沙盒 Document 目录下 ShareSupport 目录
   static var sandboxSharedSupportDirectory: URL {
     sandboxDirectory
