@@ -85,7 +85,6 @@ public class TextContentView: NibLessView {
   }
 
   func setStyle(_ style: KeyboardButtonStyle) {
-    guard self.style != style else { return }
     self.style = style
     setupAppearance()
   }

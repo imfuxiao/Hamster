@@ -615,9 +615,6 @@ extension KeyboardAction {
 
   /// 按键空闲状态的背景颜色
   func buttonBackgroundColorForIdleState(for context: KeyboardContext) -> UIColor {
-    if isPrimaryAction {
-      print("test")
-    }
     // 数字九宫格分类符号按键颜色调整
     if isClassifySymbolicOfLight {
       return HamsterUIColor.shared.standardButtonBackground(for: context)

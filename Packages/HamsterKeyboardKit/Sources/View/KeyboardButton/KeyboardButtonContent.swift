@@ -225,11 +225,7 @@ public class KeyboardButtonContentView: NibLessView {
   }
 
   func setStyle(_ style: KeyboardButtonStyle) {
-    guard self.style != style else { return }
     self.style = style
-
-    guard oldBounds.width != .zero else { return }
-
     setupAppearance()
     if action == .space {
       spaceContentView.setStyle(style)
