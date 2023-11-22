@@ -24,6 +24,7 @@ class CandidateWordCell: UICollectionViewCell {
     label.textAlignment = .center
     label.numberOfLines = 1
     label.lineBreakMode = .byTruncatingTail
+    label.setContentHuggingPriority(.defaultLow, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
@@ -34,6 +35,7 @@ class CandidateWordCell: UICollectionViewCell {
     label.textAlignment = .center
     label.numberOfLines = 1
     label.lineBreakMode = .byTruncatingTail
+    label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
@@ -49,9 +51,9 @@ class CandidateWordCell: UICollectionViewCell {
     textLabelCenterXContainer?.priority = .required
 
     NSLayoutConstraint.activate([
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 0),
+      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
       secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -0),
+      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -6),
 
       textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
       secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
@@ -144,6 +146,9 @@ class CandidateWordCell: UICollectionViewCell {
         self.secondaryLabel.textColor = style.candidateCommentTextColor
       }
     }
+
+    textLabel.sizeToFit()
+    secondaryLabel.sizeToFit()
 
     if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted
     {

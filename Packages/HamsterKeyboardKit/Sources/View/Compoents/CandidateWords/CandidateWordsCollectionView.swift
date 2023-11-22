@@ -165,11 +165,16 @@ extension CandidateWordsCollectionView: UICollectionViewDataSource {
 
 extension CandidateWordsCollectionView: UICollectionViewDelegate {
   /// 向下划动到达阈值时获取下一页数据
-  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let threshold: CGFloat = 50.0
-    let contentOffset = scrollView.contentOffset.y
-    let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
-    if (maximumOffset - contentOffset <= threshold) && (maximumOffset - contentOffset != -5.0) {
+//  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//    let threshold: CGFloat = 50.0
+//    let contentOffset = scrollView.contentOffset.y
+//    let maximumOffset = scrollView.contentSize.height - scrollView.frame.size.height
+//    if (maximumOffset - contentOffset <= threshold) && (maximumOffset - contentOffset != -5.0) {
+//      rimeContext.nextPage()
+//    }
+//  }
+  public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    if indexPath.item + 1 >= (candidates?.count ?? 1) {
       rimeContext.nextPage()
     }
   }
@@ -229,7 +234,7 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     let showComment = toolbarConfig?.displayCommentOfCandidateWord ?? false
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord ?? false
 
-    // 为 cell 内容增加左右间距
+    // 为 cell 内容增加左右间距, 对应 cell 的 leading, trailing 的约束
     let intrinsicHorizontalMargin: CGFloat = 12
 
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
