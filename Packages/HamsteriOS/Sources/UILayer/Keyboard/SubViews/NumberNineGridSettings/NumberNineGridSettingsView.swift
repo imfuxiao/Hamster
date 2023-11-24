@@ -38,6 +38,13 @@ class NumberNineGridSettingsView: NibLessView {
     tableView.dataSource = self
     tableView.fillSuperview()
   }
+
+  override func didMoveToWindow() {
+    super.didMoveToWindow()
+    if let _ = window {
+      tableView.reloadData()
+    }
+  }
 }
 
 extension NumberNineGridSettingsView: UITableViewDataSource {
@@ -71,7 +78,11 @@ extension NumberNineGridSettingsView: UITableViewDataSource {
   }
 }
 
-extension NumberNineGridSettingsView: UITableViewDelegate {}
+extension NumberNineGridSettingsView: UITableViewDelegate {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    tableView.deselectRow(at: indexPath, animated: false)
+  }
+}
 
 extension NumberNineGridSettingsView {
   static let enableNumberNineGridInputOnScreenModeRemark = "开启此选项后，符号会直接上屏，不在经过RIME引擎处理。"

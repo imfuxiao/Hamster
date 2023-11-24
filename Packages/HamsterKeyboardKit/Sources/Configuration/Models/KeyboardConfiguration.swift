@@ -74,8 +74,14 @@ public struct KeyboardConfiguration: Codable, Hashable {
   /// 启用九宫格数字键盘
   public var enableNineGridOfNumericKeyboard: Bool?
 
-  /// 九宫格数字键盘: 输入后直接上屏
-  public var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool?
+  /// 数字九宫格键盘: 数字键是否由 RIME 处理
+  public var numberKeyProcessByRimeOnNineGridOfNumericKeyboard: Bool?
+
+  /// 数字九宫格键盘：左侧符号列表符号是否由 RIME 处理
+  public var leftSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool?
+
+  /// 数字九宫格键盘：右侧符号否由 RIME 处理
+  public var rightSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool?
 
   /// 九宫格数字键盘: 符号列表
   public var symbolsOfGridOfNumericKeyboard: [String]?
@@ -143,7 +149,7 @@ public struct KeyboardConfiguration: Codable, Hashable {
   // 按键下方边框
   public var enableButtonUnderBorder: Bool?
 
-  public init(useKeyboardType: String? = nil, disableSwipeLabel: Bool? = nil, upSwipeOnLeft: Bool? = nil, swipeLabelUpAndDownLayout: Bool? = nil, swipeLabelUpAndDownIrregularLayout: Bool? = nil, displayButtonBubbles: Bool? = nil, enableKeySounds: Bool? = nil, enableHapticFeedback: Bool? = nil, hapticFeedbackIntensity: Int? = nil, displaySemicolonButton: Bool? = nil, displayClassifySymbolButton: Bool? = nil, displaySpaceLeftButton: Bool? = nil, spaceLeftButtonProcessByRIME: Bool? = nil, keyValueOfSpaceLeftButton: String? = nil, displaySpaceRightButton: Bool? = nil, spaceRightButtonProcessByRIME: Bool? = nil, keyValueOfSpaceRightButton: String? = nil, displayChineseEnglishSwitchButton: Bool? = nil, chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool? = nil, enableNineGridOfNumericKeyboard: Bool? = nil, enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool? = nil, symbolsOfGridOfNumericKeyboard: [String]? = nil, lockShiftState: Bool? = nil, enableEmbeddedInputMode: Bool? = nil, widthOfOneHandedKeyboard: Int? = nil, symbolsOfCursorBack: [String]? = nil, symbolsOfReturnToMainKeyboard: [String]? = nil, symbolsOfChineseNineGridKeyboard: [String]? = nil, pairsOfSymbols: [String]? = nil, enableSymbolKeyboard: Bool? = nil, lockForSymbolKeyboard: Bool? = nil, enableColorSchema: Bool? = nil, useColorSchemaForLight: String? = nil, useColorSchemaForDark: String? = nil, colorSchemas: [KeyboardColorSchema]? = nil, enableLoadingTextForSpaceButton: Bool? = nil, loadingTextForSpaceButton: String? = nil, labelTextForSpaceButton: String? = nil, showCurrentInputSchemaNameForSpaceButton: Bool? = nil, showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool? = nil, showUppercasedCharacterOnChineseKeyboard: Bool? = nil, enableButtonUnderBorder: Bool? = nil) {
+  public init(useKeyboardType: String? = nil, disableSwipeLabel: Bool? = nil, upSwipeOnLeft: Bool? = nil, swipeLabelUpAndDownLayout: Bool? = nil, swipeLabelUpAndDownIrregularLayout: Bool? = nil, displayButtonBubbles: Bool? = nil, enableKeySounds: Bool? = nil, enableHapticFeedback: Bool? = nil, hapticFeedbackIntensity: Int? = nil, displaySemicolonButton: Bool? = nil, displayClassifySymbolButton: Bool? = nil, displaySpaceLeftButton: Bool? = nil, spaceLeftButtonProcessByRIME: Bool? = nil, keyValueOfSpaceLeftButton: String? = nil, displaySpaceRightButton: Bool? = nil, spaceRightButtonProcessByRIME: Bool? = nil, keyValueOfSpaceRightButton: String? = nil, displayChineseEnglishSwitchButton: Bool? = nil, chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: Bool? = nil, enableNineGridOfNumericKeyboard: Bool? = nil, numberKeyProcessByRimeOnNineGridOfNumericKeyboard: Bool? = nil, leftSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool? = nil, rightSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool? = nil, symbolsOfGridOfNumericKeyboard: [String]? = nil, lockShiftState: Bool? = nil, enableEmbeddedInputMode: Bool? = nil, widthOfOneHandedKeyboard: Int? = nil, symbolsOfCursorBack: [String]? = nil, symbolsOfReturnToMainKeyboard: [String]? = nil, symbolsOfChineseNineGridKeyboard: [String]? = nil, pairsOfSymbols: [String]? = nil, enableSymbolKeyboard: Bool? = nil, lockForSymbolKeyboard: Bool? = nil, enableColorSchema: Bool? = nil, useColorSchemaForLight: String? = nil, useColorSchemaForDark: String? = nil, colorSchemas: [KeyboardColorSchema]? = nil, enableLoadingTextForSpaceButton: Bool? = nil, loadingTextForSpaceButton: String? = nil, labelTextForSpaceButton: String? = nil, showCurrentInputSchemaNameForSpaceButton: Bool? = nil, showCurrentInputSchemaNameOnLoadingTextForSpaceButton: Bool? = nil, showUppercasedCharacterOnChineseKeyboard: Bool? = nil, enableButtonUnderBorder: Bool? = nil) {
     self.useKeyboardType = useKeyboardType
     self.disableSwipeLabel = disableSwipeLabel
     self.upSwipeOnLeft = upSwipeOnLeft
@@ -164,7 +170,9 @@ public struct KeyboardConfiguration: Codable, Hashable {
     self.displayChineseEnglishSwitchButton = displayChineseEnglishSwitchButton
     self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = chineseEnglishSwitchButtonIsOnLeftOfSpaceButton
     self.enableNineGridOfNumericKeyboard = enableNineGridOfNumericKeyboard
-    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = enterDirectlyOnScreenByNineGridOfNumericKeyboard
+    self.numberKeyProcessByRimeOnNineGridOfNumericKeyboard = numberKeyProcessByRimeOnNineGridOfNumericKeyboard
+    self.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = leftSymbolProcessByRimeOnNineGridOfNumericKeyboard
+    self.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = rightSymbolProcessByRimeOnNineGridOfNumericKeyboard
     self.symbolsOfGridOfNumericKeyboard = symbolsOfGridOfNumericKeyboard
     self.lockShiftState = lockShiftState
     self.enableEmbeddedInputMode = enableEmbeddedInputMode
@@ -210,7 +218,9 @@ public struct KeyboardConfiguration: Codable, Hashable {
     self.displayChineseEnglishSwitchButton = try container.decodeIfPresent(Bool.self, forKey: .displayChineseEnglishSwitchButton)
     self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton = try container.decodeIfPresent(Bool.self, forKey: .chineseEnglishSwitchButtonIsOnLeftOfSpaceButton)
     self.enableNineGridOfNumericKeyboard = try container.decodeIfPresent(Bool.self, forKey: .enableNineGridOfNumericKeyboard)
-    self.enterDirectlyOnScreenByNineGridOfNumericKeyboard = try container.decodeIfPresent(Bool.self, forKey: .enterDirectlyOnScreenByNineGridOfNumericKeyboard)
+    self.numberKeyProcessByRimeOnNineGridOfNumericKeyboard = try container.decodeIfPresent(Bool.self, forKey: .numberKeyProcessByRimeOnNineGridOfNumericKeyboard)
+    self.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = try container.decodeIfPresent(Bool.self, forKey: .leftSymbolProcessByRimeOnNineGridOfNumericKeyboard)
+    self.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = try container.decodeIfPresent(Bool.self, forKey: .rightSymbolProcessByRimeOnNineGridOfNumericKeyboard)
     self.symbolsOfGridOfNumericKeyboard = try container.decodeIfPresent([String].self, forKey: .symbolsOfGridOfNumericKeyboard)
     self.lockShiftState = try container.decodeIfPresent(Bool.self, forKey: .lockShiftState)
     self.enableEmbeddedInputMode = try container.decodeIfPresent(Bool.self, forKey: .enableEmbeddedInputMode)
@@ -255,7 +265,9 @@ public struct KeyboardConfiguration: Codable, Hashable {
     case displayChineseEnglishSwitchButton
     case chineseEnglishSwitchButtonIsOnLeftOfSpaceButton
     case enableNineGridOfNumericKeyboard
-    case enterDirectlyOnScreenByNineGridOfNumericKeyboard
+    case numberKeyProcessByRimeOnNineGridOfNumericKeyboard
+    case leftSymbolProcessByRimeOnNineGridOfNumericKeyboard
+    case rightSymbolProcessByRimeOnNineGridOfNumericKeyboard
     case symbolsOfGridOfNumericKeyboard
     case lockShiftState
     case enableEmbeddedInputMode
@@ -301,7 +313,9 @@ public struct KeyboardConfiguration: Codable, Hashable {
     try container.encodeIfPresent(self.displayChineseEnglishSwitchButton, forKey: .displayChineseEnglishSwitchButton)
     try container.encodeIfPresent(self.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, forKey: .chineseEnglishSwitchButtonIsOnLeftOfSpaceButton)
     try container.encodeIfPresent(self.enableNineGridOfNumericKeyboard, forKey: .enableNineGridOfNumericKeyboard)
-    try container.encodeIfPresent(self.enterDirectlyOnScreenByNineGridOfNumericKeyboard, forKey: .enterDirectlyOnScreenByNineGridOfNumericKeyboard)
+    try container.encodeIfPresent(self.numberKeyProcessByRimeOnNineGridOfNumericKeyboard, forKey: .numberKeyProcessByRimeOnNineGridOfNumericKeyboard)
+    try container.encodeIfPresent(self.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard, forKey: .leftSymbolProcessByRimeOnNineGridOfNumericKeyboard)
+    try container.encodeIfPresent(self.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard, forKey: .rightSymbolProcessByRimeOnNineGridOfNumericKeyboard)
     try container.encodeIfPresent(self.symbolsOfGridOfNumericKeyboard, forKey: .symbolsOfGridOfNumericKeyboard)
     try container.encodeIfPresent(self.lockShiftState, forKey: .lockShiftState)
     try container.encodeIfPresent(self.enableEmbeddedInputMode, forKey: .enableEmbeddedInputMode)

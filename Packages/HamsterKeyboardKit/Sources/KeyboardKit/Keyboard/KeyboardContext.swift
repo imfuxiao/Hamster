@@ -401,9 +401,16 @@ public class KeyboardContext: ObservableObject {
     CGFloat(hamsterConfiguration?.toolbar?.heightOfCodingArea ?? 15)
   }
 
-  /// 数字九宫格符号是否直接上屏
-  var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
-    hamsterConfiguration?.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+  var numberKeyProcessByRimeOnNineGridOfNumericKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.numberKeyProcessByRimeOnNineGridOfNumericKeyboard ?? false
+  }
+
+  var leftSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard ?? false
+  }
+
+  var rightSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool {
+    hamsterConfiguration?.keyboard?.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard ?? false
   }
 
   /// 分类符号键盘状态

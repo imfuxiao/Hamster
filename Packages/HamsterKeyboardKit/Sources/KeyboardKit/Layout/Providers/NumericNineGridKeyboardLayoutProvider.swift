@@ -45,7 +45,9 @@ open class NumericNineGridKeyboardLayoutProvider: KeyboardLayoutProvider {
   }
 
   open func actions(for rows: InputSetRows, context: KeyboardContext) -> KeyboardActionRows {
-    let inputActions = KeyboardActionRows(characters: rows.characters())
+    let inputActions = keyboardContext.numberKeyProcessByRimeOnNineGridOfNumericKeyboard
+      ? KeyboardActionRows(characters: rows.characters())
+      : KeyboardActionRows(symbols: rows.characters())
     var result = KeyboardActionRows()
     result.append(inputActions[0] + topTrailingActions(for: inputActions, context: context))
     result.append(inputActions[1] + middleTrailingActions(for: inputActions, context: context))
@@ -127,9 +129,9 @@ open class NumericNineGridKeyboardLayoutProvider: KeyboardLayoutProvider {
     for actions: KeyboardActionRows,
     context: KeyboardContext
   ) -> KeyboardActions {
-    let action: KeyboardAction = keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard
-      ? .symbolOfDark(.init(char: "."))
-      : .characterOfDark(".")
+    let action: KeyboardAction = keyboardContext.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard
+      ? .characterOfDark(".")
+      : .symbolOfDark(.init(char: "."))
     return [action]
   }
 
@@ -140,9 +142,9 @@ open class NumericNineGridKeyboardLayoutProvider: KeyboardLayoutProvider {
     for actions: KeyboardActionRows,
     context: KeyboardContext
   ) -> KeyboardActions {
-    let action: KeyboardAction = keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard
-      ? .symbolOfDark(.init(char: "@"))
-      : .characterOfDark("@")
+    let action: KeyboardAction = keyboardContext.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard
+      ? .characterOfDark("@")
+      : .symbolOfDark(.init(char: "@"))
     return [action]
   }
 

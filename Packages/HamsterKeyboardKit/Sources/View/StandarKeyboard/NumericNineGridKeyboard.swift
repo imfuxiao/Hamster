@@ -256,10 +256,10 @@ public class NumericNineGridKeyboard: KeyboardTouchView, UICollectionViewDelegat
 public extension NumericNineGridKeyboard {
   func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
     let char = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    if keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard {
-      actionHandler.handle(.press, on: .symbol(.init(char: char)))
-    } else {
+    if keyboardContext.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard {
       actionHandler.handle(.press, on: .character(char))
+    } else {
+      actionHandler.handle(.press, on: .symbol(.init(char: char)))
     }
     return true
   }
@@ -267,10 +267,10 @@ public extension NumericNineGridKeyboard {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let _ = collectionView.cellForItem(at: indexPath) else { return }
     let char = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
-    if keyboardContext.enterDirectlyOnScreenByNineGridOfNumericKeyboard {
-      actionHandler.handle(.release, on: .symbol(.init(char: char)))
-    } else {
+    if keyboardContext.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard {
       actionHandler.handle(.release, on: .character(char))
+    } else {
+      actionHandler.handle(.release, on: .symbol(.init(char: char)))
     }
     collectionView.deselectItem(at: indexPath, animated: true)
   }

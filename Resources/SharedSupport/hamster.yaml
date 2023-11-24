@@ -77,8 +77,13 @@ keyboard:
   chineseEnglishSwitchButtonIsOnLeftOfSpaceButton: false
   # 启用数字九宫格键盘
   enableNineGridOfNumericKeyboard: true
-  # (数字九宫格键盘)符号是否直接上屏
-  enterDirectlyOnScreenByNineGridOfNumericKeyboard: true
+  # 数字九宫格键盘：数字键是否由 RIME 处理
+  numberKeyProcessByRimeOnNineGridOfNumericKeyboard: false
+  # 数字九宫格键盘：左侧符号列表符号是否由 RIME 处理
+  leftSymbolProcessByRimeOnNineGridOfNumericKeyboard: false
+  # 数字九宫格键盘：键盘右侧符号是否由 RIME 处理
+  rightSymbolProcessByRimeOnNineGridOfNumericKeyboard: false
+
   symbolsOfGridOfNumericKeyboard:
     - +
     - "-"

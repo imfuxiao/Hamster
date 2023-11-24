@@ -246,13 +246,33 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
-  public var enterDirectlyOnScreenByNineGridOfNumericKeyboard: Bool {
+  public var numberKeyProcessByRimeOnNineGridOfNumericKeyboard: Bool {
     get {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard ?? true
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.numberKeyProcessByRimeOnNineGridOfNumericKeyboard ?? false
     }
     set {
-      HamsterAppDependencyContainer.shared.configuration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
-      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.enterDirectlyOnScreenByNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.numberKeyProcessByRimeOnNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.numberKeyProcessByRimeOnNineGridOfNumericKeyboard = newValue
+    }
+  }
+
+  public var leftSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = newValue
+    }
+  }
+
+  public var rightSymbolProcessByRimeOnNineGridOfNumericKeyboard: Bool {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard ?? false
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.keyboard?.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.keyboard?.rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = newValue
     }
   }
 
@@ -998,11 +1018,25 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         enableNineGridOfNumericKeyboard = $0
       }),
     .init(
-      text: "符号是否直接上屏",
+      text: "数字键由 RIME 处理",
       type: .toggle,
-      toggleValue: { [unowned self] in enterDirectlyOnScreenByNineGridOfNumericKeyboard },
+      toggleValue: { [unowned self] in numberKeyProcessByRimeOnNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
-        enterDirectlyOnScreenByNineGridOfNumericKeyboard = $0
+        numberKeyProcessByRimeOnNineGridOfNumericKeyboard = $0
+      }),
+    .init(
+      text: "左侧符号列表由 RIME 处理",
+      type: .toggle,
+      toggleValue: { [unowned self] in leftSymbolProcessByRimeOnNineGridOfNumericKeyboard },
+      toggleHandled: { [unowned self] in
+        leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = $0
+      }),
+    .init(
+      text: "右侧符号由 RIME 处理",
+      type: .toggle,
+      toggleValue: { [unowned self] in rightSymbolProcessByRimeOnNineGridOfNumericKeyboard },
+      toggleHandled: { [unowned self] in
+        rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = $0
       }),
     .init(
       text: "符号列表 - 恢复默认值",
