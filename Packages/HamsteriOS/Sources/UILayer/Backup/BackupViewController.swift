@@ -30,7 +30,7 @@ class BackupViewController: NibLessViewController {
   }
 
   override func loadView() {
-    title = "备份与恢复"
+    title = L10n.Backup.title2
     view = BackupRootView(backupViewModel: backupViewModel)
   }
 
@@ -44,26 +44,26 @@ class BackupViewController: NibLessViewController {
   }
 
   func deleteBackupAction() {
-    let alertController = UIAlertController(title: "是否删除？", message: "文件删除后无法恢复，确认删除？", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "确认", style: .destructive, handler: { [unowned self] _ in
+    let alertController = UIAlertController(title: L10n.Backup.Delete.alertTitle, message: L10n.Backup.Delete.alertMessage, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: L10n.confirm, style: .destructive, handler: { [unowned self] _ in
       Task {
         guard let selectFile = backupViewModel.selectFile else { return }
         do {
           try self.backupViewModel.deleteBackupFile(selectFile.url)
         } catch {
-          presentError(error: ErrorMessage(title: "删除文件", message: "删除失败"))
+          presentError(error: ErrorMessage(title: L10n.Backup.Delete.errorTitle, message: L10n.Backup.Delete.errorMessage))
         }
         self.backupViewModel.loadBackupFiles()
       }
     }))
-    alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: L10n.cancel, style: .cancel, handler: nil))
     present(alertController, animated: true, completion: nil)
   }
 
   func renameAction() {
-    let alertController = UIAlertController(title: "修改备份文件名称", message: nil, preferredStyle: .alert)
-    alertController.addTextField { $0.placeholder = "新文件名称" }
-    alertController.addAction(UIAlertAction(title: "确认", style: .destructive, handler: { [unowned self, alertController] _ in
+    let alertController = UIAlertController(title: L10n.Backup.Rename.alertTitle, message: nil, preferredStyle: .alert)
+    alertController.addTextField { $0.placeholder =  L10n.Backup.Rename.newName}
+    alertController.addAction(UIAlertAction(title: L10n.confirm, style: .destructive, handler: { [unowned self, alertController] _ in
       Task {
         guard let textFields = alertController.textFields else { return }
         guard let selectFile = backupViewModel.selectFile else { return }
@@ -73,7 +73,7 @@ class BackupViewController: NibLessViewController {
         self.backupViewModel.loadBackupFiles()
       }
     }))
-    alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: nil))
+    alertController.addAction(UIAlertAction(title: L10n.cancel, style: .cancel, handler: nil))
     present(alertController, animated: true)
   }
 }

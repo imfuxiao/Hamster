@@ -10,8 +10,14 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
+  /// 取消
+  public static let cancel = L10n.tr("Localizable", "cancel", fallback: "取消")
+  /// 确认
+  public static let confirm = L10n.tr("Localizable", "confirm", fallback: "确认")
   /// 复制成功
   public static let copySuccessfully = L10n.tr("Localizable", "copy_successfully", fallback: "复制成功")
+  /// 删除
+  public static let delete = L10n.tr("Localizable", "delete", fallback: "删除")
   /// 禁用
   public static let disabledLabel = L10n.tr("Localizable", "disabledLabel", fallback: "禁用")
   /// 启用
@@ -65,8 +71,51 @@ public enum L10n {
     public static let title = L10n.tr("Localizable", "app.title", fallback: "输入法设置")
   }
   public enum Backup {
+    /// 1. 向左划动操作文件；
+    /// 2. 软件恢复后,请手动执行“重新部署”；
+    public static let remark = L10n.tr("Localizable", "backup.remark", fallback: "1. 向左划动操作文件；\n2. 软件恢复后,请手动执行“重新部署”；")
     /// 软件备份
     public static let title = L10n.tr("Localizable", "backup.title", fallback: "软件备份")
+    /// 备份与恢复
+    public static let title2 = L10n.tr("Localizable", "backup.title2", fallback: "备份与恢复")
+    public enum Create {
+      /// 软件备份中，请等待……
+      public static let backingUp = L10n.tr("Localizable", "backup.create.backing_up", fallback: "软件备份中，请等待……")
+      /// 备份失败
+      public static let failed = L10n.tr("Localizable", "backup.create.failed", fallback: "备份失败")
+      /// 备份成功
+      public static let success = L10n.tr("Localizable", "backup.create.success", fallback: "备份成功")
+      /// 软件备份
+      public static let title = L10n.tr("Localizable", "backup.create.title", fallback: "软件备份")
+    }
+    public enum Delete {
+      /// 文件删除后无法恢复，确认删除？
+      public static let alertMessage = L10n.tr("Localizable", "backup.delete.alert_message", fallback: "文件删除后无法恢复，确认删除？")
+      /// 是否删除？
+      public static let alertTitle = L10n.tr("Localizable", "backup.delete.alert_title", fallback: "是否删除？")
+      /// 删除失败
+      public static let errorMessage = L10n.tr("Localizable", "backup.delete.error_message", fallback: "删除失败")
+      /// 删除文件
+      public static let errorTitle = L10n.tr("Localizable", "backup.delete.error_title", fallback: "删除文件")
+    }
+    public enum Rename {
+      /// 修改备份文件名称
+      public static let alertTitle = L10n.tr("Localizable", "backup.rename.alert_title", fallback: "修改备份文件名称")
+      /// 新文件名称
+      public static let newName = L10n.tr("Localizable", "backup.rename.new_name", fallback: "新文件名称")
+      /// 修改名称
+      public static let title = L10n.tr("Localizable", "backup.rename.title", fallback: "修改名称")
+    }
+    public enum Restore {
+      /// 恢复失败
+      public static let failed = L10n.tr("Localizable", "backup.restore.failed", fallback: "恢复失败")
+      /// 恢复中，请等待……
+      public static let restoring = L10n.tr("Localizable", "backup.restore.restoring", fallback: "恢复中，请等待……")
+      /// 恢复成功, 请重新部署。
+      public static let success = L10n.tr("Localizable", "backup.restore.success", fallback: "恢复成功, 请重新部署。")
+      /// 恢复
+      public static let title = L10n.tr("Localizable", "backup.restore.title", fallback: "恢复")
+    }
   }
   public enum ColorScheme {
     /// 键盘配色

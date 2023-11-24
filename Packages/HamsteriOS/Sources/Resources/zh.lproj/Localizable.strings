@@ -23,7 +23,25 @@
 
 "syncbackup.title" = "同步与备份";
 "i_cloud.title" = "iCloud同步";
+
 "backup.title" = "软件备份";
+"backup.title2" = "备份与恢复";
+"backup.create.title" = "软件备份";
+"backup.create.backing_up" = "软件备份中，请等待……";
+"backup.create.success" = "备份成功";
+"backup.create.failed" = "备份失败";
+"backup.delete.alert_title" = "是否删除？";
+"backup.delete.alert_message" = "文件删除后无法恢复，确认删除？";
+"backup.delete.error_title" = "删除文件";
+"backup.delete.error_message" = "删除失败";
+"backup.restore.title" = "恢复";
+"backup.restore.restoring" = "恢复中，请等待……";
+"backup.restore.success" = "恢复成功, 请重新部署。";
+"backup.restore.failed" = "恢复失败";
+"backup.rename.title" = "修改名称";
+"backup.rename.alert_title" = "修改备份文件名称";
+"backup.rename.new_name" = "新文件名称";
+"backup.remark" = "1. 向左划动操作文件；\n2. 软件恢复后,请手动执行“重新部署”；";
 
 "rime.title" = "RIME";
 "rime.simp_trad_swtich.title" = "简繁切换";
@@ -78,7 +96,10 @@
 "about.export.text" = "导出界面设置";
 "about.export.error" = "导出 UI 设置失败";
 
+"cancel" = "取消";
+"confirm" = "确认";
 "copy_successfully" = "复制成功";
+"delete" = "删除";
 "disabledLabel" = "禁用";
 "enabledLabel" = "启用";
 "reset_successfully" = "重置成功";
