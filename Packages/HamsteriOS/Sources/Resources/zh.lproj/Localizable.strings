@@ -19,7 +19,12 @@
 "k_b.section_title" = "键盘相关";
 "k_b.title" = "键盘设置";
 "color_scheme.title" = "键盘配色";
+
 "feedback.title" = "按键音与震动";
+"feedback.title2" = "键盘反馈";
+"feedback.haptic" = "按键震动";
+"feedback.haptic_permission" = "开启震动需要为键盘开启“完全访问权限”";
+"feedback.sound" = "开启按键声";
 
 "syncbackup.title" = "同步与备份";
 

@@ -19,7 +19,12 @@
 "k_b.section_title" = "鍵盤相關";
 "k_b.title" = "鍵盤設定";
 "color_scheme.title" = "鍵盤配色";
+
 "feedback.title" = "按鍵音與震動";
+"feedback.title2" = "鍵盤回饋";
+"feedback.haptic" = "按鍵震動";
+"feedback.haptic_permission" = "開啟震動需要為鍵盤開啟“允許完整取用”";
+"feedback.sound" = "開啟按鍵聲";
 
 "syncbackup.title" = "同步與備份";
 

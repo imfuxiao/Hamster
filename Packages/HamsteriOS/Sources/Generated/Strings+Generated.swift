@@ -130,8 +130,16 @@ public enum L10n {
     public static let sync = L10n.tr("Localizable", "favbtn.sync", fallback: "RIME同步")
   }
   public enum Feedback {
+    /// 按键震动
+    public static let haptic = L10n.tr("Localizable", "feedback.haptic", fallback: "按键震动")
+    /// 开启震动需要为键盘开启“完全访问权限”
+    public static let hapticPermission = L10n.tr("Localizable", "feedback.haptic_permission", fallback: "开启震动需要为键盘开启“完全访问权限”")
+    /// 开启按键声
+    public static let sound = L10n.tr("Localizable", "feedback.sound", fallback: "开启按键声")
     /// 按键音与震动
     public static let title = L10n.tr("Localizable", "feedback.title", fallback: "按键音与震动")
+    /// 键盘反馈
+    public static let title2 = L10n.tr("Localizable", "feedback.title2", fallback: "键盘反馈")
   }
   public enum Finder {
     /// 文件管理

@@ -22,7 +22,7 @@ class KeyboardFeedbackViewController: NibLessViewController {
   }
 
   override func loadView() {
-    title = "键盘反馈"
+    title = L10n.Feedback.title2
     view = KeyboardFeedbackRootView(
       keyboardFeedbackViewModel: keyboardFeedbackViewModel
     )
