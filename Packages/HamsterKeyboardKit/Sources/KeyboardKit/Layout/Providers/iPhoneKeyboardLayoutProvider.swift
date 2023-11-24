@@ -38,7 +38,7 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     context: KeyboardContext
   ) -> KeyboardActionRows {
     let characters = actionCharacters(for: inputs, context: context)
-    let actions = KeyboardActionRows(characters: characters)
+    let actions = KeyboardActionRows(symbols: characters)
     guard isExpectedActionSet(actions) else { return actions }
     var result = KeyboardActionRows()
     result.append(topLeadingActions(for: actions, context: context) + actions[0] + topTrailingActions(for: actions, context: context))
@@ -59,11 +59,11 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     case context.keyboardDictationReplacement: return bottomSystemButtonWidth(for: context)
     case .character, .symbol: return isLastNumericInputRow(row, for: context) ? lastSymbolicInputWidth(for: context) : .input
     case .backspace: return lowerSystemButtonWidth(for: context)
-    case .keyboardType:
-      if row == 3 && (actions[row].count == 3 || (actions[row].count == 4 && index == 0)) {
+    case .keyboardType(let type):
+      if row == 3 && actions[row].count == 3 {
         return largeBottomWidth(for: context)
       }
-      if row == 3 && actions[row].count == 4 && index + 1 == actions.endIndex {
+      if row == 3 && actions[row].count == 4 && type.isNumber {
         return smallBottomWidth(for: context)
       }
       return bottomSystemButtonWidth(for: context)
@@ -183,19 +183,20 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     var result = KeyboardActions()
     if let action = keyboardSwitchActionForBottomRow(for: context) { result.append(action) }
 
+    if context.keyboardType.isAlphabetic, context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton {
+      // 自定义键盘：返回主键盘
+      result.append(.keyboardType(context.selectKeyboard))
+    }
+
     // 地球（系统输入法切换键）
     if context.needsInputModeSwitchKey { result.append(.nextKeyboard) }
 
     result.append(.space)
 
-    // 自定义键盘：返回主键盘
-    result.append(.keyboardType(context.selectKeyboard))
-//    if (context.selectKeyboard.isCustom || context.selectKeyboard.isChineseNineGrid) && context.keyboardType.isAlphabetic {}
-//
-//    // 英文键盘：返回主键盘
-//    if context.selectKeyboard.isChinesePrimaryKeyboard && context.keyboardType.isAlphabetic {
-//      result.append(.keyboardType(context.selectKeyboard))
-//    }
+    if context.keyboardType.isAlphabetic, !context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton {
+      // 自定义键盘：返回主键盘
+      result.append(.keyboardType(context.selectKeyboard))
+    }
 
     if context.textDocumentProxy.keyboardType == .emailAddress {
       result.append(.symbol(.init(char: "@")))
@@ -204,14 +205,6 @@ open class iPhoneKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
     if context.textDocumentProxy.returnKeyType == .go {
       result.append(.symbol(.init(char: ".")))
     }
-    // 切换用户设置键盘
-//    if context.selectKeyboard.isCustom {
-//      result.append(.returnLastKeyboard)
-//    } else if context.selectKeyboard.isChinesePrimaryKeyboard {
-//      result.append(.keyboardType(.chinese(.lowercased)))
-//    } else if context.selectKeyboard.isChineseNineGrid {
-//      result.append(.keyboardType(.chineseNineGrid))
-//    }
     result.append(keyboardReturnAction(for: context))
     return result
   }

@@ -87,8 +87,8 @@ public extension NumericInputSet {
   static func standard(currency: String) -> NumericInputSet {
     NumericInputSet(rows: [
       .init(chars: "1234567890"),
-      .init(phone: "-/:;()\(currency)&@”", pad: "@#\(currency)&*()’”"),
-      .init(phone: ".,?!’", pad: "%-+=/;:!?")
+      .init(phone: "-/:;()\(currency)&@\"", pad: "@#\(currency)&*()'\""),
+      .init(phone: ".,?!'", pad: "%-+=/;:!?")
     ])
   }
 

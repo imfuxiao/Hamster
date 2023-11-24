@@ -185,7 +185,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       result.append(.keyboardType(.classifySymbolic))
     }
 
-    if context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
+    if context.keyboardType.isChinesePrimaryKeyboard, context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
       result.append(action)
     }
 
@@ -205,7 +205,7 @@ open class iPhoneChineseKeyboardLayoutProvider: SystemKeyboardLayoutProvider {
       result.append(action)
     }
 
-    if !context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
+    if context.keyboardType.isChinesePrimaryKeyboard, !context.chineseEnglishSwitchButtonIsOnLeftOfSpaceButton, let action = needsChineseEnglishSwitchAction(for: context) {
       result.append(action)
     }
 
