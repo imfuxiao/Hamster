@@ -49,7 +49,7 @@ extension FinderSettingsView: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     if section == 1 {
-      return "指后缀为“.txt”及文件夹名包含“.userdb”下的文件"
+      return L10n.Finder.CopyUserdb.remark
     }
     return nil
   }

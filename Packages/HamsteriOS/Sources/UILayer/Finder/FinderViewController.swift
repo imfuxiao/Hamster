@@ -64,7 +64,7 @@ class FinderViewController: NibLessViewController {
 
 extension FinderViewController {
   override func loadView() {
-    title = "方案文件管理"
+    title = L10n.Finder.title
     view = FinderRootView(finderViewModel: finderViewModel, fileBrowserViewModelFactory: fileBrowserViewModelFactory)
 
     finderViewModel.presentTextEditorPublished

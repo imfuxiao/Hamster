@@ -94,7 +94,7 @@ extension TextEditorViewController {
     // 添加导入按钮
     textView.isEditable = enableEditorState
     if enableEditorState {
-      let saveItem = UIBarButtonItem(title: "保存", style: .done, target: self, action: #selector(saveFileContent))
+      let saveItem = UIBarButtonItem(title: L10n.Finder.Editor.Save.title, style: .done, target: self, action: #selector(saveFileContent))
       navigationItem.rightBarButtonItem = saveItem
     }
   }
@@ -108,11 +108,11 @@ extension TextEditorViewController {
     let fileContent = textView.text
     do {
       try fileContent.write(toFile: fileURL.path, atomically: true, encoding: .utf8)
-      ProgressHUD.success("保存成功")
+      ProgressHUD.success(L10n.Finder.Editor.Save.success)
       navigationController?.popViewController(animated: true)
     } catch {
       Logger.statistics.debug("TextEditorView save error: \(error.localizedDescription)")
-      ProgressHUD.failed("保存失败", delay: 1.5)
+      ProgressHUD.failed(L10n.Finder.Editor.Save.failed, delay: 1.5)
     }
   }
 }

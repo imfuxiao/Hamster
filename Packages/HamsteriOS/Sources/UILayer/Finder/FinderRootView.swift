@@ -20,9 +20,9 @@ class FinderRootView: NibLessView {
   lazy var segmentedControl: UISegmentedControl = {
     let tags: [String]
     if finderViewModel.enableAppleCloud {
-      tags = ["通用", "应用文件", "键盘文件", "iCloud文件"]
+      tags = [L10n.Finder.Tag.general, L10n.Finder.Tag.app, L10n.Finder.Tag.keyboard, L10n.Finder.Tag.iCloud]
     } else {
-      tags = ["通用", "应用文件", "键盘文件"]
+      tags = [L10n.Finder.Tag.general, L10n.Finder.Tag.app, L10n.Finder.Tag.keyboard]
     }
     let segmentedControl = UISegmentedControl(items: tags)
     segmentedControl.selectedSegmentIndex = 0
@@ -143,7 +143,7 @@ extension FinderRootView {
       stackView.distribution = .fill
 
       let warringLabel = UILabel(frame: .zero)
-      warringLabel.text = "iCloud异常"
+      warringLabel.text = L10n.Finder.ICloudDoc.warning
       warringLabel.font = UIFont.preferredFont(forTextStyle: .body)
       stackView.addSubview(warringLabel)
       changeContentSubView(view: stackView)
