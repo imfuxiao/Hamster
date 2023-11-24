@@ -74,12 +74,22 @@ public class CandidateWordsCollectionView: UICollectionView {
     self.alwaysBounceHorizontal = true
     self.alwaysBounceVertical = false
 
+    let gesture = UISwipeGestureRecognizer(target: self, action: #selector(downSwipeGesture(_:)))
+    gesture.direction = .down
+    self.addGestureRecognizer(gesture)
+
     combine()
   }
 
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  @objc func downSwipeGesture(_ sender: CandidateWordsCollectionView) {
+    if candidatesViewState.isCollapse() {
+      keyboardContext.candidatesViewState = .expand
+    }
   }
 
   func setupStyle(_ style: CandidateBarStyle) {
