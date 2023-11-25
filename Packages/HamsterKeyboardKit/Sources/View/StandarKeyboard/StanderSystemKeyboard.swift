@@ -283,9 +283,10 @@ public class StanderSystemKeyboard: KeyboardTouchView {
     var dynamicConstraintsIndex = 0
     for (rowIndex, row) in layout.itemRows.enumerated() {
       for (columnIndex, item) in row.enumerated() {
-        // 检测按键宽度是否发生变化, 如果发生变化，则重新计算自动布局
         let oldItem = keyboardRows[rowIndex][columnIndex].item
-        resetConstraints = oldItem.size.width != item.size.width
+
+        // 检测按键宽度或高度是否发生变化, 如果发生变化，则重新计算自动布局
+        resetConstraints = oldItem.size.width != item.size.width || oldItem.size.height != item.size.height
 
         keyboardRows[rowIndex][columnIndex].item = item
 
