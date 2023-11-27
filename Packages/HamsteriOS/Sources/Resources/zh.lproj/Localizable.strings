@@ -22,7 +22,24 @@
 "feedback.title" = "按键音与震动";
 
 "syncbackup.title" = "同步与备份";
+
 "i_cloud.title" = "iCloud同步";
+"i_cloud.enable_apple_cloud" = "iCloud";
+"i_cloud.enable_apple_cloud_remark" = "1. 启用后，“重新部署”会复制iCloud中仓输入法`RIME`文件夹下全部文件；\
+2. 复制时，差异文件会被覆盖；";
+"i_cloud.copy_file_to_i_cloud" = "拷贝应用文件至iCloud";
+"i_cloud.copy_remark" = "默认为全量拷贝，如需过滤拷贝内容，需要结合过滤表达式一起使用；";
+"i_cloud.regex_on_copy_file" = "正则过滤";
+"i_cloud.regex_remark" = "1. 过滤表达式在“重新部署”功能中也会生效；\
+2. 多个正则表达式使用英文逗号分隔；\
+3. 常用示例（点击可复制全部表达式，请按需修改）:\
+   * 过滤userdb目录 ^.*[.]userdb.*$\
+   * 过滤build目录 ^.*build.*$\
+   * 过滤SharedSupport目录 ^.*SharedSupport.*$\
+   * 过滤编译后的词库文件 ^.*[.]bin$";
+"i_cloud.upload.copying" = "拷贝中……";
+"i_cloud.upload.success" = "拷贝成功";
+"i_cloud.upload.failed" = "拷贝失败: %@";
 
 "backup.title" = "软件备份";
 "backup.title2" = "备份与恢复";

@@ -50,7 +50,7 @@ class AppleCloudRootView: NibLessView {
 
   @objc func copyRegex() {
     UIPasteboard.general.string = Self.clipboardOnCopyToCloudFilterRegexRemark
-    ProgressHUD.success("复制成功", delay: 1.5)
+    ProgressHUD.success(L10n.copySuccessfully, delay: 1.5)
   }
 }
 
@@ -116,24 +116,11 @@ extension AppleCloudRootView: UITableViewDataSource {
 }
 
 extension AppleCloudRootView {
-  static let enableAppleCloudRemark = """
-  1. 启用后，“重新部署”会复制iCloud中仓输入法`RIME`文件夹下全部文件；
-  2. 复制时，差异文件会被覆盖；
-  """
+  static let enableAppleCloudRemark = L10n.ICloud.enableAppleCloudRemark
 
-  static let copyRemark = """
-  默认为全量拷贝，如需过滤拷贝内容，需要结合过滤表达式一起使用；
-  """
+  static let copyRemark = L10n.ICloud.copyRemark
 
-  static let regexRemark = """
-  1. 过滤表达式在“重新部署”功能中也会生效；
-  2. 多个正则表达式使用英文逗号分隔；
-  3. 常用示例（点击可复制全部表达式，请按需修改）:
-     * 过滤userdb目录 ^.*[.]userdb.*$
-     * 过滤build目录 ^.*build.*$
-     * 过滤SharedSupport目录 ^.*SharedSupport.*$
-     * 过滤编译后的词库文件 ^.*[.]bin$
-  """
+  static let regexRemark = L10n.ICloud.regexRemark
 
   static let clipboardOnCopyToCloudFilterRegexRemark = "^.*[.]userdb.*$,^.*build.*$,^.*SharedSupport.*$,^.*[.]bin$"
 }

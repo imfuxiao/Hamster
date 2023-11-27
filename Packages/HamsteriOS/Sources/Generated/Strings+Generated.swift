@@ -138,8 +138,37 @@ public enum L10n {
     public static let title = L10n.tr("Localizable", "finder.title", fallback: "文件管理")
   }
   public enum ICloud {
+    /// 拷贝应用文件至iCloud
+    public static let copyFileToICloud = L10n.tr("Localizable", "i_cloud.copy_file_to_i_cloud", fallback: "拷贝应用文件至iCloud")
+    /// 默认为全量拷贝，如需过滤拷贝内容，需要结合过滤表达式一起使用；
+    public static let copyRemark = L10n.tr("Localizable", "i_cloud.copy_remark", fallback: "默认为全量拷贝，如需过滤拷贝内容，需要结合过滤表达式一起使用；")
+    /// iCloud
+    public static let enableAppleCloud = L10n.tr("Localizable", "i_cloud.enable_apple_cloud", fallback: "iCloud")
+    /// 1. 启用后，“重新部署”会复制iCloud中仓输入法`RIME`文件夹下全部文件；
+    /// 2. 复制时，差异文件会被覆盖；
+    public static let enableAppleCloudRemark = L10n.tr("Localizable", "i_cloud.enable_apple_cloud_remark", fallback: "1. 启用后，“重新部署”会复制iCloud中仓输入法`RIME`文件夹下全部文件；\n2. 复制时，差异文件会被覆盖；")
+    /// 正则过滤
+    public static let regexOnCopyFile = L10n.tr("Localizable", "i_cloud.regex_on_copy_file", fallback: "正则过滤")
+    /// 1. 过滤表达式在“重新部署”功能中也会生效；
+    /// 2. 多个正则表达式使用英文逗号分隔；
+    /// 3. 常用示例（点击可复制全部表达式，请按需修改）:
+    ///    * 过滤userdb目录 ^.*[.]userdb.*$
+    ///    * 过滤build目录 ^.*build.*$
+    ///    * 过滤SharedSupport目录 ^.*SharedSupport.*$
+    ///    * 过滤编译后的词库文件 ^.*[.]bin$
+    public static let regexRemark = L10n.tr("Localizable", "i_cloud.regex_remark", fallback: "1. 过滤表达式在“重新部署”功能中也会生效；\n2. 多个正则表达式使用英文逗号分隔；\n3. 常用示例（点击可复制全部表达式，请按需修改）:\n   * 过滤userdb目录 ^.*[.]userdb.*$\n   * 过滤build目录 ^.*build.*$\n   * 过滤SharedSupport目录 ^.*SharedSupport.*$\n   * 过滤编译后的词库文件 ^.*[.]bin$")
     /// iCloud同步
     public static let title = L10n.tr("Localizable", "i_cloud.title", fallback: "iCloud同步")
+    public enum Upload {
+      /// 拷贝中……
+      public static let copying = L10n.tr("Localizable", "i_cloud.upload.copying", fallback: "拷贝中……")
+      /// 拷贝失败: %@
+      public static func failed(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "i_cloud.upload.failed", String(describing: p1), fallback: "拷贝失败: %@")
+      }
+      /// 拷贝成功
+      public static let success = L10n.tr("Localizable", "i_cloud.upload.success", fallback: "拷贝成功")
+    }
   }
   public enum InputSchema {
     /// 输入方案设置
