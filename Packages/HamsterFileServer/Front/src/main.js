@@ -1,4 +1,4 @@
-import App from "@/App";
+import App from "@/App.vue";
 import i18n from "@/i18n";
 import router from "@/router";
 import store from "@/store";
@@ -13,13 +13,13 @@ sync(store, router);
 
 async function start() {
   // try {
-  // if (loginPage) {
-  // await validateLogin();
-  // } else {
-  // await login("", "", "");
-  // }
+  //   if (loginPage) {
+  //     await validateLogin();
+  //   } else {
+  //     await login("", "", "");
+  //   }
   // } catch (e) {
-  // console.log(e);
+  //   console.log(e);
   // }
 
   // if (recaptcha) {
@@ -37,13 +37,13 @@ async function start() {
   // }
 
   new Vue({
-    render: (h) => h(App),
+    el: "#app",
     store,
     router,
     i18n,
     template: "<App/>",
     components: { App },
-  }).$mount("#app");
+  });
 }
 
 start();

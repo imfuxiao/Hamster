@@ -1,15 +1,12 @@
 <template>
-  <!-- 
-    屏蔽拖拽手势
-    :draggable="isDraggable"
-    @dragstart="dragStart"
-    @dragover="dragOver"
-    @drop="drop" 
-  -->
   <div
     class="item"
     role="button"
     tabindex="0"
+    :draggable="isDraggable"
+    @dragstart="dragStart"
+    @dragover="dragOver"
+    @drop="drop"
     @click="itemClick"
     :data-dir="isDir"
     :data-type="type"
@@ -38,11 +35,12 @@
 </template>
 
 <script>
-import { files as api } from "@/api";
 import { enableThumbs } from "@/utils/constants";
-import * as upload from "@/utils/upload";
+import { mapMutations, mapGetters, mapState } from "vuex";
+import { filesize } from "@/utils";
 import moment from "moment";
-import { mapGetters, mapMutations, mapState } from "vuex";
+import { files as api } from "@/api";
+import * as upload from "@/utils/upload";
 
 export default {
   name: "item",
@@ -100,20 +98,7 @@ export default {
   methods: {
     ...mapMutations(["addSelected", "removeSelected", "resetSelected"]),
     humanSize: function () {
-      return this.type == "invalid_link"
-        ? "invalid link"
-        : this.formatBytes(this.size);
-    },
-    formatBytes: function (bytes, decimals = 2) {
-      if (!+bytes) return "0 Bytes";
-
-      const k = 1024;
-      const dm = decimals < 0 ? 0 : decimals;
-      const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-
-      const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-      return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+      return this.type == "invalid_link" ? "invalid link" : filesize(this.size);
     },
     humanTime: function () {
       if (this.readOnly == undefined && this.user.dateFormat) {

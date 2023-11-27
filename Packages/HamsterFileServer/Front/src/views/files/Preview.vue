@@ -15,13 +15,13 @@
       />
 
       <template #actions>
-        <!-- <action
+        <action
           :disabled="loading"
           v-if="user.perm.rename"
           icon="mode_edit"
           :label="$t('buttons.rename')"
           show="rename"
-        /> -->
+        />
         <action
           :disabled="loading"
           v-if="user.perm.delete"
@@ -53,7 +53,6 @@
         <div class="bounce3"></div>
       </div>
     </div>
-
     <template v-else>
       <div class="preview">
         <ExtendedImage v-if="req.type == 'image'" :src="raw"></ExtendedImage>
@@ -144,14 +143,14 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 import { files as api } from "@/api";
-import ExtendedImage from "@/components/files/ExtendedImage";
-import Action from "@/components/header/Action";
-import HeaderBar from "@/components/header/HeaderBar";
 import { resizePreview } from "@/utils/constants";
 import url from "@/utils/url";
 import throttle from "lodash.throttle";
-import { mapState } from "vuex";
+import HeaderBar from "@/components/header/HeaderBar.vue";
+import Action from "@/components/header/Action.vue";
+import ExtendedImage from "@/components/files/ExtendedImage.vue";
 
 const mediaTypes = ["image", "video", "audio", "blob"];
 
@@ -168,7 +167,6 @@ export default {
       nextLink: "",
       listing: null,
       name: "",
-      subtitles: [],
       fullSize: false,
       showNav: true,
       navTimeout: null,
@@ -179,7 +177,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(["req", "user", "oldReq", "jwt", "loading", "show"]),
+    ...mapState(["req", "user", "oldReq", "jwt", "loading"]),
+    ...mapGetters(["currentPrompt"]),
     hasPrevious() {
       return this.previousLink !== "";
     },
@@ -197,10 +196,16 @@ export default {
       return api.getDownloadURL(this.req, true);
     },
     showMore() {
-      return this.$store.state.show === "more";
+      return this.currentPrompt?.prompt === "more";
     },
     isResizeEnabled() {
       return resizePreview;
+    },
+    subtitles() {
+      if (this.req.subtitles) {
+        return api.getSubtitlesURL(this.req);
+      }
+      return [];
     },
   },
   watch: {
@@ -243,7 +248,7 @@ export default {
       this.$router.replace({ path: this.nextLink });
     },
     key(event) {
-      if (this.show !== null) {
+      if (this.currentPrompt !== null) {
         return;
       }
 
@@ -265,10 +270,6 @@ export default {
         !this.$refs.player.ended
       ) {
         this.autoPlay = false;
-      }
-
-      if (this.req.subtitles) {
-        this.subtitles = api.getSubtitlesURL(this.req);
       }
 
       let dirs = this.$route.fullPath.split("/");

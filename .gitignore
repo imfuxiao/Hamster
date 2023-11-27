@@ -24,3 +24,7 @@ Frameworks/
 .HamsterInputSchemas/
 .tmp
 package/
+
+# VueJS
+/Packages/HamsterFileServer/Front/node_modules
+/Packages/HamsterFileServer/Front/dist/*

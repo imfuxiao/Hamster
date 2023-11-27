@@ -1,12 +1,19 @@
-import i18n, { rtlLanguages } from "@/i18n";
-import store from "@/store";
-import { baseURL, name } from "@/utils/constants";
-import Errors from "@/views/Errors";
-import Files from "@/views/Files";
-import Layout from "@/views/Layout";
-import Login from "@/views/Login";
 import Vue from "vue";
 import Router from "vue-router";
+import Login from "@/views/Login.vue";
+import Layout from "@/views/Layout.vue";
+import Files from "@/views/Files.vue";
+import Share from "@/views/Share.vue";
+import Users from "@/views/settings/Users.vue";
+import User from "@/views/settings/User.vue";
+import Settings from "@/views/Settings.vue";
+import GlobalSettings from "@/views/settings/Global.vue";
+import ProfileSettings from "@/views/settings/Profile.vue";
+import Shares from "@/views/settings/Shares.vue";
+import Errors from "@/views/Errors.vue";
+import store from "@/store";
+import { baseURL, name } from "@/utils/constants";
+import i18n, { rtlLanguages } from "@/i18n";
 
 Vue.use(Router);
 
@@ -26,7 +33,7 @@ const titles = {
 };
 
 const router = new Router({
-  base: baseURL,
+  base: import.meta.env.PROD ? baseURL : "",
   mode: "history",
   routes: [
     {
@@ -45,18 +52,65 @@ const router = new Router({
       path: "/*",
       component: Layout,
       children: [
-        // {
-        //   path: "/share/*",
-        //   name: "Share",
-        //   component: Share,
-        // },
+        {
+          path: "/share/*",
+          name: "Share",
+          component: Share,
+        },
         {
           path: "/files/*",
           name: "Files",
           component: Files,
           meta: {
-            requiresAuth: false,
+            requiresAuth: true,
           },
+        },
+        {
+          path: "/settings",
+          name: "Settings",
+          component: Settings,
+          redirect: {
+            path: "/settings/profile",
+          },
+          meta: {
+            requiresAuth: true,
+          },
+          children: [
+            {
+              path: "/settings/profile",
+              name: "ProfileSettings",
+              component: ProfileSettings,
+            },
+            {
+              path: "/settings/shares",
+              name: "Shares",
+              component: Shares,
+            },
+            {
+              path: "/settings/global",
+              name: "GlobalSettings",
+              component: GlobalSettings,
+              meta: {
+                requiresAdmin: true,
+              },
+            },
+            {
+              path: "/settings/users",
+              name: "Users",
+              component: Users,
+              meta: {
+                requiresAdmin: true,
+              },
+            },
+            {
+              path: "/settings/users/*",
+              name: "User",
+              component: User,
+              meta: {
+                requiresAdmin: true,
+              },
+            },
+          ],
         },
         {
           path: "/403",
@@ -116,23 +170,23 @@ router.beforeEach((to, from, next) => {
       break;
   }
 
-  // if (to.matched.some((record) => record.meta.requiresAuth)) {
-  //   if (!store.getters.isLogged) {
-  //     next({
-  //       path: "/login",
-  //       query: { redirect: to.fullPath },
-  //     });
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!store.getters.isLogged) {
+      next({
+        path: "/login",
+        query: { redirect: to.fullPath },
+      });
 
-  //     return;
-  //   }
+      return;
+    }
 
-  //   if (to.matched.some((record) => record.meta.requiresAdmin)) {
-  //     if (!store.state.user.perm.admin) {
-  //       next({ path: "/403" });
-  //       return;
-  //     }
-  //   }
-  // }
+    if (to.matched.some((record) => record.meta.requiresAdmin)) {
+      if (!store.state.user.perm.admin) {
+        next({ path: "/403" });
+        return;
+      }
+    }
+  }
 
   next();
 });

@@ -128,9 +128,9 @@ extension UploadInputSchemaRootView: UITableViewDelegate {
 
 extension UploadInputSchemaRootView {
   private static let remark = """
-  1. 请保持手机与浏览器处于同一局域网；
+  1. 连接到相同的 Wi-Fi，注意：开启服务请不要离开此页面或锁定手机；
   2. 请将个人方案上传至“Rime”文件夹内，可先删除原“Rime”文件夹内文件在上传;
-  3. 上传完毕后，需要点击"重新部署"，否则方案不会生效；
-  4. 浏览器内支持全选/拖拽等动作。
+  3. 上传完毕后，需要“重新部署”，否则方案不会生效；
+  4. 浏览器内支持全选/拖拽上传等动作。
   """
 }

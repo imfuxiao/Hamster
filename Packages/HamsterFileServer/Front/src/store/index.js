@@ -39,9 +39,8 @@ const state = {
   reload: false,
   selected: [],
   multiple: false,
-  show: null,
+  prompts: [],
   showShell: false,
-  showConfirm: null,
 };
 
 export default new Vuex.Store({

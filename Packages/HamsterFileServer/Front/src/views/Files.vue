@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- <header-bar v-if="error || req.type == null" showMenu showLogo /> -->
-    <header-bar  showMenu showLogo />
+    <header-bar v-if="error || req.type == null" showMenu showLogo />
 
     <breadcrumbs base="/files" />
 
@@ -22,13 +21,13 @@
 
 <script>
 import { files as api } from "@/api";
-import { mapMutations, mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
-import Breadcrumbs from "@/components/Breadcrumbs";
-import HeaderBar from "@/components/header/HeaderBar";
-import Errors from "@/views/Errors";
-import Listing from "@/views/files/Listing";
-// import Preview from "@/views/files/Preview";
+import HeaderBar from "@/components/header/HeaderBar.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import Errors from "@/views/Errors.vue";
+import Preview from "@/views/files/Preview.vue";
+import Listing from "@/views/files/Listing.vue";
 
 function clean(path) {
   return path.endsWith("/") ? path.slice(0, -1) : path;
@@ -40,9 +39,9 @@ export default {
     HeaderBar,
     Breadcrumbs,
     Errors,
-    // Preview,
+    Preview,
     Listing,
-    // Editor: () => import("@/views/files/Editor"),
+    Editor: () => import("@/views/files/Editor.vue"),
   },
   data: function () {
     return {
@@ -51,7 +50,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["req", "reload", "loading", "show"]),
+    ...mapState(["req", "reload", "loading"]),
     currentView() {
       if (this.req.type == undefined) {
         return null;
@@ -87,9 +86,9 @@ export default {
     window.removeEventListener("keydown", this.keyEvent);
   },
   destroyed() {
-    // if (this.$store.state.showShell) {
-    //   this.$store.commit("toggleShell");
-    // }
+    if (this.$store.state.showShell) {
+      this.$store.commit("toggleShell");
+    }
     this.$store.commit("updateRequest", {});
   },
   methods: {

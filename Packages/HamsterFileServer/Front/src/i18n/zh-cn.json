@@ -84,6 +84,7 @@
   },
   "languages": {
     "he": "עברית",
+    "hu": "Magyar",
     "ar": "العربية",
     "de": "Deutsch",
     "en": "English",
@@ -152,7 +153,7 @@
     "show": "点击以显示",
     "size": "大小",
     "upload": "上传",
-    "uploadMessage": "选择上传选项。(也可在主页面拖拽上传)",
+    "uploadMessage": "选择上传选项。",
     "optionalPassword": "密码（选填，不填即无密码）"
   },
   "search": {
@@ -185,6 +186,7 @@
     "customStylesheet": "自定义样式表（CSS）",
     "defaultUserDescription": "这些是新用户的默认设置。",
     "disableExternalLinks": "禁止外部链接（帮助文档除外）",
+    "disableUsedDiskPercentage": "Disable used disk percentage graph",
     "documentation": "帮助文档",
     "examples": "例子",
     "executeOnShell": "在 Shell 中执行",

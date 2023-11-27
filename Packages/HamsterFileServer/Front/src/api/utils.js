@@ -1,5 +1,5 @@
 import store from "@/store";
-import { logout, renew } from "@/utils/auth";
+import { renew, logout } from "@/utils/auth";
 import { baseURL } from "@/utils/constants";
 import { encodePath } from "@/utils/url";
 
@@ -8,7 +8,6 @@ export async function fetchURL(url, opts, auth = true) {
   opts.headers = opts.headers || {};
 
   let { headers, ...rest } = opts;
-
   let res;
   try {
     res = await fetch(`${baseURL}${url}`, {
@@ -63,9 +62,9 @@ export function removePrefix(url) {
 
 export function createURL(endpoint, params = {}, auth = true) {
   let prefix = baseURL;
-  // if (!prefix.endsWith("/")) {
-  //   prefix = prefix + "/";
-  // }
+  if (!prefix.endsWith("/")) {
+    prefix = prefix + "/";
+  }
   const url = new URL(prefix + encodePath(endpoint), origin);
 
   const searchParams = {

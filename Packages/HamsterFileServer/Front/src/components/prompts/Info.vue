@@ -12,10 +12,17 @@
       <p class="break-word" v-if="selected.length < 2">
         <strong>{{ $t("prompts.displayName") }}</strong> {{ name }}
       </p>
+
       <p v-if="!dir || selected.length > 1">
         <strong>{{ $t("prompts.size") }}:</strong>
         <span id="content_length"></span> {{ humanSize }}
       </p>
+
+      <div v-if="resolution">
+        <strong>{{ $t("prompts.resolution") }}:</strong>
+        {{ resolution.width }} x {{ resolution.height }}
+      </div>
+
       <p v-if="selected.length < 2" :title="modTime">
         <strong>{{ $t("prompts.lastModified") }}:</strong> {{ humanTime }}
       </p>
@@ -80,10 +87,10 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
-// import filesize from "filesize";
-import { files as api } from "@/api";
+import { mapState, mapGetters } from "vuex";
+import { filesize } from "@/utils";
 import moment from "moment";
+import { files as api } from "@/api";
 
 export default {
   name: "info",
@@ -92,7 +99,7 @@ export default {
     ...mapGetters(["selectedCount", "isListing"]),
     humanSize: function () {
       if (this.selectedCount === 0 || !this.isListing) {
-        return this.req.size;
+        return filesize(this.req.size);
       }
 
       let sum = 0;
@@ -101,7 +108,7 @@ export default {
         sum += this.req.items[selected].size;
       }
 
-      return sum;
+      return filesize(sum);
     },
     humanTime: function () {
       if (this.selectedCount === 0) {
@@ -125,6 +132,18 @@ export default {
           ? this.req.isDir
           : this.req.items[this.selected[0]].isDir)
       );
+    },
+    resolution: function() {
+      if (this.selectedCount === 1) {
+        const selectedItem = this.req.items[this.selected[0]];
+        if (selectedItem && selectedItem.type === 'image') {
+          return selectedItem.resolution;
+        }
+      }
+      else if (this.req && this.req.type === 'image') {
+        return this.req.resolution;
+      }
+      return null;
     },
   },
   methods: {

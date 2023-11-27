@@ -1,9 +1,11 @@
-import store from "@/store";
-import { baseURL } from "@/utils/constants";
 import { createURL, fetchURL, removePrefix } from "./utils";
+import { baseURL } from "@/utils/constants";
+import store from "@/store";
+import { upload as postTus, useTus } from "./tus";
 
 export async function fetch(url) {
   url = removePrefix(url);
+
   const res = await fetchURL(`/api/resources${url}`, {});
 
   let data = await res.json();
@@ -49,7 +51,7 @@ export async function put(url, content = "") {
 }
 
 export function download(format, ...files) {
-  let url = `/api/raw`;
+  let url = `${baseURL}/api/raw`;
 
   if (files.length === 1) {
     url += removePrefix(files[0]) + "?";
@@ -69,14 +71,29 @@ export function download(format, ...files) {
     url += `algo=${format}&`;
   }
 
-  // if (store.state.jwt) {
-  //   url += `auth=${store.state.jwt}&`;
-  // }
+  if (store.state.jwt) {
+    url += `auth=${store.state.jwt}&`;
+  }
 
   window.open(url);
 }
 
 export async function post(url, content = "", overwrite = false, onupload) {
+  // Use the pre-existing API if:
+  const useResourcesApi =
+    // a folder is being created
+    url.endsWith("/") ||
+    // We're not using http(s)
+    (content instanceof Blob &&
+      !["http:", "https:"].includes(window.location.protocol)) ||
+    // Tus is disabled / not applicable
+    !(await useTus(content));
+  return useResourcesApi
+    ? postResources(url, content, overwrite, onupload)
+    : postTus(url, content, overwrite, onupload);
+}
+
+async function postResources(url, content = "", overwrite = false, onupload) {
   url = removePrefix(url);
 
   let bufferContent;
@@ -101,7 +118,7 @@ export async function post(url, content = "", overwrite = false, onupload) {
     }
 
     request.onload = () => {
-      if (request.status === 200 || request.status === 204) {
+      if (request.status === 200) {
         resolve(request.responseText);
       } else if (request.status === 409) {
         reject(request.status);

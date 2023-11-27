@@ -13,11 +13,10 @@ class OpenSourceViewModel {
     .init(name: "KeyboardKit", projectURL: "https://github.com/KeyboardKit/KeyboardKit"),
     .init(name: "Runestone", projectURL: "https://github.com/simonbs/Runestone"),
     .init(name: "TreeSitterLanguages", projectURL: "https://github.com/simonbs/TreeSitterLanguages"),
-    .init(name: "Vapor", projectURL: "https://github.com/vapor/vapor"),
-    .init(name: "Leaf", projectURL: "https://github.com/vapor/leaf"),
     .init(name: "ProgressHUD", projectURL: "https://github.com/relatedcode/ProgressHUD"),
     .init(name: "ZIPFoundation", projectURL: "https://github.com/weichsel/ZIPFoundation"),
     .init(name: "Yams", projectURL: "https://github.com/jpsim/Yams"),
     .init(name: "ZippyJSON", projectURL: "https://github.com/michaeleisel/ZippyJSON"),
+    .init(name: "GCDWebServer", projectURL: "https://github.com/swisspol/GCDWebServer"),
   ]
 }

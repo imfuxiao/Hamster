@@ -20,19 +20,19 @@
 </template>
 
 <script>
-import { files as api } from "@/api";
-import buttons from "@/utils/buttons";
-import { theme } from "@/utils/constants";
-import url from "@/utils/url";
 import { mapState } from "vuex";
+import { files as api } from "@/api";
+import { theme } from "@/utils/constants";
+import buttons from "@/utils/buttons";
+import url from "@/utils/url";
 
+import { version as ace_version } from "ace-builds";
 import ace from "ace-builds/src-min-noconflict/ace.js";
 import modelist from "ace-builds/src-min-noconflict/ext-modelist.js";
-import "ace-builds/webpack-resolver";
 
-import Breadcrumbs from "@/components/Breadcrumbs";
-import Action from "@/components/header/Action";
-import HeaderBar from "@/components/header/HeaderBar";
+import HeaderBar from "@/components/header/HeaderBar.vue";
+import Action from "@/components/header/Action.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 export default {
   name: "editor",
@@ -85,6 +85,11 @@ export default {
   },
   mounted: function () {
     const fileContent = this.req.content || "";
+
+    ace.config.set(
+      "basePath",
+      `https://cdn.jsdelivr.net/npm/ace-builds@${ace_version}/src-min-noconflict/`
+    );
 
     this.editor = ace.edit("editor", {
       value: fileContent,

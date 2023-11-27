@@ -1,6 +1,7 @@
 <template>
   <div>
     <header-bar showMenu showLogo>
+      <!-- <search /> -->
       <title />
       <action
         class="search-button"
@@ -16,10 +17,8 @@
             icon="share"
             :label="$t('buttons.share')"
             show="share"
-          /> -->
-          <!-- TODO: 暂不提供以下API -->
-          <!-- 
-            <action
+          />
+          <action
             v-if="headerButtons.rename"
             icon="mode_edit"
             :label="$t('buttons.rename')"
@@ -38,8 +37,7 @@
             icon="forward"
             :label="$t('buttons.moveFile')"
             show="move"
-          /> 
-        -->
+          /> -->
           <action
             v-if="headerButtons.delete"
             id="delete-button"
@@ -49,12 +47,17 @@
           />
         </template>
 
-        <action
+        <!-- <action
+          v-if="headerButtons.shell"
+          icon="code"
+          :label="$t('buttons.shell')"
+          @action="$store.commit('toggleShell')"
+        /> -->
+        <!-- <action
           :icon="viewIcon"
           :label="$t('buttons.switchView')"
           @action="switchView"
-        />
-
+        /> -->
         <action
           v-if="headerButtons.download"
           icon="file_download"
@@ -69,18 +72,17 @@
           :label="$t('buttons.upload')"
           @action="upload"
         />
-        <!-- <action icon="info" :label="$t('buttons.info')" show="info" /> -->
-        <!-- <action
+        <action icon="info" :label="$t('buttons.info')" show="info" />
+        <action
           icon="check_circle"
           :label="$t('buttons.selectMultiple')"
           @action="toggleMultipleSelection"
-        /> -->
+        />
       </template>
     </header-bar>
 
     <div v-if="isMobile" id="file-selection">
       <span v-if="selectedCount > 0">{{ selectedCount }} selected</span>
-      <!--
       <action
         v-if="headerButtons.share"
         icon="share"
@@ -105,7 +107,6 @@
         :label="$t('buttons.moveFile')"
         show="move"
       />
-      -->
       <action
         v-if="headerButtons.delete"
         icon="delete"
@@ -274,15 +275,17 @@ import throttle from "lodash.throttle";
 import Vue from "vue";
 import { mapGetters, mapMutations, mapState } from "vuex";
 
-import Item from "@/components/files/ListingItem";
-import Action from "@/components/header/Action";
-import HeaderBar from "@/components/header/HeaderBar";
+import Search from "@/components/Search.vue";
+import Item from "@/components/files/ListingItem.vue";
+import Action from "@/components/header/Action.vue";
+import HeaderBar from "@/components/header/HeaderBar.vue";
 
 export default {
   name: "listing",
   components: {
     HeaderBar,
     Action,
+    Search,
     Item,
   },
   data: function () {
@@ -295,16 +298,8 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      "req",
-      "selected",
-      "user",
-      "show",
-      "multiple",
-      "selected",
-      "loading",
-    ]),
-    ...mapGetters(["selectedCount"]),
+    ...mapState(["req", "selected", "user", "multiple", "selected", "loading"]),
+    ...mapGetters(["selectedCount", "currentPrompt"]),
     nameSorted() {
       return this.req.sorting.by === "name";
     },
@@ -441,7 +436,7 @@ export default {
     },
     keyEvent(event) {
       // No prompts are shown
-      if (this.show !== null) {
+      if (this.currentPrompt !== null) {
         return;
       }
 
@@ -604,10 +599,12 @@ export default {
     },
     colunmsResize() {
       // Update the columns size based on the window width.
+      let items = css(["#listing.mosaic .item", ".mosaic#listing .item"]);
+      if (!items) return;
+
       let columns = Math.floor(
         document.querySelector("main").offsetWidth / this.columnWidth
       );
-      let items = css(["#listing.mosaic .item", ".mosaic#listing .item"]);
       if (columns === 0) columns = 1;
       items.style.width = `calc(${100 / columns}% - 1em)`;
     },
@@ -692,6 +689,11 @@ export default {
       if (conflict) {
         this.$store.commit("showHover", {
           prompt: "replace",
+          action: (event) => {
+            event.preventDefault();
+            this.$store.commit("closeHovers");
+            upload.handleFiles(files, path, false);
+          },
           confirm: (event) => {
             event.preventDefault();
             this.$store.commit("closeHovers");
@@ -727,6 +729,11 @@ export default {
       if (conflict) {
         this.$store.commit("showHover", {
           prompt: "replace",
+          action: (event) => {
+            event.preventDefault();
+            this.$store.commit("closeHovers");
+            upload.handleFiles(files, path, false);
+          },
           confirm: (event) => {
             event.preventDefault();
             this.$store.commit("closeHovers");
@@ -828,11 +835,11 @@ export default {
       };
 
       const data = {
-        // id: this.user.id,
+        id: this.user.id,
         viewMode: modes[this.user.viewMode] || "list",
       };
 
-      // users.update(data, ["viewMode"]).catch(this.$showError);
+      users.update(data, ["viewMode"]).catch(this.$showError);
 
       // Await ensures correct value for setItemWeight()
       await this.$store.commit("updateUser", data);

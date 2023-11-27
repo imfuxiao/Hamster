@@ -5,9 +5,8 @@
 </template>
 
 <script>
-// __webpack_public_path__ = window.FileBrowser.StaticURL + "/";
 // eslint-disable-next-line no-undef
-__webpack_public_path__ = "/";
+// __webpack_public_path__ = window.FileBrowser.StaticURL + "/";
 
 export default {
   name: "app",
