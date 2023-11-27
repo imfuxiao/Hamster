@@ -379,23 +379,26 @@ public extension RimeContext {
 
     configuration = try HamsterConfigurationRepositories.shared.loadConfiguration()
 
+    // 键盘重新同步文件标志
+    UserDefaults.hamster.overrideRimeDirectory = true
+
     // 保存配置至 build/hamster.yaml
     // try? HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: FileManager.hamsterConfigFileOnBuild)
 //    try? HamsterConfigurationRepositories.shared.saveToJSON(
 //      config: configuration,
-//      path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.json")
+//      path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.json")
 //    )
     try? HamsterConfigurationRepositories.shared.saveToPropertyList(
       config: configuration,
-      path: FileManager.appGroupUserDataDirectoryURL.appendingPathComponent("/build/hamster.plist")
+      path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.plist")
     )
-
-    // 键盘重新同步文件标志
-    UserDefaults.hamster.overrideRimeDirectory = true
 
     // 将 Sandbox 目录下方案复制到AppGroup下
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
+
+
+
   }
 
   /// RIME 同步
@@ -428,6 +431,17 @@ public extension RimeContext {
 
     // 键盘重新同步文件标志
     UserDefaults.hamster.overrideRimeDirectory = true
+
+    // 保存配置至 build/hamster.yaml
+    // try? HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: FileManager.hamsterConfigFileOnBuild)
+//    try? HamsterConfigurationRepositories.shared.saveToJSON(
+//      config: configuration,
+//      path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.json")
+//    )
+    try? HamsterConfigurationRepositories.shared.saveToPropertyList(
+      config: configuration,
+      path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.plist")
+    )
 
     // 将 Sandbox 目录下方案复制到AppGroup下
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)

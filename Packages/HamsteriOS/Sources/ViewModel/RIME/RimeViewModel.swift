@@ -291,6 +291,18 @@ public extension RimeViewModel {
 
       // 重新读取 Hamster.yaml 生成 configuration
       let hamsterConfiguration = try HamsterConfigurationRepositories.shared.loadFromYAML(FileManager.hamsterConfigFileOnSandboxSharedSupport)
+
+      // 保存配置至 build/hamster.yaml
+      // try? HamsterConfigurationRepositories.shared.saveToYAML(config: configuration, path: FileManager.hamsterConfigFileOnBuild)
+  //    try? HamsterConfigurationRepositories.shared.saveToJSON(
+  //      config: configuration,
+  //      path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.json")
+  //    )
+      try? HamsterConfigurationRepositories.shared.saveToPropertyList(
+        config: hamsterConfiguration,
+        path: FileManager.sandboxUserDataDirectory.appendingPathComponent("/build/hamster.plist")
+      )
+
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       HamsterAppDependencyContainer.shared.applicationConfiguration = HamsterConfiguration(
