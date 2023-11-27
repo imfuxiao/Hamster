@@ -16,7 +16,7 @@ class OpenSourceViewModel {
     .init(name: "ProgressHUD", projectURL: "https://github.com/relatedcode/ProgressHUD"),
     .init(name: "ZIPFoundation", projectURL: "https://github.com/weichsel/ZIPFoundation"),
     .init(name: "Yams", projectURL: "https://github.com/jpsim/Yams"),
-    .init(name: "ZippyJSON", projectURL: "https://github.com/michaeleisel/ZippyJSON"),
+    // .init(name: "ZippyJSON", projectURL: "https://github.com/michaeleisel/ZippyJSON"),
     .init(name: "GCDWebServer", projectURL: "https://github.com/swisspol/GCDWebServer"),
   ]
 }

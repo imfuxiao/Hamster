@@ -10,7 +10,7 @@
 import Foundation
 import XCTest
 import Yams
-import ZippyJSON
+// import ZippyJSON
 
 final class CustomizeKeyboardTest: XCTestCase {
   let tempYamlPath = FileManager.default.temporaryDirectory.appendingPathComponent("test.yaml")
@@ -94,7 +94,7 @@ final class CustomizeKeyboardTest: XCTestCase {
     self.measure {
       do {
         let data = try Data(contentsOf: testJSONPath)
-        let _ = try ZippyJSONDecoder().decode(HamsterConfiguration.self, from: data)
+        let _ = try JSONDecoder().decode(HamsterConfiguration.self, from: data)
       } catch {
         fatalError(error.localizedDescription)
       }

@@ -11,7 +11,7 @@ import Foundation
 import HamsterKit
 import OSLog
 import UIKit
-import ZippyJSON
+// import ZippyJSON
 
 /**
  This class provides keyboard extensions with contextual and
