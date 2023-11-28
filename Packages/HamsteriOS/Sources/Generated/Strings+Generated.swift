@@ -118,6 +118,20 @@ public enum L10n {
     }
   }
   public enum ColorScheme {
+    /// 作者： %@
+    public static func authorName(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "color_scheme.author_name", String(describing: p1), fallback: "作者： %@")
+    }
+    /// 启用配色
+    public static let enableCustomKeyboardColor = L10n.tr("Localizable", "color_scheme.enable_custom_keyboard_color", fallback: "启用配色")
+    /// 方案名称： %@
+    public static func schemeName(_ p1: Any) -> String {
+      return L10n.tr("Localizable", "color_scheme.scheme_name", String(describing: p1), fallback: "方案名称： %@")
+    }
+    /// 系统浅色模式
+    public static let systemDarkMode = L10n.tr("Localizable", "color_scheme.system_dark_mode", fallback: "系统浅色模式")
+    /// 系统深色模式
+    public static let systemLightMode = L10n.tr("Localizable", "color_scheme.system_light_mode", fallback: "系统深色模式")
     /// 键盘配色
     public static let title = L10n.tr("Localizable", "color_scheme.title", fallback: "键盘配色")
   }

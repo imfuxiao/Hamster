@@ -18,7 +18,13 @@
 
 "k_b.section_title" = "鍵盤相關";
 "k_b.title" = "鍵盤設定";
+
 "color_scheme.title" = "鍵盤配色";
+"color_scheme.enable_custom_keyboard_color" = "啟用配色";
+"color_scheme.system_dark_mode" = "系統淺色模式";
+"color_scheme.system_light_mode" = "系統深色模式";
+"color_scheme.scheme_name" = "方案名稱： %@";
+"color_scheme.author_name" = "作者： %@";
 
 "feedback.title" = "按鍵音與震動";
 "feedback.title2" = "鍵盤回饋";

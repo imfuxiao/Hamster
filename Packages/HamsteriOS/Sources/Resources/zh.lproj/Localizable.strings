@@ -18,7 +18,13 @@
 
 "k_b.section_title" = "键盘相关";
 "k_b.title" = "键盘设置";
+
 "color_scheme.title" = "键盘配色";
+"color_scheme.enable_custom_keyboard_color" = "启用配色";
+"color_scheme.system_dark_mode" = "系统浅色模式";
+"color_scheme.system_light_mode" = "系统深色模式";
+"color_scheme.scheme_name" = "方案名称： %@";
+"color_scheme.author_name" = "作者： %@";
 
 "feedback.title" = "按键音与震动";
 "feedback.title2" = "键盘反馈";

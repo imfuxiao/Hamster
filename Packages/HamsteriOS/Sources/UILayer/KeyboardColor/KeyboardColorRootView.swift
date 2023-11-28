@@ -17,7 +17,7 @@ class KeyboardColorRootView: NibLessView {
 
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "启用配色"
+    label.text = L10n.ColorScheme.enableCustomKeyboardColor
     label.font = UIFont.preferredFont(forTextStyle: .headline)
     return label
   }()
@@ -42,7 +42,7 @@ class KeyboardColorRootView: NibLessView {
   }()
 
   lazy var segmentedControl: UISegmentedControl = {
-    let segmentedControl = UISegmentedControl(items: ["系统浅色模式", "系统深色模式"])
+    let segmentedControl = UISegmentedControl(items: [L10n.ColorScheme.systemLightMode, L10n.ColorScheme.systemDarkMode])
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     segmentedControl.isHidden = !keyboardColorViewModel.enableColorSchema
     segmentedControl.selectedSegmentIndex = 0
