@@ -124,11 +124,10 @@ public class KeyboardContext: ObservableObject {
 
    当前使用的键盘类型。默认中文26键
    */
-  public lazy var keyboardType = KeyboardType.chinese(.lowercased) {
-    didSet {
-      keyboardTypeSubject.send(keyboardType)
-    }
-  }
+  public private(set) lazy var keyboardType = KeyboardType.chinese(.lowercased)
+
+  /// 主键盘类型栈：用来做返回主键盘的栈结构
+  private lazy var primaryKeyboardStack = [KeyboardType]()
 
   private lazy var keyboardTypeSubject = PassthroughSubject<KeyboardType, Never>()
   public var keyboardTypePublished: AnyPublisher<KeyboardType, Never> {
@@ -145,16 +144,16 @@ public class KeyboardContext: ObservableObject {
 
    这将使用 `Locale` 而不是 `KeyboardLocale``，因为键盘可以使用不在该枚举中的本地语言。
    */
-  @Published
-  public var locale = Locale.current
+//  @Published
+//  public var locale = Locale.current
 
   /**
    The locales that are currently enabled for the keyboard.
 
    键盘当前启用的本地语言列表。
    */
-  @Published
-  public var locales: [Locale] = [.current]
+//  @Published
+//  public var locales: [Locale] = [.current]
 
   /**
    An custom locale to use when displaying other locales.
@@ -165,8 +164,8 @@ public class KeyboardContext: ObservableObject {
 
    如果未指定 locale，则将使用 ``locale``。
    */
-  @Published
-  public var localePresentationLocale: Locale?
+//  @Published
+//  public var localePresentationLocale: Locale?
 
   /**
    Whether or not the keyboard should (must) have a switch
@@ -617,9 +616,9 @@ public extension KeyboardContext {
 
    上下文是否有多个本地语言。
    */
-  var hasMultipleLocales: Bool {
-    locales.count > 1
-  }
+//  var hasMultipleLocales: Bool {
+//    locales.count > 1
+//  }
 
   /**
    Whether or not the context has a certain locale.
@@ -646,13 +645,13 @@ public extension KeyboardContext {
 
    根据 ``locale`` 选择 ``locales`` 中的下一个本地语言。如果 ``locale`` 是 ``locales`` 中的最后一个或不在列表中，则选择列表中的第一个 locale。
    */
-  func selectNextLocale() {
-    let fallback = locales.first ?? locale
-    guard let currentIndex = locales.firstIndex(of: locale) else { return locale = fallback }
-    let nextIndex = currentIndex.advanced(by: 1)
-    guard locales.count > nextIndex else { return locale = fallback }
-    locale = locales[nextIndex]
-  }
+//  func selectNextLocale() {
+//    let fallback = locales.first ?? locale
+//    guard let currentIndex = locales.firstIndex(of: locale) else { return locale = fallback }
+//    let nextIndex = currentIndex.advanced(by: 1)
+//    guard locales.count > nextIndex else { return locale = fallback }
+//    locale = locales[nextIndex]
+//  }
 
   /**
    Set ``keyboardType`` to the provided `type`.
@@ -660,7 +659,24 @@ public extension KeyboardContext {
    设置键盘类型
    */
   func setKeyboardType(_ type: KeyboardType) {
+    if type.isPrimaryKeyboard(keyboards) {
+      // 切换回 selectKeyboard 时，清空键盘 stack
+      if type == selectKeyboard {
+        primaryKeyboardStack.removeAll()
+      } else if primaryKeyboardStack.isEmpty {
+        primaryKeyboardStack.append(type)
+      } else if let popLastType = primaryKeyboardStack.last, popLastType != type {
+        primaryKeyboardStack.append(type)
+      }
+    }
     keyboardType = type
+    keyboardTypeSubject.send(type)
+  }
+
+  /// 返回主键盘
+  func returnKeyboardType() -> KeyboardType {
+    guard let type = primaryKeyboardStack.popLast() else { return selectKeyboard }
+    return type
   }
 
   /**
@@ -668,9 +684,9 @@ public extension KeyboardContext {
 
    设置当前语言
    */
-  func setLocale(_ locale: Locale) {
-    self.locale = locale
-  }
+//  func setLocale(_ locale: Locale) {
+//    self.locale = locale
+//  }
 
   /**
    Set ``locale`` to the provided keyboard `locale`.
@@ -684,9 +700,9 @@ public extension KeyboardContext {
   /**
    Set ``locales`` to the provided `locales`.
    */
-  func setLocales(_ locales: [Locale]) {
-    self.locales = locales
-  }
+//  func setLocales(_ locales: [Locale]) {
+//    self.locales = locales
+//  }
 
   /**
    Set ``locales`` to the provided keyboard `locales`.
@@ -780,5 +796,21 @@ private extension UIInputViewController {
 
   var screenSize: CGSize {
     view.window?.screen.bounds.size ?? .zero
+  }
+}
+
+private extension KeyboardType {
+  /// 检测键盘是否为主键盘类型，用于点击符号返回主键盘
+  func isPrimaryKeyboard(_ customKeyboards: [Keyboard]) -> Bool {
+    switch self {
+    case .chinese, .alphabetic, .chineseNineGrid: return true
+    case .custom(let name, _):
+      if let keyboard = customKeyboards.first(where: { $0.name == name }) {
+        return keyboard.isPrimary
+      }
+      return false
+    default:
+      return false
+    }
   }
 }

@@ -51,7 +51,7 @@ private extension KeyboardContext {
     guard keyboardType.isAlphabetic else { return nil }
     let uppercased = KeyboardType.alphabetic(.uppercased)
     let lowercased = KeyboardType.alphabetic(.lowercased)
-    if locale.isRightToLeft { return lowercased }
+//    if locale.isRightToLeft { return lowercased }
     switch proxyType {
     case .allCharacters: return uppercased
     case .sentences: return textDocumentProxy.isCursorAtNewSentenceWithTrailingWhitespace ? uppercased : lowercased
@@ -71,7 +71,7 @@ private extension KeyboardContext {
     guard keyboardType == .numeric || keyboardType == .symbolic else { return nil }
     guard let before = textDocumentProxy.documentContextBeforeInput else { return nil }
     guard before.hasSuffix(" "), !before.hasSuffix("  ") else { return nil }
-    keyboardType = .alphabetic(.lowercased)
+    setKeyboardType(.alphabetic(.lowercased))
     return preferredAutocapitalizedKeyboardType
   }
 }

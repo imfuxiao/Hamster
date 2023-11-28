@@ -438,7 +438,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 
     // fix: 键盘跟随环境显示数字键盘
     if let keyboardType = textDocumentProxy.keyboardType, keyboardType.isNumberType {
-      keyboardContext.keyboardType = .numericNineGrid
+      keyboardContext.setKeyboardType(.numericNineGrid)
     }
 
     if keyboardContext.textDocumentProxy === textDocumentProxy { return }
@@ -574,7 +574,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func selectNextLocale() {
-    keyboardContext.selectNextLocale()
+//    keyboardContext.selectNextLocale()
   }
 
   open func setKeyboardType(_ type: KeyboardType) {
@@ -583,21 +583,21 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
 //      textDocumentProxy.insertText(rimeContext.userInputKey)
 //      rimeContext.reset()
 //    }
-    keyboardContext.keyboardType = type
+    keyboardContext.setKeyboardType(type)
   }
 
   open func setKeyboardCase(_ casing: KeyboardCase) {
     if keyboardContext.keyboardType.isChinesePrimaryKeyboard {
-      keyboardContext.keyboardType = .chinese(casing)
+      keyboardContext.setKeyboardType(.chinese(casing))
       return
     }
 
     if case .custom(let name, _) = keyboardContext.keyboardType {
-      keyboardContext.keyboardType = .custom(named: name, case: casing)
+      keyboardContext.setKeyboardType(.custom(named: name, case: casing))
       return
     }
 
-    keyboardContext.keyboardType = .alphabetic(casing)
+    keyboardContext.setKeyboardType(.alphabetic(casing))
   }
 
   open func openUrl(_ url: URL?) {
@@ -621,12 +621,7 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   }
 
   open func returnLastKeyboard() {
-//    Logger.statistics.debug("return lastKeyboard: \(self.keyboardContext.lastKeyboardTypeStack.map { $0.yamlString }.joined(separator: ","))")
-//    guard let keyboard = keyboardContext.lastKeyboardTypeStack.popLast() else {
-//      keyboardContext.keyboardType = keyboardContext.selectKeyboard
-//      return
-//    }
-    keyboardContext.keyboardType = keyboardContext.selectKeyboard
+    keyboardContext.setKeyboardType(keyboardContext.returnKeyboardType())
   }
 
   // MARK: - Syncing
@@ -987,7 +982,7 @@ private extension KeyboardInputViewController {
     // 检测是否需要返回主键盘
     let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: insertText)
     if returnToPrimaryKeyboard {
-      keyboardContext.keyboardType = keyboardContext.selectKeyboard
+      keyboardContext.setKeyboardType(keyboardContext.returnKeyboardType())
     }
   }
 }

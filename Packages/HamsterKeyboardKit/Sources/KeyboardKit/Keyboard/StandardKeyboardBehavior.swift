@@ -223,8 +223,9 @@ private extension KeyboardAction {
 private extension String {
   /// 是备用引号分隔符
   func isAlternateQuotationDelimiter(for context: KeyboardContext) -> Bool {
-    let locale = context.locale
-    return self == locale.alternateQuotationBeginDelimiter || self == locale.alternateQuotationEndDelimiter
+//    let locale = context.locale
+//    return self == locale.alternateQuotationBeginDelimiter || self == locale.alternateQuotationEndDelimiter
+    return false
   }
 }
 

@@ -60,9 +60,9 @@ public extension KKL10n {
   /**
    Get the localized text for a certain ``KeyboardContext``.
    */
-  func text(for context: KeyboardContext) -> String {
-    text(for: context.locale)
-  }
+//  func text(for context: KeyboardContext) -> String {
+//    text(for: context.locale)
+//  }
 
   /**
    Get the localized text for a certain ``KeyboardLocale``.

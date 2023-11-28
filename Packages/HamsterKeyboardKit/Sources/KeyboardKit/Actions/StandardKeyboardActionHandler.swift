@@ -207,14 +207,14 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
 
     // Apply proxy-based replacements, if any
     // 应用基于代理的替换（如果有）
-    if case let .character(char) = action,
-       let replacement = textDocumentProxy.preferredQuotationReplacement(
-         whenInserting: char,
-         for: keyboardContext.locale
-       )
-    {
-      return .character(replacement)
-    }
+//    if case let .character(char) = action,
+//       let replacement = textDocumentProxy.preferredQuotationReplacement(
+//         whenInserting: char,
+//         for: keyboardContext.locale
+//       )
+//    {
+//      return .character(replacement)
+//    }
 
     return nil
   }
@@ -281,7 +281,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
   open func tryChangeKeyboardType(after gesture: KeyboardGesture, on action: KeyboardAction) {
     guard keyboardBehavior.shouldSwitchToPreferredKeyboardType(after: gesture, on: action) else { return }
     let newType = keyboardBehavior.preferredKeyboardType(after: gesture, on: action)
-    keyboardContext.keyboardType = newType
+    keyboardContext.setKeyboardType(newType)
   }
 
   /**

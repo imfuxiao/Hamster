@@ -186,7 +186,7 @@ class CreateInputSchemaRootView: NibLessView {
       .eraseToAnyPublisher()
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] in
-        print("picker file: \($0.path)")
+        // print("picker file: \($0.path)")
         self.inputSchemaFileURL = $0
       }
       .store(in: &subscriptions)

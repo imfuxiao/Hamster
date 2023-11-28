@@ -40,6 +40,9 @@ public struct Keyboard: Codable, Hashable {
   /// 所以自定义键盘类型统一为 .custom(name) 类型，name 对应属性 name 的值
   public var type: KeyboardType
 
+  /// 是否是主键盘类型，用于点击符号返回主键盘功能，默认值为 false
+  public var isPrimary: Bool
+
   /// 键盘行高度
   /// 如果为 nil, 则使用系统标准键盘行高度
   public var rowHeight: RowHeight? = nil
@@ -50,9 +53,10 @@ public struct Keyboard: Codable, Hashable {
 
   public var rows: [Row]
 
-  public init(name: String, type: KeyboardType, rowHeight: RowHeight? = nil, buttonInsets: UIEdgeInsets? = nil, rows: [Row]) {
+  public init(name: String, type: KeyboardType, isPrimary: Bool = true, rowHeight: RowHeight? = nil, buttonInsets: UIEdgeInsets? = nil, rows: [Row]) {
     self.name = name
     self.type = type
+    self.isPrimary = isPrimary
     self.rowHeight = rowHeight
     self.buttonInsets = buttonInsets
     self.rows = rows
@@ -63,6 +67,12 @@ public struct Keyboard: Codable, Hashable {
     self.name = try container.decode(String.self, forKey: .name)
     self.type = .custom(named: self.name)
     self.rows = try container.decode([Row].self, forKey: .rows)
+
+    if let isPrimary = try? container.decodeIfPresent(Bool.self, forKey: .isPrimary) {
+      self.isPrimary = isPrimary
+    } else {
+      self.isPrimary = false
+    }
 
     if let rowHeight = try? container.decodeIfPresent(CGFloat.self, forKey: .rowHeight) {
       self.rowHeight = RowHeight(portrait: rowHeight, landscape: rowHeight)
@@ -108,6 +118,7 @@ public struct Keyboard: Codable, Hashable {
 
   public enum CodingKeys: CodingKey {
     case name
+    case isPrimary
     case rows
     case rowHeight
     case buttonInsets
@@ -116,6 +127,7 @@ public struct Keyboard: Codable, Hashable {
   public func encode(to encoder: Encoder) throws {
     var container = encoder.container(keyedBy: CodingKeys.self)
     try container.encode(self.name, forKey: .name)
+    try container.encode(self.isPrimary, forKey: .isPrimary)
     try container.encode(self.rows, forKey: .rows)
     if let rowHeight = self.rowHeight {
       try container.encode(rowHeight, forKey: .rowHeight)

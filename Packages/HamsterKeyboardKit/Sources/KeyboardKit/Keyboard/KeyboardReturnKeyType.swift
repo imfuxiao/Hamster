@@ -165,4 +165,19 @@ public extension KeyboardReturnKeyType {
     case .send: return "发送"
     }
   }
+
+  func standardButtonText() -> String? {
+    switch self {
+    case .custom(let title): return title
+    case .done: return "完成"
+    case .go: return "前往"
+    case .join: return "加入"
+    case .newLine: return nil
+    case .next: return "next"
+    case .return: return "换行"
+    case .ok: return "确定"
+    case .search: return "搜索"
+    case .send: return "发送"
+    }
+  }
 }

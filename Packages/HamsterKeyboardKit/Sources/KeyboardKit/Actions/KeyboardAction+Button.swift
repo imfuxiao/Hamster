@@ -33,7 +33,7 @@ public extension KeyboardAction {
     case .moveCursorForward: return HamsterUIImage.shared.keyboardRight
     case .nextKeyboard: return HamsterUIImage.shared.keyboardGlobe
     case .option: return HamsterUIImage.shared.keyboardOption
-    case .primary(let type): return type.standardButtonImage(for: context.locale)
+//    case .primary(let type): return type.standardButtonImage(for: context.locale)
     case .settings: return HamsterUIImage.shared.keyboardSettings
     case .shift(let currentCasing):
       return currentCasing.standardButtonImage
@@ -60,8 +60,8 @@ public extension KeyboardAction {
     case .emoji(let emoji): return emoji.char
     case .emojiCategory(let cat): return cat.fallbackDisplayEmoji.char
     case .keyboardType(let type): return type.standardButtonText(for: context)
-    case .nextLocale: return context.locale.languageCode?.uppercased()
-    case .primary(let type): return type.standardButtonText(for: context.locale)
+//    case .nextLocale: return context.locale.languageCode?.uppercased()
+    case .primary(let type): return type.standardButtonText()
     case .space:
       // return KKL10n.space.text(for: context)
       return "空格"
@@ -82,7 +82,7 @@ public extension KeyboardAction {
    */
   func standardButtonTextImageReplacement(for context: KeyboardContext) -> UIImage? {
     switch standardButtonText(for: context) {
-    case "↵", "↳": return HamsterUIImage.shared.keyboardNewline(for: context.locale)
+//    case "↵", "↳": return HamsterUIImage.shared.keyboardNewline(for: context.locale)
     default: return nil
     }
   }
