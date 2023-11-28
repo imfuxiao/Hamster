@@ -125,7 +125,28 @@ public extension KeyboardAction {
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
     case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }
     case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
-    case .chineseNineGrid(let symbol): return { $0?.insertText(String(symbol.char.first!)) }
+    case .chineseNineGrid(let symbol): return {
+        var char = symbol.char
+        // 将 ADGJMPTW 转 23456789
+        switch char {
+        case "@/.": char = "@"
+        case "ABC": char = "2"
+        case "DEF": char = "3"
+        case "GHI": char = "4"
+        case "JKL": char = "5"
+        case "MNO": char = "6"
+        case "PQRS": char = "7"
+        case "TUV": char = "8"
+        case "WXYZ": char = "9"
+        default:
+          if let first = char.first {
+            char = String(first)
+          } else {
+            char = ""
+          }
+        }
+        $0?.insertText(char)
+      }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return { $0?.insertText(emoji.char) }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }
@@ -183,7 +204,28 @@ public extension KeyboardAction {
     case .symbol(let symbol): return { $0?.insertSymbol(symbol) }
     case .symbolOfDark(let symbol): return { $0?.insertSymbol(symbol) }
     case .shortCommand(let command): return { $0?.tryHandleShortcutCommand(command) }
-    case .chineseNineGrid(let symbol): return { $0?.insertSymbol(symbol) }
+    case .chineseNineGrid(let symbol): return {
+        var char = symbol.char
+        // 将 ADGJMPTW 转 23456789
+        switch char {
+        case "@/.": char = "@"
+        case "ABC": char = "2"
+        case "DEF": char = "3"
+        case "GHI": char = "4"
+        case "JKL": char = "5"
+        case "MNO": char = "6"
+        case "PQRS": char = "7"
+        case "TUV": char = "8"
+        case "WXYZ": char = "9"
+        default:
+          if let first = char.first {
+            char = String(first)
+          } else {
+            char = ""
+          }
+        }
+        $0?.insertText(char)
+      }
     case .dismissKeyboard: return { $0?.dismissKeyboard() }
     case .emoji(let emoji): return { $0?.insertSymbol(Symbol(char: emoji.char)) }
     case .moveCursorBackward: return { $0?.adjustTextPosition(byCharacterOffset: -1) }

@@ -5,6 +5,7 @@
 //  Created by morse on 2023/8/19.
 //
 
+import Combine
 import HamsterKit
 import HamsterUIKit
 import UIKit
@@ -24,6 +25,7 @@ class KeyboardToolbarView: NibLessView {
   private var style: CandidateBarStyle
   private var userInterfaceStyle: UIUserInterfaceStyle
   private var oldBounds: CGRect = .zero
+  private var subscriptions = Set<AnyCancellable>()
 
   /// 常用功能项: 仓输入法App
   lazy var iconButton: UIButton = {
@@ -158,17 +160,31 @@ class KeyboardToolbarView: NibLessView {
   }
 
   func combine() {
-    rimeContext.registryHandleUserInputKeyChanged { [weak self] in
-      guard let self = self else { return }
-      let isEmpty = $0.isEmpty
-      self.commonFunctionBar.isHidden = !isEmpty
-      self.candidateBarView.isHidden = isEmpty
-      if self.candidateBarView.superview == nil {
-        candidateBarView.setStyle(self.style)
-        addSubview(candidateBarView)
-        candidateBarView.fillSuperview()
+    rimeContext.userInputKeyPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
+        let isEmpty = $0.isEmpty
+        self.commonFunctionBar.isHidden = !isEmpty
+        self.candidateBarView.isHidden = isEmpty
+        if self.candidateBarView.superview == nil {
+          candidateBarView.setStyle(self.style)
+          addSubview(candidateBarView)
+          candidateBarView.fillSuperview()
+        }
       }
-    }
+      .store(in: &subscriptions)
+//    rimeContext.registryHandleUserInputKeyChanged { [weak self] in
+//      guard let self = self else { return }
+//      let isEmpty = $0.isEmpty
+//      self.commonFunctionBar.isHidden = !isEmpty
+//      self.candidateBarView.isHidden = isEmpty
+//      if self.candidateBarView.superview == nil {
+//        candidateBarView.setStyle(self.style)
+//        addSubview(candidateBarView)
+//        candidateBarView.fillSuperview()
+//      }
+//    }
   }
 
   @objc func dismissKeyboardTouchDownAction() {

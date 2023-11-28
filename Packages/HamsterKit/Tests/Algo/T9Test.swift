@@ -22,32 +22,32 @@ final class T9Test: XCTestCase {
                           "za", "zai", "zan", "zang", "zao", "ze", "zei", "zen", "zeng", "zha", "zhai", "zhan", "zhang", "zhao", "zhe", "zhei", "zhen", "zheng", "zhi", "zhong", "zhou", "zhu", "zhua", "zhuai", "zhuan", "zhuang", "zhui", "zhun", "zhuo", "zi", "zong", "zou", "zu", "zuan", "zui", "zun", "zuo"]
 
   static let t9Map = [
-    "a": "A",
-    "b": "A",
-    "c": "A",
-    "d": "D",
-    "e": "D",
-    "f": "D",
-    "g": "G",
-    "h": "G",
-    "i": "G",
-    "j": "J",
-    "k": "J",
-    "l": "J",
-    "m": "M",
-    "n": "M",
-    "o": "M",
-    "p": "P",
-    "q": "P",
-    "r": "P",
-    "s": "P",
-    "t": "T",
-    "u": "T",
-    "v": "T",
-    "w": "W",
-    "x": "W",
-    "y": "W",
-    "z": "W",
+    "a": "2",
+    "b": "2",
+    "c": "2",
+    "d": "3",
+    "e": "3",
+    "f": "3",
+    "g": "4",
+    "h": "4",
+    "i": "4",
+    "j": "5",
+    "k": "5",
+    "l": "5",
+    "m": "6",
+    "n": "6",
+    "o": "6",
+    "p": "7",
+    "q": "7",
+    "r": "7",
+    "s": "7",
+    "t": "8",
+    "u": "8",
+    "v": "8",
+    "w": "9",
+    "x": "9",
+    "y": "9",
+    "z": "9",
   ]
 
   override func setUpWithError() throws {}
@@ -67,7 +67,7 @@ final class T9Test: XCTestCase {
     let keys = t9Mapping.keys.sorted()
     print("[")
     for key in keys {
-      print("\"\(key)\": \(t9Mapping[key]!)")
+      print("\"\(key)\": \(t9Mapping[key]!),")
     }
     print("]")
   }
@@ -96,6 +96,11 @@ final class T9Test: XCTestCase {
     if let maxString = Self.allPinyin.max(by: { $1.count > $0.count }) {
       print("maxString: \(maxString)")
     }
+  }
+
+  func testT9ToPinyin() throws {
+    let pinyin = "7436444".t9ToPinyin(comment: "sheng")
+    print(pinyin)
   }
 
   func testT9Input() throws {

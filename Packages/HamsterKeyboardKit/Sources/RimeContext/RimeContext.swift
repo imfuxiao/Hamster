@@ -5,6 +5,7 @@
 //  Created by morse on 2023/6/30.
 //
 
+import Combine
 import Foundation
 import HamsterKit
 import OSLog
@@ -14,13 +15,13 @@ import RimeKit
 public class RimeContext {
   typealias HandleAsciiModeChanged = (Bool) -> Void
   typealias HandleCurrentSchemaChanged = () -> Void
-  typealias HandleUserInputKeyChanged = (String) -> Void
+//  typealias HandleUserInputKeyChanged = (String) -> Void
   typealias HandleSuggestionsChanged = () -> Void
   typealias HandleRimeContextChanged = () -> Void
 
   private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
   private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
-  private lazy var registryHandleUserInputKeyChanged = [HandleUserInputKeyChanged]()
+//  private lazy var registryHandleUserInputKeyChanged = [HandleUserInputKeyChanged]()
   private lazy var registryHandleSuggestionsChanged = [HandleSuggestionsChanged]()
   private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
 
@@ -63,12 +64,20 @@ public class RimeContext {
   }
 
   /// 用户输入键值
-  public lazy var userInputKey: String = "" {
+  public var userInputKey: String = "" {
     didSet {
-      registryHandleUserInputKeyChanged.forEach { handle in
-        handle(userInputKey)
-      }
+      userInputKeySubject.send(userInputKey)
+//      registryHandleUserInputKeyChanged.forEach { handle in
+//        DispatchQueue.main.async { [unowned self] in
+//          handle(userInputKey)
+//        }
+//      }
     }
+  }
+
+  private let userInputKeySubject = PassthroughSubject<String, Never>()
+  public var userInputKeyPublished: AnyPublisher<String, Never> {
+    userInputKeySubject.eraseToAnyPublisher()
   }
 
   /// 待上屏文字
@@ -78,8 +87,10 @@ public class RimeContext {
   @MainActor
   public var t9UserInputKey: String {
     guard !userInputKey.isEmpty else { return "" }
-    guard let firstCandidate = suggestions.first else { return userInputKey }
-    guard let comment = firstCandidate.subtitle else { return userInputKey }
+    var comment = ""
+    if let firstCandidate = suggestions.first, let subtitle = firstCandidate.subtitle {
+      comment = subtitle
+    }
     return userInputKey.t9ToPinyin(comment: comment)
   }
 
@@ -148,9 +159,9 @@ public class RimeContext {
     self.registryHandleCurrentSchemaChanged.append(handle)
   }
 
-  func registryHandleUserInputKeyChanged(_ handle: @escaping HandleUserInputKeyChanged) {
-    self.registryHandleUserInputKeyChanged.append(handle)
-  }
+//  func registryHandleUserInputKeyChanged(_ handle: @escaping HandleUserInputKeyChanged) {
+//    self.registryHandleUserInputKeyChanged.append(handle)
+//  }
 
   func registryHandleSuggestionsChanged(_ handle: @escaping HandleSuggestionsChanged) {
     self.registryHandleSuggestionsChanged.append(handle)
@@ -396,9 +407,6 @@ public extension RimeContext {
     // 将 Sandbox 目录下方案复制到AppGroup下
     try FileManager.syncSandboxSharedSupportDirectoryToAppGroup(override: true)
     try FileManager.syncSandboxUserDataDirectoryToAppGroup(override: true)
-
-
-
   }
 
   /// RIME 同步
@@ -677,9 +685,10 @@ public extension RimeContext {
     }
 
     self.commitText = commitText
-    self.userInputKey = userInputText
     self.suggestions = candidates
     self.rimeContext = context
+    // 注意赋值顺序
+    self.userInputKey = userInputText
   }
 
   /// 分页：下一页
