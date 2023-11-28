@@ -35,9 +35,9 @@ class CloudInputSchemaInfoViewController: NibLessViewController {
       .sink { [unowned self] type, info in
         if case .replace = type {
           self.alertConfirm(
-            alertTitle: "替换安装",
-            message: "使用下载方案替换当前Rime目录，替换后原Rime路径下文件不可恢复，是否确认替换？",
-            confirmTitle: "确认",
+            alertTitle: L10n.InputSchema.Cloud.AlertReplace.title,
+            message: L10n.InputSchema.Cloud.AlertReplace.message,
+            confirmTitle: L10n.confirm,
             confirmCallback: { [unowned self] in
               Task {
                 await inputSchemaViewModel.installInputSchemaByReplace(info)
@@ -46,9 +46,9 @@ class CloudInputSchemaInfoViewController: NibLessViewController {
           )
         } else {
           self.alertConfirm(
-            alertTitle: "覆盖安装",
-            message: "使用下载方案覆盖当前Rime目录，覆盖后原Rime路径下相同文件名文件会被覆盖，是否确认覆盖",
-            confirmTitle: "确认",
+            alertTitle: L10n.InputSchema.Cloud.AlertOverwrite.title,
+            message: L10n.InputSchema.Cloud.AlertOverwrite.message,
+            confirmTitle: L10n.confirm,
             confirmCallback: { [unowned self] in
               Task {
                 await inputSchemaViewModel.installInputSchemaByOverwrite(info)

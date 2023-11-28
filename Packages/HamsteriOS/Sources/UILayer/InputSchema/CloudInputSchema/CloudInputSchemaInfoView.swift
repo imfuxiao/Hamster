@@ -56,7 +56,7 @@ class CloudInputSchemaInfoView: NibLessView {
 
   public lazy var replaceInstallButton: UIButton = {
     let button = UIButton(type: .roundedRect)
-    button.setTitle("替换并部署", for: .normal)
+    button.setTitle(L10n.InputSchema.Cloud.installByReplace, for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.backgroundColor = UIColor.systemBackground
     button.layer.cornerRadius = 5
@@ -67,7 +67,7 @@ class CloudInputSchemaInfoView: NibLessView {
 
   public lazy var overwriteInstallButton: UIButton = {
     let button = UIButton(type: .roundedRect)
-    button.setTitle("覆盖并部署", for: .normal)
+    button.setTitle(L10n.InputSchema.Cloud.installByOverwrite, for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.backgroundColor = UIColor.systemBackground
     button.layer.cornerRadius = 5
@@ -78,7 +78,7 @@ class CloudInputSchemaInfoView: NibLessView {
 
   public lazy var remarkLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "替换：删除当前 Rime 路径下文件，并将下载的方案文件存放至 Rime 路径下。\n覆盖：将下载方案文件存放至 Rime 目录下，相同文件名称文件覆盖，不同文件追加。"
+    label.text = L10n.InputSchema.Cloud.installRemark
     label.textAlignment = .justified
     label.numberOfLines = -1
     label.lineBreakMode = .byTruncatingTail

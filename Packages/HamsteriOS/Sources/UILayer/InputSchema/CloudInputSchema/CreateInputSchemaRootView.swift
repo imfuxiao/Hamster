@@ -19,7 +19,7 @@ class CreateInputSchemaRootView: NibLessView {
     let field = UITextField(frame: .zero)
     field.translatesAutoresizingMaskIntoConstraints = false
     field.leftViewMode = .always
-    field.placeholder = "输入方案名称"
+    field.placeholder = L10n.InputSchema.Create.solutionName
     field.clearButtonMode = .whileEditing
     field.borderStyle = .roundedRect
     field.leftView = UIImageView(image: UIImage(systemName: "square.and.pencil"))
@@ -30,7 +30,7 @@ class CreateInputSchemaRootView: NibLessView {
     let field = UITextField(frame: .zero)
     field.translatesAutoresizingMaskIntoConstraints = false
     field.leftViewMode = .always
-    field.placeholder = "作者"
+    field.placeholder = L10n.InputSchema.Create.author
     field.clearButtonMode = .whileEditing
     field.borderStyle = .roundedRect
     field.leftView = UIImageView(image: UIImage(systemName: "square.and.pencil"))
@@ -43,7 +43,7 @@ class CreateInputSchemaRootView: NibLessView {
     label.numberOfLines = 1
     label.lineBreakMode = .byTruncatingTail
     label.textColor = UIColor.secondaryLabel
-    label.text = "方案描述："
+    label.text = L10n.InputSchema.Create.description
     label.font = UIFont.preferredFont(forTextStyle: .caption1)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -64,7 +64,7 @@ class CreateInputSchemaRootView: NibLessView {
 
   public lazy var inputSchemaFileDocumentPickButton: UIButton = {
     let button = UIButton(type: .roundedRect)
-    button.setTitle("选择输入方案Zip文件", for: .normal)
+    button.setTitle(L10n.InputSchema.Create.pickFile, for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.backgroundColor = UIColor.systemBackground
     button.layer.cornerRadius = 5
@@ -76,7 +76,7 @@ class CreateInputSchemaRootView: NibLessView {
   public lazy var uploadButton: UIButton = {
     let button = UIButton(type: .roundedRect)
     button.setImage(UIImage(systemName: "icloud.and.arrow.up.fill"), for: .normal)
-    button.setTitle("上传", for: .normal)
+    button.setTitle(L10n.InputSchema.Create.upload, for: .normal)
     button.setTitleColor(.systemBlue, for: .normal)
     button.backgroundColor = UIColor.systemBackground
     button.layer.cornerRadius = 5
@@ -87,7 +87,7 @@ class CreateInputSchemaRootView: NibLessView {
 
   public lazy var remarkLabel: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "注意：请勿上传无版权输入方案。\n\(InputSchemaViewModel.copyright)"
+    label.text = L10n.InputSchema.Create.remark(InputSchemaViewModel.copyright)
     label.textAlignment = .justified
     label.numberOfLines = -1
     label.lineBreakMode = .byTruncatingTail
@@ -119,7 +119,7 @@ class CreateInputSchemaRootView: NibLessView {
   override func didMoveToWindow() {
     super.didMoveToWindow()
     if let _ = window {
-      ProgressHUD.banner("请注意", "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期删除。", delay: 5)
+      ProgressHUD.banner(L10n.InputSchema.Create.bannerTitle, L10n.InputSchema.Create.bannerMessage, delay: 5)
     }
   }
 
@@ -198,25 +198,25 @@ class CreateInputSchemaRootView: NibLessView {
 
   @objc func uploadInputSchema(_ sender: Any) {
     guard let title = self.titleField.text, !title.isEmpty else {
-      ProgressHUD.error("请输入方案名称")
+      ProgressHUD.error(L10n.InputSchema.Create.nameError)
       titleField.becomeFirstResponder()
       return
     }
 
     guard let author = self.authorField.text, !author.isEmpty else {
-      ProgressHUD.error("请输入方案作者")
+      ProgressHUD.error(L10n.InputSchema.Create.authorError)
       titleField.becomeFirstResponder()
       return
     }
 
     guard let desc = self.descriptionTextView.text, !desc.isEmpty else {
-      ProgressHUD.error("请输入方案描述")
+      ProgressHUD.error(L10n.InputSchema.Create.descriptionError)
       descriptionTextView.becomeFirstResponder()
       return
     }
 
     guard let fileURL = self.inputSchemaFileURL else {
-      ProgressHUD.error("请选择需要上传的方案文件")
+      ProgressHUD.error(L10n.InputSchema.Create.noUploadFileError)
       return
     }
 

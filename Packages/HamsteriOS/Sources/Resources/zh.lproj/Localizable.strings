@@ -12,8 +12,64 @@
 "favbtn.backup" = "应用备份";
 
 "solution.title" = "输入相关";
+
 "input_schema.title" = "输入方案设置";
+"input_schema.select_at_least_one" = "需要保留至少一个输入方案。";
+"input_schema.solution_deploying" = "方案部署中……";
+"input_schema.action.import" = "导入方案";
+"input_schema.action.download" = "方案下载";
+"input_schema.action.upload" = "开源方案上传";
+
+"input_schema.import.importing" = "方案导入中……";
+"input_schema.import.success" = "导入成功";
+"input_schema.import.failed" = "导入Zip文件失败, %@";
+
+"input_schema.cloud.list_loading" = "加载中……";
+"input_schema.cloud.downloading" = "下载中……";
+"input_schema.cloud.title" = "开源输入方案";
+"input_schema.cloud.install_by_replace" = "替换并部署";
+"input_schema.cloud.install_by_overwrite" = "覆盖并部署";
+"input_schema.cloud.install_remark" = "替换：删除当前 Rime 路径下文件，并将下载的方案文件存放至 Rime 路径下。\n覆盖：将下载方案文件存放至 Rime 目录下，相同文件名称文件覆盖，不同文件追加。";
+"input_schema.cloud.alert_replace.title" = "替换安装";
+"input_schema.cloud.alert_replace.message" = "使用下载方案替换当前Rime目录，替换后原Rime路径下文件不可恢复，是否确认替换？";
+"input_schema.cloud.alert_overwrite.title" = "覆盖安装";
+"input_schema.cloud.alert_overwrite.message" = "使用下载方案覆盖当前Rime目录，覆盖后原Rime路径下相同文件名文件会被覆盖，是否确认覆盖";
+
+"input_schema.create.title" = "上传开源输入方案";
+"input_schema.create.alert_title" = "上传输入方案";
+"input_schema.create.alert_message" = "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期清除。";
+"input_schema.create.alert_confirm" = "确认上传";
+"input_schema.create.solution_name" = "输入方案名称";
+"input_schema.create.author" = "作者";
+"input_schema.create.description" = "方案描述：";
+"input_schema.create.pick_file" = "选择输入方案Zip文件";
+"input_schema.create.upload" = "上传";
+"input_schema.create.remark" = "注意：请勿上传无版权输入方案。\n%@";
+"input_schema.create.banner_title" = "请注意";
+"input_schema.create.banner_message" = "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期删除。";
+"input_schema.create.name_error" = "请输入方案名称";
+"input_schema.create.author_error" = "请输入方案作者";
+"input_schema.create.description_error" = "请输入方案描述";
+"input_schema.create.no_upload_file_error" = "请选择需要上传的方案文件";
+
 "input_schema.upload.title" = "Wi-Fi上传方案";
+"input_schema.upload.title2" = "输入方案上传";
+"input_schema.upload.stop_service" = "停止服务";
+"input_schema.upload.start_service" = "启动服务";
+"input_schema.upload.address" = "http://%@";
+"input_schema.upload.success" = "方案上传成功……";
+"input_schema.upload.failed" = "上传方案失败：%@";
+"input_schema.upload.click_to_copy" = "局域网访问地址(点击复制)";
+"input_schema.upload.no_address_available" = "无法获取 IP 地址，请在系统设置 - WiFi 中查看地址。";
+"input_schema.upload.remark" = "\
+1. 连接到相同的 Wi-Fi，注意：开启服务请不要离开此页面或锁定手机；\
+2. 请将个人方案上传至“Rime”文件夹内，可先删除原“Rime”文件夹内文件在上传;\
+3. 上传完毕后，需要“重新部署”，否则方案不会生效；\
+4. 浏览器内支持全选/拖拽上传等动作。";
+"input_schema.uploading" = "方案上传中……";
+"input_schema.upload_size_limit_error" = "方案文件不能超过 50 MB";
+"input_schema.upload_file_info_error" = "未能获取上传方案文件信息";
+
 "finder.title" = "文件管理";
 
 "k_b.section_title" = "键盘相关";

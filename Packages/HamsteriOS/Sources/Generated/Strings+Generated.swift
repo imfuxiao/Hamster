@@ -193,11 +193,129 @@ public enum L10n {
     }
   }
   public enum InputSchema {
+    /// 需要保留至少一个输入方案。
+    public static let selectAtLeastOne = L10n.tr("Localizable", "input_schema.select_at_least_one", fallback: "需要保留至少一个输入方案。")
+    /// 方案部署中……
+    public static let solutionDeploying = L10n.tr("Localizable", "input_schema.solution_deploying", fallback: "方案部署中……")
     /// 输入方案设置
     public static let title = L10n.tr("Localizable", "input_schema.title", fallback: "输入方案设置")
+    /// 未能获取上传方案文件信息
+    public static let uploadFileInfoError = L10n.tr("Localizable", "input_schema.upload_file_info_error", fallback: "未能获取上传方案文件信息")
+    /// 方案文件不能超过 50 MB
+    public static let uploadSizeLimitError = L10n.tr("Localizable", "input_schema.upload_size_limit_error", fallback: "方案文件不能超过 50 MB")
+    /// 方案上传中……
+    public static let uploading = L10n.tr("Localizable", "input_schema.uploading", fallback: "方案上传中……")
+    public enum Action {
+      /// 方案下载
+      public static let download = L10n.tr("Localizable", "input_schema.action.download", fallback: "方案下载")
+      /// 导入方案
+      public static let `import` = L10n.tr("Localizable", "input_schema.action.import", fallback: "导入方案")
+      /// 开源方案上传
+      public static let upload = L10n.tr("Localizable", "input_schema.action.upload", fallback: "开源方案上传")
+    }
+    public enum Cloud {
+      /// 下载中……
+      public static let downloading = L10n.tr("Localizable", "input_schema.cloud.downloading", fallback: "下载中……")
+      /// 覆盖并部署
+      public static let installByOverwrite = L10n.tr("Localizable", "input_schema.cloud.install_by_overwrite", fallback: "覆盖并部署")
+      /// 替换并部署
+      public static let installByReplace = L10n.tr("Localizable", "input_schema.cloud.install_by_replace", fallback: "替换并部署")
+      /// 替换：删除当前 Rime 路径下文件，并将下载的方案文件存放至 Rime 路径下。
+      /// 覆盖：将下载方案文件存放至 Rime 目录下，相同文件名称文件覆盖，不同文件追加。
+      public static let installRemark = L10n.tr("Localizable", "input_schema.cloud.install_remark", fallback: "替换：删除当前 Rime 路径下文件，并将下载的方案文件存放至 Rime 路径下。\n覆盖：将下载方案文件存放至 Rime 目录下，相同文件名称文件覆盖，不同文件追加。")
+      /// 加载中……
+      public static let listLoading = L10n.tr("Localizable", "input_schema.cloud.list_loading", fallback: "加载中……")
+      /// 开源输入方案
+      public static let title = L10n.tr("Localizable", "input_schema.cloud.title", fallback: "开源输入方案")
+      public enum AlertOverwrite {
+        /// 使用下载方案覆盖当前Rime目录，覆盖后原Rime路径下相同文件名文件会被覆盖，是否确认覆盖
+        public static let message = L10n.tr("Localizable", "input_schema.cloud.alert_overwrite.message", fallback: "使用下载方案覆盖当前Rime目录，覆盖后原Rime路径下相同文件名文件会被覆盖，是否确认覆盖")
+        /// 覆盖安装
+        public static let title = L10n.tr("Localizable", "input_schema.cloud.alert_overwrite.title", fallback: "覆盖安装")
+      }
+      public enum AlertReplace {
+        /// 使用下载方案替换当前Rime目录，替换后原Rime路径下文件不可恢复，是否确认替换？
+        public static let message = L10n.tr("Localizable", "input_schema.cloud.alert_replace.message", fallback: "使用下载方案替换当前Rime目录，替换后原Rime路径下文件不可恢复，是否确认替换？")
+        /// 替换安装
+        public static let title = L10n.tr("Localizable", "input_schema.cloud.alert_replace.title", fallback: "替换安装")
+      }
+    }
+    public enum Create {
+      /// 确认上传
+      public static let alertConfirm = L10n.tr("Localizable", "input_schema.create.alert_confirm", fallback: "确认上传")
+      /// 请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期清除。
+      public static let alertMessage = L10n.tr("Localizable", "input_schema.create.alert_message", fallback: "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期清除。")
+      /// 上传输入方案
+      public static let alertTitle = L10n.tr("Localizable", "input_schema.create.alert_title", fallback: "上传输入方案")
+      /// 作者
+      public static let author = L10n.tr("Localizable", "input_schema.create.author", fallback: "作者")
+      /// 请输入方案作者
+      public static let authorError = L10n.tr("Localizable", "input_schema.create.author_error", fallback: "请输入方案作者")
+      /// 请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期删除。
+      public static let bannerMessage = L10n.tr("Localizable", "input_schema.create.banner_message", fallback: "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期删除。")
+      /// 请注意
+      public static let bannerTitle = L10n.tr("Localizable", "input_schema.create.banner_title", fallback: "请注意")
+      /// 方案描述：
+      public static let description = L10n.tr("Localizable", "input_schema.create.description", fallback: "方案描述：")
+      /// 请输入方案描述
+      public static let descriptionError = L10n.tr("Localizable", "input_schema.create.description_error", fallback: "请输入方案描述")
+      /// 请输入方案名称
+      public static let nameError = L10n.tr("Localizable", "input_schema.create.name_error", fallback: "请输入方案名称")
+      /// 请选择需要上传的方案文件
+      public static let noUploadFileError = L10n.tr("Localizable", "input_schema.create.no_upload_file_error", fallback: "请选择需要上传的方案文件")
+      /// 选择输入方案Zip文件
+      public static let pickFile = L10n.tr("Localizable", "input_schema.create.pick_file", fallback: "选择输入方案Zip文件")
+      /// 注意：请勿上传无版权输入方案。
+      /// %@
+      public static func remark(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "input_schema.create.remark", String(describing: p1), fallback: "注意：请勿上传无版权输入方案。\n%@")
+      }
+      /// 输入方案名称
+      public static let solutionName = L10n.tr("Localizable", "input_schema.create.solution_name", fallback: "输入方案名称")
+      /// 上传开源输入方案
+      public static let title = L10n.tr("Localizable", "input_schema.create.title", fallback: "上传开源输入方案")
+      /// 上传
+      public static let upload = L10n.tr("Localizable", "input_schema.create.upload", fallback: "上传")
+    }
+    public enum Import {
+      /// 导入Zip文件失败, %@
+      public static func failed(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "input_schema.import.failed", String(describing: p1), fallback: "导入Zip文件失败, %@")
+      }
+      /// 方案导入中……
+      public static let importing = L10n.tr("Localizable", "input_schema.import.importing", fallback: "方案导入中……")
+      /// 导入成功
+      public static let success = L10n.tr("Localizable", "input_schema.import.success", fallback: "导入成功")
+    }
     public enum Upload {
+      /// http://%@
+      public static func address(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "input_schema.upload.address", String(describing: p1), fallback: "http://%@")
+      }
+      /// 局域网访问地址(点击复制)
+      public static let clickToCopy = L10n.tr("Localizable", "input_schema.upload.click_to_copy", fallback: "局域网访问地址(点击复制)")
+      /// 上传方案失败：%@
+      public static func failed(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "input_schema.upload.failed", String(describing: p1), fallback: "上传方案失败：%@")
+      }
+      /// 无法获取 IP 地址，请在系统设置 - WiFi 中查看地址。
+      public static let noAddressAvailable = L10n.tr("Localizable", "input_schema.upload.no_address_available", fallback: "无法获取 IP 地址，请在系统设置 - WiFi 中查看地址。")
+      /// 
+      /// 1. 连接到相同的 Wi-Fi，注意：开启服务请不要离开此页面或锁定手机；
+      /// 2. 请将个人方案上传至“Rime”文件夹内，可先删除原“Rime”文件夹内文件在上传;
+      /// 3. 上传完毕后，需要“重新部署”，否则方案不会生效；
+      /// 4. 浏览器内支持全选/拖拽上传等动作。
+      public static let remark = L10n.tr("Localizable", "input_schema.upload.remark", fallback: "\n1. 连接到相同的 Wi-Fi，注意：开启服务请不要离开此页面或锁定手机；\n2. 请将个人方案上传至“Rime”文件夹内，可先删除原“Rime”文件夹内文件在上传;\n3. 上传完毕后，需要“重新部署”，否则方案不会生效；\n4. 浏览器内支持全选/拖拽上传等动作。")
+      /// 启动服务
+      public static let startService = L10n.tr("Localizable", "input_schema.upload.start_service", fallback: "启动服务")
+      /// 停止服务
+      public static let stopService = L10n.tr("Localizable", "input_schema.upload.stop_service", fallback: "停止服务")
+      /// 方案上传成功……
+      public static let success = L10n.tr("Localizable", "input_schema.upload.success", fallback: "方案上传成功……")
       /// Wi-Fi上传方案
       public static let title = L10n.tr("Localizable", "input_schema.upload.title", fallback: "Wi-Fi上传方案")
+      /// 输入方案上传
+      public static let title2 = L10n.tr("Localizable", "input_schema.upload.title2", fallback: "输入方案上传")
     }
   }
   public enum KB {

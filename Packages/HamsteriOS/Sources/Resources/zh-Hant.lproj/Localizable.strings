@@ -12,8 +12,64 @@
 "favbtn.backup" = "App備份";
 
 "solution.title" = "輸入相關";
+
 "input_schema.title" = "輸入方案設定";
+"input_schema.select_at_least_one" = "需要保留至少一個輸入方案。";
+"input_schema.solution_deploying" = "方案部署中……";
+"input_schema.action.import" = "匯入方案";
+"input_schema.action.download" = "方案下載";
+"input_schema.action.upload" = "開源方案上傳";
+
+"input_schema.import.importing" = "方案匯入中……";
+"input_schema.import.success" = "匯入成功";
+"input_schema.import.failed" = "匯入Zip檔案失敗, %@";
+
+"input_schema.cloud.list_loading" = "載入中……";
+"input_schema.cloud.downloading" = "下載中……";
+"input_schema.cloud.title" = "開源輸入方案";
+"input_schema.cloud.install_by_replace" = "替換並部署";
+"input_schema.cloud.install_by_overwrite" = "覆蓋並部署";
+"input_schema.cloud.install_remark" = "替換：刪除目前 Rime 路徑下檔案，並將下載的方案檔案存放至 Rime 路徑下。\n覆蓋：將下載方案檔案存放至 Rime 目錄下，相同檔名檔案覆蓋，不同檔案追加。";
+"input_schema.cloud.alert_replace.title" = "替換安裝";
+"input_schema.cloud.alert_replace.message" = "使用下載方案替換目前Rime目錄，替換後原Rime路徑下檔案不可恢復，是否確認替換？";
+"input_schema.cloud.alert_overwrite.title" = "覆蓋安裝";
+"input_schema.cloud.alert_overwrite.message" = "使用下載方案覆蓋目前Rime目錄，覆蓋後原Rime路徑下相同檔名檔案會被覆蓋，是否確認覆蓋";
+
+"input_schema.create.title" = "上傳開源輸入方案";
+"input_schema.create.alert_title" = "上傳輸入方案";
+"input_schema.create.alert_message" = "請勿上傳非自己創作且無版權的輸入方案，不符合規範的方案會被定期清除。";
+"input_schema.create.alert_confirm" = "確認上傳";
+"input_schema.create.solution_name" = "輸入方案名稱";
+"input_schema.create.author" = "作者";
+"input_schema.create.description" = "方案描述：";
+"input_schema.create.pick_file" = "選擇輸入方案Zip檔案";
+"input_schema.create.upload" = "上傳";
+"input_schema.create.remark" = "注意：請勿上傳無版權輸入方案。\n%@";
+"input_schema.create.banner_title" = "請注意";
+"input_schema.create.banner_message" = "請勿上傳非自己創作且無版權的輸入方案，不符合規範的方案會被定期刪除。";
+"input_schema.create.name_error" = "請輸入方案名稱";
+"input_schema.create.author_error" = "請輸入方案作者";
+"input_schema.create.description_error" = "請輸入方案描述";
+"input_schema.create.no_upload_file_error" = "請選擇需要上傳的方案檔案";
+
 "input_schema.upload.title" = "Wi-Fi上傳方案";
+"input_schema.upload.title2" = "輸入方案上傳";
+"input_schema.upload.stop_service" = "停止服務";
+"input_schema.upload.start_service" = "啟動服務";
+"input_schema.upload.address" = "http://%@";
+"input_schema.upload.success" = "方案上傳成功……";
+"input_schema.upload.failed" = "上傳方案失敗：%@";
+"input_schema.upload.click_to_copy" = "區域網路存取地址(點擊複製)";
+"input_schema.upload.no_address_available" = "無法獲得 IP 地址，請在系統設定 - Wi-Fi 中查看地址。";
+"input_schema.upload.remark" = "\
+1. 連接到相同的 Wi-Fi，注意：開啟服務請不要離開此頁面或鎖定手機；\
+2. 請將個人方案上傳至“Rime”目錄内，可先刪除原“Rime”目錄内檔案再上傳;\
+3. 上傳完畢後，需要“重新部署”，否則方案不會生效；\
+4. 瀏覽器内支援全選/拖曳上傳等動作。";
+"input_schema.uploading" = "方案上傳中……";
+"input_schema.upload_size_limit_error" = "方案檔案不能超過 50 MB";
+"input_schema.upload_file_info_error" = "未能取得上傳方案檔案訊息";
+
 "finder.title" = "檔案管理";
 
 "k_b.section_title" = "鍵盤相關";

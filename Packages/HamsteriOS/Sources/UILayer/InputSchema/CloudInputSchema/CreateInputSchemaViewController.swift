@@ -21,7 +21,7 @@ class CreateInputSchemaViewController: NibLessViewController {
 
   override func loadView() {
     view = CreateInputSchemaRootView(inputSchemaViewModel: inputSchemaViewModel)
-    title = "上传开源输入方案"
+    title = L10n.InputSchema.Create.title
   }
 
   func combine() {
@@ -29,7 +29,7 @@ class CreateInputSchemaViewController: NibLessViewController {
       .eraseToAnyPublisher()
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] callback in
-        alertConfirm(alertTitle: "上传输入方案", message: "请勿上传非自己创作且无版权的输入方案，不符合规范的方案会被定期清除。", confirmTitle: "确认上传", confirmCallback: {
+        alertConfirm(alertTitle: L10n.InputSchema.Create.alertTitle, message: L10n.InputSchema.Create.alertMessage, confirmTitle: L10n.InputSchema.Create.alertConfirm, confirmCallback: {
           callback()
         })
       }
