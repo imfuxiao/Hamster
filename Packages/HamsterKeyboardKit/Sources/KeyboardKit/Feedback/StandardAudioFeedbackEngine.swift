@@ -37,7 +37,10 @@ open class StandardAudioFeedbackEngine: AudioFeedbackEngine {
   open func trigger(_ audio: AudioFeedback) {
     switch audio {
     case .none: return
-    default: AudioServicesPlaySystemSound(audio.id)
+    default:
+      DispatchQueue.global().async {
+        AudioServicesPlaySystemSound(audio.id)
+      }
     }
   }
 }
