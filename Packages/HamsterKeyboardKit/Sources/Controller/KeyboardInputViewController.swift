@@ -435,6 +435,12 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   ///   * textInput: 采用 UITextInput 协议的文档实例。
   override open func textWillChange(_ textInput: UITextInput?) {
     super.textWillChange(textInput)
+
+    // fix: 键盘跟随环境显示数字键盘
+    if let keyboardType = textDocumentProxy.keyboardType, keyboardType.isNumberType {
+      keyboardContext.keyboardType = .numericNineGrid
+    }
+
     if keyboardContext.textDocumentProxy === textDocumentProxy { return }
     keyboardContext.textDocumentProxy = textDocumentProxy
   }
@@ -444,9 +450,14 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
   ///   * textInput: 采用 UITextInput 协议的文档实例。
   override open func textDidChange(_ textInput: UITextInput?) {
     super.textDidChange(textInput)
-    performAutocomplete()
-    performTextContextSync()
-    tryChangeToPreferredKeyboardTypeAfterTextDidChange()
+//    performAutocomplete()
+//    performTextContextSync()
+//    tryChangeToPreferredKeyboardTypeAfterTextDidChange()
+
+    // fix: 输出栏点击右侧x形按钮后, 输入法候选栏内容没有跟随输入栏一同清空
+    if !self.textDocumentProxy.hasText {
+      self.rimeContext.reset()
+    }
   }
 
   // MARK: - Implementations KeyboardController
@@ -977,6 +988,16 @@ private extension KeyboardInputViewController {
     let returnToPrimaryKeyboard = keyboardContext.returnToPrimaryKeyboardOfSymbols(key: insertText)
     if returnToPrimaryKeyboard {
       keyboardContext.keyboardType = keyboardContext.selectKeyboard
+    }
+  }
+}
+
+extension UIKeyboardType {
+  var isNumberType: Bool {
+    switch self {
+    // 数字键盘
+    case .numberPad, .numbersAndPunctuation, .phonePad, .decimalPad, .asciiCapableNumberPad: return true
+    default: return false
     }
   }
 }

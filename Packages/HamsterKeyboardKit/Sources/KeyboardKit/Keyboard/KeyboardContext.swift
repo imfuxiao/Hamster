@@ -782,17 +782,3 @@ private extension UIInputViewController {
     view.window?.screen.bounds.size ?? .zero
   }
 }
-
-// MARK: - Hamster Configuration
-
-public extension KeyboardContext {}
-
-extension UIKeyboardType {
-  var isNumberType: Bool {
-    switch self {
-    // 数字键盘
-    case .numberPad, .numbersAndPunctuation, .phonePad, .decimalPad, .asciiCapableNumberPad: return true
-    default: return false
-    }
-  }
-}
