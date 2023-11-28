@@ -828,38 +828,38 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   /// 中文键盘设置
   lazy var chineseStanderSystemKeyboardSettingsItems: [SettingSectionModel] = [
     .init(
-      footer: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧",
+      footer: L10n.KB.LayoutZh26.switchOnLeftOfSpaceRemark,
       items: [
         .init(
-          text: "显示大写字母",
+          text: L10n.KB.LayoutZh26.showUppercasedCharacterOnChineseKeyboard,
           type: .toggle,
           toggleValue: { [unowned self] in showUppercasedCharacterOnChineseKeyboard },
           toggleHandled: { [unowned self] in
             showUppercasedCharacterOnChineseKeyboard = $0
           }),
         .init(
-          text: "启用分号按键",
+          text: L10n.KB.LayoutZh26.displaySemicolonButton,
           type: .toggle,
           toggleValue: { [unowned self] in displaySemicolonButton },
           toggleHandled: { [unowned self] in
             displaySemicolonButton = $0
           }),
         .init(
-          text: "启用符号按键",
+          text: L10n.KB.LayoutZh26.displayClassifySymbolButton,
           type: .toggle,
           toggleValue: { [unowned self] in displayClassifySymbolButton },
           toggleHandled: { [unowned self] in
             displayClassifySymbolButton = $0
           }),
         .init(
-          text: "启用中英切换按键",
+          text: L10n.KB.LayoutZh26.displayChineseEnglishSwitchButton,
           type: .toggle,
           toggleValue: { [unowned self] in displayChineseEnglishSwitchButton },
           toggleHandled: { [unowned self] in
             displayChineseEnglishSwitchButton = $0
           }),
         .init(
-          text: "按键位于空格左侧",
+          text: L10n.KB.LayoutZh26.switchOnLeftOfSpace,
           type: .toggle,
           toggleValue: { [unowned self] in chineseEnglishSwitchButtonIsOnLeftOfSpaceButton },
           toggleHandled: { [unowned self] in
@@ -869,14 +869,14 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       items: [
         .init(
-          text: "启用空格左侧按键",
+          text: L10n.KB.LayoutZh26.displaySpaceLeftButton,
           type: .toggle,
           toggleValue: { [unowned self] in displaySpaceLeftButton },
           toggleHandled: { [unowned self] in
             displaySpaceLeftButton = $0
           }),
         .init(
-          text: "左侧按键由RIME处理",
+          text: L10n.KB.LayoutZh26.spaceLeftButtonProcessByRIME,
           type: .toggle,
           toggleValue: { [unowned self] in spaceLeftButtonProcessByRIME },
           toggleHandled: { [unowned self] in
@@ -884,21 +884,21 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           }),
         .init(
           icon: UIImage(systemName: "square.and.pencil"),
-          placeholder: "左侧按键键值",
+          placeholder: L10n.KB.LayoutZh26.keyValueOfSpaceLeftButton,
           type: .textField,
           textValue: { [unowned self] in keyValueOfSpaceLeftButton },
           textHandled: { [unowned self] in
             keyValueOfSpaceLeftButton = $0
           }),
         .init(
-          text: "启用空格右侧按键",
+          text: L10n.KB.LayoutZh26.displaySpaceRightButton,
           type: .toggle,
           toggleValue: { [unowned self] in displaySpaceRightButton },
           toggleHandled: { [unowned self] in
             displaySpaceRightButton = $0
           }),
         .init(
-          text: "右侧按键由RIME处理",
+          text: L10n.KB.LayoutZh26.spaceRightButtonProcessByRIME,
           type: .toggle,
           toggleValue: { [unowned self] in spaceRightButtonProcessByRIME },
           toggleHandled: { [unowned self] in
@@ -906,7 +906,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           }),
         .init(
           icon: UIImage(systemName: "square.and.pencil"),
-          placeholder: "右侧按键键值",
+          placeholder: L10n.KB.LayoutZh26.keyValueOfSpaceRightButton,
           type: .textField,
           textValue: { [unowned self] in keyValueOfSpaceRightButton },
           textHandled: { [unowned self] in

@@ -20,10 +20,16 @@ public enum L10n {
   public static let delete = L10n.tr("Localizable", "delete", fallback: "删除")
   /// 禁用
   public static let disabledLabel = L10n.tr("Localizable", "disabledLabel", fallback: "禁用")
+  /// 完成
+  public static let done = L10n.tr("Localizable", "done", fallback: "完成")
+  /// 编辑
+  public static let edit = L10n.tr("Localizable", "edit", fallback: "编辑")
   /// 启用
   public static let enabledLabel = L10n.tr("Localizable", "enabledLabel", fallback: "启用")
   /// 重置成功
   public static let resetSuccessfully = L10n.tr("Localizable", "reset_successfully", fallback: "重置成功")
+  /// 保存
+  public static let save = L10n.tr("Localizable", "save", fallback: "保存")
   public enum About {
     /// 联系邮箱
     public static let email = L10n.tr("Localizable", "about.email", fallback: "联系邮箱")
@@ -186,8 +192,6 @@ public enum L10n {
         public static let failed = L10n.tr("Localizable", "finder.editor.save.failed", fallback: "保存失败")
         /// 保存成功
         public static let success = L10n.tr("Localizable", "finder.editor.save.success", fallback: "保存成功")
-        /// 保存
-        public static let title = L10n.tr("Localizable", "finder.editor.save.title", fallback: "保存")
       }
     }
     public enum ICloudDoc {
@@ -454,6 +458,46 @@ public enum L10n {
         public static let success = L10n.tr("Localizable", "k_b.layout_action.import.success", fallback: "导入成功")
         /// 导入文件读取受限，无法加载文件
         public static let unableToAccess = L10n.tr("Localizable", "k_b.layout_action.import.unable_to_access", fallback: "导入文件读取受限，无法加载文件")
+      }
+    }
+    public enum LayoutZh26 {
+      /// 启用中英切换按键
+      public static let displayChineseEnglishSwitchButton = L10n.tr("Localizable", "k_b.layout_zh26.displayChineseEnglishSwitchButton", fallback: "启用中英切换按键")
+      /// 启用符号按键
+      public static let displayClassifySymbolButton = L10n.tr("Localizable", "k_b.layout_zh26.displayClassifySymbolButton", fallback: "启用符号按键")
+      /// 启用分号按键
+      public static let displaySemicolonButton = L10n.tr("Localizable", "k_b.layout_zh26.displaySemicolonButton", fallback: "启用分号按键")
+      /// 启用空格左侧按键
+      public static let displaySpaceLeftButton = L10n.tr("Localizable", "k_b.layout_zh26.displaySpaceLeftButton", fallback: "启用空格左侧按键")
+      /// 启用空格右侧按键
+      public static let displaySpaceRightButton = L10n.tr("Localizable", "k_b.layout_zh26.displaySpaceRightButton", fallback: "启用空格右侧按键")
+      /// 左侧按键键值
+      public static let keyValueOfSpaceLeftButton = L10n.tr("Localizable", "k_b.layout_zh26.keyValueOfSpaceLeftButton", fallback: "左侧按键键值")
+      /// 右侧按键键值
+      public static let keyValueOfSpaceRightButton = L10n.tr("Localizable", "k_b.layout_zh26.keyValueOfSpaceRightButton", fallback: "右侧按键键值")
+      /// 设置
+      public static let segmentSettings = L10n.tr("Localizable", "k_b.layout_zh26.segment_settings", fallback: "设置")
+      /// 划动设置
+      public static let segmentSwipe = L10n.tr("Localizable", "k_b.layout_zh26.segment_swipe", fallback: "划动设置")
+      /// 显示大写字母
+      public static let showUppercasedCharacterOnChineseKeyboard = L10n.tr("Localizable", "k_b.layout_zh26.showUppercasedCharacterOnChineseKeyboard", fallback: "显示大写字母")
+      /// 左侧按键由RIME处理
+      public static let spaceLeftButtonProcessByRIME = L10n.tr("Localizable", "k_b.layout_zh26.spaceLeftButtonProcessByRIME", fallback: "左侧按键由RIME处理")
+      /// 右侧按键由RIME处理
+      public static let spaceRightButtonProcessByRIME = L10n.tr("Localizable", "k_b.layout_zh26.spaceRightButtonProcessByRIME", fallback: "右侧按键由RIME处理")
+      /// 按键位于空格左侧
+      public static let switchOnLeftOfSpace = L10n.tr("Localizable", "k_b.layout_zh26.switch_on_left_of_space", fallback: "按键位于空格左侧")
+      /// “按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧
+      public static let switchOnLeftOfSpaceRemark = L10n.tr("Localizable", "k_b.layout_zh26.switch_on_left_of_space_remark", fallback: "“按键位于空格左侧”选项：关闭状态则位于空格右侧，开启状态则位于空格左侧")
+      public enum SwipeKey {
+        /// 新增滑动Action
+        public static let addKeySwipeAction = L10n.tr("Localizable", "k_b.layout_zh26.swipe_key.add_key_swipe_action", fallback: "新增滑动Action")
+        /// %@已经存在
+        public static func keyExist(_ p1: Any) -> String {
+          return L10n.tr("Localizable", "k_b.layout_zh26.swipe_key.key_exist", String(describing: p1), fallback: "%@已经存在")
+        }
+        /// 字符
+        public static let title = L10n.tr("Localizable", "k_b.layout_zh26.swipe_key.title", fallback: "字符")
       }
     }
     public enum TypeOption {

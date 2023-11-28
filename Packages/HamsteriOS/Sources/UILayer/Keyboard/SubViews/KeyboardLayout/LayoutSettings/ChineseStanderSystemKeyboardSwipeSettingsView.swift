@@ -38,7 +38,7 @@ class ChineseStanderSystemKeyboardSwipeSettingsView: NibLessView {
     configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
       guard let self = self else { return UISwipeActionsConfiguration(actions: []) }
 
-      let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, completion in
+      let deleteAction = UIContextualAction(style: .destructive, title: L10n.delete) { [unowned self] _, _, completion in
         var keys = self.keyboardSettingsViewModel.chineseStanderSystemKeyboardSwipeList
         guard keys.count > indexPath.item else { return }
         keys.remove(at: indexPath.item)

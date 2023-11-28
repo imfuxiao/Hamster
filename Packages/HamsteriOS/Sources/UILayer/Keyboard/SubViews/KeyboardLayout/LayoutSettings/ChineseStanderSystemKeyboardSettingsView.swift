@@ -15,7 +15,7 @@ class ChineseStanderSystemKeyboardSettingsView: NibLessView {
   private var subscriptions = Set<AnyCancellable>()
 
   lazy var segmentedControl: UISegmentedControl = {
-    let tags = ["设置", "划动设置"]
+    let tags = [L10n.KB.LayoutZh26.segmentSettings, L10n.KB.LayoutZh26.segmentSwipe]
     let segmentedControl = UISegmentedControl(items: tags)
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
     segmentedControl.selectedSegmentIndex = 0

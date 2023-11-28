@@ -77,7 +77,6 @@
 "finder.tag.i_cloud" = "iCloud檔案";
 "finder.i_cloud_doc.warning" = "iCloud異常";
 "finder.copy_userdb.remark" = "指副檔名為“.txt”及目錄名包含“.userdb”下的檔案";
-"finder.editor.save.title" = "儲存";
 "finder.editor.save.success" = "儲存成功";
 "finder.editor.save.failed" = "儲存失敗";
 "finder.editor.line_wrapping_enabled" = "文字編輯器: 自動換行";
@@ -134,6 +133,26 @@
 "k_b.layout.custom_named" = "自定義-%@";
 "k_b.layout.numericNineGrid" = "數字九宮格";
 "k_b.layout.remark" = "注意：\n1. 内建鍵盤向左滑動進入設定頁面。\n2. 自定義佈局通過組態檔案調整，調整申需重新部署。";
+
+"k_b.layout_zh26.segment_settings" = "設定";
+"k_b.layout_zh26.segment_swipe" = "滑動設定";
+"k_b.layout_zh26.swipe_key.add_key_swipe_action" = "新增滑動Action";
+"k_b.layout_zh26.swipe_key.title" = "字元";
+"k_b.layout_zh26.swipe_key.key_exist" = "%@已經存在";
+
+"k_b.layout_zh26.showUppercasedCharacterOnChineseKeyboard" = "顯示大寫字母";
+"k_b.layout_zh26.displaySemicolonButton" = "啟用分號按鍵";
+"k_b.layout_zh26.displayClassifySymbolButton" = "啟用符號按鍵";
+"k_b.layout_zh26.displayChineseEnglishSwitchButton" = "啟用中英切換按鍵";
+"k_b.layout_zh26.switch_on_left_of_space" = "按鍵位於空格左側";
+"k_b.layout_zh26.switch_on_left_of_space_remark" = "“按鍵位於空格左側”選項：關閉狀態則位於空格右側，開啟狀態則位於空格左側";
+
+"k_b.layout_zh26.displaySpaceLeftButton" = "啟用空格左側按鍵";
+"k_b.layout_zh26.spaceLeftButtonProcessByRIME" = "左側按鍵由RIME處理";
+"k_b.layout_zh26.keyValueOfSpaceLeftButton" = "左側按鍵鍵值";
+"k_b.layout_zh26.displaySpaceRightButton" = "啟用空格右側按鍵";
+"k_b.layout_zh26.spaceRightButtonProcessByRIME" = "右側按鍵由RIME處理";
+"k_b.layout_zh26.keyValueOfSpaceRightButton" = "右側按鍵鍵值";
 
 "color_scheme.title" = "鍵盤配色";
 "color_scheme.enable_custom_keyboard_color" = "啟用配色";
@@ -245,6 +264,9 @@
 "copy_successfully" = "複製成功";
 "delete" = "刪除";
 "disabledLabel" = "關閉";
+"done" = "完成";
+"edit" = "編輯";
 "enabledLabel" = "開啟";
 "reset_successfully" = "重置成功";
+"save" = "儲存";
 
