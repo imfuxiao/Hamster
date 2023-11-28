@@ -69,9 +69,18 @@ public class BackupViewModel {
 
       try FileManager.default.unzipItem(at: selectRestoreFileURL, to: FileManager.default.temporaryDirectory)
 
+      // 检测 UI 配置文件是否存在，存在则恢复
+      let appConfiguration = FileManager.tempUserDataDirectory.appendingPathComponent("hamster.app.yaml")
+      if FileManager.default.fileExists(atPath: appConfiguration.path) {
+        let appConfig = try HamsterConfigurationRepositories.shared.loadFromYAML(appConfiguration)
+        HamsterAppDependencyContainer.shared.applicationConfiguration = appConfig
+        try FileManager.default.removeItem(at: appConfiguration)
+      }
+
       // 恢复输入方案
       try FileManager.copyDirectory(override: true, src: FileManager.tempSharedSupportDirectory, dst: FileManager.sandboxSharedSupportDirectory)
       try FileManager.copyDirectory(override: true, src: FileManager.tempUserDataDirectory, dst: FileManager.sandboxUserDataDirectory)
+
       await ProgressHUD.success("恢复成功, 请重新部署。", delay: 1.5)
     } catch {
       Logger.statistics.error("App restore error: \(error.localizedDescription)")
@@ -97,6 +106,11 @@ public class BackupViewModel {
     // copy 当前输入方案
     try FileManager.copyDirectory(override: true, src: FileManager.sandboxSharedSupportDirectory, dst: FileManager.tempSharedSupportDirectory)
     try FileManager.copyDirectory(override: true, src: FileManager.sandboxUserDataDirectory, dst: FileManager.tempUserDataDirectory)
+
+    // 读取 UI 操作产生的配置，并保存至备份文件夹
+    if let appConfig = try? HamsterConfigurationRepositories.shared.loadAppConfigurationFromUserDefaults() {
+      try HamsterConfigurationRepositories.shared.saveToYAML(config: appConfig, path: FileManager.tempUserDataDirectory.appendingPathComponent("hamster.app.yaml"))
+    }
 
     // 检测备份文件夹是否存在
     let backupURL = FileManager.sandboxBackupDirectory
