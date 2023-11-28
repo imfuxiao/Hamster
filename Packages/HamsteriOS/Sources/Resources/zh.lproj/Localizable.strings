@@ -195,6 +195,21 @@
 "k_b.action_option.shortCommand" = "快捷指令";
 "k_b.action_option.keyboardType" = "切换键盘";
 
+"k_b.toolbar.title" = "候选栏";
+"k_b.toolbar.enableToolbar" = "启用候选工具栏";
+"k_b.toolbar.displayAppIconButton" = "显示应用图标";
+"k_b.toolbar.displayKeyboardDismissButton" = "显示键盘收起图标";
+"k_b.toolbar.displayIndexOfCandidateWord" = "显示候选项序号";
+"k_b.toolbar.displayCommentOfCandidateWord" = "显示候选 Comment";
+"k_b.toolbar.swipePaging" = "划动分页模式";
+"k_b.toolbar.maximumNumberOfCandidateWords" = "候选字最大数量";
+"k_b.toolbar.candidateLabelFontSize" = "候选序号字体大小";
+"k_b.toolbar.candidateWordFontSize" = "候选字体大小";
+"k_b.toolbar.candidateCommentFontSize" = "候选 Comment 字体大小";
+"k_b.toolbar.heightOfToolbar" = "工具栏高度";
+"k_b.toolbar.heightOfCodingArea" = "编码区高度";
+"k_b.toolbar.codingAreaFontSize" = "编码区字体大小";
+
 "k_b.symbol_edit.reset.title" = "恢复默认值";
 "k_b.symbol_edit.here" = "我在这";
 "k_b.symbol_edit.tap2edit_or_swipe2delete" = "点击行可编辑/划动可删除";

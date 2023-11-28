@@ -648,6 +648,36 @@ public enum L10n {
         public static let title = L10n.tr("Localizable", "k_b.symbol_edit.reset.title", fallback: "恢复默认值")
       }
     }
+    public enum Toolbar {
+      /// 候选 Comment 字体大小
+      public static let candidateCommentFontSize = L10n.tr("Localizable", "k_b.toolbar.candidateCommentFontSize", fallback: "候选 Comment 字体大小")
+      /// 候选序号字体大小
+      public static let candidateLabelFontSize = L10n.tr("Localizable", "k_b.toolbar.candidateLabelFontSize", fallback: "候选序号字体大小")
+      /// 候选字体大小
+      public static let candidateWordFontSize = L10n.tr("Localizable", "k_b.toolbar.candidateWordFontSize", fallback: "候选字体大小")
+      /// 编码区字体大小
+      public static let codingAreaFontSize = L10n.tr("Localizable", "k_b.toolbar.codingAreaFontSize", fallback: "编码区字体大小")
+      /// 显示应用图标
+      public static let displayAppIconButton = L10n.tr("Localizable", "k_b.toolbar.displayAppIconButton", fallback: "显示应用图标")
+      /// 显示候选 Comment
+      public static let displayCommentOfCandidateWord = L10n.tr("Localizable", "k_b.toolbar.displayCommentOfCandidateWord", fallback: "显示候选 Comment")
+      /// 显示候选项序号
+      public static let displayIndexOfCandidateWord = L10n.tr("Localizable", "k_b.toolbar.displayIndexOfCandidateWord", fallback: "显示候选项序号")
+      /// 显示键盘收起图标
+      public static let displayKeyboardDismissButton = L10n.tr("Localizable", "k_b.toolbar.displayKeyboardDismissButton", fallback: "显示键盘收起图标")
+      /// 启用候选工具栏
+      public static let enableToolbar = L10n.tr("Localizable", "k_b.toolbar.enableToolbar", fallback: "启用候选工具栏")
+      /// 编码区高度
+      public static let heightOfCodingArea = L10n.tr("Localizable", "k_b.toolbar.heightOfCodingArea", fallback: "编码区高度")
+      /// 工具栏高度
+      public static let heightOfToolbar = L10n.tr("Localizable", "k_b.toolbar.heightOfToolbar", fallback: "工具栏高度")
+      /// 候选字最大数量
+      public static let maximumNumberOfCandidateWords = L10n.tr("Localizable", "k_b.toolbar.maximumNumberOfCandidateWords", fallback: "候选字最大数量")
+      /// 划动分页模式
+      public static let swipePaging = L10n.tr("Localizable", "k_b.toolbar.swipePaging", fallback: "划动分页模式")
+      /// 候选栏
+      public static let title = L10n.tr("Localizable", "k_b.toolbar.title", fallback: "候选栏")
+    }
     public enum TypeOption {
       /// 英文键盘
       public static let alphabetic = L10n.tr("Localizable", "k_b.type_option.alphabetic", fallback: "英文键盘")

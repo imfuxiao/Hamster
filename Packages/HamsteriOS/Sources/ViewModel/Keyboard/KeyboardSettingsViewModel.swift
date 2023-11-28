@@ -918,37 +918,37 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
   lazy var toolbarSettings: [SettingSectionModel] = [
     .init(items: [
       .init(
-        text: "启用候选工具栏",
+        text: L10n.KB.Toolbar.enableToolbar,
         toggleValue: { [unowned self] in enableToolbar },
         toggleHandled: { [unowned self] in
           enableToolbar = $0
         }),
       .init(
-        text: "显示应用图标",
+        text: L10n.KB.Toolbar.displayAppIconButton,
         toggleValue: { [unowned self] in displayAppIconButton },
         toggleHandled: { [unowned self] in
           displayAppIconButton = $0
         }),
       .init(
-        text: "显示键盘收起图标",
+        text: L10n.KB.Toolbar.displayKeyboardDismissButton,
         toggleValue: { [unowned self] in displayKeyboardDismissButton },
         toggleHandled: { [unowned self] in
           displayKeyboardDismissButton = $0
         }),
       .init(
-        text: "显示候选项序号",
+        text: L10n.KB.Toolbar.displayIndexOfCandidateWord,
         toggleValue: { [unowned self] in displayIndexOfCandidateWord },
         toggleHandled: { [unowned self] in
           displayIndexOfCandidateWord = $0
         }),
       .init(
-        text: "显示候选 Comment",
+        text: L10n.KB.Toolbar.displayCommentOfCandidateWord,
         toggleValue: { [unowned self] in displayCommentOfCandidateWord },
         toggleHandled: { [unowned self] in
           displayCommentOfCandidateWord = $0
         }),
       .init(
-        text: "划动分页模式",
+        text: L10n.KB.Toolbar.swipePaging,
         toggleValue: { [unowned self] in swipePaging },
         toggleHandled: { [unowned self] in
           swipePaging = $0
@@ -957,7 +957,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
     .init(items: [
       .init(
-        text: "候选字最大数量",
+        text: L10n.KB.Toolbar.maximumNumberOfCandidateWords,
         type: .step,
         textValue: { [unowned self] in String(maximumNumberOfCandidateWords) },
         minValue: 50,
@@ -967,7 +967,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           maximumNumberOfCandidateWords = Int($0)
         }),
       .init(
-        text: "候选序号字体大小",
+        text: L10n.KB.Toolbar.candidateLabelFontSize,
         type: .step,
         textValue: { [unowned self] in String(candidateLabelFontSize) },
         minValue: 10,
@@ -977,7 +977,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           candidateLabelFontSize = Int($0)
         }),
       .init(
-        text: "候选字体大小",
+        text: L10n.KB.Toolbar.candidateWordFontSize,
         type: .step,
         textValue: { [unowned self] in String(candidateWordFontSize) },
         minValue: 10,
@@ -987,7 +987,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           candidateWordFontSize = Int($0)
         }),
       .init(
-        text: "候选 Comment 字体大小",
+        text: L10n.KB.Toolbar.candidateCommentFontSize,
         type: .step,
         textValue: { [unowned self] in String(candidateCommentFontSize) },
         minValue: 5,
@@ -997,7 +997,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           candidateCommentFontSize = Int($0)
         }),
       .init(
-        text: "工具栏高度",
+        text: L10n.KB.Toolbar.heightOfToolbar,
         type: .step,
         textValue: { [unowned self] in String(heightOfToolbar) },
         minValue: 30,
@@ -1007,7 +1007,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           heightOfToolbar = Int($0)
         }),
       .init(
-        text: "编码区高度",
+        text: L10n.KB.Toolbar.heightOfCodingArea,
         type: .step,
         textValue: { [unowned self] in String(heightOfCodingArea) },
         minValue: 5,
@@ -1017,7 +1017,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           heightOfCodingArea = Int($0)
         }),
       .init(
-        text: "编码区字体大小",
+        text: L10n.KB.Toolbar.codingAreaFontSize,
         type: .step,
         textValue: { [unowned self] in String(codingAreaFontSize) },
         minValue: 5,
