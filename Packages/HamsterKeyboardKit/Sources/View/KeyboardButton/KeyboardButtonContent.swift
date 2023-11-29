@@ -75,13 +75,6 @@ public class KeyboardButtonContentView: NibLessView {
     return appearance.buttonText(for: action) ?? ""
   }
 
-  /// 是否需要显示划动文本控件
-  var needSwipeLabel: Bool {
-    guard !action.isSystemAction else { return false }
-    guard action != .space else { return false }
-    return action.isInputAction
-  }
-
   init(item: KeyboardLayoutItem, style: KeyboardButtonStyle, appearance: KeyboardAppearance, keyboardContext: KeyboardContext, rimeContext: RimeContext) {
     self.item = item
     self.action = item.action
@@ -106,8 +99,6 @@ public class KeyboardButtonContentView: NibLessView {
 
   override public func constructViewHierarchy() {
     addSubview(contentView)
-
-    guard needSwipeLabel else { return }
 
     for swipe in item.swipes {
       if swipe.display, swipe.direction == .up {
@@ -140,7 +131,7 @@ public class KeyboardButtonContentView: NibLessView {
       return
     }
 
-    if keyboardContext.disableSwipeLabel || !needSwipeLabel {
+    if keyboardContext.disableSwipeLabel {
       contentView.frame = self.oldBounds
       return
     }
