@@ -17,85 +17,28 @@ class CandidateWordCell: UICollectionViewCell {
   private var showComment: Bool = false
   private var style: CandidateBarStyle? = nil
 
-  private var textLabelCenterXContainer: NSLayoutConstraint?
-
-  public lazy var textLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .center
-    label.numberOfLines = 1
-    label.lineBreakMode = .byTruncatingTail
-    label.setContentHuggingPriority(.defaultLow, for: .horizontal)
-    label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-
-  public lazy var secondaryLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .center
-    label.numberOfLines = 1
-    label.lineBreakMode = .byTruncatingTail
-    label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-    label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-
-  private lazy var labelContainerView: UIView = {
-    let containerView = UIView(frame: .zero)
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    containerView.addSubview(textLabel)
-    containerView.addSubview(secondaryLabel)
-
-    textLabelCenterXContainer = textLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor)
-    textLabelCenterXContainer?.priority = .required
-
-    NSLayoutConstraint.activate([
-      textLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 6),
-      secondaryLabel.leadingAnchor.constraint(equalTo: textLabel.trailingAnchor),
-      secondaryLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -6),
-
-      textLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-      secondaryLabel.bottomAnchor.constraint(equalTo: textLabel.bottomAnchor),
-
-      textLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 1),
-      secondaryLabel.widthAnchor.constraint(lessThanOrEqualTo: containerView.widthAnchor, multiplier: 1),
-
-      textLabelCenterXContainer!,
-    ])
-
-    return containerView
-  }()
-
-  private lazy var containerView: UIStackView = {
-    let stackView = UIStackView(arrangedSubviews: [labelContainerView])
-    stackView.axis = .horizontal
-    stackView.alignment = .center
-    stackView.distribution = .fill
-    stackView.spacing = 0
-    return stackView
-  }()
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    setupView()
+    contentView.addSubview(candidateLabel)
+    NSLayoutConstraint.activate([
+      candidateLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+      candidateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      candidateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      candidateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+    ])
   }
+
+  private var candidateLabel: UILabel = {
+    let label = UILabel(frame: .zero)
+    label.textAlignment = .center
+    label.translatesAutoresizingMaskIntoConstraints = false
+    return label
+  }()
 
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  func setupView() {
-    contentView.addSubview(containerView)
-    containerView.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      containerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-      containerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      containerView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-      containerView.heightAnchor.constraint(equalTo: contentView.heightAnchor),
-    ])
   }
 
   /// 当每次 CandidateSuggestion 发生变化时调用此方法，来更新 UI
@@ -120,43 +63,17 @@ class CandidateWordCell: UICollectionViewCell {
   }
 
   override func updateConfiguration(using state: UICellConfigurationState) {
-    let title = state.candidateSuggestion?.title ?? ""
-    let index = state.candidateSuggestion?.showIndexLabel ?? ""
-    if showIndex {
-      textLabel.text = index.isEmpty ? title : "\(index) \(title)"
-    } else {
-      textLabel.text = title
-    }
-    if showComment {
-      secondaryLabel.text = state.candidateSuggestion?.subtitle
-    } else {
-      secondaryLabel.text = ""
+    if let style = style, let attributeText = state.candidateSuggestion?.attributeString(showIndex: showIndex, showComment: showComment, style: style) {
+      candidateLabel.attributedText = attributeText
     }
 
-    textLabelCenterXContainer?.isActive = secondaryLabel.text?.isEmpty ?? true
-
-    if let style = style {
-      textLabel.font = style.candidateTextFont
-      secondaryLabel.font = style.candidateCommentFont
-      if state.candidateSuggestion?.isAutocomplete ?? false {
-        self.textLabel.textColor = style.preferredCandidateTextColor
-        self.secondaryLabel.textColor = style.preferredCandidateCommentTextColor
-      } else {
-        self.textLabel.textColor = style.candidateTextColor
-        self.secondaryLabel.textColor = style.candidateCommentTextColor
-      }
+    var backgroundConfiguration = UIBackgroundConfiguration.clear()
+    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted {
+      backgroundConfiguration.cornerRadius = 5
+      backgroundConfiguration.backgroundColor = style?.preferredCandidateBackgroundColor
     }
 
-    textLabel.sizeToFit()
-    secondaryLabel.sizeToFit()
-
-    if (state.candidateSuggestion?.isAutocomplete ?? false) || state.isSelected || state.isHighlighted
-    {
-      containerView.layer.cornerRadius = 5
-      containerView.backgroundColor = style?.preferredCandidateBackgroundColor
-    } else {
-      containerView.backgroundColor = .clear
-    }
+    self.backgroundConfiguration = backgroundConfiguration
   }
 
   /// 为 UICellConfigurationState 添加自定义属性 candidateSuggestion
@@ -169,13 +86,9 @@ class CandidateWordCell: UICollectionViewCell {
   override func prepareForReuse() {
     super.prepareForReuse()
 
-    textLabel.text = ""
-    secondaryLabel.text = ""
-  }
-
-  /// 返回具有并排值文本的列表单元格的默认配置。
-  private func contentConfiguration() -> UIListContentConfiguration {
-    .valueCell()
+    candidateLabel.attributedText = nil
+    contentConfiguration = nil
+    backgroundConfiguration = nil
   }
 }
 
@@ -193,5 +106,30 @@ private extension UICellConfigurationState {
     set {
       self[.candidateSuggestionItem] = newValue
     }
+  }
+}
+
+public extension CandidateSuggestion {
+  func attributeString(showIndex: Bool, showComment: Bool, style: CandidateBarStyle) -> NSAttributedString {
+    let result = NSMutableAttributedString()
+
+    let label = label.trimmingCharacters(in: .whitespaces)
+    if showIndex, !label.isEmpty {
+      let labelColor = isAutocomplete ? style.preferredCandidateLabelColor : style.candidateLabelColor
+      let labelAttributeString = NSAttributedString(string: label, attributes: [.foregroundColor: labelColor, .font: style.candidateLabelFont])
+      result.append(labelAttributeString)
+    }
+
+    let textColor = isAutocomplete ? style.preferredCandidateTextColor : style.candidateTextColor
+    let textAttributeString = NSAttributedString(string: (showIndex && !label.isEmpty) ? " \(title)" : title, attributes: [.foregroundColor: textColor, .font: style.candidateTextFont])
+    result.append(textAttributeString)
+
+    if showComment, let comment = subtitle {
+      let commentColor = isAutocomplete ? style.preferredCandidateCommentTextColor : style.candidateCommentTextColor
+      let commentAttributeString = NSAttributedString(string: " \(comment)", attributes: [.foregroundColor: commentColor, .font: style.candidateCommentFont])
+      result.append(commentAttributeString)
+    }
+
+    return result
   }
 }

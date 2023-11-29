@@ -56,13 +56,6 @@ public struct CandidateSuggestion: Identifiable, Equatable, Hashable {
     self.subtitle = subtitle
     self.additionalInfo = additionalInfo
   }
-
-  var showIndexLabel: String {
-    if !label.isEmpty {
-      return label
-    }
-    return "\(index + 1)"
-  }
 }
 
 public extension CandidateSuggestion {

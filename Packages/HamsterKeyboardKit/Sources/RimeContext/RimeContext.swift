@@ -22,8 +22,8 @@ public class RimeContext {
   private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
   private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
 //  private lazy var registryHandleUserInputKeyChanged = [HandleUserInputKeyChanged]()
-  private lazy var registryHandleSuggestionsChanged = [HandleSuggestionsChanged]()
-  private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
+//  private lazy var registryHandleSuggestionsChanged = [HandleSuggestionsChanged]()
+//  private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
 
   /// 最大候选词数量
   public private(set) lazy var maximumNumberOfCandidateWords: Int = 100
@@ -108,22 +108,25 @@ public class RimeContext {
   }
 
   /// 候选字
-  @MainActor
-  public lazy var suggestions: [CandidateSuggestion] = [] {
-    didSet {
-      registryHandleSuggestionsChanged.forEach { handle in
-        handle()
-      }
-    }
-  }
+  @MainActor @Published
+  public var suggestions: [CandidateSuggestion] = []
+//  {
+//    didSet {
+//      registryHandleSuggestionsChanged.forEach { handle in
+//        handle()
+//      }
+//    }
+//  }
 
-  public lazy var rimeContext: IRimeContext? = nil {
-    didSet {
-      registryHandleRimeContextChanged.forEach { handle in
-        handle()
-      }
-    }
-  }
+  @MainActor @Published
+  public var rimeContext: IRimeContext? = nil
+//  {
+//    didSet {
+//      registryHandleRimeContextChanged.forEach { handle in
+//        handle()
+//      }
+//    }
+//  }
 
   /// 划动分页模式下，当前页码，从 0 开始
   public lazy var pageIndex: Int = 0
@@ -163,13 +166,13 @@ public class RimeContext {
 //    self.registryHandleUserInputKeyChanged.append(handle)
 //  }
 
-  func registryHandleSuggestionsChanged(_ handle: @escaping HandleSuggestionsChanged) {
-    self.registryHandleSuggestionsChanged.append(handle)
-  }
+//  func registryHandleSuggestionsChanged(_ handle: @escaping HandleSuggestionsChanged) {
+//    self.registryHandleSuggestionsChanged.append(handle)
+//  }
 
-  func registryHandleRimeContextChanged(_ handle: @escaping HandleRimeContextChanged) {
-    self.registryHandleRimeContextChanged.append(handle)
-  }
+//  func registryHandleRimeContextChanged(_ handle: @escaping HandleRimeContextChanged) {
+//    self.registryHandleRimeContextChanged.append(handle)
+//  }
 }
 
 // MARK: methods
@@ -684,11 +687,11 @@ public extension RimeContext {
       return
     }
 
+    // 注意赋值顺序
+    self.userInputKey = userInputText
     self.commitText = commitText
     self.suggestions = candidates
     self.rimeContext = context
-    // 注意赋值顺序
-    self.userInputKey = userInputText
   }
 
   /// 分页：下一页
@@ -718,7 +721,7 @@ public extension RimeContext {
       let index = candidateIndex + index
       let suggestion = CandidateSuggestion(
         index: index,
-        label: "",
+        label: "\(index + 1)",
         text: candidate.text,
         title: candidate.text,
         isAutocomplete: index == highlightIndex,

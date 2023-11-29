@@ -5,7 +5,6 @@
 //  Created by morse on 2023/8/19.
 //
 
-import Combine
 import HamsterKit
 import HamsterUIKit
 import UIKit
@@ -31,7 +30,6 @@ public class CandidateBarView: NibLessView {
   private var keyboardContext: KeyboardContext
   private var rimeContext: RimeContext
   private var userInterfaceStyle: UIUserInterfaceStyle
-  private var subscriptions = Set<AnyCancellable>()
 
   /// 拼音Label
   lazy var phoneticLabel: UILabel = {
@@ -127,7 +125,6 @@ public class CandidateBarView: NibLessView {
     super.init(frame: .zero)
 
     setupContentView()
-    combine()
   }
 
   func setupContentView() {
@@ -228,36 +225,6 @@ public class CandidateBarView: NibLessView {
   func setStyle(_ style: CandidateBarStyle) {
     self.style = style
     setupAppearance()
-  }
-
-  func combine() {
-    rimeContext.userInputKeyPublished
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] inputKeys in
-        guard let self = self else { return }
-        // 检测是否启用内嵌编码
-        guard !keyboardContext.enableEmbeddedInputMode else { return }
-        if self.keyboardContext.keyboardType.isChineseNineGrid {
-          // Debug
-          // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
-          self.phoneticLabel.text = self.rimeContext.t9UserInputKey
-        } else {
-          self.phoneticLabel.text = inputKeys
-        }
-      }
-      .store(in: &subscriptions)
-//    rimeContext.registryHandleUserInputKeyChanged { [weak self] inputKeys in
-//      guard let self = self else { return }
-//      // 检测是否启用内嵌编码
-//      guard !keyboardContext.enableEmbeddedInputMode else { return }
-//      if self.keyboardContext.keyboardType.isChineseNineGrid {
-//        // Debug
-//        // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
-//        self.phoneticLabel.text = self.rimeContext.t9UserInputKey
-//      } else {
-//        self.phoneticLabel.text = inputKeys
-//      }
-//    }
   }
 
   @objc func changeState() {

@@ -286,6 +286,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     }
   }
 
+  public var candidateLabelFontSize: Int {
+    get {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateLabelFontSize ?? 12
+    }
+    set {
+      HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateLabelFontSize = newValue
+      HamsterAppDependencyContainer.shared.applicationConfiguration.toolbar?.candidateLabelFontSize = newValue
+    }
+  }
+
   public var candidateWordFontSize: Int {
     get {
       HamsterAppDependencyContainer.shared.configuration.toolbar?.candidateWordFontSize ?? 20
@@ -926,13 +936,13 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           displayKeyboardDismissButton = $0
         }),
       .init(
-        text: "显示候选项索引",
+        text: "显示候选项序号",
         toggleValue: { [unowned self] in displayIndexOfCandidateWord },
         toggleHandled: { [unowned self] in
           displayIndexOfCandidateWord = $0
         }),
       .init(
-        text: "显示候选文字 Comment",
+        text: "显示候选 Comment",
         toggleValue: { [unowned self] in displayCommentOfCandidateWord },
         toggleHandled: { [unowned self] in
           displayCommentOfCandidateWord = $0
@@ -957,6 +967,16 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           maximumNumberOfCandidateWords = Int($0)
         }),
       .init(
+        text: "候选序号字体大小",
+        type: .step,
+        textValue: { [unowned self] in String(candidateLabelFontSize) },
+        minValue: 10,
+        maxValue: 30,
+        stepValue: 1,
+        valueChangeHandled: { [unowned self] in
+          candidateLabelFontSize = Int($0)
+        }),
+      .init(
         text: "候选字体大小",
         type: .step,
         textValue: { [unowned self] in String(candidateWordFontSize) },
@@ -967,7 +987,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           candidateWordFontSize = Int($0)
         }),
       .init(
-        text: "候选备注字体大小",
+        text: "候选 Comment 字体大小",
         type: .step,
         textValue: { [unowned self] in String(candidateCommentFontSize) },
         minValue: 5,

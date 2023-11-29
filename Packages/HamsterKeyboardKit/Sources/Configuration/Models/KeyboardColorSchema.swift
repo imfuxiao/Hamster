@@ -70,13 +70,19 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
   /// 首选提示文字颜色: hilited_comment_text_color
   public var hilitedCommentTextColor: String?
 
+  /// 首选文字序号颜色 hilited_candidate_label_color
+  public var hilitedCandidateLabelColor: String?
+
   /// 次选文字色: candidate_text_color
   public var candidateTextColor: String?
 
   /// 次选提示文字颜色: comment_text_color
   public var commentTextColor: String?
 
-  public init(schemaName: String? = nil, name: String? = nil, author: String? = nil, backColor: String? = nil, buttonBackColor: String? = nil, buttonPressedBackColor: String? = nil, buttonFrontColor: String? = nil, buttonPressedFrontColor: String? = nil, buttonSwipeFrontColor: String? = nil, cornerRadius: Int? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil) {
+  /// 次选文字序号颜色 label_color
+  public var labelColor: String?
+
+  public init(schemaName: String? = nil, name: String? = nil, author: String? = nil, backColor: String? = nil, buttonBackColor: String? = nil, buttonPressedBackColor: String? = nil, buttonFrontColor: String? = nil, buttonPressedFrontColor: String? = nil, buttonSwipeFrontColor: String? = nil, cornerRadius: Int? = nil, borderColor: String? = nil, textColor: String? = nil, hilitedTextColor: String? = nil, hilitedBackColor: String? = nil, hilitedCandidateTextColor: String? = nil, hilitedCandidateBackColor: String? = nil, hilitedCommentTextColor: String? = nil, hilitedCandidateLabelColor: String? = nil, candidateTextColor: String? = nil, commentTextColor: String? = nil, labelColor: String? = nil) {
     self.schemaName = schemaName
     self.name = name
     self.author = author
@@ -94,8 +100,10 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     self.hilitedCandidateTextColor = hilitedCandidateTextColor
     self.hilitedCandidateBackColor = hilitedCandidateBackColor
     self.hilitedCommentTextColor = hilitedCommentTextColor
+    self.hilitedCandidateLabelColor = hilitedCandidateLabelColor
     self.candidateTextColor = candidateTextColor
     self.commentTextColor = commentTextColor
+    self.labelColor = labelColor
   }
 
   public init(from decoder: Decoder) throws {
@@ -117,8 +125,10 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     self.hilitedCandidateTextColor = try container.decodeIfPresent(String.self, forKey: .hilitedCandidateTextColor)
     self.hilitedCandidateBackColor = try container.decodeIfPresent(String.self, forKey: .hilitedCandidateBackColor)
     self.hilitedCommentTextColor = try container.decodeIfPresent(String.self, forKey: .hilitedCommentTextColor)
+    self.hilitedCandidateLabelColor = try container.decodeIfPresent(String.self, forKey: .hilitedCandidateLabelColor)
     self.candidateTextColor = try container.decodeIfPresent(String.self, forKey: .candidateTextColor)
     self.commentTextColor = try container.decodeIfPresent(String.self, forKey: .commentTextColor)
+    self.labelColor = try container.decodeIfPresent(String.self, forKey: .labelColor)
   }
 
   enum CodingKeys: String, CodingKey {
@@ -139,8 +149,10 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     case hilitedCandidateTextColor = "hilited_candidate_text_color"
     case hilitedCandidateBackColor = "hilited_candidate_back_color"
     case hilitedCommentTextColor = "hilited_comment_text_color"
+    case hilitedCandidateLabelColor = "hilited_candidate_label_color"
     case candidateTextColor = "candidate_text_color"
     case commentTextColor = "comment_text_color"
+    case labelColor = "label_color"
   }
 
   public func encode(to encoder: Encoder) throws {
@@ -162,8 +174,10 @@ public struct KeyboardColorSchema: Codable, Hashable, Comparable {
     try container.encodeIfPresent(self.hilitedCandidateTextColor, forKey: .hilitedCandidateTextColor)
     try container.encodeIfPresent(self.hilitedCandidateBackColor, forKey: .hilitedCandidateBackColor)
     try container.encodeIfPresent(self.hilitedCommentTextColor, forKey: .hilitedCommentTextColor)
+    try container.encodeIfPresent(self.hilitedCandidateLabelColor, forKey: .hilitedCandidateLabelColor)
     try container.encodeIfPresent(self.candidateTextColor, forKey: .candidateTextColor)
     try container.encodeIfPresent(self.commentTextColor, forKey: .commentTextColor)
+    try container.encodeIfPresent(self.labelColor, forKey: .labelColor)
   }
 }
 

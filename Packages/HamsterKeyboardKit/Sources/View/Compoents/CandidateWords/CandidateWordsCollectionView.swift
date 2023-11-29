@@ -98,27 +98,30 @@ public class CandidateWordsCollectionView: UICollectionView {
   }
 
   func combine() {
-    self.rimeContext.registryHandleSuggestionsChanged { [weak self] in
-      guard let self = self else { return }
-      self.reloadData()
-      if self.currentUserInputKey != self.rimeContext.userInputKey {
-        self.currentUserInputKey = self.rimeContext.userInputKey
-        if !rimeContext.suggestions.isEmpty {
-          if self.candidatesViewState.isCollapse() {
-            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
-          } else {
-            self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+    self.rimeContext.$suggestions
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] suggestions in
+        guard let self = self else { return }
+        self.reloadData()
+        if self.currentUserInputKey != self.rimeContext.userInputKey {
+          self.currentUserInputKey = self.rimeContext.userInputKey
+          if !suggestions.isEmpty {
+            if self.candidatesViewState.isCollapse() {
+              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .right, animated: false)
+            } else {
+              self.scrollToItem(at: IndexPath(item: 0, section: 0), at: .top, animated: false)
+            }
+            return
           }
-          return
+        }
+
+        if suggestions.isEmpty, self.candidatesViewState != .collapse {
+          self.candidatesViewState = .collapse
+          self.keyboardContext.candidatesViewState = .collapse
+          changeLayout(.collapse)
         }
       }
-
-      if rimeContext.suggestions.isEmpty, self.candidatesViewState != .collapse {
-        self.candidatesViewState = .collapse
-        self.keyboardContext.candidatesViewState = .collapse
-        changeLayout(.collapse)
-      }
-    }
+      .store(in: &subscriptions)
 
     keyboardContext.$candidatesViewState
       .receive(on: DispatchQueue.main)
@@ -236,56 +239,27 @@ extension CandidateWordsCollectionView: UICollectionViewDelegateFlowLayout {
     guard indexPath.item < rimeContext.suggestions.count else { return .zero }
     let candidate = rimeContext.suggestions[indexPath.item]
     let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
-
-    let candidateTextFont = style.candidateTextFont
-    let candidateCommentFont = style.candidateCommentFont
     let showComment = toolbarConfig?.displayCommentOfCandidateWord ?? false
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord ?? false
 
     // 为 cell 内容增加左右间距, 对应 cell 的 leading, trailing 的约束
-    let intrinsicHorizontalMargin: CGFloat = 12
+    let intrinsicHorizontalMargin: CGFloat = 14
 
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
     let maxWidth: CGFloat = UIScreen.main.bounds.width - ((self.window?.screen.interfaceOrientation == .portrait) ? 60 : 220)
 
-    let titleText = showIndex ? "\(candidate.showIndexLabel) \(candidate.title)" : candidate.title
+    let attributeString = candidate.attributeString(showIndex: showIndex, showComment: showComment, style: style)
+
     // 60 是下拉箭头按键的宽度，垂直滑动的 label 在超出宽度时，文字折叠
     let targetWidth: CGFloat = maxWidth - (isVerticalLayout ? 60 : 0)
 
-    var titleLabelSize = UILabel.estimatedSize(
-      titleText,
-      targetSize: CGSize(width: targetWidth, height: 0),
-      font: candidateTextFont
-    )
+    var titleLabelSize = UILabel.estimatedAttributeSize(attributeString, targetSize: CGSize(width: targetWidth, height: 0))
 
-    if titleText.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[candidateTextFont.pointSize] {
+    if attributeString.string.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[style.candidateTextFont.pointSize] {
       titleLabelSize.width = minWidth
     }
 
-    // 不显示 comment
-    if !showComment {
-      let width = titleLabelSize.width + intrinsicHorizontalMargin
-      return CGSize(
-        // 垂直布局下，cell 宽度不能大于屏幕宽度
-        width: isVerticalLayout ? min(width, maxWidth) : width,
-        height: heightOfToolbar
-      )
-    }
-
-    var subtitleLabelSize = CGSize.zero
-    if let subtitle = candidate.subtitle {
-      subtitleLabelSize = UILabel.estimatedSize(
-        subtitle,
-        targetSize: CGSize(width: targetWidth, height: 0),
-        font: candidateCommentFont
-      )
-
-      if subtitle.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[candidateCommentFont.pointSize] {
-        subtitleLabelSize.width = minWidth
-      }
-    }
-
-    let width = titleLabelSize.width + subtitleLabelSize.width + intrinsicHorizontalMargin
+    let width = titleLabelSize.width + intrinsicHorizontalMargin
     return CGSize(
       // 垂直布局下，cell 宽度不能大于屏幕宽度
       width: isVerticalLayout ? min(width, maxWidth) : width,
@@ -331,10 +305,17 @@ public extension UILabel {
   }()
 
   static func estimatedSize(_ text: String, targetSize: CGSize = .zero, font: UIFont? = nil) -> CGSize {
+    tempLabelForCalc.attributedText = nil
     tempLabelForCalc.text = text
     if let font = font {
       tempLabelForCalc.font = font
     }
+    return tempLabelForCalc.sizeThatFits(targetSize)
+  }
+
+  static func estimatedAttributeSize(_ text: NSAttributedString, targetSize: CGSize = .zero) -> CGSize {
+    tempLabelForCalc.text = nil
+    tempLabelForCalc.attributedText = text
     return tempLabelForCalc.sizeThatFits(targetSize)
   }
 }

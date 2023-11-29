@@ -29,6 +29,9 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
   /// 编码区字体大小
   public var codingAreaFontSize: Int?
 
+  /// 候选字索引大小
+  public var candidateLabelFontSize: Int?
+
   /// 候选字字体大小
   /// 指候选列表中的字体大小
   public var candidateWordFontSize: Int?
@@ -46,13 +49,27 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
   /// 关闭后为手动分页模式，即通过发送上一页/下一页按键，使 rime 翻页
   public var swipePaging: Bool?
 
-  public init(enableToolbar: Bool? = nil, heightOfToolbar: Int? = nil, displayAppIconButton: Bool? = nil, displayKeyboardDismissButton: Bool? = nil, heightOfCodingArea: Int? = nil, codingAreaFontSize: Int? = nil, candidateWordFontSize: Int? = nil, candidateCommentFontSize: Int? = nil, displayIndexOfCandidateWord: Bool? = nil, displayCommentOfCandidateWord: Bool? = nil, swipePaging: Bool? = nil) {
+  public init(
+    enableToolbar: Bool? = nil,
+    heightOfToolbar: Int? = nil,
+    displayAppIconButton: Bool? = nil,
+    displayKeyboardDismissButton: Bool? = nil,
+    heightOfCodingArea: Int? = nil,
+    codingAreaFontSize: Int? = nil,
+    candidateLabelFontSize: Int? = nil,
+    candidateWordFontSize: Int? = nil,
+    candidateCommentFontSize: Int? = nil,
+    displayIndexOfCandidateWord: Bool? = nil,
+    displayCommentOfCandidateWord: Bool? = nil,
+    swipePaging: Bool? = nil)
+  {
     self.enableToolbar = enableToolbar
     self.heightOfToolbar = heightOfToolbar
     self.displayAppIconButton = displayAppIconButton
     self.displayKeyboardDismissButton = displayKeyboardDismissButton
     self.heightOfCodingArea = heightOfCodingArea
     self.codingAreaFontSize = codingAreaFontSize
+    self.candidateLabelFontSize = candidateLabelFontSize
     self.candidateWordFontSize = candidateWordFontSize
     self.candidateCommentFontSize = candidateCommentFontSize
     self.displayIndexOfCandidateWord = displayIndexOfCandidateWord
@@ -67,6 +84,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     self.displayAppIconButton = try container.decodeIfPresent(Bool.self, forKey: .displayAppIconButton)
     self.displayKeyboardDismissButton = try container.decodeIfPresent(Bool.self, forKey: .displayKeyboardDismissButton)
     self.heightOfCodingArea = try container.decodeIfPresent(Int.self, forKey: .heightOfCodingArea)
+    self.candidateLabelFontSize = try container.decodeIfPresent(Int.self, forKey: .candidateLabelFontSize)
     self.codingAreaFontSize = try container.decodeIfPresent(Int.self, forKey: .codingAreaFontSize)
     self.candidateWordFontSize = try container.decodeIfPresent(Int.self, forKey: .candidateWordFontSize)
     self.candidateCommentFontSize = try container.decodeIfPresent(Int.self, forKey: .candidateCommentFontSize)
@@ -82,6 +100,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     case displayKeyboardDismissButton
     case heightOfCodingArea
     case codingAreaFontSize
+    case candidateLabelFontSize
     case candidateWordFontSize
     case candidateCommentFontSize
     case displayIndexOfCandidateWord
@@ -97,6 +116,7 @@ public struct KeyboardToolbarConfiguration: Codable, Hashable {
     try container.encodeIfPresent(self.displayKeyboardDismissButton, forKey: .displayKeyboardDismissButton)
     try container.encodeIfPresent(self.heightOfCodingArea, forKey: .heightOfCodingArea)
     try container.encodeIfPresent(self.codingAreaFontSize, forKey: .codingAreaFontSize)
+    try container.encodeIfPresent(self.candidateLabelFontSize, forKey: .candidateLabelFontSize)
     try container.encodeIfPresent(self.candidateWordFontSize, forKey: .candidateWordFontSize)
     try container.encodeIfPresent(self.candidateCommentFontSize, forKey: .candidateCommentFontSize)
     try container.encodeIfPresent(self.displayIndexOfCandidateWord, forKey: .displayIndexOfCandidateWord)

@@ -34,12 +34,12 @@ public struct HamsterKeyboardColor: Equatable {
   // 候选栏颜色
   public var hilitedCandidateTextColor: UIColor // 首选文字颜色: hilited_candidate_text_color
   public var hilitedCandidateBackColor: UIColor // 首选背景颜色: hilited_candidate_back_color
-  // hilited_candidate_label_color 首选序号颜色
   public var hilitedCommentTextColor: UIColor // 首选提示字母色: hilited_comment_text_color
+  public var hilitedCandidateLabelColor: UIColor // 首选序号颜色 hilited_candidate_label_color
 
   public var candidateTextColor: UIColor // 次选文字色: candidate_text_color
   public var commentTextColor: UIColor // 次选提示色: comment_text_color
-  // label_color 次选序号颜色
+  public var labelColor: UIColor // 次选序号颜色 label_color
 
   public init(
     colorSchema schema: KeyboardColorSchema = KeyboardColorSchema(),
@@ -63,8 +63,10 @@ public struct HamsterKeyboardColor: Equatable {
     self.hilitedCandidateTextColor = schema.hilitedCandidateTextColor?.bgrColor ?? foregroundColor
     self.hilitedCandidateBackColor = schema.hilitedCandidateBackColor?.bgrColor ?? backgroundColor
     self.hilitedCommentTextColor = schema.hilitedCommentTextColor?.bgrColor ?? foregroundColor
+    self.hilitedCandidateLabelColor = schema.hilitedCandidateLabelColor?.bgrColor ?? foregroundColor
     self.candidateTextColor = schema.candidateTextColor?.bgrColor ?? foregroundColor
     self.commentTextColor = schema.commentTextColor?.bgrColor ?? foregroundColor
+    self.labelColor = schema.labelColor?.bgrColor ?? foregroundColor
   }
 
   public static func == (lhs: Self, rhs: Self) -> Bool {

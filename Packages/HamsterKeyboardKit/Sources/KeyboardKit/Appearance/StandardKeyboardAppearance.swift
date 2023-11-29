@@ -196,14 +196,19 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
     }
     let phoneticTextFont = UIFont.systemFont(ofSize: phoneticTextFontSize)
 
-    var candidateTextFont: UIFont?
-    var candidateCommentFont: UIFont?
+    var candidateTextFont: UIFont = KeyboardFont.title3.font
+    var candidateCommentFont: UIFont = KeyboardFont.caption2.font
+    var candidateLabelFont: UIFont = KeyboardFont.caption2.font
     if let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar {
       if let candidateTextFontSize = toolbarConfig.candidateWordFontSize {
         candidateTextFont = UIFont.systemFont(ofSize: CGFloat(candidateTextFontSize))
       }
       if let candidateCommentFontSize = toolbarConfig.candidateCommentFontSize {
         candidateCommentFont = UIFont.systemFont(ofSize: CGFloat(candidateCommentFontSize))
+      }
+
+      if let candidateLabelFontSize = toolbarConfig.candidateLabelFontSize {
+        candidateLabelFont = UIFont.systemFont(ofSize: CGFloat(candidateLabelFontSize))
       }
     }
 
@@ -215,10 +220,13 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
         preferredCandidateTextColor: hamsterColor.hilitedCandidateTextColor,
         preferredCandidateCommentTextColor: hamsterColor.hilitedCommentTextColor,
         preferredCandidateBackgroundColor: hamsterColor.hilitedCandidateBackColor,
+        preferredCandidateLabelColor: hamsterColor.hilitedCandidateLabelColor,
         candidateTextColor: hamsterColor.candidateTextColor,
         candidateCommentTextColor: hamsterColor.commentTextColor,
-        candidateTextFont: candidateTextFont ?? KeyboardFont.title3.font,
-        candidateCommentFont: candidateCommentFont ?? KeyboardFont.caption2.font,
+        candidateLabelColor: hamsterColor.labelColor,
+        candidateLabelFont: candidateLabelFont,
+        candidateTextFont: candidateTextFont,
+        candidateCommentFont: candidateCommentFont,
         toolbarButtonFrontColor: hamsterColor.buttonFrontColor,
         toolbarButtonBackgroundColor: .clear,
         toolbarButtonPressedBackgroundColor: hamsterColor.buttonPressedBackColor
@@ -232,10 +240,13 @@ open class StandardKeyboardAppearance: KeyboardAppearance {
       preferredCandidateTextColor: foregroundColor,
       preferredCandidateCommentTextColor: foregroundColor,
       preferredCandidateBackgroundColor: hamsterUIColor.standardButtonBackground(for: keyboardContext),
+      preferredCandidateLabelColor: foregroundColor,
       candidateTextColor: foregroundColor,
       candidateCommentTextColor: foregroundColor,
-      candidateTextFont: candidateTextFont ?? KeyboardFont.title3.font,
-      candidateCommentFont: candidateCommentFont ?? KeyboardFont.caption2.font,
+      candidateLabelColor: foregroundColor,
+      candidateLabelFont: candidateLabelFont,
+      candidateTextFont: candidateTextFont,
+      candidateCommentFont: candidateCommentFont,
       toolbarButtonFrontColor: .secondaryLabel,
       toolbarButtonBackgroundColor: .clear,
       toolbarButtonPressedBackgroundColor: .secondarySystemFill

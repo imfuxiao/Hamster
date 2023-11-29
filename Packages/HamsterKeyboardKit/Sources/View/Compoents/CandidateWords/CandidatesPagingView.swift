@@ -5,6 +5,7 @@
 //  Created by morse on 2023/11/18.
 //
 
+import Combine
 import HamsterKit
 import OSLog
 import UIKit
@@ -20,6 +21,8 @@ class CandidatesPagingCollectionView: UICollectionView {
   let keyboardContext: KeyboardContext
 
   let actionHandler: KeyboardActionHandler
+
+  var subscriptions = Set<AnyCancellable>()
 
   /// 水平滚动方向布局
   let horizontalLayout: UICollectionViewLayout
@@ -43,25 +46,6 @@ class CandidatesPagingCollectionView: UICollectionView {
     self.actionHandler = actionHandler
     self.rimeContext = rimeContext
     self.candidatesViewState = keyboardContext.candidatesViewState
-
-//    let heightOfToolbar = keyboardContext.heightOfToolbar
-//    let heightOfCodingArea: CGFloat = keyboardContext.enableEmbeddedInputMode ? 0 : keyboardContext.heightOfCodingArea
-
-//    self.horizontalLayout = {
-//      let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.1), heightDimension: .fractionalHeight(1.0))
-//      let item = NSCollectionLayoutItem(layoutSize: itemSize)
-//      let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(heightOfToolbar - heightOfCodingArea))
-//      let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-//      let section = NSCollectionLayoutSection(group: group)
-//      // 控制水平方向 item 之间间距
-//      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
-//      section.interGroupSpacing = 0
-//      section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-//      // 控制垂直方向距拼写区的间距
-//      // 注意：添加间距会导致点击间距无响应，需要将间距在 cell 的自动布局中添加进去
-//      section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-//      return UICollectionViewCompositionalLayout(section: section)
-//    }()
 
     self.horizontalLayout = {
       let layout = AlignedCollectionViewFlowLayout(horizontalAlignment: .justified, verticalAlignment: .center)
@@ -125,41 +109,44 @@ class CandidatesPagingCollectionView: UICollectionView {
   }
 
   func combine() {
-    rimeContext.registryHandleRimeContextChanged { [weak self] in
-      guard let self = self else { return }
-      guard let context = self.rimeContext.rimeContext else { return }
-      guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
-      guard let pageCandidates = context.menu?.candidates else { return }
-      let labels = context.labels ?? [String]()
-      let selectKeys = (context.menu?.selectKeys ?? "").map { String($0) }
-      var candidates = [CandidateSuggestion]()
-      for (index, candidate) in pageCandidates.enumerated() {
-        let suggestion = CandidateSuggestion(
-          index: index,
-          label: indexLabel(index, labels: labels, selectKeys: selectKeys),
-          text: candidate.text,
-          title: candidate.text,
-          isAutocomplete: index == highlightedIndex,
-          subtitle: candidate.comment
-        )
-        candidates.append(suggestion)
-      }
+    rimeContext.$rimeContext
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] context in
+        guard let self = self else { return }
+        guard let context = context else { return }
+        guard let highlightedIndex = context.menu?.highlightedCandidateIndex else { return }
+        guard let pageCandidates = context.menu?.candidates else { return }
+        let labels = context.labels ?? [String]()
+        let selectKeys = (context.menu?.selectKeys ?? "").map { String($0) }
+        var candidates = [CandidateSuggestion]()
+        for (index, candidate) in pageCandidates.enumerated() {
+          let suggestion = CandidateSuggestion(
+            index: index,
+            label: indexLabel(index, labels: labels, selectKeys: selectKeys),
+            text: candidate.text,
+            title: candidate.text,
+            isAutocomplete: index == highlightedIndex,
+            subtitle: candidate.comment
+          )
+          candidates.append(suggestion)
+        }
 
-      var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
-      snapshot.appendSections([0])
-      snapshot.appendItems(candidates, toSection: 0)
-      diffableDataSource.applySnapshotUsingReloadData(snapshot)
-    }
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CandidateSuggestion>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(candidates, toSection: 0)
+        diffableDataSource.applySnapshotUsingReloadData(snapshot)
+      }
+      .store(in: &subscriptions)
   }
 
   /// 显示 index 对应的 label
   /// 优先级：labels > selectKeys > index
   func indexLabel(_ index: Int, labels: [String], selectKeys: [String]) -> String {
     if index < labels.count, !labels[index].isEmpty {
-      return labels[index]
+      return labels[index].trimmingCharacters(in: .whitespacesAndNewlines)
     }
     if index < selectKeys.count, !selectKeys[index].isEmpty {
-      return selectKeys[index]
+      return selectKeys[index].trimmingCharacters(in: .whitespacesAndNewlines)
     }
     return "\(index + 1)"
   }
@@ -227,70 +214,27 @@ extension CandidatesPagingCollectionView: UICollectionViewDelegateFlowLayout {
     let candidate = diffableDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     let toolbarConfig = keyboardContext.hamsterConfiguration?.toolbar
 
-    var candidateTextFont = KeyboardFont.title3.font
-    var candidateCommentFont = KeyboardFont.caption2.font
-
-    if let titleFontSize = toolbarConfig?.candidateWordFontSize {
-      candidateTextFont = UIFont.systemFont(ofSize: CGFloat(titleFontSize))
-    }
-    if let subtileFontSize = toolbarConfig?.candidateCommentFontSize {
-      candidateCommentFont = UIFont.systemFont(ofSize: CGFloat(subtileFontSize))
-    }
-
     let showComment = toolbarConfig?.displayCommentOfCandidateWord ?? false
     let showIndex = toolbarConfig?.displayIndexOfCandidateWord ?? false
 
-    // 垂直布局时，为 cell 内容增加左右间距
-    let intrinsicHorizontalMargin: CGFloat = isVerticalLayout ? 20 : 12
+    // 为 cell 内容增加左右间距, 对应 cell 的 leading, trailing 的约束
+    let intrinsicHorizontalMargin: CGFloat = 14
 
     // 60 为下拉状态按钮宽度, 220 是 横屏时需要减去全面屏两侧的宽度(注意：这里忽略的非全面屏)
     let maxWidth: CGFloat = UIScreen.main.bounds.width - ((self.window?.screen.interfaceOrientation == .portrait) ? 60 : 220)
 
-    let showIndexLabel: String = {
-      if candidate.label.isEmpty {
-        return "\(candidate.index + 1)"
-      }
-      return candidate.label
-    }()
+    let attributeString = candidate.attributeString(showIndex: showIndex, showComment: showComment, style: style)
 
-    let titleText = showIndex ? "\(showIndexLabel). \(candidate.title)" : candidate.title
     // 60 是下拉箭头按键的宽度，垂直滑动的 label 在超出宽度时，文字折叠
     let targetWidth: CGFloat = maxWidth - (isVerticalLayout ? 60 : 0)
 
-    var titleLabelSize = UILabel.estimatedSize(
-      titleText,
-      targetSize: CGSize(width: targetWidth, height: 0),
-      font: candidateTextFont
-    )
+    var titleLabelSize = UILabel.estimatedAttributeSize(attributeString, targetSize: CGSize(width: targetWidth, height: 0))
 
-    if titleText.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[candidateTextFont.pointSize] {
+    if attributeString.string.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[style.candidateTextFont.pointSize] {
       titleLabelSize.width = minWidth
     }
 
-    // 不显示 comment
-    if !showComment {
-      let width = titleLabelSize.width + intrinsicHorizontalMargin
-      return CGSize(
-        // 垂直布局下，cell 宽度不能大于屏幕宽度
-        width: isVerticalLayout ? min(width, maxWidth) : width,
-        height: heightOfToolbar
-      )
-    }
-
-    var subtitleLabelSize = CGSize.zero
-    if let subtitle = candidate.subtitle {
-      subtitleLabelSize = UILabel.estimatedSize(
-        subtitle,
-        targetSize: CGSize(width: targetWidth, height: 0),
-        font: candidateCommentFont
-      )
-
-      if subtitle.count == 1, let minWidth = UILabel.fontSizeAndMinWidthMapping[candidateCommentFont.pointSize] {
-        subtitleLabelSize.width = minWidth
-      }
-    }
-
-    let width = titleLabelSize.width + subtitleLabelSize.width + intrinsicHorizontalMargin
+    let width = titleLabelSize.width + intrinsicHorizontalMargin
     return CGSize(
       // 垂直布局下，cell 宽度不能大于屏幕宽度
       width: isVerticalLayout ? min(width, maxWidth) : width,

@@ -167,24 +167,24 @@ class KeyboardToolbarView: NibLessView {
         let isEmpty = $0.isEmpty
         self.commonFunctionBar.isHidden = !isEmpty
         self.candidateBarView.isHidden = isEmpty
+
         if self.candidateBarView.superview == nil {
           candidateBarView.setStyle(self.style)
           addSubview(candidateBarView)
           candidateBarView.fillSuperview()
         }
+
+        // 检测是否启用内嵌编码
+        guard !keyboardContext.enableEmbeddedInputMode else { return }
+        if self.keyboardContext.keyboardType.isChineseNineGrid {
+          // Debug
+          // self.phoneticArea.text = inputKeys + " | " + self.rimeContext.t9UserInputKey
+          candidateBarView.phoneticLabel.text = self.rimeContext.t9UserInputKey
+        } else {
+          candidateBarView.phoneticLabel.text = $0
+        }
       }
       .store(in: &subscriptions)
-//    rimeContext.registryHandleUserInputKeyChanged { [weak self] in
-//      guard let self = self else { return }
-//      let isEmpty = $0.isEmpty
-//      self.commonFunctionBar.isHidden = !isEmpty
-//      self.candidateBarView.isHidden = isEmpty
-//      if self.candidateBarView.superview == nil {
-//        candidateBarView.setStyle(self.style)
-//        addSubview(candidateBarView)
-//        candidateBarView.fillSuperview()
-//      }
-//    }
   }
 
   @objc func dismissKeyboardTouchDownAction() {
