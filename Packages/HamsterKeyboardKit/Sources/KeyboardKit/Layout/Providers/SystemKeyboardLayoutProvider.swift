@@ -186,14 +186,25 @@ open class SystemKeyboardLayoutProvider: KeyboardLayoutProvider {
       if context.keyboardType.isChinesePrimaryKeyboard {
         return .chinese(.lowercased)
       }
+      if context.keyboardType.isAlphabetic {
+        return .alphabetic(.lowercased)
+      }
+      if case .custom(let named, _) = context.keyboardType {
+        return .custom(named: named, case: .lowercased)
+      }
       return context.keyboardType
     }()
+
     let actionKey: KeyboardAction = {
       if case .character(let char) = action {
         return .character(char.lowercased())
       }
+      if case .symbol(let symbol) = action {
+        return .symbol(Symbol(char: symbol.char.lowercased()))
+      }
       return action
     }()
+
     if let swipe = context.keyboardSwipe[keyboardTypeKey]?[actionKey] {
       return swipe
     }
