@@ -91,49 +91,14 @@ public extension StringProtocol {
 }
 
 public extension String {
-  func t9ToPinyin(comment: String, separator: String = "'") -> String {
-    guard !comment.isEmpty else {
-      Logger.statistics.warning("input candidates not comments info.")
-      return self
-        .map {
-          let key = String($0)
-          if let pinYinList = t9ToPinyinMapping[key] {
-            return pinYinList[0]
-          }
-          return key
-        }
-        .joined(separator: separator)
-    }
-
-    // comment 按空格拆分音节
-    let pinyinList = comment.split(separator: " ").map { String($0) }.map { String($0).lowercased() }
-
-    // comment 音节转 t9 编码
-    let t9pinyinList = pinyinList.map { pinyinToT9Mapping[$0] ?? $0 }
-
-    var inputKey = self.replacingOccurrences(of: " ", with: "")
-    var replaceInputKey = [String]()
-
-    // 用 comment 音节替换输入的 t9 编码
-    for (index, t9pinyin) in t9pinyinList.enumerated() {
-      // 完全包含前缀字符，则 inputKey 删除前缀，并在 newInputKey 使用 pinyin 作为 t9 的替换
-      if inputKey.hasPrefix(t9pinyin) {
-        inputKey.removeFirst(t9pinyin.count)
-        replaceInputKey.append(pinyinList[index])
-        continue
+  var replaceT9pinyin: String {
+    map {
+      let key = String($0)
+      if let pinYinList = t9ToPinyinMapping[key] {
+        return pinYinList[0]
       }
+      return key
     }
-
-    if !inputKey.isEmpty {
-      let otherInputKeys = inputKey.map {
-        let key = String($0)
-        if let pinYinList = t9ToPinyinMapping[key] {
-          return pinYinList[0]
-        }
-        return key
-      }
-      replaceInputKey.append(contentsOf: otherInputKeys)
-    }
-    return replaceInputKey.joined(separator: separator)
+    .joined()
   }
 }

@@ -44,7 +44,7 @@ public let t9ToPinyinMapping = [
   "2826": ["cuan"],
   "284": ["cui"],
   "286": ["cun", "cuo"],
-  "3": ["e", "d", "f", "3"],
+  "3": ["d", "e", "f", "3"],
   "32": ["da", "fa"],
   "324": ["dai"],
   "326": ["dan", "dao", "fan"],

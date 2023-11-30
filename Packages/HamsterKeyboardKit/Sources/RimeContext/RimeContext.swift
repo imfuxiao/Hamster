@@ -86,12 +86,15 @@ public class RimeContext {
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
   @MainActor
   public var t9UserInputKey: String {
-    guard !userInputKey.isEmpty else { return "" }
-    var comment = ""
-    if let firstCandidate = suggestions.first, let subtitle = firstCandidate.subtitle {
-      comment = subtitle
+    var preview = rimeContext?.commitTextPreview ?? ""
+    if let highlightIndex = rimeContext?.menu.highlightedCandidateIndex,
+       let candidates = rimeContext?.menu.candidates,
+       highlightIndex < candidates.count
+    {
+      let candidate = candidates[Int(highlightIndex)]
+      preview = preview.replacingOccurrences(of: candidate.text, with: candidate.comment)
     }
-    return userInputKey.t9ToPinyin(comment: comment)
+    return preview.replaceT9pinyin
   }
 
   /// 用户选择的候选拼音

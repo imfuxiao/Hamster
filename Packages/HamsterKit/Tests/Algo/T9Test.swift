@@ -99,8 +99,7 @@ final class T9Test: XCTestCase {
   }
 
   func testT9ToPinyin() throws {
-    let pinyin = "7436444".t9ToPinyin(comment: "sheng")
-    print(pinyin)
+    XCTAssertEqual("7436444".replaceT9pinyin, "pgdmggg")
   }
 
   func testT9Input() throws {
