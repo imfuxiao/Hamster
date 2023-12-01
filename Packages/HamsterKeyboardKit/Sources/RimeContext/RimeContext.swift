@@ -86,19 +86,20 @@ public class RimeContext {
   /// T9拼音，将用户T9拼音输入还原为正常的拼音
   @MainActor
   public var t9UserInputKey: String {
-    var preview = rimeContext?.commitTextPreview ?? ""
+    var preview = rimeContext?.composition.preedit ?? ""
     if let highlightIndex = rimeContext?.menu.highlightedCandidateIndex,
        let candidates = rimeContext?.menu.candidates,
        highlightIndex < candidates.count
     {
       let candidate = candidates[Int(highlightIndex)]
-      preview = preview.replacingOccurrences(of: candidate.text, with: candidate.comment)
+      preview = preview.t9pinyinToPinyin(comment: candidate.comment ?? "")
     }
     return preview.replaceT9pinyin
   }
 
   /// 用户选择的候选拼音
-  public lazy var selectPinyinList: [String] = []
+  /// 注意：只保存最近一次选择的拼音和拼音开始位置及长度
+  public lazy var selectCandidatePinyin: (String, Int, Int)? = nil
 
   /// 字母模式
   @MainActor
@@ -186,7 +187,7 @@ public extension RimeContext {
   func reset() {
     self.pageIndex = 0
     self.userInputKey = ""
-    self.selectPinyinList.removeAll(keepingCapacity: false)
+    self.selectCandidatePinyin = nil
     self.suggestions.removeAll(keepingCapacity: false)
     Rime.shared.cleanComposition()
   }
@@ -644,6 +645,18 @@ public extension RimeContext {
     return true
   }
 
+  @MainActor
+  func tryHandleReplaceInputTexts(_ text: String, startPos: Int, count: Int) -> Bool {
+    guard Rime.shared.replaceInputKeys(text, startPos: startPos, count: count) else { return false }
+    self.selectCandidatePinyin = (text, startPos, count)
+    self.syncContext()
+    return true
+  }
+
+  func getInputKeys() -> String {
+    Rime.shared.getInputKeys()
+  }
+
   /**
    RIME引擎尝试处理输入编码
    */
@@ -663,13 +676,13 @@ public extension RimeContext {
   @MainActor
   func syncContext() {
     self.pageIndex = 0
-    let context = Rime.shared.context()
-    let userInputText = context.composition?.preedit ?? ""
+    self.rimeContext = Rime.shared.context()
+    let userInputText = rimeContext?.composition?.preedit ?? ""
     let commitText = Rime.shared.getCommitText()
     var candidates = [CandidateSuggestion]()
     if !useContextPaging {
       var highlightIndex = 0
-      if let menu = context.menu {
+      if let menu = rimeContext?.menu {
         highlightIndex = Int(menu.pageSize * menu.pageNo + menu.highlightedCandidateIndex)
       }
       candidates = self.candidateListLimit(index: candidateIndex, highlightIndex: highlightIndex, count: maximumNumberOfCandidateWords)
@@ -694,7 +707,6 @@ public extension RimeContext {
     self.userInputKey = userInputText
     self.commitText = commitText
     self.suggestions = candidates
-    self.rimeContext = context
   }
 
   /// 分页：下一页
@@ -962,37 +974,60 @@ public extension RimeContext {
 
 public extension RimeContext {
   /// 获取拼音候选列表
-  func getPinyinCandidates(userInputKey: String, selectPinyin: [String]) -> [String] {
-    guard !userInputKey.isEmpty else { return [] }
+  @MainActor
+  func getPinyinCandidates() -> [String] {
+    var pinyinList = [String]()
+    guard let preedit = rimeContext?.composition.preedit, !preedit.isEmpty else { return pinyinList }
 
-    // 删除中文前缀和空格
-    let chinesePrefix = String(userInputKey.filter { !$0.isASCII })
-    var userInputKey = userInputKey
-      .replacingOccurrences(of: chinesePrefix, with: "")
-      .replacingOccurrences(of: " ", with: "")
+    // 删除音节
+    var prePinypin = preedit.replacingOccurrences(of: " ", with: "")
+    guard !prePinypin.isEmpty else { return pinyinList }
 
-    // 删除已选拼音
-    selectPinyin.forEach {
-      userInputKey = userInputKey.replacingOccurrences(of: $0, with: "")
-    }
-
-    guard !userInputKey.isEmpty else { return [] }
-    var pinyinCandidates = [String]()
-
-    // 因中文拼音最大长度为6，如：chuang，所以这里最大取用户输入的前6个字符
-    for maxLength in 1 ... userInputKey.count {
-      if maxLength > 6 {
+    // 删除开头非数字字符
+    while !prePinypin.isEmpty {
+      if let firstCharacter = prePinypin.first, firstCharacter.isNumber {
         break
       }
+      prePinypin.removeFirst()
+    }
 
-      let prefixString = String(userInputKey.prefix(maxLength))
-      if let t9Pinyins = t9ToPinyinMapping[prefixString] {
-        pinyinCandidates += t9Pinyins
+    // 拼写区非数字情况，取最后一个音节的拼音列表
+    if prePinypin.isEmpty {
+      // 如果不包含 t9 拼音，则使用最后一个拼音音节
+      if var lastPinyin = preedit.split(separator: " ").last {
+        // 音节可能会丢失，这里需要删除非字母的字符
+        // 注意: 小心死循环
+        while !lastPinyin.isEmpty {
+          if let first = lastPinyin.first, first.isLowercase {
+            break
+          }
+          _ = lastPinyin.removeFirst()
+        }
+
+        if var firstT9Pinyin = pinyinToT9Mapping[String(lastPinyin)] {
+          /// 遍历包含的全部拼音子串
+          while !firstT9Pinyin.isEmpty {
+            if let list = t9ToPinyinMapping[firstT9Pinyin] {
+              pinyinList.append(contentsOf: list)
+            }
+            _ = firstT9Pinyin.popLast()
+          }
+        }
+      }
+    } else {
+      // 使用 trie 结构判断 pre 的字符
+      for count in 1 ... prePinypin.count {
+        let sub = String(prePinypin.prefix(count))
+        if !t9PinyinTrie.contains(sub) {
+          break
+        }
+        if let subList = t9ToPinyinMapping[sub] {
+          pinyinList.append(contentsOf: subList)
+        }
       }
     }
 
-    // 按长度及字母排序
-    return pinyinCandidates.sorted(by: {
+    return pinyinList.sorted(by: {
       if $0.count > $1.count {
         return true
       }

@@ -130,30 +130,24 @@ public class ChineseNineGridKeyboard: KeyboardTouchView, UICollectionViewDelegat
         setNeedsUpdateConstraints()
       }
       .store(in: &subscriptions)
-    // TODO: 屏蔽左侧候选拼音功能
-//    Task {
-//      await rimeContext.$userInputKey
-//        .receive(on: DispatchQueue.main)
-//        .sink { [unowned self] in
-//          if $0.isEmpty {
-//            var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-//            snapshot.appendSections([0])
-//            snapshot.appendItems(keyboardContext.symbolsOfChineseNineGridKeyboard, toSection: 0)
-//            symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
-//            return
-//          }
-//
-//          var t9pinyin = rimeContext.getPinyinCandidates(userInputKey: $0, selectPinyin: rimeContext.selectPinyinList)
-//          if t9pinyin.isEmpty {
-//            t9pinyin = keyboardContext.symbolsOfChineseNineGridKeyboard
-//          }
-//          var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
-//          snapshot.appendSections([0])
-//          snapshot.appendItems(t9pinyin, toSection: 0)
-//          symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
-//        }
-//        .store(in: &subscriptions)
-//    }
+
+    // 屏蔽左侧候选拼音功能
+    rimeContext.userInputKeyPublished
+      .receive(on: DispatchQueue.main)
+      .sink { [unowned self] in
+        var pinyinList = keyboardContext.symbolsOfChineseNineGridKeyboard
+        if !$0.isEmpty {
+          let candidatePinyinList = rimeContext.getPinyinCandidates()
+          if !candidatePinyinList.isEmpty {
+            pinyinList = candidatePinyinList
+          }
+        }
+        var snapshot = NSDiffableDataSourceSnapshot<Int, String>()
+        snapshot.appendSections([0])
+        snapshot.appendItems(pinyinList, toSection: 0)
+        symbolsListView.diffalbeDataSource.apply(snapshot, animatingDifferences: false)
+      }
+      .store(in: &subscriptions)
   }
 
   // MARK: - Layout
@@ -328,7 +322,11 @@ public extension ChineseNineGridKeyboard {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: true)
+
     guard let _ = collectionView.cellForItem(at: indexPath) else { return }
+
+    // 符号处理
     let symbol = symbolsListView.diffalbeDataSource.snapshot(for: indexPath.section).items[indexPath.item]
     // 当 symbol 非字母数字，顶码上屏
     if !symbol.isMatch(regex: "\\w.*") {
@@ -337,42 +335,37 @@ public extension ChineseNineGridKeyboard {
         rimeContext.reset()
       }
       keyboardContext.textDocumentProxy.insertText(symbol)
-      collectionView.deselectItem(at: indexPath, animated: true)
       return
     }
 
-//    // 根据用户选择的候选拼音，反查得到对应的 T9 编码
-//    guard let t9Pinyin = pinyinToT9Mapping[symbol] else { return }
-//
-//    // 替换 inputKey 中的空格分词
-//    let userInputKey = rimeContext.userInputKey.replacingOccurrences(of: " ", with: "")
-//
-//    // 获取 t9Pinyin 所处字符串的 index
-//    guard let starIndex = userInputKey.index(of: t9Pinyin) else { return }
-//
-//    // 删除 t9Pinyin 后的全部字符
-//    for _ in userInputKey[starIndex ..< userInputKey.endIndex] {
-//      rimeContext.deleteBackwardNotSync()
-//    }
-//
-//    // 组合用户选择字符，并输入
-//    let endIndex = userInputKey.index(starIndex, offsetBy: t9Pinyin.count)
-//    let newInputKey: String
-//    if endIndex >= userInputKey.endIndex {
-//      newInputKey = symbol
-//    } else {
-//      newInputKey = symbol + String(userInputKey[endIndex ..< userInputKey.endIndex])
-//    }
-//    for text in newInputKey {
-//      if !rimeContext.inputKeyNotSync(String(text)) {
-//        Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
-//      }
-//    }
-//
-//    Task {
-//      rimeContext.selectPinyinList.append(symbol)
-//      await rimeContext.syncContext()
-//      collectionView.deselectItem(at: indexPath, animated: true)
-//    }
+    // 数字候选字直接上屏
+    if Int(symbol) != nil {
+      keyboardContext.textDocumentProxy.insertText(symbol)
+      rimeContext.reset()
+      return
+    }
+
+    // 候选拼音处理: 待修改拼音音节开始位置
+    var startPos = 0
+    var inputKeys = rimeContext.getInputKeys()
+    let inputKeysCount = inputKeys.utf8.count
+
+    if let symbolT9Pinyin = pinyinToT9Mapping[symbol] {
+      while !inputKeys.isEmpty {
+        if inputKeys.hasPrefix(symbolT9Pinyin) {
+          break
+        }
+        startPos += inputKeys.first?.utf8.count ?? 0
+        inputKeys = String(inputKeys.dropFirst())
+      }
+    }
+
+    // 已经选择到输入拼音末尾了
+    if inputKeys.isEmpty, startPos == inputKeysCount, let selectCandidatePinyin = rimeContext.selectCandidatePinyin {
+      startPos = selectCandidatePinyin.1
+    }
+
+    let handle = rimeContext.tryHandleReplaceInputTexts(symbol, startPos: startPos, count: symbol.utf8.count)
+    Logger.statistics.warning("change input text handle = \(handle)")
   }
 }

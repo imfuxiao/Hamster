@@ -483,33 +483,16 @@ open class KeyboardInputViewController: UIInputViewController, KeyboardControlle
       return
     }
 
+    // 拼音九宫格处理
     if keyboardContext.keyboardType.isChineseNineGrid {
-      // 判断代删除字符是否为用户选择精确拼音，如果是，则需要将精确拼音还原为模糊拼音
-      if let lastSelectPinyin = rimeContext.selectPinyinList.last, rimeContext.userInputKey.hasSuffix(lastSelectPinyin) {
-        // 根据用户选择的候选拼音，反查得到对应的 T9 编码
-        guard let t9Pinyin = pinyinToT9Mapping[lastSelectPinyin] else {
-          Logger.statistics.error("not found \(lastSelectPinyin) match t9pinyin")
-          return
+      if let selectCandidatePinyin = rimeContext.selectCandidatePinyin {
+        if let t9pinyin = pinyinToT9Mapping[selectCandidatePinyin.0] {
+          let handled = rimeContext.tryHandleReplaceInputTexts(t9pinyin, startPos: selectCandidatePinyin.1, count: selectCandidatePinyin.2)
+          Logger.statistics.info("change input text handled: \(handled)")
         }
-
-        // 删除 lastSelectPinyin
-        for _ in lastSelectPinyin {
-          rimeContext.deleteBackwardNotSync()
-        }
-
-        // 还原模糊拼音
-        for text in t9Pinyin {
-          if !rimeContext.inputKeyNotSync(String(text)) {
-            Logger.statistics.warning("inputKeyNotSync error. text:\(text)")
-          }
-        }
-
-        _ = rimeContext.selectPinyinList.popLast()
-        rimeContext.syncContext()
-      } else {
-        rimeContext.deleteBackward()
+        rimeContext.selectCandidatePinyin = nil
+        return
       }
-      return
     }
 
     // 非九宫格处理
@@ -908,7 +891,7 @@ private extension KeyboardInputViewController {
         if !commitText.isEmpty {
           // 九宫格编码转换
           if keyboardContext.keyboardType.isChineseNineGrid {
-            commitText = commitText.t9ToPinyin(comment: "", separator: "")
+            commitText = commitText.replaceT9pinyin
           }
 
           self.textDocumentProxy.setMarkedText("", selectedRange: NSRange(location: 0, length: 0))

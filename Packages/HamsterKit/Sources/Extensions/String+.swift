@@ -101,4 +101,29 @@ public extension String {
     }
     .joined()
   }
+
+  func t9pinyinToPinyin(comment: String, separator: String = "'") -> String {
+    guard !comment.isEmpty else { return replaceT9pinyin }
+    // 拆分音节
+    let commentList = comment
+      .split(separator: " ")
+      .map { String($0) }
+
+    // 将 comment 拼音转 t9 数字编码，用来对字符串中的 t9 做转换
+    let t9CommentList = commentList
+      .compactMap { pinyinToT9Mapping[$0] ?? $0 }
+
+    var previewList = split(separator: " ").map { String($0) }
+    for (index, t9pinyin) in t9CommentList.enumerated() {
+      if index < previewList.count {
+        if previewList[index].count >= t9pinyin.count {
+          previewList[index] = previewList[index].replacingOccurrences(of: t9pinyin, with: commentList[index])
+        } else {
+          previewList[index] = String(commentList[index].prefix(previewList[index].count))
+        }
+      }
+    }
+
+    return previewList.joined(separator: separator)
+  }
 }

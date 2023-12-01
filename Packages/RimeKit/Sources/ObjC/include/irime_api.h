@@ -55,6 +55,7 @@ typedef uintptr_t RimeSessionId;
 // MARK: input and output
 - (BOOL)processKey:(NSString *)keyCode andSession:(RimeSessionId)session;
 - (BOOL)processKeyCode:(int)code modifier:(int)modifier andSession:(RimeSessionId)session;
+- (BOOL)replaceInputKeys:(NSString *)keys withStartPos:(int)pos AndCount:(int)length AndSession:(RimeSessionId)session;
 - (NSArray<IRimeCandidate *> *)getCandidateList:(RimeSessionId)session;
 - (NSArray<IRimeCandidate *> *)getCandidateWithIndex:(int)index
                                             andCount:(int)limit
@@ -69,8 +70,8 @@ typedef uintptr_t RimeSessionId;
 - (IRimeStatus *)getStatus:(RimeSessionId)session;
 - (IRimeContext *)getContext:(RimeSessionId)session;
 
-- (int) getCaretPosition:(RimeSessionId)session;
-- (BOOL) setCaret:(RimeSessionId)session withPosition:(int)position;
+- (int)getCaretPosition:(RimeSessionId)session;
+- (void)setCaretPosition:(int)pos withSession:(RimeSessionId)session;
 
 // MARK: schema
 - (NSArray<IRimeSchema *> *)schemaList;

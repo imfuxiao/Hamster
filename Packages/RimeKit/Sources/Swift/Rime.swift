@@ -154,6 +154,10 @@ public class Rime: IRimeNotificationDelegate {
     return rimeAPI.processKeyCode(keycode, modifier: modifier, andSession: session)
   }
 
+  public func replaceInputKeys(_ inputKeys: String, startPos: Int, count: Int) -> Bool {
+    return rimeAPI.replaceInputKeys(inputKeys, withStartPos: Int32(startPos), andCount: Int32(count), andSession: session)
+  }
+
   public func candidateList() -> [CandidateWord] {
     let candidates = rimeAPI.getCandidateList(session)
     if candidates != nil {
@@ -260,7 +264,7 @@ public class Rime: IRimeNotificationDelegate {
   }
 
   public func setCaretPosition(_ position: Int) {
-    rimeAPI.setCaret(session, withPosition: Int32(position))
+    rimeAPI.setCaretPosition(Int32(position), withSession: session)
   }
 
   public func getConfigFileValue(configFileName: String, key: String) -> String? {

@@ -416,6 +416,10 @@ static RimeLeversApi *get_levers() {
   return RimeProcessKey(session, code, modifier);
 }
 
+- (BOOL)replaceInputKeys:(NSString *)keys withStartPos:(int)pos AndCount:(int)length AndSession:(RimeSessionId)session {
+  return RimeReplaceInput(session, pos, length, [keys UTF8String]);
+}
+
 - (NSArray<IRimeCandidate *> *)getCandidateList:(RimeSessionId)session {
   @autoreleasepool {
     RimeCandidateListIterator iterator = {0};
@@ -595,8 +599,8 @@ static RimeLeversApi *get_levers() {
   return (int)pos;
 }
 
-- (BOOL) setCaret:(RimeSessionId)session withPosition:(int)position {
-  rime_get_api()->set_caret_pos(session, (size_t)position);
+- (void)setCaretPosition:(int)pos withSession:(RimeSessionId)session {
+  rime_get_api()->set_caret_pos(session, (size_t)pos);
 }
 
 // MARK: Schema
