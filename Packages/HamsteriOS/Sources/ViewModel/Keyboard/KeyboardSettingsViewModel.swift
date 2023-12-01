@@ -1367,10 +1367,10 @@ extension KeyboardSettingsViewModel {
 
     var option: String {
       switch self {
-      case .character: "字符"
-      case .symbol: "符号"
-      case .shortCommand: "快捷指令"
-      case .keyboardType: "切换键盘"
+      case .character: L10n.KB.ActionOption.character
+      case .symbol: L10n.KB.ActionOption.symbol
+      case .shortCommand: L10n.KB.ActionOption.shortCommand
+      case .keyboardType: L10n.KB.ActionOption.keyboardType
       }
     }
   }
@@ -1427,14 +1427,14 @@ extension KeyboardSettingsViewModel {
       SettingSectionModel(
         items: [
           .init(
-            text: "按键操作",
+            text: L10n.KB.SwipeSetting.keyOperation,
             type: .textField,
             textValue: { key.action.yamlString },
             textFieldShouldBeginEditing: false)
         ]),
       SettingSectionModel(items: [
         .init(
-          text: "划动方向",
+          text: L10n.KB.SwipeSetting.direction,
           type: .pullDown,
           textValue: { keySwipe.direction.labelText },
           pullDownMenuActionsBuilder: {
@@ -1442,7 +1442,7 @@ extension KeyboardSettingsViewModel {
               .map { direction in
                 UIAction(title: direction.labelText) { _ in
                   if let _ = key.swipe.first(where: { swipe in swipe.direction == direction }) {
-                    ProgressHUD.failed("划动方向:\(direction.labelText) 配置已存在")
+                    ProgressHUD.failed(L10n.KB.SwipeSetting.directionExists(direction.labelText))
                     return
                   }
                   setDirection(direction)
@@ -1450,7 +1450,7 @@ extension KeyboardSettingsViewModel {
               }
           }),
         .init(
-          text: "划动操作",
+          text: L10n.KB.SwipeSetting.swipeOperation,
           type: .pullDown,
           textValue: { keySwipe.action.yamlString },
           pullDownMenuActionsBuilder: {
@@ -1462,29 +1462,29 @@ extension KeyboardSettingsViewModel {
               }
           }),
         .init(
-          text: "是否经过 RIME 处理",
+          text: L10n.KB.SwipeSetting.processByRIME,
           type: .toggle,
           toggleValue: { keySwipe.processByRIME },
           toggleHandled: { display in
             setProcessByRIME(display)
           }),
         .init(
-          text: "键盘显示文本",
-          placeholder: "显示文本",
+          text: L10n.KB.SwipeSetting.textDisplayed,
+          placeholder: L10n.KB.SwipeSetting.textPlaceholder,
           type: .textField,
           textValue: { keySwipe.label.text },
           textHandled: { labelText in
             setLabelText(labelText)
           }),
         .init(
-          text: "是否显示文本",
+          text: L10n.KB.SwipeSetting.isShowingText,
           type: .toggle,
           toggleValue: { keySwipe.display },
           toggleHandled: { display in
             setShowLabel(display)
           }),
         .init(
-          text: "保存",
+          text: L10n.save,
           type: .button,
           buttonAction: {
             saveHandle()
@@ -1501,7 +1501,7 @@ extension KeyboardSettingsViewModel {
       .init(
         items: [
           .init(
-            text: "按键操作",
+            text: L10n.KB.SwipeSetting.keyOperation,
             type: .textField,
             textValue: { key.action.yamlString },
             textFieldShouldBeginEditing: false)
@@ -1513,7 +1513,7 @@ extension KeyboardSettingsViewModel {
       swipeSettingsItem.append(SettingSectionModel(
         items: [
           .init(
-            text: "划动方向",
+            text: L10n.KB.SwipeSetting.direction,
             type: .pullDown,
             textValue: { swipe.direction.labelText },
             pullDownMenuActionsBuilder: {
@@ -1523,7 +1523,7 @@ extension KeyboardSettingsViewModel {
                 // 删除原先的滑动方向配置
                 key.swipe.removeAll(where: { $0.direction == swipe.direction })
                 guard !key.swipe.contains(where: { $0.direction == direction }) else {
-                  ProgressHUD.failed("划动方向：\(direction.labelText) 已存在。")
+                  ProgressHUD.failed(L10n.KB.SwipeSetting.directionExists(direction.labelText))
                   return
                 }
                 swipe.direction = direction
@@ -1542,7 +1542,7 @@ extension KeyboardSettingsViewModel {
                 }
             }),
           .init(
-            text: "划动操作",
+            text: L10n.KB.SwipeSetting.swipeOperation,
             type: .pullDown,
             textValue: { swipe.action.yamlString },
             pullDownMenuActionsBuilder: {
@@ -1559,7 +1559,7 @@ extension KeyboardSettingsViewModel {
                 }
             }),
           .init(
-            text: "是否经过 RIME 处理",
+            text: L10n.KB.SwipeSetting.processByRIME,
             type: .toggle,
             toggleValue: { swipe.processByRIME },
             toggleHandled: { [unowned self] value in
@@ -1573,8 +1573,8 @@ extension KeyboardSettingsViewModel {
               self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
             }),
           .init(
-            text: "键盘显示文本",
-            placeholder: "显示文本",
+            text: L10n.KB.SwipeSetting.textDisplayed,
+            placeholder: L10n.KB.SwipeSetting.textPlaceholder,
             type: .textField,
             textValue: { swipe.label.text },
             textHandled: { [unowned self] labelText in
@@ -1589,7 +1589,7 @@ extension KeyboardSettingsViewModel {
 
             }),
           .init(
-            text: "是否显示文本",
+            text: L10n.KB.SwipeSetting.isShowingText,
             type: .toggle,
             toggleValue: { swipe.display },
             toggleHandled: { [unowned self] display in
@@ -1603,7 +1603,7 @@ extension KeyboardSettingsViewModel {
               self.reloadKeySwipeSettingViewSubject.send((key, keyboardType))
             }),
           .init(
-            text: "删除",
+            text: L10n.delete,
             textTintColor: .systemRed,
             type: .button,
             buttonAction: { [unowned self] in

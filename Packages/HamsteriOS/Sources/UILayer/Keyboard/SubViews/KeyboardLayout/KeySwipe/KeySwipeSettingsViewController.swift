@@ -41,7 +41,7 @@ class KeySwipeSettingsViewController: NibLessViewController {
     self.keyboardSettingsViewModel.alertSwipeSettingDeleteConfirmPublished
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] callback in
-        alertConfirm(alertTitle: "确认删除", confirmTitle: "删除") { callback() }
+        alertConfirm(alertTitle: L10n.KB.SwipeSetting.deleteConfirm, confirmTitle: L10n.delete) { callback() }
       }
       .store(in: &subscriptions)
 
@@ -49,7 +49,7 @@ class KeySwipeSettingsViewController: NibLessViewController {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] option, swipe, key, keyboardType in
         if option == .character || option == .symbol {
-          alertText(alertTitle: "字符修改", submitTitle: "保存", submitCallback: { textField in
+          alertText(alertTitle: L10n.KB.SwipeSetting.editCharacter, submitTitle: L10n.save, submitCallback: { textField in
             guard let char = textField.text, !char.isEmpty else { return }
             var key = key
             var swipe = swipe
@@ -64,12 +64,12 @@ class KeySwipeSettingsViewController: NibLessViewController {
         }
 
         if option == .shortCommand {
-          alertOptionSheet(alertTitle: "快捷指令修改", addAlertOptions: { [unowned self] optionMenu in
+          alertOptionSheet(alertTitle: L10n.KB.SwipeSetting.editCommand, addAlertOptions: { [unowned self] optionMenu in
             ShortcutCommand.allCases.forEach { command in
 
               let alertAction = UIAlertAction(title: command.rawValue, style: .default) {[unowned self] _ in
                 if case .sendKeys = command {
-                  alertText(alertTitle: "sendKeys", submitTitle: "保存", submitCallback: { textField in
+                  alertText(alertTitle: "sendKeys", submitTitle: L10n.save, submitCallback: { textField in
                     guard let char = textField.text, !char.isEmpty else { return }
                     var key = key
                     var swipe = swipe
@@ -99,11 +99,11 @@ class KeySwipeSettingsViewController: NibLessViewController {
         }
 
         if option == .keyboardType {
-          alertOptionSheet(alertTitle: "键盘切换", addAlertOptions: { optionMenu in
+          alertOptionSheet(alertTitle: L10n.KB.SwipeSetting.switchKeyboard, addAlertOptions: { optionMenu in
             KeyboardSettingsViewModel.KeyboardTypeOption.allCases.forEach { keyboardTypeOption in
               let alertAction = UIAlertAction(title: keyboardTypeOption.option, style: .default) { _ in
                 if keyboardTypeOption == .custom {
-                  self.alertText(alertTitle: "自定义键盘名称", submitTitle: "保存", submitCallback: { textField in
+                  self.alertText(alertTitle: L10n.KB.SwipeSetting.customKeyboardName, submitTitle: L10n.save, submitCallback: { textField in
                     guard let char = textField.text, !char.isEmpty else { return }
                     var key = key
                     var swipe = swipe
@@ -118,7 +118,7 @@ class KeySwipeSettingsViewController: NibLessViewController {
                 }
 
                 guard let keyboardTypeOption = keyboardTypeOption.keyboardType else {
-                  ProgressHUD.failed("无对应的键盘类型")
+                  ProgressHUD.failed(L10n.KB.SwipeSetting.noCorrespondingKbType)
                   return
                 }
 

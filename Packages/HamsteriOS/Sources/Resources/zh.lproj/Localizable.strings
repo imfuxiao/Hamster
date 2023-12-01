@@ -154,6 +154,34 @@
 "k_b.layout_zh26.spaceRightButtonProcessByRIME" = "右侧按键由RIME处理";
 "k_b.layout_zh26.keyValueOfSpaceRightButton" = "右侧按键键值";
 
+"k_b.swipe_setting.character" = "字符";
+"k_b.swipe_setting.key_operation" = "按键操作";
+"k_b.swipe_setting.direction" = "划动方向";
+"k_b.swipe_setting.direction_exists" = "划动方向:%@ 配置已存在";
+"k_b.swipe_setting.swipe_operation" = "划动操作";
+"k_b.swipe_setting.processByRIME" = "是否经过 RIME 处理";
+"k_b.swipe_setting.text_displayed" = "键盘显示文本";
+"k_b.swipe_setting.text_placeholder" = "显示文本";
+"k_b.swipe_setting.is_showing_text" = "是否显示文本";
+"k_b.swipe_setting.add_swipe" = "新增滑动";
+"k_b.swipe_setting.delete_confirm" = "确认删除";
+"k_b.swipe_setting.edit_character" = "字符修改";
+"k_b.swipe_setting.edit_command" = "快捷指令修改";
+"k_b.swipe_setting.switch_keyboard" = "键盘切换";
+"k_b.swipe_setting.custom_keyboard_name" = "自定义键盘名称";
+"k_b.swipe_setting.no_action" = "划动Action不能为空";
+"k_b.swipe_setting.no_corresponding_kb_type" = "无对应的键盘类型";
+"k_b.swipe_setting.no_character" = "字符不能为空";
+"k_b.swipe_setting.key_name_backspace" = "退格键";
+"k_b.swipe_setting.key_name_return" = "回车键";
+"k_b.swipe_setting.key_name_shift" = "Shift";
+"k_b.swipe_setting.key_name_space" = "空格";
+
+"k_b.action_option.character" = "字符（由 RIME 处理）";
+"k_b.action_option.symbol" = "符号字符（不由 RIME 处理）";
+"k_b.action_option.shortCommand" = "快捷指令";
+"k_b.action_option.keyboardType" = "切换键盘";
+
 "color_scheme.title" = "键盘配色";
 "color_scheme.enable_custom_keyboard_color" = "启用配色";
 "color_scheme.system_dark_mode" = "系统浅色模式";

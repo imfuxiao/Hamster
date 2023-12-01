@@ -420,6 +420,16 @@ public enum L10n {
     public static let upSwipeOnLeftRemark = L10n.tr("Localizable", "k_b.up_swipe_on_left_remark", fallback: "关闭后，按键右上侧为显示上划文本，左上侧显示下划文本。")
     /// 上划显示位置-左上侧
     public static let upSwipeOnLeft = L10n.tr("Localizable", "k_b.upSwipeOnLeft", fallback: "上划显示位置-左上侧")
+    public enum ActionOption {
+      /// 字符（由 RIME 处理）
+      public static let character = L10n.tr("Localizable", "k_b.action_option.character", fallback: "字符（由 RIME 处理）")
+      /// 切换键盘
+      public static let keyboardType = L10n.tr("Localizable", "k_b.action_option.keyboardType", fallback: "切换键盘")
+      /// 快捷指令
+      public static let shortCommand = L10n.tr("Localizable", "k_b.action_option.shortCommand", fallback: "快捷指令")
+      /// 符号字符（不由 RIME 处理）
+      public static let symbol = L10n.tr("Localizable", "k_b.action_option.symbol", fallback: "符号字符（不由 RIME 处理）")
+    }
     public enum Layout {
       /// 中文26键
       public static let chinese = L10n.tr("Localizable", "k_b.layout.chinese", fallback: "中文26键")
@@ -499,6 +509,54 @@ public enum L10n {
         /// 字符
         public static let title = L10n.tr("Localizable", "k_b.layout_zh26.swipe_key.title", fallback: "字符")
       }
+    }
+    public enum SwipeSetting {
+      /// 新增滑动
+      public static let addSwipe = L10n.tr("Localizable", "k_b.swipe_setting.add_swipe", fallback: "新增滑动")
+      /// 字符
+      public static let character = L10n.tr("Localizable", "k_b.swipe_setting.character", fallback: "字符")
+      /// 自定义键盘名称
+      public static let customKeyboardName = L10n.tr("Localizable", "k_b.swipe_setting.custom_keyboard_name", fallback: "自定义键盘名称")
+      /// 确认删除
+      public static let deleteConfirm = L10n.tr("Localizable", "k_b.swipe_setting.delete_confirm", fallback: "确认删除")
+      /// 划动方向
+      public static let direction = L10n.tr("Localizable", "k_b.swipe_setting.direction", fallback: "划动方向")
+      /// 划动方向:%@ 配置已存在
+      public static func directionExists(_ p1: Any) -> String {
+        return L10n.tr("Localizable", "k_b.swipe_setting.direction_exists", String(describing: p1), fallback: "划动方向:%@ 配置已存在")
+      }
+      /// 字符修改
+      public static let editCharacter = L10n.tr("Localizable", "k_b.swipe_setting.edit_character", fallback: "字符修改")
+      /// 快捷指令修改
+      public static let editCommand = L10n.tr("Localizable", "k_b.swipe_setting.edit_command", fallback: "快捷指令修改")
+      /// 是否显示文本
+      public static let isShowingText = L10n.tr("Localizable", "k_b.swipe_setting.is_showing_text", fallback: "是否显示文本")
+      /// 退格键
+      public static let keyNameBackspace = L10n.tr("Localizable", "k_b.swipe_setting.key_name_backspace", fallback: "退格键")
+      /// 回车键
+      public static let keyNameReturn = L10n.tr("Localizable", "k_b.swipe_setting.key_name_return", fallback: "回车键")
+      /// Shift
+      public static let keyNameShift = L10n.tr("Localizable", "k_b.swipe_setting.key_name_shift", fallback: "Shift")
+      /// 空格
+      public static let keyNameSpace = L10n.tr("Localizable", "k_b.swipe_setting.key_name_space", fallback: "空格")
+      /// 按键操作
+      public static let keyOperation = L10n.tr("Localizable", "k_b.swipe_setting.key_operation", fallback: "按键操作")
+      /// 划动Action不能为空
+      public static let noAction = L10n.tr("Localizable", "k_b.swipe_setting.no_action", fallback: "划动Action不能为空")
+      /// 字符不能为空
+      public static let noCharacter = L10n.tr("Localizable", "k_b.swipe_setting.no_character", fallback: "字符不能为空")
+      /// 无对应的键盘类型
+      public static let noCorrespondingKbType = L10n.tr("Localizable", "k_b.swipe_setting.no_corresponding_kb_type", fallback: "无对应的键盘类型")
+      /// 是否经过 RIME 处理
+      public static let processByRIME = L10n.tr("Localizable", "k_b.swipe_setting.processByRIME", fallback: "是否经过 RIME 处理")
+      /// 划动操作
+      public static let swipeOperation = L10n.tr("Localizable", "k_b.swipe_setting.swipe_operation", fallback: "划动操作")
+      /// 键盘切换
+      public static let switchKeyboard = L10n.tr("Localizable", "k_b.swipe_setting.switch_keyboard", fallback: "键盘切换")
+      /// 键盘显示文本
+      public static let textDisplayed = L10n.tr("Localizable", "k_b.swipe_setting.text_displayed", fallback: "键盘显示文本")
+      /// 显示文本
+      public static let textPlaceholder = L10n.tr("Localizable", "k_b.swipe_setting.text_placeholder", fallback: "显示文本")
     }
     public enum TypeOption {
       /// 英文键盘
