@@ -10,13 +10,19 @@
 
 > 感谢 @amorphobia 为 LibrimeKit 提交的 Github Action 配置
 
-1. 下载编译后的 Framework.
+1. 下载编译后的 Framework
 
 ```sh
 make framework
 ```
 
-2. XCode 打开项目并运行（我个人使用的开发环境 Intel X86，MacOS 14，XCode 15）
+2. 下载内置方案
+
+```sh
+make schema
+```
+
+3. XCode 打开项目并运行（我个人使用的开发环境 Intel X86，MacOS 14，XCode 15）
 
 ```sh
 xed .

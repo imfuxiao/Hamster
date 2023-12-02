@@ -9,4 +9,4 @@ cleanFramework:
 schema:
 	bash ./InputSchemaBuild.sh
 cleanSchema:
-	rm -rf Resources/SharedSupport/SharedSupport.zip 
+	rm -rf .tmp Resources/SharedSupport/*.zip 

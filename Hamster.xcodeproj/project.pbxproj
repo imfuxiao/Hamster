@@ -272,6 +272,9 @@
 		C02435722A0490220080CFB4 /* Hamster */ = {
 			isa = PBXGroup;
 			children = (
+				C02435972A0490220080CFB4 /* Info.plist */,
+				C02435962A0490220080CFB4 /* Hamster.entitlements */,
+				C0D856C92B0213E5003DB275 /* HamsterDebug.entitlements */,
 				C01396F62AB499CA0043674A /* Shortcuts */,
 				C08387EE2A55467900EA8082 /* Assets */,
 				C03319D92A2DFEBB00CE4950 /* AppDelegete.swift */,
@@ -359,12 +362,9 @@
 		C08387EE2A55467900EA8082 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				C02435972A0490220080CFB4 /* Info.plist */,
 				C03319E12A2E1BEA00CE4950 /* LaunchScreen.storyboard */,
 				C02435932A0490220080CFB4 /* Assets.xcassets */,
 				C02435942A0490220080CFB4 /* Preview Content */,
-				C02435962A0490220080CFB4 /* Hamster.entitlements */,
-				C0D856C92B0213E5003DB275 /* HamsterDebug.entitlements */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -754,7 +754,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/assets/HamsterDebug.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/HamsterDebug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Assets/Preview Content\"";
@@ -762,7 +762,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Hamster/Assets/Info.plist;
+				INFOPLIST_FILE = Hamster/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hamster;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
@@ -798,7 +798,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Hamster/assets/Hamster.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Hamster/Hamster.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Hamster/Assets/Preview Content\"";
@@ -806,7 +806,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Hamster/Assets/Info.plist;
+				INFOPLIST_FILE = Hamster/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Hamster;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;

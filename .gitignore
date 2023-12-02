@@ -20,10 +20,10 @@ xcuserdata/
 *.xcscmblueprint
 *.xccheckout
 .history
-Frameworks/
 .HamsterInputSchemas/
 .tmp
 package/
+*.xcframework
 
 # VueJS
 /Packages/HamsterFileServer/Front/node_modules

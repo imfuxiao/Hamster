@@ -2,7 +2,14 @@
 # encoding: utf-8
 set -e
 
-WORK=`pwd`
+# 输入方案临时目录
+if [[ -z "${CI_PRIMARY_REPOSITORY_PATH}" ]]; then
+  CI_PRIMARY_REPOSITORY_PATH="$PWD"
+  WORK=`pwd`
+else
+  CI_PRIMARY_REPOSITORY_PATH="${CI_PRIMARY_REPOSITORY_PATH}"
+  WORK="${CI_PRIMARY_REPOSITORY_PATH}"
+fi
 
 # 如果方案存在就不再执行
 # if [[  -f Resources/SharedSupport/SharedSupport.zip ]]
@@ -30,8 +37,9 @@ then
   )
 fi
 
-# 输入方案临时目录
-OUTPUT=".tmp"
+
+
+OUTPUT="$CI_PRIMARY_REPOSITORY_PATH/.tmp"
 DST_PATH="$OUTPUT/SharedSupport"
 rm -rf .plum $OUTPUT
 mkdir -p $DST_PATH/opencc
@@ -81,12 +89,12 @@ mv default.yaml.min default.yaml
 popd > /dev/null
 
 # SharedSupport
-mkdir -p Resources/SharedSupport
+mkdir -p $CI_PRIMARY_REPOSITORY_PATH/Resources/SharedSupport
 (
-  cp Resources/SharedSupport/hamster.yaml $DST_PATH
+  cp $CI_PRIMARY_REPOSITORY_PATH/Resources/SharedSupport/hamster.yaml $DST_PATH
   cd $DST_PATH/
   zip -r SharedSupport.zip *
-) && cp $DST_PATH/SharedSupport.zip Resources/SharedSupport/
+) && cp $DST_PATH/SharedSupport.zip $CI_PRIMARY_REPOSITORY_PATH/Resources/SharedSupport/
 
 # 内置方案雾凇
 input_scheme_name=rime-ice
@@ -99,6 +107,6 @@ rm -rf $OUTPUT/.$input_scheme_name && \
     # $WORK/.deps/dist/bin/rime_deployer --build .
     zip -r $input_scheme_name.zip ./*
   ) && \
-  cp -R $OUTPUT/.$input_scheme_name/*.zip Resources/SharedSupport/
+  cp -R $OUTPUT/.$input_scheme_name/*.zip $CI_PRIMARY_REPOSITORY_PATH/Resources/SharedSupport/
 
 
