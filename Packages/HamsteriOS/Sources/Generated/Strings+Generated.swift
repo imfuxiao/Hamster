@@ -26,6 +26,8 @@ public enum L10n {
   public static let edit = L10n.tr("Localizable", "edit", fallback: "编辑")
   /// 启用
   public static let enabledLabel = L10n.tr("Localizable", "enabledLabel", fallback: "启用")
+  /// 重置失败
+  public static let resetFailed = L10n.tr("Localizable", "reset_failed", fallback: "重置失败")
   /// 重置成功
   public static let resetSuccessfully = L10n.tr("Localizable", "reset_successfully", fallback: "重置成功")
   /// 保存
@@ -470,6 +472,14 @@ public enum L10n {
         public static let unableToAccess = L10n.tr("Localizable", "k_b.layout_action.import.unable_to_access", fallback: "导入文件读取受限，无法加载文件")
       }
     }
+    public enum LayoutSymbol {
+      /// 启用分类符号键盘
+      public static let enableSymbolKeyboard = L10n.tr("Localizable", "k_b.layout_symbol.enableSymbolKeyboard", fallback: "启用分类符号键盘")
+      /// 常用符号 - 恢复默认值
+      public static let resetCommonSymbol = L10n.tr("Localizable", "k_b.layout_symbol.reset_common_symbol", fallback: "常用符号 - 恢复默认值")
+      /// 符号键盘设置
+      public static let title = L10n.tr("Localizable", "k_b.layout_symbol.title", fallback: "符号键盘设置")
+    }
     public enum LayoutZh26 {
       /// 启用中英切换按键
       public static let displayChineseEnglishSwitchButton = L10n.tr("Localizable", "k_b.layout_zh26.displayChineseEnglishSwitchButton", fallback: "启用中英切换按键")
@@ -557,6 +567,32 @@ public enum L10n {
       public static let textDisplayed = L10n.tr("Localizable", "k_b.swipe_setting.text_displayed", fallback: "键盘显示文本")
       /// 显示文本
       public static let textPlaceholder = L10n.tr("Localizable", "k_b.swipe_setting.text_placeholder", fallback: "显示文本")
+    }
+    public enum Symbol {
+      /// 未找到默认值
+      public static let noDefaultConf = L10n.tr("Localizable", "k_b.symbol.no_default_conf", fallback: "未找到默认值")
+      /// 未找到系统默认配置
+      public static let noSysDefaultConf = L10n.tr("Localizable", "k_b.symbol.no_sys_default_conf", fallback: "未找到系统默认配置")
+      /// 光标居中
+      public static let segmentCursorBack = L10n.tr("Localizable", "k_b.symbol.segment_cursor_back", fallback: "光标居中")
+      /// 成对上屏
+      public static let segmentPairs = L10n.tr("Localizable", "k_b.symbol.segment_pairs", fallback: "成对上屏")
+      /// 返回主键盘
+      public static let segmentReturnToMainKeyboard = L10n.tr("Localizable", "k_b.symbol.segment_return_to_main_keyboard", fallback: "返回主键盘")
+      /// 符号设置
+      public static let title = L10n.tr("Localizable", "k_b.symbol.title", fallback: "符号设置")
+    }
+    public enum SymbolEdit {
+      /// 我在这
+      public static let here = L10n.tr("Localizable", "k_b.symbol_edit.here", fallback: "我在这")
+      /// 点我添加新符号(回车键保存)。
+      public static let tap2add = L10n.tr("Localizable", "k_b.symbol_edit.tap2add", fallback: "点我添加新符号(回车键保存)。")
+      /// 点击行可编辑/划动可删除
+      public static let tap2editOrSwipe2delete = L10n.tr("Localizable", "k_b.symbol_edit.tap2edit_or_swipe2delete", fallback: "点击行可编辑/划动可删除")
+      public enum Reset {
+        /// 恢复默认值
+        public static let title = L10n.tr("Localizable", "k_b.symbol_edit.reset.title", fallback: "恢复默认值")
+      }
     }
     public enum TypeOption {
       /// 英文键盘

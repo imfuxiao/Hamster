@@ -182,6 +182,22 @@
 "k_b.action_option.shortCommand" = "快捷指令";
 "k_b.action_option.keyboardType" = "切換鍵盤";
 
+"k_b.symbol_edit.reset.title" = "恢復預設值";
+"k_b.symbol_edit.here" = "我在這";
+"k_b.symbol_edit.tap2edit_or_swipe2delete" = "點擊行可編輯/滑動可刪除";
+"k_b.symbol_edit.tap2add" = "點我添加新符號(確認鍵保存)。";
+
+"k_b.symbol.no_default_conf" = "未找到預設值";
+"k_b.symbol.no_sys_default_conf" = "未找到系统預設組態";
+"k_b.symbol.title" = "符號設定";
+"k_b.symbol.segment_pairs" = "成對上屏";
+"k_b.symbol.segment_cursor_back" = "光標居中";
+"k_b.symbol.segment_return_to_main_keyboard" = "返回主鍵盤";
+
+"k_b.layout_symbol.title" = "符號鍵盤設定";
+"k_b.layout_symbol.enableSymbolKeyboard" = "啟用分類符號鍵盤";
+"k_b.layout_symbol.reset_common_symbol" = "常用符號 - 恢復預設值";
+
 "color_scheme.title" = "鍵盤配色";
 "color_scheme.enable_custom_keyboard_color" = "啟用配色";
 "color_scheme.system_dark_mode" = "系統淺色模式";
@@ -295,6 +311,7 @@
 "done" = "完成";
 "edit" = "編輯";
 "enabledLabel" = "開啟";
+"reset_failed" = "重置失敗";
 "reset_successfully" = "重置成功";
 "save" = "儲存";
 

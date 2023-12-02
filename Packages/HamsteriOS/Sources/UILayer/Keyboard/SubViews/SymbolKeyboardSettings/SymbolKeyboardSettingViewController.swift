@@ -22,7 +22,7 @@ class SymbolKeyboardSettingsViewController: NibLessViewController {
 
 extension SymbolKeyboardSettingsViewController {
   override func loadView() {
-    title = "符号键盘设置"
+    title = L10n.KB.LayoutSymbol.title
     view = SymbolKeyboardSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
   }
 }

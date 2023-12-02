@@ -1078,19 +1078,19 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   lazy var symbolKeyboardSettings: [SettingItemModel] = [
     .init(
-      text: "启用分类符号键盘",
+      text: L10n.KB.LayoutSymbol.enableSymbolKeyboard,
       type: .toggle,
       toggleValue: { [unowned self] in enableSymbolKeyboard },
       toggleHandled: { [unowned self] in
         enableSymbolKeyboard = $0
       }),
     .init(
-      text: "常用符号 - 恢复默认值",
+      text: L10n.KB.LayoutSymbol.resetCommonSymbol,
       textTintColor: .systemRed,
       type: .button,
       buttonAction: { [unowned self] in
         MostRecentSymbolProvider().reset()
-        await ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
+        await ProgressHUD.success(L10n.resetSuccessfully, interaction: false, delay: 1.5)
       })
   ]
 

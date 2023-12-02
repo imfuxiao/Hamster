@@ -63,7 +63,7 @@ public class SymbolEditorView: NibLessView {
   lazy var restButton: UIButton = {
     let button = UIButton(type: .roundedRect)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setTitle("恢复默认值", for: .normal)
+    button.setTitle(L10n.KB.SymbolEdit.Reset.title, for: .normal)
     button.setTitleColor(.systemRed, for: .normal)
     button.addTarget(self, action: #selector(restSymbols), for: .touchUpInside)
     return button
@@ -165,7 +165,7 @@ extension SymbolEditorView {
     if lastSymbol.isEmpty, !symbols.isEmpty {
       let indexPath = IndexPath(row: symbols.count - 1, section: 0)
       if let cell = tableView.cellForRow(at: indexPath), let textCell = cell as? TextFieldTableViewCell {
-        ProgressHUD.added("我在这", interaction: false, delay: 1)
+        ProgressHUD.added(L10n.KB.SymbolEdit.here, interaction: false, delay: 1)
         textCell.textField.becomeFirstResponder()
       }
       return
@@ -196,9 +196,9 @@ extension SymbolEditorView {
   @objc func restSymbols() {
     do {
       try restButtonAction?()
-      ProgressHUD.success("重置成功", interaction: false, delay: 1.5)
+      ProgressHUD.success(L10n.resetSuccessfully, interaction: false, delay: 1.5)
     } catch {
-      ProgressHUD.failed("重置失败", interaction: false, delay: 1.5)
+      ProgressHUD.failed(L10n.resetFailed, interaction: false, delay: 1.5)
     }
   }
 }
@@ -229,11 +229,11 @@ extension SymbolEditorView: UITableViewDataSource {
   }
 
   public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return "点击行可编辑/划动可删除"
+    return L10n.KB.SymbolEdit.tap2editOrSwipe2delete
   }
 
   public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    let footView = TableFooterView(footer: "点我添加新符号(回车键保存)。")
+    let footView = TableFooterView(footer: L10n.KB.SymbolEdit.tap2add)
     footView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addTableRow)))
     return footView
   }
