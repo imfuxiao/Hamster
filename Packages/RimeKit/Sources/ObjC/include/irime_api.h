@@ -102,4 +102,5 @@ typedef uintptr_t RimeSessionId;
 - (BOOL) customize:(NSString *)key boolValue:(BOOL) value;
 - (BOOL) customize:(NSString *)key stringValue:(NSString *) value;
 - (NSString *) getCustomize:(NSString *)key;
+- (NSString *) getStateLabelAbbreviated:(RimeSessionId) session optionName:(NSString *) option state:(BOOL)state abbreviated:(BOOL)abbreviated;
 @end

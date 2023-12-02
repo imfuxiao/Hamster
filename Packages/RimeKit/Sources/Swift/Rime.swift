@@ -11,7 +11,7 @@ import os
 @_exported import RimeKitObjC
 
 /// 对 librime 的二次封装
-public class Rime: IRimeNotificationDelegate {
+public class Rime {
   private let logger = Logger(
     subsystem: "com.ihsiao.apps.hamster.RimeKit",
     category: "Rime"
@@ -64,7 +64,7 @@ public class Rime: IRimeNotificationDelegate {
     return traits
   }
 
-  private func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
+  public func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
     rimeAPI.setNotificationDelegate(delegate)
   }
 
@@ -74,7 +74,6 @@ public class Rime: IRimeNotificationDelegate {
 
   public func setupRime(_ traits: IRimeTraits) {
     if isFirstRun {
-      setNotificationDelegate(self)
       rimeAPI.setup(traits)
       isFirstRun = false
     }
@@ -274,55 +273,9 @@ public class Rime: IRimeNotificationDelegate {
     return value
   }
 
-  // MARK: 通知回调函数
-
-  public func setDeployStartCallback(callback: @escaping () -> Void) {
-    deployStartCallback = callback
-  }
-
-  public func setDeploySuccessCallback(callback: @escaping () -> Void) {
-    deploySuccessCallback = callback
-  }
-
-  public func setDeployFailureCallback(callback: @escaping () -> Void) {
-    deployFailureCallback = callback
-  }
-
-  public func setChangeModeCallback(callback: @escaping (String) -> Void) {
-    changeModeCallback = callback
-  }
-
-  public func setLoadingSchemaCallback(callback: @escaping (String) -> Void) {
-    loadingSchemaCallback = callback
-  }
-}
-
-// MARK: implementation IRimeNotificationDelegate
-
-public extension Rime {
-  func onDeployStart() {
-    logger.info("HamsterRimeNotification: onDeployStart")
-    deployStartCallback?()
-  }
-
-  func onDeploySuccess() {
-    logger.info("HamsterRimeNotification: onDeploySuccess")
-    deploySuccessCallback?()
-  }
-
-  func onDeployFailure() {
-    logger.info("HamsterRimeNotification: onDeployFailure")
-    deployFailureCallback?()
-  }
-
-  func onChangeMode(_ mode: String) {
-    logger.info("HamsterRimeNotification: onChangeMode, mode: \(mode)")
-    changeModeCallback?(mode)
-  }
-
-  func onLoadingSchema(_ schema: String) {
-    logger.info("HamsterRimeNotification: onLoadingSchema, schema: \(schema)")
-    loadingSchemaCallback?(schema)
+  public func getStateLabel(option: String, state: Bool, abbreviated: Bool) -> String {
+    createSession()
+    return rimeAPI.getStateLabelAbbreviated(session, optionName: option, state: state, abbreviated: abbreviated)
   }
 }
 

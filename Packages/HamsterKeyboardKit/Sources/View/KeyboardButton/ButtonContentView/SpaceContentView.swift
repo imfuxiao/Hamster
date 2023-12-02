@@ -5,6 +5,7 @@
 //  Created by morse on 2023/8/10.
 //
 
+import Combine
 import HamsterUIKit
 import UIKit
 
@@ -18,6 +19,7 @@ class SpaceContentView: NibLessView {
   private var oldBounds: CGRect = .zero
   /// 是否首次加载空格
   private var firstLoadingSpace = true
+  private var subscriptions = Set<AnyCancellable>()
 
   private lazy var loadingLabel: UILabel = {
     let label = UILabel(frame: .zero)
@@ -110,7 +112,10 @@ class SpaceContentView: NibLessView {
 
     guard self.bounds != oldBounds else { return }
     self.oldBounds = self.bounds
-    loadingLabel.frame = oldBounds
+    /// 数字键盘不显示加载文字
+    if isShowLoadingText {
+      loadingLabel.frame = oldBounds
+    }
     textView.frame = oldBounds
   }
 
@@ -163,6 +168,17 @@ class SpaceContentView: NibLessView {
         textView.setTextValue(rimeContext.currentSchema?.schemaName ?? "")
       }
     }
+
+    rimeContext.$optionState
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] in
+        guard let self = self else { return }
+        guard let optionState = $0 else { return }
+        self.loadingLabel.alpha = 1
+        self.loadingLabel.text = optionState
+        loadingAnimate()
+      }
+      .store(in: &subscriptions)
   }
 
   override func didMoveToWindow() {

@@ -811,4 +811,9 @@ static RimeLeversApi *get_levers() {
   return value;
 }
 
+- (NSString *) getStateLabelAbbreviated:(RimeSessionId) session optionName:(NSString *) option state:(BOOL)state abbreviated:(BOOL)abbreviated {
+  struct rime_string_slice_t stateLabel = rime_get_api()->get_state_label_abbreviated(session, [option UTF8String], state ? 1 : 0, abbreviated ? 1 : 0);
+  return stateLabel.str ? [NSString stringWithUTF8String: stateLabel.str] : @"";
+}
+
 @end

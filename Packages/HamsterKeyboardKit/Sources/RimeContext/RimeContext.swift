@@ -15,15 +15,11 @@ import RimeKit
 public class RimeContext {
   typealias HandleAsciiModeChanged = (Bool) -> Void
   typealias HandleCurrentSchemaChanged = () -> Void
-//  typealias HandleUserInputKeyChanged = (String) -> Void
   typealias HandleSuggestionsChanged = () -> Void
   typealias HandleRimeContextChanged = () -> Void
 
   private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
   private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
-//  private lazy var registryHandleUserInputKeyChanged = [HandleUserInputKeyChanged]()
-//  private lazy var registryHandleSuggestionsChanged = [HandleSuggestionsChanged]()
-//  private lazy var registryHandleRimeContextChanged = [HandleRimeContextChanged]()
 
   /// 最大候选词数量
   public private(set) lazy var maximumNumberOfCandidateWords: Int = 100
@@ -67,11 +63,6 @@ public class RimeContext {
   public var userInputKey: String = "" {
     didSet {
       userInputKeySubject.send(userInputKey)
-//      registryHandleUserInputKeyChanged.forEach { handle in
-//        DispatchQueue.main.async { [unowned self] in
-//          handle(userInputKey)
-//        }
-//      }
     }
   }
 
@@ -97,6 +88,9 @@ public class RimeContext {
     return preview.replaceT9pinyin
   }
 
+  /// rime option 选项对应的值的缓存
+  private var optionValueCache: [String: [Bool: String]] = [:]
+
   /// 用户选择的候选拼音
   /// 注意：只保存最近一次选择的拼音和拼音开始位置及长度
   public lazy var selectCandidatePinyin: (String, Int, Int)? = nil
@@ -114,23 +108,13 @@ public class RimeContext {
   /// 候选字
   @MainActor @Published
   public var suggestions: [CandidateSuggestion] = []
-//  {
-//    didSet {
-//      registryHandleSuggestionsChanged.forEach { handle in
-//        handle()
-//      }
-//    }
-//  }
 
   @MainActor @Published
   public var rimeContext: IRimeContext? = nil
-//  {
-//    didSet {
-//      registryHandleRimeContextChanged.forEach { handle in
-//        handle()
-//      }
-//    }
-//  }
+
+  /// rime option
+  @MainActor @Published
+  public var optionState: String? = nil
 
   /// 划动分页模式下，当前页码，从 0 开始
   public lazy var pageIndex: Int = 0
@@ -165,18 +149,6 @@ public class RimeContext {
   func registryHandleCurrentSchemaChanged(_ handle: @escaping HandleCurrentSchemaChanged) {
     self.registryHandleCurrentSchemaChanged.append(handle)
   }
-
-//  func registryHandleUserInputKeyChanged(_ handle: @escaping HandleUserInputKeyChanged) {
-//    self.registryHandleUserInputKeyChanged.append(handle)
-//  }
-
-//  func registryHandleSuggestionsChanged(_ handle: @escaping HandleSuggestionsChanged) {
-//    self.registryHandleSuggestionsChanged.append(handle)
-//  }
-
-//  func registryHandleRimeContextChanged(_ handle: @escaping HandleRimeContextChanged) {
-//    self.registryHandleRimeContextChanged.append(handle)
-//  }
 }
 
 // MARK: methods
@@ -250,30 +222,7 @@ public extension RimeContext {
   /// RIME 启动
   /// 注意：仅用于键盘扩展调用
   func start(hasFullAccess: Bool) async {
-    // RIME 输入方案切换后同步状态
-    Rime.shared.setLoadingSchemaCallback(callback: { [weak self] loadSchema in
-      guard let self = self else { return }
-      Task {
-        let currentSchema = self.currentSchema
-        let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
-        guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
-        // 从当前全部方案列表中获取
-        guard let changeSchema = self.schemas.first(where: { $0.schemaId == schemaID }) else { return }
-        self.setCurrentSchema(changeSchema)
-        Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
-      }
-    })
-
-    // RIME 中英文状态切换同步
-    Rime.shared.setChangeModeCallback(callback: { [weak self] mode in
-      guard let self = self else { return }
-      guard mode.hasSuffix("ascii_mode") else { return }
-      Task {
-        let mode = !mode.hasPrefix("!")
-        await self.setAsciiMode(mode)
-        Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(mode)")
-      }
-    })
+    Rime.shared.setNotificationDelegate(self)
 
     // 启动
     Rime.shared.start(Rime.createTraits(
@@ -626,6 +575,62 @@ public extension RimeContext {
   }
 }
 
+// MARK: implementation IRimeNotificationDelegate
+
+extension RimeContext: IRimeNotificationDelegate {
+  public func onDeployStart() {
+    Logger.statistics.info("HamsterRimeNotification: onDeployStart")
+  }
+
+  public func onDeploySuccess() {
+    Logger.statistics.info("HamsterRimeNotification: onDeploySuccess")
+  }
+
+  public func onDeployFailure() {
+    Logger.statistics.info("HamsterRimeNotification: onDeployFailure")
+  }
+
+  @MainActor
+  public func onChangeMode(_ option: String) {
+    Logger.statistics.info("HamsterRimeNotification: onChangeMode, mode: \(option)")
+
+    let optionState = !option.hasPrefix("!")
+    let optionName = optionState ? option : String(option.dropFirst())
+
+    if optionValueCache[optionName] == nil {
+      optionValueCache[optionName] = [
+        true: Rime.shared.getStateLabel(option: optionName, state: true, abbreviated: true),
+        false: Rime.shared.getStateLabel(option: optionName, state: false, abbreviated: true),
+      ]
+    } else {
+      // 设置 rime option 对应的值
+      self.optionState = optionValueCache[optionName]?[optionState]
+    }
+
+    // 中英模式
+    if option.hasSuffix("ascii_mode") {
+      self.setAsciiMode(optionState)
+      Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(optionState)")
+      return
+    }
+  }
+
+  @MainActor
+  public func onLoadingSchema(_ loadSchema: String) {
+    Logger.statistics.info("HamsterRimeNotification: onLoadingSchema, schema: \(loadSchema)")
+    Task {
+      let currentSchema = self.currentSchema
+      let schemaID = loadSchema.split(separator: "/").map { String($0) }[0]
+      guard !schemaID.isEmpty, currentSchema?.schemaId != schemaID else { return }
+      // 从当前全部方案列表中获取
+      guard let changeSchema = self.schemas.first(where: { $0.schemaId == schemaID }) else { return }
+      self.setCurrentSchema(changeSchema)
+      self.optionState = changeSchema.schemaName
+      Logger.statistics.info("loading schema callback: currentSchema = \(changeSchema.schemaName), latestSchema = \(currentSchema?.schemaName)")
+    }
+  }
+}
+
 // MARK: - 文字输入处理
 
 public extension RimeContext {
@@ -927,6 +932,8 @@ public extension RimeContext {
     "esc": XK_Escape,
     "Esc": XK_Escape,
     "ESC": XK_Escape,
+    "shift_l": XK_Shift_L,
+    "shift_r": XK_Shift_R,
     // "enter": XK_KP_Enter, // 小键盘的 enter 键
     "minus": XK_minus, // 减号 -
     "-": XK_minus, // 减号 -
