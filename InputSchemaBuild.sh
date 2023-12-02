@@ -39,7 +39,7 @@ cp -r .deps/share/opencc $DST_PATH
 
 git clone --depth 1 https://github.com/rime/plum.git $OUTPUT/.plum
 
-for package in prelude; do
+for package in prelude rime-essay; do
   bash $OUTPUT/.plum/scripts/install-packages.sh "${package}" $DST_PATH
 done
 
