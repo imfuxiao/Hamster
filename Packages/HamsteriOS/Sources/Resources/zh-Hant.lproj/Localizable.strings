@@ -200,6 +200,17 @@
 "k_b.layout_symbol.enableSymbolKeyboard" = "啟用分類符號鍵盤";
 "k_b.layout_symbol.reset_common_symbol" = "常用符號 - 恢復預設值";
 
+"k_b.num9grid.segment_settings" = "設定";
+"k_b.num9grid.segment_symbol_list" = "符號列表";
+"k_b.num9grid.enableNineGridOfNumericKeyboard" = "啟用數字九宮格";
+"k_b.num9grid.enableNumberNineGridInputOnScreenModeRemark" = "開啟此選項後，符號會直接上屏，不再經過RIME引擎處理。";
+"k_b.num9grid.numberKeyProcessByRime" = "數字鍵由 RIME 處理";
+"k_b.num9grid.leftSymbolProcessByRime" = "左側符號列表由 RIME 處理";
+"k_b.num9grid.rightSymbolProcessByRime" = "右側符號由 RIME 處理";
+"k_b.num9grid.symbol_list_reset" = "符号列表 - 恢復預設值";
+"k_b.num9grid.fail_to_get_system_default_conf" = "獲得系統預設組態失敗";
+"k_b.num9grid.symbol_list_title" = "自定義敗字九宮格左側滑動符號欄";
+
 "color_scheme.title" = "鍵盤配色";
 "color_scheme.enable_custom_keyboard_color" = "啟用配色";
 "color_scheme.system_dark_mode" = "系統淺色模式";

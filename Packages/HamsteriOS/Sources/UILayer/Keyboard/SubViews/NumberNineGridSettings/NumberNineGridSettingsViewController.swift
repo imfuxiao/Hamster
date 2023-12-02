@@ -16,7 +16,7 @@ public class NumberNineGridSettingsViewController: NibLessViewController {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   lazy var segmentedView: UISegmentedControl = {
-    let segmentedControl = UISegmentedControl(items: ["设置", "符号列表"])
+    let segmentedControl = UISegmentedControl(items: [L10n.KB.Num9grid.segmentSettings, L10n.KB.Num9grid.segmentSymbolList])
     segmentedControl.selectedSegmentIndex = 0
     segmentedControl.addTarget(
       keyboardSettingsViewModel,
@@ -37,7 +37,7 @@ public class NumberNineGridSettingsViewController: NibLessViewController {
 
 public extension NumberNineGridSettingsViewController {
   override func loadView() {
-    title = "数字九宫格"
+    title = L10n.KB.Layout.numericNineGrid
     view = NumberNineGridSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
 
     navigationItem.titleView = segmentedView
@@ -47,7 +47,7 @@ public extension NumberNineGridSettingsViewController {
       .sink { [unowned self] subview, isEditing in
         if subview == .symbols {
           let rightBarButtonItem = UIBarButtonItem(
-            title: isEditing ? "完成" : "编辑",
+            title: isEditing ? L10n.done: L10n.edit,
             style: .plain,
             target: keyboardSettingsViewModel,
             action: #selector(keyboardSettingsViewModel.changeTableEditModel)

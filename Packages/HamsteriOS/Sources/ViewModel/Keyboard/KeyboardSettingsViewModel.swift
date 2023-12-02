@@ -1031,46 +1031,46 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
 
   lazy var numberNineGridSettings: [SettingItemModel] = [
     .init(
-      text: "启用数字九宫格",
+      text: L10n.KB.Num9grid.enableNineGridOfNumericKeyboard,
       type: .toggle,
       toggleValue: { [unowned self] in enableNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
         enableNineGridOfNumericKeyboard = $0
       }),
     .init(
-      text: "数字键由 RIME 处理",
+      text: L10n.KB.Num9grid.numberKeyProcessByRime,
       type: .toggle,
       toggleValue: { [unowned self] in numberKeyProcessByRimeOnNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
         numberKeyProcessByRimeOnNineGridOfNumericKeyboard = $0
       }),
     .init(
-      text: "左侧符号列表由 RIME 处理",
+      text: L10n.KB.Num9grid.leftSymbolProcessByRime,
       type: .toggle,
       toggleValue: { [unowned self] in leftSymbolProcessByRimeOnNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
         leftSymbolProcessByRimeOnNineGridOfNumericKeyboard = $0
       }),
     .init(
-      text: "右侧符号由 RIME 处理",
+      text: L10n.KB.Num9grid.rightSymbolProcessByRime,
       type: .toggle,
       toggleValue: { [unowned self] in rightSymbolProcessByRimeOnNineGridOfNumericKeyboard },
       toggleHandled: { [unowned self] in
         rightSymbolProcessByRimeOnNineGridOfNumericKeyboard = $0
       }),
     .init(
-      text: "符号列表 - 恢复默认值",
+      text: L10n.KB.Num9grid.symbolListReset,
       textTintColor: .systemRed,
       type: .button,
       buttonAction: { [unowned self] in
         Task {
           guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-            throw "获取系统默认配置失败"
+            throw L10n.KB.Num9grid.failToGetSystemDefaultConf
           }
           if let defaultSymbolsOfGridOfNumericKeyboard = defaultConfiguration.keyboard?.symbolsOfGridOfNumericKeyboard {
             self.symbolsOfGridOfNumericKeyboard = defaultSymbolsOfGridOfNumericKeyboard
             resetSignSubject.send(true)
-            await ProgressHUD.success("重置成功")
+            await ProgressHUD.success(L10n.resetSuccessfully)
           }
         }
       })

@@ -526,6 +526,28 @@ public enum L10n {
         public static let title = L10n.tr("Localizable", "k_b.layout_zh9grid.symbol_edit.title", fallback: "左侧划动符号栏")
       }
     }
+    public enum Num9grid {
+      /// 启用数字九宫格
+      public static let enableNineGridOfNumericKeyboard = L10n.tr("Localizable", "k_b.num9grid.enableNineGridOfNumericKeyboard", fallback: "启用数字九宫格")
+      /// 开启此选项后，符号会直接上屏，不在经过RIME引擎处理。
+      public static let enableNumberNineGridInputOnScreenModeRemark = L10n.tr("Localizable", "k_b.num9grid.enableNumberNineGridInputOnScreenModeRemark", fallback: "开启此选项后，符号会直接上屏，不在经过RIME引擎处理。")
+      /// 获取系统默认配置失败
+      public static let failToGetSystemDefaultConf = L10n.tr("Localizable", "k_b.num9grid.fail_to_get_system_default_conf", fallback: "获取系统默认配置失败")
+      /// 左侧符号列表由 RIME 处理
+      public static let leftSymbolProcessByRime = L10n.tr("Localizable", "k_b.num9grid.leftSymbolProcessByRime", fallback: "左侧符号列表由 RIME 处理")
+      /// 数字键由 RIME 处理
+      public static let numberKeyProcessByRime = L10n.tr("Localizable", "k_b.num9grid.numberKeyProcessByRime", fallback: "数字键由 RIME 处理")
+      /// 右侧符号由 RIME 处理
+      public static let rightSymbolProcessByRime = L10n.tr("Localizable", "k_b.num9grid.rightSymbolProcessByRime", fallback: "右侧符号由 RIME 处理")
+      /// 设置
+      public static let segmentSettings = L10n.tr("Localizable", "k_b.num9grid.segment_settings", fallback: "设置")
+      /// 符号列表
+      public static let segmentSymbolList = L10n.tr("Localizable", "k_b.num9grid.segment_symbol_list", fallback: "符号列表")
+      /// 符号列表 - 恢复默认值
+      public static let symbolListReset = L10n.tr("Localizable", "k_b.num9grid.symbol_list_reset", fallback: "符号列表 - 恢复默认值")
+      /// 自定义数字九宫格左侧划动符号栏
+      public static let symbolListTitle = L10n.tr("Localizable", "k_b.num9grid.symbol_list_title", fallback: "自定义数字九宫格左侧划动符号栏")
+    }
     public enum SwipeSetting {
       /// 新增滑动
       public static let addSwipe = L10n.tr("Localizable", "k_b.swipe_setting.add_swipe", fallback: "新增滑动")

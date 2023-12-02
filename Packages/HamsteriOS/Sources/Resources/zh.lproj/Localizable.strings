@@ -200,6 +200,17 @@
 "k_b.layout_symbol.enableSymbolKeyboard" = "启用分类符号键盘";
 "k_b.layout_symbol.reset_common_symbol" = "常用符号 - 恢复默认值";
 
+"k_b.num9grid.segment_settings" = "设置";
+"k_b.num9grid.segment_symbol_list" = "符号列表";
+"k_b.num9grid.enableNineGridOfNumericKeyboard" = "启用数字九宫格";
+"k_b.num9grid.enableNumberNineGridInputOnScreenModeRemark" = "开启此选项后，符号会直接上屏，不在经过RIME引擎处理。";
+"k_b.num9grid.numberKeyProcessByRime" = "数字键由 RIME 处理";
+"k_b.num9grid.leftSymbolProcessByRime" = "左侧符号列表由 RIME 处理";
+"k_b.num9grid.rightSymbolProcessByRime" = "右侧符号由 RIME 处理";
+"k_b.num9grid.symbol_list_reset" = "符号列表 - 恢复默认值";
+"k_b.num9grid.fail_to_get_system_default_conf" = "获取系统默认配置失败";
+"k_b.num9grid.symbol_list_title" = "自定义数字九宫格左侧划动符号栏";
+
 "color_scheme.title" = "键盘配色";
 "color_scheme.enable_custom_keyboard_color" = "启用配色";
 "color_scheme.system_dark_mode" = "系统浅色模式";

@@ -19,7 +19,7 @@ class NumberNineGridSettingsRootView: NibLessView {
   lazy var settingsView: UIView = NumberNineGridSettingsView(keyboardSettingsViewModel: keyboardSettingsViewModel)
 
   lazy var symbolsView: UIView = SymbolEditorView(
-    headerTitle: "自定义数字九宫格左侧划动符号栏",
+    headerTitle: L10n.KB.Num9grid.symbolListTitle,
     getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfGridOfNumericKeyboard },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfGridOfNumericKeyboard = $0
