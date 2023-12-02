@@ -194,6 +194,8 @@
 "k_b.symbol.segment_cursor_back" = "光标居中";
 "k_b.symbol.segment_return_to_main_keyboard" = "返回主键盘";
 
+"k_b.layout_zh9grid.symbol_edit.title" = "左侧划动符号栏";
+
 "k_b.layout_symbol.title" = "符号键盘设置";
 "k_b.layout_symbol.enableSymbolKeyboard" = "启用分类符号键盘";
 "k_b.layout_symbol.reset_common_symbol" = "常用符号 - 恢复默认值";

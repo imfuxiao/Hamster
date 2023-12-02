@@ -194,6 +194,8 @@
 "k_b.symbol.segment_cursor_back" = "光標居中";
 "k_b.symbol.segment_return_to_main_keyboard" = "返回主鍵盤";
 
+"k_b.layout_zh9grid.symbol_edit.title" = "左側滑動符號欄";
+
 "k_b.layout_symbol.title" = "符號鍵盤設定";
 "k_b.layout_symbol.enableSymbolKeyboard" = "啟用分類符號鍵盤";
 "k_b.layout_symbol.reset_common_symbol" = "常用符號 - 恢復預設值";

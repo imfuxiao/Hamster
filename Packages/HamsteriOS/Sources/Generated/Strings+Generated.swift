@@ -520,6 +520,12 @@ public enum L10n {
         public static let title = L10n.tr("Localizable", "k_b.layout_zh26.swipe_key.title", fallback: "字符")
       }
     }
+    public enum LayoutZh9grid {
+      public enum SymbolEdit {
+        /// 左侧划动符号栏
+        public static let title = L10n.tr("Localizable", "k_b.layout_zh9grid.symbol_edit.title", fallback: "左侧划动符号栏")
+      }
+    }
     public enum SwipeSetting {
       /// 新增滑动
       public static let addSwipe = L10n.tr("Localizable", "k_b.swipe_setting.add_swipe", fallback: "新增滑动")
