@@ -167,12 +167,13 @@ public class KeyboardButtonContentView: NibLessView {
           upSwipeLabel.frame = CGRect(x: 0, y: 0, width: self.oldBounds.width, height: swipeHeight)
         }
 
-        contentView.frame = CGRect(x: 0, y: swipeHeight - 1, width: self.oldBounds.width, height: self.oldBounds.height * 0.66)
+        let contentHeight = self.oldBounds.height * 0.66
+        contentView.frame = CGRect(x: 0, y: swipeHeight - 1, width: self.oldBounds.width, height: contentHeight)
         textContentView.label.adjustsFontSizeToFitWidth = true
         textContentView.label.minimumScaleFactor = 0.85
 
         if showDownSwipeLabel {
-          downSwipeLabel.frame = upSwipeLabel.frame.offsetBy(dx: 0, dy: upSwipeLabel.frame.height + contentView.frame.height - 1)
+          downSwipeLabel.frame = CGRect(x: 0, y: swipeHeight + contentHeight - 1, width: self.oldBounds.width, height: swipeHeight)
         }
       }
     } else { // 划动上布局
