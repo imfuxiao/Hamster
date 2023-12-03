@@ -14,7 +14,6 @@ class SpaceContentView: NibLessView {
   private let rimeContext: RimeContext
   private let item: KeyboardLayoutItem
   private var spaceText: String
-  private var asciiState: Bool
   private var style: KeyboardButtonStyle
   private var oldBounds: CGRect = .zero
   /// 是否首次加载空格
@@ -83,7 +82,6 @@ class SpaceContentView: NibLessView {
     self.item = item
     self.style = style
     self.spaceText = spaceText
-    self.asciiState = rimeContext.asciiMode
 
     super.init(frame: .zero)
 
@@ -141,41 +139,15 @@ class SpaceContentView: NibLessView {
   }
 
   func combine() {
-    rimeContext.registryHandleAsciiModeChanged { [weak self] in
-      guard let self = self else { return }
-      guard self.asciiState != $0 else { return }
-      self.asciiState = $0
-      loadingLabel.text = self.asciiState == false ? "中" : "英"
-      self.textView.alpha = 0
-      self.loadingLabel.alpha = 1
-      loadingAnimate()
-    }
-
-    rimeContext.registryHandleCurrentSchemaChanged { [weak self] in
-      guard let self = self else { return }
-      guard !keyboardContext.keyboardType.isNumber else { return }
-
-      if keyboardContext.showCurrentInputSchemaNameOnLoadingTextForSpaceButton {
-        if loadingLabel.text != rimeContext.currentSchema?.schemaName {
-          loadingLabel.text = rimeContext.currentSchema?.schemaName
-          self.textView.alpha = 0
-          self.loadingLabel.alpha = 1
-          loadingAnimate()
-        }
-      }
-
-      if keyboardContext.showCurrentInputSchemaNameForSpaceButton {
-        textView.setTextValue(rimeContext.currentSchema?.schemaName ?? "")
-      }
-    }
-
     rimeContext.$optionState
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
         guard let self = self else { return }
         guard let optionState = $0 else { return }
+        guard !self.firstLoadingSpace else { return }
         self.loadingLabel.alpha = 1
         self.loadingLabel.text = optionState
+        self.textView.alpha = 0
         loadingAnimate()
       }
       .store(in: &subscriptions)
@@ -186,7 +158,6 @@ class SpaceContentView: NibLessView {
 
     guard let _ = window else { return }
     if firstLoadingSpace {
-      self.firstLoadingSpace = false
       if isShowLoadingText {
         loadingAnimate()
       }
@@ -198,7 +169,10 @@ class SpaceContentView: NibLessView {
       guard let self = self else { return }
       UIView.animate(withDuration: 0.35) {
         self.loadingLabel.alpha = 0
+        self.loadingLabel.text = nil
+        self.rimeContext.optionState = nil
         self.textView.alpha = 1
+        self.firstLoadingSpace = false
       }
     }
   }

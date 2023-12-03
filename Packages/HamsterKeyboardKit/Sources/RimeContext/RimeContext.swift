@@ -13,14 +13,6 @@ import RimeKit
 
 /// RIME 运行时上下文
 public class RimeContext {
-  typealias HandleAsciiModeChanged = (Bool) -> Void
-  typealias HandleCurrentSchemaChanged = () -> Void
-  typealias HandleSuggestionsChanged = () -> Void
-  typealias HandleRimeContextChanged = () -> Void
-
-  private lazy var registryHandleAsciiModeChanged = [HandleAsciiModeChanged]()
-  private lazy var registryHandleCurrentSchemaChanged = [HandleCurrentSchemaChanged]()
-
   /// 最大候选词数量
   public private(set) lazy var maximumNumberOfCandidateWords: Int = 100
 
@@ -46,9 +38,6 @@ public class RimeContext {
     didSet {
       // 注意：如果没有完全访问权限，UserDefaults.hamster 会保存失败
       UserDefaults.hamster.currentSchema = currentSchema
-      registryHandleCurrentSchemaChanged.forEach { handle in
-        handle()
-      }
     }
   }
 
@@ -97,13 +86,7 @@ public class RimeContext {
 
   /// 字母模式
   @MainActor
-  public lazy var asciiMode: Bool = false {
-    didSet {
-      registryHandleAsciiModeChanged.forEach { handle in
-        handle(asciiMode)
-      }
-    }
-  }
+  public lazy var asciiMode: Bool = false
 
   /// 候选字
   @MainActor @Published
@@ -140,14 +123,6 @@ public class RimeContext {
 
   func setUseContextPaging(_ state: Bool) {
     self.useContextPaging = state
-  }
-
-  func registryHandleAsciiModeChanged(_ handle: @escaping HandleAsciiModeChanged) {
-    self.registryHandleAsciiModeChanged.append(handle)
-  }
-
-  func registryHandleCurrentSchemaChanged(_ handle: @escaping HandleCurrentSchemaChanged) {
-    self.registryHandleCurrentSchemaChanged.append(handle)
   }
 }
 
@@ -542,13 +517,13 @@ public extension RimeContext {
 
     // 获取文件中保存状态
     let value = Rime.shared.API().getCustomize("patch/\(simplifiedModeKey)") ?? ""
-    if !value.isEmpty {
-      let handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: (value as NSString).boolValue)
-      Logger.statistics.info("syncTraditionalSimplifiedChineseMode() set runtime state. key: \(simplifiedModeKey), value: \(value), handled: \(handled)")
-    } else {
+    if value.isEmpty {
       // 首次加载保存简繁状态
       let handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(simplifiedModeValue))
       Logger.statistics.info("syncTraditionalSimplifiedChineseMode() first save. key: \(simplifiedModeKey), value: \(simplifiedModeValue), handled: \(handled)")
+    } else {
+//      let handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: (value as NSString).boolValue)
+//      Logger.statistics.info("syncTraditionalSimplifiedChineseMode() set runtime state. key: \(simplifiedModeKey), value: \(value), handled: \(handled)")
     }
   }
 
@@ -557,11 +532,11 @@ public extension RimeContext {
     let simplifiedModeValue = Rime.shared.simplifiedChineseMode(key: simplifiedModeKey)
 
     // 设置运行时状态
-    var handled = Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: !simplifiedModeValue)
-    Logger.statistics.info("switchTraditionalSimplifiedChinese key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
+    Rime.shared.setSimplifiedChineseMode(key: simplifiedModeKey, value: !simplifiedModeValue)
+    Logger.statistics.info("switchTraditionalSimplifiedChinese key: \(simplifiedModeKey), value: \(!simplifiedModeValue)")
 
     // 保存运行时状态
-    handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(!simplifiedModeValue))
+    let handled = Rime.shared.API().customize(simplifiedModeKey, stringValue: String(!simplifiedModeValue))
     Logger.statistics.info("switchTraditionalSimplifiedChinese save file state. key: \(simplifiedModeKey), value: \(!simplifiedModeValue), handled: \(handled)")
   }
 
@@ -570,8 +545,7 @@ public extension RimeContext {
   func switchEnglishChinese() {
     self.reset()
     self.asciiMode.toggle()
-    let handled = Rime.shared.asciiMode(self.asciiMode)
-    Logger.statistics.info("rime set ascii_mode handled \(handled)")
+    Rime.shared.asciiMode(asciiMode)
   }
 }
 
@@ -602,17 +576,15 @@ extension RimeContext: IRimeNotificationDelegate {
         true: Rime.shared.getStateLabel(option: optionName, state: true, abbreviated: true),
         false: Rime.shared.getStateLabel(option: optionName, state: false, abbreviated: true),
       ]
-    } else {
-      // 设置 rime option 对应的值
-      self.optionState = optionValueCache[optionName]?[optionState]
     }
 
     // 中英模式
     if option.hasSuffix("ascii_mode") {
       self.setAsciiMode(optionState)
-      Logger.statistics.info("rime setChangeModeCallback() asciiMode = \(optionState)")
-      return
     }
+
+    // 设置 rime option 对应的值
+    self.optionState = optionValueCache[optionName]?[optionState]
   }
 
   @MainActor

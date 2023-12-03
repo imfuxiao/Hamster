@@ -644,7 +644,7 @@ static RimeLeversApi *get_levers() {
     return RimeGetOption(session, [option UTF8String]);
   }
 }
-- (BOOL)setOption:(RimeSessionId)session
+- (void)setOption:(RimeSessionId)session
         andOption:(NSString *)option
          andValue:(BOOL)value {
   @autoreleasepool {

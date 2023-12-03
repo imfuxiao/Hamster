@@ -80,7 +80,7 @@ typedef uintptr_t RimeSessionId;
 
 // MARK: Configuration
 - (BOOL)getOption:(RimeSessionId)session andOption:(NSString *)option;
-- (BOOL)setOption:(RimeSessionId)session andOption:(NSString *)option andValue:(BOOL)value;
+- (void)setOption:(RimeSessionId)session andOption:(NSString *)option andValue:(BOOL)value;
 // open <schema_id>.schema.yaml
 - (IRimeConfig *)openSchema:(NSString *)schemaId;
 // open <config_id>.yaml

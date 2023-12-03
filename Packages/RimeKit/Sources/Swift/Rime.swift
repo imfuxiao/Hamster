@@ -137,10 +137,10 @@ public class Rime {
     return rimeAPI.getOption(session, andOption: key)
   }
 
-  public func setSimplifiedChineseMode(key: String, value: Bool) -> Bool {
+  public func setSimplifiedChineseMode(key: String, value: Bool) {
     currentSimplifiedModeKey = key
     currentSimplifiedModeValue = value
-    return rimeAPI.setOption(session, andOption: key, andValue: value)
+    rimeAPI.setOption(session, andOption: key, andValue: value)
   }
 
   public func inputKey(_ key: String) -> Bool {
@@ -171,8 +171,8 @@ public class Rime {
     return rimeAPI.getOption(session, andOption: Self.asciiModeKey)
   }
 
-  public func asciiMode(_ value: Bool) -> Bool {
-    return rimeAPI.setOption(session, andOption: Self.asciiModeKey, andValue: value)
+  public func asciiMode(_ value: Bool) {
+    rimeAPI.setOption(session, andOption: Self.asciiModeKey, andValue: value)
   }
 
   public func getCandidate(index: Int, count: Int) -> [IRimeCandidate] {
