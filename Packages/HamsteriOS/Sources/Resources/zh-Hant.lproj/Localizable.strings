@@ -99,7 +99,20 @@
 "k_b.lockShiftState" = "Shift狀態鎖定";
 "k_b.toolbar_remark" = "開啟後建議調整工具欄高度為：40。\n（位置：鍵盤設定 -> 候選欄設定 -> 工具欄高度）";
 "k_b.enableEmbeddedInputMode" = "啟用內嵌模式";
+
 "k_b.space_settings" = "空格設定";
+"k_b.space_settings.loadingText" = "空格載入文字";
+"k_b.space_settings.labelText" = "空格長顯文字";
+"k_b.space_settings.text_remark" = "1. 僅對内建鍵盤有效。\n2.自定義鍵盤在組態檔案中設定。";
+"k_b.space_settings.enable_loadingText_remark" = "1. 啟用後，方案名稱會覆蓋長顯文本。\n2. 以上兩個選項對自定義鍵盤也適用。";
+"k_b.space_settings.loadingText_placeholder" = "載入文字";
+"k_b.space_settings.labelText_placeholder" = "長顯文字";
+"k_b.space_settings.enable_loadingText" = "啟用載入文字";
+"k_b.space_settings.showCurrentInputSchemaNameOnLoadingText" = "長顯文字顯示輸入方案名";
+"k_b.space_settings.showCurrentInputSchemaName" = "長顯顯示輸入方案名";
+"k_b.space_settings.spaceDragSensitivity_remark" = "空格移動光標的靈敏度指: 手指在螢幕移動個點，光標移動一位，所以數值越小，光標移動越快。";
+"k_b.space_settings.spaceDragSensitivity" = "移動光標靈敏度";
+
 "k_b.up_swipe_on_left_remark" = "關閉後，按鍵右上側為顯示上滑文字，左上側顯示下滑文字。";
 "k_b.upSwipeOnLeft" = "上滑顯示位置-左上側";
 "k_b.show_swipe_up_and_down_layout_remark" = "開啟後，按鍵上方顯示上滑，下方顯示下滑。";

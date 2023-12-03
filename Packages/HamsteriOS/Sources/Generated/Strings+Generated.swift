@@ -548,6 +548,32 @@ public enum L10n {
       /// 自定义数字九宫格左侧划动符号栏
       public static let symbolListTitle = L10n.tr("Localizable", "k_b.num9grid.symbol_list_title", fallback: "自定义数字九宫格左侧划动符号栏")
     }
+    public enum SpaceSettings {
+      /// 启用加载文字
+      public static let enableLoadingText = L10n.tr("Localizable", "k_b.space_settings.enable_loadingText", fallback: "启用加载文字")
+      /// 1. 启用后，方案名称会覆盖长显文本。
+      /// 2. 以上两个选项对自定义键盘也适用。
+      public static let enableLoadingTextRemark = L10n.tr("Localizable", "k_b.space_settings.enable_loadingText_remark", fallback: "1. 启用后，方案名称会覆盖长显文本。\n2. 以上两个选项对自定义键盘也适用。")
+      /// 空格长显文字
+      public static let labelText = L10n.tr("Localizable", "k_b.space_settings.labelText", fallback: "空格长显文字")
+      /// 长显文字
+      public static let labelTextPlaceholder = L10n.tr("Localizable", "k_b.space_settings.labelText_placeholder", fallback: "长显文字")
+      /// 空格加载文字
+      public static let loadingText = L10n.tr("Localizable", "k_b.space_settings.loadingText", fallback: "空格加载文字")
+      /// 加载文字
+      public static let loadingTextPlaceholder = L10n.tr("Localizable", "k_b.space_settings.loadingText_placeholder", fallback: "加载文字")
+      /// 长显显示输入方案名
+      public static let showCurrentInputSchemaName = L10n.tr("Localizable", "k_b.space_settings.showCurrentInputSchemaName", fallback: "长显显示输入方案名")
+      /// 加载文字显示输入方案名
+      public static let showCurrentInputSchemaNameOnLoadingText = L10n.tr("Localizable", "k_b.space_settings.showCurrentInputSchemaNameOnLoadingText", fallback: "加载文字显示输入方案名")
+      /// 移动光标灵敏度
+      public static let spaceDragSensitivity = L10n.tr("Localizable", "k_b.space_settings.spaceDragSensitivity", fallback: "移动光标灵敏度")
+      /// 空格移动光标的灵敏度指: 手指在屏幕移动多少个点，光标移动一位，所以数值越小，光标移动越快。
+      public static let spaceDragSensitivityRemark = L10n.tr("Localizable", "k_b.space_settings.spaceDragSensitivity_remark", fallback: "空格移动光标的灵敏度指: 手指在屏幕移动多少个点，光标移动一位，所以数值越小，光标移动越快。")
+      /// 1. 仅对内置键盘有效。
+      /// 2.自定义键盘在配置文件中设置。
+      public static let textRemark = L10n.tr("Localizable", "k_b.space_settings.text_remark", fallback: "1. 仅对内置键盘有效。\n2.自定义键盘在配置文件中设置。")
+    }
     public enum SwipeSetting {
       /// 新增滑动
       public static let addSwipe = L10n.tr("Localizable", "k_b.swipe_setting.add_swipe", fallback: "新增滑动")

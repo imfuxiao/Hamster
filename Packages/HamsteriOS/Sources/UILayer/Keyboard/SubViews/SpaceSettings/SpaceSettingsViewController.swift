@@ -20,6 +20,6 @@ public class SpaceSettingsViewController: NibLessViewController {
 
   override public func loadView() {
     view = SpaceSettingsRootView(keyboardSettingsViewModel: keyboardSettingsViewModel)
-    title = "空格设置"
+    title = L10n.KB.spaceSettings
   }
 }

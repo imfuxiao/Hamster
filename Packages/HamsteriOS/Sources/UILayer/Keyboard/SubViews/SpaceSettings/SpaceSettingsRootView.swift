@@ -83,20 +83,20 @@ extension SpaceSettingsRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
     if section == 0 {
-      return "空格加载文字"
+      return L10n.KB.SpaceSettings.loadingText
     }
     if section == 1 {
-      return "空格长显文字"
+      return L10n.KB.SpaceSettings.labelText
     }
     return nil
   }
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     if section == 0 || section == 1 {
-      return "1. 仅对内置键盘有效。\n2.自定义键盘在配置文件中设置。"
+      return L10n.KB.SpaceSettings.textRemark
     }
     if section == 2 {
-      return "1. 启用后，方案名称会覆盖长显文本。\n2. 以上两个选项对自定义键盘也适用。"
+      return L10n.KB.SpaceSettings.enableLoadingTextRemark
     }
     return keyboardSettingsViewModel.spaceSettings[section].footer
   }

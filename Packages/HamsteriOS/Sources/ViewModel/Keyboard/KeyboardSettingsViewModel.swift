@@ -1098,7 +1098,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(items: [
       .init(
         icon: UIImage(systemName: "square.and.pencil"),
-        placeholder: "加载文字",
+        placeholder: L10n.KB.SpaceSettings.loadingTextPlaceholder,
         type: .textField,
         textValue: { [unowned self] in
           loadingTextForSpaceButton
@@ -1110,7 +1110,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(items: [
       .init(
         icon: UIImage(systemName: "square.and.pencil"),
-        placeholder: "长显文字",
+        placeholder: L10n.KB.SpaceSettings.labelTextPlaceholder,
         type: .textField,
         textValue: { [unowned self] in
           labelTextForSpaceButton
@@ -1121,7 +1121,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     ]),
     .init(items: [
       .init(
-        text: "启用加载文字",
+        text: L10n.KB.SpaceSettings.enableLoadingText,
         type: .toggle,
         toggleValue: { [unowned self] in
           enableLoadingTextForSpaceButton
@@ -1130,7 +1130,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           enableLoadingTextForSpaceButton = $0
         }),
       .init(
-        text: "加载文字显示输入方案名",
+        text: L10n.KB.SpaceSettings.showCurrentInputSchemaNameOnLoadingText,
         type: .toggle,
         toggleValue: { [unowned self] in
           showCurrentInputSchemaNameOnLoadingTextForSpaceButton
@@ -1139,7 +1139,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
           showCurrentInputSchemaNameOnLoadingTextForSpaceButton = $0
         }),
       .init(
-        text: "长显显示输入方案名",
+        text: L10n.KB.SpaceSettings.showCurrentInputSchemaName,
         type: .toggle,
         toggleValue: { [unowned self] in
           showCurrentInputSchemaNameForSpaceButton
@@ -1149,10 +1149,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
         })
     ]),
     .init(
-      footer: "空格移动光标的灵敏度指: 手指在屏幕移动多少个点，光标移动一位，所以数值越小，光标移动越快。",
+      footer: L10n.KB.SpaceSettings.spaceDragSensitivityRemark,
       items: [
         .init(
-          text: "移动光标灵敏度",
+          text: L10n.KB.SpaceSettings.spaceDragSensitivity,
           type: .step,
           textValue: { [unowned self] in String(spaceDragSensitivity) },
           minValue: 1,
