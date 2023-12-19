@@ -33,14 +33,14 @@ typedef uintptr_t RimeSessionId;
 - (void)setNotificationDelegate:(id<IRimeNotificationDelegate>)delegate;
 
 // MARK: start and shutdown
-- (void)setup:(IRimeTraits *)traits;
-- (void)initialize:(IRimeTraits *)traits;
+- (void)setup:(RimeTraits *)traits;
+- (void)initialize;
 - (void)finalize;
 
 - (void)startMaintenance:(BOOL)fullCheck;
 
 - (BOOL)preBuildAllSchemas;
-- (void)deployerInitialize:(IRimeTraits *)traits;
+- (void)deployerInitialize;
 - (BOOL)deploy;
 
 - (BOOL)runTask:(NSString *)taskName;
@@ -53,34 +53,34 @@ typedef uintptr_t RimeSessionId;
 - (void)cleanAllSession;
 
 // MARK: input and output
-- (BOOL)processKey:(NSString *)keyCode andSession:(RimeSessionId)session;
-- (BOOL)processKeyCode:(int)code modifier:(int)modifier andSession:(RimeSessionId)session;
-- (BOOL)replaceInputKeys:(NSString *)keys withStartPos:(int)pos AndCount:(int)length AndSession:(RimeSessionId)session;
+- (BOOL)processKey:(NSString *)keyCode inSession:(RimeSessionId)session;
+- (BOOL)processKeyCode:(int)code modifier:(int)modifier inSession:(RimeSessionId)session;
+- (BOOL)setInputKeys:(NSString *)keys forSession:(RimeSessionId)session;
 - (NSArray<IRimeCandidate *> *)getCandidateList:(RimeSessionId)session;
-- (NSArray<IRimeCandidate *> *)getCandidateWithIndex:(int)index
-                                            andCount:(int)limit
-                                          andSession:(RimeSessionId)session;
-- (BOOL)selectCandidate:(RimeSessionId)session andIndex:(int)index;
-- (BOOL)deleteCandidate:(RimeSessionId)session andIndex:(int)index;
+- (NSArray<IRimeCandidate *> *)getCandidatesFromIndex:(int)index
+                                            maxNumber:(int)limit
+                                            inSession:(RimeSessionId)session;
+- (BOOL)selectCandidateAtIndex:(size_t)index inSession:(RimeSessionId)session;
+- (BOOL)deleteCandidateAtIndex:(size_t)index inSession:(RimeSessionId)session;
 
 - (NSString *)getInput:(RimeSessionId)session;
 - (NSString *)getCommit:(RimeSessionId)session;
 - (BOOL)commitComposition:(RimeSessionId)session;
-- (void)cleanComposition:(RimeSessionId)session;
+- (void)clearComposition:(RimeSessionId)session;
 - (IRimeStatus *)getStatus:(RimeSessionId)session;
 - (IRimeContext *)getContext:(RimeSessionId)session;
 
-- (int)getCaretPosition:(RimeSessionId)session;
-- (void)setCaretPosition:(int)pos withSession:(RimeSessionId)session;
+- (size_t)getCaretPosition:(RimeSessionId)session;
+- (void)setCaretPosition:(size_t)pos inSession:(RimeSessionId)session;
 
 // MARK: schema
 - (NSArray<IRimeSchema *> *)schemaList;
 - (IRimeSchema *)currentSchema:(RimeSessionId)session;
-- (BOOL)selectSchema:(RimeSessionId)session andSchemaId:(NSString *)schemaId;
+- (BOOL)selectSchema:(NSString *)schemaId forSession:(RimeSessionId)session;
 
 // MARK: Configuration
-- (BOOL)getOption:(RimeSessionId)session andOption:(NSString *)option;
-- (void)setOption:(RimeSessionId)session andOption:(NSString *)option andValue:(BOOL)value;
+- (BOOL)getOption:(NSString *)option inSession:(RimeSessionId)session ;
+- (void)setValue:(BOOL)value forOption:(NSString *)option inSession:(RimeSessionId)session;
 // open <schema_id>.schema.yaml
 - (IRimeConfig *)openSchema:(NSString *)schemaId;
 // open <config_id>.yaml
@@ -102,5 +102,5 @@ typedef uintptr_t RimeSessionId;
 - (BOOL) customize:(NSString *)key boolValue:(BOOL) value;
 - (BOOL) customize:(NSString *)key stringValue:(NSString *) value;
 - (NSString *) getCustomize:(NSString *)key;
-- (NSString *) getStateLabelAbbreviated:(RimeSessionId) session optionName:(NSString *) option state:(BOOL)state abbreviated:(BOOL)abbreviated;
+- (NSString *) getStateLabel:(BOOL)state Abbreviated:(BOOL)abbred forOption:(NSString *) option inSession:(RimeSessionId)session;
 @end
