@@ -45,10 +45,14 @@ public class Rime {
     return rimeAPI
   }
 
-  public static func createTraits(sharedSupportDir: String, userDataDir: String, models: [String] = []) -> IRimeTraits {
-    let traits = IRimeTraits()
-    traits.sharedDataDir = sharedSupportDir
-    traits.userDataDir = userDataDir
+  public func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
+    rimeAPI.setNotificationDelegate(delegate)
+  }
+
+  public func setupRime(sharedSupportDir: String, userDataDir: String) {
+    RIME_STRUCT(RimeTraits, traits);
+    traits.sharedDataDir = sharedSupportDir.utf8
+    traits.userDataDir = userDataDir.utf8
     traits.distributionCodeName = "Hamster"
     traits.distributionName = "Hamster"
     traits.distributionVersion = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
@@ -58,54 +62,28 @@ public class Rime {
     traits.appName = "rime.Hamster"
     if !models.isEmpty {
       traits.modules = models
-//    traits.modules = ["core", "dict", "gears", "levers", "lua"]
-//    traits.modules = ["core", "dict", "gears", "lua"]
+      //    traits.modules = ["core", "dict", "gears", "levers", "lua"]
+      //    traits.modules = ["core", "dict", "gears", "lua"]
     }
-    return traits
+    rimeAPI.setup(traits)
   }
 
-  public func setNotificationDelegate(_ delegate: IRimeNotificationDelegate) {
-    rimeAPI.setNotificationDelegate(delegate)
+  public func initialize() {
+    rimeAPI.initialize()
   }
 
-  public func setupRime(sharedSupportDir: String, userDataDir: String) {
-    setupRime(Self.createTraits(sharedSupportDir: sharedSupportDir, userDataDir: userDataDir))
-  }
-
-  public func setupRime(_ traits: IRimeTraits) {
-    if isFirstRun {
-      rimeAPI.setup(traits)
-      isFirstRun = false
-    }
-  }
-
-  public func initialize(_ traits: IRimeTraits? = nil) {
-    rimeAPI.initialize(traits)
-  }
-
-  public func start(_ traits: IRimeTraits? = nil, maintenance: Bool = false, fullCheck: Bool = false) {
-    if let traits = traits {
-      setupRime(traits)
-    }
-
-    self.traits = traits
-
-    initialize(traits)
-
-    if maintenance {
-      rimeAPI.startMaintenance(fullCheck)
-    }
-
+  public func startmaintenance(_ fullCheck: Bool = false) {
+    rimeAPI.startMaintenance(fullCheck)
     // session = rimeAPI.createSession()
   }
 
-  public func deploy(_ traits: IRimeTraits? = nil) -> Bool {
-    rimeAPI.deployerInitialize(traits)
+  public func deploy() -> Bool {
+    rimeAPI.deployerInitialize
     return rimeAPI.deploy()
   }
 
   public func isRunning() -> Bool {
-    return session != 0
+    return session && rimeAPI.findSession(session)
   }
 
   public func shutdown() {
@@ -114,47 +92,45 @@ public class Rime {
     rimeAPI.finalize()
   }
 
-  public func getSession() -> RimeSessionId {
-    return session
+  public func createSession() -> self.session: RimeSessionId {
+    return rimeAPI.createSession()
   }
 
-  public func createSession() {
-    if !isRunning() {
-      session = rimeAPI.createSession()
-    }
-  }
-
-  public func restSession() {
+  public func resetSession() {
     rimeAPI.destroySession(session)
     session = rimeAPI.createSession()
   }
 
-  public func openSchema(schema: String) -> IRimeConfig {
-    rimeAPI.openSchema(schema)
+  public func openSchema(schemaId: String) -> Bool {
+    rimeAPI.openSchema(schemaId.utf8)
   }
 
   public func simplifiedChineseMode(key: String) -> Bool {
-    return rimeAPI.getOption(session, andOption: key)
+    return rimeAPI.getOption(key, inSession: session)
   }
 
   public func setSimplifiedChineseMode(key: String, value: Bool) {
     currentSimplifiedModeKey = key
     currentSimplifiedModeValue = value
-    rimeAPI.setOption(session, andOption: key, andValue: value)
+    rimeAPI.setValue(value, forOption: key, inSession: session)
   }
 
   public func inputKey(_ key: String) -> Bool {
-    createSession()
-    return rimeAPI.processKey(key, andSession: session)
+    if (!session || !rimeAPI.findSession(session)) {
+      self.createSession()
+    }
+    return rimeAPI.processKey(key, inSession: session)
   }
 
-  public func inputKeyCode(_ keycode: Int32, modifier: Int32 = 0) -> Bool {
-    createSession()
-    return rimeAPI.processKeyCode(keycode, modifier: modifier, andSession: session)
+  public func inputKeyCode(_ keycode: Int, modifier: Int = 0) -> Bool {
+    if (!session || !rimeAPI.findSession(session)) {
+      rimeAPI.createSession()
+    }
+    return rimeAPI.processKeyCode(keycode, modifier: modifier, inSession: session)
   }
 
-  public func replaceInputKeys(_ inputKeys: String, startPos: Int, count: Int) -> Bool {
-    return rimeAPI.replaceInputKeys(inputKeys, withStartPos: Int32(startPos), andCount: Int32(count), andSession: session)
+  public func setInputKeys(_ inputKeys: String) -> Bool {
+    return rimeAPI.setInputKeys(inputKeys, forSession: session)
   }
 
   public func candidateList() -> [CandidateWord] {
@@ -168,19 +144,19 @@ public class Rime {
   }
 
   public func isAsciiMode() -> Bool {
-    return rimeAPI.getOption(session, andOption: Self.asciiModeKey)
+    return rimeAPI.getOption(asciiModeKey, inSession: session)
   }
 
   public func asciiMode(_ value: Bool) {
-    rimeAPI.setOption(session, andOption: Self.asciiModeKey, andValue: value)
+    rimeAPI.setValue(value, forOption: asciiModeKey, inSession: session)
   }
 
-  public func getCandidate(index: Int, count: Int) -> [IRimeCandidate] {
-    rimeAPI.getCandidateWith(Int32(index), andCount: Int32(count), andSession: session) ?? []
+  public func getCandidatesFrom(index: Int, count: Int) -> [RimeCandidate] {
+    rimeAPI.getCandidatesFrom(index, maxNumber: limit, inSession: session) ?? []
   }
 
-  public func selectCandidate(index: Int) -> Bool {
-    return rimeAPI.selectCandidate(session, andIndex: Int32(index))
+  public func selectCandidateAt(index: Int) -> Bool {
+    return rimeAPI.selectCandidate(atIndex: index, inSession: session)
   }
 
   // index: 指candidates索引, 从0开始
@@ -190,9 +166,9 @@ public class Rime {
   // 第二页: index = 10, count = 10
   // 第二页: index = 20, count = 10
   // 以此类推
-  public func candidateListWithIndex(index: Int, andCount count: Int) -> [CandidateWord] {
-    let candidates = rimeAPI.getCandidateWith(
-      Int32(index), andCount: Int32(count), andSession: session
+  public func candidateListFromIndex(index: Int, pageSize: Int) -> [CandidateWord] {
+    let candidates = rimeAPI.getCandidatesFrom(
+      Int(index), maxNumber: Int(count), inSession: session
     )
     if candidates != nil {
       return candidates!.map {
@@ -210,15 +186,15 @@ public class Rime {
     return rimeAPI.getCommit(session)!
   }
 
-  public func cleanComposition() {
-    rimeAPI.cleanComposition(session)
+  public func clearComposition() {
+    rimeAPI.clearComposition(session)
   }
 
-  public func status() -> IRimeStatus {
+  public func status() -> RimeStatus {
     return rimeAPI.getStatus(session)
   }
 
-  public func context() -> IRimeContext {
+  public func context() -> RimeContext {
     return rimeAPI.getContext(session)
   }
 
@@ -228,21 +204,25 @@ public class Rime {
     }
   }
 
-  public func currentSchema() -> RimeSchema? {
+  public func currentSchema() -> string {
     let status = rimeAPI.getStatus(session)!
-    return RimeSchema(schemaId: status.schemaId, schemaName: status.schemaName)
+    return status.schemaId
   }
 
   public func setSchema(_ schemaId: String) -> Bool {
-    createSession()
+    if (!session || !rimeAPI.findSession(session)) {
+      rimeAPI.createSession()
+    }
     currentInputSchema = schemaId
-    return rimeAPI.selectSchema(session, andSchemaId: schemaId)
+    return rimeAPI.selectSchema(schemaId, forSession: session)
   }
 
   // 注意：用户目录必须存在 "default.coustom.yaml" 文件，调用才有效
   public func getAvailableRimeSchemas() -> [RimeSchema] {
-    rimeAPI.getAvailableRimeSchemaList()
-      .map { RimeSchema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
+    if (config = rimeAPI.openConfig("default")) {
+      rimeAPI.getAvailableRimeSchemaList()
+        .map { RimeSchema(schemaId: $0.schemaId, schemaName: $0.schemaName) }
+    }
   }
 
   public func getSelectedRimeSchema() -> [RimeSchema] {
@@ -258,24 +238,26 @@ public class Rime {
     rimeAPI.getHotkeys()
   }
 
-  public func getCaretPosition() -> Int {
-    Int(rimeAPI.getCaretPosition(session))
+  public func getCaretPosition() -> UInt {
+    rimeAPI.getCaretPosition(session)
   }
 
-  public func setCaretPosition(_ position: Int) {
-    rimeAPI.setCaretPosition(Int32(position), withSession: session)
+  public func setCaretPosition(_ position: UInt) {
+    rimeAPI.setCaretPosition(position, inSession: session)
   }
 
-  public func getConfigFileValue(configFileName: String, key: String) -> String? {
+  public func getConfigFileValue(configFileName: String, key: String) -> String {
     guard let config = rimeAPI.openUserConfig(configFileName) else { return nil }
     let value = config.getString(key)
     config.close()
     return value
   }
 
-  public func getStateLabel(option: String, state: Bool, abbreviated: Bool) -> String {
-    createSession()
-    return rimeAPI.getStateLabelAbbreviated(session, optionName: option, state: state, abbreviated: abbreviated)
+  public func getStateLabel(state: Bool, abbreviated: Bool, option: String, session: RimeSessionId) -> String {
+    if (!session || !rimeAPI.findSession(session)) {
+      rimeAPI.createSession()
+    }
+    return rimeAPI.getStateLabel(state, abbreviated: abbred, forOption: option inSession: session)
   }
 }
 

@@ -136,7 +136,7 @@ public extension RimeContext {
     self.userInputKey = ""
     self.selectCandidatePinyin = nil
     self.suggestions.removeAll(keepingCapacity: false)
-    Rime.shared.cleanComposition()
+    Rime.shared.clearComposition()
   }
 
   func resetCommitText() {
@@ -579,7 +579,7 @@ extension RimeContext: IRimeNotificationDelegate {
     }
 
     // 中英模式
-    if option.hasSuffix("ascii_mode") {
+    if (optionName == "ascii_mode") {
       self.setAsciiMode(optionState)
     }
 

@@ -45,89 +45,19 @@ static void rimeNotificationHandler(void *contextObject,
 
   // on loading schema
   if (!strcmp(messageType, "schema")) {
-    [notificationDelegate
-        onLoadingSchema:[NSString stringWithUTF8String:messageValue]];
+    [notificationDelegate onLoadingSchema:@(messageValue)]];
     return;
   }
 
   // on changing mode:
   if (!strcmp(messageType, "option")) {
-    [notificationDelegate
-        onChangeMode:[NSString stringWithUTF8String:messageValue]];
+    [notificationDelegate onChangeMode:@(messageValue)]];
     return;
   }
 }
 
-@implementation IRimeTraits
-
-@synthesize sharedDataDir;
-@synthesize userDataDir;
-@synthesize distributionName;
-@synthesize distributionCodeName;
-@synthesize distributionVersion;
-@synthesize appName;
-@synthesize modules;
-@synthesize minLogLevel;
-@synthesize logDir;
-@synthesize prebuiltDataDir;
-@synthesize stagingDir;
-
-
-- (void)rimeTraits:(RimeTraits *)traits {
-  if (sharedDataDir != nil) {
-    traits -> shared_data_dir = [sharedDataDir UTF8String];
-  }
-  if (userDataDir != nil) {
-    traits -> user_data_dir = [userDataDir UTF8String];
-  }
-  if (distributionName != nil) {
-    traits -> distribution_name = [distributionName UTF8String];
-  }
-  if (distributionCodeName != nil) {
-    traits -> distribution_code_name = [distributionCodeName UTF8String];
-  }
-  if (distributionVersion != nil) {
-    traits -> distribution_version = [distributionVersion UTF8String];
-  }
-  if (appName != nil) {
-    traits -> app_name = [appName UTF8String];
-  }
-  // 模块定义
-  // traits -> modules = hamster_modules;
-  if (prebuiltDataDir != nil) {
-    traits -> prebuilt_data_dir = [prebuiltDataDir UTF8String];
-  }
-  if (stagingDir != nil) {
-    traits -> staging_dir = [stagingDir UTF8String];
-  }
-}
-
-@end
-
-@implementation IRimeSchema
-
-@synthesize schemaId, schemaName;
-
-- (id)initWithSchemaId:(NSString *)d andSchemaName:(NSString *)name {
-  if ((self = [super init]) != nil) {
-    schemaId = d;
-    schemaName = name;
-  }
-  return self;
-}
-
-- (NSString *)description {
-  return
-      [NSString stringWithFormat:@"id = %@, name = %@", schemaId, schemaName];
-}
-
-@end
 
 @implementation IRimeStatus
-
-@synthesize schemaId, schemaName;
-@synthesize isASCIIMode, isASCIIPunct, isComposing, isDisabled, isFullShape,
-    isSimplified, isTraditional;
 
 - (NSString *)description {
   return
@@ -135,141 +65,129 @@ static void rimeNotificationHandler(void *contextObject,
                     @"<%@: %p, schemaId: %@, schemaName: %@, isASCIIMode: %d, "
                     @"isASCIIPunct: %d, isComposing: %d, isDisabled: %d, "
                     @"isFullShape: %d, isSimplified: %d, isTraditional: %d>",
-                    NSStringFromClass([self class]), self, schemaId, schemaName,
-                    isASCIIMode, isASCIIPunct, isComposing, isDisabled,
-                    isFullShape, isSimplified, isTraditional];
+                    NSStringFromClass([self class]), self, _schemaId, _schemaName,
+                    _isASCIIMode, _isASCIIPunct, _isComposing, _isDisabled,
+                    _isFullShape, _isSimplified, _isTraditional];
 }
 @end
 
 @implementation IRimeCandidate
 
-@synthesize text, comment;
-
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, text: %@, comment: %@>",
-                                    NSStringFromClass([self class]), self, text,
-                                    comment];
+                                    NSStringFromClass([self class]), self, _text,
+                                    _comment];
 }
 
 @end
 
 @implementation IRimeMenu
 
-@synthesize pageSize, pageNo, isLastPage, highlightedCandidateIndex,
-    numCandidates;
-@synthesize selectKeys;
-@synthesize candidates;
-
 - (NSString *)description {
   return [NSString
-      stringWithFormat:@"<%@: %p, pageSize: %d, pageNo: %d, isLastPage: %@, "
+      stringWithFormat:@"<%@: %p, pageSize: %d, pageNo: %d, isLastPage: %c, "
                        @"highlightedCandidateIndex: %d, numCandidates %d,"
-                       @"selectKeys: %@, candidates: %@>",
-                       NSStringFromClass([self class]), self, pageSize, pageNo,
-                       isLastPage ? @"true" : @"false",
-                       highlightedCandidateIndex, numCandidates, selectKeys,
-                       candidates];
+                       @"selectKeys: %@, candidates: [%@]>",
+                       NSStringFromClass([self class]), self, _pageSize, _pageNo,
+                       _isLastPage, _highlightedCandidateIndex, _numCandidates,
+                       [_selectKeys componentsJoinedByString:@"; "]];
+
 }
 
 @end
 
 @implementation IRimeComposition
 
-@synthesize length, cursorPos, selStart, selEnd, preedit;
-
 - (NSString *)description {
   return
       [NSString stringWithFormat:@"<%@: %p, length: %d, cursorPos: %d, "
                                  @"selStart: %d, selEnd: %d, preedit: %@>",
-                                 NSStringFromClass([self class]), self, length,
-                                 cursorPos, selStart, selEnd, preedit];
+                                 NSStringFromClass([self class]), self, _length,
+                                 _cursorPos, _selStart, _selEnd, _preedit];
 }
 
 @end
 
 @implementation IRimeContext
 
-@synthesize commitTextPreview;
-@synthesize composition;
-@synthesize menu;
-@synthesize labels;
-
 - (NSString *)description {
   return
       [NSString stringWithFormat:@"<%@: %p, commitTextPreview: %@, "
                                  @"composition: %@, labels: %@, menu: %@>",
                                  NSStringFromClass([self class]), self,
-                                 commitTextPreview, composition, labels, menu];
+                                 _commitTextPreview, _composition, _labels,
+                                 [_menu description]];
 }
 
 @end
 
-@implementation IRimeConfig {
-  RimeConfig cfg;
-}
+@implementation IRimeConfig
+
+@property RimeConfig cfg;
 
 - (id)initWithRimeConfig:(RimeConfig)c {
   if ((self = [super init]) != nil) {
-    cfg = c;
+    _cfg = c;
   }
   return self;
 }
 
 - (void)closeConfig {
-  RimeConfigClose(&cfg);
+  RimeConfigClose(&_cfg);
 }
 
 - (NSString *)getString:(NSString *)key {
   @autoreleasepool {
-    const char *c = RimeConfigGetCString(&cfg, [key UTF8String]);
+    if (RimeSchemaOpen(, &_cfg))
+    const char *c = RimeConfigGetCString(&_cfg, [key UTF8String]);
     if (!!c) {
-      return [NSString stringWithUTF8String:c];
+      return @(c);
     }
-    return @"";
+    return nil;
   }
 }
 
-- (BOOL)getBool:(NSString *)key {
+- (NSNumber *)getBool:(NSString *)key {
   @autoreleasepool {
     Bool value;
-    if (!!RimeConfigGetBool(&cfg, [key UTF8String], &value)) {
-      return value;
+    if (!!RimeConfigGetBool(&_cfg, [key UTF8String], &value)) {
+      return @(value);
     }
-    return FALSE;
+    return nil;
   }
 }
 
-- (int)getInt:(NSString *)key {
+- (NSNumber *)getInt:(NSString *)key {
   @autoreleasepool {
     int value;
-    if (!!RimeConfigGetInt(&cfg, [key UTF8String], &value)) {
-      return value;
+    if (!!RimeConfigGetInt(&_cfg, [key UTF8String], &value)) {
+      return @(value);
     }
-    return INT_MIN;
+    return nil;
   }
 }
 
-- (BOOL)setInt:(NSString *)key value:(int)value {
+- (BOOL)setInt:(int)value forOption:(NSString *)key {
   @autoreleasepool {
-    return RimeConfigSetInt(&cfg, [key UTF8String], value);
+    return (BOOL)RimeConfigSetInt(&_cfg, [key UTF8String], value);
   }
 }
 
-- (double)getDouble:(NSString *)key {
+- (NSNumber *)getDouble:(NSString *)key {
   @autoreleasepool {
     double value;
-    if (!!RimeConfigGetDouble(&cfg, [key UTF8String], &value)) {
-      return value;
+    if (!!RimeConfigGetDouble(&_cfg, [key UTF8String], &value)) {
+      return @(value);
     }
-    return DBL_MIN;
+    return nil;
   }
 }
 
-- (NSArray<IRimeConfigIteratorItem *> *)getItems:(NSString *)key {
+- (NSEnumerator<IRimeConfigIteratorItem *> *)getItems:(NSString *)key {
   NSMutableArray<IRimeConfigIteratorItem *> *array = [NSMutableArray array];
   @autoreleasepool {
     RimeConfigIterator iterator;
-    if (!!RimeConfigBeginList(&iterator, &cfg, [key UTF8String])) {
+    if (!!RimeConfigBeginList(&iterator, &_cfg, [key UTF8String])) {
       while (RimeConfigNext(&iterator)) {
         IRimeConfigIteratorItem *item = [[IRimeConfigIteratorItem alloc] init];
         [item setKey:[NSString stringWithUTF8String:iterator.key]];
@@ -291,7 +209,7 @@ static void rimeNotificationHandler(void *contextObject,
       while (RimeConfigNext(&iterator)) {
         IRimeConfigIteratorItem *item = [[IRimeConfigIteratorItem alloc] init];
         [item setKey:[NSString stringWithUTF8String:iterator.key]];
-        [item setPath:[NSString stringWithUTF8String:iterator.path]];
+        [item setPath:[NSString stringWithUTcF8String:iterator.path]];
         [item setIndex:iterator.index];
         [array addObject:item];
       }
@@ -304,8 +222,6 @@ static void rimeNotificationHandler(void *contextObject,
 @end
 
 @implementation IRimeConfigIteratorItem
-
-@synthesize index, key, path;
 
 - (NSString *)description {
   return [NSString stringWithFormat:@"<%@: %p, index: %d, key: %@, path: %@>",
@@ -335,14 +251,8 @@ static RimeLeversApi *get_levers() {
   RimeSetup(&rimeTraits);
 }
 
-- (void)initialize:(IRimeTraits *)traits {
-  if (traits == nil) {
-    RimeInitialize(NULL);
-  } else {
-    RIME_STRUCT(RimeTraits, rimeTraits);
-    [traits rimeTraits:&rimeTraits];
-    RimeInitialize(&rimeTraits);
-  }
+- (void)initialize {
+  RimeInitialize(NULL);
 }
 
 - (void)finalize {
@@ -362,14 +272,9 @@ static RimeLeversApi *get_levers() {
   return RimePrebuildAllSchemas();
 }
 
-- (void)deployerInitialize:(IRimeTraits *)traits {
-  if (traits == nil) {
-    RimeDeployerInitialize(NULL);
-  } else {
-    RIME_STRUCT(RimeTraits, rimeTraits);
-    [traits rimeTraits:&rimeTraits];
-    RimeDeployerInitialize(&rimeTraits);
-  }
+- (void)deployerInitialize {
+  RimeDeployerInitialize(NULL);
+  [self startMaintenance:YES];
 }
 
 - (BOOL)deploy {
@@ -402,88 +307,122 @@ static RimeLeversApi *get_levers() {
   RimeCleanupAllSessions();
 }
 
-- (BOOL)processKey:(NSString *)keyCode andSession:(RimeSessionId)session {
+- (BOOL)processKey:(NSString *)keyCode
+         inSession:(RimeSessionId)session {
   @autoreleasepool {
-    const char *code = [keyCode UTF8String][0];
-    // TODO: code转换
+    unichar ch = [keycode characterAtIndex:0];
+    if (ch <= 0x7f) {
+      switch (ch) {
+        case 0x9:
+          code = XK_Tab;
+          break;
+        case 0xd:
+          code = XK_Return;
+          break;
+        case 0x1b:
+          code = XK_Escape
+          break;
+        case 0x7f:
+          code = XK_BackSpace;
+          break;
+        case 0x20 ... 0x7e:
+          code = ch;
+          break;
+      }
+    } else if ([keyCode isEqualToString:UIKeyInputEscape]) {
+      code = XK_Escape;
+    } else if ([keyCode isEqualToString:UIKeyInputDelete]) {
+      code = XK_Delete;
+    } else if ([keyCode isEqualToString:UIKeyInputUpArrow]) {
+      code = XK_Up;
+    } else if ([keyCode isEqualToString:UIKeyInputDownArrow]) {
+      code = XK_Down;
+    } else if ([keyCode isEqualToString:UIKeyInputLeftArrow]) {
+      code = XK_Left;
+    } else if ([keyCode isEqualToString:UIKeyInputRightArrow]) {
+      code = XK_Right;
+    } else if ([keyCode isEqualToString:UIKeyInputHome]) {
+      code = XK_Home;
+    } else if ([keyCode isEqualToString:UIKeyInputEnd]) {
+      code = XK_End;
+    } else if ([keyCode isEqualToString:UIKeyInputPageUp]) {
+      code = XK_Page_Up;
+    } else if ([keyCode isEqualToString:UIKeyInputPageDown]) {
+      code = XK_Page_Down;
+    }
     return RimeProcessKey(session, code, 0);
   }
 }
 
 - (BOOL)processKeyCode:(int)code
               modifier:(int)modifier
-            andSession:(RimeSessionId)session {
+             inSession:(RimeSessionId)session {
   return RimeProcessKey(session, code, modifier);
 }
 
-- (BOOL)replaceInputKeys:(NSString *)keys withStartPos:(int)pos AndCount:(int)length AndSession:(RimeSessionId)session {
-  return RimeReplaceInput(session, pos, length, [keys UTF8String]);
+- (BOOL)setInputKeys:(NSString *)keys
+         withSession:(RimeSessionId)session {
+  return RimeSetInput(session, [keys UTF8String]);
 }
 
 - (NSArray<IRimeCandidate *> *)getCandidateList:(RimeSessionId)session {
   @autoreleasepool {
     RimeCandidateListIterator iterator = {0};
     if (!RimeCandidateListBegin(session, &iterator)) {
-      return [NSArray array];
+      return nil;
     }
 
     NSMutableArray<IRimeCandidate *> *list = [NSMutableArray array];
     while (RimeCandidateListNext(&iterator)) {
       IRimeCandidate *candidate = [[IRimeCandidate alloc] init];
       [candidate setText:@(iterator.candidate.text)];
-      [candidate setComment:iterator.candidate.comment
-                                ? @(iterator.candidate.comment)
-                                : @""];
+      [candidate setComment:iterator.candidate.comment ? : @""];
       [list addObject:candidate];
     }
     RimeCandidateListEnd(&iterator);
-    return [NSArray arrayWithArray:list];
+    return list;
   }
 }
 
-- (NSArray<IRimeCandidate *> *)getCandidateWithIndex:(int)index
-                                            andCount:(int)count
-                                          andSession:(RimeSessionId)session {
+- (NSArray<IRimeCandidate *> *)getCandidatesFromIndex:(int)index
+                                            maxNumber:(int)limit
+                                            inSession:(RimeSessionId)session {
   @autoreleasepool {
     RimeCandidateListIterator iterator = {0};
     if (!RimeCandidateListFromIndex(session, &iterator, index)) {
 #if DEBUG
       NSLog(@"get candidate list error");
 #endif
-      return [NSArray array];
+      return nil;
     }
 
-    NSMutableArray<IRimeCandidate *> *candidates = [NSMutableArray array];
-    int maxIndex = index + count;
-    while (RimeCandidateListNext(&iterator)) {
-      if (iterator.index >= maxIndex) {
-        break;
-      }
-
+    NSMutableArray<IRimeCandidate *> *candidates = [NSMutableArray arrayWithCapacity:limit];
+    int maxIndex = index + limit;
+    while (RimeCandidateListNext(&iterator) && iterator.index < maxIndex) {
       IRimeCandidate *candidate = [[IRimeCandidate alloc] init];
       [candidate setText:@(iterator.candidate.text)];
-      [candidate setComment:iterator.candidate.comment
-                                ? @(iterator.candidate.comment)
-                                : @""];
+      [candidate setComment:iterator.candidate.comment ? : @""];
       [candidates addObject:candidate];
     }
     RimeCandidateListEnd(&iterator);
-    return [NSArray arrayWithArray:candidates];
+    return candidates;
   }
 }
 
-- (BOOL)selectCandidate:(RimeSessionId)session andIndex:(int)index {
-  return rime_get_api()->select_candidate(session, index);
+- (BOOL)selectCandidateAtIndex:(size_t)index
+                     inSession:(RimeSessionId)session {
+  return RimeSelectCandidate(session, index);
 }
 
-- (BOOL)deleteCandidate:(RimeSessionId)session andIndex:(int)index {
-  return rime_get_api()->delete_candidate(session, index);
+- (BOOL)deleteCandidateAtIndex:(size_t)index
+                     inSession:(RimeSessionId)session {
+  return RimeDeleteCandidate(session, index);
 }
 
 - (NSString *)getInput:(RimeSessionId)session {
   @autoreleasepool {
     const char *input = rime_get_api()->get_input(session);
-    return input ? @(input) : @("");
+    return input ? @(input) : @"";
   }
 }
 
@@ -491,7 +430,7 @@ static RimeLeversApi *get_levers() {
   @autoreleasepool {
     RIME_STRUCT(RimeCommit, rimeCommit);
     if (!RimeGetCommit(session, &rimeCommit)) {
-      return @"";
+      return nil;
     }
     NSString *commitText = rimeCommit.text ? @(rimeCommit.text) : @"";
     RimeFreeCommit(&rimeCommit);
@@ -505,7 +444,7 @@ static RimeLeversApi *get_levers() {
   }
 }
 
-- (void)cleanComposition:(RimeSessionId)session {
+- (void)clearComposition:(RimeSessionId)session {
   @autoreleasepool {
     RimeClearComposition(session);
   }
@@ -585,7 +524,7 @@ static RimeLeversApi *get_levers() {
                                   : @""];
         [candidates addObject:candidate];
       }
-      [menu setCandidates:[NSArray arrayWithArray:candidates]];
+      [menu setCandidates:candidates];
       [context setMenu:menu];
     }
 
@@ -594,13 +533,13 @@ static RimeLeversApi *get_levers() {
   return context;
 }
 
-- (int) getCaretPosition:(RimeSessionId)session {
+- (size_t)getCaretPosition:(RimeSessionId)session {
   size_t pos = rime_get_api()->get_caret_pos(session);
-  return (int)pos;
+  return pos;
 }
 
-- (void)setCaretPosition:(int)pos withSession:(RimeSessionId)session {
-  rime_get_api()->set_caret_pos(session, (size_t)pos);
+- (void)setCaretPosition:(size_t)pos inSession:(RimeSessionId)session {
+  rime_get_api()->set_caret_pos(session, pos);
 }
 
 // MARK: Schema
@@ -634,19 +573,19 @@ static RimeLeversApi *get_levers() {
   }
 }
 
-- (BOOL)selectSchema:(RimeSessionId)session andSchemaId:(NSString *)schemaId {
+- (BOOL)selectSchema:(NSString *)schemaId forSession:(RimeSessionId)session; {
   return RimeSelectSchema(session, [schemaId UTF8String]);
 }
 
 // MARK: Configuration
-- (BOOL)getOption:(RimeSessionId)session andOption:(NSString *)option {
+- (BOOL)getOption:(NSString *)option inSession:(RimeSessionId)session {
   @autoreleasepool {
     return RimeGetOption(session, [option UTF8String]);
   }
 }
-- (void)setOption:(RimeSessionId)session
-        andOption:(NSString *)option
-         andValue:(BOOL)value {
+- (void)setValue:(BOOL)value
+       forOption:(NSString *)option
+       inSession:(RimeSessionId)session {
   @autoreleasepool {
     RimeSetOption(session, [option UTF8String], value ? True : False);
   }
