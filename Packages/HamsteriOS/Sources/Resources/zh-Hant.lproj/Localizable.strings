@@ -94,6 +94,46 @@
 
 "k_b.section_title" = "鍵盤相關";
 "k_b.title" = "鍵盤設定";
+"k_b.auto_lower_remark" = "關閉後，Shift狀態隨當前輸入狀態變化。注意: 雙擊Shift會保持鎖定";
+"k_b.displayButtonBubbles" = "顯示按鍵氣泡";
+"k_b.enableButtonUnderBorder" = "顯示按鍵底部邊框";
+"k_b.lockShiftState" = "Shift狀態鎖定";
+"k_b.toolbar_remark" = "開啟後建議調整工具欄高度為：40。\n（位置：鍵盤設定 -> 候選欄設定 -> 工具欄高度）";
+"k_b.enableEmbeddedInputMode" = "啟用內嵌模式";
+"k_b.space_settings" = "空格設定";
+"k_b.up_swipe_on_left_remark" = "關閉後，按鍵右上側為顯示上滑文字，左上側顯示下滑文字。";
+"k_b.upSwipeOnLeft" = "上滑顯示位置-左上側";
+"k_b.show_swipe_up_and_down_layout_remark" = "開啟後，按鍵上方顯示上滑，下方顯示下滑。";
+"k_b.swipeLabelUpAndDownLayout" = "滑動文字上下顯示";
+"k_b.swipeLabelUpAndDownIrregularLayout" = "不規則顯示滑動文字";
+"k_b.disableSwipeLabel" = "滑動文字顯示關閉";
+"k_b.layout.title" = "鍵盤佈局";
+"k_b.toolbar_prefs" = "候選欄設定";
+"k_b.number_nine_grid" = "數字九宮格";
+"k_b.symbol_prefs" = "符號設定";
+"k_b.symbol_keyboard" = "分類符號鍵盤";
+
+"k_b.layout_action.import.importing" = "匯入中……";
+"k_b.layout_action.import.unable_to_access" = "匯入檔案讀取受限，無法載入檔案";
+"k_b.layout_action.import.success" = "匯入成功";
+"k_b.layout_action.import.failed" = "自定義鍵盤組態檔案載入失敗";
+"k_b.layout_action.delete.success" = "刪除成功";
+"k_b.layout_action.delete.failed" = "未找到此鍵盤";
+"k_b.layout_action.settings" = "設定";
+
+"k_b.type_option.alphabetic" = "英文鍵盤";
+"k_b.type_option.chinese" = "中文26鍵鍵盤";
+"k_b.type_option.classifySymbolic" = "分類符號鍵盤";
+"k_b.type_option.chineseNineGrid" = "中文九宫格鍵盤";
+"k_b.type_option.numericNineGrid" = "数字九宫格鍵盤";
+"k_b.type_option.custom" = "自定义鍵盤";
+
+"k_b.layout.chinese" = "中文26鍵";
+"k_b.layout.chineseNineGrid" = "中文9鍵";
+"k_b.layout.custom" = "自定義鍵盤";
+"k_b.layout.custom_named" = "自定義-%@";
+"k_b.layout.numericNineGrid" = "數字九宮格";
+"k_b.layout.remark" = "注意：\n1. 内建鍵盤向左滑動進入設定頁面。\n2. 自定義佈局通過組態檔案調整，調整申需重新部署。";
 
 "color_scheme.title" = "鍵盤配色";
 "color_scheme.enable_custom_keyboard_color" = "啟用配色";

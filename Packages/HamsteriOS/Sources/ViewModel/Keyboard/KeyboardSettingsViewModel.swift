@@ -686,21 +686,21 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       footer: Self.enableKeyboardAutomaticallyLowercaseRemark,
       items: [
         .init(
-          text: "显示按键气泡",
+          text: L10n.KB.displayButtonBubbles,
           type: .toggle,
           toggleValue: { [unowned self] in displayButtonBubbles },
           toggleHandled: { [unowned self] in
             displayButtonBubbles = $0
           }),
         .init(
-          text: "显示按键底部边框",
+          text: L10n.KB.enableButtonUnderBorder,
           type: .toggle,
           toggleValue: { [unowned self] in enableButtonUnderBorder },
           toggleHandled: { [unowned self] in
             enableButtonUnderBorder = $0
           }),
         .init(
-          text: "Shift状态锁定",
+          text: L10n.KB.lockShiftState,
           type: .toggle,
           toggleValue: { [unowned self] in lockShiftState },
           toggleHandled: { [unowned self] in
@@ -709,10 +709,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
-      footer: "开启后建议调整工具栏高度为：40。\n（位置：键盘设置 -> 候选栏设置 -> 工具栏高度）",
+      footer: L10n.KB.toolbarRemark,
       items: [
         .init(
-          text: "启用内嵌模式",
+          text: L10n.KB.enableEmbeddedInputMode,
           type: .toggle,
           toggleValue: { [unowned self] in enableEmbeddedInputMode },
           toggleHandled: { [unowned self] in
@@ -723,7 +723,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       items: [
         .init(
-          text: "空格设置",
+          text: L10n.KB.spaceSettings,
           accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationAction: { [unowned self] in
@@ -732,10 +732,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
-      footer: "关闭后，按键右上侧为显示上划文本，左上侧显示下划文本。",
+      footer: L10n.KB.upSwipeOnLeftRemark,
       items: [
         .init(
-          text: "上划显示位置-左上侧",
+          text: L10n.KB.upSwipeOnLeft,
           type: .toggle,
           toggleValue: { [unowned self] in upSwipeOnLeft },
           toggleHandled: { [unowned self] in
@@ -744,17 +744,17 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       ]),
 
     .init(
-      footer: "开启后，按键上方显示上划，下方显示下划。",
+      footer: L10n.KB.showSwipeUpAndDownLayoutRemark,
       items: [
         .init(
-          text: "划动文本上下显示",
+          text: L10n.KB.swipeLabelUpAndDownLayout,
           type: .toggle,
           toggleValue: { [unowned self] in swipeLabelUpAndDownLayout },
           toggleHandled: { [unowned self] in
             swipeLabelUpAndDownLayout = $0
           }),
         .init(
-          text: "不规则显示划动文本",
+          text: L10n.KB.swipeLabelUpAndDownIrregularLayout,
           type: .toggle,
           toggleValue: { [unowned self] in swipeLabelUpAndDownIrregularLayout },
           toggleHandled: { [unowned self] in
@@ -766,7 +766,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
       // footer: "关闭后，按键不在显示划动文本。",
       items: [
         .init(
-          text: "划动文本显示关闭",
+          text: L10n.KB.disableSwipeLabel,
           type: .toggle,
           toggleValue: { [unowned self] in disableSwipeLabel },
           toggleHandled: { [unowned self] in
@@ -777,7 +777,7 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       items: [
         .init(
-          text: "键盘布局",
+          text: L10n.KB.Layout.title,
           accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationAction: { [unowned self] in
@@ -788,10 +788,10 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       items: [
         .init(
-          text: "候选栏设置",
+          text: L10n.KB.toolbarPrefs,
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          navigationLinkLabel: { [unowned self] in enableToolbar ? "启用" : "禁用" },
+          navigationLinkLabel: { [unowned self] in enableToolbar ? L10n.enabledLabel : L10n.disabledLabel },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.toolbar)
           })
@@ -800,25 +800,25 @@ public class KeyboardSettingsViewModel: ObservableObject, Hashable, Identifiable
     .init(
       items: [
         .init(
-          text: "数字九宫格",
+          text: L10n.KB.numberNineGrid,
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          navigationLinkLabel: { [unowned self] in enableNineGridOfNumericKeyboard ? "启用" : "禁用" },
+          navigationLinkLabel: { [unowned self] in enableNineGridOfNumericKeyboard ? L10n.enabledLabel : L10n.disabledLabel },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.numberNineGrid)
           }),
         .init(
-          text: "符号设置",
+          text: L10n.KB.symbolPrefs,
           accessoryType: .disclosureIndicator,
           type: .navigation,
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.symbols)
           }),
         .init(
-          text: "分类符号键盘",
+          text: L10n.KB.symbolKeyboard,
           accessoryType: .disclosureIndicator,
           type: .navigation,
-          navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? "启用" : "禁用" },
+          navigationLinkLabel: { [unowned self] in enableSymbolKeyboard ? L10n.enabledLabel : L10n.disabledLabel },
           navigationAction: { [unowned self] in
             self.subViewSubject.send(.symbolKeyboard)
           })
@@ -1295,7 +1295,7 @@ extension KeyboardSettingsViewModel {
   /// 导入自定义键盘布局
   public func importCustomizeKeyboardLayout(fileURL: URL) async {
     Logger.statistics.debug("importCustomizeKeyboardLayout fileName: \(fileURL.path)")
-    await ProgressHUD.animate("导入中……", interaction: false)
+    await ProgressHUD.animate(L10n.KB.LayoutAction.Import.importing, interaction: false)
     // 检测是否为iCloudURL, 需要特殊处理
     var needAccessingSecurity = false
     if fileURL.path.contains("com~apple~CloudDocs") || fileURL.path.contains("iCloud~dev~fuxiao~app~hamsterapp") {
@@ -1303,7 +1303,7 @@ extension KeyboardSettingsViewModel {
       // iCloud中的URL须添加安全访问资源语句，否则会异常：Operation not permitted
       // startAccessingSecurityScopedResource与stopAccessingSecurityScopedResource必须成对出现
       if !fileURL.startAccessingSecurityScopedResource() {
-        await ProgressHUD.failed("导入文件读取受限，无法加载文件", interaction: false, delay: 1.5)
+        await ProgressHUD.failed(L10n.KB.LayoutAction.Import.unableToAccess, interaction: false, delay: 1.5)
         return
       }
     }
@@ -1330,11 +1330,11 @@ extension KeyboardSettingsViewModel {
       HamsterAppDependencyContainer.shared.configuration.keyboards = originalKeyboards + keyboards.keyboards
       HamsterAppDependencyContainer.shared.applicationConfiguration.keyboards = originalKeyboards + keyboards.keyboards
 
-      await ProgressHUD.success("导入成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.KB.LayoutAction.Import.success, interaction: false, delay: 1.5)
       reloadRootViewSubject.send(true)
     } catch {
       Logger.statistics.error("importCustomizeKeyboardLayout error: \(error)")
-      await ProgressHUD.failed("自定义键盘配置文件加载失败", interaction: false, delay: 1.5)
+      await ProgressHUD.failed(L10n.KB.LayoutAction.Import.failed, interaction: false, delay: 1.5)
       return
     }
   }
@@ -1346,10 +1346,10 @@ extension KeyboardSettingsViewModel {
       keyboards.remove(at: index)
       HamsterAppDependencyContainer.shared.configuration.keyboards = keyboards
       HamsterAppDependencyContainer.shared.applicationConfiguration.keyboards = keyboards
-      ProgressHUD.success("删除成功", interaction: false, delay: 1.5)
+      ProgressHUD.success(L10n.KB.LayoutAction.Delete.success, interaction: false, delay: 1.5)
       reloadRootViewSubject.send(true)
     } else {
-      ProgressHUD.failed("未找到此键盘", interaction: false, delay: 1.5)
+      ProgressHUD.failed(L10n.KB.LayoutAction.Delete.failed, interaction: false, delay: 1.5)
     }
   }
 }
@@ -1388,12 +1388,12 @@ extension KeyboardSettingsViewModel {
 
     var option: String {
       switch self {
-      case .alphabetic: "英文键盘"
-      case .chinese: "中文26键键盘"
-      case .classifySymbolic: "分类符号键盘"
-      case .chineseNineGrid: "中文九宫格键盘"
-      case .numericNineGrid: "数字九宫格键盘"
-      case .custom: "自定义键盘"
+      case .alphabetic: L10n.KB.TypeOption.alphabetic
+      case .chinese: L10n.KB.TypeOption.chinese
+      case .classifySymbolic: L10n.KB.TypeOption.classifySymbolic
+      case .chineseNineGrid: L10n.KB.TypeOption.chineseNineGrid
+      case .numericNineGrid: L10n.KB.TypeOption.numericNineGrid
+      case .custom: L10n.KB.TypeOption.custom
 //      case .emojis: "Emojis键盘"
       }
     }
@@ -1670,16 +1670,16 @@ extension KeyboardSettingsViewModel {
 
 public extension KeyboardSettingsViewModel {
   static let symbolKeyboardRemark = "启用后，常规符号键盘将被替换为符号键盘。常规符号键盘布局类似系统自带键盘符号布局。"
-  static let enableKeyboardAutomaticallyLowercaseRemark = "关闭后，Shift状态随当前输入状态变化。注意: 双击Shift会保持锁定"
+  static let enableKeyboardAutomaticallyLowercaseRemark = L10n.KB.autoLowerRemark
 }
 
 extension KeyboardType {
   var label: String {
     switch self {
-    case .chinese: return "中文26键"
-    case .chineseNineGrid: return "中文9键"
-    case .custom(let name, _): return name.isEmpty ? "自定义键盘" : "自定义-\(name)"
-    case .numericNineGrid: return "数字九宫格"
+    case .chinese: return L10n.KB.Layout.chinese
+    case .chineseNineGrid: return L10n.KB.Layout.chineseNineGrid
+    case .custom(let name, _): return name.isEmpty ? L10n.KB.Layout.custom : L10n.KB.Layout.customNamed(name)
+    case .numericNineGrid: return L10n.KB.Layout.numericNineGrid
     default: return ""
     }
   }

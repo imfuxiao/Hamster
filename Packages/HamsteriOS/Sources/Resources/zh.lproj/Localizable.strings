@@ -94,6 +94,46 @@
 
 "k_b.section_title" = "键盘相关";
 "k_b.title" = "键盘设置";
+"k_b.auto_lower_remark" = "关闭后，Shift状态随当前输入状态变化。注意: 双击Shift会保持锁定";
+"k_b.displayButtonBubbles" = "显示按键气泡";
+"k_b.enableButtonUnderBorder" = "显示按键底部边框";
+"k_b.lockShiftState" = "Shift状态锁定";
+"k_b.toolbar_remark" = "开启后建议调整工具栏高度为：40。\n（位置：键盘设置 -> 候选栏设置 -> 工具栏高度）";
+"k_b.enableEmbeddedInputMode" = "启用内嵌模式";
+"k_b.space_settings" = "空格设置";
+"k_b.up_swipe_on_left_remark" = "关闭后，按键右上侧为显示上划文本，左上侧显示下划文本。";
+"k_b.upSwipeOnLeft" = "上划显示位置-左上侧";
+"k_b.show_swipe_up_and_down_layout_remark" = "开启后，按键上方显示上划，下方显示下划。";
+"k_b.swipeLabelUpAndDownLayout" = "划动文本上下显示";
+"k_b.swipeLabelUpAndDownIrregularLayout" = "不规则显示划动文本";
+"k_b.disableSwipeLabel" = "划动文本显示关闭";
+"k_b.layout.title" = "键盘布局";
+"k_b.toolbar_prefs" = "候选栏设置";
+"k_b.number_nine_grid" = "数字九宫格";
+"k_b.symbol_prefs" = "符号设置";
+"k_b.symbol_keyboard" = "分类符号键盘";
+
+"k_b.layout_action.import.importing" = "导入中……";
+"k_b.layout_action.import.unable_to_access" = "导入文件读取受限，无法加载文件";
+"k_b.layout_action.import.success" = "导入成功";
+"k_b.layout_action.import.failed" = "自定义键盘配置文件加载失败";
+"k_b.layout_action.delete.success" = "删除成功";
+"k_b.layout_action.delete.failed" = "未找到此键盘";
+"k_b.layout_action.settings" = "设置";
+
+"k_b.type_option.alphabetic" = "英文键盘";
+"k_b.type_option.chinese" = "中文26键键盘";
+"k_b.type_option.classifySymbolic" = "分类符号键盘";
+"k_b.type_option.chineseNineGrid" = "中文九宫格键盘";
+"k_b.type_option.numericNineGrid" = "数字九宫格键盘";
+"k_b.type_option.custom" = "自定义键盘";
+
+"k_b.layout.chinese" = "中文26键";
+"k_b.layout.chineseNineGrid" = "中文9键";
+"k_b.layout.custom" = "自定义键盘";
+"k_b.layout.custom_named" = "自定义-%@";
+"k_b.layout.numericNineGrid" = "数字九宫格";
+"k_b.layout.remark" = "注意：\n1. 内置键盘向左滑动进入设置页面。\n2. 自定义布局通过配置文件调整，调整后需重新部署。";
 
 "color_scheme.title" = "键盘配色";
 "color_scheme.enable_custom_keyboard_color" = "启用配色";
