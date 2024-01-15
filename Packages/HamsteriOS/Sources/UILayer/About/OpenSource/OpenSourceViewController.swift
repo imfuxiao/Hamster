@@ -25,7 +25,7 @@ class OpenSourceViewController: NibLessViewController {
 
 extension OpenSourceViewController {
   override func loadView() {
-    title = "使用开源列表"
+    title = L10n.About.Oss.title
     view = OpenSourceRootView(openSourceViewModel: openSourceViewModel)
   }
 }

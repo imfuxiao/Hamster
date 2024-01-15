@@ -111,7 +111,7 @@ extension FileBrowserView: UITableViewDelegate {
     guard fileBrowserViewModel.enableEditorState else { return nil }
     let fileInfo = fileBrowserViewModel.files[indexPath.row]
 
-    let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, _ in
+    let deleteAction = UIContextualAction(style: .destructive, title: L10n.delete) { [unowned self] _, _, _ in
       self.finderViewModel.deleteFileConform { [unowned self] in
         self.fileBrowserViewModel.deleteFile(fileInfo: fileInfo)
       }

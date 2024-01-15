@@ -13,7 +13,7 @@ class ChineseNineGridKeyboardSettingsView: NibLessView {
   private let keyboardSettingsViewModel: KeyboardSettingsViewModel
 
   lazy var symbolsView: UIView = SymbolEditorView(
-    headerTitle: "左侧划动符号栏",
+    headerTitle: L10n.KB.LayoutZh9grid.SymbolEdit.title,
     getSymbols: { [unowned self] in keyboardSettingsViewModel.symbolsOfChineseNineGridKeyboard },
     symbolsDidSet: { [unowned self] in
       keyboardSettingsViewModel.symbolsOfChineseNineGridKeyboard = $0
@@ -23,10 +23,10 @@ class ChineseNineGridKeyboardSettingsView: NibLessView {
     needRestButton: true,
     restButtonAction: { [unowned self] in
       guard let defaultConfiguration = HamsterAppDependencyContainer.shared.defaultConfiguration else {
-        throw "未找到系统默认配置"
+        throw L10n.KB.Symbol.noSysDefaultConf
       }
       guard let defaultPairsOfSymbols = defaultConfiguration.keyboard?.symbolsOfChineseNineGridKeyboard else {
-        throw "未找到默认值"
+        throw L10n.KB.Symbol.noDefaultConf
       }
       keyboardSettingsViewModel.symbolsOfChineseNineGridKeyboard = defaultPairsOfSymbols
       keyboardSettingsViewModel.resetSignSubject.send(true)

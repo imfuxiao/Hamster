@@ -124,7 +124,7 @@ extension InputSchemaViewModel {
   func initialLoadCloudInputSchema(_ title: String = "") {
     Task {
       do {
-        await ProgressHUD.animate("加载中……", AnimationType.circleRotateChase, interaction: false)
+        await ProgressHUD.animate(L10n.InputSchema.Cloud.listLoading, AnimationType.circleRotateChase, interaction: false)
         try await CloudKitHelper.shared.inputSchemaList(title) { [unowned self] result in
           self.callbackHandler(result, appendState: false)
         }
@@ -138,7 +138,7 @@ extension InputSchemaViewModel {
   func loadCloudInputSchemaByCursor() {
     guard let cursor = self.inputSchemaQueryCursor else { return }
     Task {
-      await ProgressHUD.animate("加载中……", AnimationType.circleRotateChase, interaction: false)
+      await ProgressHUD.animate(L10n.InputSchema.Cloud.listLoading, AnimationType.circleRotateChase, interaction: false)
       try await CloudKitHelper.shared.inputSchemaListByCursor(cursor) { [unowned self] result in
         self.callbackHandler(result, appendState: true)
       }
@@ -179,7 +179,7 @@ extension InputSchemaViewModel {
 
   func downloadInputSchema(_ id: CKRecord.ID, dst: URL) async throws {
     do {
-      await ProgressHUD.animate("下载中……", AnimationType.circleRotateChase)
+      await ProgressHUD.animate(L10n.InputSchema.Cloud.downloading, AnimationType.circleRotateChase)
       let record = try await CloudKitHelper.shared.getRecord(id: id)
       if let asset = record.value(forKey: "data") as? CKAsset, let zipURL = asset.fileURL {
         do {
@@ -203,15 +203,15 @@ extension InputSchemaViewModel {
     uploadInputSchemaConfirmSubject.send { [unowned self] in
       Task {
         do {
-          await ProgressHUD.animate("方案上传中……", interaction: false)
+          await ProgressHUD.animate(L10n.InputSchema.uploading, interaction: false)
           let fileInfo = try FileManager.default.attributesOfItem(atPath: fileURL.path)
           if let fileSize = fileInfo[FileAttributeKey.size] as? Int {
             if fileSize > Self.maxFileSize {
-              await ProgressHUD.error("方案文件不能超过 50 MB", interaction: false, delay: 1.5)
+              await ProgressHUD.error(L10n.InputSchema.uploadSizeLimitError, interaction: false, delay: 1.5)
               return
             }
           } else {
-            await ProgressHUD.error("未能获取上传方案文件信息", interaction: false, delay: 1.5)
+            await ProgressHUD.error(L10n.InputSchema.uploadFileInfoError, interaction: false, delay: 1.5)
             return
           }
 
@@ -225,11 +225,11 @@ extension InputSchemaViewModel {
 
           _ = try await CloudKitHelper.shared.saveRecord(record)
 
-          await ProgressHUD.success("方案上传成功……")
+          await ProgressHUD.success(L10n.InputSchema.Upload.success)
           self.presentDocumentPickerSubject.send(.inputSchema)
         } catch {
           Logger.statistics.error("\(error.localizedDescription)")
-          await ProgressHUD.error("上传方案失败：\(error.localizedDescription)", interaction: false, delay: 1.5)
+          await ProgressHUD.error(L10n.InputSchema.Upload.failed(error.localizedDescription), interaction: false, delay: 1.5)
         }
       }
     }
@@ -242,12 +242,12 @@ extension InputSchemaViewModel {
   func inputSchemaMenus() -> UIMenu {
     let barButtonMenu = UIMenu(title: "", children: [
       UIAction(
-        title: "导入方案",
+        title: L10n.InputSchema.Action.import,
         image: UIImage(systemName: "square.and.arrow.down"),
         handler: { [unowned self] _ in self.presentDocumentPickerSubject.send(.documentPicker) }
       ),
       UIAction(
-        title: "方案下载",
+        title: L10n.InputSchema.Action.download,
         image: UIImage(systemName: "icloud.and.arrow.down"),
         handler: { [unowned self] _ in self.presentDocumentPickerSubject.send(.downloadCloudInputSchema) }
       ),
@@ -258,7 +258,7 @@ extension InputSchemaViewModel {
   func uploadInputSchemaMenus() -> UIMenu {
     let barButtonMenu = UIMenu(title: "", children: [
       UIAction(
-        title: "开源方案上传",
+        title: L10n.InputSchema.Action.upload,
         image: UIImage(systemName: "icloud.and.arrow.up"),
         handler: { [unowned self] _ in self.presentDocumentPickerSubject.send(.uploadCloudInputSchema) }
       ),
@@ -273,7 +273,7 @@ extension InputSchemaViewModel {
       rimeContext.appendSelectSchema(schema)
     } else {
       if selectSchemas.count == 1 {
-        throw "需要保留至少一个输入方案。"
+        throw L10n.InputSchema.selectAtLeastOne
       }
       rimeContext.removeSelectSchema(schema)
     }
@@ -284,7 +284,7 @@ extension InputSchemaViewModel {
   public func importZipFile(fileURL: URL) async {
     Logger.statistics.debug("file.fileName: \(fileURL.path)")
 
-    await ProgressHUD.animate("方案导入中……", AnimationType.circleRotateChase, interaction: false)
+    await ProgressHUD.animate(L10n.InputSchema.Import.importing, AnimationType.circleRotateChase, interaction: false)
     do {
       // 检测 Rime 目录是否存在
       try FileManager.createDirectory(override: false, dst: FileManager.sandboxUserDataDirectory)
@@ -292,17 +292,17 @@ extension InputSchemaViewModel {
 
       var hamsterConfiguration = HamsterAppDependencyContainer.shared.configuration
 
-      await ProgressHUD.animate("方案部署中……", interaction: false)
+      await ProgressHUD.animate(L10n.InputSchema.solutionDeploying, interaction: false)
       try rimeContext.deployment(configuration: &hamsterConfiguration)
 
       HamsterAppDependencyContainer.shared.configuration = hamsterConfiguration
 
       // 发布
       reloadTableStateSubject.send(true)
-      await ProgressHUD.success("导入成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.InputSchema.Import.success, interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.debug("zip \(error)")
-      await ProgressHUD.failed("导入Zip文件失败, \(error.localizedDescription)")
+      await ProgressHUD.failed(L10n.InputSchema.Import.failed (error.localizedDescription))
     }
     try? FileManager.default.removeItem(at: fileURL)
   }

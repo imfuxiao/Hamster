@@ -36,9 +36,9 @@ class AddKeySwipeViewController: NibLessViewController {
       .receive(on: DispatchQueue.main)
       .sink { [unowned self] option, saveAction in
         if option == .character || option == .symbol {
-          alertText(alertTitle: "字符", submitTitle: "保存", submitCallback: { textField in
+          alertText(alertTitle: L10n.KB.SwipeSetting.character, submitTitle: L10n.save, submitCallback: { textField in
             guard let char = textField.text, !char.isEmpty else {
-              ProgressHUD.failed("字符不能为空")
+              ProgressHUD.failed(L10n.KB.SwipeSetting.noCharacter)
               return
             }
             let action: KeyboardAction = option == .character ? .character(char) : .symbol(Symbol(char: char))
@@ -48,7 +48,7 @@ class AddKeySwipeViewController: NibLessViewController {
         }
 
         if option == .shortCommand {
-          alertOptionSheet(alertTitle: "快捷指令修改", addAlertOptions: { optionMenu in
+          alertOptionSheet(alertTitle: L10n.KB.SwipeSetting.editCommand, addAlertOptions: { optionMenu in
             ShortcutCommand.allCases.forEach { command in
               let alertAction = UIAlertAction(title: command.rawValue, style: .default) { _ in
                 let action: KeyboardAction = .shortCommand(command)
@@ -61,11 +61,11 @@ class AddKeySwipeViewController: NibLessViewController {
         }
 
         if option == .keyboardType {
-          alertOptionSheet(alertTitle: "键盘切换", addAlertOptions: { optionMenu in
+          alertOptionSheet(alertTitle: L10n.KB.SwipeSetting.switchKeyboard, addAlertOptions: { optionMenu in
             KeyboardSettingsViewModel.KeyboardTypeOption.allCases.forEach { keyboardTypeOption in
               let alertAction = UIAlertAction(title: keyboardTypeOption.option, style: .default) { _ in
                 if keyboardTypeOption == .custom {
-                  self.alertText(alertTitle: "自定义键盘名称", submitTitle: "保存", submitCallback: { textField in
+                  self.alertText(alertTitle: L10n.KB.SwipeSetting.customKeyboardName, submitTitle: L10n.save, submitCallback: { textField in
                     guard let char = textField.text, !char.isEmpty else { return }
                     let action: KeyboardAction = .keyboardType(.custom(named: char, case: .lowercased))
                     saveAction(action)
@@ -74,7 +74,7 @@ class AddKeySwipeViewController: NibLessViewController {
                 }
 
                 guard let keyboardTypeOption = keyboardTypeOption.keyboardType else {
-                  ProgressHUD.failed("无对应的键盘类型")
+                  ProgressHUD.failed(L10n.KB.SwipeSetting.noCorrespondingKbType)
                   return
                 }
 
@@ -91,7 +91,7 @@ class AddKeySwipeViewController: NibLessViewController {
   }
 
   override func loadView() {
-    title = "新增滑动"
+    title = L10n.KB.SwipeSetting.addSwipe
     view = AddKeySwipeRootView(KeyboardSettingsViewModel: keyboardSettingsViewModel, key: key, keyboardType: keyboardType)
   }
 }

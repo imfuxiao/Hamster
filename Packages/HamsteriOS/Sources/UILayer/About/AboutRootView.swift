@@ -36,7 +36,7 @@ class AboutRootView: NibLessView {
 
   lazy var titleLabel: UILabel = {
     let titleLabel = UILabel(frame: .zero)
-    titleLabel.text = "仓输入法"
+    titleLabel.text = L10n.App.name
     titleLabel.font = UIFont.preferredFont(forTextStyle: .title2)
     return titleLabel
   }()
@@ -123,7 +123,7 @@ class AboutRootView: NibLessView {
 
   @objc func copyAppVersion() {
     UIPasteboard.general.string = AppInfo.appVersion
-    ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
+    ProgressHUD.success(L10n.copySuccessfully, interaction: false, delay: 1.5)
   }
 }
 

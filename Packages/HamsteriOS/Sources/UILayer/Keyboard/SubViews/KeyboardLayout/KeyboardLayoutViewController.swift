@@ -48,7 +48,7 @@ class KeyboardLayoutViewController: NibLessViewController {
   }
 
   override func loadView() {
-    title = "键盘布局"
+    title = L10n.KB.Layout.title
     view = rootView
 
     // 右侧导入按钮

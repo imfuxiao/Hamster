@@ -24,13 +24,13 @@ class KeyboardLayoutRootView: NibLessView {
         let action: UIContextualAction
 
         if item.keyboardType.isCustom {
-          action = UIContextualAction(style: .destructive, title: "删除", handler: { [unowned self] _, _, completion in
+          action = UIContextualAction(style: .destructive, title: L10n.delete, handler: { [unowned self] _, _, completion in
             keyboardSettingsViewModel.deleteCustomizeKeyboardLayout(item.keyboardType)
             completion(true)
           })
           action.backgroundColor = .systemRed
         } else {
-          action = UIContextualAction(style: .normal, title: "设置", handler: { [unowned self] _, _, completion in
+          action = UIContextualAction(style: .normal, title: L10n.KB.LayoutAction.settings, handler: { [unowned self] _, _, completion in
             keyboardSettingsAction(item.keyboardType)
             completion(true)
           })
@@ -98,11 +98,7 @@ extension KeyboardLayoutRootView {
   func footerRegistration() -> UICollectionView.SupplementaryRegistration<UICollectionViewListCell> {
     UICollectionView.SupplementaryRegistration(elementKind: UICollectionView.elementKindSectionFooter) { footerView, _, _ in
       var configuration = footerView.defaultContentConfiguration()
-      configuration.text = """
-      注意：
-      1. 内置键盘向左滑动进入设置页面。
-      2. 自定义布局通过配置文件调整，调整后需重新部署。
-      """
+      configuration.text = L10n.KB.Layout.remark
       configuration.textProperties.font = UIFont.preferredFont(forTextStyle: .caption2)
       configuration.textProperties.color = UIColor.secondaryLabel
       footerView.contentConfiguration = configuration

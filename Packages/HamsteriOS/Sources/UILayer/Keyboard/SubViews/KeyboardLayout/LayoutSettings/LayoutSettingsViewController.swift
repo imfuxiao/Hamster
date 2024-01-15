@@ -57,18 +57,18 @@ class LayoutSettingsViewController: NibLessViewController {
       .sink { [unowned self] action in
         if action == .chineseLayoutSwipeSettings {
           let addSwipeAction = UIAction { [unowned self] _ in
-            alertOptionSheet(alertTitle: "新增滑动Action", addAlertOptions: { optionMenu in
+            alertOptionSheet(alertTitle: L10n.KB.LayoutZh26.SwipeKey.addKeySwipeAction, addAlertOptions: { optionMenu in
               [KeyboardSettingsViewModel.KeyboardActionOption.character, KeyboardSettingsViewModel.KeyboardActionOption.symbol]
                 .forEach { actionOption in
                   let action = UIAlertAction(title: actionOption.option, style: .default) { _ in
                     // 弹出字符设置文本框
-                    self.alertText(alertTitle: "字符", submitTitle: "保存", submitCallback: { textField in
+                    self.alertText(alertTitle: L10n.KB.LayoutZh26.SwipeKey.title, submitTitle: L10n.save, submitCallback: { textField in
                       guard let char = textField.text, !char.isEmpty else { return }
                       let action: KeyboardAction = actionOption == .character ? .character(char) : .symbol(Symbol(char: char))
                       let key = Key(action: action)
                       let keyboardType: KeyboardType = .chinese(.lowercased)
                       guard !self.keyboardSettingsViewModel.swipeKeyExists(key, keyboardType: keyboardType) else {
-                        ProgressHUD.failed("\(action.yamlString)已经存在")
+                        ProgressHUD.failed(L10n.KB.LayoutZh26.SwipeKey.keyExist(action.yamlString))
                         return
                       }
                       self.keyboardSettingsViewModel.saveKeySwipe(key, keyboardType: keyboardType)
@@ -96,7 +96,7 @@ class LayoutSettingsViewController: NibLessViewController {
           return
         }
         let rightBarButtonItem = UIBarButtonItem(
-          title: isEditing ? "完成" : "编辑",
+          title: isEditing ? L10n.done : L10n.edit,
           style: .plain,
           target: keyboardSettingsViewModel,
           action: #selector(keyboardSettingsViewModel.changeSymbolsOfChineseNineGridEditorState)
