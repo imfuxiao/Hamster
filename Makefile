@@ -1,4 +1,4 @@
-.PHONY: framework cleanFramework scheme cleanScheme
+.PHONY: framework cleanFramework schema cleanSchema
 
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 mkfile_dir := $(dir $(mkfile_path))
