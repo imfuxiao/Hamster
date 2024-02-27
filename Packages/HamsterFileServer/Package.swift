@@ -15,7 +15,9 @@ let package = Package(
       targets: ["HamsterFileServer"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/JacobHearst/GCDWebServer.git", exact: "3.5.5"),
+    // .package(url: "https://github.com/JacobHearst/GCDWebServer.git", exact: "3.5.5"), // https://github.com/JacobHearst/GCDWebServer.git was deleted
+    // Clone https://github.com/CaperWhite/GCDWebServer.git then add it as local dependency
+    .package(path: "./GCDWebServer"),
     .package(url: "https://github.com/weichsel/ZIPFoundation.git", exact: "0.9.16"),
   ],
   targets: [

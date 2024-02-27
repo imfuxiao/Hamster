@@ -1,15 +1,6 @@
 {
   "pins" : [
     {
-      "identity" : "gcdwebserver",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/JacobHearst/GCDWebServer.git",
-      "state" : {
-        "revision" : "14f9eedb296c5b71fec971d8256ef3bfc20a2245",
-        "version" : "3.5.5"
-      }
-    },
-    {
       "identity" : "progresshud",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/relatedcode/ProgressHUD.git",
