@@ -11,7 +11,7 @@ OUTPUT="${PWD}/Frameworks"
 # fi
 
 # 下载依赖的 librime framework
-LibrimeKitVersion="2.1.1"
+LibrimeKitVersion="2.4.2"
 mkdir -p $OUTPUT
 rm -rf $OUTPUT/*.xcframwork && (
   curl -OL https://github.com/imfuxiao/LibrimeKit/releases/download/${LibrimeKitVersion}/Frameworks.tgz
