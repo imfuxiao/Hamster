@@ -1,7 +1,7 @@
 ---
 name: bug report
 about: 创建一个 Bug 的反馈，帮助我来改进「仓输入法」
-title: "「Bug」"
+title: "「Bug」请填 Bug 的标题"
 labels: ''
 assignees: imfuxiao
 
