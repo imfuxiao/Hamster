@@ -189,6 +189,54 @@ keyboard:
       candidate_text_color: 0x595E00 # 候选栏次选文字颜色
       comment_text_color: 0x005947 # 候选栏次选文字 Comment 信息颜色
       label_color: 0xA36407 # 候选栏次选序号颜色
+    - schemaName: ios_light
+      name: 系统•浅
+      author: Kito0615<anar930906@gmail.com>
+      back_color: 0xD9D3D1 # 键盘背景色
+      button_back_color: 0xFFFFFF # 按键背景色
+      button_pressed_back_color: 0xFFFFFF # 按下时按键背景颜色（系统TintColor。Blue: 0xF67834, Purple: 0xA2549B, Pink: 0x9C5CE4, Red: 0x5D5FED, Orange: 0x3A88E7, Yellow: 0x44C8F6, Green: 0x56B878, Grey: 0x8B8B8B）
+      button_foreground_color: 0x020100 # 按键上文字颜色
+      button_pressed_foreground_color: 0xFFFFFF # 按下时按键上文字颜色
+      button_swipe_foreground_color: 0xFFFFFF # 按键上划动文字颜色
+      corner_radius: 5  # 按键圆角半径
+      border_color: 0xFFFFFF # 按键边框颜色
+      text_color: 0x020100 # 组字区域文字颜色
+      hilited_candidate_back_color: 0xF9F8F7 # 候选栏首选文字区域背景颜色
+      hilited_candidate_text_color: 0x020100 # 候选栏首选文字颜色
+      hilited_comment_text_color: 0x020100 # 候选栏首选文字 Comment 颜色
+      hilited_candidate_label_color: 0x020100 # 候选栏首选序号颜色
+      candidate_text_color: 0x020100 # 候选栏次选文字颜色
+      comment_text_color: 0x020100 # 候选栏次选文字 Comment 颜色
+      label_color: 0x020100 # 候选栏次选序号颜色
+      hilited_callout_back_color: 0xF9F8F7 # 长按首选背景颜色
+      hilited_callout_foreground_color: 0x020100 # 长按首选文字颜色
+      shadow_color: 0x8C8887 # 按键阴影
+      shadow_size: 2  # 阴影大小
+      button_bubble_back_color: 0xF9F8F7 # 按键气泡颜色（可选），为空时使用 `button_back_color` 作为气泡颜色
+    - schemaName: ios_dark
+      name: 系统•深
+      author: Kito0615<anar930906@gmail.com>
+      back_color: 0x333333 # 键盘背景色
+      button_back_color: 0x707070 # 按键背景色
+      button_pressed_back_color: 0x707070 # 按下时按键背景颜色（系统TintColor。Blue: 0xF67834, Purple: 0xA2549B, Pink: 0x9C5CE4, Red: 0x5D5FED, Orange: 0x3A88E7, Yellow: 0x44C8F6, Green: 0x56B878, Grey: 0x8B8B8B）
+      button_foreground_color: 0xFEFEFE # 按键上文字颜色
+      button_pressed_foreground_color: 0xFEFEFE # 按下时按键上文字颜色
+      button_swipe_foreground_color: 0xFEFEFE # 按键上划动文字颜色
+      corner_radius: 5  # 按键圆角半径
+      border_color: 0x707070 # 按键边框颜色
+      text_color: 0xFEFEFE # 组字区域文字颜色
+      hilited_candidate_back_color: 0x4A4848 # 候选栏首选文字区域背景颜色
+      hilited_candidate_text_color: 0xFEFEFE # 候选栏首选文字颜色
+      hilited_comment_text_color: 0x6F6F6F # 候选栏首选文字 Comment 颜色
+      hilited_candidate_label_color: 0xFEFEFE # 候选栏首选序号颜色
+      candidate_text_color: 0xFEFEFE # 候选栏次选文字颜色
+      comment_text_color: 0xFEFEFE # 候选栏次选文字 Comment 颜色
+      label_color: 0xFEFEFE # 候选栏次选序号颜色
+      hilited_callout_back_color: 0x4A4848 # 长按首选背景颜色
+      hilited_callout_foreground_color: 0xFEFEFE # 长按首选文字颜色
+      shadow_color: 0x1E1E1E # 按键阴影
+      shadow_size: 2  # 阴影大小
+      button_bubble_back_color: 0x4A4848 # 按键气泡颜色（可选），为空时使用 `button_back_color` 作为气泡颜色
 
 # RIME 引擎相关配置
 rime:
