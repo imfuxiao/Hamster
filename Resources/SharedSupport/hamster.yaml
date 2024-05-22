@@ -194,7 +194,7 @@ keyboard:
       author: Kito0615<anar930906@gmail.com>
       back_color: 0xD9D3D1 # 键盘背景色
       button_back_color: 0xFFFFFF # 按键背景色
-      button_pressed_back_color: 0xFFFFFF # 按下时按键背景颜色（系统TintColor。Blue: 0xF67834, Purple: 0xA2549B, Pink: 0x9C5CE4, Red: 0x5D5FED, Orange: 0x3A88E7, Yellow: 0x44C8F6, Green: 0x56B878, Grey: 0x8B8B8B）
+      button_pressed_back_color: 0xFFFFFF # 按下时按键背景颜色
       button_foreground_color: 0x020100 # 按键上文字颜色
       button_pressed_foreground_color: 0xFFFFFF # 按下时按键上文字颜色
       button_swipe_foreground_color: 0xFFFFFF # 按键上划动文字颜色
@@ -218,7 +218,7 @@ keyboard:
       author: Kito0615<anar930906@gmail.com>
       back_color: 0x333333 # 键盘背景色
       button_back_color: 0x707070 # 按键背景色
-      button_pressed_back_color: 0x707070 # 按下时按键背景颜色（系统TintColor。Blue: 0xF67834, Purple: 0xA2549B, Pink: 0x9C5CE4, Red: 0x5D5FED, Orange: 0x3A88E7, Yellow: 0x44C8F6, Green: 0x56B878, Grey: 0x8B8B8B）
+      button_pressed_back_color: 0x707070 # 按下时按键背景颜色
       button_foreground_color: 0xFEFEFE # 按键上文字颜色
       button_pressed_foreground_color: 0xFEFEFE # 按下时按键上文字颜色
       button_swipe_foreground_color: 0xFEFEFE # 按键上划动文字颜色
