@@ -194,10 +194,10 @@ keyboard:
       author: Kito0615<anar930906@gmail.com>
       back_color: 0xD9D3D1 # 键盘背景色
       button_back_color: 0xFFFFFF # 按键背景色
-      button_pressed_back_color: 0xFFFFFF # 按下时按键背景颜色
+      button_pressed_back_color: 0xD9D3D1 # 按下时按键背景颜色
       button_foreground_color: 0x020100 # 按键上文字颜色
       button_pressed_foreground_color: 0xFFFFFF # 按下时按键上文字颜色
-      button_swipe_foreground_color: 0xFFFFFF # 按键上划动文字颜色
+      button_swipe_foreground_color: 0x020100 # 按键上划动文字颜色
       corner_radius: 5  # 按键圆角半径
       border_color: 0xFFFFFF # 按键边框颜色
       text_color: 0x020100 # 组字区域文字颜色
@@ -208,7 +208,7 @@ keyboard:
       candidate_text_color: 0x020100 # 候选栏次选文字颜色
       comment_text_color: 0x020100 # 候选栏次选文字 Comment 颜色
       label_color: 0x020100 # 候选栏次选序号颜色
-      hilited_callout_back_color: 0xF9F8F7 # 长按首选背景颜色
+      hilited_callout_back_color: 0xD9D3D1 # 长按首选背景颜色
       hilited_callout_foreground_color: 0x020100 # 长按首选文字颜色
       shadow_color: 0x8C8887 # 按键阴影
       shadow_size: 2  # 阴影大小
