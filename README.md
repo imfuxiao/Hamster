@@ -37,12 +37,10 @@ xed .
 * [Squirrel](https://github.com/rime/squirrel) (GPL-3.0 license)
 * [Runestone](https://github.com/simonbs/Runestone.git) (MIT License)
 * [TreeSitterLanguages](https://github.com/simonbs/TreeSitterLanguages.git) (MIT License)
-* [Vapor](https://github.com/vapor/vapor) (MIT License)
-* [Leaf](https://github.com/vapor/leaf) (MIT License)
 * [ProgressHUD](https://github.com/relatedcode/ProgressHUD) (MIT License)
 * [ZIPFoundation](https://github.com/weichsel/ZIPFoundation) (MIT License)
 * [Yams](https://github.com/jpsim/Yams) (MIT License)
-* [ZippyJSON](https://github.com/michaeleisel/ZippyJSON)
+* [GCDWebServer](https://github.com/swisspol/GCDWebServer)
 
 # 致谢
 
@@ -52,8 +50,8 @@ xed .
 
 如果「仓」对您有帮助，可以请我吃份「煎饼馃子」，感激不尽~
 
-<img src="https://ihsiao.com/images/aliPay.jpeg" width="207" height="281" />
-<img src="https://ihsiao.com/images/wechatPay.jpeg"  width="207" height="281" />
+<img src="https://ihsiao.com/aliPay.jpeg" width="207" height="281" />
+<img src="https://ihsiao.com/wechatPay.jpeg"  width="207" height="281" />
 
 
 ### AppStore
