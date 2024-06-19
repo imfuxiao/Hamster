@@ -60,12 +60,12 @@ extension BackupRootView: UITableViewDelegate {
     let fileInfo = backupViewModel.backupFiles[indexPath.row]
     backupViewModel.selectFile = fileInfo
 
-    let deleteAction = UIContextualAction(style: .destructive, title: "删除") { [unowned self] _, _, _ in
+    let deleteAction = UIContextualAction(style: .destructive, title: L10n.delete) { [unowned self] _, _, _ in
       backupViewModel.backupSwipeAction = .delete
     }
     deleteAction.backgroundColor = .systemRed
 
-    let restoreAction = UIContextualAction(style: .normal, title: "恢复") { [unowned self] _, _, completion in
+    let restoreAction = UIContextualAction(style: .normal, title: L10n.Backup.Restore.title) { [unowned self] _, _, completion in
       Task {
         await backupViewModel.restore(fileInfo: fileInfo)
         completion(true)
@@ -73,7 +73,7 @@ extension BackupRootView: UITableViewDelegate {
     }
     restoreAction.backgroundColor = .systemYellow
 
-    let editAction = UIContextualAction(style: .normal, title: "修改名称") { [unowned self] _, _, _ in
+    let editAction = UIContextualAction(style: .normal, title: L10n.Backup.Rename.title) { [unowned self] _, _, _ in
       backupViewModel.backupSwipeAction = .rename
     }
     editAction.backgroundColor = .systemBlue
@@ -117,8 +117,5 @@ extension BackupRootView: UITableViewDataSource {
 }
 
 extension BackupRootView {
-  static let backupRemark = """
-  1. 向左划动操作文件；
-  2. 软件恢复后,请手动执行“重新部署”；
-  """
+  static let backupRemark = L10n.Backup.remark
 }

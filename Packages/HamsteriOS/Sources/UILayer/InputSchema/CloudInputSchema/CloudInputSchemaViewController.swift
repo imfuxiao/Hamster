@@ -51,7 +51,7 @@ class CloudInputSchemaViewController: NibLessViewController {
 
   override func loadView() {
     view = CloudInputSchemaRootView(inputSchemaViewModel: inputSchemaViewModel)
-    title = "开源输入方案"
+    title = L10n.InputSchema.Cloud.title
   }
 
   func presentInputSchemaInfoView(_ info: InputSchemaViewModel.InputSchemaInfo) {

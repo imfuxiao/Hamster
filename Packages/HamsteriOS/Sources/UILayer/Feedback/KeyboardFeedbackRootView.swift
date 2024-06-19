@@ -64,7 +64,7 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
     if indexPath.section == 0 {
       let cell = ToggleTableViewCell(style: .default, reuseIdentifier: ToggleTableViewCell.identifier)
       cell.settingItem = .init(
-        text: "开启按键声",
+        text: L10n.Feedback.sound,
         toggleValue: { [unowned self] in keyboardFeedbackViewModel.enableKeySounds },
         toggleHandled: { [unowned self] in
           keyboardFeedbackViewModel.enableKeySounds = $0
@@ -77,7 +77,7 @@ extension KeyboardFeedbackRootView: UITableViewDataSource, UITableViewDelegate {
 
   func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
     if section == 1 {
-      return "开启震动需要为键盘开启“完全访问权限”"
+      return L10n.Feedback.hapticPermission
     }
     return ""
   }

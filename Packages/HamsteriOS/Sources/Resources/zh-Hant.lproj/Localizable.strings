@@ -1,0 +1,358 @@
+"app.title" = "輸入法設定";
+"app.name" = "倉輸入法";
+
+"load_app_data.migrating_v1_data" = "遷移 1.0 組態中……";
+"load_app_data.migrated" = "遷移完成";
+"load_app_data.initialize" = "初次啟動，需要編譯輸入方案，請耐心等待……";
+"load_app_data.deployed" = "部署完成";
+"load_app_data.error" = "導入數據異常";
+
+"favbtn.redeploy" = "重新部署";
+"favbtn.sync" = "RIME同步";
+"favbtn.backup" = "App備份";
+
+"solution.title" = "輸入相關";
+
+"input_schema.title" = "輸入方案設定";
+"input_schema.select_at_least_one" = "需要保留至少一個輸入方案。";
+"input_schema.solution_deploying" = "方案部署中……";
+"input_schema.action.import" = "匯入方案";
+"input_schema.action.download" = "方案下載";
+"input_schema.action.upload" = "開源方案上傳";
+
+"input_schema.import.importing" = "方案匯入中……";
+"input_schema.import.success" = "匯入成功";
+"input_schema.import.failed" = "匯入Zip檔案失敗, %@";
+
+"input_schema.cloud.list_loading" = "載入中……";
+"input_schema.cloud.downloading" = "下載中……";
+"input_schema.cloud.title" = "開源輸入方案";
+"input_schema.cloud.install_by_replace" = "替換並部署";
+"input_schema.cloud.install_by_overwrite" = "覆蓋並部署";
+"input_schema.cloud.install_remark" = "替換：刪除目前 Rime 路徑下檔案，並將下載的方案檔案存放至 Rime 路徑下。\n覆蓋：將下載方案檔案存放至 Rime 目錄下，相同檔名檔案覆蓋，不同檔案追加。";
+"input_schema.cloud.alert_replace.title" = "替換安裝";
+"input_schema.cloud.alert_replace.message" = "使用下載方案替換目前Rime目錄，替換後原Rime路徑下檔案不可恢復，是否確認替換？";
+"input_schema.cloud.alert_overwrite.title" = "覆蓋安裝";
+"input_schema.cloud.alert_overwrite.message" = "使用下載方案覆蓋目前Rime目錄，覆蓋後原Rime路徑下相同檔名檔案會被覆蓋，是否確認覆蓋";
+
+"input_schema.create.title" = "上傳開源輸入方案";
+"input_schema.create.alert_title" = "上傳輸入方案";
+"input_schema.create.alert_message" = "請勿上傳非自己創作且無版權的輸入方案，不符合規範的方案會被定期清除。";
+"input_schema.create.alert_confirm" = "確認上傳";
+"input_schema.create.solution_name" = "輸入方案名稱";
+"input_schema.create.author" = "作者";
+"input_schema.create.description" = "方案描述：";
+"input_schema.create.pick_file" = "選擇輸入方案Zip檔案";
+"input_schema.create.upload" = "上傳";
+"input_schema.create.remark" = "注意：請勿上傳無版權輸入方案。\n%@";
+"input_schema.create.banner_title" = "請注意";
+"input_schema.create.banner_message" = "請勿上傳非自己創作且無版權的輸入方案，不符合規範的方案會被定期刪除。";
+"input_schema.create.name_error" = "請輸入方案名稱";
+"input_schema.create.author_error" = "請輸入方案作者";
+"input_schema.create.description_error" = "請輸入方案描述";
+"input_schema.create.no_upload_file_error" = "請選擇需要上傳的方案檔案";
+
+"input_schema.upload.title" = "Wi-Fi上傳方案";
+"input_schema.upload.title2" = "輸入方案上傳";
+"input_schema.upload.stop_service" = "停止服務";
+"input_schema.upload.start_service" = "啟動服務";
+"input_schema.upload.address" = "http://%@";
+"input_schema.upload.success" = "方案上傳成功……";
+"input_schema.upload.failed" = "上傳方案失敗：%@";
+"input_schema.upload.click_to_copy" = "區域網路存取地址(點擊複製)";
+"input_schema.upload.no_address_available" = "無法獲得 IP 地址，請在系統設定 - Wi-Fi 中查看地址。";
+"input_schema.upload.remark" = "\
+1. 連接到相同的 Wi-Fi，注意：開啟服務請不要離開此頁面或鎖定手機；\
+2. 請將個人方案上傳至“Rime”目錄内，可先刪除原“Rime”目錄内檔案再上傳;\
+3. 上傳完畢後，需要“重新部署”，否則方案不會生效；\
+4. 瀏覽器内支援全選/拖曳上傳等動作。";
+"input_schema.uploading" = "方案上傳中……";
+"input_schema.upload_size_limit_error" = "方案檔案不能超過 50 MB";
+"input_schema.upload_file_info_error" = "未能取得上傳方案檔案訊息";
+
+"finder.title" = "檔案管理";
+"finder.tag.general" = "一般";
+"finder.tag.app" = "App檔案";
+"finder.tag.keyboard" = "鍵盤檔案";
+"finder.tag.i_cloud" = "iCloud檔案";
+"finder.i_cloud_doc.warning" = "iCloud異常";
+"finder.copy_userdb.remark" = "指副檔名為“.txt”及目錄名包含“.userdb”下的檔案";
+"finder.editor.save.success" = "儲存成功";
+"finder.editor.save.failed" = "儲存失敗";
+"finder.editor.line_wrapping_enabled" = "文字編輯器: 自動換行";
+"finder.action.copy_userdb" = "拷貝鍵盤詞庫檔案到App";
+"finder.action.overwrite_keyboard" = "使用鍵盤檔案覆蓋App檔案";
+"finder.delete.alert_title" = "是否刪除？";
+"finder.delete.alert_message" = "檔案刪除後無法恢復，確定刪除？";
+"finder.overwrite.alert_title" = "是否覆蓋？";
+"finder.overwrite.alert_message" = "覆蓋後App檔案無法恢復，確定覆蓋？";
+"finder.copy_userdb.copying" = "拷貝中……";
+"finder.copy_userdb.success" = "拷貝詞庫成功";
+"finder.overwrite_keyboard.overwriting" = "覆蓋中……";
+"finder.overwrite_keyboard.success" = "完成";
+
+"k_b.section_title" = "鍵盤相關";
+"k_b.title" = "鍵盤設定";
+"k_b.auto_lower_remark" = "關閉後，Shift狀態隨當前輸入狀態變化。注意: 雙擊Shift會保持鎖定";
+"k_b.displayButtonBubbles" = "顯示按鍵氣泡";
+"k_b.enableButtonUnderBorder" = "顯示按鍵底部邊框";
+"k_b.lockShiftState" = "Shift狀態鎖定";
+"k_b.toolbar_remark" = "開啟後建議調整工具欄高度為：40。\n（位置：鍵盤設定 -> 候選欄設定 -> 工具欄高度）";
+"k_b.enableEmbeddedInputMode" = "啟用內嵌模式";
+
+"k_b.space_settings" = "空格設定";
+"k_b.space_settings.loadingText" = "空格載入文字";
+"k_b.space_settings.labelText" = "空格長顯文字";
+"k_b.space_settings.text_remark" = "1. 僅對内建鍵盤有效。\n2.自定義鍵盤在組態檔案中設定。";
+"k_b.space_settings.enable_loadingText_remark" = "1. 啟用後，方案名稱會覆蓋長顯文本。\n2. 以上兩個選項對自定義鍵盤也適用。";
+"k_b.space_settings.loadingText_placeholder" = "載入文字";
+"k_b.space_settings.labelText_placeholder" = "長顯文字";
+"k_b.space_settings.enable_loadingText" = "啟用載入文字";
+"k_b.space_settings.showCurrentInputSchemaNameOnLoadingText" = "長顯文字顯示輸入方案名";
+"k_b.space_settings.showCurrentInputSchemaName" = "長顯顯示輸入方案名";
+"k_b.space_settings.spaceDragSensitivity_remark" = "空格移動光標的靈敏度指: 手指在螢幕移動個點，光標移動一位，所以數值越小，光標移動越快。";
+"k_b.space_settings.spaceDragSensitivity" = "移動光標靈敏度";
+
+"k_b.up_swipe_on_left_remark" = "關閉後，按鍵右上側為顯示上滑文字，左上側顯示下滑文字。";
+"k_b.upSwipeOnLeft" = "上滑顯示位置-左上側";
+"k_b.show_swipe_up_and_down_layout_remark" = "開啟後，按鍵上方顯示上滑，下方顯示下滑。";
+"k_b.swipeLabelUpAndDownLayout" = "滑動文字上下顯示";
+"k_b.swipeLabelUpAndDownIrregularLayout" = "不規則顯示滑動文字";
+"k_b.disableSwipeLabel" = "滑動文字顯示關閉";
+"k_b.layout.title" = "鍵盤佈局";
+"k_b.toolbar_prefs" = "候選欄設定";
+"k_b.number_nine_grid" = "數字九宮格";
+"k_b.symbol_prefs" = "符號設定";
+"k_b.symbol_keyboard" = "分類符號鍵盤";
+
+"k_b.layout_action.import.importing" = "匯入中……";
+"k_b.layout_action.import.unable_to_access" = "匯入檔案讀取受限，無法載入檔案";
+"k_b.layout_action.import.success" = "匯入成功";
+"k_b.layout_action.import.failed" = "自定義鍵盤組態檔案載入失敗";
+"k_b.layout_action.delete.success" = "刪除成功";
+"k_b.layout_action.delete.failed" = "未找到此鍵盤";
+"k_b.layout_action.settings" = "設定";
+
+"k_b.type_option.alphabetic" = "英文鍵盤";
+"k_b.type_option.chinese" = "中文26鍵鍵盤";
+"k_b.type_option.classifySymbolic" = "分類符號鍵盤";
+"k_b.type_option.chineseNineGrid" = "中文九宫格鍵盤";
+"k_b.type_option.numericNineGrid" = "数字九宫格鍵盤";
+"k_b.type_option.custom" = "自定义鍵盤";
+
+"k_b.layout.chinese" = "中文26鍵";
+"k_b.layout.chineseNineGrid" = "中文9鍵";
+"k_b.layout.custom" = "自定義鍵盤";
+"k_b.layout.custom_named" = "自定義-%@";
+"k_b.layout.numericNineGrid" = "數字九宮格";
+"k_b.layout.remark" = "注意：\n1. 内建鍵盤向左滑動進入設定頁面。\n2. 自定義佈局通過組態檔案調整，調整申需重新部署。";
+
+"k_b.layout_zh26.segment_settings" = "設定";
+"k_b.layout_zh26.segment_swipe" = "滑動設定";
+"k_b.layout_zh26.swipe_key.add_key_swipe_action" = "新增滑動Action";
+"k_b.layout_zh26.swipe_key.title" = "字元";
+"k_b.layout_zh26.swipe_key.key_exist" = "%@已經存在";
+
+"k_b.layout_zh26.showUppercasedCharacterOnChineseKeyboard" = "顯示大寫字母";
+"k_b.layout_zh26.displaySemicolonButton" = "啟用分號按鍵";
+"k_b.layout_zh26.displayClassifySymbolButton" = "啟用符號按鍵";
+"k_b.layout_zh26.displayChineseEnglishSwitchButton" = "啟用中英切換按鍵";
+"k_b.layout_zh26.switch_on_left_of_space" = "按鍵位於空格左側";
+"k_b.layout_zh26.switch_on_left_of_space_remark" = "“按鍵位於空格左側”選項：關閉狀態則位於空格右側，開啟狀態則位於空格左側";
+
+"k_b.layout_zh26.displaySpaceLeftButton" = "啟用空格左側按鍵";
+"k_b.layout_zh26.spaceLeftButtonProcessByRIME" = "左側按鍵由RIME處理";
+"k_b.layout_zh26.keyValueOfSpaceLeftButton" = "左側按鍵鍵值";
+"k_b.layout_zh26.displaySpaceRightButton" = "啟用空格右側按鍵";
+"k_b.layout_zh26.spaceRightButtonProcessByRIME" = "右側按鍵由RIME處理";
+"k_b.layout_zh26.keyValueOfSpaceRightButton" = "右側按鍵鍵值";
+
+"k_b.swipe_setting.character" = "字元";
+"k_b.swipe_setting.key_operation" = "按鍵操作";
+"k_b.swipe_setting.direction" = "滑動方向";
+"k_b.swipe_setting.direction_exists" = "滑動方向:%@ 組態已存在";
+"k_b.swipe_setting.swipe_operation" = "滑動操作";
+"k_b.swipe_setting.processByRIME" = "是否經過 RIME 處理";
+"k_b.swipe_setting.text_displayed" = "鍵盤顯示文本";
+"k_b.swipe_setting.text_placeholder" = "顯示文本";
+"k_b.swipe_setting.is_showing_text" = "是否顯示文本";
+"k_b.swipe_setting.add_swipe" = "新增滑動";
+"k_b.swipe_setting.delete_confirm" = "確認刪除";
+"k_b.swipe_setting.edit_character" = "字完修改";
+"k_b.swipe_setting.edit_command" = "快捷指令修改";
+"k_b.swipe_setting.switch_keyboard" = "鍵盤切換";
+"k_b.swipe_setting.custom_keyboard_name" = "自定義鍵盤名稱";
+"k_b.swipe_setting.no_action" = "滑動Action不能為空";
+"k_b.swipe_setting.no_corresponding_kb_type" = "無對應的鍵盤類型";
+"k_b.swipe_setting.no_character" = "字元不能為空";
+"k_b.swipe_setting.key_name_backspace" = "退格鍵";
+"k_b.swipe_setting.key_name_return" = "確認鍵";
+"k_b.swipe_setting.key_name_shift" = "Shift";
+"k_b.swipe_setting.key_name_space" = "空格";
+
+"k_b.action_option.character" = "字元（由 RIME 處理）";
+"k_b.action_option.symbol" = "符號字元（不由 RIME 處理）";
+"k_b.action_option.shortCommand" = "快捷指令";
+"k_b.action_option.keyboardType" = "切換鍵盤";
+
+"k_b.toolbar.title" = "候選欄";
+"k_b.toolbar.enableToolbar" = "啟用候選工具欄";
+"k_b.toolbar.displayAppIconButton" = "顯示App圖示";
+"k_b.toolbar.displayKeyboardDismissButton" = "顯示鍵盤收起圖示";
+"k_b.toolbar.displayIndexOfCandidateWord" = "顯示候選項序號";
+"k_b.toolbar.displayCommentOfCandidateWord" = "顯示候選 Comment";
+"k_b.toolbar.swipePaging" = "滑動分頁模式";
+"k_b.toolbar.maximumNumberOfCandidateWords" = "候選字最大數量";
+"k_b.toolbar.candidateLabelFontSize" = "候選序號字體大小";
+"k_b.toolbar.candidateWordFontSize" = "候選字體大小";
+"k_b.toolbar.candidateCommentFontSize" = "候選 Comment 字體大小";
+"k_b.toolbar.heightOfToolbar" = "工具欄高度";
+"k_b.toolbar.heightOfCodingArea" = "編碼區高度";
+"k_b.toolbar.codingAreaFontSize" = "編碼區字體大小";
+
+"k_b.symbol_edit.reset.title" = "恢復預設值";
+"k_b.symbol_edit.here" = "我在這";
+"k_b.symbol_edit.tap2edit_or_swipe2delete" = "點擊行可編輯/滑動可刪除";
+"k_b.symbol_edit.tap2add" = "點我添加新符號(確認鍵保存)。";
+
+"k_b.symbol.no_default_conf" = "未找到預設值";
+"k_b.symbol.no_sys_default_conf" = "未找到系统預設組態";
+"k_b.symbol.title" = "符號設定";
+"k_b.symbol.segment_pairs" = "成對上屏";
+"k_b.symbol.segment_cursor_back" = "光標居中";
+"k_b.symbol.segment_return_to_main_keyboard" = "返回主鍵盤";
+
+"k_b.layout_zh9grid.symbol_edit.title" = "左側滑動符號欄";
+
+"k_b.layout_symbol.title" = "符號鍵盤設定";
+"k_b.layout_symbol.enableSymbolKeyboard" = "啟用分類符號鍵盤";
+"k_b.layout_symbol.reset_common_symbol" = "常用符號 - 恢復預設值";
+
+"k_b.num9grid.segment_settings" = "設定";
+"k_b.num9grid.segment_symbol_list" = "符號列表";
+"k_b.num9grid.enableNineGridOfNumericKeyboard" = "啟用數字九宮格";
+"k_b.num9grid.enableNumberNineGridInputOnScreenModeRemark" = "開啟此選項後，符號會直接上屏，不再經過RIME引擎處理。";
+"k_b.num9grid.numberKeyProcessByRime" = "數字鍵由 RIME 處理";
+"k_b.num9grid.leftSymbolProcessByRime" = "左側符號列表由 RIME 處理";
+"k_b.num9grid.rightSymbolProcessByRime" = "右側符號由 RIME 處理";
+"k_b.num9grid.symbol_list_reset" = "符号列表 - 恢復預設值";
+"k_b.num9grid.fail_to_get_system_default_conf" = "獲得系統預設組態失敗";
+"k_b.num9grid.symbol_list_title" = "自定義敗字九宮格左側滑動符號欄";
+
+"color_scheme.title" = "鍵盤配色";
+"color_scheme.enable_custom_keyboard_color" = "啟用配色";
+"color_scheme.system_dark_mode" = "系統淺色模式";
+"color_scheme.system_light_mode" = "系統深色模式";
+"color_scheme.scheme_name" = "方案名稱： %@";
+"color_scheme.author_name" = "作者： %@";
+
+"feedback.title" = "按鍵音與震動";
+"feedback.title2" = "鍵盤回饋";
+"feedback.haptic" = "按鍵震動";
+"feedback.haptic_permission" = "開啟震動需要為鍵盤開啟“允許完整取用”";
+"feedback.sound" = "開啟按鍵聲";
+
+"syncbackup.title" = "同步與備份";
+
+"i_cloud.title" = "iCloud同步";
+"i_cloud.enable_apple_cloud" = "iCloud";
+"i_cloud.enable_apple_cloud_remark" = "1. 啟用後，“重新部署”會複製iCloud中倉輸入法`RIME`目錄下全部檔案；\
+2. 複製時，差異檔案會被覆蓋；";
+"i_cloud.copy_file_to_i_cloud" = "拷貝App檔案至iCloud";
+"i_cloud.copy_remark" = "預設為全量拷貝，如需過濾拷貝內容，需要結合過濾表示式一起使用；";
+"i_cloud.regex_on_copy_file" = "正規過濾";
+"i_cloud.regex_remark" = "1. 過濾表示式在“重新部署”功能中也會生效；\
+2. 多個正規表示式使用英文逗號分隔；\
+3. 常用範例（點擊可複製全部表示式，請按需修改）:\
+   * 過濾userdb目錄 ^.*[.]userdb.*$\
+   * 過濾build目錄 ^.*build.*$\
+   * 過濾SharedSupport目录 ^.*SharedSupport.*$\
+   * 過濾編譯後的詞庫檔案 ^.*[.]bin$";
+"i_cloud.upload.copying" = "拷貝中……";
+"i_cloud.upload.success" = "拷貝成功";
+"i_cloud.upload.failed" = "拷貝失敗: %@";
+
+"backup.title" = "軟體備份";
+"backup.title2" = "備份與恢復";
+"backup.create.title" = "軟體備份";
+"backup.create.backing_up" = "軟體備份中，請等待……";
+"backup.create.success" = "備份成功";
+"backup.create.failed" = "備份失敗";
+"backup.delete.alert_title" = "是否刪除？";
+"backup.delete.alert_message" = "檔案刪除後無法恢復，確認刪除？";
+"backup.delete.error_title" = "刪除檔案";
+"backup.delete.error_message" = "刪除失敗";
+"backup.restore.title" = "恢復";
+"backup.restore.restoring" = "恢復中，請等待……";
+"backup.restore.success" = "恢復成功，請重新部署。";
+"backup.restore.failed" = "恢復失敗";
+"backup.rename.title" = "修改名稱";
+"backup.rename.alert_title" = "修改備份檔案名稱";
+"backup.rename.new_name" = "新檔案名稱";
+"backup.remark" = "1. 向左滑動操作檔案；\n2. 軟體恢復後,請手動執行“重新部署”；";
+
+"rime.title" = "RIME";
+"rime.simp_trad_swtich.title" = "簡繁切換";
+"rime.simp_trad_swtich.footer" = "組態檔案中`switches`簡繁轉換選項的設定名稱，倉用於中文簡體與繁體之間快速切換。";
+"rime.simp_trad_swtich.placeholder" = "簡繁切換鍵值";
+"rime.override_dict.footer" = "如果您未使用自造词功能，請保持預設開啟狀態。";
+"rime.override_dict.text" = "部署時覆蓋鍵盤詞庫檔";
+"rime.logger.text" = "RIME 記錄檔";
+"rime.logger.banner_title" = "RIME記錄檔存在異常";
+"rime.logger.banner_message" = "請檢查 %@，第 %@ 行。";
+"rime.logger.error" = "RIME 部署異常";
+"rime.deploy.text" = "重新部署";
+"rime.deploy.deploying" = "RIME部署中, 請稍候……";
+"rime.deploy.success" = "部署成功";
+"rime.sync.text" = "RIME同步";
+"rime.sync.footer" = "注意：\
+1. RIME同步自定義參數，需要手工添加至Rime目錄下的`installation.yaml`檔案中(如果沒有，則需要自行建立)；\
+2. 同步設定範例：(點擊可複製)\
+```\
+%@\
+```";
+"rime.sync.syncing" = "RIME同步中, 請稍候……";
+"rime.sync.write_error" = "同步地址無寫入權限：%@";
+"rime.sync.success" = "同步成功";
+"rime.sync.failed" = "同步失敗:%@";
+"rime.sync.sample_config.comment1" = "id可以自定，但不能和其他终端定義的ID重複";
+"rime.sync.sample_config.comment2" = "倉的iOS中iCloud前綴路徑固定為：";
+"rime.sync.sample_config.comment3" = "iOS中的路徑與MacOS及Windows的iCloud路徑是不同的";
+"rime.reset.text" = "RIME重置";
+"rime.reset.reseting" = "RIME重置中, 請稍候……";
+"rime.reset.success" = "重置成功";
+"rime.reset.failed" = "重置失敗";
+"rime.reset.alert_title" = "RIME 重置";
+"rime.reset.alert_message" = "重置會恢復到初始安裝狀態，是否確認重置？";
+"rime.reset.alert_confirm" = "重置";
+
+"about.title" = "關於";
+"about.rime_version" = "RIME版本";
+"about.license" = "授權條款";
+"about.email" = "聯絡信箱";
+"about.source" = "開源儲存庫";
+"about.oss.list" = "使用開源庫列表";
+"about.oss.title" = "使用開源列表";
+
+"about.reset.text" = "重置界面設定";
+"about.reset.footer" = "重置通過界面修改的設定值。\n注意：不包含新增/修改設定檔中的設定值。";
+"about.reset.title" = "重置 UI 設定";
+"about.reset.message" = "確定重置 UI 互動產生的設定嗎？";
+"about.reset.confirm" = "確定";
+
+"about.export.footer" = "匯出通過界面修改的設定值。\n注意：不包新增/修改設定檔中的設定值。";
+"about.export.text" = "匯出界面設定";
+"about.export.error" = "匯出 UI 設定失敗";
+
+"cancel" = "取消";
+"confirm" = "確認";
+"copy_successfully" = "複製成功";
+"delete" = "刪除";
+"disabledLabel" = "關閉";
+"done" = "完成";
+"edit" = "編輯";
+"enabledLabel" = "開啟";
+"reset_failed" = "重置失敗";
+"reset_successfully" = "重置成功";
+"save" = "儲存";
+

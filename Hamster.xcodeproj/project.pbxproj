@@ -478,7 +478,7 @@
 			};
 			buildConfigurationList = C03E8020296D4F4C0083E53A /* Build configuration list for PBXProject "Hamster" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = "zh-Hans";
+			developmentRegion = zh;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,

@@ -85,5 +85,5 @@ extension NumberNineGridSettingsView: UITableViewDelegate {
 }
 
 extension NumberNineGridSettingsView {
-  static let enableNumberNineGridInputOnScreenModeRemark = "开启此选项后，符号会直接上屏，不在经过RIME引擎处理。"
+  static let enableNumberNineGridInputOnScreenModeRemark = L10n.KB.Num9grid.enableNumberNineGridInputOnScreenModeRemark
 }

@@ -40,7 +40,7 @@ class HapticFeedbackTableViewCell: NibLessTableViewCell {
 
   lazy var label: UILabel = {
     let label = UILabel(frame: .zero)
-    label.text = "按键震动"
+    label.text = L10n.Feedback.haptic
     label.setContentHuggingPriority(.defaultLow, for: .horizontal)
     return label
   }()

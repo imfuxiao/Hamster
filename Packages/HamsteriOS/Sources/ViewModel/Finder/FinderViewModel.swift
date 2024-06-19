@@ -63,7 +63,7 @@ public class FinderViewModel: ObservableObject {
 
   lazy var settingItems: [SettingItemModel] = [
     .init(
-      text: "文本编辑器: 自动换行",
+      text: L10n.Finder.Editor.lineWrappingEnabled,
       type: .toggle,
       toggleValue: { [unowned self] in textEditorLineWrappingEnabled },
       toggleHandled: { [unowned self] in
@@ -71,7 +71,7 @@ public class FinderViewModel: ObservableObject {
       }
     ),
     .init(
-      text: "拷贝键盘词库文件至应用",
+      text: L10n.Finder.Action.copyUserdb,
       buttonAction: { [unowned self] in
         Task {
           try await copyAppGroupDictFileToAppDocument()
@@ -79,7 +79,7 @@ public class FinderViewModel: ObservableObject {
       }
     ),
     .init(
-      text: "使用键盘文件覆盖应用文件",
+      text: L10n.Finder.Action.overwriteKeyboard,
       buttonAction: { [unowned self] in
         overrideDirectoryConform { [unowned self] in
           Task {
@@ -114,27 +114,27 @@ public class FinderViewModel: ObservableObject {
   }
 
   public func deleteFileConform(completion: @escaping () -> Void) {
-    conformSubject.send(Conform(title: "是否删除？", message: "文件删除后无法恢复，确认删除？", okAction: completion))
+    conformSubject.send(Conform(title: L10n.Finder.Delete.alertTitle, message: L10n.Finder.Delete.alertMessage, okAction: completion))
   }
 
   public func overrideDirectoryConform(completion: @escaping () -> Void) {
-    conformSubject.send(Conform(title: "是否覆盖？", message: "覆盖后应用文件无法恢复，确认覆盖？", okAction: completion))
+    conformSubject.send(Conform(title: L10n.Finder.Overwrite.alertTitle, message: L10n.Finder.Overwrite.alertMessage, okAction: completion))
   }
 
   /// 拷贝 AppGroup 下词库文件至应用沙盒目录
   public func copyAppGroupDictFileToAppDocument() async throws {
-    await ProgressHUD.animate("拷贝中……", interaction: true)
+    await ProgressHUD.animate(L10n.Finder.CopyUserdb.copying, interaction: true)
     do {
       try FileManager.copyAppGroupUserDict(regexOnCopyAppGroupDictFile)
     } catch {
       throw error
     }
-    await ProgressHUD.success("拷贝词库成功", delay: 1.5)
+    await ProgressHUD.success(L10n.Finder.CopyUserdb.success, delay: 1.5)
   }
 
   /// 使用键盘文件覆盖应用沙盒文件
   public func overrideAppDocument() async throws {
-    await ProgressHUD.animate("覆盖中……", interaction: true)
+    await ProgressHUD.animate(L10n.Finder.OverwriteKeyboard.overwriting, interaction: true)
     do {
       // 使用AppGroup下文件覆盖应用Sandbox下文件
       try FileManager.syncAppGroupSharedSupportDirectoryToSandbox(override: true)
@@ -142,6 +142,6 @@ public class FinderViewModel: ObservableObject {
     } catch {
       throw error
     }
-    await ProgressHUD.success("完成", delay: 1.5)
+    await ProgressHUD.success(L10n.Finder.OverwriteKeyboard.success, delay: 1.5)
   }
 }

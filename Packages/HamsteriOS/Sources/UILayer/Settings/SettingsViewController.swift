@@ -33,7 +33,7 @@ public class SettingsViewController: NibLessViewController {
 
 public extension SettingsViewController {
   override func loadView() {
-    title = "输入法设置"
+    title = L10n.App.title
     view = SettingsRootView(settingsViewModel: settingsViewModel, rimeViewModel: rimeViewModel, backupViewModel: backupViewModel)
   }
 
@@ -43,7 +43,7 @@ public extension SettingsViewController {
       do {
         try await self.settingsViewModel.loadAppData()
       } catch {
-        ProgressHUD.failed("导入数据异常", interaction: false, delay: 2)
+        ProgressHUD.failed(L10n.LoadAppData.error, interaction: false, delay: 2)
         Logger.statistics.error("load app data error: \(error)")
       }
     }

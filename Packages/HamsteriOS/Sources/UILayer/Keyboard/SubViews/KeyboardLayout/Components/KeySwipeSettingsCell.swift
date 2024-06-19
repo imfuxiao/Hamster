@@ -155,13 +155,13 @@ extension KeyboardAction {
   var labelText: String {
     switch self {
     case .backspace:
-      return "退格键"
+      return L10n.KB.SwipeSetting.keyNameBackspace
     case .primary:
-      return "回车键"
+      return L10n.KB.SwipeSetting.keyNameReturn
     case .shift:
-      return "Shift"
+      return L10n.KB.SwipeSetting.keyNameShift
     case .space:
-      return "空格"
+      return L10n.KB.SwipeSetting.keyNameSpace
     case .character(let char):
       return char
     case .keyboardType(let type):

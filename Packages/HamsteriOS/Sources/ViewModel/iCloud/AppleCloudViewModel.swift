@@ -26,7 +26,7 @@ public class AppleCloudViewModel: ObservableObject {
 
   lazy var settings: [SettingItemModel] = [
     .init(
-      text: "iCloud",
+      text: L10n.ICloud.enableAppleCloud,
       type: .toggle,
       toggleValue: { [unowned self] in settingsViewModel.enableAppleCloud },
       toggleHandled: { [unowned self] in
@@ -34,7 +34,7 @@ public class AppleCloudViewModel: ObservableObject {
       }
     ),
     .init(
-      text: "拷贝应用文件至iCloud",
+      text: L10n.ICloud.copyFileToICloud,
       type: .button,
       buttonAction: { [unowned self] in
         Task {
@@ -44,7 +44,7 @@ public class AppleCloudViewModel: ObservableObject {
     ),
     .init(
       //      icon: UIImage(systemName: "square.and.pencil"),
-      text: "正则过滤",
+      text: L10n.ICloud.regexOnCopyFile,
       textValue: { [unowned self] in regexOnCopyFile },
       textHandled: { [unowned self] in
         regexOnCopyFile = $0
@@ -58,14 +58,14 @@ public class AppleCloudViewModel: ObservableObject {
 
   func copyFileToiCloud() async {
     do {
-      await ProgressHUD.animate("拷贝中……", interaction: false)
+      await ProgressHUD.animate(L10n.ICloud.Upload.copying, interaction: false)
       let regexList = regexOnCopyFile.split(separator: ",").map { String($0) }
       try FileManager.copySandboxSharedSupportDirectoryToAppleCloud(regexList)
       try FileManager.copySandboxUserDataDirectoryToAppleCloud(regexList)
-      await ProgressHUD.success("拷贝成功", interaction: false, delay: 1.5)
+      await ProgressHUD.success(L10n.ICloud.Upload.success, interaction: false, delay: 1.5)
     } catch {
       Logger.statistics.error("apple cloud copy to iCloud error: \(error)")
-      await ProgressHUD.failed("拷贝失败: \(error.localizedDescription)", interaction: false, delay: 1.5)
+      await ProgressHUD.failed(L10n.ICloud.Upload.failed(error.localizedDescription), interaction: false, delay: 1.5)
     }
   }
 }

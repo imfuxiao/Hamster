@@ -29,11 +29,11 @@ public class AboutViewModel: ObservableObject {
 
   lazy var settingItems: [SettingSectionModel] = [
     .init(items: [
-      .init(text: "RIME版本", secondaryText: AppInfo.rimeVersion, type: .settings, buttonAction: {
+      .init(text: L10n.About.rimeVersion, secondaryText: AppInfo.rimeVersion, type: .settings, buttonAction: {
         UIPasteboard.general.string = AppInfo.rimeVersion
-        await ProgressHUD.success("复制成功", interaction: false, delay: 1.5)
+        await ProgressHUD.success(L10n.copySuccessfully, interaction: false, delay: 1.5)
       }),
-      .init(text: "许可证", secondaryText: "GPLv3", type: .settings, buttonAction: {
+      .init(text: L10n.About.license, secondaryText: "GPLv3", type: .settings, buttonAction: {
         let link = "https://www.gnu.org/licenses/gpl-3.0.html"
         if let url = URL(string: link) {
           DispatchQueue.main.async {
@@ -41,7 +41,7 @@ public class AboutViewModel: ObservableObject {
           }
         }
       }),
-      .init(text: "联系邮箱", secondaryText: "morse.hsiao@gmail.com", type: .settings, buttonAction: {
+      .init(text: L10n.About.email, secondaryText: "morse.hsiao@gmail.com", type: .settings, buttonAction: {
         let link = "morse.hsiao@gmail.com"
         if let url = URL(string: "mailto:\(link)") {
           DispatchQueue.main.async {
@@ -49,7 +49,7 @@ public class AboutViewModel: ObservableObject {
           }
         }
       }),
-      .init(text: "开源地址", secondaryText: "https://github.com/imfuxiao/Hamster", type: .settings, buttonAction: {
+      .init(text: L10n.About.source, secondaryText: "https://github.com/imfuxiao/Hamster", type: .settings, buttonAction: {
         let link = "https://github.com/imfuxiao/Hamster"
         if let url = URL(string: link) {
           DispatchQueue.main.async {
@@ -57,13 +57,13 @@ public class AboutViewModel: ObservableObject {
           }
         }
       }),
-      .init(text: "使用开源库列表", accessoryType: .disclosureIndicator, type: .navigation, navigationAction: { [unowned self] in displayOpenSourceView = true })
+      .init(text: L10n.About.Oss.list, accessoryType: .disclosureIndicator, type: .navigation, navigationAction: { [unowned self] in displayOpenSourceView = true })
     ]),
 
     .init(
-      footer: "重置通过界面修改的配置项。\n注意：不包含新增/修改配置文件中的配置项。",
+      footer: L10n.About.Reset.footer,
       items: [
-        .init(text: "重置界面设置", textTintColor: .systemRed, type: .button, buttonAction: { [unowned self] in
+        .init(text: L10n.About.Reset.text, textTintColor: .systemRed, type: .button, buttonAction: { [unowned self] in
           self.restUISettingsSubject.send {
             HamsterAppDependencyContainer.shared.resetAppConfiguration()
           }
@@ -71,16 +71,16 @@ public class AboutViewModel: ObservableObject {
       ]),
 
     .init(
-      footer: "导出的通过界面修改的配置项。\n注意：不包新增/修改配置文件中的设置。",
+      footer: L10n.About.Export.footer,
       items: [
-        .init(text: "导出界面设置", type: .button, buttonAction: { [unowned self] in
+        .init(text: L10n.About.Export.text, type: .button, buttonAction: { [unowned self] in
           let appConfig = HamsterAppDependencyContainer.shared.applicationConfiguration
           let url = FileManager.hamsterAppConfigFileOnUserData
           do {
             try HamsterConfigurationRepositories.shared.saveToYAML(config: appConfig, path: url)
             exportConfigurationSubject.send(url)
           } catch {
-            await ProgressHUD.failed("导出 UI 设置失败")
+            await ProgressHUD.failed(L10n.About.Export.error)
           }
         })
       ])
