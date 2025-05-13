@@ -60,6 +60,8 @@ xed .
 
 如果「仓」对您有帮助，可以请我吃份「煎饼馃子」，感激不尽~
 
+> 注意：不接收有偿咨询服务，请勿因此打赏，谢谢。
+
 <img src="https://ihsiao.com/aliPay.jpeg" width="207" height="281" />
 <img src="https://ihsiao.com/wechatPay.jpeg"  width="207" height="281" />
 
