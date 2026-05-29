@@ -584,23 +584,30 @@ class KeyboardRootView: NibLessView {
 
   /// 处理 GIF 搜索
   func handleGifSearch(_ searchText: String) {
-    // TODO: 调用 GIF API 搜索
-    // 暂时使用示例数据
-    let newEmojis = ["🤣", "😜", "🥳", "😇", "🤩", "😍", "🤗", "😊", "🤭"]
-    gifPanelView.updateGifEmojis(newEmojis)
+    guard !searchText.isEmpty else { return }
+
+    // 调用 GIF API
+    GifService.shared.searchGifs(query: searchText) { [weak self] result in
+      DispatchQueue.main.async {
+        switch result {
+        case .success(let gifs):
+          // 暂时使用 emoji 作为占位符，后续需要更新 UI 支持真实 GIF
+          let emojis = gifs.map { _ in "🎬" }
+          self?.gifPanelView.updateGifEmojis(emojis)
+        case .failure(let error):
+          print("GIF 搜索失败：\(error.localizedDescription)")
+          // 失败时使用示例数据
+          let fallbackEmojis = ["🤣", "😜", "🥳", "�", "🤩", "😍", "🤗", "😊", "🤭"]
+          self?.gifPanelView.updateGifEmojis(fallbackEmojis)
+        }
+      }
+    }
   }
 
   /// 处理 GIF 标签点击
   func handleGifTagTapped(_ tag: String) {
-    // TODO: 根据标签搜索 GIF
-    // 暂时使用示例数据
-    if tag.hasPrefix("AI") {
-      let aiEmojis = ["🙏", "🤝", "👏", "💪", "🌟", "✨", "🎊", "🎁", "🏆"]
-      gifPanelView.updateGifEmojis(aiEmojis)
-    } else {
-      let randomEmojis = ["😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "😉", "😊"]
-      gifPanelView.updateGifEmojis(randomEmojis)
-    }
+    // 根据标签搜索 GIF
+    handleGifSearch(tag)
   }
 
   /// 处理 GIF 选择
