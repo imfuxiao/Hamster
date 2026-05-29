@@ -183,6 +183,15 @@ class KeyboardRootView: NibLessView {
     let view = SettingsPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
+    view.onAISettingsSave = { [weak self] settings in
+      self?.handleAISettingsSave(settings)
+    }
+    view.onGifSettingsSave = { [weak self] settings in
+      self?.handleGifSettingsSave(settings)
+    }
+    view.onPianoSettingsSave = { [weak self] settings in
+      self?.handlePianoSettingsSave(settings)
+    }
     return view
   }()
 
@@ -585,6 +594,26 @@ class KeyboardRootView: NibLessView {
     // TODO: 调用钢琴音播放功能
     // 暂时显示提示
     print("播放文本: \(text), 多轨叠加: \(isMultiTrack)")
+  }
+
+  // MARK: - 设置面板处理
+
+  /// 处理 AI 设置保存
+  func handleAISettingsSave(_ settings: [String: String]) {
+    // TODO: 保存到 UserDefaults 或 App Group
+    print("保存 AI 设置: \(settings)")
+  }
+
+  /// 处理 GIF 设置保存
+  func handleGifSettingsSave(_ settings: [String: String]) {
+    // TODO: 保存到 UserDefaults 或 App Group
+    print("保存 GIF 设置: \(settings)")
+  }
+
+  /// 处理钢琴音设置保存
+  func handlePianoSettingsSave(_ settings: [String: Any]) {
+    // TODO: 保存到 UserDefaults 或 App Group
+    print("保存钢琴音设置: \(settings)")
   }
 
   func combine() {

@@ -12,6 +12,15 @@ import UIKit
 class SettingsPanelView: NibLessView {
   private let style: CandidateBarStyle
 
+  /// AI 设置保存回调
+  var onAISettingsSave: (([String: String]) -> Void)?
+
+  /// GIF 设置保存回调
+  var onGifSettingsSave: (([String: String]) -> Void)?
+
+  /// 钢琴音设置保存回调
+  var onPianoSettingsSave: (([String: Any]) -> Void)?
+
   lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
     scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -74,12 +83,131 @@ class SettingsPanelView: NibLessView {
     return view
   }()
 
+  // AI 设置内容
+  lazy var aiSettingsStackView: UIStackView = {
+    let stack = UIStackView()
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.axis = .vertical
+    stack.spacing = 16
+    return stack
+  }()
+
+  lazy var apiUrlLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "请求 URL"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var apiUrlTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "https://api.example.com"
+    return textField
+  }()
+
+  lazy var apiKeyLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "API Key"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var apiKeyTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "输入 API Key"
+    textField.isSecureTextEntry = true
+    return textField
+  }()
+
+  lazy var modelIdLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "模型 ID"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var modelIdTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "gpt-4"
+    return textField
+  }()
+
+  lazy var systemPromptLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "系统提示词"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var systemPromptTextView: UITextView = {
+    let textView = UITextView()
+    textView.translatesAutoresizingMaskIntoConstraints = false
+    textView.font = .systemFont(ofSize: 14)
+    textView.layer.borderColor = UIColor.separator.cgColor
+    textView.layer.borderWidth = 1
+    textView.layer.cornerRadius = 8
+    textView.textContainerInset = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    return textView
+  }()
+
   // GIF 图源设置子面板
   lazy var gifSettingsPanel: UIView = {
     let view = UIView()
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
     return view
+  }()
+
+  // GIF 设置内容
+  lazy var gifSettingsStackView: UIStackView = {
+    let stack = UIStackView()
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.axis = .vertical
+    stack.spacing = 16
+    return stack
+  }()
+
+  lazy var gifUrlLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "请求 URL"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var gifUrlTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "https://api.gif.com"
+    return textField
+  }()
+
+  lazy var gifApiKeyLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = "API Key"
+    label.font = .systemFont(ofSize: 16, weight: .medium)
+    return label
+  }()
+
+  lazy var gifApiKeyTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.borderStyle = .roundedRect
+    textField.placeholder = "输入 GIF API Key"
+    textField.isSecureTextEntry = true
+    return textField
   }()
 
   // 钢琴音设置子面板
@@ -221,6 +349,24 @@ class SettingsPanelView: NibLessView {
     subSettingsContainer.addSubview(gifSettingsPanel)
     subSettingsContainer.addSubview(pianoSettingsPanel)
 
+    // AI 设置内容
+    aiSettingsStackView.addArrangedSubview(apiUrlLabel)
+    aiSettingsStackView.addArrangedSubview(apiUrlTextField)
+    aiSettingsStackView.addArrangedSubview(apiKeyLabel)
+    aiSettingsStackView.addArrangedSubview(apiKeyTextField)
+    aiSettingsStackView.addArrangedSubview(modelIdLabel)
+    aiSettingsStackView.addArrangedSubview(modelIdTextField)
+    aiSettingsStackView.addArrangedSubview(systemPromptLabel)
+    aiSettingsStackView.addArrangedSubview(systemPromptTextView)
+    aiSettingsPanel.addSubview(aiSettingsStackView)
+
+    // GIF 设置内容
+    gifSettingsStackView.addArrangedSubview(gifUrlLabel)
+    gifSettingsStackView.addArrangedSubview(gifUrlTextField)
+    gifSettingsStackView.addArrangedSubview(gifApiKeyLabel)
+    gifSettingsStackView.addArrangedSubview(gifApiKeyTextField)
+    gifSettingsPanel.addSubview(gifSettingsStackView)
+
     // 钢琴音设置内容
     pianoSwitchContainer.addSubview(pianoSwitchLabel)
     pianoSwitchContainer.addSubview(pianoSwitch)
@@ -264,20 +410,38 @@ class SettingsPanelView: NibLessView {
       aiSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
       aiSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
 
+      aiSettingsStackView.topAnchor.constraint(equalTo: aiSettingsPanel.topAnchor, constant: 16),
+      aiSettingsStackView.leadingAnchor.constraint(equalTo: aiSettingsPanel.leadingAnchor, constant: 16),
+      aiSettingsStackView.trailingAnchor.constraint(equalTo: aiSettingsPanel.trailingAnchor, constant: -16),
+      aiSettingsStackView.bottomAnchor.constraint(equalTo: aiSettingsPanel.bottomAnchor, constant: -16),
+
+      apiUrlTextField.heightAnchor.constraint(equalToConstant: 44),
+      apiKeyTextField.heightAnchor.constraint(equalToConstant: 44),
+      modelIdTextField.heightAnchor.constraint(equalToConstant: 44),
+      systemPromptTextView.heightAnchor.constraint(equalToConstant: 120),
+
       gifSettingsPanel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
       gifSettingsPanel.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
       gifSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
       gifSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
+
+      gifSettingsStackView.topAnchor.constraint(equalTo: gifSettingsPanel.topAnchor, constant: 16),
+      gifSettingsStackView.leadingAnchor.constraint(equalTo: gifSettingsPanel.leadingAnchor, constant: 16),
+      gifSettingsStackView.trailingAnchor.constraint(equalTo: gifSettingsPanel.trailingAnchor, constant: -16),
+      gifSettingsStackView.bottomAnchor.constraint(equalTo: gifSettingsPanel.bottomAnchor, constant: -16),
+
+      gifUrlTextField.heightAnchor.constraint(equalToConstant: 44),
+      gifApiKeyTextField.heightAnchor.constraint(equalToConstant: 44),
 
       pianoSettingsPanel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
       pianoSettingsPanel.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
       pianoSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
       pianoSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
 
-      pianoSettingsStackView.topAnchor.constraint(equalTo: pianoSettingsPanel.topAnchor),
-      pianoSettingsStackView.leadingAnchor.constraint(equalTo: pianoSettingsPanel.leadingAnchor),
-      pianoSettingsStackView.trailingAnchor.constraint(equalTo: pianoSettingsPanel.trailingAnchor),
-      pianoSettingsStackView.bottomAnchor.constraint(equalTo: pianoSettingsPanel.bottomAnchor),
+      pianoSettingsStackView.topAnchor.constraint(equalTo: pianoSettingsPanel.topAnchor, constant: 16),
+      pianoSettingsStackView.leadingAnchor.constraint(equalTo: pianoSettingsPanel.leadingAnchor, constant: 16),
+      pianoSettingsStackView.trailingAnchor.constraint(equalTo: pianoSettingsPanel.trailingAnchor, constant: -16),
+      pianoSettingsStackView.bottomAnchor.constraint(equalTo: pianoSettingsPanel.bottomAnchor, constant: -16),
     ])
 
     // 钢琴音设置约束
@@ -332,6 +496,12 @@ class SettingsPanelView: NibLessView {
 
     // 音量滑块事件
     volumeSlider.addTarget(self, action: #selector(volumeChanged), for: .valueChanged)
+
+    // 钢琴音开关事件
+    pianoSwitch.addTarget(self, action: #selector(pianoSwitchChanged), for: .valueChanged)
+
+    // Mood 切换事件
+    moodSegmentedControl.addTarget(self, action: #selector(moodChanged), for: .valueChanged)
   }
 
   @objc func handleAiCardTap() {
@@ -374,5 +544,41 @@ class SettingsPanelView: NibLessView {
   @objc func volumeChanged() {
     let value = Int(volumeSlider.value * 100)
     volumeValueLabel.text = "\(value)%"
+    savePianoSettings()
+  }
+
+  @objc func pianoSwitchChanged() {
+    savePianoSettings()
+  }
+
+  @objc func moodChanged() {
+    savePianoSettings()
+  }
+
+  func saveAISettings() {
+    let settings: [String: String] = [
+      "apiUrl": apiUrlTextField.text ?? "",
+      "apiKey": apiKeyTextField.text ?? "",
+      "modelId": modelIdTextField.text ?? "",
+      "systemPrompt": systemPromptTextView.text ?? ""
+    ]
+    onAISettingsSave?(settings)
+  }
+
+  func saveGifSettings() {
+    let settings: [String: String] = [
+      "gifUrl": gifUrlTextField.text ?? "",
+      "gifApiKey": gifApiKeyTextField.text ?? ""
+    ]
+    onGifSettingsSave?(settings)
+  }
+
+  func savePianoSettings() {
+    let settings: [String: Any] = [
+      "pianoEnabled": pianoSwitch.isOn,
+      "volume": volumeSlider.value,
+      "mood": moodSegmentedControl.selectedSegmentIndex
+    ]
+    onPianoSettingsSave?(settings)
   }
 }
