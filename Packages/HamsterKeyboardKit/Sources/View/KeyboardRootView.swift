@@ -62,6 +62,9 @@ class KeyboardRootView: NibLessView {
   /// 是否显示文本回放面板
   private var isShowingTextPlaybackPanel = false
 
+  /// 是否显示 GIF 面板
+  private var isShowingGifPanel = false
+
   /// 是否显示 AI 建议面板
   private var isShowingAISuggestionsPanel = false
 
@@ -163,6 +166,9 @@ class KeyboardRootView: NibLessView {
     view.onTextPlaybackButtonTapped = { [weak self] in
       self?.toggleTextPlaybackPanel()
     }
+    view.onGifButtonTapped = { [weak self] in
+      self?.toggleGifPanel()
+    }
     view.onAISuggestionsButtonTapped = { [weak self] in
       self?.toggleAISuggestionsPanel()
     }
@@ -183,6 +189,14 @@ class KeyboardRootView: NibLessView {
   /// 文本回放面板
   private lazy var textPlaybackPanelView: TextPlaybackPanelView = {
     let view = TextPlaybackPanelView(style: appearance.candidateBarStyle)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  /// GIF 面板
+  private lazy var gifPanelView: GifPanelView = {
+    let view = GifPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
     return view
@@ -278,6 +292,7 @@ class KeyboardRootView: NibLessView {
       addSubview(toolbarView)
       addSubview(settingsPanelView)
       addSubview(textPlaybackPanelView)
+      addSubview(gifPanelView)
       addSubview(aiSuggestionsPanelView)
       addSubview(primaryKeyboardView)
     } else {
@@ -306,10 +321,13 @@ class KeyboardRootView: NibLessView {
       // 文本回放面板约束
       let textPlaybackPanelConstraints = createTextPlaybackPanelConstraints()
 
+      // GIF 面板约束
+      let gifPanelConstraints = createGifPanelConstraints()
+
       // AI 建议面板约束
       let aiSuggestionsPanelConstraints = createAISuggestionsPanelConstraints()
 
-      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints + textPlaybackPanelConstraints + aiSuggestionsPanelConstraints)
+      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints + textPlaybackPanelConstraints + gifPanelConstraints + aiSuggestionsPanelConstraints)
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
@@ -371,6 +389,16 @@ class KeyboardRootView: NibLessView {
     ]
   }
 
+  /// GIF 面板约束
+  func createGifPanelConstraints() -> [NSLayoutConstraint] {
+    return [
+      gifPanelView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+      gifPanelView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      gifPanelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      gifPanelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+  }
+
   /// AI 建议面板约束
   func createAISuggestionsPanelConstraints() -> [NSLayoutConstraint] {
     return [
@@ -404,11 +432,32 @@ class KeyboardRootView: NibLessView {
     textPlaybackPanelView.isHidden = !isShowingTextPlaybackPanel
     primaryKeyboardView.isHidden = isShowingTextPlaybackPanel
     settingsPanelView.isHidden = true
+    gifPanelView.isHidden = true
     aiSuggestionsPanelView.isHidden = true
     isShowingSettingsPanel = false
+    isShowingGifPanel = false
     isShowingAISuggestionsPanel = false
     
     if isShowingTextPlaybackPanel {
+      toolbarView.showBackToKeyboardButton()
+    } else {
+      toolbarView.hideBackToKeyboardButton()
+    }
+  }
+
+  /// 切换 GIF 面板显示
+  func toggleGifPanel() {
+    isShowingGifPanel.toggle()
+    gifPanelView.isHidden = !isShowingGifPanel
+    primaryKeyboardView.isHidden = isShowingGifPanel
+    settingsPanelView.isHidden = true
+    textPlaybackPanelView.isHidden = true
+    aiSuggestionsPanelView.isHidden = true
+    isShowingSettingsPanel = false
+    isShowingTextPlaybackPanel = false
+    isShowingAISuggestionsPanel = false
+    
+    if isShowingGifPanel {
       toolbarView.showBackToKeyboardButton()
     } else {
       toolbarView.hideBackToKeyboardButton()
@@ -436,10 +485,12 @@ class KeyboardRootView: NibLessView {
   func backToKeyboard() {
     isShowingSettingsPanel = false
     isShowingTextPlaybackPanel = false
+    isShowingGifPanel = false
     isShowingAISuggestionsPanel = false
     
     settingsPanelView.isHidden = true
     textPlaybackPanelView.isHidden = true
+    gifPanelView.isHidden = true
     aiSuggestionsPanelView.isHidden = true
     primaryKeyboardView.isHidden = false
     

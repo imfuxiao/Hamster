@@ -33,6 +33,9 @@ class KeyboardToolbarView: NibLessView {
   /// 文本回放按钮点击回调
   var onTextPlaybackButtonTapped: (() -> Void)?
 
+  /// GIF 按钮点击回调
+  var onGifButtonTapped: (() -> Void)?
+
   /// AI 建议按钮点击回调
   var onAISuggestionsButtonTapped: (() -> Void)?
 
@@ -109,15 +112,30 @@ class KeyboardToolbarView: NibLessView {
   }()
 
   /// 文本回放按钮
-  lazy var emojiButton: UIButton = {
+  lazy var textPlaybackButton: UIButton = {
     let button = UIButton(type: .custom)
     button.translatesAutoresizingMaskIntoConstraints = false
     button.setImage(UIImage(systemName: "play.circle"), for: .normal)
     button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
     button.tintColor = style.toolbarButtonFrontColor
     button.backgroundColor = style.toolbarButtonBackgroundColor
-    button.addTarget(self, action: #selector(emojiButtonTouchDownAction), for: .touchDown)
-    button.addTarget(self, action: #selector(emojiButtonTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(textPlaybackButtonTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(textPlaybackButtonTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    return button
+  }()
+
+  /// GIF 按钮
+  lazy var gifButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "photo.on.rectangle"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(gifButtonTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(gifButtonTouchUpAction), for: .touchUpInside)
     button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
     button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
     return button
@@ -191,7 +209,8 @@ class KeyboardToolbarView: NibLessView {
     }
     commonFunctionBar.addSubview(backToKeyboardButton)
     commonFunctionBar.addSubview(settingsButton)
-    commonFunctionBar.addSubview(emojiButton)
+    commonFunctionBar.addSubview(textPlaybackButton)
+    commonFunctionBar.addSubview(gifButton)
     commonFunctionBar.addSubview(aiButton)
   }
 
@@ -244,12 +263,17 @@ class KeyboardToolbarView: NibLessView {
       settingsButton.widthAnchor.constraint(equalToConstant: buttonSize),
       settingsButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
 
-      emojiButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: spacing),
-      emojiButton.heightAnchor.constraint(equalToConstant: buttonSize),
-      emojiButton.widthAnchor.constraint(equalToConstant: buttonSize),
-      emojiButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+      textPlaybackButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: spacing),
+      textPlaybackButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      textPlaybackButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      textPlaybackButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
 
-      aiButton.leadingAnchor.constraint(equalTo: emojiButton.trailingAnchor, constant: spacing),
+      gifButton.leadingAnchor.constraint(equalTo: textPlaybackButton.trailingAnchor, constant: spacing),
+      gifButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      gifButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      gifButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+
+      aiButton.leadingAnchor.constraint(equalTo: gifButton.trailingAnchor, constant: spacing),
       aiButton.heightAnchor.constraint(equalToConstant: buttonSize),
       aiButton.widthAnchor.constraint(equalToConstant: buttonSize),
       aiButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
@@ -322,7 +346,8 @@ class KeyboardToolbarView: NibLessView {
     iconButton.backgroundColor = style.toolbarButtonBackgroundColor
     backToKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
     settingsButton.backgroundColor = style.toolbarButtonBackgroundColor
-    emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
+    textPlaybackButton.backgroundColor = style.toolbarButtonBackgroundColor
+    gifButton.backgroundColor = style.toolbarButtonBackgroundColor
     aiButton.backgroundColor = style.toolbarButtonBackgroundColor
   }
 
@@ -352,13 +377,22 @@ class KeyboardToolbarView: NibLessView {
     onSettingsButtonTapped?()
   }
 
-  @objc func emojiButtonTouchDownAction() {
-    emojiButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  @objc func textPlaybackButtonTouchDownAction() {
+    textPlaybackButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
   }
 
-  @objc func emojiButtonTouchUpAction() {
-    emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
+  @objc func textPlaybackButtonTouchUpAction() {
+    textPlaybackButton.backgroundColor = style.toolbarButtonBackgroundColor
     onTextPlaybackButtonTapped?()
+  }
+
+  @objc func gifButtonTouchDownAction() {
+    gifButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func gifButtonTouchUpAction() {
+    gifButton.backgroundColor = style.toolbarButtonBackgroundColor
+    onGifButtonTapped?()
   }
 
   @objc func aiButtonTouchDownAction() {

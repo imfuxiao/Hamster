@@ -402,6 +402,97 @@
             background: #e5e7eb;
         }
         
+        /* GIF 斗图面板 */
+        .gif-panel {
+            padding: 16px;
+        }
+        
+        .gif-search-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .gif-search-input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .gif-search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .gif-search-button {
+            padding: 10px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .gif-search-button:hover {
+            background: #2563eb;
+        }
+        
+        .gif-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .gif-tag {
+            padding: 6px 12px;
+            background: #f3f4f6;
+            border-radius: 16px;
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .gif-tag:hover {
+            background: #e5e7eb;
+        }
+        
+        .gif-tag.ai {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .gif-tag.ai:hover {
+            background: #bfdbfe;
+        }
+        
+        .gif-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .gif-item {
+            aspect-ratio: 1;
+            background: #f3f4f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .gif-item:hover {
+            transform: scale(1.05);
+        }
+        
         /* 键盘区域 */
         .keyboard {
             background: #d1d5db;
@@ -476,6 +567,7 @@
             <button class="back-to-keyboard-button" id="backToKeyboardBtn" title="返回键盘">⌨️</button>
             <button class="toolbar-button" id="settingsBtn" title="设置">⚙️</button>
             <button class="toolbar-button" id="playbackBtn" title="文本回放">▶️</button>
+            <button class="toolbar-button" id="gifBtn" title="GIF 斗图">🎬</button>
             <button class="toolbar-button" id="aiBtn" title="AI 建议">💡</button>
         </div>
         
@@ -611,6 +703,35 @@
             </div>
         </div>
         
+        <!-- GIF 斗图面板 -->
+        <div class="panel" id="gifPanel">
+            <div class="gif-panel">
+                <div class="gif-search-bar">
+                    <input type="text" class="gif-search-input" placeholder="搜索 GIF...">
+                    <button class="gif-search-button">搜索</button>
+                </div>
+                <div class="gif-tags">
+                    <div class="gif-tag">搞笑</div>
+                    <div class="gif-tag">开心</div>
+                    <div class="gif-tag">惊讶</div>
+                    <div class="gif-tag">点赞</div>
+                    <div class="gif-tag ai">AI 推荐：感谢</div>
+                    <div class="gif-tag ai">AI 推荐：同意</div>
+                </div>
+                <div class="gif-grid">
+                    <div class="gif-item">😀</div>
+                    <div class="gif-item">😂</div>
+                    <div class="gif-item">🥰</div>
+                    <div class="gif-item">😎</div>
+                    <div class="gif-item">🤔</div>
+                    <div class="gif-item">👍</div>
+                    <div class="gif-item">🎉</div>
+                    <div class="gif-item">🔥</div>
+                    <div class="gif-item">❤️</div>
+                </div>
+            </div>
+        </div>
+        
         <!-- 键盘区域 -->
         <div class="keyboard" id="keyboard">
             <button class="key">Q</button>
@@ -650,10 +771,12 @@
     <script>
         const settingsBtn = document.getElementById('settingsBtn');
         const playbackBtn = document.getElementById('playbackBtn');
+        const gifBtn = document.getElementById('gifBtn');
         const aiBtn = document.getElementById('aiBtn');
         const backToKeyboardBtn = document.getElementById('backToKeyboardBtn');
         const settingsPanel = document.getElementById('settingsPanel');
         const playbackPanel = document.getElementById('playbackPanel');
+        const gifPanel = document.getElementById('gifPanel');
         const aiPanel = document.getElementById('aiPanel');
         const keyboard = document.getElementById('keyboard');
         const pianoSwitch = document.getElementById('pianoSwitch');
@@ -663,10 +786,12 @@
         function hideAllPanels() {
             settingsPanel.classList.remove('active');
             playbackPanel.classList.remove('active');
+            gifPanel.classList.remove('active');
             aiPanel.classList.remove('active');
             keyboard.classList.remove('hidden');
             settingsBtn.classList.remove('active');
             playbackBtn.classList.remove('active');
+            gifBtn.classList.remove('active');
             aiBtn.classList.remove('active');
             backToKeyboardBtn.classList.remove('visible');
         }
@@ -720,6 +845,14 @@
             playbackPanel.classList.add('active');
             keyboard.classList.add('hidden');
             playbackBtn.classList.add('active');
+            showBackToKeyboardButton();
+        });
+        
+        gifBtn.addEventListener('click', () => {
+            hideAllPanels();
+            gifPanel.classList.add('active');
+            keyboard.classList.add('hidden');
+            gifBtn.classList.add('active');
             showBackToKeyboardButton();
         });
         
