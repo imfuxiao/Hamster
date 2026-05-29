@@ -12,6 +12,15 @@ import UIKit
 class GifPanelView: NibLessView {
   private let style: CandidateBarStyle
 
+  /// 搜索回调
+  var onSearch: ((String) -> Void)?
+
+  /// 标签点击回调
+  var onTagTapped: ((String) -> Void)?
+
+  /// GIF 选择回调
+  var onGifSelected: ((String) -> Void)?
+
   lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
     scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -93,8 +102,12 @@ class GifPanelView: NibLessView {
     collectionView.translatesAutoresizingMaskIntoConstraints = false
     collectionView.backgroundColor = .clear
     collectionView.register(GifCell.self, forCellWithReuseIdentifier: "GifCell")
+    collectionView.dataSource = self
+    collectionView.delegate = self
     return collectionView
   }()
+
+  private var gifEmojis: [String] = ["😀", "😂", "🥰", "😎", "🤔", "👍", "🎉", "🔥", "❤️"]
 
   init(style: CandidateBarStyle) {
     self.style = style
@@ -128,6 +141,8 @@ class GifPanelView: NibLessView {
     let tags = ["搞笑", "开心", "惊讶", "点赞", "AI 推荐：感谢", "AI 推荐：同意"]
     for (index, tag) in tags.enumerated() {
       let tagButton = createTagButton(title: tag, isAI: tag.hasPrefix("AI"))
+      tagButton.tag = index
+      tagButton.addTarget(self, action: #selector(handleTagTapped(_:)), for: .touchUpInside)
       tagsStackView.addArrangedSubview(tagButton)
     }
 
@@ -176,6 +191,24 @@ class GifPanelView: NibLessView {
       stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
       stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
     ])
+
+    // 添加搜索按钮点击事件
+    searchButton.addTarget(self, action: #selector(handleSearch), for: .touchUpInside)
+  }
+
+  @objc func handleSearch() {
+    guard let searchText = searchTextField.text, !searchText.isEmpty else { return }
+    onSearch?(searchText)
+  }
+
+  @objc func handleTagTapped(_ sender: UIButton) {
+    guard let tagTitle = sender.titleLabel?.text else { return }
+    onTagTapped?(tagTitle)
+  }
+
+  func updateGifEmojis(_ emojis: [String]) {
+    self.gifEmojis = emojis
+    gifCollectionView.reloadData()
   }
 
   func createTagButton(title: String, isAI: Bool) -> UIButton {
@@ -195,6 +228,29 @@ class GifPanelView: NibLessView {
     }
 
     return button
+  }
+}
+
+// MARK: - UICollectionViewDataSource
+extension GifPanelView: UICollectionViewDataSource {
+  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return gifEmojis.count
+  }
+
+  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GifCell", for: indexPath) as? GifCell else {
+      return UICollectionViewCell()
+    }
+    cell.configure(emoji: gifEmojis[indexPath.item])
+    return cell
+  }
+}
+
+// MARK: - UICollectionViewDelegate
+extension GifPanelView: UICollectionViewDelegate {
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let emoji = gifEmojis[indexPath.item]
+    onGifSelected?(emoji)
   }
 }
 

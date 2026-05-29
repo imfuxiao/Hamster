@@ -12,6 +12,15 @@ import UIKit
 class AISuggestionsPanelView: NibLessView {
   private let style: CandidateBarStyle
 
+  /// 复制建议回调
+  var onCopySuggestion: ((String) -> Void)?
+
+  /// 发送建议回调
+  var onSendSuggestion: ((String) -> Void)?
+
+  /// 重新生成回调
+  var onRegenerate: (() -> Void)?
+
   lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
     scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -91,13 +100,38 @@ class AISuggestionsPanelView: NibLessView {
   func addSuggestionItem(text: String) {
     let item = AISuggestionItemView(text: text)
     item.translatesAutoresizingMaskIntoConstraints = false
+    item.onCopy = { [weak self] text in
+      self?.onCopySuggestion?(text)
+    }
+    item.onSend = { [weak self] text in
+      self?.onSendSuggestion?(text)
+    }
     stackView.addArrangedSubview(item)
+  }
+
+  func clearSuggestions() {
+    // 移除除了重新生成按钮之外的所有子视图
+    let itemsToRemove = stackView.arrangedSubviews.filter { $0 != regenerateButton }
+    itemsToRemove.forEach { stackView.removeArrangedSubview($0)
+      $0.removeFromSuperview()
+    }
+  }
+
+  func updateSuggestions(_ suggestions: [String]) {
+    clearSuggestions()
+    suggestions.forEach { addSuggestionItem(text: $0) }
   }
 }
 
 /// AI 建议单项视图
 class AISuggestionItemView: NibLessView {
   private let suggestionText: String
+
+  /// 复制回调
+  var onCopy: ((String) -> Void)?
+
+  /// 发送回调
+  var onSend: ((String) -> Void)?
 
   lazy var containerView: UIView = {
     let view = UIView()
@@ -189,5 +223,18 @@ class AISuggestionItemView: NibLessView {
       copyButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
       sendButton.widthAnchor.constraint(greaterThanOrEqualToConstant: 80),
     ])
+
+    // 添加按钮点击事件
+    copyButton.addTarget(self, action: #selector(handleCopy), for: .touchUpInside)
+    sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
+  }
+
+  @objc func handleCopy() {
+    UIPasteboard.general.string = suggestionText
+    onCopy?(suggestionText)
+  }
+
+  @objc func handleSend() {
+    onSend?(suggestionText)
   }
 }

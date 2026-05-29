@@ -191,6 +191,9 @@ class KeyboardRootView: NibLessView {
     let view = TextPlaybackPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
+    view.onPlay = { [weak self] text, isMultiTrack in
+      self?.handleTextPlayback(text, isMultiTrack: isMultiTrack)
+    }
     return view
   }()
 
@@ -199,6 +202,15 @@ class KeyboardRootView: NibLessView {
     let view = GifPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
+    view.onSearch = { [weak self] searchText in
+      self?.handleGifSearch(searchText)
+    }
+    view.onTagTapped = { [weak self] tag in
+      self?.handleGifTagTapped(tag)
+    }
+    view.onGifSelected = { [weak self] emoji in
+      self?.handleGifSelected(emoji)
+    }
     return view
   }()
 
@@ -207,6 +219,15 @@ class KeyboardRootView: NibLessView {
     let view = AISuggestionsPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
+    view.onCopySuggestion = { [weak self] text in
+      self?.handleCopySuggestion(text)
+    }
+    view.onSendSuggestion = { [weak self] text in
+      self?.handleSendSuggestion(text)
+    }
+    view.onRegenerate = { [weak self] in
+      self?.handleRegenerateSuggestions()
+    }
     return view
   }()
 
@@ -495,6 +516,75 @@ class KeyboardRootView: NibLessView {
     primaryKeyboardView.isHidden = false
     
     toolbarView.hideBackToKeyboardButton()
+  }
+
+  // MARK: - AI 建议处理
+
+  /// 处理复制建议
+  func handleCopySuggestion(_ text: String) {
+    // 文本已经在 AISuggestionItemView 中复制到剪贴板
+    // 这里可以添加额外的反馈，比如显示提示
+  }
+
+  /// 处理发送建议
+  func handleSendSuggestion(_ text: String) {
+    // 将文本插入到输入框
+    // TODO: 需要通过 actionHandler 将文本发送到输入框
+    // 暂时先返回键盘
+    backToKeyboard()
+  }
+
+  /// 处理重新生成建议
+  func handleRegenerateSuggestions() {
+    // TODO: 调用 AI API 重新生成建议
+    // 暂时使用示例数据
+    let newSuggestions = [
+      "我觉得这个想法很有前景！",
+      "完全同意你的观点。",
+      "这个方向确实值得探索。"
+    ]
+    aiSuggestionsPanelView.updateSuggestions(newSuggestions)
+  }
+
+  // MARK: - GIF 面板处理
+
+  /// 处理 GIF 搜索
+  func handleGifSearch(_ searchText: String) {
+    // TODO: 调用 GIF API 搜索
+    // 暂时使用示例数据
+    let newEmojis = ["🤣", "😜", "🥳", "😇", "🤩", "😍", "🤗", "😊", "🤭"]
+    gifPanelView.updateGifEmojis(newEmojis)
+  }
+
+  /// 处理 GIF 标签点击
+  func handleGifTagTapped(_ tag: String) {
+    // TODO: 根据标签搜索 GIF
+    // 暂时使用示例数据
+    if tag.hasPrefix("AI") {
+      let aiEmojis = ["🙏", "🤝", "👏", "💪", "🌟", "✨", "🎊", "🎁", "🏆"]
+      gifPanelView.updateGifEmojis(aiEmojis)
+    } else {
+      let randomEmojis = ["😄", "😁", "😆", "😅", "🤣", "😂", "🙂", "😉", "😊"]
+      gifPanelView.updateGifEmojis(randomEmojis)
+    }
+  }
+
+  /// 处理 GIF 选择
+  func handleGifSelected(_ emoji: String) {
+    // 将 emoji 复制到剪贴板
+    UIPasteboard.general.string = emoji
+    // 返回键盘
+    backToKeyboard()
+  }
+
+  // MARK: - 文本回放处理
+
+  /// 处理文本回放
+  func handleTextPlayback(_ text: String, isMultiTrack: Bool) {
+    guard !text.isEmpty else { return }
+    // TODO: 调用钢琴音播放功能
+    // 暂时显示提示
+    print("播放文本: \(text), 多轨叠加: \(isMultiTrack)")
   }
 
   func combine() {

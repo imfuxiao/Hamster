@@ -12,6 +12,9 @@ import UIKit
 class TextPlaybackPanelView: NibLessView {
   private let style: CandidateBarStyle
 
+  /// 播放回调
+  var onPlay: ((String, Bool) -> Void)?
+
   lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
     scroll.translatesAutoresizingMaskIntoConstraints = false
@@ -131,6 +134,15 @@ class TextPlaybackPanelView: NibLessView {
       textView.heightAnchor.constraint(equalToConstant: 120),
       playButton.heightAnchor.constraint(equalToConstant: 44),
     ])
+
+    // 添加播放按钮点击事件
+    playButton.addTarget(self, action: #selector(handlePlay), for: .touchUpInside)
+  }
+
+  @objc func handlePlay() {
+    let text = textView.text ?? ""
+    let isMultiTrack = multiTrackSwitch.isOn
+    onPlay?(text, isMultiTrack)
   }
 }
 
