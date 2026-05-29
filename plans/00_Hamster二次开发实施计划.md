@@ -127,23 +127,24 @@ a6, b6, c6, d6, e6, f6, g6, c7
   - 设置：`gearshape`
   - 表情：`face.smiling`
   - AI 建议：`lightbulb`
-- 初期按钮只展示占位面板或触发日志，不直接接网络能力。
+- 新增 `SettingsCardView` 单个卡片视图（图标+文字上下结构）。
+- 新增 `SettingsPanelView` 设置面板视图（包含三个卡片：AI Key、GIF Key、文字播放）。
+- 点击设置按钮切换显示设置面板，替换键盘区域。
 - 保留现有 App 图标按钮和收起键盘按钮。
 
 **建议状态模型**：
 
 ```text
 keyboard       默认键盘
-settings       键盘内设置面板
-gifs           GIF 面板
-aiSuggestions  AI 建议面板
+settings       设置面板（包含 AI Key、GIF Key、文字播放三个卡片）
 ```
 
 **验收标准**：
 
 - 工具栏布局不遮挡候选词。
-- 有候选词时仍优先显示 Hamster 原候选栏。
-- 无候选词时显示新增功能入口。
+- 有候选词时仍优先显示 Hamster 原候选栏和工具栏按钮。
+- 点击设置按钮可切换显示设置面板。
+- 设置面板包含三个正方形卡片，每个卡片有图标和文字。
 - 按钮具备无障碍标签，方便 VoiceOver 识别。
 
 ---

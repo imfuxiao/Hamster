@@ -30,6 +30,9 @@ class KeyboardToolbarView: NibLessView {
   /// 设置按钮点击回调
   var onSettingsButtonTapped: (() -> Void)?
 
+  /// 文本回放按钮点击回调
+  var onTextPlaybackButtonTapped: (() -> Void)?
+
   /// 常用功能项: 仓输入法App
   lazy var iconButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -83,11 +86,11 @@ class KeyboardToolbarView: NibLessView {
     return button
   }()
 
-  /// 表情按钮
+  /// 文本回放按钮
   lazy var emojiButton: UIButton = {
     let button = UIButton(type: .custom)
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.setImage(UIImage(systemName: "face.smiling"), for: .normal)
+    button.setImage(UIImage(systemName: "play.circle"), for: .normal)
     button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
     button.tintColor = style.toolbarButtonFrontColor
     button.backgroundColor = style.toolbarButtonBackgroundColor
@@ -309,7 +312,7 @@ class KeyboardToolbarView: NibLessView {
 
   @objc func emojiButtonTouchUpAction() {
     emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
-    // TODO: 打开 GIF 面板
+    onTextPlaybackButtonTapped?()
   }
 
   @objc func aiButtonTouchDownAction() {

@@ -59,6 +59,9 @@ class KeyboardRootView: NibLessView {
   /// 是否显示设置面板
   private var isShowingSettingsPanel = false
 
+  /// 是否显示文本回放面板
+  private var isShowingTextPlaybackPanel = false
+
   /// 非主键盘的临时键盘Cache
   // private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
 
@@ -154,12 +157,23 @@ class KeyboardRootView: NibLessView {
     view.onSettingsButtonTapped = { [weak self] in
       self?.toggleSettingsPanel()
     }
+    view.onTextPlaybackButtonTapped = { [weak self] in
+      self?.toggleTextPlaybackPanel()
+    }
     return view
   }()
 
   /// 设置面板
   private lazy var settingsPanelView: SettingsPanelView = {
     let view = SettingsPanelView(style: appearance.candidateBarStyle)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  /// 文本回放面板
+  private lazy var textPlaybackPanelView: TextPlaybackPanelView = {
+    let view = TextPlaybackPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
     return view
@@ -246,6 +260,7 @@ class KeyboardRootView: NibLessView {
     if keyboardContext.enableToolbar {
       addSubview(toolbarView)
       addSubview(settingsPanelView)
+      addSubview(textPlaybackPanelView)
       addSubview(primaryKeyboardView)
     } else {
       addSubview(primaryKeyboardView)
@@ -270,7 +285,10 @@ class KeyboardRootView: NibLessView {
       // 设置面板约束
       let settingsPanelConstraints = createSettingsPanelConstraints()
 
-      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints)
+      // 文本回放面板约束
+      let textPlaybackPanelConstraints = createTextPlaybackPanelConstraints()
+
+      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints + textPlaybackPanelConstraints)
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
@@ -322,11 +340,32 @@ class KeyboardRootView: NibLessView {
     ]
   }
 
+  /// 文本回放面板约束
+  func createTextPlaybackPanelConstraints() -> [NSLayoutConstraint] {
+    return [
+      textPlaybackPanelView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+      textPlaybackPanelView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      textPlaybackPanelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      textPlaybackPanelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+  }
+
   /// 切换设置面板显示
   func toggleSettingsPanel() {
     isShowingSettingsPanel.toggle()
     settingsPanelView.isHidden = !isShowingSettingsPanel
     primaryKeyboardView.isHidden = isShowingSettingsPanel
+    textPlaybackPanelView.isHidden = true
+    isShowingTextPlaybackPanel = false
+  }
+
+  /// 切换文本回放面板显示
+  func toggleTextPlaybackPanel() {
+    isShowingTextPlaybackPanel.toggle()
+    textPlaybackPanelView.isHidden = !isShowingTextPlaybackPanel
+    primaryKeyboardView.isHidden = isShowingTextPlaybackPanel
+    settingsPanelView.isHidden = true
+    isShowingSettingsPanel = false
   }
 
   func combine() {
