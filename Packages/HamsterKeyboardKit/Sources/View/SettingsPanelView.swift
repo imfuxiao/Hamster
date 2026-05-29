@@ -505,18 +505,29 @@ class SettingsPanelView: NibLessView {
   }
 
   @objc func handleAiCardTap() {
+    loadAISettings()
     showSubPanel(panel: aiSettingsPanel, title: "AI 模型设置")
   }
 
   @objc func handleGifCardTap() {
+    loadGifSettings()
     showSubPanel(panel: gifSettingsPanel, title: "GIF 图源设置")
   }
 
   @objc func handlePianoCardTap() {
+    loadPianoSettings()
     showSubPanel(panel: pianoSettingsPanel, title: "钢琴音设置")
   }
 
   @objc func handleBackTap() {
+    // 返回时保存当前设置
+    if !aiSettingsPanel.isHidden {
+      saveAISettings()
+    } else if !gifSettingsPanel.isHidden {
+      saveGifSettings()
+    } else if !pianoSettingsPanel.isHidden {
+      savePianoSettings()
+    }
     hideSubPanel()
   }
 
@@ -580,5 +591,28 @@ class SettingsPanelView: NibLessView {
       "mood": moodSegmentedControl.selectedSegmentIndex
     ]
     onPianoSettingsSave?(settings)
+  }
+
+  func loadAISettings() {
+    let settings = MusicKeyboardSettings.shared
+    apiUrlTextField.text = settings.aiApiUrl
+    apiKeyTextField.text = settings.aiApiKey
+    modelIdTextField.text = settings.aiModelId
+    systemPromptTextView.text = settings.aiSystemPrompt
+  }
+
+  func loadGifSettings() {
+    let settings = MusicKeyboardSettings.shared
+    gifUrlTextField.text = settings.gifApiUrl
+    gifApiKeyTextField.text = settings.gifApiKey
+  }
+
+  func loadPianoSettings() {
+    let settings = MusicKeyboardSettings.shared
+    pianoSwitch.isOn = settings.isPianoEnabled
+    volumeSlider.value = settings.pianoVolume
+    moodSegmentedControl.selectedSegmentIndex = settings.pianoMood
+    let value = Int(volumeSlider.value * 100)
+    volumeValueLabel.text = "\(value)%"
   }
 }

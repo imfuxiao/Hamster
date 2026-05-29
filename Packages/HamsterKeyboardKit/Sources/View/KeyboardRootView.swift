@@ -600,20 +600,44 @@ class KeyboardRootView: NibLessView {
 
   /// 处理 AI 设置保存
   func handleAISettingsSave(_ settings: [String: String]) {
-    // TODO: 保存到 UserDefaults 或 App Group
-    print("保存 AI 设置: \(settings)")
+    let musicSettings = MusicKeyboardSettings.shared
+    if let apiUrl = settings["apiUrl"] {
+      musicSettings.aiApiUrl = apiUrl
+    }
+    if let apiKey = settings["apiKey"] {
+      musicSettings.aiApiKey = apiKey
+    }
+    if let modelId = settings["modelId"] {
+      musicSettings.aiModelId = modelId
+    }
+    if let systemPrompt = settings["systemPrompt"] {
+      musicSettings.aiSystemPrompt = systemPrompt
+    }
   }
 
   /// 处理 GIF 设置保存
   func handleGifSettingsSave(_ settings: [String: String]) {
-    // TODO: 保存到 UserDefaults 或 App Group
-    print("保存 GIF 设置: \(settings)")
+    let musicSettings = MusicKeyboardSettings.shared
+    if let gifUrl = settings["gifUrl"] {
+      musicSettings.gifApiUrl = gifUrl
+    }
+    if let gifApiKey = settings["gifApiKey"] {
+      musicSettings.gifApiKey = gifApiKey
+    }
   }
 
   /// 处理钢琴音设置保存
   func handlePianoSettingsSave(_ settings: [String: Any]) {
-    // TODO: 保存到 UserDefaults 或 App Group
-    print("保存钢琴音设置: \(settings)")
+    let musicSettings = MusicKeyboardSettings.shared
+    if let pianoEnabled = settings["pianoEnabled"] as? Bool {
+      musicSettings.isPianoEnabled = pianoEnabled
+    }
+    if let volume = settings["volume"] as? Float {
+      musicSettings.pianoVolume = volume
+    }
+    if let mood = settings["mood"] as? Int {
+      musicSettings.pianoMood = mood
+    }
   }
 
   func combine() {
