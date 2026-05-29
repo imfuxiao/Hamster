@@ -269,3 +269,86 @@ settings       设置面板（包含 AI Key、GIF Key、文字播放三个卡片
 6. 在模拟器或真机验证原输入逻辑不受影响。
 
 每一步完成后都应暂停确认，再继续下一步，避免一次性改动过大。
+
+---
+
+## 8. AI 上下文获取方案调研
+
+### 8.1 可用的上下文 API
+
+通过 `UITextDocumentProxy` 可以获取以下上下文信息：
+
+- `documentContextBeforeInput` - 光标前的完整文本
+- `documentContextAfterInput` - 光标后的完整文本
+- `sentenceBeforeInput` - 光标前最后的句子
+- `wordBeforeInput` - 光标前最后一个结束的单词
+- `currentWord` - 光标当前的单词
+
+### 8.2 上下文获取策略
+
+**方案一：使用 documentContextBeforeInput**
+- 优点：获取完整的上下文信息
+- 缺点：可能包含过多无关信息，需要截取
+- 实现：截取最近 200 字作为上下文
+
+**方案二：使用 sentenceBeforeInput**
+- 优点：自动按句子分割，语义更完整
+- 缺点：如果用户在句子中间，可能获取不到完整句子
+- 实现：获取最近 3-5 个句子
+
+**方案三：组合使用**
+- 优点：结合句子和单词级别信息
+- 缺点：实现复杂度较高
+- 实现：优先使用最近句子，不足时补充单词
+
+### 8.3 推荐方案
+
+推荐使用 **方案一**，原因：
+1. 实现简单，直接截取即可
+2. 上下文信息更完整，AI 理解更准确
+3. 可以根据实际效果调整截取长度
+
+### 8.4 实现示例
+
+```swift
+// 在 KeyboardInputViewController 或 KeyboardRootView 中
+func getContextForAI() -> String {
+    guard let proxy = textDocumentProxy else { return "" }
+    let context = proxy.documentContextBeforeInput ?? ""
+    // 截取最近 200 字
+    let maxLength = 200
+    if context.count > maxLength {
+        let startIndex = context.index(context.endIndex, offsetBy: -maxLength)
+        return String(context[startIndex...])
+    }
+    return context
+}
+``n
+### 8.5 注意事项
+
+1. **隐私保护**：上下文可能包含敏感信息，需要确保 API 传输安全
+2. **网络限制**：键盘扩展需要「允许完全访问」才能联网
+3. **性能考虑**：获取上下文和 API 调用都是异步操作，需要处理加载状态
+4. **失败处理**：网络失败或 API 错误时给出明确提示
+
+---
+
+## 9. 当前进度更新
+
+### 已完成
+- ✅ M1：钢琴音按键反馈（52 音符映射 + 音频播放器）
+- ✅ M2：工具栏入口（设置、文本回放、GIF、AI 建议 4 个按钮）
+- ✅ M3：键盘内设置（卡片导航 + 子面板输入功能）
+- ✅ UI 预览文件（HTML 预览）
+- ✅ AI 建议面板 UI（复制、发送、重新生成）
+- ✅ GIF 斗图面板 UI（搜索、标签、网格展示）
+- ✅ 文本回放面板 UI（播放按钮、多轨叠加开关）
+
+### 进行中
+- 🔄 AI 上下文获取方案调研
+
+### 待完成
+- ⏳ M4：AI 回复建议（接入 GLM API）
+- ⏳ M5：GIF 斗图（接入 Tenor API）
+- ⏳ 文本回放功能（接入钢琴音播放）
+- ⏳ 设置持久化（接入 App Group）
