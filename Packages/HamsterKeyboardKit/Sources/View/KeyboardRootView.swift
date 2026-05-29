@@ -56,6 +56,9 @@ class KeyboardRootView: NibLessView {
   /// 候选文字视图状态
   private var candidateViewState: CandidateBarView.State
 
+  /// 是否显示设置面板
+  private var isShowingSettingsPanel = false
+
   /// 非主键盘的临时键盘Cache
   // private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
 
@@ -145,9 +148,20 @@ class KeyboardRootView: NibLessView {
   }
 
   /// 工具栏
-  private lazy var toolbarView: UIView = {
+  private lazy var toolbarView: KeyboardToolbarView = {
     let view = KeyboardToolbarView(appearance: appearance, actionHandler: actionHandler, keyboardContext: keyboardContext, rimeContext: rimeContext)
     view.translatesAutoresizingMaskIntoConstraints = false
+    view.onSettingsButtonTapped = { [weak self] in
+      self?.toggleSettingsPanel()
+    }
+    return view
+  }()
+
+  /// 设置面板
+  private lazy var settingsPanelView: SettingsPanelView = {
+    let view = SettingsPanelView(style: appearance.candidateBarStyle)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
     return view
   }()
 
@@ -231,6 +245,7 @@ class KeyboardRootView: NibLessView {
   override func constructViewHierarchy() {
     if keyboardContext.enableToolbar {
       addSubview(toolbarView)
+      addSubview(settingsPanelView)
       addSubview(primaryKeyboardView)
     } else {
       addSubview(primaryKeyboardView)
@@ -252,7 +267,10 @@ class KeyboardRootView: NibLessView {
       // 工具栏展开时动态约束
       toolbarExpandDynamicConstraints = createToolbarExpandDynamicConstraints()
 
-      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!])
+      // 设置面板约束
+      let settingsPanelConstraints = createSettingsPanelConstraints()
+
+      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints)
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
@@ -292,6 +310,23 @@ class KeyboardRootView: NibLessView {
       primaryKeyboardView.leadingAnchor.constraint(equalTo: leadingAnchor),
       primaryKeyboardView.trailingAnchor.constraint(equalTo: trailingAnchor)
     ]
+  }
+
+  /// 设置面板约束
+  func createSettingsPanelConstraints() -> [NSLayoutConstraint] {
+    return [
+      settingsPanelView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+      settingsPanelView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      settingsPanelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      settingsPanelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+  }
+
+  /// 切换设置面板显示
+  func toggleSettingsPanel() {
+    isShowingSettingsPanel.toggle()
+    settingsPanelView.isHidden = !isShowingSettingsPanel
+    primaryKeyboardView.isHidden = isShowingSettingsPanel
   }
 
   func combine() {

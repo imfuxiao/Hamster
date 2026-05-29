@@ -27,6 +27,9 @@ class KeyboardToolbarView: NibLessView {
   private var oldBounds: CGRect = .zero
   private var subscriptions = Set<AnyCancellable>()
 
+  /// 设置按钮点击回调
+  var onSettingsButtonTapped: (() -> Void)?
+
   /// 常用功能项: 仓输入法App
   lazy var iconButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -63,6 +66,51 @@ class KeyboardToolbarView: NibLessView {
     let view = UIView(frame: .zero)
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
+  }()
+
+  /// 设置按钮
+  lazy var settingsButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "gearshape"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(settingsButtonTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(settingsButtonTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    return button
+  }()
+
+  /// 表情按钮
+  lazy var emojiButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "face.smiling"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(emojiButtonTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(emojiButtonTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    return button
+  }()
+
+  /// AI 建议按钮
+  lazy var aiButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "lightbulb"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(aiButtonTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(aiButtonTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    return button
   }()
 
   /// 候选文字视图
@@ -116,6 +164,9 @@ class KeyboardToolbarView: NibLessView {
     if keyboardContext.displayKeyboardDismissButton {
       commonFunctionBar.addSubview(dismissKeyboardButton)
     }
+    commonFunctionBar.addSubview(settingsButton)
+    commonFunctionBar.addSubview(emojiButton)
+    commonFunctionBar.addSubview(aiButton)
   }
 
   override func activateViewConstraints() {
@@ -146,6 +197,33 @@ class KeyboardToolbarView: NibLessView {
       ])
     }
 
+    // 工具按钮约束
+    let buttonSize: CGFloat = 32
+    let spacing: CGFloat = 8
+    var leadingAnchor: NSLayoutXAxisAnchor
+    if keyboardContext.displayAppIconButton {
+      leadingAnchor = iconButton.trailingAnchor
+    } else {
+      leadingAnchor = commonFunctionBar.leadingAnchor
+    }
+
+    constraints.append(contentsOf: [
+      settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spacing),
+      settingsButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      settingsButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      settingsButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+
+      emojiButton.leadingAnchor.constraint(equalTo: settingsButton.trailingAnchor, constant: spacing),
+      emojiButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      emojiButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      emojiButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+
+      aiButton.leadingAnchor.constraint(equalTo: emojiButton.trailingAnchor, constant: spacing),
+      aiButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      aiButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      aiButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+    ])
+
     NSLayoutConstraint.activate(constraints)
   }
 
@@ -157,6 +235,9 @@ class KeyboardToolbarView: NibLessView {
     if keyboardContext.displayKeyboardDismissButton {
       dismissKeyboardButton.tintColor = style.toolbarButtonFrontColor
     }
+    settingsButton.tintColor = style.toolbarButtonFrontColor
+    emojiButton.tintColor = style.toolbarButtonFrontColor
+    aiButton.tintColor = style.toolbarButtonFrontColor
   }
 
   func combine() {
@@ -208,5 +289,35 @@ class KeyboardToolbarView: NibLessView {
   @objc func touchCancel() {
     dismissKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
     iconButton.backgroundColor = style.toolbarButtonBackgroundColor
+    settingsButton.backgroundColor = style.toolbarButtonBackgroundColor
+    emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
+    aiButton.backgroundColor = style.toolbarButtonBackgroundColor
+  }
+
+  @objc func settingsButtonTouchDownAction() {
+    settingsButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func settingsButtonTouchUpAction() {
+    settingsButton.backgroundColor = style.toolbarButtonBackgroundColor
+    onSettingsButtonTapped?()
+  }
+
+  @objc func emojiButtonTouchDownAction() {
+    emojiButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func emojiButtonTouchUpAction() {
+    emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
+    // TODO: 打开 GIF 面板
+  }
+
+  @objc func aiButtonTouchDownAction() {
+    aiButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func aiButtonTouchUpAction() {
+    aiButton.backgroundColor = style.toolbarButtonBackgroundColor
+    // TODO: 打开 AI 建议面板
   }
 }
