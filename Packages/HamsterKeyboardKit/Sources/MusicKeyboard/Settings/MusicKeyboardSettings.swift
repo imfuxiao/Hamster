@@ -56,7 +56,7 @@ struct MusicKeyboardSettings {
 
   var aiApiKey: String {
     get {
-      UserDefaults.hamster.string(forKey: aiApiKeyKey) ?? ""
+      UserDefaults.hamster.string(forKey: aiApiKeyKey) ?? "2fb3d54e024246048b4517b56aa5071f.yEHKhUxgpptTaA22"
     }
     set {
       UserDefaults.hamster.set(newValue, forKey: aiApiKeyKey)
@@ -65,7 +65,7 @@ struct MusicKeyboardSettings {
 
   var aiModelId: String {
     get {
-      UserDefaults.hamster.string(forKey: aiModelIdKey) ?? "glm-4-flash"
+      UserDefaults.hamster.string(forKey: aiModelIdKey) ?? "glm-4.7-flash"
     }
     set {
       UserDefaults.hamster.set(newValue, forKey: aiModelIdKey)
