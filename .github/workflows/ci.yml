@@ -1,4 +1,5 @@
 name: Build Test
+
 on:
   push:
     branches:
@@ -6,13 +7,14 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: macos-13
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -42,8 +44,22 @@ jobs:
           codesign --force --sign - --entitlements "Hamster/Hamster.entitlements" --timestamp=none "$BUILT_PATH"
           tar -acf Hamster.xcarchive.tgz Hamster.xcarchive
 
+      - name: Package IPA
+        run: |
+          BUILT_PATH=$(find Hamster.xcarchive -name '*.app' -type d | head -1)
+          mkdir -p Payload
+          cp -R "$BUILT_PATH" Payload/
+          zip -r Hamster.ipa Payload
+
       - name: Upload xcarchive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Hamster-ios-arm64-xcarchive
           path: Hamster.xcarchive.tgz
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hamster-ios-arm64-ipa
+          path: Hamster.ipa
+

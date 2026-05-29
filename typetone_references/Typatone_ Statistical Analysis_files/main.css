@@ -1,0 +1,3081 @@
+div.keyboard {
+  font-family: 'proxima-nova-soft', 'Proxima Nova Soft', 'Proxima Nova', sans-serif;
+  color: #333;
+  background: #efefef;
+}
+div.keyboard.left,
+div.keyboard.right {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+div.keyboard.left ul.row.navigation,
+div.keyboard.right ul.row.navigation {
+  margin: 0.3rem -0.75rem;
+}
+div.keyboard .board {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.15rem 0;
+}
+div.keyboard ul.row {
+  margin: 0.3rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1px;
+}
+div.keyboard ul.row .q:before {
+  content: 'q';
+}
+div.keyboard ul.row .w:before {
+  content: 'w';
+}
+div.keyboard ul.row .e:before {
+  content: 'e';
+}
+div.keyboard ul.row .r:before {
+  content: 'r';
+}
+div.keyboard ul.row .t:before {
+  content: 't';
+}
+div.keyboard ul.row .y:before {
+  content: 'y';
+}
+div.keyboard ul.row .u:before {
+  content: 'u';
+}
+div.keyboard ul.row .i:before {
+  content: 'i';
+}
+div.keyboard ul.row .o:before {
+  content: 'o';
+}
+div.keyboard ul.row .p:before {
+  content: 'p';
+}
+div.keyboard ul.row .a:before {
+  content: 'a';
+}
+div.keyboard ul.row .s:before {
+  content: 's';
+}
+div.keyboard ul.row .d:before {
+  content: 'd';
+}
+div.keyboard ul.row .f:before {
+  content: 'f';
+}
+div.keyboard ul.row .g:before {
+  content: 'g';
+}
+div.keyboard ul.row .h:before {
+  content: 'h';
+}
+div.keyboard ul.row .j:before {
+  content: 'j';
+}
+div.keyboard ul.row .k:before {
+  content: 'k';
+}
+div.keyboard ul.row .l:before {
+  content: 'l';
+}
+div.keyboard ul.row .z:before {
+  content: 'z';
+}
+div.keyboard ul.row .x:before {
+  content: 'x';
+}
+div.keyboard ul.row .c:before {
+  content: 'c';
+}
+div.keyboard ul.row .v:before {
+  content: 'v';
+}
+div.keyboard ul.row .b:before {
+  content: 'b';
+}
+div.keyboard ul.row .n:before {
+  content: 'n';
+}
+div.keyboard ul.row .m:before {
+  content: 'm';
+}
+div.keyboard ul.row .numbers:before {
+  content: '123';
+}
+div.keyboard ul.row .space:before {
+  content: 'space';
+}
+div.keyboard ul.row .return:before {
+  content: 'return';
+}
+div.keyboard ul.row li.key {
+  display: inline-block;
+  min-width: 1.125rem;
+  height: 2.49rem;
+  line-height: 2.49rem;
+  font-size: 0.99rem;
+  background: #fff;
+  padding: 0 calc(1.5rem * 0.25 - 1px);
+  border-radius: 0.15rem;
+  cursor: pointer;
+  box-shadow: 0 1px #d6d6d6;
+  user-select: none;
+}
+div.keyboard ul.row li.key:hover {
+  background-color: #fafafa;
+}
+div.keyboard ul.row li.key:active {
+  background-color: #ebebeb;
+}
+div.keyboard ul.row li.key.space {
+  min-width: 7.5rem;
+  margin-left: 0.225rem;
+  margin-right: 0.225rem;
+}
+div.keyboard ul.row li.key.shift,
+div.keyboard ul.row li.key.delete {
+  min-width: 1.5rem;
+  background-size: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+div.keyboard ul.row li.key.shift {
+  margin-right: 0.45rem;
+}
+div.keyboard ul.row li.key.delete {
+  margin-left: 0.45rem;
+}
+div.keyboard ul.row li.key.return {
+  min-width: 3rem;
+}
+div.keyboard ul.row li.key.numbers {
+  min-width: 3rem;
+}
+div.keyboard ul.row li.key.delete {
+  background-image: url(/images/icons/Delete.svg);
+}
+div.keyboard ul.row li.key.delete:active {
+  background-image: url(/images/icons/Delete.Fill.svg);
+}
+div.keyboard ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.svg);
+}
+div.keyboard div.board.uppercase {
+  text-transform: uppercase;
+}
+div.keyboard div.board.uppercase ul.row li.key.space,
+div.keyboard div.board.uppercase ul.row li.key.return,
+div.keyboard div.board.uppercase ul.row li.key.numbers {
+  text-transform: none;
+}
+div.keyboard div.board.uppercase ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.Fill.svg);
+}
+div.keyboard div.board.numbers ul.row .q:before {
+  content: '1';
+}
+div.keyboard div.board.numbers ul.row .w:before {
+  content: '2';
+}
+div.keyboard div.board.numbers ul.row .e:before {
+  content: '3';
+}
+div.keyboard div.board.numbers ul.row .r:before {
+  content: '4';
+}
+div.keyboard div.board.numbers ul.row .t:before {
+  content: '5';
+}
+div.keyboard div.board.numbers ul.row .y:before {
+  content: '6';
+}
+div.keyboard div.board.numbers ul.row .u:before {
+  content: '7';
+}
+div.keyboard div.board.numbers ul.row .i:before {
+  content: '8';
+}
+div.keyboard div.board.numbers ul.row .o:before {
+  content: '9';
+}
+div.keyboard div.board.numbers ul.row .p:before {
+  content: '0';
+}
+div.keyboard div.board.numbers ul.row .a:before {
+  content: '-';
+}
+div.keyboard div.board.numbers ul.row .s:before {
+  content: '/';
+}
+div.keyboard div.board.numbers ul.row .d:before {
+  content: ':';
+}
+div.keyboard div.board.numbers ul.row .f:before {
+  content: ';';
+}
+div.keyboard div.board.numbers ul.row .g:before {
+  content: '(';
+}
+div.keyboard div.board.numbers ul.row .h:before {
+  content: ')';
+}
+div.keyboard div.board.numbers ul.row .j:before {
+  content: '@';
+}
+div.keyboard div.board.numbers ul.row .k:before {
+  content: '&';
+}
+div.keyboard div.board.numbers ul.row .l:before {
+  content: '@';
+}
+div.keyboard div.board.numbers ul.row .shift:before {
+  content: '#+=';
+}
+div.keyboard div.board.numbers ul.row .z:before {
+  content: '.';
+}
+div.keyboard div.board.numbers ul.row .x:before {
+  content: ',';
+}
+div.keyboard div.board.numbers ul.row .c:before {
+  content: '?';
+}
+div.keyboard div.board.numbers ul.row .v:before {
+  content: '!';
+}
+div.keyboard div.board.numbers ul.row .b:before {
+  content: '’';
+}
+div.keyboard div.board.numbers ul.row .n:before {
+  content: '”';
+}
+div.keyboard div.board.numbers ul.row .m:before {
+  content: 'm';
+}
+div.keyboard div.board.numbers ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard div.board.numbers ul.row .space:before {
+  content: 'space';
+}
+div.keyboard div.board.numbers ul.row .return:before {
+  content: 'return';
+}
+div.keyboard div.board.numbers ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard div.board.numbers ul.row .m {
+  display: none;
+}
+div.keyboard div.board.numbers.uppercase ul.row .q:before {
+  content: '[';
+}
+div.keyboard div.board.numbers.uppercase ul.row .w:before {
+  content: ']';
+}
+div.keyboard div.board.numbers.uppercase ul.row .e:before {
+  content: '{';
+}
+div.keyboard div.board.numbers.uppercase ul.row .r:before {
+  content: '}';
+}
+div.keyboard div.board.numbers.uppercase ul.row .t:before {
+  content: '#';
+}
+div.keyboard div.board.numbers.uppercase ul.row .y:before {
+  content: '%';
+}
+div.keyboard div.board.numbers.uppercase ul.row .u:before {
+  content: '^';
+}
+div.keyboard div.board.numbers.uppercase ul.row .i:before {
+  content: '*';
+}
+div.keyboard div.board.numbers.uppercase ul.row .o:before {
+  content: '+';
+}
+div.keyboard div.board.numbers.uppercase ul.row .p:before {
+  content: '=';
+}
+div.keyboard div.board.numbers.uppercase ul.row .a:before {
+  content: '_';
+}
+div.keyboard div.board.numbers.uppercase ul.row .s:before {
+  content: '\\';
+}
+div.keyboard div.board.numbers.uppercase ul.row .d:before {
+  content: '|';
+}
+div.keyboard div.board.numbers.uppercase ul.row .f:before {
+  content: '~';
+}
+div.keyboard div.board.numbers.uppercase ul.row .g:before {
+  content: '<';
+}
+div.keyboard div.board.numbers.uppercase ul.row .h:before {
+  content: '>';
+}
+div.keyboard div.board.numbers.uppercase ul.row .j:before {
+  content: '€';
+}
+div.keyboard div.board.numbers.uppercase ul.row .k:before {
+  content: '£';
+}
+div.keyboard div.board.numbers.uppercase ul.row .l:before {
+  content: '¥';
+}
+div.keyboard div.board.numbers.uppercase ul.row .shift:before {
+  content: '123';
+}
+div.keyboard div.board.numbers.uppercase ul.row .z:before {
+  content: '.';
+}
+div.keyboard div.board.numbers.uppercase ul.row .x:before {
+  content: ',';
+}
+div.keyboard div.board.numbers.uppercase ul.row .c:before {
+  content: '?';
+}
+div.keyboard div.board.numbers.uppercase ul.row .v:before {
+  content: '!';
+}
+div.keyboard div.board.numbers.uppercase ul.row .b:before {
+  content: '’';
+}
+div.keyboard div.board.numbers.uppercase ul.row .n:before {
+  content: '•';
+}
+div.keyboard div.board.numbers.uppercase ul.row .m:before {
+  content: 'm';
+}
+div.keyboard div.board.numbers.uppercase ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard div.board.numbers.uppercase ul.row .space:before {
+  content: 'space';
+}
+div.keyboard div.board.numbers.uppercase ul.row .return:before {
+  content: 'return';
+}
+div.keyboard div.board.numbers.uppercase ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard div.board.numbers.uppercase ul.row li.key.shift:before {
+  content: '123';
+}
+div.keyboard div.cursor {
+  position: absolute;
+  display: none;
+  min-width: 0.975rem;
+  height: 6.225rem;
+  line-height: 2.49rem;
+  font-size: 0.99rem;
+  background: #fff;
+  margin-top: calc(-3.735rem - 1px);
+  padding: 0 0.375rem;
+  border-radius: 0.15rem;
+  border: 1px solid #d6d6d6;
+  pointer-events: none;
+}
+div.keyboard.left.left,
+div.keyboard.left.right {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+div.keyboard.left.left ul.row.navigation,
+div.keyboard.left.right ul.row.navigation {
+  margin: 0.25rem -0.625rem;
+}
+div.keyboard.left .board {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.125rem 0;
+}
+div.keyboard.left ul.row {
+  margin: 0.25rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1px;
+}
+div.keyboard.left ul.row .q:before {
+  content: 'q';
+}
+div.keyboard.left ul.row .w:before {
+  content: 'w';
+}
+div.keyboard.left ul.row .e:before {
+  content: 'e';
+}
+div.keyboard.left ul.row .r:before {
+  content: 'r';
+}
+div.keyboard.left ul.row .t:before {
+  content: 't';
+}
+div.keyboard.left ul.row .y:before {
+  content: 'y';
+}
+div.keyboard.left ul.row .u:before {
+  content: 'u';
+}
+div.keyboard.left ul.row .i:before {
+  content: 'i';
+}
+div.keyboard.left ul.row .o:before {
+  content: 'o';
+}
+div.keyboard.left ul.row .p:before {
+  content: 'p';
+}
+div.keyboard.left ul.row .a:before {
+  content: 'a';
+}
+div.keyboard.left ul.row .s:before {
+  content: 's';
+}
+div.keyboard.left ul.row .d:before {
+  content: 'd';
+}
+div.keyboard.left ul.row .f:before {
+  content: 'f';
+}
+div.keyboard.left ul.row .g:before {
+  content: 'g';
+}
+div.keyboard.left ul.row .h:before {
+  content: 'h';
+}
+div.keyboard.left ul.row .j:before {
+  content: 'j';
+}
+div.keyboard.left ul.row .k:before {
+  content: 'k';
+}
+div.keyboard.left ul.row .l:before {
+  content: 'l';
+}
+div.keyboard.left ul.row .z:before {
+  content: 'z';
+}
+div.keyboard.left ul.row .x:before {
+  content: 'x';
+}
+div.keyboard.left ul.row .c:before {
+  content: 'c';
+}
+div.keyboard.left ul.row .v:before {
+  content: 'v';
+}
+div.keyboard.left ul.row .b:before {
+  content: 'b';
+}
+div.keyboard.left ul.row .n:before {
+  content: 'n';
+}
+div.keyboard.left ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.left ul.row .numbers:before {
+  content: '123';
+}
+div.keyboard.left ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.left ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.left ul.row li.key {
+  display: inline-block;
+  min-width: 0.9375rem;
+  height: 2.075rem;
+  line-height: 2.075rem;
+  font-size: 0.825rem;
+  background: #fff;
+  padding: 0 calc(1.25rem * 0.25 - 1px);
+  border-radius: 0.125rem;
+  cursor: pointer;
+  box-shadow: 0 1px #d6d6d6;
+  user-select: none;
+}
+div.keyboard.left ul.row li.key:hover {
+  background-color: #fafafa;
+}
+div.keyboard.left ul.row li.key:active {
+  background-color: #ebebeb;
+}
+div.keyboard.left ul.row li.key.space {
+  min-width: 6.25rem;
+  margin-left: 0.1875rem;
+  margin-right: 0.1875rem;
+}
+div.keyboard.left ul.row li.key.shift,
+div.keyboard.left ul.row li.key.delete {
+  min-width: 1.25rem;
+  background-size: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+div.keyboard.left ul.row li.key.shift {
+  margin-right: 0.375rem;
+}
+div.keyboard.left ul.row li.key.delete {
+  margin-left: 0.375rem;
+}
+div.keyboard.left ul.row li.key.return {
+  min-width: 2.5rem;
+}
+div.keyboard.left ul.row li.key.numbers {
+  min-width: 2.5rem;
+}
+div.keyboard.left ul.row li.key.delete {
+  background-image: url(/images/icons/Delete.svg);
+}
+div.keyboard.left ul.row li.key.delete:active {
+  background-image: url(/images/icons/Delete.Fill.svg);
+}
+div.keyboard.left ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.svg);
+}
+div.keyboard.left div.board.uppercase {
+  text-transform: uppercase;
+}
+div.keyboard.left div.board.uppercase ul.row li.key.space,
+div.keyboard.left div.board.uppercase ul.row li.key.return,
+div.keyboard.left div.board.uppercase ul.row li.key.numbers {
+  text-transform: none;
+}
+div.keyboard.left div.board.uppercase ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.Fill.svg);
+}
+div.keyboard.left div.board.numbers ul.row .q:before {
+  content: '1';
+}
+div.keyboard.left div.board.numbers ul.row .w:before {
+  content: '2';
+}
+div.keyboard.left div.board.numbers ul.row .e:before {
+  content: '3';
+}
+div.keyboard.left div.board.numbers ul.row .r:before {
+  content: '4';
+}
+div.keyboard.left div.board.numbers ul.row .t:before {
+  content: '5';
+}
+div.keyboard.left div.board.numbers ul.row .y:before {
+  content: '6';
+}
+div.keyboard.left div.board.numbers ul.row .u:before {
+  content: '7';
+}
+div.keyboard.left div.board.numbers ul.row .i:before {
+  content: '8';
+}
+div.keyboard.left div.board.numbers ul.row .o:before {
+  content: '9';
+}
+div.keyboard.left div.board.numbers ul.row .p:before {
+  content: '0';
+}
+div.keyboard.left div.board.numbers ul.row .a:before {
+  content: '-';
+}
+div.keyboard.left div.board.numbers ul.row .s:before {
+  content: '/';
+}
+div.keyboard.left div.board.numbers ul.row .d:before {
+  content: ':';
+}
+div.keyboard.left div.board.numbers ul.row .f:before {
+  content: ';';
+}
+div.keyboard.left div.board.numbers ul.row .g:before {
+  content: '(';
+}
+div.keyboard.left div.board.numbers ul.row .h:before {
+  content: ')';
+}
+div.keyboard.left div.board.numbers ul.row .j:before {
+  content: '@';
+}
+div.keyboard.left div.board.numbers ul.row .k:before {
+  content: '&';
+}
+div.keyboard.left div.board.numbers ul.row .l:before {
+  content: '@';
+}
+div.keyboard.left div.board.numbers ul.row .shift:before {
+  content: '#+=';
+}
+div.keyboard.left div.board.numbers ul.row .z:before {
+  content: '.';
+}
+div.keyboard.left div.board.numbers ul.row .x:before {
+  content: ',';
+}
+div.keyboard.left div.board.numbers ul.row .c:before {
+  content: '?';
+}
+div.keyboard.left div.board.numbers ul.row .v:before {
+  content: '!';
+}
+div.keyboard.left div.board.numbers ul.row .b:before {
+  content: '’';
+}
+div.keyboard.left div.board.numbers ul.row .n:before {
+  content: '”';
+}
+div.keyboard.left div.board.numbers ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.left div.board.numbers ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.left div.board.numbers ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.left div.board.numbers ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.left div.board.numbers ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.left div.board.numbers ul.row .m {
+  display: none;
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .q:before {
+  content: '[';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .w:before {
+  content: ']';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .e:before {
+  content: '{';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .r:before {
+  content: '}';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .t:before {
+  content: '#';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .y:before {
+  content: '%';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .u:before {
+  content: '^';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .i:before {
+  content: '*';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .o:before {
+  content: '+';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .p:before {
+  content: '=';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .a:before {
+  content: '_';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .s:before {
+  content: '\\';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .d:before {
+  content: '|';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .f:before {
+  content: '~';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .g:before {
+  content: '<';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .h:before {
+  content: '>';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .j:before {
+  content: '€';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .k:before {
+  content: '£';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .l:before {
+  content: '¥';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .shift:before {
+  content: '123';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .z:before {
+  content: '.';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .x:before {
+  content: ',';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .c:before {
+  content: '?';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .v:before {
+  content: '!';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .b:before {
+  content: '’';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .n:before {
+  content: '•';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.left div.board.numbers.uppercase ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.left div.board.numbers.uppercase ul.row li.key.shift:before {
+  content: '123';
+}
+div.keyboard.left div.cursor {
+  position: absolute;
+  display: none;
+  min-width: 0.8125rem;
+  height: 5.1875rem;
+  line-height: 2.075rem;
+  font-size: 0.825rem;
+  background: #fff;
+  margin-top: calc(-3.1125rem - 1px);
+  padding: 0 0.3125rem;
+  border-radius: 0.125rem;
+  border: 1px solid #d6d6d6;
+  pointer-events: none;
+}
+div.keyboard.large.bottom.left,
+div.keyboard.large.bottom.right {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+div.keyboard.large.bottom.left ul.row.navigation,
+div.keyboard.large.bottom.right ul.row.navigation {
+  margin: 0.4rem -1rem;
+}
+div.keyboard.large.bottom .board {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.2rem 0;
+}
+div.keyboard.large.bottom ul.row {
+  margin: 0.4rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1px;
+}
+div.keyboard.large.bottom ul.row .q:before {
+  content: 'q';
+}
+div.keyboard.large.bottom ul.row .w:before {
+  content: 'w';
+}
+div.keyboard.large.bottom ul.row .e:before {
+  content: 'e';
+}
+div.keyboard.large.bottom ul.row .r:before {
+  content: 'r';
+}
+div.keyboard.large.bottom ul.row .t:before {
+  content: 't';
+}
+div.keyboard.large.bottom ul.row .y:before {
+  content: 'y';
+}
+div.keyboard.large.bottom ul.row .u:before {
+  content: 'u';
+}
+div.keyboard.large.bottom ul.row .i:before {
+  content: 'i';
+}
+div.keyboard.large.bottom ul.row .o:before {
+  content: 'o';
+}
+div.keyboard.large.bottom ul.row .p:before {
+  content: 'p';
+}
+div.keyboard.large.bottom ul.row .a:before {
+  content: 'a';
+}
+div.keyboard.large.bottom ul.row .s:before {
+  content: 's';
+}
+div.keyboard.large.bottom ul.row .d:before {
+  content: 'd';
+}
+div.keyboard.large.bottom ul.row .f:before {
+  content: 'f';
+}
+div.keyboard.large.bottom ul.row .g:before {
+  content: 'g';
+}
+div.keyboard.large.bottom ul.row .h:before {
+  content: 'h';
+}
+div.keyboard.large.bottom ul.row .j:before {
+  content: 'j';
+}
+div.keyboard.large.bottom ul.row .k:before {
+  content: 'k';
+}
+div.keyboard.large.bottom ul.row .l:before {
+  content: 'l';
+}
+div.keyboard.large.bottom ul.row .z:before {
+  content: 'z';
+}
+div.keyboard.large.bottom ul.row .x:before {
+  content: 'x';
+}
+div.keyboard.large.bottom ul.row .c:before {
+  content: 'c';
+}
+div.keyboard.large.bottom ul.row .v:before {
+  content: 'v';
+}
+div.keyboard.large.bottom ul.row .b:before {
+  content: 'b';
+}
+div.keyboard.large.bottom ul.row .n:before {
+  content: 'n';
+}
+div.keyboard.large.bottom ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.bottom ul.row .numbers:before {
+  content: '123';
+}
+div.keyboard.large.bottom ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.bottom ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.bottom ul.row li.key {
+  display: inline-block;
+  min-width: 1.5rem;
+  height: 3.32rem;
+  line-height: 3.32rem;
+  font-size: 1.32rem;
+  background: #fff;
+  padding: 0 calc(2rem * 0.25 - 1px);
+  border-radius: 0.2rem;
+  cursor: pointer;
+  box-shadow: 0 1px #d6d6d6;
+  user-select: none;
+}
+div.keyboard.large.bottom ul.row li.key:hover {
+  background-color: #fafafa;
+}
+div.keyboard.large.bottom ul.row li.key:active {
+  background-color: #ebebeb;
+}
+div.keyboard.large.bottom ul.row li.key.space {
+  min-width: 10rem;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+}
+div.keyboard.large.bottom ul.row li.key.shift,
+div.keyboard.large.bottom ul.row li.key.delete {
+  min-width: 2rem;
+  background-size: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+div.keyboard.large.bottom ul.row li.key.shift {
+  margin-right: 0.6rem;
+}
+div.keyboard.large.bottom ul.row li.key.delete {
+  margin-left: 0.6rem;
+}
+div.keyboard.large.bottom ul.row li.key.return {
+  min-width: 4rem;
+}
+div.keyboard.large.bottom ul.row li.key.numbers {
+  min-width: 4rem;
+}
+div.keyboard.large.bottom ul.row li.key.delete {
+  background-image: url(/images/icons/Delete.svg);
+}
+div.keyboard.large.bottom ul.row li.key.delete:active {
+  background-image: url(/images/icons/Delete.Fill.svg);
+}
+div.keyboard.large.bottom ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.svg);
+}
+div.keyboard.large.bottom div.board.uppercase {
+  text-transform: uppercase;
+}
+div.keyboard.large.bottom div.board.uppercase ul.row li.key.space,
+div.keyboard.large.bottom div.board.uppercase ul.row li.key.return,
+div.keyboard.large.bottom div.board.uppercase ul.row li.key.numbers {
+  text-transform: none;
+}
+div.keyboard.large.bottom div.board.uppercase ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.Fill.svg);
+}
+div.keyboard.large.bottom div.board.numbers ul.row .q:before {
+  content: '1';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .w:before {
+  content: '2';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .e:before {
+  content: '3';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .r:before {
+  content: '4';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .t:before {
+  content: '5';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .y:before {
+  content: '6';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .u:before {
+  content: '7';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .i:before {
+  content: '8';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .o:before {
+  content: '9';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .p:before {
+  content: '0';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .a:before {
+  content: '-';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .s:before {
+  content: '/';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .d:before {
+  content: ':';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .f:before {
+  content: ';';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .g:before {
+  content: '(';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .h:before {
+  content: ')';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .j:before {
+  content: '@';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .k:before {
+  content: '&';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .l:before {
+  content: '@';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .shift:before {
+  content: '#+=';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .z:before {
+  content: '.';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .x:before {
+  content: ',';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .c:before {
+  content: '?';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .v:before {
+  content: '!';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .b:before {
+  content: '’';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .n:before {
+  content: '”';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.bottom div.board.numbers ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.bottom div.board.numbers ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.large.bottom div.board.numbers ul.row .m {
+  display: none;
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .q:before {
+  content: '[';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .w:before {
+  content: ']';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .e:before {
+  content: '{';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .r:before {
+  content: '}';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .t:before {
+  content: '#';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .y:before {
+  content: '%';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .u:before {
+  content: '^';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .i:before {
+  content: '*';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .o:before {
+  content: '+';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .p:before {
+  content: '=';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .a:before {
+  content: '_';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .s:before {
+  content: '\\';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .d:before {
+  content: '|';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .f:before {
+  content: '~';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .g:before {
+  content: '<';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .h:before {
+  content: '>';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .j:before {
+  content: '€';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .k:before {
+  content: '£';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .l:before {
+  content: '¥';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .shift:before {
+  content: '123';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .z:before {
+  content: '.';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .x:before {
+  content: ',';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .c:before {
+  content: '?';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .v:before {
+  content: '!';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .b:before {
+  content: '’';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .n:before {
+  content: '•';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.large.bottom div.board.numbers.uppercase ul.row li.key.shift:before {
+  content: '123';
+}
+div.keyboard.large.bottom div.cursor {
+  position: absolute;
+  display: none;
+  min-width: 1.3rem;
+  height: 8.3rem;
+  line-height: 3.32rem;
+  font-size: 1.32rem;
+  background: #fff;
+  margin-top: calc(-4.98rem - 1px);
+  padding: 0 0.5rem;
+  border-radius: 0.2rem;
+  border: 1px solid #d6d6d6;
+  pointer-events: none;
+}
+div.keyboard.large.bottom ul.row {
+  gap: 3px;
+}
+div.keyboard.small.left.left,
+div.keyboard.small.left.right {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+div.keyboard.small.left.left ul.row.navigation,
+div.keyboard.small.left.right ul.row.navigation {
+  margin: 0.2rem -0.5rem;
+}
+div.keyboard.small.left .board {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.1rem 0;
+}
+div.keyboard.small.left ul.row {
+  margin: 0.2rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1px;
+}
+div.keyboard.small.left ul.row .q:before {
+  content: 'q';
+}
+div.keyboard.small.left ul.row .w:before {
+  content: 'w';
+}
+div.keyboard.small.left ul.row .e:before {
+  content: 'e';
+}
+div.keyboard.small.left ul.row .r:before {
+  content: 'r';
+}
+div.keyboard.small.left ul.row .t:before {
+  content: 't';
+}
+div.keyboard.small.left ul.row .y:before {
+  content: 'y';
+}
+div.keyboard.small.left ul.row .u:before {
+  content: 'u';
+}
+div.keyboard.small.left ul.row .i:before {
+  content: 'i';
+}
+div.keyboard.small.left ul.row .o:before {
+  content: 'o';
+}
+div.keyboard.small.left ul.row .p:before {
+  content: 'p';
+}
+div.keyboard.small.left ul.row .a:before {
+  content: 'a';
+}
+div.keyboard.small.left ul.row .s:before {
+  content: 's';
+}
+div.keyboard.small.left ul.row .d:before {
+  content: 'd';
+}
+div.keyboard.small.left ul.row .f:before {
+  content: 'f';
+}
+div.keyboard.small.left ul.row .g:before {
+  content: 'g';
+}
+div.keyboard.small.left ul.row .h:before {
+  content: 'h';
+}
+div.keyboard.small.left ul.row .j:before {
+  content: 'j';
+}
+div.keyboard.small.left ul.row .k:before {
+  content: 'k';
+}
+div.keyboard.small.left ul.row .l:before {
+  content: 'l';
+}
+div.keyboard.small.left ul.row .z:before {
+  content: 'z';
+}
+div.keyboard.small.left ul.row .x:before {
+  content: 'x';
+}
+div.keyboard.small.left ul.row .c:before {
+  content: 'c';
+}
+div.keyboard.small.left ul.row .v:before {
+  content: 'v';
+}
+div.keyboard.small.left ul.row .b:before {
+  content: 'b';
+}
+div.keyboard.small.left ul.row .n:before {
+  content: 'n';
+}
+div.keyboard.small.left ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.small.left ul.row .numbers:before {
+  content: '123';
+}
+div.keyboard.small.left ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.small.left ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.small.left ul.row li.key {
+  display: inline-block;
+  min-width: 0.75rem;
+  height: 1.66rem;
+  line-height: 1.66rem;
+  font-size: 0.66rem;
+  background: #fff;
+  padding: 0 calc(1rem * 0.25 - 1px);
+  border-radius: 0.1rem;
+  cursor: pointer;
+  box-shadow: 0 1px #d6d6d6;
+  user-select: none;
+}
+div.keyboard.small.left ul.row li.key:hover {
+  background-color: #fafafa;
+}
+div.keyboard.small.left ul.row li.key:active {
+  background-color: #ebebeb;
+}
+div.keyboard.small.left ul.row li.key.space {
+  min-width: 5rem;
+  margin-left: 0.15rem;
+  margin-right: 0.15rem;
+}
+div.keyboard.small.left ul.row li.key.shift,
+div.keyboard.small.left ul.row li.key.delete {
+  min-width: 1rem;
+  background-size: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+div.keyboard.small.left ul.row li.key.shift {
+  margin-right: 0.3rem;
+}
+div.keyboard.small.left ul.row li.key.delete {
+  margin-left: 0.3rem;
+}
+div.keyboard.small.left ul.row li.key.return {
+  min-width: 2rem;
+}
+div.keyboard.small.left ul.row li.key.numbers {
+  min-width: 2rem;
+}
+div.keyboard.small.left ul.row li.key.delete {
+  background-image: url(/images/icons/Delete.svg);
+}
+div.keyboard.small.left ul.row li.key.delete:active {
+  background-image: url(/images/icons/Delete.Fill.svg);
+}
+div.keyboard.small.left ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.svg);
+}
+div.keyboard.small.left div.board.uppercase {
+  text-transform: uppercase;
+}
+div.keyboard.small.left div.board.uppercase ul.row li.key.space,
+div.keyboard.small.left div.board.uppercase ul.row li.key.return,
+div.keyboard.small.left div.board.uppercase ul.row li.key.numbers {
+  text-transform: none;
+}
+div.keyboard.small.left div.board.uppercase ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.Fill.svg);
+}
+div.keyboard.small.left div.board.numbers ul.row .q:before {
+  content: '1';
+}
+div.keyboard.small.left div.board.numbers ul.row .w:before {
+  content: '2';
+}
+div.keyboard.small.left div.board.numbers ul.row .e:before {
+  content: '3';
+}
+div.keyboard.small.left div.board.numbers ul.row .r:before {
+  content: '4';
+}
+div.keyboard.small.left div.board.numbers ul.row .t:before {
+  content: '5';
+}
+div.keyboard.small.left div.board.numbers ul.row .y:before {
+  content: '6';
+}
+div.keyboard.small.left div.board.numbers ul.row .u:before {
+  content: '7';
+}
+div.keyboard.small.left div.board.numbers ul.row .i:before {
+  content: '8';
+}
+div.keyboard.small.left div.board.numbers ul.row .o:before {
+  content: '9';
+}
+div.keyboard.small.left div.board.numbers ul.row .p:before {
+  content: '0';
+}
+div.keyboard.small.left div.board.numbers ul.row .a:before {
+  content: '-';
+}
+div.keyboard.small.left div.board.numbers ul.row .s:before {
+  content: '/';
+}
+div.keyboard.small.left div.board.numbers ul.row .d:before {
+  content: ':';
+}
+div.keyboard.small.left div.board.numbers ul.row .f:before {
+  content: ';';
+}
+div.keyboard.small.left div.board.numbers ul.row .g:before {
+  content: '(';
+}
+div.keyboard.small.left div.board.numbers ul.row .h:before {
+  content: ')';
+}
+div.keyboard.small.left div.board.numbers ul.row .j:before {
+  content: '@';
+}
+div.keyboard.small.left div.board.numbers ul.row .k:before {
+  content: '&';
+}
+div.keyboard.small.left div.board.numbers ul.row .l:before {
+  content: '@';
+}
+div.keyboard.small.left div.board.numbers ul.row .shift:before {
+  content: '#+=';
+}
+div.keyboard.small.left div.board.numbers ul.row .z:before {
+  content: '.';
+}
+div.keyboard.small.left div.board.numbers ul.row .x:before {
+  content: ',';
+}
+div.keyboard.small.left div.board.numbers ul.row .c:before {
+  content: '?';
+}
+div.keyboard.small.left div.board.numbers ul.row .v:before {
+  content: '!';
+}
+div.keyboard.small.left div.board.numbers ul.row .b:before {
+  content: '’';
+}
+div.keyboard.small.left div.board.numbers ul.row .n:before {
+  content: '”';
+}
+div.keyboard.small.left div.board.numbers ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.small.left div.board.numbers ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.small.left div.board.numbers ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.small.left div.board.numbers ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.small.left div.board.numbers ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.small.left div.board.numbers ul.row .m {
+  display: none;
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .q:before {
+  content: '[';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .w:before {
+  content: ']';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .e:before {
+  content: '{';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .r:before {
+  content: '}';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .t:before {
+  content: '#';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .y:before {
+  content: '%';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .u:before {
+  content: '^';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .i:before {
+  content: '*';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .o:before {
+  content: '+';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .p:before {
+  content: '=';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .a:before {
+  content: '_';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .s:before {
+  content: '\\';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .d:before {
+  content: '|';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .f:before {
+  content: '~';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .g:before {
+  content: '<';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .h:before {
+  content: '>';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .j:before {
+  content: '€';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .k:before {
+  content: '£';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .l:before {
+  content: '¥';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .shift:before {
+  content: '123';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .z:before {
+  content: '.';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .x:before {
+  content: ',';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .c:before {
+  content: '?';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .v:before {
+  content: '!';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .b:before {
+  content: '’';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .n:before {
+  content: '•';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.small.left div.board.numbers.uppercase ul.row li.key.shift:before {
+  content: '123';
+}
+div.keyboard.small.left div.cursor {
+  position: absolute;
+  display: none;
+  min-width: 0.65rem;
+  height: 4.15rem;
+  line-height: 1.66rem;
+  font-size: 0.66rem;
+  background: #fff;
+  margin-top: calc(-2.49rem - 1px);
+  padding: 0 0.25rem;
+  border-radius: 0.1rem;
+  border: 1px solid #d6d6d6;
+  pointer-events: none;
+}
+div.keyboard.large.left.left,
+div.keyboard.large.left.right {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+div.keyboard.large.left.left ul.row.navigation,
+div.keyboard.large.left.right ul.row.navigation {
+  margin: 0.3rem -0.75rem;
+}
+div.keyboard.large.left .board {
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.15rem 0;
+}
+div.keyboard.large.left ul.row {
+  margin: 0.3rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1px;
+}
+div.keyboard.large.left ul.row .q:before {
+  content: 'q';
+}
+div.keyboard.large.left ul.row .w:before {
+  content: 'w';
+}
+div.keyboard.large.left ul.row .e:before {
+  content: 'e';
+}
+div.keyboard.large.left ul.row .r:before {
+  content: 'r';
+}
+div.keyboard.large.left ul.row .t:before {
+  content: 't';
+}
+div.keyboard.large.left ul.row .y:before {
+  content: 'y';
+}
+div.keyboard.large.left ul.row .u:before {
+  content: 'u';
+}
+div.keyboard.large.left ul.row .i:before {
+  content: 'i';
+}
+div.keyboard.large.left ul.row .o:before {
+  content: 'o';
+}
+div.keyboard.large.left ul.row .p:before {
+  content: 'p';
+}
+div.keyboard.large.left ul.row .a:before {
+  content: 'a';
+}
+div.keyboard.large.left ul.row .s:before {
+  content: 's';
+}
+div.keyboard.large.left ul.row .d:before {
+  content: 'd';
+}
+div.keyboard.large.left ul.row .f:before {
+  content: 'f';
+}
+div.keyboard.large.left ul.row .g:before {
+  content: 'g';
+}
+div.keyboard.large.left ul.row .h:before {
+  content: 'h';
+}
+div.keyboard.large.left ul.row .j:before {
+  content: 'j';
+}
+div.keyboard.large.left ul.row .k:before {
+  content: 'k';
+}
+div.keyboard.large.left ul.row .l:before {
+  content: 'l';
+}
+div.keyboard.large.left ul.row .z:before {
+  content: 'z';
+}
+div.keyboard.large.left ul.row .x:before {
+  content: 'x';
+}
+div.keyboard.large.left ul.row .c:before {
+  content: 'c';
+}
+div.keyboard.large.left ul.row .v:before {
+  content: 'v';
+}
+div.keyboard.large.left ul.row .b:before {
+  content: 'b';
+}
+div.keyboard.large.left ul.row .n:before {
+  content: 'n';
+}
+div.keyboard.large.left ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.left ul.row .numbers:before {
+  content: '123';
+}
+div.keyboard.large.left ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.left ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.left ul.row li.key {
+  display: inline-block;
+  min-width: 1.125rem;
+  height: 2.49rem;
+  line-height: 2.49rem;
+  font-size: 0.99rem;
+  background: #fff;
+  padding: 0 calc(1.5rem * 0.25 - 1px);
+  border-radius: 0.15rem;
+  cursor: pointer;
+  box-shadow: 0 1px #d6d6d6;
+  user-select: none;
+}
+div.keyboard.large.left ul.row li.key:hover {
+  background-color: #fafafa;
+}
+div.keyboard.large.left ul.row li.key:active {
+  background-color: #ebebeb;
+}
+div.keyboard.large.left ul.row li.key.space {
+  min-width: 7.5rem;
+  margin-left: 0.225rem;
+  margin-right: 0.225rem;
+}
+div.keyboard.large.left ul.row li.key.shift,
+div.keyboard.large.left ul.row li.key.delete {
+  min-width: 1.5rem;
+  background-size: 40%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+div.keyboard.large.left ul.row li.key.shift {
+  margin-right: 0.45rem;
+}
+div.keyboard.large.left ul.row li.key.delete {
+  margin-left: 0.45rem;
+}
+div.keyboard.large.left ul.row li.key.return {
+  min-width: 3rem;
+}
+div.keyboard.large.left ul.row li.key.numbers {
+  min-width: 3rem;
+}
+div.keyboard.large.left ul.row li.key.delete {
+  background-image: url(/images/icons/Delete.svg);
+}
+div.keyboard.large.left ul.row li.key.delete:active {
+  background-image: url(/images/icons/Delete.Fill.svg);
+}
+div.keyboard.large.left ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.svg);
+}
+div.keyboard.large.left div.board.uppercase {
+  text-transform: uppercase;
+}
+div.keyboard.large.left div.board.uppercase ul.row li.key.space,
+div.keyboard.large.left div.board.uppercase ul.row li.key.return,
+div.keyboard.large.left div.board.uppercase ul.row li.key.numbers {
+  text-transform: none;
+}
+div.keyboard.large.left div.board.uppercase ul.row li.key.shift {
+  background-image: url(/images/icons/Shift.Fill.svg);
+}
+div.keyboard.large.left div.board.numbers ul.row .q:before {
+  content: '1';
+}
+div.keyboard.large.left div.board.numbers ul.row .w:before {
+  content: '2';
+}
+div.keyboard.large.left div.board.numbers ul.row .e:before {
+  content: '3';
+}
+div.keyboard.large.left div.board.numbers ul.row .r:before {
+  content: '4';
+}
+div.keyboard.large.left div.board.numbers ul.row .t:before {
+  content: '5';
+}
+div.keyboard.large.left div.board.numbers ul.row .y:before {
+  content: '6';
+}
+div.keyboard.large.left div.board.numbers ul.row .u:before {
+  content: '7';
+}
+div.keyboard.large.left div.board.numbers ul.row .i:before {
+  content: '8';
+}
+div.keyboard.large.left div.board.numbers ul.row .o:before {
+  content: '9';
+}
+div.keyboard.large.left div.board.numbers ul.row .p:before {
+  content: '0';
+}
+div.keyboard.large.left div.board.numbers ul.row .a:before {
+  content: '-';
+}
+div.keyboard.large.left div.board.numbers ul.row .s:before {
+  content: '/';
+}
+div.keyboard.large.left div.board.numbers ul.row .d:before {
+  content: ':';
+}
+div.keyboard.large.left div.board.numbers ul.row .f:before {
+  content: ';';
+}
+div.keyboard.large.left div.board.numbers ul.row .g:before {
+  content: '(';
+}
+div.keyboard.large.left div.board.numbers ul.row .h:before {
+  content: ')';
+}
+div.keyboard.large.left div.board.numbers ul.row .j:before {
+  content: '@';
+}
+div.keyboard.large.left div.board.numbers ul.row .k:before {
+  content: '&';
+}
+div.keyboard.large.left div.board.numbers ul.row .l:before {
+  content: '@';
+}
+div.keyboard.large.left div.board.numbers ul.row .shift:before {
+  content: '#+=';
+}
+div.keyboard.large.left div.board.numbers ul.row .z:before {
+  content: '.';
+}
+div.keyboard.large.left div.board.numbers ul.row .x:before {
+  content: ',';
+}
+div.keyboard.large.left div.board.numbers ul.row .c:before {
+  content: '?';
+}
+div.keyboard.large.left div.board.numbers ul.row .v:before {
+  content: '!';
+}
+div.keyboard.large.left div.board.numbers ul.row .b:before {
+  content: '’';
+}
+div.keyboard.large.left div.board.numbers ul.row .n:before {
+  content: '”';
+}
+div.keyboard.large.left div.board.numbers ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.left div.board.numbers ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.large.left div.board.numbers ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.left div.board.numbers ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.left div.board.numbers ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.large.left div.board.numbers ul.row .m {
+  display: none;
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .q:before {
+  content: '[';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .w:before {
+  content: ']';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .e:before {
+  content: '{';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .r:before {
+  content: '}';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .t:before {
+  content: '#';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .y:before {
+  content: '%';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .u:before {
+  content: '^';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .i:before {
+  content: '*';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .o:before {
+  content: '+';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .p:before {
+  content: '=';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .a:before {
+  content: '_';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .s:before {
+  content: '\\';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .d:before {
+  content: '|';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .f:before {
+  content: '~';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .g:before {
+  content: '<';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .h:before {
+  content: '>';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .j:before {
+  content: '€';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .k:before {
+  content: '£';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .l:before {
+  content: '¥';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .shift:before {
+  content: '123';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .z:before {
+  content: '.';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .x:before {
+  content: ',';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .c:before {
+  content: '?';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .v:before {
+  content: '!';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .b:before {
+  content: '’';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .n:before {
+  content: '•';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .m:before {
+  content: 'm';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .numbers:before {
+  content: 'abc';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .space:before {
+  content: 'space';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row .return:before {
+  content: 'return';
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row li.key.shift {
+  background-image: none;
+}
+div.keyboard.large.left div.board.numbers.uppercase ul.row li.key.shift:before {
+  content: '123';
+}
+div.keyboard.large.left div.cursor {
+  position: absolute;
+  display: none;
+  min-width: 0.975rem;
+  height: 6.225rem;
+  line-height: 2.49rem;
+  font-size: 0.99rem;
+  background: #fff;
+  margin-top: calc(-3.735rem - 1px);
+  padding: 0 0.375rem;
+  border-radius: 0.15rem;
+  border: 1px solid #d6d6d6;
+  pointer-events: none;
+}
+div.keyboard.large.left ul.row {
+  gap: 2px;
+}
+div.keyboard.top {
+  top: 0;
+  left: 0;
+  right: 0;
+}
+div.keyboard.left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+div.keyboard.right {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+div.keyboard.bottom {
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 20px;
+}
+@media screen and (min-width: 900px) {
+  html {
+    font-size: 32px;
+  }
+}
+@media screen and (min-width: 2000px) {
+  html {
+    font-size: 56px;
+  }
+}
+.typatone {
+  transition: opacity 0.75s ease-in-out;
+  pointer-events: auto;
+  opacity: 1;
+}
+#lobby {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3rem;
+  height: 3rem;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+#lobby > div {
+  position: absolute;
+  inset: 0;
+  background: url(/images/icons/sync.svg) center center no-repeat;
+  background-size: 50%;
+  border-radius: 50%;
+  z-index: 9999;
+  transition: opacity 0.35s ease-in-out;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  content: "";
+}
+.loading .typatone {
+  pointer-events: none;
+  opacity: 0;
+}
+.loading #lobby {
+  opacity: 1;
+}
+#editor,
+#viewer {
+  position: fixed;
+  inset: 0;
+  transition: background-color 0.75s ease-in-out;
+  background-color: #007dc8;
+  /**
+   * Themes
+   */
+}
+#editor.active,
+#viewer.active {
+  background-color: #00af96;
+}
+#editor.natural,
+#viewer.natural {
+  background-color: #007dc8;
+}
+#editor.natural.active,
+#viewer.natural.active {
+  background-color: #00af96;
+}
+#editor.vinyl,
+#viewer.vinyl,
+#editor.flutter,
+#viewer.flutter {
+  background-color: #ff7d32;
+}
+#editor.vinyl.active,
+#viewer.vinyl.active,
+#editor.flutter.active,
+#viewer.flutter.active {
+  background-color: #ff327d;
+}
+#editor.sustain,
+#viewer.sustain,
+#editor.sustain2,
+#viewer.sustain2,
+#editor.sustain3,
+#viewer.sustain3,
+#editor.seasick,
+#viewer.seasick {
+  background-color: #6400ff;
+}
+#editor.sustain.active,
+#viewer.sustain.active,
+#editor.sustain2.active,
+#viewer.sustain2.active,
+#editor.sustain3.active,
+#viewer.sustain3.active,
+#editor.seasick.active,
+#viewer.seasick.active {
+  background-color: #643264;
+}
+#editor.boards,
+#viewer.boards {
+  background-color: #960032;
+}
+#editor.boards.active,
+#viewer.boards.active {
+  background-color: #963200;
+}
+#editor.bongorhodes,
+#viewer.bongorhodes {
+  background-color: #00af96;
+}
+#editor.bongorhodes.active,
+#viewer.bongorhodes.active {
+  background-color: #32c864;
+}
+#editor.reverser,
+#viewer.reverser,
+#editor.robotones,
+#viewer.robotones,
+#editor.beeps,
+#viewer.beeps {
+  background-color: #ccc;
+}
+#editor.reverser.active,
+#viewer.reverser.active,
+#editor.robotones.active,
+#viewer.robotones.active,
+#editor.beeps.active,
+#viewer.beeps.active {
+  background-color: #765;
+}
+#editor.noize,
+#viewer.noize,
+#editor.spooky,
+#viewer.spooky {
+  background-color: #765;
+}
+#editor.noize.active,
+#viewer.noize.active,
+#editor.spooky.active,
+#viewer.spooky.active {
+  background-color: #432;
+}
+#editor .fade,
+#viewer .fade {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+#editor .stage,
+#viewer .stage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  user-select: none;
+}
+#editor .stage canvas,
+#viewer .stage canvas,
+#editor .stage svg,
+#viewer .stage svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+#editor .stage .content,
+#viewer .stage .content {
+  position: relative;
+  padding: 1.725rem;
+  vertical-align: top;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 1.725rem;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.3);
+  color: white;
+}
+#editor .stage .content span,
+#viewer .stage .content span {
+  cursor: pointer;
+  height: 100%;
+}
+#editor .stage .content span.breaking,
+#viewer .stage .content span.breaking {
+  display: inline-block;
+}
+#editor .keyboard,
+#viewer .keyboard {
+  position: fixed;
+  box-shadow: 0 0 1.15rem rgba(0, 0, 0, 0.2);
+}
+#editor .keyboard .navigation,
+#viewer .keyboard .navigation {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  background: rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  margin-top: 0;
+}
+#editor .keyboard .navigation li.key,
+#viewer .keyboard .navigation li.key {
+  position: relative;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: 0 0 transparent;
+  border-radius: 0;
+  border-right: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.66);
+  aspect-ratio: 1;
+}
+#editor .keyboard .navigation li.key div,
+#viewer .keyboard .navigation li.key div,
+#editor .keyboard .navigation li.key button,
+#viewer .keyboard .navigation li.key button {
+  opacity: 0.75;
+}
+#editor .keyboard .navigation li.key:hover,
+#viewer .keyboard .navigation li.key:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+#editor .keyboard .navigation li.key:hover div,
+#viewer .keyboard .navigation li.key:hover div,
+#editor .keyboard .navigation li.key:hover button,
+#viewer .keyboard .navigation li.key:hover button {
+  opacity: 1;
+}
+#editor .keyboard .navigation li.key:last-child,
+#viewer .keyboard .navigation li.key:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.66);
+}
+#editor .keyboard .navigation li.key.disabled,
+#viewer .keyboard .navigation li.key.disabled {
+  cursor: default;
+}
+#editor .keyboard .navigation li.key.disabled:hover,
+#viewer .keyboard .navigation li.key.disabled:hover {
+  background: transparent;
+}
+#editor .keyboard .navigation li.key.disabled:hover div,
+#viewer .keyboard .navigation li.key.disabled:hover div,
+#editor .keyboard .navigation li.key.disabled:hover button,
+#viewer .keyboard .navigation li.key.disabled:hover button {
+  opacity: 0.75;
+}
+#editor .keyboard .navigation div,
+#viewer .keyboard .navigation div,
+#editor .keyboard .navigation button,
+#viewer .keyboard .navigation button {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 33%;
+  /**
+         * Animated spinner around icon
+         */
+}
+#editor .keyboard .navigation div.about,
+#viewer .keyboard .navigation div.about,
+#editor .keyboard .navigation button.about,
+#viewer .keyboard .navigation button.about {
+  background-image: url(/images/icons/info-white.svg);
+}
+#editor .keyboard .navigation div.profile,
+#viewer .keyboard .navigation div.profile,
+#editor .keyboard .navigation button.profile,
+#viewer .keyboard .navigation button.profile {
+  background-image: url(/images/icons/profile-white.svg);
+}
+#editor .keyboard .navigation div.volume,
+#viewer .keyboard .navigation div.volume,
+#editor .keyboard .navigation button.volume,
+#viewer .keyboard .navigation button.volume {
+  background-image: url(/images/icons/volume-white.svg);
+}
+#editor .keyboard .navigation div.volume.mute,
+#viewer .keyboard .navigation div.volume.mute,
+#editor .keyboard .navigation button.volume.mute,
+#viewer .keyboard .navigation button.volume.mute {
+  background-image: url(/images/icons/volume-mute-white.svg);
+}
+#editor .keyboard .navigation div.filter,
+#viewer .keyboard .navigation div.filter,
+#editor .keyboard .navigation button.filter,
+#viewer .keyboard .navigation button.filter {
+  background-image: url(/images/icons/filter-white.svg);
+}
+#editor .keyboard .navigation div.paste,
+#viewer .keyboard .navigation div.paste,
+#editor .keyboard .navigation button.paste,
+#viewer .keyboard .navigation button.paste {
+  background-image: url(/images/icons/paste-white.svg);
+}
+#editor .keyboard .navigation div.download,
+#viewer .keyboard .navigation div.download,
+#editor .keyboard .navigation button.download,
+#viewer .keyboard .navigation button.download {
+  background-image: url(/images/icons/download-white.svg);
+}
+#editor .keyboard .navigation div.save,
+#viewer .keyboard .navigation div.save,
+#editor .keyboard .navigation button.save,
+#viewer .keyboard .navigation button.save {
+  background-image: url(/images/icons/save-white.svg);
+}
+#editor .keyboard .navigation div.send,
+#viewer .keyboard .navigation div.send,
+#editor .keyboard .navigation button.send,
+#viewer .keyboard .navigation button.send {
+  background-image: url(/images/icons/send-white.svg);
+}
+#editor .keyboard .navigation div.in-progress,
+#viewer .keyboard .navigation div.in-progress,
+#editor .keyboard .navigation button.in-progress,
+#viewer .keyboard .navigation button.in-progress {
+  cursor: default;
+}
+#editor .keyboard .navigation div:after,
+#viewer .keyboard .navigation div:after,
+#editor .keyboard .navigation button:after,
+#viewer .keyboard .navigation button:after {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background-image: url(/images/icons/sync.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50%;
+  transition: opacity 0.35s ease-in-out;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  content: "";
+}
+#editor .keyboard .navigation div.in-progress:after,
+#viewer .keyboard .navigation div.in-progress:after,
+#editor .keyboard .navigation button.in-progress:after,
+#viewer .keyboard .navigation button.in-progress:after {
+  opacity: 1;
+}
+#editor .keyboard .navigation button,
+#viewer .keyboard .navigation button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+#editor .keyboard .navigation button:disabled,
+#viewer .keyboard .navigation button:disabled {
+  cursor: default;
+}
+#editor .keyboard .board,
+#viewer .keyboard .board {
+  padding-top: 0;
+}
+#viewer .stage {
+  overflow-y: auto;
+}
+#viewer .stage .content span {
+  cursor: default;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition-property: transform, opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+  transform: translateY(0.5rem);
+  pointer-events: none;
+  opacity: 0;
+}
+#viewer .stage .content span.enabled {
+  transform: translateY(0);
+  pointer-events: auto;
+  opacity: 1;
+}
+#viewer .navigation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #d4d4d4;
+  border-top: 1px solid rgba(255, 255, 255, 0.66);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.66);
+  box-shadow: 0 -1rem 2rem rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 2.3rem;
+  z-index: 20;
+}
+#viewer .navigation a {
+  position: relative;
+  display: inline-block;
+  width: 2.3rem;
+  height: 2.3rem;
+  outline: none;
+  border: 0;
+  border-left: 1px solid rgba(255, 255, 255, 0.6);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 0.85rem;
+  /**
+       * Animated spinner around icon
+       */
+}
+#viewer .navigation a:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
+}
+#viewer .navigation a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#viewer .navigation a.about {
+  background-image: url(/images/icons/info-white.svg);
+}
+#viewer .navigation a.create {
+  background-image: url(/images/icons/new-white.svg);
+}
+#viewer .navigation a.replay {
+  background-image: url(/images/icons/replay-white.svg);
+}
+#viewer .navigation a.download {
+  background-image: url(/images/icons/download-white.svg);
+}
+#viewer .navigation a.send {
+  background-image: url(/images/icons/send-white.svg);
+}
+#viewer .navigation a:after {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: url(/images/icons/sync.svg) center center no-repeat;
+  transition: opacity 0.35s ease-in-out;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  content: "";
+}
+#viewer .navigation a.in-progress:after {
+  opacity: 1;
+  animation-name: spin;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+#viewer .play-button {
+  position: fixed;
+  inset: 0;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(/images/icons/play-white.svg);
+  background-size: 4rem;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.35s ease-in-out;
+  cursor: pointer;
+}
+#viewer .play-button.enabled {
+  z-index: 10;
+  opacity: 1;
+}
+.text-cursor {
+  visibility: hidden;
+  position: absolute;
+  left: -999px;
+  top: -999px;
+  height: 1.5rem;
+  width: 0;
+  border-right: 2px solid white;
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  user-select: none;
+  z-index: 10;
+  content: "";
+}
+.text-cursor.editor-active {
+  visibility: visible;
+}
+.large.bottom #editor .stage .content,
+.large.bottom #viewer .stage .content {
+  font-size: 2rem;
+  line-height: 2.3rem;
+}
+.large.bottom .text-cursor {
+  height: 2rem;
+}
+.modal {
+  position: fixed;
+  display: none;
+  background: white;
+  overflow: auto;
+  z-index: 200;
+  inset: 0;
+}
+.modal .close {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0 0.4rem;
+  padding: 0.8rem 0.4rem;
+  font-size: 1.33rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: transform 0.15s ease-out;
+}
+.modal .close:hover {
+  transform: scale(1.33);
+}
+.modal .content {
+  position: relative;
+  padding: 2.3rem 1.15rem;
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  font-size: 0.66rem;
+  line-height: 0.8rem;
+  text-align: center;
+  color: #333;
+}
+.modal .content .qr {
+  margin-bottom: 1rem;
+}
+.modal .content .social {
+  margin: 0.5rem 0 1rem;
+}
+.modal .content .social a {
+  display: inline-block;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.5rem;
+  border: 1px solid #858585;
+  border-radius: 0.2rem;
+}
+.modal .content .social a:hover {
+  background-color: #f5f5f5;
+}
+.modal .content .social a.facebook {
+  border-color: transparent;
+  background-size: 2rem;
+  background-image: url(/images/social/facebook.svg);
+}
+.modal .content .social a.facebook:hover {
+  background-color: transparent;
+  opacity: 0.7;
+}
+.modal .content .social a.x {
+  background-size: 0.75rem;
+  background-image: url(/images/social/x.svg);
+}
+.modal .content .social a.email {
+  background-image: url(/images/social/email.svg);
+}
+.modal .content .social a.native-share {
+  background-image: url(/images/social/share.svg);
+}
+.modal .content form.copy-and-paste {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowarp;
+  gap: 0.2rem;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  max-width: 50%;
+}
+.modal .content #embed-url {
+  margin-top: 0.5rem;
+}
+.modal .content input {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  font-size: 0.66rem;
+  line-height: 0.8rem;
+  outline: none;
+  padding: 0.5rem 1rem;
+}
+.modal .content #copy-to-clipboard {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 1rem;
+  background-image: url(/images/social/copy.svg);
+}
+.modal .content textarea {
+  position: relative;
+  display: block;
+  margin: 0 0 0 calc(-(1px + 0.5rem));
+  width: 100%;
+  height: 100%;
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.modal .content p.paste-content {
+  display: inline-block;
+  position: relative;
+  width: 66%;
+  resize: vertical;
+}
+.modal .content p.paste-content:after {
+  position: absolute;
+  top: 1px;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: 1px;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+}
+.modal .content p > button {
+  font-weight: 900;
+  margin-top: 1rem;
+}
+.modal .content button {
+  display: block;
+  margin: 0 auto;
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  font-weight: 900;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background: transparent;
+  outline: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.modal .content button:hover,
+.modal .content button:active {
+  background: #f5f5f5;
+}
+.modal .content #paste-text > p {
+  padding: 0.5rem 0;
+}
+.modal .content #paste-text.pasting p.paste-content:after {
+  opacity: 1;
+  pointer-events: auto;
+}
+.modal .content #paste-text.pasting button.submit {
+  font-weight: 900;
+  cursor: default;
+}
+.modal .content #stripe-charge {
+  margin-left: auto;
+  margin-right: auto;
+  width: 66%;
+}
+.modal .content .error {
+  color: #ff6464;
+}
+.toast {
+  position: absolute;
+  display: none;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 0.125rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  width: auto;
+  max-width: calc(min(100% - 2rem, 24rem));
+  bottom: 1rem;
+  right: 1rem;
+}
+.toast.toast-top-right {
+  top: 1rem;
+  right: 1rem;
+  bottom: auto;
+}
+.toast.toast-top-left {
+  top: 1rem;
+  left: 1rem;
+  bottom: auto;
+  right: auto;
+}
+.toast.toast-bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+.toast.toast-bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+  right: auto;
+}
+.toast.toast-success {
+  border-left: 4px solid #00af96;
+}
+.toast.toast-error {
+  border-left: 4px solid #ff6464;
+}
+.toast.toast-warning {
+  border-left: 4px solid #ff7d32;
+}
+.toast.toast-info {
+  border-left: 4px solid #007dc8;
+}
+.toast .close {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  display: inline;
+  padding: 0 0.4rem;
+  margin-right: -0.4rem;
+  font-size: 1rem;
+  line-height: 0.5rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition: transform 0.15s ease-out;
+}
+.toast .close:hover {
+  transform: scale(1.33);
+}
+.toast .toast-content {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.5rem;
+  line-height: 0.5rem;
+  padding: 0.5rem 0.66rem;
+  color: #333;
+}
+@media screen and (max-width: 900px) {
+  .toast .toast-content {
+    font-size: 0.75rem;
+    line-height: 0.75rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+}
+.toast .toast-content a {
+  white-space: nowrap;
+}
+.tooltip {
+  position: absolute;
+  display: none;
+  background: #333;
+  color: white;
+  border-radius: 0.25rem;
+  z-index: 100;
+  max-width: 250px;
+}
+.tooltip .tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+.tooltip.tooltip-top .tooltip-arrow {
+  bottom: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px 5px 0 5px;
+  border-color: #333 transparent transparent transparent;
+}
+.tooltip.tooltip-bottom .tooltip-arrow {
+  top: -5px;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 0 5px 5px 5px;
+  border-color: transparent transparent #333 transparent;
+}
+.tooltip.tooltip-left .tooltip-arrow {
+  right: -5px;
+  top: 50%;
+  margin-top: -5px;
+  border-width: 5px 0 5px 5px;
+  border-color: transparent transparent transparent #333;
+}
+.tooltip.tooltip-right .tooltip-arrow {
+  left: -5px;
+  top: 50%;
+  margin-top: -5px;
+  border-width: 5px 5px 5px 0;
+  border-color: transparent #333 transparent transparent;
+}
+.tooltip .tooltip-content {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  font-size: 0.55rem;
+  line-height: 0.7rem;
+  padding: 0.4rem 0.6rem;
+  color: white;
+}
+.nb {
+  font-size: 75%;
+}
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  51% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: scale(0.6) rotate(0deg);
+  }
+  100% {
+    transform: scale(0.6) rotate(360deg);
+  }
+}
+#view-about,
+#view-order {
+  position: fixed;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: visible;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity 0.35s ease-in-out;
+  font-size: 0.66rem;
+  line-height: 0.8rem;
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  font-weight: 100;
+  color: #333;
+}
+#view-about h1,
+#view-order h1,
+#view-about h2,
+#view-order h2,
+#view-about h3,
+#view-order h3,
+#view-about h4,
+#view-order h4,
+#view-about h5,
+#view-order h5,
+#view-about h6,
+#view-order h6 {
+  font-weight: 100;
+  line-height: 100%;
+}
+#view-about h1,
+#view-order h1 {
+  padding: 0.4rem 0;
+}
+@media (min-width: 800px) {
+  #view-about p.synopsis,
+  #view-order p.synopsis {
+    width: 66%;
+    max-width: 800px;
+    text-align: left;
+  }
+}
+#view-about a:not(.button),
+#view-order a:not(.button) {
+  position: relative;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid #767676;
+}
+#view-about a:not(.button):after,
+#view-order a:not(.button):after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 1px;
+  background: #333;
+  content: "";
+  pointer-events: none;
+  transition: width 0.15s ease-in-out;
+}
+#view-about a:not(.button):hover:after,
+#view-order a:not(.button):hover:after {
+  width: 100%;
+}
+#view-about .close,
+#view-order .close {
+  font-family: 'proxima-nova-soft', 'Proxima Nova', sans-serif;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0 0.4rem;
+  padding: 0.8rem 0.4rem;
+  font-size: 1.33rem;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+  background: transparent;
+  border: none;
+}
+#view-about .close:hover,
+#view-order .close:hover {
+  transform: scale(1.33);
+}
+#view-about .container,
+#view-order .container {
+  position: fixed;
+  inset: 0;
+  text-align: center;
+  background: white;
+  overflow: auto;
+  padding: 1.6rem;
+}
+#view-about .container ul,
+#view-order .container ul {
+  text-align: center;
+  margin-top: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+#view-about .container ul li,
+#view-order .container ul li {
+  list-style: none;
+  display: inline-block;
+  margin-left: 0.33rem;
+  margin-right: 0.33rem;
+}
+#view-about .container > p + p,
+#view-order .container > p + p {
+  margin-top: 0.8rem;
+}
+#view-about .container .newsletter-form-container,
+#view-order .container .newsletter-form-container {
+  margin: 1rem 0;
+}
+#view-about .container .newsletter-form-container > p,
+#view-order .container .newsletter-form-container > p {
+  font-size: 85%;
+}
+#view-about .container .newsletter-form-container .newsletter-form,
+#view-order .container .newsletter-form-container .newsletter-form {
+  margin-top: 0.5rem;
+}
+#view-about .app-cta-container,
+#view-order .app-cta-container {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  margin: 1.6rem 0;
+}
+#view-about .app-cta-container a,
+#view-order .app-cta-container a {
+  border-bottom: 0;
+}
+#view-about .ios-app-store,
+#view-order .ios-app-store {
+  display: inline-block;
+  cursor: pointer;
+  background: url(../images/app-store.svg) center center no-repeat;
+  background-size: contain;
+  width: 5rem;
+  aspect-ratio: 135 / 40;
+}
+#view-about .play-store,
+#view-order .play-store {
+  display: inline-block;
+  cursor: pointer;
+  background: url(../images/play-store.svg) center center no-repeat;
+  background-size: contain;
+  width: 5rem;
+  aspect-ratio: 135 / 40;
+}
+#view-order h1 {
+  margin-bottom: 1rem;
+}
+#view-order .section {
+  margin: 2rem 0;
+}
+#view-order p {
+  max-width: 800px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+#view-order .loading-spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.1875rem solid #efefef;
+  border-top: 0.1875rem solid #333;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+#view-order .status-processing {
+  color: #f39c12;
+}
+#view-order .status-ready {
+  color: #27ae60;
+}
+#view-order .status-error {
+  color: #e74c3c;
+}
+#view-order .download-links {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: center;
+}
+#view-order .button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #777;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease-in-out;
+}
+#view-order .button:hover {
+  background: #555;
+}
+#view-order .button:active {
+  background: #222;
+}
+#view-order .button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#view-order .expires-info {
+  font-size: 75%;
+  color: #666;
+  margin-top: 1rem;
+}
+#view-order .error-details {
+  background: #ffeaea;
+  border: 1px solid #ff5555;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin: 2rem 0;
+}
+#view-order .status-message {
+  text-align: center;
+}
+#view-order .footnote {
+  text-align: center;
+}
+#view-order .footnote a {
+  white-space: nowrap;
+}
+#view-order a.back:before {
+  content: "\2190";
+  margin-right: 0.2rem;
+}
+#view-order .one-line {
+  white-space: nowrap;
+}
+#view-order .hidden {
+  display: none;
+}
+body.stats {
+  font-size: 20px;
+  line-height: 30px;
+  font-family: "Times New Roman", times, serif;
+  font-weight: 100;
+  max-width: 800px;
+  padding: 120px 60px 60px;
+}
+body.stats h1,
+body.stats h2,
+body.stats h3,
+body.stats h4,
+body.stats h5,
+body.stats h6 {
+  margin-bottom: 30px;
+  font-size: 20px;
+  line-height: 30px;
+}
+body.stats h1 {
+  font-size: 40px;
+  line-height: 40px;
+  margin-bottom: 30px / 2;
+}
+body.stats h3,
+body.stats h4,
+body.stats h5,
+body.stats h6 {
+  font-style: italic;
+  font-weight: 100;
+  line-height: 20px;
+}
+body.stats img,
+body.stats canvas {
+  width: 66%;
+}
+body.stats h3 {
+  text-align: center;
+  line-height: 30px;
+}
+body.stats p:first-child {
+  text-indent: 30px;
+}
+body.stats p:not(:last-child) {
+  margin-bottom: 30px;
+}
+body.stats p.thumbnail {
+  text-align: center;
+}
+body.stats p.thumbnail span.footnote {
+  display: block;
+  font-style: italic;
+}
+body.stats p.footnote {
+  font-style: italic;
+  font-size: 17px;
+}
+body.stats div.description {
+  margin-bottom: 30px;
+}
+body.stats div.divider {
+  width: 66%;
+  margin: 60px auto;
+  border-bottom: 1px solid #333;
+  content: "";
+}
+body.stats span.graph {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #ff3232;
+}
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,519 @@
+/* latin */
+@font-face {
+  font-family: 'charter';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/81d2bf1/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/charter-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'charter';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/81d2bf1/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/charter-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'charter';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/be78681/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/charter-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'charter';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/be78681/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/charter-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'charter';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/77a0c0c/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/charter-700-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'charter';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/77a0c0c/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/charter-700-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'charter';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/f50d520/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/charter-700-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'charter';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/f50d520/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/charter-700-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'fell';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/415369b/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/fell-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'fell';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/415369b/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/fell-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'fell';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/78ce731/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/fell-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'fell';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/78ce731/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/fell-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'gt-super';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/4a44748/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/gt-super-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'gt-super';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/4a44748/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/gt-super-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'noe';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b6752aa/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/noe-display-500-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'noe';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b6752aa/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/noe-display-500-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'opendyslexic';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/1c491fd/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/opendyslexic-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'opendyslexic';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/1c491fd/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/opendyslexic-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'opendyslexic';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/0a6190b/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/opendyslexic-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'opendyslexic';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/0a6190b/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/opendyslexic-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/51a79f1/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-300-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/51a79f1/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-300-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/6fd11d6/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-300-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/6fd11d6/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-300-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/3887986/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/3887986/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b492c44/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b492c44/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/54b52d6/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-500-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/54b52d6/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-500-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/df9ba7f/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-500-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/df9ba7f/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-500-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/9da4d76/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-700-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/9da4d76/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-700-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/cf896f3/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/sohne-700-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'sohne';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/cf896f3/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/sohne-700-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/07894b4/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-code-pro-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/07894b4/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-code-pro-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/3bd49b7/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-code-pro-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/3bd49b7/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-code-pro-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/15b127a/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-code-pro-700-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/15b127a/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-code-pro-700-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/a9cd261/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-code-pro-700-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-code-pro';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/a9cd261/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-code-pro-700-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/76c214a/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-serif-pro-400-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/76c214a/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-serif-pro-400-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/8e059b2/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-serif-pro-400-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/8e059b2/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-serif-pro-400-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/7f2eb60/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-serif-pro-700-italic.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/7f2eb60/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-serif-pro-700-italic.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b156742/0-3j_4g_53_6bu_6c4_6c8_6c9_6cc_6cd_6ci_6cm/source-serif-pro-700-normal.woff') format('woff');
+  unicode-range: U+0-7F,U+A0,U+B7,U+200A,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026;
+}
+
+/* rest */
+@font-face {
+  font-family: 'source-serif-pro';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://glyph.medium.com/font/b156742/3k-4f_4h-52_54-6bt_6bv-6c3_6c5-6c7_6ca-6cb_6ce-6ch_6cj-6cl_6cn-nvnj/source-serif-pro-700-normal.woff') format('woff');
+  unicode-range: U+80-9F,U+A1-B6,U+B8-2009,U+200B-2013,U+2015-2017,U+201A-201B,U+201E-2021,U+2023-2025,U+2027-10FFFF;
+}

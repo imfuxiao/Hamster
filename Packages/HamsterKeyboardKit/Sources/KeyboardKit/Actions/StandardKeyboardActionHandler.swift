@@ -124,6 +124,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     // tryRemoveAutocompleteInsertedSpace(before: gesture, on: action)
     // tryApplyAutocompleteSuggestion(before: gesture, on: action)
     gestureAction(keyboardController)
+    tryPlayPiano(after: gesture, on: action)
     // tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
     // tryEndSentence(after: gesture, on: action)
     tryChangeKeyboardType(after: gesture, on: action)
@@ -148,6 +149,7 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     // tryRemoveAutocompleteInsertedSpace(before: gesture, on: action)
     // tryApplyAutocompleteSuggestion(before: gesture, on: action)
     gestureAction(keyboardController)
+    tryPlayPiano(after: gesture, on: action)
     // tryReinsertAutocompleteRemovedSpace(after: gesture, on: action)
     // tryEndSentence(after: gesture, on: action)
     tryChangeKeyboardType(after: gesture, on: action)
@@ -331,6 +333,26 @@ open class StandardKeyboardActionHandler: NSObject, KeyboardActionHandler {
     switch action {
     case let .symbol(symbol): return SymbolCategory.frequentSymbolProvider.registerSymbol(symbol)
     default: return
+    }
+  }
+
+  func tryPlayPiano(after gesture: KeyboardGesture, on action: KeyboardAction) {
+    guard gesture == .release else { return }
+    switch action {
+    case let .character(text):
+      PianoAudioPlayer.shared.playText(text)
+    case let .characterOfDark(text):
+      PianoAudioPlayer.shared.playText(text)
+    case let .characterMargin(text):
+      PianoAudioPlayer.shared.playText(text)
+    case let .symbol(symbol):
+      PianoAudioPlayer.shared.playText(symbol.char)
+    case let .symbolOfDark(symbol):
+      PianoAudioPlayer.shared.playText(symbol.char)
+    case let .chineseNineGrid(symbol):
+      PianoAudioPlayer.shared.playText(symbol.char)
+    default:
+      return
     }
   }
 

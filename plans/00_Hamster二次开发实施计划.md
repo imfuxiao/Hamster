@@ -52,29 +52,36 @@ Packages/HamsterKeyboardKit/Sources/MusicKeyboard/Piano/PianoAudioPlayer.swift
 Packages/HamsterKeyboardKit/Sources/MusicKeyboard/Settings/MusicKeyboardSettings.swift
 ```
 
-**音符映射**：
+**音符映射**（Typatone-inspired）：
 
-- 默认使用 C 大调 8 音阶循环：`C4, D4, E4, F4, G4, A4, B4, C5`。
-- 字母 `a-z` 按顺序循环映射。
-- 数字和符号按 Unicode 标量取模映射。
+- 使用全音域 52 个钢琴音符，基于 Typatone 用户真实输入数据的英文字母频率顺序：`eaoitsnhrlduymgfcwkbpjvqzx`。
+- 高频字母（前 10 位）映射到旋律音区：`c3, e3, g3, c4, d4, e4, g4, a4, c5, e5`。
+- 中频字母（第 11-20 位）映射到 bass 音区：`a-1, b-1, c0, d0, e0, g0, a1, c1, d1, e1`。
+- 低频字母（第 21-26 位）映射到 accent 音区：`f5, g5, a5, b5, c6, d6`。
+- 数字、符号、中文字符按 Unicode 标量取模映射到全音域 52 个音符。
 - 中文输入过程中，如按键本身是拼音字母，则按字母音播放；候选词上屏阶段暂不逐字播放，避免干扰输入体验。
 
 **资源要求**：
 
-`assets/audio` 已存在全音域 mp3 文件。MVP 至少需要以下文件：
+`assets/audio` 已存在全音域 52 个 mp3 文件。MVP 需要全部复制到 SPM 资源目录：
 
 ```text
-c4.mp3
-d4.mp3
-e4.mp3
-f4.mp3
-g4.mp3
-a4.mp3
-b4.mp3
-c5.mp3
+Packages/HamsterKeyboardKit/Sources/Resources/Audio/
 ```
 
-当前目录已包含上述 MVP 所需资源。
+包含的音符名称（与音频文件名对应）：
+
+```text
+a-1, b-1, a0, b0, c0, d0, e0, f0, g0,
+a1, b1, c1, d1, e1, f1, g1,
+a2, b2, c2, d2, e2, f2, g2,
+a3, b3, c3, d3, e3, f3, g3,
+a4, b4, c4, d4, e4, f4, g4,
+a5, b5, c5, D5, e5, f5, g5,
+a6, b6, c6, d6, e6, f6, g6, c7
+```
+
+当前目录已包含上述 52 个音频资源。
 
 **接入点**：
 
@@ -211,7 +218,7 @@ aiSuggestions  AI 建议面板
 
 | 风险 | 影响 | 策略 |
 |---|---|---|
-| 输入法扩展内存限制 | 音频池过大导致崩溃 | MVP 只预加载 8 个音符，每个音符小池化 |
+| 输入法扩展内存限制 | 音频池过大导致崩溃 | 采用懒加载策略，按需创建 AVAudioPlayer 实例，每个音符保留 2 个播放器实例用于并发播放 |
 | 音频资源未加入 target | 真机无声音 | 检查 Xcode Copy Bundle Resources |
 | App Group 签名不匹配 | 设置无法共享 | 先沿用现有 `group.dev.fuxiao.app.Hamster` |
 | 键盘无完全访问 | AI/GIF 无法联网 | UI 提示用户开启完全访问 |
@@ -234,11 +241,11 @@ aiSuggestions  AI 建议面板
 
 若确认开始 M1，建议按以下步骤执行：
 
-1. 检查 `assets/audio` 是否已加入 Xcode 工程资源。
-2. 新增 `PianoMapping.swift`。
-3. 新增 `PianoAudioPlayer.swift`。
-4. 新增 `MusicKeyboardSettings.swift`。
-5. 在 `StandardKeyboardActionHandler` 中注入钢琴音播放。
+1. 将 `assets/audio` 中全部 52 个 mp3 文件复制到 `Packages/HamsterKeyboardKit/Sources/Resources/Audio/`。
+2. 新增 `PianoMapping.swift`，实现 Typatone-inspired 的 52 音频率驱动映射。
+3. 新增 `PianoAudioPlayer.swift`，采用懒加载策略管理音频播放器池。
+4. 新增 `MusicKeyboardSettings.swift`，读取 App Group 中的钢琴音开关和音量设置。
+5. 在 `StandardKeyboardActionHandler` 中注入钢琴音播放逻辑，仅在按键释放时触发。
 6. 在模拟器或真机验证原输入逻辑不受影响。
 
 每一步完成后都应暂停确认，再继续下一步，避免一次性改动过大。
