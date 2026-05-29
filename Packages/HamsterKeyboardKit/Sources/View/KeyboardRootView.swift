@@ -623,9 +623,21 @@ class KeyboardRootView: NibLessView {
   /// 处理文本回放
   func handleTextPlayback(_ text: String, isMultiTrack: Bool) {
     guard !text.isEmpty else { return }
-    // TODO: 调用钢琴音播放功能
-    // 暂时显示提示
-    print("播放文本: \(text), 多轨叠加: \(isMultiTrack)")
+    
+    // 调用钢琴音播放功能
+    if isMultiTrack {
+      // 多轨叠加：逐字符播放
+      for (index, char) in text.enumerated() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.1) {
+          PianoAudioPlayer.shared.playText(String(char))
+        }
+      }
+    } else {
+      // 单轨：逐字符播放
+      for char in text {
+        PianoAudioPlayer.shared.playText(String(char))
+      }
+    }
   }
 
   // MARK: - 设置面板处理
