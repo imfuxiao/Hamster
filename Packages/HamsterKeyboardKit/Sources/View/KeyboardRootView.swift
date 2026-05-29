@@ -217,8 +217,11 @@ class KeyboardRootView: NibLessView {
     view.onTagTapped = { [weak self] tag in
       self?.handleGifTagTapped(tag)
     }
-    view.onGifSelected = { [weak self] emoji in
-      self?.handleGifSelected(emoji)
+    view.onGifSelected = { [weak self] gif in
+      self?.handleGifSelected(gif)
+    }
+    view.onUpdateTags = { [weak self] tags in
+      self?.handleUpdateGifTags(tags)
     }
     return view
   }()
@@ -489,6 +492,9 @@ class KeyboardRootView: NibLessView {
     
     if isShowingGifPanel {
       toolbarView.showBackToKeyboardButton()
+      // 打开面板时更新标签
+      let baseTags = ["搞笑", "开心", "惊讶", "点赞"]
+      handleUpdateGifTags(baseTags)
     } else {
       toolbarView.hideBackToKeyboardButton()
     }
@@ -538,8 +544,8 @@ class KeyboardRootView: NibLessView {
   /// 处理发送建议
   func handleSendSuggestion(_ text: String) {
     // 将文本插入到输入框
-    // TODO: 需要通过 actionHandler 将文本发送到输入框
-    // 暂时先返回键盘
+    textDocumentProxy.insertText(text)
+    // 返回键盘
     backToKeyboard()
   }
 
@@ -591,14 +597,11 @@ class KeyboardRootView: NibLessView {
       DispatchQueue.main.async {
         switch result {
         case .success(let gifs):
-          // 暂时使用 emoji 作为占位符，后续需要更新 UI 支持真实 GIF
-          let emojis = gifs.map { _ in "🎬" }
-          self?.gifPanelView.updateGifEmojis(emojis)
+          self?.gifPanelView.updateGifResults(gifs)
         case .failure(let error):
           print("GIF 搜索失败：\(error.localizedDescription)")
-          // 失败时使用示例数据
-          let fallbackEmojis = ["🤣", "😜", "🥳", "�", "🤩", "😍", "🤗", "😊", "🤭"]
-          self?.gifPanelView.updateGifEmojis(fallbackEmojis)
+          // 失败时清空列表
+          self?.gifPanelView.updateGifResults([])
         }
       }
     }
@@ -610,12 +613,52 @@ class KeyboardRootView: NibLessView {
     handleGifSearch(tag)
   }
 
+  /// 处理更新 GIF 标签
+  func handleUpdateGifTags(_ tags: [String]) {
+    // 生成 AI 推荐标签
+    guard let proxy = textDocumentProxy else { return }
+    let context = proxy.documentContextBeforeInput ?? ""
+    
+    if !context.isEmpty {
+      AIService.shared.generateGifKeywords(context: context) { [weak self] result in
+        DispatchQueue.main.async {
+          switch result {
+          case .success(let keywords):
+            let aiTags = keywords.map { "AI 推荐：\($0)" }
+            self?.gifPanelView.updateTags(tags + aiTags)
+          case .failure(let error):
+            print("生成 GIF 关键词失败：\(error.localizedDescription)")
+            // 失败时使用原始标签
+            self?.gifPanelView.updateTags(tags)
+          }
+        }
+      }
+    } else {
+      // 上下文为空时使用原始标签
+      gifPanelView.updateTags(tags)
+    }
+  }
+
   /// 处理 GIF 选择
-  func handleGifSelected(_ emoji: String) {
-    // 将 emoji 复制到剪贴板
-    UIPasteboard.general.string = emoji
-    // 返回键盘
-    backToKeyboard()
+  func handleGifSelected(_ gif: GifResult) {
+    // 下载 GIF 数据并复制到剪贴板
+    guard let url = URL(string: gif.url) else { return }
+    
+    URLSession.shared.dataTask(with: url) { data, response, error in
+      guard let data = data, error == nil else {
+        print("下载 GIF 失败：\(error?.localizedDescription ?? "")")
+        return
+      }
+      
+      // 复制 GIF 数据到剪贴板
+      UIPasteboard.general.setData(data, forPasteboardType: "com.compuserve.gif")
+      print("GIF 已复制到剪贴板")
+      
+      // 返回键盘
+      DispatchQueue.main.async {
+        self?.backToKeyboard()
+      }
+    }.resume()
   }
 
   // MARK: - 文本回放处理

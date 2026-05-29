@@ -18,8 +18,11 @@ class GifPanelView: NibLessView {
   /// 标签点击回调
   var onTagTapped: ((String) -> Void)?
 
+  /// 更新标签回调
+  var onUpdateTags: (([String]) -> Void)?
+
   /// GIF 选择回调
-  var onGifSelected: ((String) -> Void)?
+  var onGifSelected: ((GifResult) -> Void)?
 
   lazy var scrollView: UIScrollView = {
     let scroll = UIScrollView()
@@ -107,7 +110,7 @@ class GifPanelView: NibLessView {
     return collectionView
   }()
 
-  private var gifEmojis: [String] = ["😀", "😂", "🥰", "😎", "🤔", "👍", "🎉", "🔥", "❤️"]
+  private var gifResults: [GifResult] = []
 
   init(style: CandidateBarStyle) {
     self.style = style
@@ -138,9 +141,9 @@ class GifPanelView: NibLessView {
     ])
 
     // 标签
-    let tags = ["搞笑", "开心", "惊讶", "点赞", "AI 推荐：感谢", "AI 推荐：同意"]
+    let tags = ["搞笑", "开心", "惊讶", "点赞"]
     for (index, tag) in tags.enumerated() {
-      let tagButton = createTagButton(title: tag, isAI: tag.hasPrefix("AI"))
+      let tagButton = createTagButton(title: tag, isAI: false)
       tagButton.tag = index
       tagButton.addTarget(self, action: #selector(handleTagTapped(_:)), for: .touchUpInside)
       tagsStackView.addArrangedSubview(tagButton)
@@ -206,9 +209,25 @@ class GifPanelView: NibLessView {
     onTagTapped?(tagTitle)
   }
 
-  func updateGifEmojis(_ emojis: [String]) {
-    self.gifEmojis = emojis
+  func updateGifResults(_ results: [GifResult]) {
+    self.gifResults = results
     gifCollectionView.reloadData()
+  }
+
+  func updateTags(_ tags: [String]) {
+    // 清除现有标签
+    for view in tagsStackView.arrangedSubviews {
+      tagsStackView.removeArrangedSubview(view)
+      view.removeFromSuperview()
+    }
+
+    // 添加新标签
+    for (index, tag) in tags.enumerated() {
+      let tagButton = createTagButton(title: tag, isAI: true)
+      tagButton.tag = index
+      tagButton.addTarget(self, action: #selector(handleTagTapped(_:)), for: .touchUpInside)
+      tagsStackView.addArrangedSubview(tagButton)
+    }
   }
 
   func createTagButton(title: String, isAI: Bool) -> UIButton {
@@ -234,14 +253,15 @@ class GifPanelView: NibLessView {
 // MARK: - UICollectionViewDataSource
 extension GifPanelView: UICollectionViewDataSource {
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return gifEmojis.count
+    return gifResults.count
   }
 
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GifCell", for: indexPath) as? GifCell else {
       return UICollectionViewCell()
     }
-    cell.configure(emoji: gifEmojis[indexPath.item])
+    let gif = gifResults[indexPath.item]
+    cell.configure(gif: gif)
     return cell
   }
 }
@@ -249,19 +269,19 @@ extension GifPanelView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension GifPanelView: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let emoji = gifEmojis[indexPath.item]
-    onGifSelected?(emoji)
+    let gif = gifResults[indexPath.item]
+    onGifSelected?(gif)
   }
 }
 
 /// GIF 单元格
 class GifCell: UICollectionViewCell {
-  lazy var emojiLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.font = .systemFont(ofSize: 32)
-    label.textAlignment = .center
-    return label
+  lazy var gifImageView: UIImageView = {
+    let imageView = UIImageView()
+    imageView.translatesAutoresizingMaskIntoConstraints = false
+    imageView.contentMode = .scaleAspectFill
+    imageView.clipsToBounds = true
+    return imageView
   }()
 
   lazy var containerView: UIView = {
@@ -270,6 +290,13 @@ class GifCell: UICollectionViewCell {
     view.backgroundColor = .systemGray6
     view.layer.cornerRadius = 8
     return view
+  }()
+
+  lazy var activityIndicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView(style: .medium)
+    indicator.translatesAutoresizingMaskIntoConstraints = false
+    indicator.hidesWhenStopped = true
+    return indicator
   }()
 
   override init(frame: CGRect) {
@@ -282,7 +309,8 @@ class GifCell: UICollectionViewCell {
   }
 
   func setupSubview() {
-    containerView.addSubview(emojiLabel)
+    containerView.addSubview(gifImageView)
+    containerView.addSubview(activityIndicator)
     contentView.addSubview(containerView)
 
     NSLayoutConstraint.activate([
@@ -291,12 +319,34 @@ class GifCell: UICollectionViewCell {
       containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
       containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 
-      emojiLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-      emojiLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
+      gifImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+      gifImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+      gifImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+      gifImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+
+      activityIndicator.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+      activityIndicator.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
     ])
   }
 
-  func configure(emoji: String) {
-    emojiLabel.text = emoji
+  func configure(gif: GifResult) {
+    activityIndicator.startAnimating()
+    
+    // 优先使用预览图，否则使用原图
+    let urlString = gif.previewUrl ?? gif.url
+    guard let url = URL(string: urlString) else {
+      activityIndicator.stopAnimating()
+      return
+    }
+    
+    // 下载图片
+    URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+      DispatchQueue.main.async {
+        self?.activityIndicator.stopAnimating()
+        if let data = data, let image = UIImage(data: data) {
+          self?.gifImageView.image = image
+        }
+      }
+    }.resume()
   }
 }
