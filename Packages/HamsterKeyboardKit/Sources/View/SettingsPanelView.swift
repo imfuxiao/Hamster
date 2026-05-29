@@ -24,7 +24,92 @@ class SettingsPanelView: NibLessView {
     return view
   }()
 
-  lazy var stackView: UIStackView = {
+  // 主卡片视图
+  lazy var cardsStackView: UIStackView = {
+    let stack = UIStackView()
+    stack.translatesAutoresizingMaskIntoConstraints = false
+    stack.axis = .horizontal
+    stack.distribution = .fillEqually
+    stack.spacing = 16
+    return stack
+  }()
+
+  // AI 模型设置卡片
+  lazy var aiCard: SettingsCardView = {
+    let card = SettingsCardView(iconName: "brain", title: "AI 模型设置")
+    card.translatesAutoresizingMaskIntoConstraints = false
+    card.isUserInteractionEnabled = true
+    return card
+  }()
+
+  // GIF 图源设置卡片
+  lazy var gifCard: SettingsCardView = {
+    let card = SettingsCardView(iconName: "photo.on.rectangle", title: "GIF 图源设置")
+    card.translatesAutoresizingMaskIntoConstraints = false
+    card.isUserInteractionEnabled = true
+    return card
+  }()
+
+  // 钢琴音设置卡片
+  lazy var pianoCard: SettingsCardView = {
+    let card = SettingsCardView(iconName: "pianokeys", title: "钢琴音设置")
+    card.translatesAutoresizingMaskIntoConstraints = false
+    card.isUserInteractionEnabled = true
+    return card
+  }()
+
+  // 子设置面板容器
+  lazy var subSettingsContainer: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  // AI 模型设置子面板
+  lazy var aiSettingsPanel: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  // GIF 图源设置子面板
+  lazy var gifSettingsPanel: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  // 钢琴音设置子面板
+  lazy var pianoSettingsPanel: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  // 返回按钮
+  lazy var backButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle("←", for: .normal)
+    button.titleLabel?.font = .systemFont(ofSize: 24)
+    return button
+  }()
+
+  // 子面板标题
+  lazy var subPanelTitleLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.font = .systemFont(ofSize: 18, weight: .semibold)
+    label.textColor = .label
+    return label
+  }()
+
+  // 钢琴音设置内容
+  lazy var pianoSettingsStackView: UIStackView = {
     let stack = UIStackView()
     stack.translatesAutoresizingMaskIntoConstraints = false
     stack.axis = .vertical
@@ -32,7 +117,6 @@ class SettingsPanelView: NibLessView {
     return stack
   }()
 
-  // 钢琴音开关
   lazy var pianoSwitchLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +137,6 @@ class SettingsPanelView: NibLessView {
     return view
   }()
 
-  // 音量
   lazy var volumeLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +169,6 @@ class SettingsPanelView: NibLessView {
     return view
   }()
 
-  // Mood 选择
   lazy var moodLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -122,9 +204,83 @@ class SettingsPanelView: NibLessView {
   func setupSubview() {
     backgroundColor = style.toolbarButtonBackgroundColor
 
-    // 钢琴音开关容器
+    // 主卡片视图
+    cardsStackView.addArrangedSubview(aiCard)
+    cardsStackView.addArrangedSubview(gifCard)
+    cardsStackView.addArrangedSubview(pianoCard)
+
+    contentView.addSubview(cardsStackView)
+    contentView.addSubview(subSettingsContainer)
+    scrollView.addSubview(contentView)
+    addSubview(scrollView)
+
+    // 子设置面板
+    subSettingsContainer.addSubview(backButton)
+    subSettingsContainer.addSubview(subPanelTitleLabel)
+    subSettingsContainer.addSubview(aiSettingsPanel)
+    subSettingsContainer.addSubview(gifSettingsPanel)
+    subSettingsContainer.addSubview(pianoSettingsPanel)
+
+    // 钢琴音设置内容
     pianoSwitchContainer.addSubview(pianoSwitchLabel)
     pianoSwitchContainer.addSubview(pianoSwitch)
+    pianoSettingsStackView.addArrangedSubview(pianoSwitchContainer)
+    pianoSettingsStackView.addArrangedSubview(volumeContainer)
+    pianoSettingsStackView.addArrangedSubview(moodContainer)
+    pianoSettingsPanel.addSubview(pianoSettingsStackView)
+
+    // 约束
+    NSLayoutConstraint.activate([
+      scrollView.topAnchor.constraint(equalTo: topAnchor),
+      scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+
+      contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+      contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+      contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+      contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+      contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+      cardsStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
+      cardsStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+      cardsStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+      cardsStackView.heightAnchor.constraint(equalToConstant: 120),
+
+      subSettingsContainer.topAnchor.constraint(equalTo: cardsStackView.bottomAnchor, constant: 20),
+      subSettingsContainer.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+      subSettingsContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+      subSettingsContainer.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+
+      backButton.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
+      backButton.topAnchor.constraint(equalTo: subSettingsContainer.topAnchor),
+      backButton.heightAnchor.constraint(equalToConstant: 44),
+
+      subPanelTitleLabel.leadingAnchor.constraint(equalTo: backButton.trailingAnchor, constant: 12),
+      subPanelTitleLabel.centerYAnchor.constraint(equalTo: backButton.centerYAnchor),
+
+      aiSettingsPanel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+      aiSettingsPanel.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
+      aiSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
+      aiSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
+
+      gifSettingsPanel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+      gifSettingsPanel.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
+      gifSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
+      gifSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
+
+      pianoSettingsPanel.topAnchor.constraint(equalTo: backButton.bottomAnchor, constant: 16),
+      pianoSettingsPanel.leadingAnchor.constraint(equalTo: subSettingsContainer.leadingAnchor),
+      pianoSettingsPanel.trailingAnchor.constraint(equalTo: subSettingsContainer.trailingAnchor),
+      pianoSettingsPanel.bottomAnchor.constraint(equalTo: subSettingsContainer.bottomAnchor),
+
+      pianoSettingsStackView.topAnchor.constraint(equalTo: pianoSettingsPanel.topAnchor),
+      pianoSettingsStackView.leadingAnchor.constraint(equalTo: pianoSettingsPanel.leadingAnchor),
+      pianoSettingsStackView.trailingAnchor.constraint(equalTo: pianoSettingsPanel.trailingAnchor),
+      pianoSettingsStackView.bottomAnchor.constraint(equalTo: pianoSettingsPanel.bottomAnchor),
+    ])
+
+    // 钢琴音设置约束
     NSLayoutConstraint.activate([
       pianoSwitchLabel.leadingAnchor.constraint(equalTo: pianoSwitchContainer.leadingAnchor),
       pianoSwitchLabel.centerYAnchor.constraint(equalTo: pianoSwitchContainer.centerYAnchor),
@@ -161,35 +317,58 @@ class SettingsPanelView: NibLessView {
       moodContainer.heightAnchor.constraint(equalToConstant: 60),
     ])
 
-    // 添加到 stackView
-    stackView.addArrangedSubview(pianoSwitchContainer)
-    stackView.addArrangedSubview(volumeContainer)
-    stackView.addArrangedSubview(moodContainer)
+    // 卡片点击事件
+    let aiTap = UITapGestureRecognizer(target: self, action: #selector(handleAiCardTap))
+    aiCard.addGestureRecognizer(aiTap)
 
-    contentView.addSubview(stackView)
-    scrollView.addSubview(contentView)
-    addSubview(scrollView)
+    let gifTap = UITapGestureRecognizer(target: self, action: #selector(handleGifCardTap))
+    gifCard.addGestureRecognizer(gifTap)
 
-    NSLayoutConstraint.activate([
-      scrollView.topAnchor.constraint(equalTo: topAnchor),
-      scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    let pianoTap = UITapGestureRecognizer(target: self, action: #selector(handlePianoCardTap))
+    pianoCard.addGestureRecognizer(pianoTap)
 
-      contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-      contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-      contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-      contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-      contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-
-      stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
-      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-      stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-      stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-    ])
+    // 返回按钮事件
+    backButton.addTarget(self, action: #selector(handleBackTap), for: .touchUpInside)
 
     // 音量滑块事件
     volumeSlider.addTarget(self, action: #selector(volumeChanged), for: .valueChanged)
+  }
+
+  @objc func handleAiCardTap() {
+    showSubPanel(panel: aiSettingsPanel, title: "AI 模型设置")
+  }
+
+  @objc func handleGifCardTap() {
+    showSubPanel(panel: gifSettingsPanel, title: "GIF 图源设置")
+  }
+
+  @objc func handlePianoCardTap() {
+    showSubPanel(panel: pianoSettingsPanel, title: "钢琴音设置")
+  }
+
+  @objc func handleBackTap() {
+    hideSubPanel()
+  }
+
+  func showSubPanel(panel: UIView, title: String) {
+    cardsStackView.isHidden = true
+    subSettingsContainer.isHidden = false
+    subPanelTitleLabel.text = title
+
+    aiSettingsPanel.isHidden = true
+    gifSettingsPanel.isHidden = true
+    pianoSettingsPanel.isHidden = true
+
+    panel.isHidden = false
+  }
+
+  func hideSubPanel() {
+    cardsStackView.isHidden = false
+    subSettingsContainer.isHidden = true
+
+    aiSettingsPanel.isHidden = true
+    gifSettingsPanel.isHidden = true
+    pianoSettingsPanel.isHidden = true
   }
 
   @objc func volumeChanged() {

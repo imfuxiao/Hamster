@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamster 键盘预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .keyboard-container {
+            width: 375px;
+            background: #d1d5db;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        /* 工具栏 */
+        .toolbar {
+            background: #e5e7eb;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 44px;
+        }
+        
+        .back-to-keyboard-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+        
+        .back-to-keyboard-button.visible {
+            display: flex;
+        }
+        
+        .back-to-keyboard-button:hover {
+            background: #f3f4f6;
+        }
+        
+        .toolbar-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: background 0.2s;
+        }
+        
+        .toolbar-button:hover {
+            background: #f3f4f6;
+        }
+        
+        .toolbar-button.active {
+            background: #dbeafe;
+        }
+        
+        /* 面板区域 */
+        .panel {
+            background: #f9fafb;
+            padding: 16px;
+            min-height: 200px;
+            display: none;
+        }
+        
+        .panel.active {
+            display: block;
+        }
+        
+        /* 设置面板 */
+        .settings-cards {
+            display: flex;
+            justify-content: space-around;
+            gap: 16px;
+            padding: 20px;
+        }
+        
+        .settings-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 12px;
+            background: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .settings-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        
+        .settings-card-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+        
+        .settings-card-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+            text-align: center;
+        }
+        
+        /* 子设置面板 */
+        .sub-settings-panel {
+            display: none;
+            padding: 16px;
+        }
+        
+        .sub-settings-panel.active {
+            display: block;
+        }
+        
+        .sub-settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 12px;
+            padding: 4px;
+        }
+        
+        .sub-settings-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        
+        .setting-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .setting-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+        
+        .setting-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .setting-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        .switch-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 44px;
+        }
+        
+        .switch {
+            width: 51px;
+            height: 31px;
+            background: #e5e7eb;
+            border-radius: 15.5px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .switch.on {
+            background: #3b82f6;
+        }
+        
+        .switch::after {
+            content: '';
+            position: absolute;
+            width: 27px;
+            height: 27px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+        
+        .switch.on::after {
+            transform: translateX(20px);
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        .slider-fill {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 2px;
+            width: 50%;
+        }
+        
+        .slider-thumb {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .volume-value {
+            font-size: 14px;
+            color: #6b7280;
+            width: 40px;
+            text-align: right;
+        }
+        
+        .segmented-control {
+            display: flex;
+            background: #e5e7eb;
+            border-radius: 8px;
+            padding: 2px;
+        }
+        
+        .segment {
+            flex: 1;
+            padding: 8px 12px;
+            text-align: center;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+        
+        .segment.active {
+            background: white;
+            font-weight: 500;
+        }
+        
+        /* 文本回放面板 */
+        .text-input {
+            width: 100%;
+            height: 120px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 16px;
+            resize: none;
+            margin-bottom: 16px;
+        }
+        
+        .play-button {
+            width: 100%;
+            height: 44px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        
+        .play-button:hover {
+            background: #2563eb;
+        }
+        
+        /* AI 建议面板 */
+        .ai-suggestions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 16px;
+        }
+        
+        .ai-suggestion-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .suggestion-text {
+            font-size: 15px;
+            color: #1f2937;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .suggestion-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .action-button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        
+        .copy-button {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .copy-button:hover {
+            background: #e5e7eb;
+        }
+        
+        .send-button {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .send-button:hover {
+            background: #2563eb;
+        }
+        
+        .regenerate-button {
+            width: 100%;
+            padding: 12px;
+            background: #f3f4f6;
+            color: #374151;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s;
+        }
+        
+        .regenerate-button:hover {
+            background: #e5e7eb;
+        }
+        
+        /* 键盘区域 */
+        .keyboard {
+            background: #d1d5db;
+            padding: 8px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+        }
+        
+        .key {
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 4px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        
+        .key:hover {
+            background: #f3f4f6;
+        }
+        
+        .key.space {
+            grid-column: span 6;
+        }
+        
+        .key.special {
+            background: #e5e7eb;
+            font-size: 14px;
+        }
+        
+        .keyboard.hidden {
+            display: none;
+        }
+        
+        /* 候选词区域 */
+        .candidate-bar {
+            background: #f9fafb;
+            padding: 8px 12px;
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            min-height: 36px;
+        }
+        
+        .candidate {
+            font-size: 16px;
+            color: #1f2937;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        
+        .candidate:hover {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="keyboard-container">
+        <!-- 候选词区域 -->
+        <div class="candidate-bar">
+            <span class="candidate">你好</span>
+            <span class="candidate">您好</span>
+            <span class="candidate">你好呀</span>
+            <span class="candidate">你好吗</span>
+        </div>
+        
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <button class="back-to-keyboard-button" id="backToKeyboardBtn" title="返回键盘">⌨️</button>
+            <button class="toolbar-button" id="settingsBtn" title="设置">⚙️</button>
+            <button class="toolbar-button" id="playbackBtn" title="文本回放">▶️</button>
+            <button class="toolbar-button" id="aiBtn" title="AI 建议">💡</button>
+        </div>
+        
+        <!-- 设置面板 -->
+        <div class="panel" id="settingsPanel">
+            <!-- 主卡片视图 -->
+            <div class="settings-cards" id="settingsCards">
+                <div class="settings-card" data-target="aiSettings">
+                    <div class="settings-card-icon">🤖</div>
+                    <div class="settings-card-text">AI 模型设置</div>
+                </div>
+                <div class="settings-card" data-target="gifSettings">
+                    <div class="settings-card-icon">🎬</div>
+                    <div class="settings-card-text">GIF 图源设置</div>
+                </div>
+                <div class="settings-card" data-target="pianoSettings">
+                    <div class="settings-card-icon">🎹</div>
+                    <div class="settings-card-text">钢琴音设置</div>
+                </div>
+            </div>
+            
+            <!-- AI 模型设置子面板 -->
+            <div class="sub-settings-panel" id="aiSettings">
+                <div class="sub-settings-header">
+                    <div class="back-button" data-back="settingsCards">←</div>
+                    <div class="sub-settings-title">AI 模型设置</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">请求 URL</div>
+                    <input type="text" class="setting-input" placeholder="https://api.openai.com/v1/chat/completions">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">API Key</div>
+                    <input type="password" class="setting-input" placeholder="sk-...">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">模型 ID</div>
+                    <input type="text" class="setting-input" placeholder="gpt-4">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">系统提示词</div>
+                    <textarea class="setting-textarea" placeholder="你是一个有用的助手..."></textarea>
+                </div>
+            </div>
+            
+            <!-- GIF 图源设置子面板 -->
+            <div class="sub-settings-panel" id="gifSettings">
+                <div class="sub-settings-header">
+                    <div class="back-button" data-back="settingsCards">←</div>
+                    <div class="sub-settings-title">GIF 图源设置</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">请求 URL 地址</div>
+                    <input type="text" class="setting-input" placeholder="https://api.tenor.com/v1/search">
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">API Key</div>
+                    <input type="password" class="setting-input" placeholder="Tenor API Key">
+                </div>
+            </div>
+            
+            <!-- 钢琴音设置子面板 -->
+            <div class="sub-settings-panel" id="pianoSettings">
+                <div class="sub-settings-header">
+                    <div class="back-button" data-back="settingsCards">←</div>
+                    <div class="sub-settings-title">钢琴音设置</div>
+                </div>
+                <div class="setting-item">
+                    <div class="switch-container">
+                        <span class="setting-label">钢琴音</span>
+                        <div class="switch on" id="pianoSwitch"></div>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-label">音量</div>
+                    <div class="slider-container">
+                        <div class="slider">
+                            <div class="slider-fill"></div>
+                            <div class="slider-thumb"></div>
+                        </div>
+                        <span class="volume-value">50%</span>
+                    </div>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-label">风格</div>
+                    <div class="segmented-control">
+                        <div class="segment active">默认</div>
+                        <div class="segment">欢快</div>
+                        <div class="segment">舒缓</div>
+                        <div class="segment">紧张</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 文本回放面板 -->
+        <div class="panel" id="playbackPanel">
+            <textarea class="text-input" placeholder="粘贴文本到此处播放"></textarea>
+            <button class="play-button">播放</button>
+            <div class="switch-container">
+                <span class="setting-label">多轨叠加</span>
+                <div class="switch" id="multiTrackSwitch"></div>
+            </div>
+        </div>
+        
+        <!-- AI 建议面板 -->
+        <div class="panel" id="aiPanel">
+            <div class="ai-suggestions-list">
+                <div class="ai-suggestion-item">
+                    <div class="suggestion-text">好的，我明白了！这个想法很有趣，我们可以进一步讨论。</div>
+                    <div class="suggestion-actions">
+                        <button class="action-button copy-button">📋 复制</button>
+                        <button class="action-button send-button">📤 发送</button>
+                    </div>
+                </div>
+                <div class="ai-suggestion-item">
+                    <div class="suggestion-text">没问题！我觉得这个方向是对的，我们可以试试看。</div>
+                    <div class="suggestion-actions">
+                        <button class="action-button copy-button">📋 复制</button>
+                        <button class="action-button send-button">📤 发送</button>
+                    </div>
+                </div>
+                <div class="ai-suggestion-item">
+                    <div class="suggestion-text">确实如此！我同意你的看法，我们可以继续深入探讨。</div>
+                    <div class="suggestion-actions">
+                        <button class="action-button copy-button">📋 复制</button>
+                        <button class="action-button send-button">📤 发送</button>
+                    </div>
+                </div>
+                <button class="regenerate-button">🔄 重新生成</button>
+            </div>
+        </div>
+        
+        <!-- 键盘区域 -->
+        <div class="keyboard" id="keyboard">
+            <button class="key">Q</button>
+            <button class="key">W</button>
+            <button class="key">E</button>
+            <button class="key">R</button>
+            <button class="key">T</button>
+            <button class="key">Y</button>
+            <button class="key">U</button>
+            <button class="key">I</button>
+            <button class="key">O</button>
+            <button class="key">P</button>
+            <button class="key">A</button>
+            <button class="key">S</button>
+            <button class="key">D</button>
+            <button class="key">F</button>
+            <button class="key">G</button>
+            <button class="key">H</button>
+            <button class="key">J</button>
+            <button class="key">K</button>
+            <button class="key">L</button>
+            <button class="key special">⇧</button>
+            <button class="key">Z</button>
+            <button class="key">X</button>
+            <button class="key">C</button>
+            <button class="key">V</button>
+            <button class="key">B</button>
+            <button class="key">N</button>
+            <button class="key">M</button>
+            <button class="key special">⌫</button>
+            <button class="key special">123</button>
+            <button class="key space">空格</button>
+            <button class="key special">↵</button>
+        </div>
+    </div>
+    
+    <script>
+        const settingsBtn = document.getElementById('settingsBtn');
+        const playbackBtn = document.getElementById('playbackBtn');
+        const aiBtn = document.getElementById('aiBtn');
+        const backToKeyboardBtn = document.getElementById('backToKeyboardBtn');
+        const settingsPanel = document.getElementById('settingsPanel');
+        const playbackPanel = document.getElementById('playbackPanel');
+        const aiPanel = document.getElementById('aiPanel');
+        const keyboard = document.getElementById('keyboard');
+        const pianoSwitch = document.getElementById('pianoSwitch');
+        const multiTrackSwitch = document.getElementById('multiTrackSwitch');
+        const settingsCards = document.getElementById('settingsCards');
+        
+        function hideAllPanels() {
+            settingsPanel.classList.remove('active');
+            playbackPanel.classList.remove('active');
+            aiPanel.classList.remove('active');
+            keyboard.classList.remove('hidden');
+            settingsBtn.classList.remove('active');
+            playbackBtn.classList.remove('active');
+            aiBtn.classList.remove('active');
+            backToKeyboardBtn.classList.remove('visible');
+        }
+        
+        function showBackToKeyboardButton() {
+            backToKeyboardBtn.classList.add('visible');
+        }
+        
+        // 设置面板导航
+        function showSettingsCard() {
+            document.querySelectorAll('.sub-settings-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            settingsCards.style.display = 'flex';
+        }
+        
+        function showSubPanel(targetId) {
+            settingsCards.style.display = 'none';
+            document.getElementById(targetId).classList.add('active');
+        }
+        
+        // 卡片点击事件
+        document.querySelectorAll('.settings-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const target = card.dataset.target;
+                showSubPanel(target);
+            });
+        });
+        
+        // 返回按钮事件
+        document.querySelectorAll('.back-button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.back;
+                if (target === 'settingsCards') {
+                    showSettingsCard();
+                }
+            });
+        });
+        
+        settingsBtn.addEventListener('click', () => {
+            hideAllPanels();
+            settingsPanel.classList.add('active');
+            keyboard.classList.add('hidden');
+            settingsBtn.classList.add('active');
+            showSettingsCard();
+            showBackToKeyboardButton();
+        });
+        
+        playbackBtn.addEventListener('click', () => {
+            hideAllPanels();
+            playbackPanel.classList.add('active');
+            keyboard.classList.add('hidden');
+            playbackBtn.classList.add('active');
+            showBackToKeyboardButton();
+        });
+        
+        aiBtn.addEventListener('click', () => {
+            hideAllPanels();
+            aiPanel.classList.add('active');
+            keyboard.classList.add('hidden');
+            aiBtn.classList.add('active');
+            showBackToKeyboardButton();
+        });
+        
+        backToKeyboardBtn.addEventListener('click', () => {
+            hideAllPanels();
+        });
+        
+        pianoSwitch.addEventListener('click', () => {
+            pianoSwitch.classList.toggle('on');
+        });
+        
+        multiTrackSwitch.addEventListener('click', () => {
+            multiTrackSwitch.classList.toggle('on');
+        });
+        
+        // 分段控制
+        document.querySelectorAll('.segment').forEach(segment => {
+            segment.addEventListener('click', () => {
+                const parent = segment.closest('.segmented-control');
+                parent.querySelectorAll('.segment').forEach(s => s.classList.remove('active'));
+                segment.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

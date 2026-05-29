@@ -62,6 +62,9 @@ class KeyboardRootView: NibLessView {
   /// 是否显示文本回放面板
   private var isShowingTextPlaybackPanel = false
 
+  /// 是否显示 AI 建议面板
+  private var isShowingAISuggestionsPanel = false
+
   /// 非主键盘的临时键盘Cache
   // private var tempKeyboardViewCache: [KeyboardType: UIView] = [:]
 
@@ -160,6 +163,12 @@ class KeyboardRootView: NibLessView {
     view.onTextPlaybackButtonTapped = { [weak self] in
       self?.toggleTextPlaybackPanel()
     }
+    view.onAISuggestionsButtonTapped = { [weak self] in
+      self?.toggleAISuggestionsPanel()
+    }
+    view.onBackToKeyboardTapped = { [weak self] in
+      self?.backToKeyboard()
+    }
     return view
   }()
 
@@ -174,6 +183,14 @@ class KeyboardRootView: NibLessView {
   /// 文本回放面板
   private lazy var textPlaybackPanelView: TextPlaybackPanelView = {
     let view = TextPlaybackPanelView(style: appearance.candidateBarStyle)
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.isHidden = true
+    return view
+  }()
+
+  /// AI 建议面板
+  private lazy var aiSuggestionsPanelView: AISuggestionsPanelView = {
+    let view = AISuggestionsPanelView(style: appearance.candidateBarStyle)
     view.translatesAutoresizingMaskIntoConstraints = false
     view.isHidden = true
     return view
@@ -261,6 +278,7 @@ class KeyboardRootView: NibLessView {
       addSubview(toolbarView)
       addSubview(settingsPanelView)
       addSubview(textPlaybackPanelView)
+      addSubview(aiSuggestionsPanelView)
       addSubview(primaryKeyboardView)
     } else {
       addSubview(primaryKeyboardView)
@@ -288,7 +306,10 @@ class KeyboardRootView: NibLessView {
       // 文本回放面板约束
       let textPlaybackPanelConstraints = createTextPlaybackPanelConstraints()
 
-      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints + textPlaybackPanelConstraints)
+      // AI 建议面板约束
+      let aiSuggestionsPanelConstraints = createAISuggestionsPanelConstraints()
+
+      NSLayoutConstraint.activate(toolbarStaticConstraint + toolbarCollapseDynamicConstraints + [toolbarHeightConstraint!] + settingsPanelConstraints + textPlaybackPanelConstraints + aiSuggestionsPanelConstraints)
     } else {
       NSLayoutConstraint.activate(createNoToolbarConstraints())
     }
@@ -350,13 +371,31 @@ class KeyboardRootView: NibLessView {
     ]
   }
 
+  /// AI 建议面板约束
+  func createAISuggestionsPanelConstraints() -> [NSLayoutConstraint] {
+    return [
+      aiSuggestionsPanelView.topAnchor.constraint(equalTo: toolbarView.bottomAnchor),
+      aiSuggestionsPanelView.bottomAnchor.constraint(equalTo: bottomAnchor),
+      aiSuggestionsPanelView.leadingAnchor.constraint(equalTo: leadingAnchor),
+      aiSuggestionsPanelView.trailingAnchor.constraint(equalTo: trailingAnchor),
+    ]
+  }
+
   /// 切换设置面板显示
   func toggleSettingsPanel() {
     isShowingSettingsPanel.toggle()
     settingsPanelView.isHidden = !isShowingSettingsPanel
     primaryKeyboardView.isHidden = isShowingSettingsPanel
     textPlaybackPanelView.isHidden = true
+    aiSuggestionsPanelView.isHidden = true
     isShowingTextPlaybackPanel = false
+    isShowingAISuggestionsPanel = false
+    
+    if isShowingSettingsPanel {
+      toolbarView.showBackToKeyboardButton()
+    } else {
+      toolbarView.hideBackToKeyboardButton()
+    }
   }
 
   /// 切换文本回放面板显示
@@ -365,7 +404,46 @@ class KeyboardRootView: NibLessView {
     textPlaybackPanelView.isHidden = !isShowingTextPlaybackPanel
     primaryKeyboardView.isHidden = isShowingTextPlaybackPanel
     settingsPanelView.isHidden = true
+    aiSuggestionsPanelView.isHidden = true
     isShowingSettingsPanel = false
+    isShowingAISuggestionsPanel = false
+    
+    if isShowingTextPlaybackPanel {
+      toolbarView.showBackToKeyboardButton()
+    } else {
+      toolbarView.hideBackToKeyboardButton()
+    }
+  }
+
+  /// 切换 AI 建议面板显示
+  func toggleAISuggestionsPanel() {
+    isShowingAISuggestionsPanel.toggle()
+    aiSuggestionsPanelView.isHidden = !isShowingAISuggestionsPanel
+    primaryKeyboardView.isHidden = isShowingAISuggestionsPanel
+    settingsPanelView.isHidden = true
+    textPlaybackPanelView.isHidden = true
+    isShowingSettingsPanel = false
+    isShowingTextPlaybackPanel = false
+    
+    if isShowingAISuggestionsPanel {
+      toolbarView.showBackToKeyboardButton()
+    } else {
+      toolbarView.hideBackToKeyboardButton()
+    }
+  }
+  
+  /// 返回键盘
+  func backToKeyboard() {
+    isShowingSettingsPanel = false
+    isShowingTextPlaybackPanel = false
+    isShowingAISuggestionsPanel = false
+    
+    settingsPanelView.isHidden = true
+    textPlaybackPanelView.isHidden = true
+    aiSuggestionsPanelView.isHidden = true
+    primaryKeyboardView.isHidden = false
+    
+    toolbarView.hideBackToKeyboardButton()
   }
 
   func combine() {

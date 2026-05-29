@@ -33,6 +33,28 @@ class KeyboardToolbarView: NibLessView {
   /// 文本回放按钮点击回调
   var onTextPlaybackButtonTapped: (() -> Void)?
 
+  /// AI 建议按钮点击回调
+  var onAISuggestionsButtonTapped: (() -> Void)?
+
+  /// 返回键盘按钮点击回调
+  var onBackToKeyboardTapped: (() -> Void)?
+
+  /// 返回键盘按钮
+  lazy var backToKeyboardButton: UIButton = {
+    let button = UIButton(type: .custom)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setImage(UIImage(systemName: "keyboard"), for: .normal)
+    button.setPreferredSymbolConfiguration(.init(font: .systemFont(ofSize: 18), scale: .default), forImageIn: .normal)
+    button.tintColor = style.toolbarButtonFrontColor
+    button.backgroundColor = style.toolbarButtonBackgroundColor
+    button.addTarget(self, action: #selector(backToKeyboardTouchDownAction), for: .touchDown)
+    button.addTarget(self, action: #selector(backToKeyboardTouchUpAction), for: .touchUpInside)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchCancel)
+    button.addTarget(self, action: #selector(touchCancel), for: .touchUpOutside)
+    button.isHidden = true
+    return button
+  }()
+
   /// 常用功能项: 仓输入法App
   lazy var iconButton: UIButton = {
     let button = UIButton(type: .custom)
@@ -167,6 +189,7 @@ class KeyboardToolbarView: NibLessView {
     if keyboardContext.displayKeyboardDismissButton {
       commonFunctionBar.addSubview(dismissKeyboardButton)
     }
+    commonFunctionBar.addSubview(backToKeyboardButton)
     commonFunctionBar.addSubview(settingsButton)
     commonFunctionBar.addSubview(emojiButton)
     commonFunctionBar.addSubview(aiButton)
@@ -211,7 +234,12 @@ class KeyboardToolbarView: NibLessView {
     }
 
     constraints.append(contentsOf: [
-      settingsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spacing),
+      backToKeyboardButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: spacing),
+      backToKeyboardButton.heightAnchor.constraint(equalToConstant: buttonSize),
+      backToKeyboardButton.widthAnchor.constraint(equalToConstant: buttonSize),
+      backToKeyboardButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
+
+      settingsButton.leadingAnchor.constraint(equalTo: backToKeyboardButton.trailingAnchor, constant: spacing),
       settingsButton.heightAnchor.constraint(equalToConstant: buttonSize),
       settingsButton.widthAnchor.constraint(equalToConstant: buttonSize),
       settingsButton.centerYAnchor.constraint(equalTo: commonFunctionBar.centerYAnchor),
@@ -292,9 +320,27 @@ class KeyboardToolbarView: NibLessView {
   @objc func touchCancel() {
     dismissKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
     iconButton.backgroundColor = style.toolbarButtonBackgroundColor
+    backToKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
     settingsButton.backgroundColor = style.toolbarButtonBackgroundColor
     emojiButton.backgroundColor = style.toolbarButtonBackgroundColor
     aiButton.backgroundColor = style.toolbarButtonBackgroundColor
+  }
+
+  @objc func backToKeyboardTouchDownAction() {
+    backToKeyboardButton.backgroundColor = style.toolbarButtonPressedBackgroundColor
+  }
+
+  @objc func backToKeyboardTouchUpAction() {
+    backToKeyboardButton.backgroundColor = style.toolbarButtonBackgroundColor
+    onBackToKeyboardTapped?()
+  }
+
+  func showBackToKeyboardButton() {
+    backToKeyboardButton.isHidden = false
+  }
+
+  func hideBackToKeyboardButton() {
+    backToKeyboardButton.isHidden = true
   }
 
   @objc func settingsButtonTouchDownAction() {
@@ -321,6 +367,6 @@ class KeyboardToolbarView: NibLessView {
 
   @objc func aiButtonTouchUpAction() {
     aiButton.backgroundColor = style.toolbarButtonBackgroundColor
-    // TODO: 打开 AI 建议面板
+    onAISuggestionsButtonTapped?()
   }
 }
