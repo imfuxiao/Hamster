@@ -545,14 +545,39 @@ class KeyboardRootView: NibLessView {
 
   /// 处理重新生成建议
   func handleRegenerateSuggestions() {
-    // TODO: 调用 AI API 重新生成建议
-    // 暂时使用示例数据
-    let newSuggestions = [
-      "我觉得这个想法很有前景！",
-      "完全同意你的观点。",
-      "这个方向确实值得探索。"
-    ]
-    aiSuggestionsPanelView.updateSuggestions(newSuggestions)
+    // 获取上下文
+    guard let proxy = textDocumentProxy else { return }
+    let context = proxy.documentContextBeforeInput ?? ""
+
+    // 如果上下文为空，使用示例数据
+    if context.isEmpty {
+      let newSuggestions = [
+        "我觉得这个想法很有前景！",
+        "完全同意你的观点。",
+        "这个方向确实值得探索。"
+      ]
+      aiSuggestionsPanelView.updateSuggestions(newSuggestions)
+      return
+    }
+
+    // 调用 AI API
+    AIService.shared.generateSuggestions(context: context) { [weak self] result in
+      DispatchQueue.main.async {
+        switch result {
+        case .success(let suggestions):
+          self?.aiSuggestionsPanelView.updateSuggestions(suggestions)
+        case .failure(let error):
+          print("AI 生成失败：\(error.localizedDescription)")
+          // 失败时使用示例数据
+          let fallbackSuggestions = [
+            "AI 生成失败，请检查网络和 API Key。",
+            "建议：先检查设置中的 API Key 是否正确。",
+            "建议：确保键盘已开启「允许完全访问」。"
+          ]
+          self?.aiSuggestionsPanelView.updateSuggestions(fallbackSuggestions)
+        }
+      }
+    }
   }
 
   // MARK: - GIF 面板处理
