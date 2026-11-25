@@ -2,15 +2,14 @@
 
 一款基于「[中州韻輸入法引擎／Rime Input Method Engine](https://github.com/rime/librime)」的 iOS 版本输入法.
 
-# License
+## 许可证（License）
 
-本项目最初采用 GPL-3.0 许可。从 v2.1.0 开始，它变更为 MIT 许可。
+MIT 授权限于相关权利人已按 MIT 授权的内容。历史贡献已有的 GPL-3.0 授权继续有效，补充 MIT 授权的征询见 [#802](https://github.com/imfuxiao/Hamster/issues/802)。第三方组件及代码适用各自的许可证。
 
-后续代码是否会在开源？
-
-目前「仓」已经在做商业化的相关功能了，在没有资金的情况下，不打算在开源了。
-
-感谢大家的支持。
+- [LICENSE.txt](LICENSE.txt) — MIT 许可证正文及适用范围
+- [LICENSES/GPL-3.0.txt](LICENSES/GPL-3.0.txt) — 历史 GPL-3.0 许可证正文
+- [LICENSING.md](LICENSING.md) — 许可证变更历史及补充授权说明
+- [AUTHORS.md](AUTHORS.md) — 项目作者及历史贡献者名单
 
 # 如何编译运行
 
